@@ -24,9 +24,9 @@
  *
  * <pre>{@code
  * Storage storage = StorageOptions.getDefaultInstance().getService();
- * BlobId blobId = BlobId.of("bucket", "blob_name");
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
- * Blob blob = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes(UTF_8));
+ * BlobId blobIdCodec = BlobId.of("bucket", "blob_name");
+ * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+ * Blob blob = storage.create(blobInfoCodec, "Hello, Cloud Storage!".getBytes(UTF_8));
  * }</pre>
  *
  * <p>This second example shows how to update the blob's content if the blob exists. For the
@@ -36,8 +36,8 @@
  *
  * <pre>{@code
  * Storage storage = StorageOptions.getDefaultInstance().getService();
- * BlobId blobId = BlobId.of("bucket", "blob_name");
- * Blob blob = storage.get(blobId);
+ * BlobId blobIdCodec = BlobId.of("bucket", "blob_name");
+ * Blob blob = storage.get(blobIdCodec);
  * if (blob != null) {
  *   byte[] prevContent = blob.getContent();
  *   System.out.println(new String(prevContent, UTF_8));

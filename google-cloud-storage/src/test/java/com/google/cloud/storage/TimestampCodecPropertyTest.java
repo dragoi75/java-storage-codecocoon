@@ -39,7 +39,7 @@ final class TimestampCodecPropertyTest {
 
   @Property(tries = 50_000)
   void timestampCodecShouldRoundTrip(@ForAll(supplier = Supp.class) Timestamp ts) {
-    Codec<OffsetDateTime, Timestamp> codec = GrpcConversions.INSTANCE.timestampCodec;
+    Codec<OffsetDateTime, Timestamp> codec = GrpcConverters.GRPC_CONVERTERS.timestampMapper;
     OffsetDateTime decode = codec.decode(ts);
     Timestamp encode = codec.encode(decode);
 

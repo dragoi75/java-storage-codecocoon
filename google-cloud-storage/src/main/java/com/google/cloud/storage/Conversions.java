@@ -26,8 +26,8 @@ final class Conversions {
     return ApiaryConversions.INSTANCE;
   }
 
-  static GrpcConversions grpc() {
-    return GrpcConversions.INSTANCE;
+  static GrpcConverters grpc() {
+    return GrpcConverters.GRPC_CONVERTERS;
   }
 
   @FunctionalInterface

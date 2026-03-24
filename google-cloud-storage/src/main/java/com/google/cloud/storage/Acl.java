@@ -94,13 +94,13 @@ public final class Acl implements Serializable {
       this.etag = acl.etag;
     }
 
-    /** Sets the entity for the ACL object. */
+    /** Sets the entityCodec for the ACL object. */
     public Builder setEntity(Entity entity) {
       this.entity = entity;
       return this;
     }
 
-    /** Sets the role to associate to the {@code entity} object. */
+    /** Sets the role to associate to the {@code entityCodec} object. */
     public Builder setRole(Role role) {
       this.role = role;
       return this;
@@ -143,12 +143,12 @@ public final class Acl implements Serializable {
       this.value = value;
     }
 
-    /** Returns the type of entity. */
+    /** Returns the type of entityCodec. */
     public Type getType() {
       return type;
     }
 
-    /** Returns the entity's value. */
+    /** Returns the entityCodec's value. */
     protected String getValue() {
       return value;
     }
@@ -182,15 +182,15 @@ public final class Acl implements Serializable {
     private static final long serialVersionUID = -3033025857280447253L;
 
     /**
-     * Creates a domain entity.
+     * Creates a domain entityCodec.
      *
-     * @param domain the domain associated to this entity
+     * @param domain the domain associated to this entityCodec
      */
     public Domain(String domain) {
       super(Type.DOMAIN, domain);
     }
 
-    /** Returns the domain associated to this entity. */
+    /** Returns the domain associated to this entityCodec. */
     public String getDomain() {
       return getValue();
     }
@@ -202,7 +202,7 @@ public final class Acl implements Serializable {
     private static final long serialVersionUID = -1660987136294408826L;
 
     /**
-     * Creates a group entity.
+     * Creates a group entityCodec.
      *
      * @param email the group email
      */
@@ -224,7 +224,7 @@ public final class Acl implements Serializable {
     static final String ALL_AUTHENTICATED_USERS = "allAuthenticatedUsers";
 
     /**
-     * Creates a user entity.
+     * Creates a user entityCodec.
      *
      * @param email the user email
      */
@@ -290,7 +290,7 @@ public final class Acl implements Serializable {
     }
 
     /**
-     * Creates a project entity.
+     * Creates a project entityCodec.
      *
      * @param projectRole a role in the project, used to select project's teams
      * @param projectId id of the project
@@ -301,12 +301,12 @@ public final class Acl implements Serializable {
       this.projectId = projectId;
     }
 
-    /** Returns the role in the project for this entity. */
+    /** Returns the role in the project for this entityCodec. */
     public ProjectRole getProjectRole() {
       return projectRole;
     }
 
-    /** Returns the project id for this entity. */
+    /** Returns the project id for this entityCodec. */
     public String getProjectId() {
       return projectId;
     }
@@ -349,12 +349,12 @@ public final class Acl implements Serializable {
     this.etag = builder.etag;
   }
 
-  /** Returns the entity for this ACL object. */
+  /** Returns the entityCodec for this ACL object. */
   public Entity getEntity() {
     return entity;
   }
 
-  /** Returns the role associated to the entity in this ACL object. */
+  /** Returns the role associated to the entityCodec in this ACL object. */
   public Role getRole() {
     return role;
   }
@@ -381,8 +381,8 @@ public final class Acl implements Serializable {
   /**
    * Returns an {@code Acl} object.
    *
-   * @param entity the entity for this ACL object
-   * @param role the role to associate to the {@code entity} object
+   * @param entity the entityCodec for this ACL object
+   * @param role the role to associate to the {@code entityCodec} object
    */
   public static Acl of(Entity entity, Role role) {
     return newBuilder(entity, role).build();
@@ -391,8 +391,8 @@ public final class Acl implements Serializable {
   /**
    * Returns a builder for {@code Acl} objects.
    *
-   * @param entity the entity for this ACL object
-   * @param role the role to associate to the {@code entity} object
+   * @param entity the entityCodec for this ACL object
+   * @param role the role to associate to the {@code entityCodec} object
    */
   public static Builder newBuilder(Entity entity, Role role) {
     return new Builder(entity, role);
@@ -401,7 +401,7 @@ public final class Acl implements Serializable {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("entity", entity)
+        .add("entityCodec", entity)
         .add("role", role)
         .add("etag", etag)
         .add("id", id)

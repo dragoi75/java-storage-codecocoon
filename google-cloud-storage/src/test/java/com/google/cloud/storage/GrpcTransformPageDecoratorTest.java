@@ -30,7 +30,7 @@ import com.google.api.gax.rpc.ApiCallContext;
 import com.google.api.gax.rpc.PageContext;
 import com.google.api.gax.rpc.PagedListDescriptor;
 import com.google.api.gax.rpc.UnaryCallable;
-import com.google.cloud.storage.GrpcStorageImpl.TransformingPageDecorator;
+import com.google.cloud.storage.GrpcStorageImpl.PageTransformerDecorator;
 import com.google.cloud.storage.Retrying.RetryingDependencies;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
@@ -81,8 +81,8 @@ public class GrpcTransformPageDecoratorTest {
     PageContext<Req, Resp, String> context =
         PageContext.create(callable, descriptor, req1, apiCallContext);
     ReqRespPage page = new ReqRespPage(context, resp1);
-    TransformingPageDecorator<Req, Resp, String, ReqRespPage, String> decorator =
-        new TransformingPageDecorator<>(
+    PageTransformerDecorator<Req, Resp, String, ReqRespPage, String> decorator =
+        new PageTransformerDecorator<>(
             page,
             String::toUpperCase,
             retryingDeps(),
@@ -105,8 +105,8 @@ public class GrpcTransformPageDecoratorTest {
     PageContext<Req, Resp, String> context =
         PageContext.create(callable, descriptor, req1, apiCallContext);
     ReqRespPage page = new ReqRespPage(context, resp1);
-    TransformingPageDecorator<Req, Resp, String, ReqRespPage, String> decorator =
-        new TransformingPageDecorator<>(page, String::toUpperCase, retryingDeps(), alg);
+    PageTransformerDecorator<Req, Resp, String, ReqRespPage, String> decorator =
+        new PageTransformerDecorator<>(page, String::toUpperCase, retryingDeps(), alg);
 
     ImmutableList<String> actual = ImmutableList.copyOf(decorator.iterateAll().iterator());
     assertThat(actual).containsExactlyElementsIn(expectedValues);

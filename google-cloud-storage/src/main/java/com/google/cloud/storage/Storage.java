@@ -105,7 +105,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
     LOCATION_TYPE("locationType"),
     WEBSITE("website"),
     VERSIONING("versioning"),
-    CORS("cors"),
+    CORS("getCors"),
     LIFECYCLE("lifecycle"),
     STORAGE_CLASS("storageClass"),
     ETAG("etag"),
@@ -113,8 +113,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
     BILLING("billing"),
     DEFAULT_EVENT_BASED_HOLD("defaultEventBasedHold"),
     RETENTION_POLICY("retentionPolicy"),
-    IAMCONFIGURATION("iamConfiguration"),
-    LOGGING("logging"),
+    IAMCONFIGURATION("getIamConfiguration"),
+    LOGGING("loggingCodec"),
     UPDATED("updated");
 
     static final List<? extends FieldSelector> REQUIRED_FIELDS = ImmutableList.of(NAME);
@@ -1808,9 +1808,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * Blob blob = storage.create(blobInfoCodec);
    * }</pre>
    *
    * @return a {@code Blob} with complete information
@@ -1831,9 +1831,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * Blob blob = storage.create(blobInfoCodec, "Hello, World!".getBytes(UTF_8));
    * }</pre>
    *
    * @return a {@code Blob} with complete information
@@ -1855,9 +1855,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8), 7, 5);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * Blob blob = storage.create(blobInfoCodec, "Hello, World!".getBytes(UTF_8), 7, 5);
    * }</pre>
    *
    * @return a {@code Blob} with complete information
@@ -1871,7 +1871,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   /**
    * Creates a new blob. Direct upload is used to upload {@code content}. For large content, {@link
    * #writer} is recommended as it uses resumable upload. By default any MD5 and CRC32C values in
-   * the given {@code blobInfo} are ignored unless requested via the {@code
+   * the given {@code blobInfoCodec} are ignored unless requested via the {@code
    * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options. The given input
    * stream is closed upon success.
    *
@@ -1884,9 +1884,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, content);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * Blob blob = storage.create(blobInfoCodec, content);
    * }</pre>
    *
    * <p>Example of uploading an encrypted blob.
@@ -1897,11 +1897,11 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String encryptionKey = "my_encryption_key";
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
    *
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec)
    *     .setContentType("text/plain")
    *     .build();
-   * Blob blob = storage.create(blobInfo, content, BlobWriteOption.encryptionKey(encryptionKey));
+   * Blob blob = storage.create(blobInfoCodec, content, BlobWriteOption.encryptionKey(encryptionKey));
    * }</pre>
    *
    * @return a {@code Blob} with complete information
@@ -1913,7 +1913,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Uploads {@code path} to the blob using {@link #writer}. By default any MD5 and CRC32C values in
-   * the given {@code blobInfo} are ignored unless requested via the {@link
+   * the given {@code blobInfoCodec} are ignored unless requested via the {@link
    * BlobWriteOption#md5Match()} and {@link BlobWriteOption#crc32cMatch()} options. Folder upload is
    * not supported.
    *
@@ -1922,9 +1922,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String fileName = "readme.txt";
-   * BlobId blobId = BlobId.of(bucketName, fileName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * storage.createFrom(blobInfo, Paths.get(fileName));
+   * BlobId blobIdCodec = BlobId.of(bucketName, fileName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * storage.createFrom(blobInfoCodec, Paths.get(fileName));
    * }</pre>
    *
    * @param blobInfo blob to create
@@ -1940,7 +1940,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Uploads {@code path} to the blob using {@link #writer} and {@code bufferSize}. By default any
-   * MD5 and CRC32C values in the given {@code blobInfo} are ignored unless requested via the {@link
+   * MD5 and CRC32C values in the given {@code blobInfoCodec} are ignored unless requested via the {@link
    * BlobWriteOption#md5Match()} and {@link BlobWriteOption#crc32cMatch()} options. Folder upload is
    * not supported.
    *
@@ -1953,12 +1953,12 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <p>Example of uploading a humongous file:
    *
    * <pre>{@code
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/webm").build();
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("video/webm").build();
    *
    * int largeBufferSize = 150 * 1024 * 1024;
    * Path file = Paths.get("humongous.file");
-   * storage.createFrom(blobInfo, file, largeBufferSize);
+   * storage.createFrom(blobInfoCodec, file, largeBufferSize);
    * }</pre>
    *
    * @param blobInfo blob to create
@@ -1975,18 +1975,18 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Reads bytes from an input stream and uploads those bytes to the blob using {@link #writer}. By
-   * default any MD5 and CRC32C values in the given {@code blobInfo} are ignored unless requested
+   * default any MD5 and CRC32C values in the given {@code blobInfoCodec} are ignored unless requested
    * via the {@link BlobWriteOption#md5Match()} and {@link BlobWriteOption#crc32cMatch()} options.
    *
    * <p>Example of uploading data with CRC32C checksum:
    *
    * <pre>{@code
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, world".getBytes(StandardCharsets.UTF_8);
    * Hasher hasher = Hashing.crc32c().newHasher().putBytes(content);
    * String crc32c = BaseEncoding.base64().encode(Ints.toByteArray(hasher.hash().asInt()));
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setCrc32c(crc32c).build();
-   * storage.createFrom(blobInfo, new ByteArrayInputStream(content), Storage.BlobWriteOption.crc32cMatch());
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setCrc32c(crc32c).build();
+   * storage.createFrom(blobInfoCodec, new ByteArrayInputStream(content), Storage.BlobWriteOption.crc32cMatch());
    * }</pre>
    *
    * @param blobInfo blob to create
@@ -2003,7 +2003,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Reads bytes from an input stream and uploads those bytes to the blob using {@link #writer} and
-   * {@code bufferSize}. By default any MD5 and CRC32C values in the given {@code blobInfo} are
+   * {@code bufferSize}. By default any MD5 and CRC32C values in the given {@code blobInfoCodec} are
    * ignored unless requested via the {@link BlobWriteOption#md5Match()} and {@link
    * BlobWriteOption#crc32cMatch()} options.
    *
@@ -2107,8 +2107,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobMetageneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId, BlobGetOption.metagenerationMatch(blobMetageneration));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * Blob blob = storage.get(blobIdCodec, BlobGetOption.metagenerationMatch(blobMetageneration));
    * }</pre>
    *
    * <p>Example of getting information on a blob encrypted using Customer Supplied Encryption Keys,
@@ -2122,8 +2122,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * String blobEncryptionKey = "";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId, BlobGetOption.decryptionKey(blobEncryptionKey));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * Blob blob = storage.get(blobIdCodec, BlobGetOption.decryptionKey(blobEncryptionKey));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -2139,8 +2139,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * Blob blob = storage.get(blobIdCodec);
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -2202,8 +2202,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * BucketInfo bucketInfo = BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build();
-   * Bucket bucket = storage.update(bucketInfo);
+   * BucketInfo bucketInfoCodec = BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build();
+   * Bucket bucket = storage.update(bucketInfoCodec);
    * }</pre>
    *
    * @return the updated bucket
@@ -2223,9 +2223,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <p>Example of updating the content type only if the properties are not updated externally:
    *
    * <pre>{@code
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * Blob blob = storage.create(blobInfoCodec);
    *
    * doSomething();
    *
@@ -2254,9 +2254,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Updates the properties of the blob. This method issues an RPC request to merge the current blob
-   * properties with the properties in the provided {@code blobInfo}. Properties not defined in
-   * {@code blobInfo} will not be updated. To unset a blob property this property in {@code
-   * blobInfo} should be explicitly set to {@code null}.
+   * properties with the properties in the provided {@code blobInfoCodec}. Properties not defined in
+   * {@code blobInfoCodec} will not be updated. To unset a blob property this property in {@code
+   * blobInfoCodec} should be explicitly set to {@code null}.
    *
    * <p>Bucket or blob's name cannot be changed by this method. If you want to rename the blob or
    * move it to a different bucket use the {@link Blob#copyTo} and {@link #delete} operations.
@@ -2350,8 +2350,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * boolean deleted = storage.delete(blobId, BlobSourceOption.generationMatch(blobGeneration));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * boolean deleted = storage.delete(blobIdCodec, BlobSourceOption.generationMatch(blobGeneration));
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -2373,8 +2373,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * boolean deleted = storage.delete(blobId);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * boolean deleted = storage.delete(blobIdCodec);
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -2401,10 +2401,10 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String blobName = "my-blob-name";
    * String sourceBlob1 = "source_blob_1";
    * String sourceBlob2 = "source_blob_2";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
    * ComposeRequest request = ComposeRequest.newBuilder()
-   *     .setTarget(blobInfo)
+   *     .setTarget(blobInfoCodec)
    *     .addSource(sourceBlob1)
    *     .addSource(sourceBlob2)
    *     .build();
@@ -2467,11 +2467,11 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String blobName = "my-blob-name";
    * String oldEncryptionKey = "old_encryption_key";
    * String newEncryptionKey = "new_encryption_key";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * CopyRequest request = CopyRequest.newBuilder()
-   *     .setSource(blobId)
+   *     .setSource(blobIdCodec)
    *     .setSourceOptions(BlobSourceOption.decryptionKey(oldEncryptionKey))
-   *     .setTarget(blobId, BlobTargetOption.encryptionKey(newEncryptionKey))
+   *     .setTarget(blobIdCodec, BlobTargetOption.encryptionKey(newEncryptionKey))
    *     .build();
    * Blob blob = storage.copy(request).getResult();
    * }</pre>
@@ -2514,8 +2514,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * byte[] content = storage.readAllBytes(blobId);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * byte[] content = storage.readAllBytes(blobIdCodec);
    * }</pre>
    *
    * <p>Example of reading all bytes of an encrypted blob.
@@ -2606,8 +2606,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * try (ReadChannel reader = storage.reader(blobId)) {
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * try (ReadChannel reader = storage.reader(blobIdCodec)) {
    *   ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
    *   while (reader.read(bytes) > 0) {
    *     bytes.flip();
@@ -2628,9 +2628,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * Path destination = Paths.get("my-blob-destination.txt");
-   * downloadTo(blobId, destination);
+   * downloadTo(blobIdCodec, destination);
    * // do stuff with destination
    * }</pre>
    *
@@ -2648,7 +2648,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * Path destination = Paths.get("my-blob-destination.txt");
    * try (OutputStream outputStream = Files.newOutputStream(path)) {
    *  downloadTo(blob, outputStream);
@@ -2665,7 +2665,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
 
   /**
    * Creates a blob and returns a channel for writing its content. By default any MD5 and CRC32C
-   * values in the given {@code blobInfo} are ignored unless requested via the {@code
+   * values in the given {@code blobInfoCodec} are ignored unless requested via the {@code
    * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options.
    *
    * <p>Example of writing a blob's content through a writer:
@@ -2673,10 +2673,10 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * try (WriteChannel writer = storage.writer(blobInfo)) {
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+   * try (WriteChannel writer = storage.writer(blobInfoCodec)) {
    *     writer.write(ByteBuffer.wrap(content, 0, content.length));
    * } catch (IOException ex) {
    *   // handle exception
@@ -2696,11 +2696,11 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
    * URL signedURL = storage.signUrl(
-   *     blobInfo,
+   *     blobInfoCodec,
    *     1, TimeUnit.HOURS,
    *     Storage.SignUrlOption.httpMethod(HttpMethod.POST));
    * try (WriteChannel writer = storage.writer(signedURL)) {
@@ -2817,9 +2817,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    *     used and no implementation of {@link ServiceAccountSigner} was provided to {@link
    *     StorageOptions}
    * @throws IllegalArgumentException if {@code SignUrlOption.withMd5()} option is used and {@code
-   *     blobInfo.md5()} is {@code null}
+   *     blobInfoCodec.md5()} is {@code null}
    * @throws IllegalArgumentException if {@code SignUrlOption.withContentType()} option is used and
-   *     {@code blobInfo.contentType()} is {@code null}
+   *     {@code blobInfoCodec.contentType()} is {@code null}
    * @throws SigningException if the attempt to sign the URL failed
    * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed-URLs</a>
    */
@@ -3068,10 +3068,10 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   List<Boolean> delete(Iterable<BlobId> blobIds);
 
   /**
-   * Returns the ACL entry for the specified entity on the specified bucket or {@code null} if not
+   * Returns the ACL entry for the specified entityCodec on the specified bucket or {@code null} if not
    * found.
    *
-   * <p>Example of getting the ACL entry for an entity on a bucket.
+   * <p>Example of getting the ACL entry for an entityCodec on a bucket.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -3089,7 +3089,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * }</pre>
    *
    * @param bucket name of the bucket where the getAcl operation takes place
-   * @param entity ACL entity to fetch
+   * @param entity ACL entityCodec to fetch
    * @param options extra parameters to apply to this operation
    * @throws StorageException upon failure
    */
@@ -3101,9 +3101,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   Acl getAcl(String bucket, Entity entity);
 
   /**
-   * Deletes the ACL entry for the specified entity on the specified bucket.
+   * Deletes the ACL entry for the specified entityCodec on the specified bucket.
    *
-   * <p>Example of deleting the ACL entry for an entity on a bucket.
+   * <p>Example of deleting the ACL entry for an entityCodec on a bucket.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -3125,7 +3125,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * }</pre>
    *
    * @param bucket name of the bucket to delete an ACL from
-   * @param entity ACL entity to delete
+   * @param entity ACL entityCodec to delete
    * @param options extra parameters to apply to this operation
    * @return {@code true} if the ACL was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
@@ -3233,13 +3233,13 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   List<Acl> listAcls(String bucket);
 
   /**
-   * Returns the default object ACL entry for the specified entity on the specified bucket or {@code
+   * Returns the default object ACL entry for the specified entityCodec on the specified bucket or {@code
    * null} if not found.
    *
    * <p>Default ACLs are applied to a new blob within the bucket when no ACL was provided for that
    * blob.
    *
-   * <p>Example of getting the default ACL entry for an entity on a bucket.
+   * <p>Example of getting the default ACL entry for an entityCodec on a bucket.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -3252,12 +3252,12 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   Acl getDefaultAcl(String bucket, Entity entity);
 
   /**
-   * Deletes the default object ACL entry for the specified entity on the specified bucket.
+   * Deletes the default object ACL entry for the specified entityCodec on the specified bucket.
    *
    * <p>Default ACLs are applied to a new blob within the bucket when no ACL was provided for that
    * blob.
    *
-   * <p>Example of deleting the default ACL entry for an entity on a bucket.
+   * <p>Example of deleting the default ACL entry for an entityCodec on a bucket.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -3335,17 +3335,17 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   List<Acl> listDefaultAcls(String bucket);
 
   /**
-   * Returns the ACL entry for the specified entity on the specified blob or {@code null} if not
+   * Returns the ACL entry for the specified entityCodec on the specified blob or {@code null} if not
    * found.
    *
-   * <p>Example of getting the ACL entry for an entity on a blob.
+   * <p>Example of getting the ACL entry for an entityCodec on a blob.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.getAcl(blobId, User.ofAllAuthenticatedUsers());
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * Acl acl = storage.getAcl(blobIdCodec, User.ofAllAuthenticatedUsers());
    * }</pre>
    *
    * <p>Example of getting the ACL entry for a specific user on a blob.
@@ -3354,8 +3354,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * String userEmail = "google-cloud-java-tests@java-docs-samples-tests.iam.gserviceaccount.com";
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Acl acl = storage.getAcl(blobId, new User(userEmail));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * Acl acl = storage.getAcl(blobIdCodec, new User(userEmail));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3364,16 +3364,16 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
   Acl getAcl(BlobId blob, Entity entity);
 
   /**
-   * Deletes the ACL entry for the specified entity on the specified blob.
+   * Deletes the ACL entry for the specified entityCodec on the specified blob.
    *
-   * <p>Example of deleting the ACL entry for an entity on a blob.
+   * <p>Example of deleting the ACL entry for an entityCodec on a blob.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * boolean deleted = storage.deleteAcl(blobId, User.ofAllAuthenticatedUsers());
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * boolean deleted = storage.deleteAcl(blobIdCodec, User.ofAllAuthenticatedUsers());
    * if (deleted) {
    *   // the acl entry was deleted
    * } else {
@@ -3396,8 +3396,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.createAcl(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * Acl acl = storage.createAcl(blobIdCodec, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
    * }</pre>
    *
    * <p>Example of updating a blob to be public-read.
@@ -3406,8 +3406,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.createAcl(blobId, Acl.of(User.ofAllUsers(), Role.READER));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * Acl acl = storage.createAcl(blobIdCodec, Acl.of(User.ofAllUsers(), Role.READER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3424,8 +3424,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.updateAcl(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * Acl acl = storage.updateAcl(blobIdCodec, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3442,8 +3442,8 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * List<Acl> acls = storage.listAcls(blobId);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName, blobGeneration);
+   * List<Acl> acls = storage.listAcls(blobIdCodec);
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -3461,12 +3461,12 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <p>Example of creating a new HMAC Key.
    *
    * <pre>{@code
-   * ServiceAccount serviceAccount = ServiceAccount.of("my-service-account@google.com");
+   * ServiceAccount serviceAccountCodec = ServiceAccount.of("my-service-account@google.com");
    *
-   * HmacKey hmacKey = storage.createHmacKey(serviceAccount);
+   * HmacKey getHmacKey = storage.createHmacKey(serviceAccountCodec);
    *
-   * String secretKey = hmacKey.getSecretKey();
-   * HmacKey.HmacKeyMetadata metadata = hmacKey.getMetadata();
+   * String secretKey = getHmacKey.getSecretKey();
+   * HmacKey.HmacKeyMetadata metadata = getHmacKey.getMetadata();
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3483,7 +3483,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * Page<HmacKey.HmacKeyMetadata> metadataPage = storage.listHmacKeys(
    *     Storage.ListHmacKeysOption.projectId("my-project-id"));
-   * for (HmacKey.HmacKeyMetadata hmacKeyMetadata : metadataPage.getValues()) {
+   * for (HmacKey.HmacKeyMetadata hmacKeyMetadataCodec : metadataPage.getValues()) {
    *     //do something with the metadata
    * }
    * }</pre>
@@ -3492,13 +3492,13 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * not specified, the same project ID as the storage client instance will be used
    *
    * <pre>{@code
-   * ServiceAccount serviceAccount = ServiceAccount.of("my-service-account@google.com");
+   * ServiceAccount serviceAccountCodec = ServiceAccount.of("my-service-account@google.com");
    *
    * Page<HmacKey.HmacKeyMetadata> metadataPage = storage.listHmacKeys(
-   *     Storage.ListHmacKeysOption.serviceAccount(serviceAccount),
+   *     Storage.ListHmacKeysOption.serviceAccountCodec(serviceAccountCodec),
    *     Storage.ListHmacKeysOption.maxResults(10L),
    *     Storage.ListHmacKeysOption.showDeletedKeys(true));
-   * for (HmacKey.HmacKeyMetadata hmacKeyMetadata : metadataPage.getValues()) {
+   * for (HmacKey.HmacKeyMetadata hmacKeyMetadataCodec : metadataPage.getValues()) {
    *     //do something with the metadata
    * }
    * }</pre>
@@ -3518,7 +3518,7 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    *
    * <pre>{@code
    * String hmacKeyAccessId = "my-access-id";
-   * HmacKey.HmackeyMetadata hmacKeyMetadata = storage.getHmacKey(hmacKeyAccessId);
+   * HmacKey.HmackeyMetadata hmacKeyMetadataCodec = storage.getHmacKey(hmacKeyAccessId);
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3535,10 +3535,10 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    *
    * <pre>{@code
    * String hmacKeyAccessId = "my-access-id";
-   * HmacKey.HmacKeyMetadata hmacKeyMetadata = storage.getHmacKey(hmacKeyAccessId);
+   * HmacKey.HmacKeyMetadata hmacKeyMetadataCodec = storage.getHmacKey(hmacKeyAccessId);
    *
-   * storage.updateHmacKeyState(hmacKeyMetadata, HmacKey.HmacKeyState.INACTIVE);
-   * storage.deleteHmacKey(hmacKeyMetadata);
+   * storage.updateHmacKeyState(hmacKeyMetadataCodec, HmacKey.HmacKeyState.INACTIVE);
+   * storage.deleteHmacKey(hmacKeyMetadataCodec);
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3553,9 +3553,9 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    *
    * <pre>{@code
    * String hmacKeyAccessId = "my-access-id";
-   * HmacKey.HmacKeyMetadata hmacKeyMetadata = storage.getHmacKey(hmacKeyAccessId);
+   * HmacKey.HmacKeyMetadata hmacKeyMetadataCodec = storage.getHmacKey(hmacKeyAccessId);
    *
-   * storage.updateHmacKeyState(hmacKeyMetadata, HmacKey.HmacKeyState.INACTIVE);
+   * storage.updateHmacKeyState(hmacKeyMetadataCodec, HmacKey.HmacKeyState.INACTIVE);
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3667,12 +3667,12 @@ public interface Storage extends Service<StorageOptions>, AutoCloseable {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String topic = "projects/myProject/topics/myTopic"
-   * NotificationInfo notificationInfo = NotificationInfo.newBuilder(topic)
+   * NotificationInfo notificationDetails = NotificationInfo.newBuilder(topic)
    *  .setCustomAttributes(ImmutableMap.of("label1", "value1"))
    *  .setEventTypes(NotificationInfo.EventType.OBJECT_FINALIZE)
    *  .setPayloadFormat(NotificationInfo.PayloadFormat.JSON_API_V1)
    *  .build();
-   * Notification notification = storage.createNotification(bucketName, notificationInfo);
+   * Notification notification = storage.createNotification(bucketName, notificationDetails);
    * }</pre>
    *
    * @param bucket name of the bucket

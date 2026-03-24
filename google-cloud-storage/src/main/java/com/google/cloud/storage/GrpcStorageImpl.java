@@ -134,458 +134,458 @@ import java.util.stream.StreamSupport;
 @BetaApi
 final class GrpcStorageImpl extends BaseService<StorageOptions> implements Storage {
 
-  private static final byte[] ZERO_BYTES = new byte[0];
-  private static final Set<OpenOption> READ_OPS = ImmutableSet.of(StandardOpenOption.READ);
-  private static final Set<OpenOption> WRITE_OPS =
+  private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+  private static final Set<OpenOption> READ_OPEN_OPTIONS = ImmutableSet.of(StandardOpenOption.READ);
+  private static final Set<OpenOption> WRITE_OPEN_OPTIONS =
       ImmutableSet.of(
           StandardOpenOption.WRITE,
           StandardOpenOption.CREATE,
           StandardOpenOption.TRUNCATE_EXISTING);
   /**
-   * For use in {@link #resultRetryAlgorithmToCodes(ResultRetryAlgorithm)}. Resolve all codes and
+   * For use in {@link #getRetryableStatusCodes (ResultRetryAlgorithm)}. Resolve all codes and
    * construct corresponding ApiExceptions.
    *
    * <p>Constructing the exceptions will walk the stack for each one. In order to avoid the stack
    * walking overhead for every Code for every invocation of read, construct the set of exceptions
    * only once and keep in this value.
    */
-  private static final Set<StorageException> CODE_API_EXCEPTIONS =
+  private static final Set<StorageException> API_CODE_EXCEPTIONS =
       Arrays.stream(StatusCode.Code.values())
-          .map(GrpcStorageImpl::statusCodeFor)
+          .map(GrpcStorageImpl::getGrpcStatusCode)
           .map(c -> ApiExceptionFactory.createException(null, c, false))
           .map(StorageException::asStorageException)
           .collect(Collectors.toSet());
 
-  private final StorageClient storageClient;
-  private final GrpcConversions codecs;
-  private final GrpcRetryAlgorithmManager retryAlgorithmManager;
-  private final SyntaxDecoders syntaxDecoders;
+  private final StorageClient storageConnector;
+  private final GrpcConverters grpcConverters;
+  private final GrpcRetryAlgorithmManager retryPolicyManager;
+  private final SyntaxDecoder syntaxParser;
 
-  @Deprecated private final ProjectId defaultProjectId;
+  @Deprecated private final ProjectId projectIdDefault;
 
-  GrpcStorageImpl(GrpcStorageOptions options, StorageClient storageClient) {
-    super(options);
-    this.storageClient = storageClient;
-    this.codecs = Conversions.grpc();
-    this.retryAlgorithmManager = options.getRetryAlgorithmManager();
-    this.syntaxDecoders = new SyntaxDecoders();
-    this.defaultProjectId = UnifiedOpts.projectId(options.getProjectId());
+  GrpcStorageImpl(GrpcStorageOptions grpcOptions, StorageClient storageConnector) {
+    super(grpcOptions);
+    this.storageConnector = storageConnector;
+    this.grpcConverters = Conversions.grpc();
+    this.retryPolicyManager = grpcOptions.getRetryAlgorithmManager();
+    this.syntaxParser = new SyntaxDecoder();
+    this.projectIdDefault = UnifiedOpts.projectId(grpcOptions.getProjectId());
   }
 
   @Override
   public void close() throws Exception {
-    try (StorageClient s = storageClient) {
-      s.shutdownNow();
-      org.threeten.bp.Duration terminationAwaitDuration =
+    try (StorageClient clientInstance = storageConnector) {
+      clientInstance.shutdownNow();
+      org.threeten.bp.Duration shutdownTimeout =
           getOptions().getTerminationAwaitDuration();
-      s.awaitTermination(terminationAwaitDuration.toMillis(), TimeUnit.MILLISECONDS);
+      clientInstance.awaitTermination(shutdownTimeout.toMillis(), TimeUnit.MILLISECONDS);
     }
   }
 
   @Override
-  public Bucket create(BucketInfo bucketInfo, BucketTargetOption... options) {
-    Opts<BucketTargetOpt> opts = Opts.unwrap(options).resolveFrom(bucketInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    com.google.storage.v2.Bucket bucket = codecs.bucketInfo().encode(bucketInfo);
-    CreateBucketRequest.Builder builder =
+  public Bucket create(BucketInfo bucketMetadata, BucketTargetOption... grpcOptions) {
+    Opts<BucketTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(bucketMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    com.google.storage.v2.Bucket bucketModel = grpcConverters.bucketInfoCodec().encode(bucketMetadata);
+    CreateBucketRequest.Builder bucketBuilder =
         CreateBucketRequest.newBuilder()
-            .setBucket(bucket)
-            .setBucketId(bucketInfo.getName())
+            .setBucket(bucketModel)
+            .setBucketId(bucketMetadata.getName())
             .setParent(ProjectName.format(getOptions().getProjectId()));
-    CreateBucketRequest req = opts.createBucketsRequest().apply(builder).build();
+    CreateBucketRequest createBucketRequest = bucketOpts.createBucketsRequest().apply(bucketBuilder).build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.createBucketCallable().call(req, grpcCallContext),
-        syntaxDecoders.bucket);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.createBucketCallable().call(createBucketRequest, callContext),
+        syntaxParser.bucketModel);
   }
 
   @Override
-  public Blob create(BlobInfo blobInfo, BlobTargetOption... options) {
-    return create(blobInfo, null, options);
+  public Blob create(BlobInfo blobMetadata, BlobTargetOption... grpcOptions) {
+    return create(blobMetadata, null, grpcOptions);
   }
 
   @Override
-  public Blob create(BlobInfo blobInfo, byte[] content, BlobTargetOption... options) {
-    content = firstNonNull(content, ZERO_BYTES);
-    return create(blobInfo, content, 0, content.length, options);
+  public Blob create(BlobInfo blobMetadata, byte[] dataBytes, BlobTargetOption... grpcOptions) {
+    dataBytes = firstNonNull(dataBytes, EMPTY_BYTE_ARRAY);
+    return create(blobMetadata, dataBytes, 0, dataBytes.length, grpcOptions);
   }
 
   @Override
   public Blob create(
-      BlobInfo blobInfo, byte[] content, int offset, int length, BlobTargetOption... options) {
-    requireNonNull(blobInfo, "blobInfo must be non null");
-    requireNonNull(content, "content must be non null");
-    Opts<ObjectTargetOpt> opts = Opts.unwrap(options).resolveFrom(blobInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    WriteObjectRequest req = getWriteObjectRequest(blobInfo, opts);
+      BlobInfo blobMetadata, byte[] dataBytes, int startOffset, int dataLength, BlobTargetOption... grpcOptions) {
+    requireNonNull(blobMetadata, "blobInfoCodec must be non null");
+    requireNonNull(dataBytes, "content must be non null");
+    Opts<ObjectTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    WriteObjectRequest createBucketRequest = getWriteObjectRequest(blobMetadata, bucketOpts);
     try {
-      UnbufferedWritableByteChannelSession<WriteObjectResponse> session =
+      UnbufferedWritableByteChannelSession<WriteObjectResponse> writeSession =
           ResumableMedia.gapic()
               .write()
               .byteChannel(
-                  storageClient.writeObjectCallable().withDefaultCallContext(grpcCallContext))
+                  storageConnector.writeObjectCallable().withDefaultCallContext(callContext))
               .setByteStringStrategy(ByteStringStrategy.noCopy())
               .setHasher(Hasher.enabled())
               .direct()
               .unbuffered()
-              .setRequest(req)
+              .setRequest(createBucketRequest)
               .build();
 
-      try (UnbufferedWritableByteChannel c = session.open()) {
-        c.write(ByteBuffer.wrap(content, offset, length));
+      try (UnbufferedWritableByteChannel ctx = writeSession.open()) {
+        ctx.write(ByteBuffer.wrap(dataBytes, startOffset, dataLength));
       }
-      return getBlob(session.getResult());
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+      return getBlob(writeSession.getResult());
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public Blob create(BlobInfo blobInfo, InputStream content, BlobWriteOption... options) {
+  public Blob create(BlobInfo blobMetadata, InputStream dataBytes, BlobWriteOption... grpcOptions) {
     try {
-      return createFrom(blobInfo, content, options);
-    } catch (IOException e) {
-      throw StorageException.coalesce(e);
+      return createFrom(blobMetadata, dataBytes, grpcOptions);
+    } catch (IOException err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, Path path, BlobWriteOption... options)
+  public Blob createFrom(BlobInfo blobMetadata, Path filePath, BlobWriteOption... grpcOptions)
       throws IOException {
-    return createFrom(blobInfo, path, _15MiB, options);
+    return createFrom(blobMetadata, filePath, _15MiB, grpcOptions);
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, Path path, int bufferSize, BlobWriteOption... options)
+  public Blob createFrom(BlobInfo blobMetadata, Path filePath, int readBufferSize, BlobWriteOption... grpcOptions)
       throws IOException {
-    requireNonNull(path, "path must be non null");
-    if (Files.isDirectory(path)) {
-      throw new StorageException(0, path + " is a directory");
+    requireNonNull(filePath, "path must be non null");
+    if (Files.isDirectory(filePath)) {
+      throw new StorageException(0, filePath + " is a directory");
     }
 
-    Opts<ObjectTargetOpt> opts = Opts.unwrap(options).resolveFrom(blobInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    WriteObjectRequest req = getWriteObjectRequest(blobInfo, opts);
+    Opts<ObjectTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    WriteObjectRequest createBucketRequest = getWriteObjectRequest(blobMetadata, bucketOpts);
 
-    GapicWritableByteChannelSessionBuilder channelSessionBuilder =
+    GapicWritableByteChannelSessionBuilder channelSessionFactory =
         ResumableMedia.gapic()
             .write()
             .byteChannel(
-                storageClient.writeObjectCallable().withDefaultCallContext(grpcCallContext))
+                storageConnector.writeObjectCallable().withDefaultCallContext(callContext))
             .setHasher(Hasher.enabled())
             .setByteStringStrategy(ByteStringStrategy.noCopy());
 
-    BufferedWritableByteChannelSession<WriteObjectResponse> session;
-    long size = Files.size(path);
-    if (size < bufferSize) {
+    BufferedWritableByteChannelSession<WriteObjectResponse> writeSession;
+    long fileSize = Files.size(filePath);
+    if (fileSize < readBufferSize) {
       // ignore the bufferSize argument if the file is smaller than it
-      session =
-          channelSessionBuilder.direct().buffered(Buffers.allocate(size)).setRequest(req).build();
+      writeSession =
+          channelSessionFactory.direct().buffered(Buffers.allocate(fileSize)).setRequest(createBucketRequest).build();
     } else {
-      ApiFuture<ResumableWrite> start =
+      ApiFuture<ResumableWrite> startFuture =
           ResumableMedia.gapic()
               .write()
               .resumableWrite(
-                  storageClient
+                  storageConnector
                       .startResumableWriteCallable()
-                      .withDefaultCallContext(grpcCallContext),
-                  req);
-      session =
-          channelSessionBuilder
+                      .withDefaultCallContext(callContext),
+                  createBucketRequest);
+      writeSession =
+          channelSessionFactory
               .resumable()
-              .buffered(Buffers.allocateAligned(bufferSize, _256KiB))
-              .setStartAsync(start)
+              .buffered(Buffers.allocateAligned(readBufferSize, _256KiB))
+              .setStartAsync(startFuture)
               .build();
     }
 
-    try (SeekableByteChannel src = Files.newByteChannel(path, READ_OPS);
-        BufferedWritableByteChannel dst = session.open()) {
-      ByteStreams.copy(src, dst);
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+    try (SeekableByteChannel sourceChannel = Files.newByteChannel(filePath, READ_OPEN_OPTIONS);
+        BufferedWritableByteChannel destinationChannel = writeSession.open()) {
+      ByteStreams.copy(sourceChannel, destinationChannel);
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
-    return getBlob(session.getResult());
+    return getBlob(writeSession.getResult());
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, InputStream content, BlobWriteOption... options)
+  public Blob createFrom(BlobInfo blobMetadata, InputStream dataBytes, BlobWriteOption... grpcOptions)
       throws IOException {
-    return createFrom(blobInfo, content, _15MiB, options);
+    return createFrom(blobMetadata, dataBytes, _15MiB, grpcOptions);
   }
 
   @Override
   public Blob createFrom(
-      BlobInfo blobInfo, InputStream in, int bufferSize, BlobWriteOption... options)
+      BlobInfo blobMetadata, InputStream input, int readBufferSize, BlobWriteOption... grpcOptions)
       throws IOException {
-    requireNonNull(blobInfo, "blobInfo must be non null");
+    requireNonNull(blobMetadata, "blobInfoCodec must be non null");
 
-    Opts<ObjectTargetOpt> opts = Opts.unwrap(options).resolveFrom(blobInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    WriteObjectRequest req = getWriteObjectRequest(blobInfo, opts);
+    Opts<ObjectTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    WriteObjectRequest createBucketRequest = getWriteObjectRequest(blobMetadata, bucketOpts);
 
-    ApiFuture<ResumableWrite> start =
+    ApiFuture<ResumableWrite> startFuture =
         ResumableMedia.gapic()
             .write()
             .resumableWrite(
-                storageClient.startResumableWriteCallable().withDefaultCallContext(grpcCallContext),
-                req);
+                storageConnector.startResumableWriteCallable().withDefaultCallContext(callContext),
+                createBucketRequest);
 
-    BufferedWritableByteChannelSession<WriteObjectResponse> session =
+    BufferedWritableByteChannelSession<WriteObjectResponse> writeSession =
         ResumableMedia.gapic()
             .write()
             .byteChannel(
-                storageClient.writeObjectCallable().withDefaultCallContext(grpcCallContext))
+                storageConnector.writeObjectCallable().withDefaultCallContext(callContext))
             .setHasher(Hasher.enabled())
             .setByteStringStrategy(ByteStringStrategy.noCopy())
             .resumable()
-            .buffered(Buffers.allocateAligned(bufferSize, _256KiB))
-            .setStartAsync(start)
+            .buffered(Buffers.allocateAligned(readBufferSize, _256KiB))
+            .setStartAsync(startFuture)
             .build();
 
     // Specifically not in the try-with, so we don't close the provided stream
-    ReadableByteChannel src =
-        Channels.newChannel(firstNonNull(in, new ByteArrayInputStream(ZERO_BYTES)));
-    try (BufferedWritableByteChannel dst = session.open()) {
-      ByteStreams.copy(src, dst);
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+    ReadableByteChannel sourceChannel =
+        Channels.newChannel(firstNonNull(input, new ByteArrayInputStream(EMPTY_BYTE_ARRAY)));
+    try (BufferedWritableByteChannel destinationChannel = writeSession.open()) {
+      ByteStreams.copy(sourceChannel, destinationChannel);
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
-    return getBlob(session.getResult());
+    return getBlob(writeSession.getResult());
   }
 
   @Override
-  public Bucket get(String bucket, BucketGetOption... options) {
-    Opts<BucketSourceOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    GetBucketRequest.Builder builder =
-        GetBucketRequest.newBuilder().setName(bucketNameCodec.encode(bucket));
-    GetBucketRequest req = opts.getBucketsRequest().apply(builder).build();
+  public Bucket get(String bucketModel, BucketGetOption... grpcOptions) {
+    Opts<BucketSourceOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    GetBucketRequest.Builder bucketBuilder =
+        GetBucketRequest.newBuilder().setName(bucketNameCodec.encode(bucketModel));
+    GetBucketRequest createBucketRequest = bucketOpts.getBucketsRequest().apply(bucketBuilder).build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.getBucketCallable().call(req, grpcCallContext),
-        syntaxDecoders.bucket);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.getBucketCallable().call(createBucketRequest, callContext),
+        syntaxParser.bucketModel);
   }
 
   @Override
-  public Bucket lockRetentionPolicy(BucketInfo bucket, BucketTargetOption... options) {
+  public Bucket lockRetentionPolicy(BucketInfo bucketModel, BucketTargetOption... grpcOptions) {
     return todo();
   }
 
   @Override
-  public Blob get(String bucket, String blob, BlobGetOption... options) {
-    return get(BlobId.of(bucket, blob), options);
+  public Blob get(String bucketModel, String blobName, BlobGetOption... grpcOptions) {
+    return get(BlobId.of(bucketModel, blobName), grpcOptions);
   }
 
   @Override
-  public Blob get(BlobId blob, BlobGetOption... options) {
-    Opts<ObjectSourceOpt> opts = Opts.unwrap(options).resolveFrom(blob);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    GetObjectRequest.Builder builder =
+  public Blob get(BlobId blobName, BlobGetOption... grpcOptions) {
+    Opts<ObjectSourceOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobName);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    GetObjectRequest.Builder bucketBuilder =
         GetObjectRequest.newBuilder()
-            .setBucket(bucketNameCodec.encode(blob.getBucket()))
-            .setObject(blob.getName());
-    GetObjectRequest req = opts.getObjectsRequest().apply(builder).build();
+            .setBucket(bucketNameCodec.encode(blobName.getBucket()))
+            .setObject(blobName.getName());
+    GetObjectRequest createBucketRequest = bucketOpts.getObjectsRequest().apply(bucketBuilder).build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.getObjectCallable().call(req, grpcCallContext),
-        syntaxDecoders.blob);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.getObjectCallable().call(createBucketRequest, callContext),
+        syntaxParser.blobName);
   }
 
   @Override
-  public Blob get(BlobId blob) {
-    return get(blob, new BlobGetOption[0]);
+  public Blob get(BlobId blobName) {
+    return get(blobName, new BlobGetOption[0]);
   }
 
   @Override
-  public Page<Bucket> list(BucketListOption... options) {
-    UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsCallable =
-        storageClient.listBucketsPagedCallable();
-    Opts<BucketListOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    ListBucketsRequest request =
-        defaultProjectId
+  public Page<Bucket> list(BucketListOption... grpcOptions) {
+    UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsCall =
+        storageConnector.listBucketsPagedCallable();
+    Opts<BucketListOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    ListBucketsRequest listBucketsRequest =
+        projectIdDefault
             .listBuckets()
-            .andThen(opts.listBucketsRequest())
+            .andThen(bucketOpts.listBucketsRequest())
             .apply(ListBucketsRequest.newBuilder())
             .build();
-    ListBucketsPagedResponse call = listBucketsCallable.call(request, grpcCallContext);
+    ListBucketsPagedResponse bucketsResponse = listBucketsCall.call(listBucketsRequest, callContext);
     try {
-      ListBucketsPage page = call.getPage();
-      return new TransformingPageDecorator<>(
-          page, syntaxDecoders.bucket, getOptions(), retryAlgorithmManager.getFor(request));
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+      ListBucketsPage bucketsPage = bucketsResponse.getPage();
+      return new PageTransformerDecorator<>(
+          bucketsPage, syntaxParser.bucketModel, getOptions(), retryPolicyManager.getFor(listBucketsRequest));
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public Page<Blob> list(String bucket, BlobListOption... options) {
-    UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsCallable =
-        storageClient.listObjectsPagedCallable();
-    Opts<ObjectListOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    ListObjectsRequest.Builder builder =
-        ListObjectsRequest.newBuilder().setParent(bucketNameCodec.encode(bucket));
-    ListObjectsRequest req = opts.listObjectsRequest().apply(builder).build();
+  public Page<Blob> list(String bucketModel, BlobListOption... grpcOptions) {
+    UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsCall =
+        storageConnector.listObjectsPagedCallable();
+    Opts<ObjectListOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    ListObjectsRequest.Builder bucketBuilder =
+        ListObjectsRequest.newBuilder().setParent(bucketNameCodec.encode(bucketModel));
+    ListObjectsRequest createBucketRequest = bucketOpts.listObjectsRequest().apply(bucketBuilder).build();
     try {
-      ListObjectsPagedResponse call = listObjectsCallable.call(req, grpcCallContext);
-      ListObjectsPage page = call.getPage();
-      return new TransformingPageDecorator<>(
-          page, syntaxDecoders.blob, getOptions(), retryAlgorithmManager.getFor(req));
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+      ListObjectsPagedResponse bucketsResponse = listObjectsCall.call(createBucketRequest, callContext);
+      ListObjectsPage bucketsPage = bucketsResponse.getPage();
+      return new PageTransformerDecorator<>(
+          bucketsPage, syntaxParser.blobName, getOptions(), retryPolicyManager.getFor(createBucketRequest));
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public Bucket update(BucketInfo bucketInfo, BucketTargetOption... options) {
-    Opts<BucketTargetOpt> opts = Opts.unwrap(options).resolveFrom(bucketInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    com.google.storage.v2.Bucket bucket = codecs.bucketInfo().encode(bucketInfo);
-    UpdateBucketRequest.Builder builder = UpdateBucketRequest.newBuilder().setBucket(bucket);
-    UpdateBucketRequest req =
-        opts.updateBucketsRequest()
-            .apply(builder)
-            .setUpdateMask(fieldMaskGenerator(bucket))
+  public Bucket update(BucketInfo bucketMetadata, BucketTargetOption... grpcOptions) {
+    Opts<BucketTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(bucketMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    com.google.storage.v2.Bucket bucketModel = grpcConverters.bucketInfoCodec().encode(bucketMetadata);
+    UpdateBucketRequest.Builder bucketBuilder = UpdateBucketRequest.newBuilder().setBucket(bucketModel);
+    UpdateBucketRequest createBucketRequest =
+        bucketOpts.updateBucketsRequest()
+            .apply(bucketBuilder)
+            .setUpdateMask(generateFieldMask(bucketModel))
             .build();
 
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.updateBucketCallable().call(req, grpcCallContext),
-        syntaxDecoders.bucket);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.updateBucketCallable().call(createBucketRequest, callContext),
+        syntaxParser.bucketModel);
   }
 
   @Override
-  public Blob update(BlobInfo blobInfo, BlobTargetOption... options) {
-    Opts<ObjectTargetOpt> opts = Opts.unwrap(options).resolveFrom(blobInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    Object object = codecs.blobInfo().encode(blobInfo);
-    UpdateObjectRequest.Builder builder = UpdateObjectRequest.newBuilder().setObject(object);
-    UpdateObjectRequest req =
-        opts.updateObjectsRequest()
-            .apply(builder)
-            .setUpdateMask(fieldMaskGenerator(object))
+  public Blob update(BlobInfo blobMetadata, BlobTargetOption... grpcOptions) {
+    Opts<ObjectTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    Object objectProto = grpcConverters.blobInfoCodec().encode(blobMetadata);
+    UpdateObjectRequest.Builder bucketBuilder = UpdateObjectRequest.newBuilder().setObject(objectProto);
+    UpdateObjectRequest createBucketRequest =
+        bucketOpts.updateObjectsRequest()
+            .apply(bucketBuilder)
+            .setUpdateMask(generateFieldMask(objectProto))
             .build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.updateObjectCallable().call(req, grpcCallContext),
-        syntaxDecoders.blob);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.updateObjectCallable().call(createBucketRequest, callContext),
+        syntaxParser.blobName);
   }
 
   @Override
-  public Blob update(BlobInfo blobInfo) {
-    return update(blobInfo, new BlobTargetOption[0]);
+  public Blob update(BlobInfo blobMetadata) {
+    return update(blobMetadata, new BlobTargetOption[0]);
   }
 
   @Override
-  public boolean delete(String bucket, BucketSourceOption... options) {
-    Opts<BucketSourceOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    DeleteBucketRequest.Builder builder =
-        DeleteBucketRequest.newBuilder().setName(bucketNameCodec.encode(bucket));
-    DeleteBucketRequest req = opts.deleteBucketsRequest().apply(builder).build();
+  public boolean delete(String bucketModel, BucketSourceOption... grpcOptions) {
+    Opts<BucketSourceOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    DeleteBucketRequest.Builder bucketBuilder =
+        DeleteBucketRequest.newBuilder().setName(bucketNameCodec.encode(bucketModel));
+    DeleteBucketRequest createBucketRequest = bucketOpts.deleteBucketsRequest().apply(bucketBuilder).build();
     try {
       Retrying.run(
           getOptions(),
-          retryAlgorithmManager.getFor(req),
-          () -> storageClient.deleteBucketCallable().call(req, grpcCallContext),
+          retryPolicyManager.getFor(createBucketRequest),
+          () -> storageConnector.deleteBucketCallable().call(createBucketRequest, callContext),
           Decoder.identity());
       return true;
-    } catch (StorageException e) {
+    } catch (StorageException err) {
       return false;
     }
   }
 
   @Override
-  public boolean delete(String bucket, String blob, BlobSourceOption... options) {
-    return delete(BlobId.of(bucket, blob), options);
+  public boolean delete(String bucketModel, String blobName, BlobSourceOption... grpcOptions) {
+    return delete(BlobId.of(bucketModel, blobName), grpcOptions);
   }
 
   @Override
-  public boolean delete(BlobId blob, BlobSourceOption... options) {
-    Opts<ObjectSourceOpt> opts = Opts.unwrap(options).resolveFrom(blob);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    DeleteObjectRequest.Builder builder =
-        DeleteObjectRequest.newBuilder().setBucket(blob.getBucket()).setObject(blob.getName());
-    ifNonNull(blob.getGeneration(), builder::setGeneration);
-    DeleteObjectRequest req = opts.deleteObjectsRequest().apply(builder).build();
+  public boolean delete(BlobId blobName, BlobSourceOption... grpcOptions) {
+    Opts<ObjectSourceOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobName);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    DeleteObjectRequest.Builder bucketBuilder =
+        DeleteObjectRequest.newBuilder().setBucket(blobName.getBucket()).setObject(blobName.getName());
+    ifNonNull(blobName.getGeneration(), bucketBuilder::setGeneration);
+    DeleteObjectRequest createBucketRequest = bucketOpts.deleteObjectsRequest().apply(bucketBuilder).build();
     try {
       Retrying.run(
           getOptions(),
-          retryAlgorithmManager.getFor(req),
-          () -> storageClient.deleteObjectCallable().call(req, grpcCallContext),
+          retryPolicyManager.getFor(createBucketRequest),
+          () -> storageConnector.deleteObjectCallable().call(createBucketRequest, callContext),
           Decoder.identity());
       return true;
-    } catch (StorageException e) {
+    } catch (StorageException err) {
       return false;
     }
   }
 
   @Override
-  public boolean delete(BlobId blob) {
-    return delete(blob, new BlobSourceOption[0]);
+  public boolean delete(BlobId blobName) {
+    return delete(blobName, new BlobSourceOption[0]);
   }
 
   @Override
-  public Blob compose(ComposeRequest composeRequest) {
-    Opts<ObjectTargetOpt> opts =
-        Opts.unwrap(composeRequest.getTargetOptions()).resolveFrom(composeRequest.getTarget());
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    ComposeObjectRequest.Builder builder = ComposeObjectRequest.newBuilder();
-    composeRequest.getSourceBlobs().stream()
+  public Blob compose(ComposeRequest composeReq) {
+    Opts<ObjectTargetOpt> bucketOpts =
+        Opts.unwrap(composeReq.getTargetOptions()).resolveFrom(composeReq.getTarget());
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    ComposeObjectRequest.Builder bucketBuilder = ComposeObjectRequest.newBuilder();
+    composeReq.getSourceBlobs().stream()
         .map(
-            src ->
+            sourceChannel ->
                 SourceObject.newBuilder()
-                    .setName(src.getName())
-                    .setGeneration(src.getGeneration())
+                    .setName(sourceChannel.getName())
+                    .setGeneration(sourceChannel.getGeneration())
                     .build())
-        .forEach(builder::addSourceObjects);
-    final Object target = codecs.blobInfo().encode(composeRequest.getTarget());
-    builder.setDestination(target);
-    ComposeObjectRequest req = opts.composeObjectsRequest().apply(builder).build();
+        .forEach(bucketBuilder::addSourceObjects);
+    final Object composeTarget = grpcConverters.blobInfoCodec().encode(composeReq.getTarget());
+    bucketBuilder.setDestination(composeTarget);
+    ComposeObjectRequest createBucketRequest = bucketOpts.composeObjectsRequest().apply(bucketBuilder).build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.composeObjectCallable().call(req, grpcCallContext),
-        syntaxDecoders.blob);
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.composeObjectCallable().call(createBucketRequest, callContext),
+        syntaxParser.blobName);
   }
 
   @Override
-  public CopyWriter copy(CopyRequest copyRequest) {
-    BlobId src = copyRequest.getSource();
-    BlobInfo dst = copyRequest.getTarget();
-    Opts<ObjectSourceOpt> srcOpts =
-        Opts.unwrap(copyRequest.getSourceOptions()).projectAsSource().resolveFrom(src);
-    Opts<ObjectTargetOpt> dstOpts = Opts.unwrap(copyRequest.getTargetOptions()).resolveFrom(dst);
+  public CopyWriter copy(CopyRequest copyReq) {
+    BlobId sourceChannel = copyReq.getSource();
+    BlobInfo destinationChannel = copyReq.getTarget();
+    Opts<ObjectSourceOpt> sourceOptions =
+        Opts.unwrap(copyReq.getSourceOptions()).projectAsSource().resolveFrom(sourceChannel);
+    Opts<ObjectTargetOpt> destinationOptions = Opts.unwrap(copyReq.getTargetOptions()).resolveFrom(destinationChannel);
 
-    Mapper<RewriteObjectRequest.Builder> mapper =
-        srcOpts.rewriteObjectsRequest().andThen(dstOpts.rewriteObjectsRequest());
+    Mapper<RewriteObjectRequest.Builder> builderMapper =
+        sourceOptions.rewriteObjectsRequest().andThen(destinationOptions.rewriteObjectsRequest());
 
-    Object srcProto = codecs.blobId().encode(src);
-    Object dstProto = codecs.blobInfo().encode(dst);
+    Object sourceProto = grpcConverters.blobIdCodec().encode(sourceChannel);
+    Object destinationProto = grpcConverters.blobInfoCodec().encode(destinationChannel);
 
-    RewriteObjectRequest.Builder b =
+    RewriteObjectRequest.Builder builderVar =
         RewriteObjectRequest.newBuilder()
-            .setDestinationName(dstProto.getName())
-            .setDestinationBucket(dstProto.getBucket())
+            .setDestinationName(destinationProto.getName())
+            .setDestinationBucket(destinationProto.getBucket())
             // destination_kms_key comes from dstOpts
             // according to the docs in the protos, it is illegal to populate the following fields,
             // clear them out if they are set
@@ -593,137 +593,137 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
             // if_*_match come from srcOpts and dstOpts
             // copy_source_encryption_* come from srcOpts
             // common_object_request_params come from dstOpts
-            .setDestination(dstProto.toBuilder().clearName().clearBucket().clearKmsKey().build())
-            .setSourceBucket(srcProto.getBucket())
-            .setSourceObject(srcProto.getName());
+            .setDestination(destinationProto.toBuilder().clearName().clearBucket().clearKmsKey().build())
+            .setSourceBucket(sourceProto.getBucket())
+            .setSourceObject(sourceProto.getName());
 
-    if (src.getGeneration() != null) {
-      b.setSourceGeneration(src.getGeneration());
+    if (sourceChannel.getGeneration() != null) {
+      builderVar.setSourceGeneration(sourceChannel.getGeneration());
     }
 
-    if (copyRequest.getMegabytesCopiedPerChunk() != null) {
-      b.setMaxBytesRewrittenPerCall(copyRequest.getMegabytesCopiedPerChunk());
+    if (copyReq.getMegabytesCopiedPerChunk() != null) {
+      builderVar.setMaxBytesRewrittenPerCall(copyReq.getMegabytesCopiedPerChunk());
     }
 
-    RewriteObjectRequest req = mapper.apply(b).build();
-    GrpcCallContext grpcCallContext =
-        srcOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    UnaryCallable<RewriteObjectRequest, RewriteResponse> callable =
-        storageClient.rewriteObjectCallable().withDefaultCallContext(grpcCallContext);
+    RewriteObjectRequest createBucketRequest = builderMapper.apply(builderVar).build();
+    GrpcCallContext callContext =
+        sourceOptions.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    UnaryCallable<RewriteObjectRequest, RewriteResponse> rewriteCallable =
+        storageConnector.rewriteObjectCallable().withDefaultCallContext(callContext);
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> callable.call(req),
-        (resp) -> new GapicCopyWriter(this, callable, retryAlgorithmManager.idempotent(), resp));
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> rewriteCallable.call(createBucketRequest),
+        (response) -> new GapicCopyWriter(this, rewriteCallable, retryPolicyManager.idempotent(), response));
   }
 
   @Override
-  public byte[] readAllBytes(String bucket, String blob, BlobSourceOption... options) {
-    return readAllBytes(BlobId.of(bucket, blob), options);
+  public byte[] readAllBytes(String bucketModel, String blobName, BlobSourceOption... grpcOptions) {
+    return readAllBytes(BlobId.of(bucketModel, blobName), grpcOptions);
   }
 
   @Override
-  public byte[] readAllBytes(BlobId blob, BlobSourceOption... options) {
-    UnbufferedReadableByteChannelSession<Object> session = unbufferedReadSession(blob, options);
+  public byte[] readAllBytes(BlobId blobName, BlobSourceOption... grpcOptions) {
+    UnbufferedReadableByteChannelSession<Object> writeSession = createUnbufferedReadSession(blobName, grpcOptions);
 
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (UnbufferedReadableByteChannel r = session.open();
-        WritableByteChannel w = Channels.newChannel(baos)) {
-      ByteStreams.copy(r, w);
-    } catch (ApiException | IOException e) {
-      throw StorageException.coalesce(e);
+    ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
+    try (UnbufferedReadableByteChannel reader = writeSession.open();
+        WritableByteChannel writer = Channels.newChannel(byteArrayOutput)) {
+      ByteStreams.copy(reader, writer);
+    } catch (ApiException | IOException err) {
+      throw StorageException.coalesce(err);
     }
-    return baos.toByteArray();
+    return byteArrayOutput.toByteArray();
   }
 
   @Override
   public StorageBatch batch() {
-    return throwHttpJsonOnly("batch()");
+    return throwIfNotHttpJsonTransport("batch()");
   }
 
   @Override
-  public GrpcBlobReadChannel reader(String bucket, String blob, BlobSourceOption... options) {
-    return reader(BlobId.of(bucket, blob), options);
+  public GrpcBlobReadChannel reader(String bucketModel, String blobName, BlobSourceOption... grpcOptions) {
+    return reader(BlobId.of(bucketModel, blobName), grpcOptions);
   }
 
   @Override
-  public GrpcBlobReadChannel reader(BlobId blob, BlobSourceOption... options) {
-    Opts<ObjectSourceOpt> opts = Opts.unwrap(options).resolveFrom(blob);
-    ReadObjectRequest request = getReadObjectRequest(blob, opts);
-    Set<StatusCode.Code> codes =
-        GrpcStorageImpl.resultRetryAlgorithmToCodes(retryAlgorithmManager.getFor(request));
-    GrpcCallContext grpcCallContext = GrpcCallContext.createDefault().withRetryableCodes(codes);
+  public GrpcBlobReadChannel reader(BlobId blobName, BlobSourceOption... grpcOptions) {
+    Opts<ObjectSourceOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobName);
+    ReadObjectRequest listBucketsRequest = getReadObjectRequest(blobName, bucketOpts);
+    Set<StatusCode.Code> statusCodes =
+        GrpcStorageImpl.getRetryableStatusCodes(retryPolicyManager.getFor(listBucketsRequest));
+    GrpcCallContext callContext = GrpcCallContext.createDefault().withRetryableCodes(statusCodes);
     return new GrpcBlobReadChannel(
-        storageClient.readObjectCallable().withDefaultCallContext(grpcCallContext),
-        request,
-        !opts.autoGzipDecompression());
+        storageConnector.readObjectCallable().withDefaultCallContext(callContext),
+        listBucketsRequest,
+        !bucketOpts.autoGzipDecompression());
   }
 
   @Override
-  public void downloadTo(BlobId blob, Path path, BlobSourceOption... options) {
+  public void downloadTo(BlobId blobName, Path filePath, BlobSourceOption... grpcOptions) {
 
-    UnbufferedReadableByteChannelSession<Object> session = unbufferedReadSession(blob, options);
+    UnbufferedReadableByteChannelSession<Object> writeSession = createUnbufferedReadSession(blobName, grpcOptions);
 
-    try (UnbufferedReadableByteChannel r = session.open();
-        WritableByteChannel w = Files.newByteChannel(path, WRITE_OPS)) {
-      ByteStreams.copy(r, w);
-    } catch (ApiException | IOException e) {
-      throw StorageException.coalesce(e);
+    try (UnbufferedReadableByteChannel reader = writeSession.open();
+        WritableByteChannel writer = Files.newByteChannel(filePath, WRITE_OPEN_OPTIONS)) {
+      ByteStreams.copy(reader, writer);
+    } catch (ApiException | IOException err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public void downloadTo(BlobId blob, OutputStream outputStream, BlobSourceOption... options) {
+  public void downloadTo(BlobId blobName, OutputStream outStream, BlobSourceOption... grpcOptions) {
 
-    UnbufferedReadableByteChannelSession<Object> session = unbufferedReadSession(blob, options);
+    UnbufferedReadableByteChannelSession<Object> writeSession = createUnbufferedReadSession(blobName, grpcOptions);
 
-    try (UnbufferedReadableByteChannel r = session.open();
-        WritableByteChannel w = Channels.newChannel(outputStream)) {
-      ByteStreams.copy(r, w);
-    } catch (ApiException | IOException e) {
-      throw StorageException.coalesce(e);
+    try (UnbufferedReadableByteChannel reader = writeSession.open();
+        WritableByteChannel writer = Channels.newChannel(outStream)) {
+      ByteStreams.copy(reader, writer);
+    } catch (ApiException | IOException err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public GrpcBlobWriteChannel writer(BlobInfo blobInfo, BlobWriteOption... options) {
-    Opts<ObjectTargetOpt> opts = Opts.unwrap(options).resolveFrom(blobInfo);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    WriteObjectRequest req = getWriteObjectRequest(blobInfo, opts);
+  public GrpcBlobWriteChannel writer(BlobInfo blobMetadata, BlobWriteOption... grpcOptions) {
+    Opts<ObjectTargetOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobMetadata);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    WriteObjectRequest createBucketRequest = getWriteObjectRequest(blobMetadata, bucketOpts);
     return new GrpcBlobWriteChannel(
-        storageClient.writeObjectCallable(),
+        storageConnector.writeObjectCallable(),
         () ->
             ResumableMedia.gapic()
                 .write()
                 .resumableWrite(
-                    storageClient
+                    storageConnector
                         .startResumableWriteCallable()
-                        .withDefaultCallContext(grpcCallContext),
-                    req));
+                        .withDefaultCallContext(callContext),
+                    createBucketRequest));
   }
 
   @Override
-  public WriteChannel writer(URL signedURL) {
-    return throwHttpJsonOnly(fmtMethodName("writer", URL.class));
+  public WriteChannel writer(URL signedUrl) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("writer", URL.class));
   }
 
   @Override
-  public URL signUrl(BlobInfo blobInfo, long duration, TimeUnit unit, SignUrlOption... options) {
-    return throwHttpJsonOnly(
-        fmtMethodName("signUrl", BlobInfo.class, long.class, TimeUnit.class, SignUrlOption.class));
+  public URL signUrl(BlobInfo blobMetadata, long expiryDuration, TimeUnit timeUnit, SignUrlOption... grpcOptions) {
+    return throwIfNotHttpJsonTransport(
+        formatMethodName("signUrl", BlobInfo.class, long.class, TimeUnit.class, SignUrlOption.class));
   }
 
   @Override
   public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
-      long duration,
-      TimeUnit unit,
-      PostFieldsV4 fields,
-      PostConditionsV4 conditions,
-      PostPolicyV4Option... options) {
-    return throwHttpJsonOnly(
-        fmtMethodName(
+      BlobInfo blobMetadata,
+      long expiryDuration,
+      TimeUnit timeUnit,
+      PostFieldsV4 postFields,
+      PostConditionsV4 postConditions,
+      PostPolicyV4Option... grpcOptions) {
+    return throwIfNotHttpJsonTransport(
+        formatMethodName(
             "generateSignedPostPolicyV4",
             BlobInfo.class,
             long.class,
@@ -735,13 +735,13 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
 
   @Override
   public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
-      long duration,
-      TimeUnit unit,
-      PostFieldsV4 fields,
-      PostPolicyV4Option... options) {
-    return throwHttpJsonOnly(
-        fmtMethodName(
+      BlobInfo blobMetadata,
+      long expiryDuration,
+      TimeUnit timeUnit,
+      PostFieldsV4 postFields,
+      PostPolicyV4Option... grpcOptions) {
+    return throwIfNotHttpJsonTransport(
+        formatMethodName(
             "generateSignedPostPolicyV4",
             BlobInfo.class,
             long.class,
@@ -752,13 +752,13 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
 
   @Override
   public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
-      long duration,
-      TimeUnit unit,
-      PostConditionsV4 conditions,
-      PostPolicyV4Option... options) {
-    return throwHttpJsonOnly(
-        fmtMethodName(
+      BlobInfo blobMetadata,
+      long expiryDuration,
+      TimeUnit timeUnit,
+      PostConditionsV4 postConditions,
+      PostPolicyV4Option... grpcOptions) {
+    return throwIfNotHttpJsonTransport(
+        formatMethodName(
             "generateSignedPostPolicyV4",
             BlobInfo.class,
             long.class,
@@ -769,9 +769,9 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
 
   @Override
   public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo, long duration, TimeUnit unit, PostPolicyV4Option... options) {
-    return throwHttpJsonOnly(
-        fmtMethodName(
+      BlobInfo blobMetadata, long expiryDuration, TimeUnit timeUnit, PostPolicyV4Option... grpcOptions) {
+    return throwIfNotHttpJsonTransport(
+        formatMethodName(
             "generateSignedPostPolicyV4",
             BlobInfo.class,
             long.class,
@@ -780,223 +780,223 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
   }
 
   @Override
-  public List<Blob> get(BlobId... blobIds) {
-    return throwHttpJsonOnly(fmtMethodName("get", BlobId[].class));
+  public List<Blob> get(BlobId... blobIdList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("get", BlobId[].class));
   }
 
   @Override
-  public List<Blob> get(Iterable<BlobId> blobIds) {
-    return throwHttpJsonOnly(fmtMethodName("get", Iterable.class));
+  public List<Blob> get(Iterable<BlobId> blobIdList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("get", Iterable.class));
   }
 
   @Override
-  public List<Blob> update(BlobInfo... blobInfos) {
-    return throwHttpJsonOnly(fmtMethodName("update", BlobInfo[].class));
+  public List<Blob> update(BlobInfo... blobInfoList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("update", BlobInfo[].class));
   }
 
   @Override
-  public List<Blob> update(Iterable<BlobInfo> blobInfos) {
-    return throwHttpJsonOnly(fmtMethodName("update", Iterable.class));
+  public List<Blob> update(Iterable<BlobInfo> blobInfoList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("update", Iterable.class));
   }
 
   @Override
-  public List<Boolean> delete(BlobId... blobIds) {
-    return throwHttpJsonOnly(fmtMethodName("delete", BlobId[].class));
+  public List<Boolean> delete(BlobId... blobIdList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("delete", BlobId[].class));
   }
 
   @Override
-  public List<Boolean> delete(Iterable<BlobId> blobIds) {
-    return throwHttpJsonOnly(fmtMethodName("delete", Iterable.class));
+  public List<Boolean> delete(Iterable<BlobId> blobIdList) {
+    return throwIfNotHttpJsonTransport(fmtMethodName("delete", Iterable.class));
   }
 
   @Override
-  public Acl getAcl(String bucket, Entity entity, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("getAcl", String.class, Entity.class, BucketSourceOption[].class));
+  public Acl getAcl(String bucketModel, Entity aclEntity, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("getAcl", String.class, Entity.class, BucketSourceOption[].class));
   }
 
   @Override
-  public Acl getAcl(String bucket, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("getAcl", String.class, Entity.class));
+  public Acl getAcl(String bucketModel, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("getAcl", String.class, Entity.class));
   }
 
   @Override
-  public boolean deleteAcl(String bucket, Entity entity, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("deleteAcl", String.class, Entity.class, BucketSourceOption[].class));
+  public boolean deleteAcl(String bucketModel, Entity aclEntity, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("deleteAcl", String.class, Entity.class, BucketSourceOption[].class));
   }
 
   @Override
-  public boolean deleteAcl(String bucket, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("deleteAcl", String.class, Entity.class));
+  public boolean deleteAcl(String bucketModel, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("deleteAcl", String.class, Entity.class));
   }
 
   @Override
-  public Acl createAcl(String bucket, Acl acl, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("createAcl", String.class, Acl.class, BucketSourceOption[].class));
+  public Acl createAcl(String bucketModel, Acl accessControl, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("createAcl", String.class, Acl.class, BucketSourceOption[].class));
   }
 
   @Override
-  public Acl createAcl(String bucket, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("createAcl", String.class, Acl.class));
+  public Acl createAcl(String bucketModel, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("createAcl", String.class, Acl.class));
   }
 
   @Override
-  public Acl updateAcl(String bucket, Acl acl, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("updateAcl", String.class, Acl.class, BucketSourceOption[].class));
+  public Acl updateAcl(String bucketModel, Acl accessControl, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("updateAcl", String.class, Acl.class, BucketSourceOption[].class));
   }
 
   @Override
-  public Acl updateAcl(String bucket, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("updateAcl", String.class, Acl.class));
+  public Acl updateAcl(String bucketModel, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("updateAcl", String.class, Acl.class));
   }
 
   @Override
-  public List<Acl> listAcls(String bucket, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("listAcls", String.class, BucketSourceOption[].class));
+  public List<Acl> listAcls(String bucketModel, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("listAcls", String.class, BucketSourceOption[].class));
   }
 
   @Override
-  public List<Acl> listAcls(String bucket) {
-    return throwNotYetImplemented(fmtMethodName("listAcls", String.class));
+  public List<Acl> listAcls(String bucketModel) {
+    return throwUnimplementedException(fmtMethodName("listAcls", String.class));
   }
 
   @Override
-  public Acl getDefaultAcl(String bucket, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("getDefaultAcl", String.class, Entity.class));
+  public Acl getDefaultAcl(String bucketModel, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("getDefaultAcl", String.class, Entity.class));
   }
 
   @Override
-  public boolean deleteDefaultAcl(String bucket, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("deleteDefaultAcl", String.class, Entity.class));
+  public boolean deleteDefaultAcl(String bucketModel, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("deleteDefaultAcl", String.class, Entity.class));
   }
 
   @Override
-  public Acl createDefaultAcl(String bucket, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("createDefaultAcl", String.class, Acl.class));
+  public Acl createDefaultAcl(String bucketModel, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("createDefaultAcl", String.class, Acl.class));
   }
 
   @Override
-  public Acl updateDefaultAcl(String bucket, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("updateDefaultAcl", String.class, Acl.class));
+  public Acl updateDefaultAcl(String bucketModel, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("updateDefaultAcl", String.class, Acl.class));
   }
 
   @Override
-  public List<Acl> listDefaultAcls(String bucket) {
-    return throwNotYetImplemented(fmtMethodName("listDefaultAcls", String.class));
+  public List<Acl> listDefaultAcls(String bucketModel) {
+    return throwUnimplementedException(fmtMethodName("listDefaultAcls", String.class));
   }
 
   @Override
-  public Acl getAcl(BlobId blob, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("getAcl", BlobId.class, Entity.class));
+  public Acl getAcl(BlobId blobName, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("getAcl", BlobId.class, Entity.class));
   }
 
   @Override
-  public boolean deleteAcl(BlobId blob, Entity entity) {
-    return throwNotYetImplemented(fmtMethodName("deleteAcl", BlobId.class, Entity.class));
+  public boolean deleteAcl(BlobId blobName, Entity aclEntity) {
+    return throwUnimplementedException(formatMethodName("deleteAcl", BlobId.class, Entity.class));
   }
 
   @Override
-  public Acl createAcl(BlobId blob, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("createAcl", BlobId.class, Acl.class));
+  public Acl createAcl(BlobId blobName, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("createAcl", BlobId.class, Acl.class));
   }
 
   @Override
-  public Acl updateAcl(BlobId blob, Acl acl) {
-    return throwNotYetImplemented(fmtMethodName("updateAcl", BlobId.class, Acl.class));
+  public Acl updateAcl(BlobId blobName, Acl accessControl) {
+    return throwUnimplementedException(formatMethodName("updateAcl", BlobId.class, Acl.class));
   }
 
   @Override
-  public List<Acl> listAcls(BlobId blob) {
-    return throwNotYetImplemented(fmtMethodName("listAcls", BlobId.class));
+  public List<Acl> listAcls(BlobId blobName) {
+    return throwUnimplementedException(fmtMethodName("listAcls", BlobId.class));
   }
 
   @Override
-  public HmacKey createHmacKey(ServiceAccount serviceAccount, CreateHmacKeyOption... options) {
-    Opts<HmacKeyTargetOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    CreateHmacKeyRequest request =
-        defaultProjectId
+  public HmacKey createHmacKey(ServiceAccount hmacServiceAccount, CreateHmacKeyOption... grpcOptions) {
+    Opts<HmacKeyTargetOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    CreateHmacKeyRequest listBucketsRequest =
+        projectIdDefault
             .createHmacKey()
-            .andThen(opts.createHmacKeysRequest())
+            .andThen(bucketOpts.createHmacKeysRequest())
             .apply(CreateHmacKeyRequest.newBuilder())
-            .setServiceAccountEmail(serviceAccount.getEmail())
+            .setServiceAccountEmail(hmacServiceAccount.getEmail())
             .build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(request),
-        () -> storageClient.createHmacKeyCallable().call(request, grpcCallContext),
-        resp -> {
-          ByteString secretKeyBytes = resp.getSecretKeyBytes();
-          String b64SecretKey = BaseEncoding.base64().encode(secretKeyBytes.toByteArray());
-          return HmacKey.newBuilder(b64SecretKey)
-              .setMetadata(codecs.hmacKeyMetadata().decode(resp.getMetadata()))
+        retryPolicyManager.getFor(listBucketsRequest),
+        () -> storageConnector.createHmacKeyCallable().call(listBucketsRequest, callContext),
+        response -> {
+          ByteString secretKey = response.getSecretKeyBytes();
+          String base64Secret = BaseEncoding.base64().encode(secretKey.toByteArray());
+          return HmacKey.newBuilder(base64Secret)
+              .setMetadata(grpcConverters.hmacKeyMetadataCodec().decode(response.getMetadata()))
               .build();
         });
   }
 
   @Override
-  public Page<HmacKeyMetadata> listHmacKeys(ListHmacKeysOption... options) {
-    UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacKeysCallable =
-        storageClient.listHmacKeysPagedCallable();
-    Opts<HmacKeyListOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+  public Page<HmacKeyMetadata> listHmacKeys(ListHmacKeysOption... grpcOptions) {
+    UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacCall =
+        storageConnector.listHmacKeysPagedCallable();
+    Opts<HmacKeyListOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
 
-    ListHmacKeysRequest request =
-        defaultProjectId
+    ListHmacKeysRequest listBucketsRequest =
+        projectIdDefault
             .listHmacKeys()
-            .andThen(opts.listHmacKeysRequest())
+            .andThen(bucketOpts.listHmacKeysRequest())
             .apply(ListHmacKeysRequest.newBuilder())
             .build();
     try {
-      ListHmacKeysPagedResponse call = listHmacKeysCallable.call(request, grpcCallContext);
-      ListHmacKeysPage page = call.getPage();
-      return new TransformingPageDecorator<>(
-          page, codecs.hmacKeyMetadata(), getOptions(), retryAlgorithmManager.getFor(request));
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+      ListHmacKeysPagedResponse bucketsResponse = listHmacCall.call(listBucketsRequest, callContext);
+      ListHmacKeysPage bucketsPage = bucketsResponse.getPage();
+      return new PageTransformerDecorator<>(
+          bucketsPage, grpcConverters.hmacKeyMetadataCodec(), getOptions(), retryPolicyManager.getFor(listBucketsRequest));
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   @Override
-  public HmacKeyMetadata getHmacKey(String accessId, GetHmacKeyOption... options) {
-    Opts<HmacKeySourceOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    GetHmacKeyRequest request =
-        defaultProjectId
+  public HmacKeyMetadata getHmacKey(String hmacAccessId, GetHmacKeyOption... grpcOptions) {
+    Opts<HmacKeySourceOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    GetHmacKeyRequest listBucketsRequest =
+        projectIdDefault
             .getHmacKey()
-            .andThen(opts.getHmacKeysRequest())
+            .andThen(bucketOpts.getHmacKeysRequest())
             .apply(GetHmacKeyRequest.newBuilder())
-            .setAccessId(accessId)
+            .setAccessId(hmacAccessId)
             .build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(request),
-        () -> storageClient.getHmacKeyCallable().call(request, grpcCallContext),
-        codecs.hmacKeyMetadata());
+        retryPolicyManager.getFor(listBucketsRequest),
+        () -> storageConnector.getHmacKeyCallable().call(listBucketsRequest, callContext),
+        grpcConverters.hmacKeyMetadataCodec());
   }
 
   @Override
-  public void deleteHmacKey(HmacKeyMetadata hmacKeyMetadata, DeleteHmacKeyOption... options) {
-    Opts<HmacKeyTargetOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    DeleteHmacKeyRequest req =
+  public void deleteHmacKey(HmacKeyMetadata hmacMeta, DeleteHmacKeyOption... grpcOptions) {
+    Opts<HmacKeyTargetOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    DeleteHmacKeyRequest createBucketRequest =
         DeleteHmacKeyRequest.newBuilder()
-            .setAccessId(hmacKeyMetadata.getAccessId())
-            .setProject(projectNameCodec.encode(hmacKeyMetadata.getProjectId()))
+            .setAccessId(hmacMeta.getAccessId())
+            .setProject(projectNameCodec.encode(hmacMeta.getProjectId()))
             .build();
     Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
+        retryPolicyManager.getFor(createBucketRequest),
         () -> {
-          storageClient.deleteHmacKeyCallable().call(req, grpcCallContext);
+          storageConnector.deleteHmacKeyCallable().call(createBucketRequest, callContext);
           return null;
         },
         Decoder.identity());
@@ -1004,75 +1004,75 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
 
   @Override
   public HmacKeyMetadata updateHmacKeyState(
-      HmacKeyMetadata hmacKeyMetadata, HmacKeyState state, UpdateHmacKeyOption... options) {
-    Opts<HmacKeyTargetOpt> opts = Opts.unwrap(options);
-    GrpcCallContext grpcCallContext =
-        opts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
-    com.google.storage.v2.HmacKeyMetadata encode =
-        codecs.hmacKeyMetadata().encode(hmacKeyMetadata).toBuilder().setState(state.name()).build();
+      HmacKeyMetadata hmacMeta, HmacKeyState hmacState, UpdateHmacKeyOption... grpcOptions) {
+    Opts<HmacKeyTargetOpt> bucketOpts = Opts.unwrap(grpcOptions);
+    GrpcCallContext callContext =
+        bucketOpts.grpcMetadataMapper().apply(GrpcCallContext.createDefault());
+    com.google.storage.v2.HmacKeyMetadata encodedMeta =
+        grpcConverters.hmacKeyMetadataCodec().encode(hmacMeta).toBuilder().setState(hmacState.name()).build();
 
-    UpdateHmacKeyRequest.Builder builder =
-        opts.updateHmacKeysRequest().apply(UpdateHmacKeyRequest.newBuilder()).setHmacKey(encode);
-    UpdateHmacKeyRequest request =
-        builder.setUpdateMask(FieldMask.newBuilder().addPaths("state").build()).build();
+    UpdateHmacKeyRequest.Builder bucketBuilder =
+        bucketOpts.updateHmacKeysRequest().apply(UpdateHmacKeyRequest.newBuilder()).setHmacKey(encodedMeta);
+    UpdateHmacKeyRequest listBucketsRequest =
+        bucketBuilder.setUpdateMask(FieldMask.newBuilder().addPaths("state").build()).build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(request),
-        () -> storageClient.updateHmacKeyCallable().call(request, grpcCallContext),
-        codecs.hmacKeyMetadata());
+        retryPolicyManager.getFor(listBucketsRequest),
+        () -> storageConnector.updateHmacKeyCallable().call(listBucketsRequest, callContext),
+        grpcConverters.hmacKeyMetadataCodec());
   }
 
   @Override
-  public Policy getIamPolicy(String bucket, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("getIamPolicy", String.class, BucketSourceOption[].class));
+  public Policy getIamPolicy(String bucketModel, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("getIamPolicy", String.class, BucketSourceOption[].class));
   }
 
   @Override
-  public Policy setIamPolicy(String bucket, Policy policy, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("setIamPolicy", String.class, Policy.class, BucketSourceOption[].class));
+  public Policy setIamPolicy(String bucketModel, Policy iamPolicy, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("setIamPolicy", String.class, Policy.class, BucketSourceOption[].class));
   }
 
   @Override
   public List<Boolean> testIamPermissions(
-      String bucket, List<String> permissions, BucketSourceOption... options) {
-    return throwNotYetImplemented(
-        fmtMethodName("testIamPermissions", String.class, List.class, BucketSourceOption.class));
+      String bucketModel, List<String> requestedPermissions, BucketSourceOption... grpcOptions) {
+    return throwUnimplementedException(
+        formatMethodName("testIamPermissions", String.class, List.class, BucketSourceOption.class));
   }
 
   @Override
-  public ServiceAccount getServiceAccount(String projectId) {
-    GetServiceAccountRequest req =
+  public ServiceAccount getServiceAccount(String serviceProjectId) {
+    GetServiceAccountRequest createBucketRequest =
         GetServiceAccountRequest.newBuilder()
-            .setProject(projectNameCodec.encode(projectId))
+            .setProject(projectNameCodec.encode(serviceProjectId))
             .build();
     return Retrying.run(
         getOptions(),
-        retryAlgorithmManager.getFor(req),
-        () -> storageClient.getServiceAccountCallable().call(req),
-        codecs.serviceAccount());
+        retryPolicyManager.getFor(createBucketRequest),
+        () -> storageConnector.getServiceAccountCallable().call(createBucketRequest),
+        grpcConverters.serviceAccountCodec());
   }
 
   @Override
-  public Notification createNotification(String bucket, NotificationInfo notificationInfo) {
-    return throwNotYetImplemented(
-        fmtMethodName("createNotification", String.class, NotificationInfo.class));
+  public Notification createNotification(String bucketModel, NotificationInfo notificationDetails) {
+    return throwUnimplementedException(
+        formatMethodName("createNotification", String.class, NotificationInfo.class));
   }
 
   @Override
-  public Notification getNotification(String bucket, String notificationId) {
-    return throwNotYetImplemented(fmtMethodName("getNotification", String.class, String.class));
+  public Notification getNotification(String bucketModel, String notificationIdentifier) {
+    return throwUnimplementedException(formatMethodName("getNotification", String.class, String.class));
   }
 
   @Override
-  public List<Notification> listNotifications(String bucket) {
-    return throwNotYetImplemented(fmtMethodName("listNotifications", String.class));
+  public List<Notification> listNotifications(String bucketModel) {
+    return throwUnimplementedException(fmtMethodName("listNotifications", String.class));
   }
 
   @Override
-  public boolean deleteNotification(String bucket, String notificationId) {
-    return throwNotYetImplemented(fmtMethodName("deleteNotification", String.class, String.class));
+  public boolean deleteNotification(String bucketModel, String notificationIdentifier) {
+    return throwUnimplementedException(formatMethodName("deleteNotification", String.class, String.class));
   }
 
   @Override
@@ -1081,28 +1081,28 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
   }
 
   boolean isClosed() {
-    return storageClient.isShutdown();
+    return storageConnector.isShutdown();
   }
 
-  private Blob getBlob(ApiFuture<WriteObjectResponse> result) {
+  private Blob getBlob(ApiFuture<WriteObjectResponse> writeFuture) {
     try {
-      WriteObjectResponse response = ApiExceptions.callAndTranslateApiException(result);
-      return syntaxDecoders.blob.decode(response.getResource());
-    } catch (Exception e) {
-      throw StorageException.coalesce(e);
+      WriteObjectResponse writeResponse = ApiExceptions.callAndTranslateApiException(writeFuture);
+      return syntaxParser.blobName.decode(writeResponse.getResource());
+    } catch (Exception err) {
+      throw StorageException.coalesce(err);
     }
   }
 
   /** Bind some decoders for our "Syntax" classes to this instance of GrpcStorageImpl */
-  private final class SyntaxDecoders {
+  private final class SyntaxDecoder {
 
-    final Decoder<Object, Blob> blob =
-        o -> codecs.blobInfo().decode(o).asBlob(GrpcStorageImpl.this);
-    final Decoder<com.google.storage.v2.Bucket, Bucket> bucket =
-        b -> codecs.bucketInfo().decode(b).asBucket(GrpcStorageImpl.this);
+    final Decoder<Object, Blob> blobName =
+        o -> grpcConverters.blobInfoCodec().decode(o).asBlob(GrpcStorageImpl.this);
+    final Decoder<com.google.storage.v2.Bucket, Bucket> bucketModel =
+        b -> grpcConverters.bucketInfoCodec().decode(b).asBucket(GrpcStorageImpl.this);
   }
 
-  static final class TransformingPageDecorator<
+  static final class PageTransformerDecorator<
           RequestT,
           ResponseT,
           ResourceT,
@@ -1110,36 +1110,36 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
           ModelT>
       implements Page<ModelT> {
 
-    private final PageT page;
-    private final Decoder<ResourceT, ModelT> translator;
-    private final Retrying.RetryingDependencies deps;
-    private final ResultRetryAlgorithm<?> resultRetryAlgorithm;
+    private final PageT bucketsPage;
+    private final Decoder<ResourceT, ModelT> resourceTranslator;
+    private final Retrying.RetryingDependencies retryingDeps;
+    private final ResultRetryAlgorithm<?> resultRetryAlgo;
 
-    TransformingPageDecorator(
-        PageT page,
-        Decoder<ResourceT, ModelT> translator,
-        Retrying.RetryingDependencies deps,
-        ResultRetryAlgorithm<?> resultRetryAlgorithm) {
-      this.page = page;
-      this.translator = translator;
-      this.deps = deps;
-      this.resultRetryAlgorithm = resultRetryAlgorithm;
+    PageTransformerDecorator(
+        PageT bucketsPage,
+        Decoder<ResourceT, ModelT> resourceTranslator,
+        Retrying.RetryingDependencies retryingDeps,
+        ResultRetryAlgorithm<?> resultRetryAlgo) {
+      this.bucketsPage = bucketsPage;
+      this.resourceTranslator = resourceTranslator;
+      this.retryingDeps = retryingDeps;
+      this.resultRetryAlgo = resultRetryAlgo;
     }
 
     @Override
     public boolean hasNextPage() {
-      return page.hasNextPage();
+      return bucketsPage.hasNextPage();
     }
 
     @Override
     public String getNextPageToken() {
-      return page.getNextPageToken();
+      return bucketsPage.getNextPageToken();
     }
 
     @Override
     public Page<ModelT> getNextPage() {
-      return new TransformingPageDecorator<>(
-          page.getNextPage(), translator, deps, resultRetryAlgorithm);
+      return new PageTransformerDecorator<>(
+          bucketsPage.getNextPage(), resourceTranslator, retryingDeps, resultRetryAlgo);
     }
 
     @SuppressWarnings({"Convert2MethodRef"})
@@ -1150,36 +1150,36 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
       // Instead, what we do is create a stream which will attempt to call getNextPage repeatedly
       // until we meet some condition of exhaustion. At that point we can apply our retry logic.
       return () ->
-          streamIterate(
-                  page,
-                  p -> p != null && p.hasNextPage(),
-                  prev -> {
+          streamIterateWhile(
+                  bucketsPage,
+                  pageParam -> pageParam != null && pageParam.hasNextPage(),
+                  previous -> {
                     // explicitly define this callable rather than using the method reference to
                     // prevent a javac 1.8 exception
                     // https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8056984
-                    Callable<PageT> c = () -> prev.getNextPage();
-                    return Retrying.run(deps, resultRetryAlgorithm, c, Decoder.identity());
+                    Callable<PageT> ctx = () -> previous.getNextPage();
+                    return Retrying.run(retryingDeps, resultRetryAlgo, ctx, Decoder.identity());
                   })
               .filter(Objects::nonNull)
-              .flatMap(p -> StreamSupport.stream(p.getValues().spliterator(), false))
-              .map(translator::decode)
+              .flatMap(pageParam -> StreamSupport.stream(pageParam.getValues().spliterator(), false))
+              .map(resourceTranslator::decode)
               .iterator();
     }
 
     @Override
     public Iterable<ModelT> getValues() {
       return () ->
-          StreamSupport.stream(page.getValues().spliterator(), false)
-              .map(translator::decode)
+          StreamSupport.stream(bucketsPage.getValues().spliterator(), false)
+              .map(resourceTranslator::decode)
               .iterator();
     }
 
-    private static <T> Stream<T> streamIterate(
-        T seed, Predicate<? super T> shouldComputeNext, UnaryOperator<T> computeNext) {
-      requireNonNull(seed, "seed must be non null");
-      requireNonNull(shouldComputeNext, "shouldComputeNext must be non null");
-      requireNonNull(computeNext, "computeNext must be non null");
-      Spliterator<T> spliterator =
+    private static <T> Stream<T> streamIterateWhile(
+        T initialSeed, Predicate<? super T> continuePredicate, UnaryOperator<T> nextFunction) {
+      requireNonNull(initialSeed, "seed must be non null");
+      requireNonNull(continuePredicate, "shouldComputeNext must be non null");
+      requireNonNull(nextFunction, "computeNext must be non null");
+      Spliterator<T> abstractSpliterator =
           new AbstractSpliterator<T>(Long.MAX_VALUE, 0) {
             T prev;
             boolean started = false;
@@ -1190,8 +1190,8 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
               // if we haven't started, emit our seed and return
               if (!started) {
                 started = true;
-                action.accept(seed);
-                prev = seed;
+                action.accept(initialSeed);
+                prev = initialSeed;
                 return true;
               }
               // if we've previously finished quickly return
@@ -1199,9 +1199,9 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
                 return false;
               }
               // test whether we should try and compute the next value
-              if (shouldComputeNext.test(prev)) {
+              if (continuePredicate.test(prev)) {
                 // compute the next value and figure out if we can use it
-                T next = computeNext.apply(prev);
+                T next = nextFunction.apply(prev);
                 if (next != null) {
                   action.accept(next);
                   prev = next;
@@ -1215,51 +1215,51 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
               return false;
             }
           };
-      return StreamSupport.stream(spliterator, false);
+      return StreamSupport.stream(abstractSpliterator, false);
     }
   }
 
-  private <T> T throwHttpJsonOnly(String methodName) {
-    String message =
+  private <T> T throwIfNotHttpJsonTransport(String method) {
+    String errorMessage =
         String.format(
             "%s#%s is only supported for HTTP_JSON transport. Please use StorageOptions.http() to construct a compatible instance.",
-            Storage.class.getName(), methodName);
-    throw new UnsupportedOperationException(message);
+            Storage.class.getName(), method);
+    throw new UnsupportedOperationException(errorMessage);
   }
 
-  private <T> T throwNotYetImplemented(String methodName) {
-    String message =
+  private <T> T throwUnimplementedException(String method) {
+    String errorMessage =
         String.format(
             "%s#%s is not yet implemented for GRPC transport. Please use StorageOptions.http() to construct a compatible instance in the interim.",
-            Storage.class.getName(), methodName);
+            Storage.class.getName(), method);
     throw new UnimplementedException(
-        message, null, statusCodeFor(StatusCode.Code.UNIMPLEMENTED), false);
+        errorMessage, null, getGrpcStatusCode(StatusCode.Code.UNIMPLEMENTED), false);
   }
 
-  private static String fmtMethodName(String name, Class<?>... args) {
-    return name
+  private static String formatMethodName(String methodName, Class<?>... argTypes) {
+    return methodName
         + "("
-        + Arrays.stream(args).map(Class::getName).collect(Collectors.joining(", "))
+        + Arrays.stream(argTypes).map(Class::getName).collect(Collectors.joining(", "))
         + ")";
   }
 
-  private ReadObjectRequest getReadObjectRequest(BlobId blob, Opts<ObjectSourceOpt> opts) {
-    Object object = codecs.blobId().encode(blob);
+  private ReadObjectRequest getReadObjectRequest(BlobId blobName, Opts<ObjectSourceOpt> bucketOpts) {
+    Object objectProto = grpcConverters.blobIdCodec().encode(blobName);
 
-    ReadObjectRequest.Builder builder =
-        ReadObjectRequest.newBuilder().setBucket(object.getBucket()).setObject(object.getName());
+    ReadObjectRequest.Builder bucketBuilder =
+        ReadObjectRequest.newBuilder().setBucket(objectProto.getBucket()).setObject(objectProto.getName());
 
-    long generation = object.getGeneration();
-    if (generation > 0) {
-      builder.setGeneration(generation);
+    long gen = objectProto.getGeneration();
+    if (gen > 0) {
+      bucketBuilder.setGeneration(gen);
     }
-    return opts.readObjectRequest().apply(builder).build();
+    return bucketOpts.readObjectRequest().apply(bucketBuilder).build();
   }
 
-  private WriteObjectRequest getWriteObjectRequest(BlobInfo info, Opts<ObjectTargetOpt> opts) {
-    Object object = codecs.blobInfo().encode(info);
-    Object.Builder objectBuilder =
-        object
+  private WriteObjectRequest getWriteObjectRequest(BlobInfo blobInfo, Opts<ObjectTargetOpt> bucketOpts) {
+    Object objectProto = grpcConverters.blobInfoCodec().encode(blobInfo);
+    Object.Builder objBuilder =
+        objectProto
             .toBuilder()
             // required if the data is changing
             .clearChecksums()
@@ -1269,37 +1269,37 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
             .clearSize()
             .clearCreateTime()
             .clearUpdateTime();
-    WriteObjectSpec.Builder specBuilder = WriteObjectSpec.newBuilder().setResource(objectBuilder);
+    WriteObjectSpec.Builder specReqBuilder = WriteObjectSpec.newBuilder().setResource(objBuilder);
 
-    WriteObjectRequest.Builder requestBuilder =
-        WriteObjectRequest.newBuilder().setWriteObjectSpec(specBuilder);
+    WriteObjectRequest.Builder reqBuilder =
+        WriteObjectRequest.newBuilder().setWriteObjectSpec(specReqBuilder);
 
-    return opts.writeObjectRequest().apply(requestBuilder).build();
+    return bucketOpts.writeObjectRequest().apply(reqBuilder).build();
   }
 
-  private UnbufferedReadableByteChannelSession<Object> unbufferedReadSession(
-      BlobId blob, BlobSourceOption[] options) {
-    Opts<ObjectSourceOpt> opts = Opts.unwrap(options).resolveFrom(blob);
-    ReadObjectRequest readObjectRequest = getReadObjectRequest(blob, opts);
-    Set<StatusCode.Code> codes =
-        GrpcStorageImpl.resultRetryAlgorithmToCodes(
-            retryAlgorithmManager.getFor(readObjectRequest));
-    GrpcCallContext grpcCallContext = GrpcCallContext.createDefault().withRetryableCodes(codes);
+  private UnbufferedReadableByteChannelSession<Object> createUnbufferedReadSession(
+      BlobId blobName, BlobSourceOption[] grpcOptions) {
+    Opts<ObjectSourceOpt> bucketOpts = Opts.unwrap(grpcOptions).resolveFrom(blobName);
+    ReadObjectRequest readReq = getReadObjectRequest(blobName, bucketOpts);
+    Set<StatusCode.Code> statusCodes =
+        GrpcStorageImpl.getRetryableStatusCodes(
+            retryPolicyManager.getFor(readReq));
+    GrpcCallContext callContext = GrpcCallContext.createDefault().withRetryableCodes(statusCodes);
     return ResumableMedia.gapic()
         .read()
-        .byteChannel(storageClient.readObjectCallable().withDefaultCallContext(grpcCallContext))
-        .setAutoGzipDecompression(!opts.autoGzipDecompression())
+        .byteChannel(storageConnector.readObjectCallable().withDefaultCallContext(callContext))
+        .setAutoGzipDecompression(!bucketOpts.autoGzipDecompression())
         .unbuffered()
-        .setReadObjectRequest(readObjectRequest)
+        .setReadObjectRequest(readReq)
         .build();
   }
 
-  private FieldMask fieldMaskGenerator(Message message) {
+  private FieldMask generateFieldMask(Message errorMessage) {
     return FieldMask.newBuilder()
         .addAllPaths(
-            message.getAllFields().entrySet().stream()
-                .filter(x -> x.getValue() != null)
-                .map(e -> e.getKey().getName())
+            errorMessage.getAllFields().entrySet().stream()
+                .filter(field -> field.getValue() != null)
+                .map(err -> err.getKey().getName())
                 .collect(Collectors.toList()))
         .build();
   }
@@ -1310,15 +1310,15 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
    * resolve the set of values from a given {@link ResultRetryAlgorithm} by evaluating each one as
    * an {@link ApiException}.
    */
-  static Set<StatusCode.Code> resultRetryAlgorithmToCodes(ResultRetryAlgorithm<?> alg) {
-    return CODE_API_EXCEPTIONS.stream()
-        .filter(e -> alg.shouldRetry(e, null))
-        .map(e -> e.apiExceptionCause.getStatusCode().getCode())
+  static Set<StatusCode.Code> getRetryableStatusCodes(ResultRetryAlgorithm<?> retryAlgo) {
+    return API_CODE_EXCEPTIONS.stream()
+        .filter(err -> retryAlgo.shouldRetry(err, null))
+        .map(err -> err.apiExceptionCause.getStatusCode().getCode())
         .collect(Collectors.toSet());
   }
 
-  private static GrpcStatusCode statusCodeFor(StatusCode.Code code) {
-    switch (code) {
+  private static GrpcStatusCode getGrpcStatusCode(StatusCode.Code statusCode) {
+    switch (statusCode) {
       case OK:
         return GrpcStatusCode.of(Code.OK);
       case CANCELLED:
@@ -1354,7 +1354,7 @@ final class GrpcStorageImpl extends BaseService<StorageOptions> implements Stora
       case UNAUTHENTICATED:
         return GrpcStatusCode.of(Code.UNAUTHENTICATED);
       default:
-        throw new IllegalStateException("Unrecognized status code: " + code);
+        throw new IllegalStateException("Unrecognized status code: " + statusCode);
     }
   }
 }

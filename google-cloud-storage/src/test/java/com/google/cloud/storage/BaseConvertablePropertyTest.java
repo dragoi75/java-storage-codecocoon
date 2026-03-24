@@ -49,7 +49,7 @@ abstract class BaseConvertablePropertyTest<
 
   /** Provide the codec instance used to convert between {@code ModelT} and {@code ProtoT} */
   Codec<ModelT, ProtoT> grpcCodec() {
-    GrpcConversions instance = Conversions.grpc();
+    GrpcConverters instance = Conversions.grpc();
     return resolveCodec(instance, protoTType);
   }
 

@@ -49,9 +49,9 @@ import java.util.Set;
  * <p>Example of usage {@code BlobInfo} to create an object in Google Cloud Storage:
  *
  * <pre>{@code
- * BlobId blobId = BlobId.of(bucketName, blobName);
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
- * Blob blob = storage.create(blobInfo, "Hello, world".getBytes(StandardCharsets.UTF_8));
+ * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+ * BlobInfo blobInfoCodec = BlobInfo.newBuilder(blobIdCodec).setContentType("text/plain").build();
+ * Blob blob = storage.create(blobInfoCodec, "Hello, world".getBytes(StandardCharsets.UTF_8));
  * }</pre>
  *
  * @see <a href="https://cloud.google.com/storage/docs/concepts-techniques#concepts">Concepts and
@@ -375,8 +375,8 @@ public class BlobInfo implements Serializable {
      * String bucketName = "my-unique-bucket";
      * String blobName = "my-blob-name";
      * String kmsKeyName = "projects/project-id/locations/us/keyRings/lab1/cryptoKeys/test-key"
-     * BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
-     * Blob blob = storage.create(blobInfo, Storage.BlobTargetOption.kmsKeyName(kmsKeyName));
+     * BlobInfo blobInfoCodec = BlobInfo.newBuilder(bucketName, blobName).build();
+     * Blob blob = storage.create(blobInfoCodec, Storage.BlobTargetOption.kmsKeyName(kmsKeyName));
      * }</pre>
      */
     abstract Builder setKmsKeyName(String kmsKeyName);

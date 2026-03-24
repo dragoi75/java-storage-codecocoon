@@ -29,7 +29,7 @@ import com.google.cloud.TransportOptions;
 import com.google.cloud.http.HttpTransportOptions;
 import com.google.cloud.spi.ServiceRpcFactory;
 import com.google.cloud.storage.spi.StorageRpcFactory;
-import com.google.cloud.storage.spi.v1.HttpStorageRpc;
+import com.google.cloud.storage.spi.v1.HttpStorageClient;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
@@ -308,7 +308,7 @@ public class HttpStorageOptions extends StorageOptions {
     public ServiceRpc create(StorageOptions options) {
       if (options instanceof HttpStorageOptions) {
         HttpStorageOptions httpStorageOptions = (HttpStorageOptions) options;
-        return new HttpStorageRpc(httpStorageOptions);
+        return new HttpStorageClient(httpStorageOptions);
       } else {
         throw new IllegalArgumentException("Only HttpStorageOptions supported");
       }

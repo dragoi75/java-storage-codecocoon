@@ -924,9 +924,9 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Returns the ACL entry for the specified entity on this bucket or {@code null} if not found.
+   * Returns the ACL entry for the specified entityCodec on this bucket or {@code null} if not found.
    *
-   * <p>Example of getting the ACL entry for an entity.
+   * <p>Example of getting the ACL entry for an entityCodec.
    *
    * <pre>{@code
    * Acl acl = bucket.getAcl(User.ofAllAuthenticatedUsers());
@@ -940,9 +940,9 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Deletes the ACL entry for the specified entity on this bucket.
+   * Deletes the ACL entry for the specified entityCodec on this bucket.
    *
-   * <p>Example of deleting the ACL entry for an entity.
+   * <p>Example of deleting the ACL entry for an entityCodec.
    *
    * <pre>{@code
    * boolean deleted = bucket.deleteAcl(User.ofAllAuthenticatedUsers());
@@ -1013,13 +1013,13 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Returns the default object ACL entry for the specified entity on this bucket or {@code null} if
+   * Returns the default object ACL entry for the specified entityCodec on this bucket or {@code null} if
    * not found.
    *
    * <p>Default ACLs are applied to a new blob within the bucket when no ACL was provided for that
    * blob.
    *
-   * <p>Example of getting the default ACL entry for an entity.
+   * <p>Example of getting the default ACL entry for an entityCodec.
    *
    * <pre>{@code
    * Acl acl = bucket.getDefaultAcl(User.ofAllAuthenticatedUsers());
@@ -1033,12 +1033,12 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Deletes the default object ACL entry for the specified entity on this bucket.
+   * Deletes the default object ACL entry for the specified entityCodec on this bucket.
    *
    * <p>Default ACLs are applied to a new blob within the bucket when no ACL was provided for that
    * blob.
    *
-   * <p>Example of deleting the default ACL entry for an entity.
+   * <p>Example of deleting the default ACL entry for an entityCodec.
    *
    * <pre>{@code
    * boolean deleted = bucket.deleteDefaultAcl(User.ofAllAuthenticatedUsers());

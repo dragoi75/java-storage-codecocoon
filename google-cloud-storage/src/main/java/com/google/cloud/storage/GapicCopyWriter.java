@@ -54,7 +54,7 @@ final class GapicCopyWriter extends CopyWriter {
     while (!isDone()) {
       copyChunk();
     }
-    BlobInfo info = Conversions.grpc().blobInfo().decode(mostRecentResponse.getResource());
+    BlobInfo info = Conversions.grpc().blobInfoCodec().decode(mostRecentResponse.getResource());
     return info.asBlob(storage);
   }
 

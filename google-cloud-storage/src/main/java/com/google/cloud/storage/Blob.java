@@ -60,8 +60,8 @@ import java.util.concurrent.TimeUnit;
  * <p>Example of getting the content of the object in Google Cloud Storage:
  *
  * <pre>{@code
- * BlobId blobId = BlobId.of(bucketName, blobName);
- * Blob blob = storage.get(blobId);
+ * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+ * Blob blob = storage.get(blobIdCodec);
  * long size = blob.getSize(); // no RPC call is required
  * byte[] content = blob.getContent(); // one or multiple RPC calls will be issued
  * }</pre>
@@ -595,8 +595,8 @@ public class Blob extends BlobInfo {
    * <p>Example of updating the content type:
    *
    * <pre>{@code
-   * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId);
+   * BlobId blobIdCodec = BlobId.of(bucketName, blobName);
+   * Blob blob = storage.get(blobIdCodec);
    * blob.toBuilder().setContentType("text/plain").build().update();
    * }</pre>
    *
@@ -846,9 +846,9 @@ public class Blob extends BlobInfo {
    *     used and no implementation of {@link ServiceAccountSigner} was provided to {@link
    *     StorageOptions}
    * @throws IllegalArgumentException if {@code SignUrlOption.withMd5()} option is used and {@code
-   *     blobInfo.md5()} is {@code null}
+   *     blobInfoCodec.md5()} is {@code null}
    * @throws IllegalArgumentException if {@code SignUrlOption.withContentType()} option is used and
-   *     {@code blobInfo.contentType()} is {@code null}
+   *     {@code blobInfoCodec.contentType()} is {@code null}
    * @throws SigningException if the attempt to sign the URL failed
    * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed-URLs</a>
    */
@@ -858,9 +858,9 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Returns the ACL entry for the specified entity on this blob or {@code null} if not found.
+   * Returns the ACL entry for the specified entityCodec on this blob or {@code null} if not found.
    *
-   * <p>Example of getting the ACL entry for an entity.
+   * <p>Example of getting the ACL entry for an entityCodec.
    *
    * <pre>{@code
    * Acl acl = blob.getAcl(User.ofAllAuthenticatedUsers());
@@ -874,9 +874,9 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Deletes the ACL entry for the specified entity on this blob.
+   * Deletes the ACL entry for the specified entityCodec on this blob.
    *
-   * <p>Example of deleting the ACL entry for an entity.
+   * <p>Example of deleting the ACL entry for an entityCodec.
    *
    * <pre>{@code
    * boolean deleted = blob.deleteAcl(User.ofAllAuthenticatedUsers());

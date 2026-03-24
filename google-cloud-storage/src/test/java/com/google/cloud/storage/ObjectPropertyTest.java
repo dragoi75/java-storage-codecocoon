@@ -23,6 +23,6 @@ final class ObjectPropertyTest {
 
   // @Property
   void allObjectsDecode(@ForAll Object o) {
-    Conversions.grpc().blobId().decode(o);
+    Conversions.grpc().blobIdCodec().decode(o);
   }
 }

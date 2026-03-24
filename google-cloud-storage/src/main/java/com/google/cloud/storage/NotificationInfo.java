@@ -269,7 +269,7 @@ public class NotificationInfo implements Serializable {
    *
    * <pre>{@code
    * String topic = "projects/myProject/topics/myTopic"
-   * NotificationInfo notificationInfo = NotificationInfo.of(topic)
+   * NotificationInfo notificationDetails = NotificationInfo.of(topic)
    * }</pre>
    *
    * @param topic a string in the format "projects/{project}/topics/{topic}"

@@ -387,7 +387,7 @@ public class BucketInfo implements Serializable {
   }
 
   /**
-   * The bucket's logging configuration, which defines the destination bucket and optional name
+   * The bucket's loggingCodec configuration, which defines the destination bucket and optional name
    * prefix for the current bucket's logs.
    */
   public static class Logging implements Serializable {
