@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,7 +26,7 @@ import com.google.cloud.http.HttpTransportOptions;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobListOption;
+import com.google.cloud.storage.Storage.BlobListOptions;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.ImmutableList;
@@ -131,7 +131,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true));
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -150,7 +150,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
 
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOptions.includeVersions(true)))
         .andReturn(blobPage)
         .anyTimes();
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(RETRYABLE_EXCEPTION).anyTimes();
@@ -169,7 +169,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOptions.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -192,7 +192,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -209,7 +209,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -238,17 +238,17 @@ public class RemoteStorageHelperTest {
         .anyTimes();
     EasyMock.expect(
             storageMock.delete(
-                BUCKET_NAME, BLOB_NAME2, Storage.BlobSourceOption.userProject(USER_PROJECT)))
+                BUCKET_NAME, BLOB_NAME2, Storage.BlobSourceOptions.withUserProject(USER_PROJECT)))
         .andReturn(true)
         .anyTimes();
     EasyMock.expect(
             storageMock.list(
                 BUCKET_NAME,
-                BlobListOption.versions(true),
-                BlobListOption.userProject(USER_PROJECT)))
+                BlobListOptions.includeVersions(true),
+                Storage.BlobListOptions.setUserProject(USER_PROJECT)))
         .andReturn(blobPage);
     EasyMock.expect(
-            storageMock.delete(BUCKET_NAME, Storage.BucketSourceOption.userProject(USER_PROJECT)))
+            storageMock.delete(BUCKET_NAME, Storage.BucketSourceOptions.setUserProject(USER_PROJECT)))
         .andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
     try {

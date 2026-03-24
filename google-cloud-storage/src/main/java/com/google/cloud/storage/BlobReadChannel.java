@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -40,7 +40,7 @@ class BlobReadChannel implements ReadChannel {
 
   private final StorageOptions serviceOptions;
   private final BlobId blob;
-  private final Map<StorageRpc.Option, ?> requestOptions;
+  private final Map<StorageRpc.RequestOption, ?> requestOptions;
   private String lastEtag;
   private long position;
   private boolean isOpen;
@@ -53,7 +53,7 @@ class BlobReadChannel implements ReadChannel {
   private byte[] buffer;
 
   BlobReadChannel(
-      StorageOptions serviceOptions, BlobId blob, Map<StorageRpc.Option, ?> requestOptions) {
+      StorageOptions serviceOptions, BlobId blob, Map<StorageRpc.RequestOption, ?> requestOptions) {
     this.serviceOptions = serviceOptions;
     this.blob = blob;
     this.requestOptions = requestOptions;
@@ -165,7 +165,7 @@ class BlobReadChannel implements ReadChannel {
 
     private final StorageOptions serviceOptions;
     private final BlobId blob;
-    private final Map<StorageRpc.Option, ?> requestOptions;
+    private final Map<StorageRpc.RequestOption, ?> requestOptions;
     private final String lastEtag;
     private final long position;
     private final boolean isOpen;
@@ -186,14 +186,14 @@ class BlobReadChannel implements ReadChannel {
     static class Builder {
       private final StorageOptions serviceOptions;
       private final BlobId blob;
-      private final Map<StorageRpc.Option, ?> requestOptions;
+      private final Map<StorageRpc.RequestOption, ?> requestOptions;
       private String lastEtag;
       private long position;
       private boolean isOpen;
       private boolean endOfStream;
       private int chunkSize;
 
-      private Builder(StorageOptions options, BlobId blob, Map<StorageRpc.Option, ?> reqOptions) {
+      private Builder(StorageOptions options, BlobId blob, Map<StorageRpc.RequestOption, ?> reqOptions) {
         this.serviceOptions = options;
         this.blob = blob;
         this.requestOptions = reqOptions;
@@ -230,7 +230,7 @@ class BlobReadChannel implements ReadChannel {
     }
 
     static Builder builder(
-        StorageOptions options, BlobId blob, Map<StorageRpc.Option, ?> reqOptions) {
+        StorageOptions options, BlobId blob, Map<StorageRpc.RequestOption, ?> reqOptions) {
       return new Builder(options, blob, reqOptions);
     }
 

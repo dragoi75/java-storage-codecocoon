@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -32,7 +32,7 @@ import java.util.concurrent.Callable;
 /** Write channel implementation to upload Google Cloud Storage blobs. */
 class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
 
-  BlobWriteChannel(StorageOptions options, BlobInfo blob, Map<StorageRpc.Option, ?> optionsMap) {
+  BlobWriteChannel(StorageOptions options, BlobInfo blob, Map<StorageRpc.RequestOption, ?> optionsMap) {
     this(options, blob, open(options, blob, optionsMap));
   }
 
@@ -48,7 +48,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     super(options, null, uploadId);
   }
 
-  // Contains metadata of the updated object or null if upload is not completed.
+  // Contains metadata from the updated object or null if upload is not completed.
   private StorageObject storageObject;
 
   StorageObject getStorageObject() {
@@ -85,7 +85,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   private static String open(
       final StorageOptions options,
       final BlobInfo blob,
-      final Map<StorageRpc.Option, ?> optionsMap) {
+      final Map<StorageRpc.RequestOption, ?> optionsMap) {
     try {
       return runWithRetries(
           new Callable<String>() {

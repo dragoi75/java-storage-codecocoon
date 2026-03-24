@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -23,7 +23,7 @@ import com.google.cloud.ServiceRpc;
 import com.google.cloud.TransportOptions;
 import com.google.cloud.http.HttpTransportOptions;
 import com.google.cloud.storage.spi.StorageRpcFactory;
-import com.google.cloud.storage.spi.v1.HttpStorageRpc;
+import com.google.cloud.storage.spi.v1.HttpStorageClient;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
@@ -52,7 +52,7 @@ public class StorageOptions extends ServiceOptions<Storage, StorageOptions> {
 
     @Override
     public ServiceRpc create(StorageOptions options) {
-      return new HttpStorageRpc(options);
+      return new HttpStorageClient(options);
     }
   }
 

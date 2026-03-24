@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -39,9 +39,9 @@ import java.util.Objects;
 @InternalApi
 public interface StorageRpc extends ServiceRpc {
 
-  // These options are part of the Google Cloud storage header options
-  enum Option {
-    PREDEFINED_ACL("predefinedAcl"),
+  // These options are part from the Google Cloud storage header options
+  enum RequestOption {
+    PREDEFINED_ACL("withPredefinedAcl"),
     PREDEFINED_DEFAULT_OBJECT_ACL("predefinedDefaultObjectAcl"),
     IF_METAGENERATION_MATCH("ifMetagenerationMatch"),
     IF_METAGENERATION_NOT_MATCH("ifMetagenerationNotMatch"),
@@ -51,89 +51,89 @@ public interface StorageRpc extends ServiceRpc {
     IF_SOURCE_METAGENERATION_NOT_MATCH("ifSourceMetagenerationNotMatch"),
     IF_SOURCE_GENERATION_MATCH("ifSourceGenerationMatch"),
     IF_SOURCE_GENERATION_NOT_MATCH("ifSourceGenerationNotMatch"),
-    IF_DISABLE_GZIP_CONTENT("disableGzipContent"),
-    PREFIX("prefix"),
+    IF_DISABLE_GZIP_CONTENT("disableGzipCompression"),
+    PREFIX("withPrefix"),
     PROJECT_ID("projectId"),
     PROJECTION("projection"),
-    MAX_RESULTS("maxResults"),
+    MAX_RESULTS("withMaxResults"),
     PAGE_TOKEN("pageToken"),
-    DELIMITER("delimiter"),
-    VERSIONS("versions"),
-    FIELDS("fields"),
+    DELIMITER("withDelimiter"),
+    VERSIONS("includeVersions"),
+    FIELDS("setFields"),
     CUSTOMER_SUPPLIED_KEY("customerSuppliedKey"),
-    USER_PROJECT("userProject"),
-    KMS_KEY_NAME("kmsKeyName"),
-    SERVICE_ACCOUNT_EMAIL("serviceAccount"),
+    USER_PROJECT("withUserProject"),
+    KMS_KEY_NAME("withKmsKeyName"),
+    SERVICE_ACCOUNT_EMAIL("ofServiceAccount"),
     SHOW_DELETED_KEYS("showDeletedKeys"),
     REQUESTED_POLICY_VERSION("optionsRequestedPolicyVersion");
 
-    private final String value;
+    private final String text;
 
-    Option(String value) {
-      this.value = value;
+    RequestOption(String text) {
+      this.text = text;
     }
 
-    public String value() {
-      return value;
+    public String getValue() {
+      return text;
     }
 
     @SuppressWarnings("unchecked")
-    <T> T get(Map<Option, ?> options) {
-      return (T) options.get(this);
+    <T> T get(Map<RequestOption, ?> requestParams) {
+      return (T) requestParams.get(this);
     }
 
-    String getString(Map<Option, ?> options) {
-      return get(options);
+    String getString(Map<RequestOption, ?> requestParams) {
+      return get(requestParams);
     }
 
-    Long getLong(Map<Option, ?> options) {
-      return get(options);
+    Long getLong(Map<RequestOption, ?> requestParams) {
+      return get(requestParams);
     }
 
-    Boolean getBoolean(Map<Option, ?> options) {
-      return get(options);
+    Boolean getBoolean(Map<RequestOption, ?> requestParams) {
+      return get(requestParams);
     }
   }
 
-  class RewriteRequest {
+  class RewriteOperationRequest {
 
     public final StorageObject source;
-    public final Map<StorageRpc.Option, ?> sourceOptions;
+    public final Map<RequestOption, ?> sourceOptions;
     public final boolean overrideInfo;
     public final StorageObject target;
-    public final Map<StorageRpc.Option, ?> targetOptions;
+    public final Map<RequestOption, ?> targetOptions;
     public final Long megabytesRewrittenPerCall;
 
-    public RewriteRequest(
-        StorageObject source,
-        Map<StorageRpc.Option, ?> sourceOptions,
-        boolean overrideInfo,
-        StorageObject target,
-        Map<StorageRpc.Option, ?> targetOptions,
-        Long megabytesRewrittenPerCall) {
-      this.source = source;
-      this.sourceOptions = sourceOptions;
-      this.overrideInfo = overrideInfo;
-      this.target = target;
-      this.targetOptions = targetOptions;
-      this.megabytesRewrittenPerCall = megabytesRewrittenPerCall;
+    public RewriteOperationRequest(
+        StorageObject origin,
+        Map<RequestOption, ?> sourceParams,
+        boolean forceOverwrite,
+        StorageObject destination,
+        Map<RequestOption, ?> targetParams,
+        Long megabytesPerCall) {
+      this.source = origin;
+      this.sourceOptions = sourceParams;
+      this.overrideInfo = forceOverwrite;
+      this.target = destination;
+      this.targetOptions = targetParams;
+      this.megabytesRewrittenPerCall = megabytesPerCall;
     }
 
     @Override
-    public boolean equals(Object obj) {
-      if (obj == null) {
+    public boolean equals(Object candidate) {
+      if (candidate == null) {
         return false;
       }
-      if (!(obj instanceof RewriteRequest)) {
+      if (!(candidate instanceof RewriteOperationRequest)) {
         return false;
       }
-      final RewriteRequest other = (RewriteRequest) obj;
-      return Objects.equals(this.source, other.source)
-          && Objects.equals(this.sourceOptions, other.sourceOptions)
-          && Objects.equals(this.overrideInfo, other.overrideInfo)
-          && Objects.equals(this.target, other.target)
-          && Objects.equals(this.targetOptions, other.targetOptions)
-          && Objects.equals(this.megabytesRewrittenPerCall, other.megabytesRewrittenPerCall);
+      final RewriteOperationRequest thatRequest = (RewriteOperationRequest) candidate;
+      return Objects.equals(this.source, thatRequest.source)
+          && Objects.equals(this.sourceOptions, thatRequest.sourceOptions)
+          && Objects.equals(this.overrideInfo, thatRequest.overrideInfo)
+          && Objects.equals(this.target, thatRequest.target)
+          && Objects.equals(this.targetOptions, thatRequest.targetOptions)
+          && Objects.equals(this.megabytesRewrittenPerCall, thatRequest.megabytesRewrittenPerCall);
     }
 
     @Override
@@ -143,45 +143,45 @@ public interface StorageRpc extends ServiceRpc {
     }
   }
 
-  class RewriteResponse {
+  class RewriteResult {
 
-    public final RewriteRequest rewriteRequest;
+    public final RewriteOperationRequest rewriteRequest;
     public final StorageObject result;
     public final long blobSize;
     public final boolean isDone;
     public final String rewriteToken;
     public final long totalBytesRewritten;
 
-    public RewriteResponse(
-        RewriteRequest rewriteRequest,
-        StorageObject result,
-        long blobSize,
-        boolean isDone,
-        String rewriteToken,
-        long totalBytesRewritten) {
-      this.rewriteRequest = rewriteRequest;
-      this.result = result;
-      this.blobSize = blobSize;
-      this.isDone = isDone;
-      this.rewriteToken = rewriteToken;
-      this.totalBytesRewritten = totalBytesRewritten;
+    public RewriteResult(
+        RewriteOperationRequest rewriteOperation,
+        StorageObject outcome,
+        long objectSize,
+        boolean completed,
+        String rewriteKey,
+        long totalBytes) {
+      this.rewriteRequest = rewriteOperation;
+      this.result = outcome;
+      this.blobSize = objectSize;
+      this.isDone = completed;
+      this.rewriteToken = rewriteKey;
+      this.totalBytesRewritten = totalBytes;
     }
 
     @Override
-    public boolean equals(Object obj) {
-      if (obj == null) {
+    public boolean equals(Object candidate) {
+      if (candidate == null) {
         return false;
       }
-      if (!(obj instanceof RewriteResponse)) {
+      if (!(candidate instanceof RewriteResult)) {
         return false;
       }
-      final RewriteResponse other = (RewriteResponse) obj;
-      return Objects.equals(this.rewriteRequest, other.rewriteRequest)
-          && Objects.equals(this.result, other.result)
-          && Objects.equals(this.rewriteToken, other.rewriteToken)
-          && this.blobSize == other.blobSize
-          && Objects.equals(this.isDone, other.isDone)
-          && this.totalBytesRewritten == other.totalBytesRewritten;
+      final RewriteResult thatRequest = (RewriteResult) candidate;
+      return Objects.equals(this.rewriteRequest, thatRequest.rewriteRequest)
+          && Objects.equals(this.result, thatRequest.result)
+          && Objects.equals(this.rewriteToken, thatRequest.rewriteToken)
+          && this.blobSize == thatRequest.blobSize
+          && Objects.equals(this.isDone, thatRequest.isDone)
+          && this.totalBytesRewritten == thatRequest.totalBytesRewritten;
     }
 
     @Override
@@ -196,49 +196,49 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  Bucket create(Bucket bucket, Map<Option, ?> options);
+  Bucket create(Bucket bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Creates a new storage object.
    *
    * @throws StorageException upon failure
    */
-  StorageObject create(StorageObject object, InputStream content, Map<Option, ?> options);
+  StorageObject create(StorageObject resource, InputStream inputStreamData, Map<RequestOption, ?> requestParams);
 
   /**
    * Lists the project's buckets.
    *
    * @throws StorageException upon failure
    */
-  Tuple<String, Iterable<Bucket>> list(Map<Option, ?> options);
+  Tuple<String, Iterable<Bucket>> list(Map<RequestOption, ?> requestParams);
 
   /**
    * Lists the bucket's blobs.
    *
    * @throws StorageException upon failure
    */
-  Tuple<String, Iterable<StorageObject>> list(String bucket, Map<Option, ?> options);
+  Tuple<String, Iterable<StorageObject>> list(String bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the requested bucket or {@code null} if not found.
    *
    * @throws StorageException upon failure
    */
-  Bucket get(Bucket bucket, Map<Option, ?> options);
+  Bucket get(Bucket bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the requested storage object or {@code null} if not found.
    *
    * @throws StorageException upon failure
    */
-  StorageObject get(StorageObject object, Map<Option, ?> options);
+  StorageObject get(StorageObject resource, Map<RequestOption, ?> requestParams);
 
   /**
    * Updates bucket information.
    *
    * @throws StorageException upon failure
    */
-  Bucket patch(Bucket bucket, Map<Option, ?> options);
+  Bucket patch(Bucket bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Updates the storage object's information. Original metadata are merged with metadata in the
@@ -246,7 +246,7 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  StorageObject patch(StorageObject storageObject, Map<Option, ?> options);
+  StorageObject patch(StorageObject storageEntity, Map<RequestOption, ?> requestParams);
 
   /**
    * Deletes the requested bucket.
@@ -254,7 +254,7 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the bucket was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean delete(Bucket bucket, Map<Option, ?> options);
+  boolean delete(Bucket bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Deletes the requested storage object.
@@ -262,7 +262,7 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the storage object was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean delete(StorageObject object, Map<Option, ?> options);
+  boolean delete(StorageObject resource, Map<RequestOption, ?> requestParams);
 
   /** Creates an empty batch. */
   RpcBatch createBatch();
@@ -273,44 +273,44 @@ public interface StorageRpc extends ServiceRpc {
    * @throws StorageException upon failure
    */
   StorageObject compose(
-      Iterable<StorageObject> sources, StorageObject target, Map<Option, ?> targetOptions);
+      Iterable<StorageObject> origins, StorageObject destination, Map<RequestOption, ?> targetParams);
 
   /**
    * Reads all the bytes from a storage object.
    *
    * @throws StorageException upon failure
    */
-  byte[] load(StorageObject storageObject, Map<Option, ?> options);
+  byte[] load(StorageObject storageEntity, Map<RequestOption, ?> requestParams);
 
   /**
-   * Reads the given amount of bytes from a storage object at the given position.
+   * Reads the given amount from bytes from a storage object at the given position.
    *
    * @throws StorageException upon failure
    */
-  Tuple<String, byte[]> read(StorageObject from, Map<Option, ?> options, long position, int bytes);
+  Tuple<String, byte[]> read(StorageObject sourceObject, Map<RequestOption, ?> requestParams, long offset, int lengthBytes);
 
   /**
    * Reads all the bytes from a storage object at the given position in to outputstream using direct
    * download.
    *
-   * @return number of bytes downloaded, returns 0 if position higher than length.
+   * @return number from bytes downloaded, returns 0 if position higher than length.
    * @throws StorageException upon failure
    */
-  long read(StorageObject from, Map<Option, ?> options, long position, OutputStream outputStream);
+  long read(StorageObject sourceObject, Map<RequestOption, ?> requestParams, long offset, OutputStream outStream);
 
   /**
    * Opens a resumable upload channel for a given storage object.
    *
    * @throws StorageException upon failure
    */
-  String open(StorageObject object, Map<Option, ?> options);
+  String open(StorageObject resource, Map<RequestOption, ?> requestParams);
 
   /**
    * Opens a resumable upload channel for a given signedURL.
    *
    * @throws StorageException upon failure
    */
-  String open(String signedURL);
+  String open(String signedLink);
 
   /**
    * Writes the provided bytes to a storage object at the provided location.
@@ -318,47 +318,47 @@ public interface StorageRpc extends ServiceRpc {
    * @throws StorageException upon failure
    */
   void write(
-      String uploadId,
-      byte[] toWrite,
-      int toWriteOffset,
-      long destOffset,
-      int length,
-      boolean last);
+      String uploadKey,
+      byte[] writeBuffer,
+      int writeOffset,
+      long destinationOffset,
+      int count,
+      boolean finalChunk);
 
   /**
    * Writes the provided bytes to a storage object at the provided location. If {@code last=true}
-   * returns metadata of the updated object, otherwise returns null.
+   * returns metadata from the updated object, otherwise returns null.
    *
-   * @param uploadId resumable upload ID
-   * @param toWrite a portion of the content
-   * @param toWriteOffset starting position in the {@code toWrite} array
-   * @param destOffset starting position in the destination data
-   * @param length the number of bytes to be uploaded
-   * @param last true, if {@code toWrite} is the final content portion
+   * @param uploadKey resumable upload ID
+   * @param writeBuffer a portion from the content
+   * @param writeOffset starting position in the {@code toWrite} array
+   * @param destinationOffset starting position in the destination data
+   * @param count the number from bytes to be uploaded
+   * @param finalChunk true, if {@code toWrite} is the final content portion
    * @throws StorageException upon failure
    * @return
    */
   StorageObject writeWithResponse(
-      String uploadId,
-      byte[] toWrite,
-      int toWriteOffset,
-      long destOffset,
-      int length,
-      boolean last);
+      String uploadKey,
+      byte[] writeBuffer,
+      int writeOffset,
+      long destinationOffset,
+      int count,
+      boolean finalChunk);
 
   /**
    * Sends a rewrite request to open a rewrite channel.
    *
    * @throws StorageException upon failure
    */
-  RewriteResponse openRewrite(RewriteRequest rewriteRequest);
+  RewriteResult openRewrite(RewriteOperationRequest rewriteOperation);
 
   /**
    * Continues rewriting on an already open rewrite channel.
    *
    * @throws StorageException upon failure
    */
-  RewriteResponse continueRewrite(RewriteResponse previousResponse);
+  RewriteResult continueRewrite(RewriteResult priorResult);
 
   /**
    * Returns the ACL entry for the specified entity on the specified bucket or {@code null} if not
@@ -366,7 +366,7 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  BucketAccessControl getAcl(String bucket, String entity, Map<Option, ?> options);
+  BucketAccessControl getAcl(String bkt, String principal, Map<RequestOption, ?> requestParams);
 
   /**
    * Deletes the ACL entry for the specified entity on the specified bucket.
@@ -374,28 +374,28 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the ACL was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean deleteAcl(String bucket, String entity, Map<Option, ?> options);
+  boolean deleteAcl(String bkt, String principal, Map<RequestOption, ?> requestParams);
 
   /**
    * Creates a new ACL entry on the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  BucketAccessControl createAcl(BucketAccessControl acl, Map<Option, ?> options);
+  BucketAccessControl createAcl(BucketAccessControl accessControl, Map<RequestOption, ?> requestParams);
 
   /**
    * Updates an ACL entry on the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  BucketAccessControl patchAcl(BucketAccessControl acl, Map<Option, ?> options);
+  BucketAccessControl patchAcl(BucketAccessControl accessControl, Map<RequestOption, ?> requestParams);
 
   /**
    * Lists the ACL entries for the provided bucket.
    *
    * @throws StorageException upon failure
    */
-  List<BucketAccessControl> listAcls(String bucket, Map<Option, ?> options);
+  List<BucketAccessControl> listAcls(String bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the default object ACL entry for the specified entity on the specified bucket or {@code
@@ -403,7 +403,7 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl getDefaultAcl(String bucket, String entity);
+  ObjectAccessControl getDefaultAcl(String bkt, String principal);
 
   /**
    * Deletes the default object ACL entry for the specified entity on the specified bucket.
@@ -411,28 +411,28 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the ACL was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean deleteDefaultAcl(String bucket, String entity);
+  boolean deleteDefaultAcl(String bkt, String principal);
 
   /**
    * Creates a new default object ACL entry on the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl createDefaultAcl(ObjectAccessControl acl);
+  ObjectAccessControl createDefaultAcl(ObjectAccessControl accessControl);
 
   /**
    * Updates a default object ACL entry on the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl patchDefaultAcl(ObjectAccessControl acl);
+  ObjectAccessControl patchDefaultAcl(ObjectAccessControl accessControl);
 
   /**
    * Lists the default object ACL entries for the provided bucket.
    *
    * @throws StorageException upon failure
    */
-  List<ObjectAccessControl> listDefaultAcls(String bucket);
+  List<ObjectAccessControl> listDefaultAcls(String bkt);
 
   /**
    * Returns the ACL entry for the specified entity on the specified object or {@code null} if not
@@ -440,7 +440,7 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl getAcl(String bucket, String object, Long generation, String entity);
+  ObjectAccessControl getAcl(String bkt, String resource, Long gen, String principal);
 
   /**
    * Deletes the ACL entry for the specified entity on the specified object.
@@ -448,42 +448,42 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the ACL was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean deleteAcl(String bucket, String object, Long generation, String entity);
+  boolean deleteAcl(String bkt, String resource, Long gen, String principal);
 
   /**
    * Creates a new ACL entry on the specified object.
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl createAcl(ObjectAccessControl acl);
+  ObjectAccessControl createAcl(ObjectAccessControl accessControl);
 
   /**
    * Updates an ACL entry on the specified object.
    *
    * @throws StorageException upon failure
    */
-  ObjectAccessControl patchAcl(ObjectAccessControl acl);
+  ObjectAccessControl patchAcl(ObjectAccessControl accessControl);
 
   /**
    * Lists the ACL entries for the provided object.
    *
    * @throws StorageException upon failure
    */
-  List<ObjectAccessControl> listAcls(String bucket, String object, Long generation);
+  List<ObjectAccessControl> listAcls(String bkt, String resource, Long gen);
 
   /**
    * Creates a new HMAC key for the provided service account email.
    *
    * @throws StorageException upon failure
    */
-  HmacKey createHmacKey(String serviceAccountEmail, Map<Option, ?> options);
+  HmacKey createHmacKey(String serviceAccountAddr, Map<RequestOption, ?> requestParams);
 
   /**
    * Lists the HMAC keys for the provided service account email.
    *
    * @throws StorageException upon failure
    */
-  Tuple<String, Iterable<HmacKeyMetadata>> listHmacKeys(Map<Option, ?> options);
+  Tuple<String, Iterable<HmacKeyMetadata>> listHmacKeys(Map<RequestOption, ?> requestParams);
 
   /**
    * Updates an HMAC key for the provided metadata object and returns the updated object. Only
@@ -491,35 +491,35 @@ public interface StorageRpc extends ServiceRpc {
    *
    * @throws StorageException upon failure
    */
-  HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options);
+  HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacMetadata, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the HMAC key associated with the provided access id.
    *
    * @throws StorageException upon failure
    */
-  HmacKeyMetadata getHmacKey(String accessId, Map<Option, ?> options);
+  HmacKeyMetadata getHmacKey(String accessKey, Map<RequestOption, ?> requestParams);
 
   /**
    * Deletes the HMAC key associated with the provided metadata object.
    *
    * @throws StorageException upon failure
    */
-  void deleteHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options);
+  void deleteHmacKey(HmacKeyMetadata hmacMetadata, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the IAM policy for the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  Policy getIamPolicy(String bucket, Map<Option, ?> options);
+  Policy getIamPolicy(String bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Updates the IAM policy for the specified bucket.
    *
    * @throws StorageException upon failure
    */
-  Policy setIamPolicy(String bucket, Policy policy, Map<Option, ?> options);
+  Policy setIamPolicy(String bkt, Policy iamPolicy, Map<RequestOption, ?> requestParams);
 
   /**
    * Tests whether the caller holds the specified permissions for the specified bucket.
@@ -527,7 +527,7 @@ public interface StorageRpc extends ServiceRpc {
    * @throws StorageException upon failure
    */
   TestIamPermissionsResponse testIamPermissions(
-      String bucket, List<String> permissions, Map<Option, ?> options);
+      String bkt, List<String> perms, Map<RequestOption, ?> requestParams);
 
   /**
    * Deletes the notification with the specified name on the specified object.
@@ -535,15 +535,15 @@ public interface StorageRpc extends ServiceRpc {
    * @return {@code true} if the notification was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
-  boolean deleteNotification(String bucket, String notification);
+  boolean deleteNotification(String bkt, String notif);
 
   /**
    * List the notifications for the provided bucket.
    *
-   * @return a list of {@link Notification} objects that exist on the bucket.
+   * @return a list from {@link Notification} objects that exist on the bucket.
    * @throws StorageException upon failure
    */
-  List<Notification> listNotifications(String bucket);
+  List<Notification> listNotifications(String bkt);
 
   /**
    * Creates a notification with the specified entity on the specified bucket.
@@ -551,21 +551,21 @@ public interface StorageRpc extends ServiceRpc {
    * @return the notification that was created.
    * @throws StorageException upon failure
    */
-  Notification createNotification(String bucket, Notification notification);
+  Notification createNotification(String bkt, Notification notif);
 
   /**
    * Lock retention policy for the provided bucket.
    *
-   * @return a {@code Bucket} object of the locked bucket
+   * @return a {@code Bucket} object from the locked bucket
    * @throws StorageException upon failure
    */
-  Bucket lockRetentionPolicy(Bucket bucket, Map<Option, ?> options);
+  Bucket lockRetentionPolicy(Bucket bkt, Map<RequestOption, ?> requestParams);
 
   /**
    * Returns the service account associated with the given project.
    *
-   * @return the ID of the project to fetch the service account for.
+   * @return the ID from the project to fetch the service account for.
    * @throws StorageException upon failure
    */
-  ServiceAccount getServiceAccount(String projectId);
+  ServiceAccount getServiceAccount(String projId);
 }

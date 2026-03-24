@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -47,7 +47,7 @@ public class StorageRpcTestBaseTest {
   private Callable rpc;
 
   private static final StorageRpc STORAGE_RPC = new StorageRpcTestBase();
-  private static final Map<StorageRpc.Option, Object> OPTIONS = new HashMap<>();
+  private static final Map<StorageRpc.RequestOption, Object> OPTIONS = new HashMap<>();
   private static final Bucket BUCKET = new Bucket().setName("fake-bucket");
   private static final byte[] BYTES = {0, 1, 2, 3, 4, 5, 6, 7};
   private static final StorageObject OBJECT =
@@ -271,9 +271,9 @@ public class StorageRpcTestBaseTest {
   @Test
   public void testOpenRewrite() {
     rpc =
-        new Callable<StorageRpc.RewriteResponse>() {
+        new Callable<StorageRpc.RewriteResult>() {
           @Override
-          public StorageRpc.RewriteResponse call() {
+          public StorageRpc.RewriteResult call() {
             return STORAGE_RPC.openRewrite(null);
           }
         };
@@ -282,9 +282,9 @@ public class StorageRpcTestBaseTest {
   @Test
   public void testContinueRewrite() {
     rpc =
-        new Callable<StorageRpc.RewriteResponse>() {
+        new Callable<StorageRpc.RewriteResult>() {
           @Override
-          public StorageRpc.RewriteResponse call() {
+          public StorageRpc.RewriteResult call() {
             return STORAGE_RPC.continueRewrite(null);
           }
         };

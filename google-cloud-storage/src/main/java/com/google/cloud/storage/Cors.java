@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -88,7 +88,7 @@ public final class Cors implements Serializable {
       }
     }
 
-    /** Creates an {@code Origin} object for the provided value. */
+    /** Creates an {@code Origin} object for the provided getValue. */
     public static Origin of(String value) {
       if (ANY_URI.equals(value)) {
         return any();

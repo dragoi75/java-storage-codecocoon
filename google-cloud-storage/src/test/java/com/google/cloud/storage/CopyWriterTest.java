@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,8 +28,8 @@ import com.google.cloud.RestorableState;
 import com.google.cloud.ServiceOptions;
 import com.google.cloud.storage.spi.StorageRpcFactory;
 import com.google.cloud.storage.spi.v1.StorageRpc;
-import com.google.cloud.storage.spi.v1.StorageRpc.RewriteRequest;
-import com.google.cloud.storage.spi.v1.StorageRpc.RewriteResponse;
+import com.google.cloud.storage.spi.v1.StorageRpc.RewriteOperationRequest;
+import com.google.cloud.storage.spi.v1.StorageRpc.RewriteResult;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import org.easymock.EasyMock;
@@ -50,21 +50,21 @@ public class CopyWriterTest {
       BlobInfo.newBuilder(DESTINATION_BUCKET_NAME, DESTINATION_BLOB_NAME)
           .setContentType("type")
           .build();
-  private static final Map<StorageRpc.Option, ?> EMPTY_OPTIONS = ImmutableMap.of();
-  private static final RewriteRequest REQUEST_WITH_OBJECT =
-      new StorageRpc.RewriteRequest(
+  private static final Map<StorageRpc.RequestOption, ?> EMPTY_OPTIONS = ImmutableMap.of();
+  private static final RewriteOperationRequest REQUEST_WITH_OBJECT =
+      new RewriteOperationRequest(
           BLOB_ID.toPb(), EMPTY_OPTIONS, true, BLOB_INFO.toPb(), EMPTY_OPTIONS, null);
-  private static final RewriteRequest REQUEST_WITHOUT_OBJECT =
-      new StorageRpc.RewriteRequest(
+  private static final RewriteOperationRequest REQUEST_WITHOUT_OBJECT =
+      new RewriteOperationRequest(
           BLOB_ID.toPb(), EMPTY_OPTIONS, false, BLOB_INFO.toPb(), EMPTY_OPTIONS, null);
-  private static final RewriteResponse RESPONSE_WITH_OBJECT =
-      new RewriteResponse(REQUEST_WITH_OBJECT, null, 42L, false, "token", 21L);
-  private static final RewriteResponse RESPONSE_WITHOUT_OBJECT =
-      new RewriteResponse(REQUEST_WITHOUT_OBJECT, null, 42L, false, "token", 21L);
-  private static final RewriteResponse RESPONSE_WITH_OBJECT_DONE =
-      new RewriteResponse(REQUEST_WITH_OBJECT, RESULT_INFO.toPb(), 42L, true, "token", 42L);
-  private static final RewriteResponse RESPONSE_WITHOUT_OBJECT_DONE =
-      new RewriteResponse(REQUEST_WITHOUT_OBJECT, RESULT_INFO.toPb(), 42L, true, "token", 42L);
+  private static final RewriteResult RESPONSE_WITH_OBJECT =
+      new RewriteResult(REQUEST_WITH_OBJECT, null, 42L, false, "token", 21L);
+  private static final RewriteResult RESPONSE_WITHOUT_OBJECT =
+      new RewriteResult(REQUEST_WITHOUT_OBJECT, null, 42L, false, "token", 21L);
+  private static final StorageRpc.RewriteResult RESPONSE_WITH_OBJECT_DONE =
+      new RewriteResult(REQUEST_WITH_OBJECT, RESULT_INFO.toPb(), 42L, true, "token", 42L);
+  private static final RewriteResult RESPONSE_WITHOUT_OBJECT_DONE =
+      new RewriteResult(REQUEST_WITHOUT_OBJECT, RESULT_INFO.toPb(), 42L, true, "token", 42L);
 
   private StorageOptions options;
   private StorageRpcFactory rpcFactoryMock;

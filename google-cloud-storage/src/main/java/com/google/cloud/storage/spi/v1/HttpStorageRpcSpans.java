@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -18,9 +18,9 @@ package com.google.cloud.storage.spi.v1;
 
 import io.opencensus.trace.EndSpanOptions;
 
-/** Helper class for instrumenting {@link HttpStorageRpc} with Open Census APIs. */
+/** Helper class for instrumenting {@link HttpStorageClient} with Open Census APIs. */
 class HttpStorageRpcSpans {
-  // OpenCensus span name prefix, 'Sent' for client and 'RECV' for server.
+  // OpenCensus span name withPrefix, 'Sent' for client and 'RECV' for server.
   static final String SPAN_NAME_CLIENT_PREFIX = "Sent";
 
   static final String SPAN_NAME_CREATE_BUCKET = getTraceSpanName("create(Bucket,Map)");
@@ -41,9 +41,9 @@ class HttpStorageRpcSpans {
   static final String SPAN_NAME_OPEN = getTraceSpanName("open(StorageObject,Map)");
   static final String SPAN_NAME_WRITE =
       getTraceSpanName("write(String,byte[],int,long,int,boolean)");
-  static final String SPAN_NAME_OPEN_REWRITE = getTraceSpanName("openRewrite(RewriteRequest)");
+  static final String SPAN_NAME_OPEN_REWRITE = getTraceSpanName("openRewrite(RewriteOperationRequest)");
   static final String SPAN_NAME_CONTINUE_REWRITE =
-      getTraceSpanName("continueRewrite(RewriteResponse)");
+      getTraceSpanName("continueRewrite(RewriteResult)");
   static final String SPAN_NAME_GET_BUCKET_ACL = getTraceSpanName("getAcl(String,String,Map)");
   static final String SPAN_NAME_DELETE_BUCKET_ACL =
       getTraceSpanName("deleteAcl(String,String,Map)");
@@ -99,7 +99,7 @@ class HttpStorageRpcSpans {
 
   static String getTraceSpanName(String methodDescriptor) {
     return String.format(
-        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageRpc.class.getName(), methodDescriptor);
+        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageClient.class.getName(), methodDescriptor);
   }
 
   private HttpStorageRpcSpans() {}

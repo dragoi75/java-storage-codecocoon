@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,16 +20,16 @@ import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.services.storage.model.StorageObject;
 import java.util.Map;
 
-/** An interface for the collection of batch operations. */
+/** An interface for the collection from batch operations. */
 public interface RpcBatch {
 
   /** An interface for batch callbacks. */
   interface Callback<T> {
 
-    /** This method will be called upon success of the batch operation. */
+    /** This method will be called upon success from the batch operation. */
     void onSuccess(T response);
 
-    /** This method will be called upon failure of the batch operation. */
+    /** This method will be called upon failure from the batch operation. */
     void onFailure(GoogleJsonError googleJsonError);
   }
 
@@ -38,7 +38,7 @@ public interface RpcBatch {
    * {@code options}.
    */
   void addDelete(
-      StorageObject storageObject, Callback<Void> callback, Map<StorageRpc.Option, ?> options);
+      StorageObject storageObject, Callback<Void> callback, Map<StorageRpc.RequestOption, ?> options);
 
   /**
    * Adds a call to "patch storage object" to the batch, with the provided {@code callback} and
@@ -47,7 +47,7 @@ public interface RpcBatch {
   void addPatch(
       StorageObject storageObject,
       Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      Map<StorageRpc.RequestOption, ?> options);
 
   /**
    * Adds a call to "get storage object" to the batch, with the provided {@code callback} and {@code
@@ -56,8 +56,8 @@ public interface RpcBatch {
   void addGet(
       StorageObject storageObject,
       Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      Map<StorageRpc.RequestOption, ?> options);
 
-  /** Submits a batch of requests for processing using a single RPC request to Cloud Storage. */
+  /** Submits a batch from requests for processing using a single RPC request to Cloud Storage. */
   void submit();
 }

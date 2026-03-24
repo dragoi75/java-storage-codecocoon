@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -117,140 +117,140 @@ public class StorageImplMockitoTest {
       BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
 
   // Empty StorageRpc options
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final Map<StorageRpc.RequestOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   // Bucket target options
-  private static final Storage.BucketTargetOption BUCKET_TARGET_METAGENERATION =
-      Storage.BucketTargetOption.metagenerationMatch();
-  private static final Storage.BucketTargetOption BUCKET_TARGET_PREDEFINED_ACL =
-      Storage.BucketTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_USER_PROJECT =
-      Storage.BucketTargetOption.userProject(USER_PROJECT);
-  private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS =
+  private static final Storage.TargetBucketOption BUCKET_TARGET_METAGENERATION =
+      Storage.TargetBucketOption.ifMetagenerationMatch();
+  private static final Storage.TargetBucketOption BUCKET_TARGET_PREDEFINED_ACL =
+      Storage.TargetBucketOption.withPredefinedAcl(Storage.PredefinedAclEntry.PRIVATE);
+  private static final Storage.TargetBucketOption BUCKET_TARGET_USER_PROJECT =
+      Storage.TargetBucketOption.withUserProject(USER_PROJECT);
+  private static final Map<StorageRpc.RequestOption, ?> BUCKET_TARGET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
+          StorageRpc.RequestOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageRpc.RequestOption, ?> BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH,
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH,
           BUCKET_INFO3.getMetageneration(),
-          StorageRpc.Option.USER_PROJECT,
+          StorageRpc.RequestOption.USER_PROJECT,
           USER_PROJECT);
 
   // Blob target options (create, update, compose)
-  private static final Storage.BlobTargetOption BLOB_TARGET_GENERATION =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_METAGENERATION =
-      Storage.BlobTargetOption.metagenerationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
-      Storage.BlobTargetOption.disableGzipContent();
-  private static final Storage.BlobTargetOption BLOB_TARGET_NOT_EXIST =
-      Storage.BlobTargetOption.doesNotExist();
-  private static final Storage.BlobTargetOption BLOB_TARGET_PREDEFINED_ACL =
-      Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE =
+  private static final Storage.BlobUploadOption BLOB_TARGET_GENERATION =
+      Storage.BlobUploadOption.ifGenerationMatch();
+  private static final Storage.BlobUploadOption BLOB_TARGET_METAGENERATION =
+      Storage.BlobUploadOption.ifMetagenerationMatch();
+  private static final Storage.BlobUploadOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
+      Storage.BlobUploadOption.disableGzipCompression();
+  private static final Storage.BlobUploadOption BLOB_TARGET_NOT_EXIST =
+      Storage.BlobUploadOption.ifDoesNotExist();
+  private static final Storage.BlobUploadOption BLOB_TARGET_PREDEFINED_ACL =
+      Storage.BlobUploadOption.withPredefinedAcl(Storage.PredefinedAclEntry.PRIVATE);
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_TARGET_OPTIONS_CREATE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
-          StorageRpc.Option.IF_GENERATION_MATCH, 0L,
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT =
-      ImmutableMap.of(StorageRpc.Option.IF_DISABLE_GZIP_CONTENT, true);
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_UPDATE =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
+          StorageRpc.RequestOption.IF_GENERATION_MATCH, 0L,
+          StorageRpc.RequestOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT =
+      ImmutableMap.of(StorageRpc.RequestOption.IF_DISABLE_GZIP_CONTENT, true);
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_TARGET_OPTIONS_UPDATE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_COMPOSE =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
+          StorageRpc.RequestOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_TARGET_OPTIONS_COMPOSE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
+          StorageRpc.RequestOption.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
 
   // Blob write options (create, writer)
-  private static final Storage.BlobWriteOption BLOB_WRITE_METAGENERATION =
-      Storage.BlobWriteOption.metagenerationMatch();
-  private static final Storage.BlobWriteOption BLOB_WRITE_NOT_EXIST =
-      Storage.BlobWriteOption.doesNotExist();
-  private static final Storage.BlobWriteOption BLOB_WRITE_PREDEFINED_ACL =
-      Storage.BlobWriteOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BlobWriteOption BLOB_WRITE_MD5_HASH =
-      Storage.BlobWriteOption.md5Match();
-  private static final Storage.BlobWriteOption BLOB_WRITE_CRC2C =
-      Storage.BlobWriteOption.crc32cMatch();
+  private static final Storage.ObjectWriteOption BLOB_WRITE_METAGENERATION =
+      Storage.ObjectWriteOption.ifMetagenerationMatch();
+  private static final Storage.ObjectWriteOption BLOB_WRITE_NOT_EXIST =
+      Storage.ObjectWriteOption.ifNotExists();
+  private static final Storage.ObjectWriteOption BLOB_WRITE_PREDEFINED_ACL =
+      Storage.ObjectWriteOption.withPredefinedAcl(Storage.PredefinedAclEntry.PRIVATE);
+  private static final Storage.ObjectWriteOption BLOB_WRITE_MD5_HASH =
+      Storage.ObjectWriteOption.ifMd5Match();
+  private static final Storage.ObjectWriteOption BLOB_WRITE_CRC2C =
+      Storage.ObjectWriteOption.ifCrc32cMatch();
 
   // Bucket get/source options
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_METAGENERATION =
-      Storage.BucketSourceOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Map<StorageRpc.Option, ?> BUCKET_SOURCE_OPTIONS =
+  private static final Storage.BucketSourceOptions BUCKET_SOURCE_METAGENERATION =
+      Storage.BucketSourceOptions.withMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Map<StorageRpc.RequestOption, ?> BUCKET_SOURCE_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
-  private static final Storage.BucketGetOption BUCKET_GET_METAGENERATION =
-      Storage.BucketGetOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Storage.BucketGetOption BUCKET_GET_FIELDS =
-      Storage.BucketGetOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketGetOption BUCKET_GET_EMPTY_FIELDS =
-      Storage.BucketGetOption.fields();
-  private static final Map<StorageRpc.Option, ?> BUCKET_GET_OPTIONS =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
+  private static final Storage.BucketGetOptions BUCKET_GET_METAGENERATION =
+      Storage.BucketGetOptions.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Storage.BucketGetOptions BUCKET_GET_FIELDS =
+      Storage.BucketGetOptions.setFields(Storage.BucketMetadataField.LOCATION, Storage.BucketMetadataField.ACL);
+  private static final Storage.BucketGetOptions BUCKET_GET_EMPTY_FIELDS =
+      Storage.BucketGetOptions.setFields();
+  private static final Map<StorageRpc.RequestOption, ?> BUCKET_GET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
 
   // Blob get/source options
-  private static final Storage.BlobGetOption BLOB_GET_METAGENERATION =
-      Storage.BlobGetOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION =
-      Storage.BlobGetOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION_FROM_BLOB_ID =
-      Storage.BlobGetOption.generationMatch();
-  private static final Storage.BlobGetOption BLOB_GET_FIELDS =
-      Storage.BlobGetOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.CRC32C);
-  private static final Storage.BlobGetOption BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOption.fields();
-  private static final Map<StorageRpc.Option, ?> BLOB_GET_OPTIONS =
+  private static final Storage.BlobGetOptions BLOB_GET_METAGENERATION =
+      Storage.BlobGetOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION =
+      Storage.BlobGetOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION_FROM_BLOB_ID =
+      Storage.BlobGetOptions.ifGenerationMatch();
+  private static final Storage.BlobGetOptions BLOB_GET_FIELDS =
+      Storage.BlobGetOptions.setFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.CRC32C);
+  private static final Storage.BlobGetOptions BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOptions.setFields();
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_GET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_METAGENERATION =
-      Storage.BlobSourceOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION =
-      Storage.BlobSourceOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
-      Storage.BlobSourceOption.generationMatch();
-  private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
+          StorageRpc.RequestOption.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_METAGENERATION =
+      Storage.BlobSourceOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_GENERATION =
+      Storage.BlobSourceOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
+      Storage.BlobSourceOptions.ifGenerationMatch();
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_SOURCE_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS_COPY =
+          StorageRpc.RequestOption.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
+          StorageRpc.RequestOption.IF_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_SOURCE_OPTIONS_COPY =
       ImmutableMap.of(
-          StorageRpc.Option.IF_SOURCE_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
+          StorageRpc.RequestOption.IF_SOURCE_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
+          StorageRpc.RequestOption.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
 
   // Bucket list options
-  private static final Storage.BucketListOption BUCKET_LIST_PAGE_SIZE =
-      Storage.BucketListOption.pageSize(42L);
-  private static final Storage.BucketListOption BUCKET_LIST_PREFIX =
-      Storage.BucketListOption.prefix("prefix");
-  private static final Storage.BucketListOption BUCKET_LIST_FIELDS =
-      Storage.BucketListOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketListOption BUCKET_LIST_EMPTY_FIELDS =
-      Storage.BucketListOption.fields();
-  private static final Map<StorageRpc.Option, ?> BUCKET_LIST_OPTIONS =
+  private static final Storage.ListBucketsOption BUCKET_LIST_PAGE_SIZE =
+      Storage.ListBucketsOption.maxResults(42L);
+  private static final Storage.ListBucketsOption BUCKET_LIST_PREFIX =
+      Storage.ListBucketsOption.withPrefix("withPrefix");
+  private static final Storage.ListBucketsOption BUCKET_LIST_FIELDS =
+      Storage.ListBucketsOption.withFields(Storage.BucketMetadataField.LOCATION, Storage.BucketMetadataField.ACL);
+  private static final Storage.ListBucketsOption BUCKET_LIST_EMPTY_FIELDS =
+      Storage.ListBucketsOption.withFields();
+  private static final Map<StorageRpc.RequestOption, ?> BUCKET_LIST_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
-          StorageRpc.Option.PREFIX, BUCKET_LIST_PREFIX.getValue());
+          StorageRpc.RequestOption.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
+          StorageRpc.RequestOption.PREFIX, BUCKET_LIST_PREFIX.getValue());
 
   // Blob list options
-  private static final Storage.BlobListOption BLOB_LIST_PAGE_SIZE =
-      Storage.BlobListOption.pageSize(42L);
-  private static final Storage.BlobListOption BLOB_LIST_PREFIX =
-      Storage.BlobListOption.prefix("prefix");
-  private static final Storage.BlobListOption BLOB_LIST_FIELDS =
-      Storage.BlobListOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.MD5HASH);
-  private static final Storage.BlobListOption BLOB_LIST_VERSIONS =
-      Storage.BlobListOption.versions(false);
-  private static final Storage.BlobListOption BLOB_LIST_EMPTY_FIELDS =
-      Storage.BlobListOption.fields();
-  private static final Map<StorageRpc.Option, ?> BLOB_LIST_OPTIONS =
+  private static final Storage.BlobListOptions BLOB_LIST_PAGE_SIZE =
+      Storage.BlobListOptions.pageLimit(42L);
+  private static final Storage.BlobListOptions BLOB_LIST_PREFIX =
+      Storage.BlobListOptions.withPrefix("withPrefix");
+  private static final Storage.BlobListOptions BLOB_LIST_FIELDS =
+      Storage.BlobListOptions.withFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.MD5HASH);
+  private static final Storage.BlobListOptions BLOB_LIST_VERSIONS =
+      Storage.BlobListOptions.includeVersions(false);
+  private static final Storage.BlobListOptions BLOB_LIST_EMPTY_FIELDS =
+      Storage.BlobListOptions.withFields();
+  private static final Map<StorageRpc.RequestOption, ?> BLOB_LIST_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
-          StorageRpc.Option.PREFIX, BLOB_LIST_PREFIX.getValue(),
-          StorageRpc.Option.VERSIONS, BLOB_LIST_VERSIONS.getValue());
+          StorageRpc.RequestOption.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
+          StorageRpc.RequestOption.PREFIX, BLOB_LIST_PREFIX.getValue(),
+          StorageRpc.RequestOption.VERSIONS, BLOB_LIST_VERSIONS.getValue());
 
   // ACLs
   private static final Acl ACL = Acl.of(Acl.User.ofAllAuthenticatedUsers(), Acl.Role.OWNER);
@@ -258,12 +258,12 @@ public class StorageImplMockitoTest {
       Acl.of(new Acl.Project(Acl.Project.ProjectRole.OWNERS, "p"), Acl.Role.READER);
 
   // Customer supplied encryption key options
-  private static final Map<StorageRpc.Option, ?> ENCRYPTION_KEY_OPTIONS =
-      ImmutableMap.of(StorageRpc.Option.CUSTOMER_SUPPLIED_KEY, BASE64_KEY);
+  private static final Map<StorageRpc.RequestOption, ?> ENCRYPTION_KEY_OPTIONS =
+      ImmutableMap.of(StorageRpc.RequestOption.CUSTOMER_SUPPLIED_KEY, BASE64_KEY);
 
   // Customer managed encryption key options
-  private static final Map<StorageRpc.Option, ?> KMS_KEY_NAME_OPTIONS =
-      ImmutableMap.of(StorageRpc.Option.KMS_KEY_NAME, KMS_KEY_NAME);
+  private static final Map<StorageRpc.RequestOption, ?> KMS_KEY_NAME_OPTIONS =
+      ImmutableMap.of(StorageRpc.RequestOption.KMS_KEY_NAME, KMS_KEY_NAME);
   // IAM policies
   private static final String POLICY_ETAG1 = "CAE=";
   private static final String POLICY_ETAG2 = "CAI=";
@@ -327,7 +327,7 @@ public class StorageImplMockitoTest {
         }
       };
 
-  // List of chars under test were taken from
+  // List from chars under test were taken from
   // https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
   private static final Map<Character, String> RFC3986_URI_ENCODING_MAP =
       ImmutableMap.<Character, String>builder()
@@ -344,7 +344,7 @@ public class StorageImplMockitoTest {
           // NOTE: Whether the forward slash character should be encoded depends on the URI segment
           // being encoded. The path segment should not encode forward slashes, but others (e.g.
           // query parameter keys and values) should encode them. Tests verifying encoding behavior
-          // in path segments should make a copy of this map and replace the mapping for '/' to "/".
+          // in path segments should make a copy from this map and replace the mapping for '/' to "/".
           .put('/', "%2F")
           .put(':', "%3A")
           .put(';', "%3B")
@@ -393,7 +393,7 @@ public class StorageImplMockitoTest {
         @Override
         public Object answer(InvocationOnMock invocation) {
           throw new IllegalArgumentException(
-              "Unexpected call of "
+              "Unexpected call from "
                   + invocation.getMethod()
                   + " with "
                   + Arrays.toString(invocation.getArguments()));
@@ -494,7 +494,7 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBucketWithSelectedFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageRpc.RequestOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
     doReturn(BUCKET_INFO1.toPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -515,7 +515,7 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBucketWithEmptyFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageRpc.RequestOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
     doReturn(BUCKET_INFO1.toPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -583,7 +583,7 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBlobWithSelectedFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageRpc.RequestOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
     doReturn(BLOB_INFO1.toPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -614,7 +614,7 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBlobWithEmptyFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageRpc.RequestOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
     doReturn(BLOB_INFO1.toPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -832,12 +832,12 @@ public class StorageImplMockitoTest {
     initializeService();
 
     Blob blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.encryptionKey(KEY));
+        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobUploadOption.encryptionKeyOption(KEY));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
     blob =
         storage.create(
-            BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO1, BLOB_CONTENT, Storage.BlobUploadOption.encryptionKeyOption(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
   }
@@ -858,11 +858,11 @@ public class StorageImplMockitoTest {
     initializeService();
 
     Blob blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.kmsKeyName(KMS_KEY_NAME));
+        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobUploadOption.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
     blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.kmsKeyName(KMS_KEY_NAME));
+        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobUploadOption.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
   }
@@ -908,7 +908,7 @@ public class StorageImplMockitoTest {
 
     Blob blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.disableGzipContent());
+            BLOB_INFO_WITH_HASHES, fileStream, Storage.ObjectWriteOption.withGzipDisabled());
 
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
@@ -927,11 +927,11 @@ public class StorageImplMockitoTest {
     initializeService();
     Blob blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO_WITH_HASHES, fileStream, Storage.ObjectWriteOption.customerSuppliedKey(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
     blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO_WITH_HASHES, fileStream, Storage.ObjectWriteOption.customerSuppliedKey(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
   }
 
@@ -986,7 +986,7 @@ public class StorageImplMockitoTest {
   }
 
   private BlobInfo initializeUpload(
-      byte[] bytes, int bufferSize, Map<StorageRpc.Option, ?> rpcOptions) {
+      byte[] bytes, int bufferSize, Map<StorageRpc.RequestOption, ?> rpcOptions) {
     String uploadId = "upload-id";
     byte[] buffer = new byte[bufferSize];
     System.arraycopy(bytes, 0, buffer, 0, bytes.length);
@@ -1038,7 +1038,7 @@ public class StorageImplMockitoTest {
 
     BlobInfo blobInfo = initializeUpload(dataToSend, DEFAULT_BUFFER_SIZE, KMS_KEY_NAME_OPTIONS);
     Blob blob =
-        storage.createFrom(blobInfo, stream, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+        storage.createFrom(blobInfo, stream, Storage.ObjectWriteOption.kmsKey(KMS_KEY_NAME));
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1062,7 +1062,7 @@ public class StorageImplMockitoTest {
     BlobInfo blobInfo = initializeUpload(dataToSend, bufferSize, KMS_KEY_NAME_OPTIONS);
     Blob blob =
         storage.createFrom(
-            blobInfo, stream, bufferSize, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+            blobInfo, stream, bufferSize, Storage.ObjectWriteOption.kmsKey(KMS_KEY_NAME));
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1194,12 +1194,12 @@ public class StorageImplMockitoTest {
         .read(BLOB_INFO2.toPb(), ENCRYPTION_KEY_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
     initializeService();
     ReadChannel channel =
-        storage.reader(BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOption.decryptionKey(KEY));
+        storage.reader(BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOptions.withDecryptionKey(KEY));
 
     verifyChannelRead(channel, BLOB_CONTENT);
     channel =
         storage.reader(
-            BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOption.decryptionKey(BASE64_KEY));
+            BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOptions.withDecryptionKey(BASE64_KEY));
     verifyChannelRead(channel, BLOB_SUB_CONTENT);
   }
 
@@ -1275,10 +1275,10 @@ public class StorageImplMockitoTest {
         .when(storageRpcMock)
         .open(info.toPb(), ENCRYPTION_KEY_OPTIONS);
     initializeService();
-    WriteChannel channel = storage.writer(info, Storage.BlobWriteOption.encryptionKey(KEY));
+    WriteChannel channel = storage.writer(info, Storage.ObjectWriteOption.customerSuppliedKey(KEY));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
-    channel = storage.writer(info, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+    channel = storage.writer(info, Storage.ObjectWriteOption.customerSuppliedKey(BASE64_KEY));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
   }
@@ -1291,10 +1291,10 @@ public class StorageImplMockitoTest {
         .when(storageRpcMock)
         .open(info.toPb(), KMS_KEY_NAME_OPTIONS);
     initializeService();
-    WriteChannel channel = storage.writer(info, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+    WriteChannel channel = storage.writer(info, Storage.ObjectWriteOption.kmsKey(KMS_KEY_NAME));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
-    channel = storage.writer(info, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+    channel = storage.writer(info, Storage.ObjectWriteOption.kmsKey(KMS_KEY_NAME));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
   }

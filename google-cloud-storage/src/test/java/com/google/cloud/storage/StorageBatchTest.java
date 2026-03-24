@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -24,9 +24,8 @@ import static org.junit.Assert.fail;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.services.storage.model.StorageObject;
-import com.google.cloud.storage.Storage.BlobGetOption;
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
+import com.google.cloud.storage.Storage.BlobSourceOptions;
+import com.google.cloud.storage.Storage.BlobUploadOption;
 import com.google.cloud.storage.spi.v1.RpcBatch;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.collect.ImmutableMap;
@@ -44,14 +43,14 @@ public class StorageBatchTest {
   private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder(BLOB_ID).build();
   private static final BlobInfo BLOB_INFO_COMPLETE =
       BlobInfo.newBuilder(BLOB_ID_COMPLETE).setMetageneration(42L).build();
-  private static final BlobGetOption[] BLOB_GET_OPTIONS = {
-    BlobGetOption.generationMatch(42L), BlobGetOption.metagenerationMatch(42L)
+  private static final Storage.BlobGetOptions[] BLOB_GET_OPTIONS = {
+    Storage.BlobGetOptions.ifGenerationMatch(42L), Storage.BlobGetOptions.ifMetagenerationMatch(42L)
   };
-  private static final BlobSourceOption[] BLOB_SOURCE_OPTIONS = {
-    BlobSourceOption.generationMatch(42L), BlobSourceOption.metagenerationMatch(42L)
+  private static final BlobSourceOptions[] BLOB_SOURCE_OPTIONS = {
+    BlobSourceOptions.ifGenerationMatch(42L), BlobSourceOptions.ifMetagenerationMatch(42L)
   };
-  private static final BlobTargetOption[] BLOB_TARGET_OPTIONS = {
-    BlobTargetOption.generationMatch(), BlobTargetOption.metagenerationMatch()
+  private static final BlobUploadOption[] BLOB_TARGET_OPTIONS = {
+    Storage.BlobUploadOption.ifGenerationMatch(), Storage.BlobUploadOption.ifMetagenerationMatch()
   };
   private static final GoogleJsonError GOOGLE_JSON_ERROR = new GoogleJsonError();
 
@@ -91,7 +90,7 @@ public class StorageBatchTest {
     batchMock.addDelete(
         EasyMock.eq(BLOB_INFO.toPb()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpc.RequestOption, Object>of()));
     EasyMock.replay(batchMock);
     StorageBatchResult<Boolean> batchResult =
         storageBatch.delete(BLOB_ID.getBucket(), BLOB_ID.getName());
@@ -117,7 +116,7 @@ public class StorageBatchTest {
   public void testDeleteWithOptions() {
     EasyMock.reset(batchMock);
     Capture<RpcBatch.Callback<Void>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
+    Capture<Map<StorageRpc.RequestOption, Object>> capturedOptions = Capture.newInstance();
     batchMock.addDelete(
         EasyMock.eq(BLOB_INFO.toPb()),
         EasyMock.capture(callback),
@@ -126,7 +125,7 @@ public class StorageBatchTest {
     StorageBatchResult<Boolean> batchResult = storageBatch.delete(BLOB_ID, BLOB_SOURCE_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobSourceOption option : BLOB_SOURCE_OPTIONS) {
+    for (Storage.BlobSourceOptions option : BLOB_SOURCE_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
     RpcBatch.Callback<Void> capturedCallback = callback.getValue();
@@ -141,7 +140,7 @@ public class StorageBatchTest {
     batchMock.addPatch(
         EasyMock.eq(BLOB_INFO.toPb()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpc.RequestOption, Object>of()));
     EasyMock.replay(batchMock);
     StorageBatchResult<Blob> batchResult = storageBatch.update(BLOB_INFO);
     assertNotNull(callback.getValue());
@@ -168,7 +167,7 @@ public class StorageBatchTest {
     EasyMock.expect(storage.getOptions()).andReturn(optionsMock).times(2);
     EasyMock.expect(optionsMock.getService()).andReturn(storage);
     Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
+    Capture<Map<StorageRpc.RequestOption, Object>> capturedOptions = Capture.newInstance();
     batchMock.addPatch(
         EasyMock.eq(BLOB_INFO_COMPLETE.toPb()),
         EasyMock.capture(callback),
@@ -192,7 +191,7 @@ public class StorageBatchTest {
     batchMock.addGet(
         EasyMock.eq(BLOB_INFO.toPb()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpc.RequestOption, Object>of()));
     EasyMock.replay(batchMock);
     StorageBatchResult<Blob> batchResult = storageBatch.get(BLOB_ID.getBucket(), BLOB_ID.getName());
     assertNotNull(callback.getValue());
@@ -219,7 +218,7 @@ public class StorageBatchTest {
     EasyMock.expect(storage.getOptions()).andReturn(optionsMock).times(2);
     EasyMock.expect(optionsMock.getService()).andReturn(storage);
     Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
+    Capture<Map<StorageRpc.RequestOption, Object>> capturedOptions = Capture.newInstance();
     batchMock.addGet(
         EasyMock.eq(BLOB_INFO.toPb()),
         EasyMock.capture(callback),
@@ -228,7 +227,7 @@ public class StorageBatchTest {
     StorageBatchResult<Blob> batchResult = storageBatch.get(BLOB_ID, BLOB_GET_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobGetOption option : BLOB_GET_OPTIONS) {
+    for (Storage.BlobGetOptions option : BLOB_GET_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
     RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();

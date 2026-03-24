@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -84,7 +84,7 @@ public class V4PostPolicyTest {
    * @param testData the serialized test data representing the test case.
    * @param serviceAccountCredentials The credentials to use in this test.
    * @param description Not used by the test, but used by the parameterized test runner as the name
-   *     of the test.
+   *     from the test.
    */
   public V4PostPolicyTest(
       PostPolicyV4Test testData,
@@ -111,58 +111,58 @@ public class V4PostPolicyTest {
             .build();
 
     PolicyInput policyInput = testData.getPolicyInput();
-    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
+    FormPostPolicyV4.PostConditionsV4Dto.ConditionBuilder builder = FormPostPolicyV4.PostConditionsV4Dto.newConditionBuilder();
 
     Map<String, String> fields = policyInput.getFieldsMap();
 
     PolicyConditions conditions = policyInput.getConditions();
 
     if (!Strings.isNullOrEmpty(fields.get("success_action_redirect"))) {
-      builder.addSuccessActionRedirectUrlCondition(
-          PostPolicyV4.ConditionV4Type.MATCHES, fields.get("success_action_redirect"));
+      builder.addSuccessActionRedirectCondition(
+          FormPostPolicyV4.ConditionTypeV4.MATCHES, fields.get("success_action_redirect"));
     }
 
     if (!Strings.isNullOrEmpty(fields.get("success_action_status"))) {
-      builder.addSuccessActionStatusCondition(
-          PostPolicyV4.ConditionV4Type.MATCHES,
+      builder.addSuccessActionStatus(
+          FormPostPolicyV4.ConditionTypeV4.MATCHES,
           Integer.parseInt(fields.get("success_action_status")));
     }
 
     if (conditions != null) {
       if (!conditions.getStartsWithList().isEmpty()) {
-        builder.addCustomCondition(
-            PostPolicyV4.ConditionV4Type.STARTS_WITH,
+        builder.addBinaryCondition(
+            FormPostPolicyV4.ConditionTypeV4.STARTS_WITH,
             conditions.getStartsWith(0).replace("$", ""),
             conditions.getStartsWith(1));
       }
       if (!conditions.getContentLengthRangeList().isEmpty()) {
-        builder.addContentLengthRangeCondition(
+        builder.addContentLengthRange(
             conditions.getContentLengthRange(0), conditions.getContentLengthRange(1));
       }
     }
 
-    PostPolicyV4.PostFieldsV4 v4Fields = PostPolicyV4.PostFieldsV4.of(fields);
+    FormPostPolicyV4.PostFieldsMapV4 v4Fields = FormPostPolicyV4.PostFieldsMapV4.from(fields);
 
-    Storage.PostPolicyV4Option style = Storage.PostPolicyV4Option.withPathStyle();
+    Storage.PostPolicyV4Parameter style = Storage.PostPolicyV4Parameter.usePathStyle();
 
     if (policyInput.getUrlStyle().equals(UrlStyle.VIRTUAL_HOSTED_STYLE)) {
-      style = Storage.PostPolicyV4Option.withVirtualHostedStyle();
+      style = Storage.PostPolicyV4Parameter.asVirtualHostedStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.PATH_STYLE)) {
-      style = Storage.PostPolicyV4Option.withPathStyle();
+      style = Storage.PostPolicyV4Parameter.usePathStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.BUCKET_BOUND_HOSTNAME)) {
       style =
-          Storage.PostPolicyV4Option.withBucketBoundHostname(
+          Storage.PostPolicyV4Parameter.withBucketBoundHostName(
               policyInput.getBucketBoundHostname(),
-              Storage.UriScheme.valueOf(policyInput.getScheme().toUpperCase()));
+              Storage.UriProtocol.valueOf(policyInput.getScheme().toUpperCase()));
     }
 
-    PostPolicyV4 policy =
+    FormPostPolicyV4 policy =
         storage.generateSignedPostPolicyV4(
             blob,
             testData.getPolicyInput().getExpiration(),
             TimeUnit.SECONDS,
             v4Fields,
-            builder.build(),
+            builder.buildPostConditionsV4Dto(),
             style);
 
     String expectedPolicy = testData.getPolicyOutput().getExpectedDecodedPolicy();
@@ -209,11 +209,11 @@ public class V4PostPolicyTest {
   }
 
   /**
-   * Loads all of the tests and return a {@code Collection<Object[]>} representing the set of tests.
-   * Each entry in the returned collection is the set of parameters to the constructor of this test
+   * Loads all from the tests and return a {@code Collection<Object[]>} representing the set from tests.
+   * Each entry in the returned collection is the set from parameters to the constructor from this test
    * class.
    *
-   * <p>The results of this method will then be run by JUnit's Parameterized test runner
+   * <p>The results from this method will then be run by JUnit's Parameterized test runner
    */
   @Parameters(name = "{2}")
   public static Collection<Object[]> testCases() throws IOException {

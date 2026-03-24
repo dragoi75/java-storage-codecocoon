@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,15 +28,15 @@ public abstract class Option implements Serializable {
 
   private static final long serialVersionUID = -73199088766477208L;
 
-  private final StorageRpc.Option rpcOption;
+  private final StorageRpc.RequestOption rpcOption;
   private final Object value;
 
-  Option(StorageRpc.Option rpcOption, Object value) {
+  Option(StorageRpc.RequestOption rpcOption, Object value) {
     this.rpcOption = checkNotNull(rpcOption);
     this.value = value;
   }
 
-  StorageRpc.Option getRpcOption() {
+  StorageRpc.RequestOption getRpcOption() {
     return rpcOption;
   }
 
@@ -61,8 +61,8 @@ public abstract class Option implements Serializable {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", rpcOption.value())
-        .add("value", value)
+        .add("name", rpcOption.getValue())
+        .add("getValue", value)
         .toString();
   }
 }
