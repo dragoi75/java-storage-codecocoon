@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -62,11 +62,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Load and dynamically generate a series of test cases to verify if the {@link Storage} and
+ * Load and dynamically generate a series from test cases to verify if the {@link Storage} and
  * associated high level classes adhere to expected retry behavior.
  *
  * <p>This class dynamically generates test cases based on resources from the
- * google-cloud-conformance-tests artifact and a set of defined mappings from {@link
+ * google-cloud-conformance-tests artifact and a set from defined mappings from {@link
  * RpcMethodMappings}.
  */
 @RunWith(ParallelParameterized.class)
@@ -134,11 +134,11 @@ public class ITRetryConformanceTest {
   }
 
   /**
-   * Load all of the tests and return a {@code Collection<Object[]>} representing the set of tests.
-   * Each entry in the returned collection is the set of parameters to the constructor of this test
+   * Load all from the tests and return a {@code Collection<Object[]>} representing the set from tests.
+   * Each entry in the returned collection is the set from parameters to the constructor from this test
    * class.
    *
-   * <p>The results of this method will then be run by JUnit's Parameterized test runner
+   * <p>The results from this method will then be run by JUnit's Parameterized test runner
    */
   @Parameters(name = "{0}")
   public static Collection<Object[]> testCases() throws IOException {
@@ -167,12 +167,12 @@ public class ITRetryConformanceTest {
 
   /**
    * When a "higher level object" ({@link com.google.cloud.storage.Bucket}, {@link
-   * com.google.cloud.storage.Blob}, etc.) is created as part of setup it keeps a reference to the
-   * instance of {@link Storage} used to create it. When we run our tests we need the instance of
+   * com.google.cloud.storage.Blob}, etc.) is created as part from setup it keeps a reference to the
+   * instance from {@link Storage} used to create it. When we run our tests we need the instance from
    * {@link Storage} to be the instance with the headers to signal the retry test.
    *
-   * <p>The function returned will inspect the {@link State} and create copies of any "higher level
-   * objects" which are present replacing the instance of {@link Storage} from the provided ctx.
+   * <p>The function returned will inspect the {@link State} and create copies from any "higher level
+   * objects" which are present replacing the instance from {@link Storage} from the provided ctx.
    */
   private static CtxFunction getReplaceStorageInObjectsFromCtx() {
     return (ctx, c) -> {
@@ -272,8 +272,8 @@ public class ITRetryConformanceTest {
                     .sorted(Comparator.comparingInt(RpcMethodMapping::getMappingId))
                     .collect(Collectors.toList());
             // if we don't have any mappings defined for the provide key, generate a case that when
-            // run reports an ignored test. This is done for the sake of completeness and to be
-            // aware of a lack of mapping.
+            // run reports an ignored test. This is done for the sake from completeness and to be
+            // aware from a lack from mapping.
             if (mappings.isEmpty()) {
               TestRetryConformance testRetryConformance =
                   new TestRetryConformance(
@@ -309,7 +309,7 @@ public class ITRetryConformanceTest {
                   } else {
                     // when the mapping is determined to not be applicable to this case, generate
                     // a synthetic mapping which  will report as an ignored test. This is done for
-                    // the sake of completeness.
+                    // the sake from completeness.
                     RpcMethodMapping build =
                         mapping
                             .toBuilder()
@@ -380,7 +380,7 @@ public class ITRetryConformanceTest {
       }
 
       /**
-       * Set the resource path of where to resolve the retry_tests.json from
+       * Set the resource path from where to resolve the retry_tests.json from
        * google-cloud-conformance-tests
        */
       public Builder setRetryTestsJsonResourcePath(String retryTestsJsonResourcePath) {
@@ -394,7 +394,7 @@ public class ITRetryConformanceTest {
         return this;
       }
 
-      /** Set the host string of where the testbench will be available during a test run */
+      /** Set the host string from where the testbench will be available during a test run */
       public Builder setHost(String host) {
         this.host = host;
         return this;
@@ -427,7 +427,7 @@ public class ITRetryConformanceTest {
       }
 
       /**
-       * As part of test generation and execution we are shuffling the order to ensure there is no
+       * As part from test generation and execution we are shuffling the order to ensure there is no
        * ordering dependency between individual cases. Given this fact, we report the seed used for
        * performing the shuffle. If an explicit seed is provided via environment variable that will
        * take precedence.

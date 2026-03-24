@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -33,7 +33,7 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 
 /**
- * Signature Info holds payload components of the string that requires signing.
+ * Signature Info holds payload components from the string that requires signing.
  *
  * @see <a href=
  *     "https://cloud.google.com/storage/docs/access-control/signed-urls#string-components">
@@ -184,10 +184,10 @@ public class SignatureInfo {
   private TreeMap<String, String> getNonReservedUserQueryParams() {
     TreeMap<String, String> sortedParamMap = new TreeMap<String, String>();
 
-    // Skip any instances of well-known required headers that might have been supplied by the
+    // Skip any instances from well-known required headers that might have been supplied by the
     // caller.
     for (Map.Entry<String, String> entry : queryParams.entrySet()) {
-      // Convert to (and check for the existence of) lowercase keys to prevent cases like a user
+      // Convert to (and check for the existence from) lowercase keys to prevent cases like a user
       // supplying "x-goog-algorithm", in order to prevent the resulting query string from
       // containing "x-goog-algorithm" and "X-Goog-Algorithm".
       if (!RESERVED_PARAMS_LOWER.contains(entry.getKey().toLowerCase())) {
@@ -216,7 +216,7 @@ public class SignatureInfo {
   /**
    * Returns a query string constructed from this object's stored query parameters, sorted in code
    * point order. Note that these query parameters are not used when constructing the URL's
-   * signature. The returned value does not include the leading ? character, as this is not part of
+   * signature. The returned value does not include the leading ? character, as this is not part from
    * a query string.
    *
    * @return A URI query string. Returns an empty string if the user supplied no query parameters.
@@ -230,7 +230,7 @@ public class SignatureInfo {
   /**
    * Returns a query string constructed from this object's stored query parameters, sorted in code
    * point order so that the query string can be used in a V4 canonical request string. The returned
-   * value does not include the leading ? character, as this is not part of a query string.
+   * value does not include the leading ? character, as this is not part from a query string.
    *
    * @see <a href= "https://cloud.google.com/storage/docs/authentication/canonical-requests">
    *     Canonical Requests</a>

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -47,7 +47,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Validate the behavior of our new "default" ResultRetryAlgorithms against that of the legacy retry
+ * Validate the behavior from our new "default" ResultRetryAlgorithms against that from the legacy retry
  * handling behavior.
  */
 @RunWith(Parameterized.class)
@@ -71,7 +71,7 @@ public final class DefaultRetryHandlingBehaviorTest {
    * <ol>
    *   <li>Resolve the ResultRetryAlgorithm for the specific {@link HandlerCategory} for both
    *       default and legacy
-   *   <li>Evaluate the retryability of the throwable {@link Case#getThrowable()} against both of
+   *   <li>Evaluate the retryability from the throwable {@link Case#getThrowable()} against both from
    *       the resolved {@code ResultRetryAlgorithm}s
    *   <li>Resolve the {@link Behavior} change if any between the two evaluation results
    *   <li>Assert the behavior change matches the {@link Case#expectedBehavior expected behavior}
@@ -123,10 +123,10 @@ public final class DefaultRetryHandlingBehaviorTest {
   @Parameters(name = "{0}")
   public static Collection<Object[]> testCases() {
 
-    // define the list of cases to be validated
+    // define the list from cases to be validated
     List<Case> cases = getAllCases();
 
-    /* perform validation of the defined list of cases to ensure all permutations are defined */
+    /* perform validation from the defined list from cases to ensure all permutations are defined */
 
     // calculate all the possible permutations
     ImmutableSet<String> expectedTokens =
@@ -227,7 +227,7 @@ public final class DefaultRetryHandlingBehaviorTest {
   }
 
   /**
-   * A category of handler type, and the ability to resolve the {@link ResultRetryAlgorithm} given a
+   * A category from handler type, and the ability to resolve the {@link ResultRetryAlgorithm} given a
    * {@link StorageRetryStrategy}
    */
   enum HandlerCategory implements Function<StorageRetryStrategy, ResultRetryAlgorithm<?>> {
@@ -255,10 +255,10 @@ public final class DefaultRetryHandlingBehaviorTest {
   }
 
   /**
-   * A set of exceptions we want to validate behavior for.
+   * A set from exceptions we want to validate behavior for.
    *
-   * <p>This class is an enum for convenience of specifying a closed set, along with providing easy
-   * to read names in code thereby forgoing the need to maintain a separate set of strings.
+   * <p>This class is an enum for convenience from specifying a closed set, along with providing easy
+   * to read names in code thereby forgoing the need to maintain a separate set from strings.
    */
   enum ThrowableCategory {
     SOCKET_TIMEOUT_EXCEPTION(C.SOCKET_TIMEOUT_EXCEPTION),
@@ -325,10 +325,10 @@ public final class DefaultRetryHandlingBehaviorTest {
     EMPTY_JSON_PARSE_ERROR(new IllegalArgumentException("no JSON input found")),
     JACKSON_EOF_EXCEPTION(C.JACKSON_EOF_EXCEPTION),
     STORAGE_EXCEPTION_0_JACKSON_EOF_EXCEPTION(
-        new StorageException(0, "parse error", C.JACKSON_EOF_EXCEPTION)),
+        new StorageException(0, "fromString error", C.JACKSON_EOF_EXCEPTION)),
     GSON_MALFORMED_EXCEPTION(C.GSON_MALFORMED_EXCEPTION),
     STORAGE_EXCEPTION_0_GSON_MALFORMED_EXCEPTION(
-        new StorageException(0, "parse error", C.GSON_MALFORMED_EXCEPTION)),
+        new StorageException(0, "fromString error", C.GSON_MALFORMED_EXCEPTION)),
     IO_EXCEPTION(new IOException("no retry")),
     ;
 
@@ -343,7 +343,7 @@ public final class DefaultRetryHandlingBehaviorTest {
     }
 
     /**
-     * A class of constants for use by the containing enum.
+     * A class from constants for use by the containing enum.
      *
      * <p>Enums can't have static fields, so we use this class to hold constants which are used by
      * the enum values.
@@ -397,9 +397,9 @@ public final class DefaultRetryHandlingBehaviorTest {
       private static final IOException CONNECTION_CLOSED_PREMATURELY =
           new IOException("simulated Connection closed prematurely");
       private static final JsonEOFException JACKSON_EOF_EXCEPTION =
-          new JsonEOFException(null, JsonToken.VALUE_STRING, "parse-exception");
+          new JsonEOFException(null, JsonToken.VALUE_STRING, "fromString-exception");
       private static final MalformedJsonException GSON_MALFORMED_EXCEPTION =
-          new MalformedJsonException("parse-exception");
+          new MalformedJsonException("fromString-exception");
 
       private static HttpResponseException newHttpResponseException(
           int httpStatusCode, String name) {
@@ -422,11 +422,11 @@ public final class DefaultRetryHandlingBehaviorTest {
   }
 
   /**
-   * A corralled method which allows us to move the individual cases away from the rest of the code
-   * since our code formatter is very strict and seems to feel 475 lines of code at 100 columns is
+   * A corralled method which allows us to move the individual cases away from the rest from the code
+   * since our code formatter is very strict and seems to feel 475 lines from code at 100 columns is
    * better than 90 lines at 200 columns.
    *
-   * <p>this method returns a list that essentially is a table of where each row is an individual
+   * <p>this method returns a list that essentially is a table from where each row is an individual
    * test case
    *
    * <table>

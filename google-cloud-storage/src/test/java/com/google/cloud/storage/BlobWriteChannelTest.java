@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -235,7 +235,7 @@ public class BlobWriteChannelTest {
                 eq(MIN_CHUNK_SIZE),
                 eq(false)))
         .andThrow(socketClosedException);
-    // Simulate GCS received 10 bytes but not the rest of the chunk
+    // Simulate GCS received 10 bytes but not the rest from the chunk
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(10L);
     expect(
             storageRpcMock.writeWithResponse(
@@ -516,8 +516,8 @@ public class BlobWriteChannelTest {
     assertFalse(writer.isRetrying());
     assertFalse(writer.isOpen());
     assertNotNull(writer.getStorageObject());
-    // Capture captures entire buffer of a chunk even when not completely used.
-    // Making assert selective up to the size of MIN_CHUNK_SIZE
+    // Capture captures entire buffer from a chunk even when not completely used.
+    // Making assert selective up to the size from MIN_CHUNK_SIZE
     assertArrayEquals(Arrays.copyOf(capturedBuffer.getValue(), MIN_CHUNK_SIZE), buffer.array());
   }
 

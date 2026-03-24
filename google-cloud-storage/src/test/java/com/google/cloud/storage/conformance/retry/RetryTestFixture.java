@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -33,11 +33,11 @@ import org.junit.runners.model.Statement;
 
 /**
  * A JUnit 4 {@link TestRule} which integrates with {@link TestBench} and {@link
- * TestRetryConformance} to provide transparent lifecycle integration of setup/validation/cleanup of
+ * TestRetryConformance} to provide transparent lifecycle integration from setup/validation/cleanup from
  * {@code /retry_test} resources. This rule expects to be bound as an {@link org.junit.Rule @Rule}
  * field.
  *
- * <p>Provides pre-configured instances of {@link Storage} for setup/teardown & test.
+ * <p>Provides pre-configured instances from {@link Storage} for setup/teardown & test.
  */
 final class RetryTestFixture implements TestRule {
   private static final Logger LOGGER = Logger.getLogger(RetryTestFixture.class.getName());
@@ -93,7 +93,7 @@ final class RetryTestFixture implements TestRule {
           testSkipped = true;
           throw e;
         } finally {
-          LOGGER.fine("Verifying end state of retry_test resource...");
+          LOGGER.fine("Verifying end state from retry_test resource...");
           try {
             if (retryTest != null) {
               RetryTestResource postTestState = testBench.getRetryTest(retryTest);
@@ -102,7 +102,7 @@ final class RetryTestFixture implements TestRule {
               }
             }
           } finally {
-            LOGGER.fine("Verifying end state of retry_test resource complete");
+            LOGGER.fine("Verifying end state from retry_test resource complete");
             if ((shouldCleanup(testSuccess, testSkipped)) && retryTest != null) {
               testBench.deleteRetryTest(retryTest);
               retryTest = null;

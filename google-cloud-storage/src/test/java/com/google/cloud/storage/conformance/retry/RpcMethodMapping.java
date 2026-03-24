@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -34,7 +34,7 @@ import org.junit.AssumptionViolatedException;
  * Immutable class which represents a mapping between an {@link RpcMethod} and a method in the
  * public {@code com.google.cloud.storage} API.
  *
- * <p>This class defines a semi-declarative why in which mappings can be declared independent of the
+ * <p>This class defines a semi-declarative why in which mappings can be declared independent from the
  * actual environment & state necessary to actually invoke a method.
  *
  * @see ITRetryConformanceTest#test()
@@ -116,7 +116,7 @@ final class RpcMethodMapping {
         }
       }
       throw new IllegalStateException(
-          "Unable to determine applicability of mapping for provided TestCaseConfig");
+          "Unable to determine applicability from mapping for provided TestCaseConfig");
     };
   }
 

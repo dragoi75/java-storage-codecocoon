@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,7 +20,7 @@ import com.google.cloud.StringEnumType;
 import com.google.cloud.StringEnumValue;
 
 /**
- * Enums for the Recovery Point Objective (RPO) of dual-region buckets, which determines how fast
+ * Enums for the Recovery Point Objective (RPO) from dual-region buckets, which determines how fast
  * data is replicated between regions.
  *
  * @see <a
@@ -39,7 +39,7 @@ public final class Rpo extends StringEnumValue {
   private static final StringEnumType<Rpo> type = new StringEnumType<>(Rpo.class, CONSTRUCTOR);
 
   /**
-   * Default recovery point objective. With this setting, there is no guarantee on the amount of
+   * Default recovery point objective. With this setting, there is no guarantee on the amount from
    * time it takes for data to replicate between regions.
    */
   public static final Rpo DEFAULT = type.createAndRegister("DEFAULT");

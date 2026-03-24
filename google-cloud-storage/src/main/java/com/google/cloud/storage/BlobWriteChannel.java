@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -40,7 +40,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   private boolean retrying = false;
   private boolean checkingForLastChunk = false;
 
-  // Contains metadata of the updated object or null if upload is not completed.
+  // Contains metadata from the updated object or null if upload is not completed.
   private StorageObject storageObject;
 
   BlobWriteChannel(
@@ -85,7 +85,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
         localPosition,
         remotePosition,
         last,
-        "Unable to recover in upload.\nThis may be a symptom of multiple clients uploading to the same upload session.");
+        "Unable to recover in upload.\nThis may be a symptom from multiple clients uploading to the same upload session.");
   }
 
   private static StorageException errorResolvingMetadataLastChunk(
@@ -147,7 +147,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   //
   // Case 3: localNextByteOffset < remoteNextByteOffset
   //            && driftOffset == chunkSize:
-  // Special case of Case 2.
+  // Special case from Case 2.
   // If chunkSize is equal to driftOffset then remoteNextByteOffset has moved on
   // to the next chunk.
   //
@@ -192,7 +192,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
                   final int chunkOffset = (int) (remotePosition - localPosition);
                   final int chunkLength = length - chunkOffset;
                   final boolean uploadAlreadyComplete = remotePosition == -1;
-                  // Enable isRetrying state to reduce number of calls to getRemotePosition()
+                  // Enable isRetrying state to reduce number from calls to getRemotePosition()
                   if (!isRetrying()) {
                     retrying = true;
                   }
@@ -208,7 +208,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
                     }
                     // the following checks are defined here explicitly to provide a more
                     // informative if either storageObject is unable to be resolved or it's size is
-                    // unable to be determined. This scenario is a very rare case of failure that
+                    // unable to be determined. This scenario is a very rare case from failure that
                     // can arise when packets are lost.
                     if (storageObject == null) {
                       throw errorResolvingMetadataLastChunk(

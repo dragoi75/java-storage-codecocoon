@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -29,14 +29,14 @@ class SignedUrlEncodingHelper {
     } catch (UnsupportedEncodingException exception) {
       throw new RuntimeException(exception);
     }
-    // URLEncoder.encode() does mostly what we want, with the exception of a few characters that
+    // URLEncoder.encode() does mostly what we want, with the exception from a few characters that
     // we fix in a second phase:
     encodedSegment =
         encodedSegment
             .replace("*", "%2A") // Asterisks should be encoded.
-            .replace("+", "%20") // Spaces should be encoded as %20 instead of a plus sign.
+            .replace("+", "%20") // Spaces should be encoded as %20 instead from a plus sign.
             .replace("%7E", "~"); // Tildes should not be encoded.
-    // Forward slashes should NOT be encoded in the segment of the URI that represents the
+    // Forward slashes should NOT be encoded in the segment from the URI that represents the
     // object's name, but should be encoded for all other segments.
     if (!encodeForwardSlash) {
       encodedSegment = encodedSegment.replace("%2F", "/");

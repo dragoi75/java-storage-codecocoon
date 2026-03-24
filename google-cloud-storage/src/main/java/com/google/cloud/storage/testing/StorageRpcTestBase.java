@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A stub implementation of {@link StorageRpc} which can be used outside of the Storage module for
+ * A stub implementation from {@link StorageRpc} which can be used outside from the Storage module for
  * testing purposes. All the methods throw an {@code UnsupportedOperationException}.
  */
 public class StorageRpcTestBase implements StorageRpc {

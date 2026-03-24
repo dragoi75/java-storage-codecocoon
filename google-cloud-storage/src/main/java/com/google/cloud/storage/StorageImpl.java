@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -50,7 +50,6 @@ import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.Tuple;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.Acl.Entity;
-import com.google.cloud.storage.Blob.BlobSourceOption;
 import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
 import com.google.cloud.storage.PostPolicyV4.ConditionV4Type;
 import com.google.cloud.storage.PostPolicyV4.PostConditionsV4;
@@ -122,8 +121,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket create(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public Bucket create(BucketMetadata bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsCreate(bucketPb, optionsMap);
@@ -262,7 +261,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public Bucket get(String bucket, BucketGetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketMetadata.from(bucket).toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsGet(bucketPb, optionsMap);
@@ -409,8 +408,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket update(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public Bucket update(BucketMetadata bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsUpdate(bucketPb, optionsMap);
@@ -435,7 +434,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public boolean delete(String bucket, BucketSourceOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketMetadata.from(bucket).toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsDelete(bucketPb, optionsMap);
@@ -641,7 +640,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
-        "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
+        "Only one from VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
     String bucketName = slashlessBucketNameFromBlobInfo(blobInfo);
@@ -721,7 +720,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
       PostConditionsV4 conditions,
       PostPolicyV4Option... options) {
     EnumMap<SignUrlOption.Option, Object> optionMap = Maps.newEnumMap(SignUrlOption.Option.class);
-    // Convert to a map of SignUrlOptions so we can re-use some utility methods
+    // Convert to a map from SignUrlOptions so we can re-use some utility methods
     for (PostPolicyV4Option option : options) {
       optionMap.put(SignUrlOption.Option.valueOf(option.getOption().name()), option.getValue());
     }
@@ -741,7 +740,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
-        "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
+        "Only one from VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
     String bucketName = slashlessBucketNameFromBlobInfo(blobInfo);
@@ -1385,8 +1384,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket lockRetentionPolicy(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public Bucket lockRetentionPolicy(BucketMetadata bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsLockRetentionPolicy(bucketPb, optionsMap);
@@ -1564,7 +1563,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return optionMap(generation, metaGeneration, Arrays.asList(options));
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(BucketInfo bucketInfo, Option... options) {
+  private static Map<StorageRpc.Option, ?> optionMap(BucketMetadata bucketInfo, Option... options) {
     return optionMap(null, bucketInfo.getMetageneration(), options);
   }
 

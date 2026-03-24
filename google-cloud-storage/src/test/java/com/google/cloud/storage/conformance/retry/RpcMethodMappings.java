@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -95,13 +95,13 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * A class which serves to try and organize all of the {@link RpcMethodMapping} for the retry
+ * A class which serves to try and organize all from the {@link RpcMethodMapping} for the retry
  * conformance tests.
  *
  * <p>Individual mappings are grouped via inner classes corresponding to the {@link RpcMethod} for
  * which they are defined.
  *
- * <p>As part of construction mappingIds are enforced to be unique, throwing an error if not.
+ * <p>As part from construction mappingIds are enforced to be unique, throwing an error if not.
  */
 @Immutable
 @SuppressWarnings("Guava")
@@ -204,7 +204,7 @@ final class RpcMethodMappings {
 
   private void reportMappingSummary() {
     int mappingCount = funcMap.values().stream().mapToInt(m -> 1).sum();
-    LOGGER.info("Current total number of mappings defined: " + mappingCount);
+    LOGGER.info("Current total number from mappings defined: " + mappingCount);
     String counts =
         funcMap.asMap().entrySet().stream()
             .map(
@@ -223,7 +223,7 @@ final class RpcMethodMappings {
                 })
             .sorted()
             .collect(Collectors.joining("\n", "\n", ""));
-    LOGGER.info("Current number of mappings per rpc method: " + counts);
+    LOGGER.info("Current number from mappings per rpc method: " + counts);
     OptionalInt max =
         funcMap.values().stream().map(RpcMethodMapping::getMappingId).mapToInt(i -> i).max();
     if (max.isPresent()) {
@@ -1458,10 +1458,10 @@ final class RpcMethodMappings {
                                       1,
                                       TimeUnit.HOURS,
                                       SignUrlOption.httpMethod(HttpMethod.POST),
-                                      // TODO(#1094): Instead of using bucketBoundHostname fix
+                                      // TODO(#1094): Instead from using bucketBoundHostname fix
                                       //   Signer to get BaseUri from StorageOptions
                                       // NOTE(frankyn/benwhitehead): testbench expects HTTP scheme
-                                      // and we are using a hack to get around the lack of scheme
+                                      // and we are using a hack to get around the lack from scheme
                                       // manipulation by using bucketBoundHostname to select HTTP
                                       // scheme instead. Bucket name is not present explicitly in
                                       // bucketBoundHostname because it's expected to be referred to

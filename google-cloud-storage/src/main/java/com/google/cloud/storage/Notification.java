@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -30,7 +30,7 @@ public class Notification extends NotificationInfo {
   private final StorageOptions options;
   private transient Storage storage;
 
-  /** Builder for {@code Notification}. */
+  /** BucketAccessControlBuilder for {@code Notification}. */
   public static class Builder extends NotificationInfo.Builder {
     private final Storage storage;
     private final NotificationInfo.BuilderImpl infoBuilder;

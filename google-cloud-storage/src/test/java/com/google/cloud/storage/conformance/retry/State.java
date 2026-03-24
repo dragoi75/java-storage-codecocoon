@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -25,7 +25,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.BucketInfo;
+import com.google.cloud.storage.BucketMetadata;
 import com.google.cloud.storage.CopyWriter;
 import com.google.cloud.storage.HmacKey;
 import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
@@ -41,16 +41,16 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * A specialized wrapper around an immutable map allowing for declaration of named get/has/with
+ * A specialized wrapper around an immutable map allowing for declaration from named get/has/with
  * methods without the need for individual fields.
  *
  * <p>Every mutation returns a copy with the mutation result.
  *
- * <p>Over the course of executing an individual test for a specific mapping some fields will be
+ * <p>Over the course from executing an individual test for a specific mapping some fields will be
  * updated.
  *
  * <p>This approach was taken after multiple attempts to create more type safe alternatives which
- * turned into far too much duplication given the possible permutations of state for various
+ * turned into far too much duplication given the possible permutations from state for various
  * mappings.
  */
 @Immutable
@@ -64,7 +64,7 @@ final class State {
   private static final Key<BlobInfo> KEY_BLOB_INFO = new Key<>("blobInfo");
   private static final Key<Boolean> KEY_BOOL = new Key<>("bool");
   private static final Key<Bucket> KEY_BUCKET = new Key<>("bucket");
-  private static final Key<BucketInfo> KEY_BUCKET_INFO = new Key<>("bucketInfo");
+  private static final Key<BucketMetadata> KEY_BUCKET_INFO = new Key<>("bucketInfo");
   private static final Key<CopyWriter> KEY_COPY = new Key<>("copy");
   private static final Key<HmacKey> KEY_HMAC_KEY = new Key<>("hmacKey");
   private static final Key<HmacKeyMetadata> KEY_HMAC_KEY_METADATA = new Key<>("hmacKeyMetadata");
@@ -179,11 +179,11 @@ final class State {
     return hasValue(KEY_BUCKET_INFO);
   }
 
-  public BucketInfo getBucketInfo() {
+  public BucketMetadata getBucketInfo() {
     return getValue(KEY_BUCKET_INFO);
   }
 
-  public State with(BucketInfo bucketInfo) {
+  public State with(BucketMetadata bucketInfo) {
     return newStateWith(KEY_BUCKET_INFO, bucketInfo);
   }
 

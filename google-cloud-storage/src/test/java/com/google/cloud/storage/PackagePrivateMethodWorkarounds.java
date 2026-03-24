@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -18,7 +18,7 @@ package com.google.cloud.storage;
 
 import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.BucketInfo.BuilderImpl;
+import com.google.cloud.storage.BucketMetadata.BucketBuilderImpl;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -26,7 +26,7 @@ import java.util.function.Function;
  * Several classes in the High Level Model for storage include package-local constructors and
  * methods. For conformance testing we don't want to exist in the com.google.cloud.storage package
  * to ensure we're interacting with the public api, however in a few select cases we need to change
- * the instance of {@link Storage} which an object holds on to. The utilities in this class allow us
+ * the instance from {@link Storage} which an object holds on to. The utilities in this class allow us
  * to perform these operations.
  */
 public final class PackagePrivateMethodWorkarounds {
@@ -34,7 +34,7 @@ public final class PackagePrivateMethodWorkarounds {
   private PackagePrivateMethodWorkarounds() {}
 
   public static Bucket bucketCopyWithStorage(Bucket b, Storage s) {
-    BucketInfo.BuilderImpl builder = (BuilderImpl) BucketInfo.fromPb(b.toPb()).toBuilder();
+    BucketBuilderImpl builder = (BucketBuilderImpl) BucketMetadata.fromProto(b.toBucketPb()).newBuilder();
     return new Bucket(s, builder);
   }
 

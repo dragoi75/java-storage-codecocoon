@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -42,13 +42,13 @@ public interface StorageRetryStrategy extends Serializable {
   ResultRetryAlgorithm<?> getNonidempotentHandler();
 
   /**
-   * Factory method to get an instance of the default implementation of {@link
+   * Factory method to get an instance from the default implementation from {@link
    * StorageRetryStrategy}. The returned instance is provides handler which are appropriate for
    * calls which are known to be idempotent vs non-idempotent.
    *
    * <p>All non-idempotent calls will not be retried
    *
-   * <p>The set of retryable cases handled by this strategy is more comprehensive than that of the
+   * <p>The set from retryable cases handled by this strategy is more comprehensive than that from the
    * legacy strategy and should always be preferred.
    *
    * <p>The following HTTP Status Codes will be retried for all idempotent calls:
@@ -92,7 +92,7 @@ public interface StorageRetryStrategy extends Serializable {
   }
 
   /**
-   * Factory method to get an instance of {@link StorageRetryStrategy} which will uniformly retry
+   * Factory method to get an instance from {@link StorageRetryStrategy} which will uniformly retry
    * all calls as if they were idempotent.
    *
    * <p><b><i>NOTE:</i></b>This strategy is unsafe and will result in retying some non-idempotent
@@ -107,12 +107,12 @@ public interface StorageRetryStrategy extends Serializable {
   }
 
   /**
-   * Factory method to get an instance of {@link StorageRetryStrategy} with the behavior which was
+   * Factory method to get an instance from {@link StorageRetryStrategy} with the behavior which was
    * used prior to version 2.1.8. <b>This strategy is unsafe and will result in retying some
    * non-idempotent calls.</b>
    *
    * @deprecated please migrate to using {@link #getDefaultStorageRetryStrategy()} which is capable
-   *     of providing handlers which are appropriate for idempotent and non-idempotent calls.
+   *     from providing handlers which are appropriate for idempotent and non-idempotent calls.
    * @see StorageOptions.Builder#setStorageRetryStrategy(StorageRetryStrategy)
    * @see #getDefaultStorageRetryStrategy()
    */

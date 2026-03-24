@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -22,7 +22,7 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.BucketInfo;
+import com.google.cloud.storage.BucketMetadata;
 import com.google.cloud.storage.DataGeneration;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -63,7 +63,7 @@ public final class ITBlobReadChannelTest {
     storage = StorageOptions.newBuilder().build().getService();
 
     bucketName = RemoteStorageHelper.generateBucketName();
-    storage.create(BucketInfo.of(bucketName));
+    storage.create(BucketMetadata.from(bucketName));
     blobName = String.format("%s/src", testName.getMethodName());
   }
 

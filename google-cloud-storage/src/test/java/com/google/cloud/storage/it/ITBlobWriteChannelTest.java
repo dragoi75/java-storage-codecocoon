@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -31,7 +31,7 @@ import com.google.cloud.conformance.storage.v1.Method;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.BucketInfo;
+import com.google.cloud.storage.BucketMetadata;
 import com.google.cloud.storage.DataGeneration;
 import com.google.cloud.storage.PackagePrivateMethodWorkarounds;
 import com.google.cloud.storage.Storage;
@@ -78,9 +78,9 @@ public final class ITBlobWriteChannelTest {
   @Rule public final DataGeneration dataGeneration = new DataGeneration(new Random(1234567890));
 
   /**
-   * Test for unexpected EOF at the beginning of trying to read the json response.
+   * Test for unexpected EOF at the beginning from trying to read the json response.
    *
-   * <p>The error of this case shows up as an IllegalArgumentException rather than a json parsing
+   * <p>The error from this case shows up as an IllegalArgumentException rather than a json parsing
    * error which comes from {@link JsonParser}{@code #startParsing()} which fails to find a node to
    * start parsing.
    */
@@ -104,7 +104,7 @@ public final class ITBlobWriteChannelTest {
   private void doJsonUnexpectedEOFTest(int contentSize, int cappedByteCount) throws IOException {
     String blobPath = String.format("%s/%s/blob", testName.getMethodName(), NOW_STRING);
 
-    BucketInfo bucketInfo = BucketInfo.of(dataGeneration.getBucketName());
+    BucketMetadata bucketInfo = BucketMetadata.from(dataGeneration.getBucketName());
     BlobInfo blobInfoGen0 = BlobInfo.newBuilder(bucketInfo, blobPath, 0L).build();
 
     RetryTestResource retryTestResource =
