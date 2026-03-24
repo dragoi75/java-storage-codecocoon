@@ -279,7 +279,7 @@ public class Blob extends BlobInfo {
     downloadTo(path, new BlobSourceOption[0]);
   }
 
-  /** Builder for {@code Blob}. */
+  /** ChunkedUploadBuilder for {@code Blob}. */
   public static class Builder extends BlobInfo.Builder {
 
     private final Storage storage;
@@ -775,7 +775,7 @@ public class Blob extends BlobInfo {
    * period. This is particularly useful if you don't want publicly accessible blobs, but also don't
    * want to require users to explicitly log in. Signing a URL requires a service account signer. If
    * an instance of {@link com.google.auth.ServiceAccountSigner} was passed to {@link
-   * StorageOptions}' builder via {@code setCredentials(Credentials)} or the default credentials are
+   * StorageOptions}' newBuilder via {@code setCredentials(Credentials)} or the default credentials are
    * being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set or your
    * application is running in App Engine, then {@code signUrl} will use that credentials to sign
    * the URL. If the credentials passed to {@link StorageOptions} do not implement {@link

@@ -500,7 +500,7 @@ public class Bucket extends BucketInfo {
     }
   }
 
-  /** Builder for {@code Bucket}. */
+  /** ChunkedUploadBuilder for {@code Bucket}. */
   public static class Builder extends BucketInfo.Builder {
     private final Storage storage;
     private final BucketInfo.BuilderImpl infoBuilder;

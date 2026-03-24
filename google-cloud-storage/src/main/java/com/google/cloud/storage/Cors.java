@@ -119,7 +119,7 @@ public final class Cors implements Serializable {
     }
   }
 
-  /** CORS configuration builder. */
+  /** CORS configuration newBuilder. */
   public static final class Builder {
 
     private Integer maxAgeSeconds;
@@ -192,7 +192,7 @@ public final class Cors implements Serializable {
     return responseHeaders;
   }
 
-  /** Returns a builder for this CORS configuration. */
+  /** Returns a newBuilder for this CORS configuration. */
   public Builder toBuilder() {
     return newBuilder()
         .setMaxAgeSeconds(maxAgeSeconds)
@@ -218,7 +218,7 @@ public final class Cors implements Serializable {
         && Objects.equals(responseHeaders, other.responseHeaders);
   }
 
-  /** Returns a CORS configuration builder. */
+  /** Returns a CORS configuration newBuilder. */
   public static Builder newBuilder() {
     return new Builder();
   }

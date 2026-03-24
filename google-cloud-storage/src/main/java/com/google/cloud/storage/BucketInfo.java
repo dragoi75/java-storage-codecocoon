@@ -191,7 +191,7 @@ public class BucketInfo implements Serializable {
           .build();
     }
 
-    /** Builder for {@code IamConfiguration} */
+    /** ChunkedUploadBuilder for {@code IamConfiguration} */
     public static class Builder {
       private Boolean isUniformBucketLevelAccessEnabled;
       private Long uniformBucketLevelAccessLockedTime;
@@ -590,7 +590,7 @@ public class BucketInfo implements Serializable {
         return daysSinceCustomTime;
       }
 
-      /** Builder for {@code LifecycleCondition}. */
+      /** ChunkedUploadBuilder for {@code LifecycleCondition}. */
       public static class Builder {
         private Integer age;
         private DateTime createdBefore;
@@ -869,7 +869,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and use {@code
-   *     LifecycleCondition.Builder.setAge} instead.
+   *     LifecycleCondition.ChunkedUploadBuilder.setAge} instead.
    *     <p>For example, {@code new DeleteLifecycleAction(1)} is equivalent to {@code new
    *     LifecycleRule( LifecycleAction.newDeleteAction(),
    *     LifecycleCondition.newBuilder().setAge(1).build()))}
@@ -939,7 +939,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with an action {@code DeleteLifecycleAction} and a
-   *     condition {@code LifecycleCondition.Builder.setCreatedBefore} instead.
+   *     condition {@code LifecycleCondition.ChunkedUploadBuilder.setCreatedBefore} instead.
    */
   @Deprecated
   public static class CreatedBeforeDeleteRule extends DeleteRule {
@@ -974,7 +974,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setNumberOfNewerVersions} instead.
+   *     {@code LifecycleCondition.ChunkedUploadBuilder.setNumberOfNewerVersions} instead.
    */
   @Deprecated
   public static class NumNewerVersionsDeleteRule extends DeleteRule {
@@ -1008,7 +1008,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setIsLive} instead.
+   *     {@code LifecycleCondition.ChunkedUploadBuilder.setIsLive} instead.
    */
   @Deprecated
   public static class IsLiveDeleteRule extends DeleteRule {
@@ -1037,7 +1037,7 @@ public class BucketInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BucketInfo}. */
+  /** ChunkedUploadBuilder for {@code BucketInfo}. */
   public abstract static class Builder {
     Builder() {}
 
@@ -1743,7 +1743,7 @@ public class BucketInfo implements Serializable {
     return logging;
   }
 
-  /** Returns a builder for the current bucket. */
+  /** Returns a newBuilder for the current bucket. */
   public Builder toBuilder() {
     return new BuilderImpl(this);
   }
@@ -1902,7 +1902,7 @@ public class BucketInfo implements Serializable {
     return newBuilder(name).build();
   }
 
-  /** Returns a {@code BucketInfo} builder where the bucket's name is set to the provided name. */
+  /** Returns a {@code BucketInfo} newBuilder where the bucket's name is set to the provided name. */
   public static Builder newBuilder(String name) {
     return new BuilderImpl(name);
   }

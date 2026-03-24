@@ -2153,7 +2153,7 @@ public class StorageImplTest {
     EasyMock.expect(storageRpcMock.open(SIGNED_URL)).andReturn("upload-id");
     EasyMock.replay(storageRpcMock);
     initializeService();
-    WriteChannel writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    WriteChannel writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     assertNotNull(writer);
     assertTrue(writer.isOpen());
   }

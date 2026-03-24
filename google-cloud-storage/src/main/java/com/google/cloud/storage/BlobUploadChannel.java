@@ -30,46 +30,46 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 /** Write channel implementation to upload Google Cloud Storage blobs. */
-class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
+class BlobUploadChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
 
-  BlobWriteChannel(StorageOptions options, BlobInfo blob, Map<StorageRpc.Option, ?> optionsMap) {
-    this(options, blob, open(options, blob, optionsMap));
+  BlobUploadChannel(StorageOptions storageConfig, BlobInfo objectInfo, Map<StorageRpc.Option, ?> settingMap) {
+    this(storageConfig, objectInfo, openChannel(storageConfig, objectInfo, settingMap));
   }
 
-  BlobWriteChannel(StorageOptions options, URL signedURL) {
-    this(options, open(signedURL, options));
+  BlobUploadChannel(StorageOptions storageConfig, URL accessLink) {
+    this(storageConfig, openUploadChannel(accessLink, storageConfig));
   }
 
-  BlobWriteChannel(StorageOptions options, BlobInfo blobInfo, String uploadId) {
-    super(options, blobInfo, uploadId);
+  BlobUploadChannel(StorageOptions storageConfig, BlobInfo objectMetadata, String uploadToken) {
+    super(storageConfig, objectMetadata, uploadToken);
   }
 
-  BlobWriteChannel(StorageOptions options, String uploadId) {
-    super(options, null, uploadId);
+  BlobUploadChannel(StorageOptions storageConfig, String uploadToken) {
+    super(storageConfig, null, uploadToken);
   }
 
   // Contains metadata of the updated object or null if upload is not completed.
-  private StorageObject storageObject;
+  private StorageObject remoteObject;
 
   // Detect if flushBuffer() is being retried or not.
   // TODO: I don't think this is thread safe, and there's probably a better way to detect a retry
   // occuring.
-  private boolean retrying = false;
-  private boolean checkingForLastChunk = false;
+  private boolean retryInProgress = false;
+  private boolean detectingFinalSegment = false;
 
   boolean isRetrying() {
-    return retrying;
+    return retryInProgress;
   }
 
   StorageObject getStorageObject() {
-    return storageObject;
+    return remoteObject;
   }
 
-  private StorageObject transmitChunk(
-      int chunkOffset, int chunkLength, long position, boolean last) {
+  private StorageObject uploadChunk(
+      int segmentOffset, int segmentLength, long streamOffset, boolean isFinal) {
     return getOptions()
         .getStorageRpcV1()
-        .writeWithResponse(getUploadId(), getBuffer(), chunkOffset, position, chunkLength, last);
+        .writeWithResponse(getUploadId(), getBuffer(), segmentOffset, streamOffset, segmentLength, isFinal);
   }
 
   private long getRemotePosition() {
@@ -80,20 +80,20 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     return getOptions().getStorageRpcV1().get(getEntity().toPb(), null);
   }
 
-  private StorageException unrecoverableState(
-      int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Unable to recover in upload.\n");
-    sb.append(
+  private StorageException createUnrecoverableUploadException(
+      int segmentOffset, int segmentLength, long localOffset, long remoteOffset, boolean isFinal) {
+    StringBuilder messageBuilder = new StringBuilder();
+    messageBuilder.append("Unable to recover in upload.\n");
+    messageBuilder.append(
         "This may be a symptom of multiple clients uploading to the same upload session.\n\n");
-    sb.append("For debugging purposes:\n");
-    sb.append("uploadId: ").append(getUploadId()).append('\n');
-    sb.append("chunkOffset: ").append(chunkOffset).append('\n');
-    sb.append("chunkLength: ").append(chunkLength).append('\n');
-    sb.append("localOffset: ").append(localPosition).append('\n');
-    sb.append("remoteOffset: ").append(remotePosition).append('\n');
-    sb.append("lastChunk: ").append(last).append("\n\n");
-    return new StorageException(0, sb.toString());
+    messageBuilder.append("For debugging purposes:\n");
+    messageBuilder.append("uploadId: ").append(getUploadId()).append('\n');
+    messageBuilder.append("chunkOffset: ").append(segmentOffset).append('\n');
+    messageBuilder.append("chunkLength: ").append(segmentLength).append('\n');
+    messageBuilder.append("localOffset: ").append(localOffset).append('\n');
+    messageBuilder.append("remoteOffset: ").append(remoteOffset).append('\n');
+    messageBuilder.append("lastChunk: ").append(isFinal).append("\n\n");
+    return new StorageException(0, messageBuilder.toString());
   }
 
   // Retriable interruption occurred.
@@ -149,7 +149,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   // offset which is not possible.
   //
   @Override
-  protected void flushBuffer(final int length, final boolean lastChunk) {
+  protected void flushBuffer(final int byteCount, final boolean finalSegment) {
     try {
       runWithRetries(
           callable(
@@ -161,148 +161,148 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
                   // For each request it should be possible to retry from its location in this code
                   final long remotePosition = isRetrying() ? getRemotePosition() : getPosition();
                   final int chunkOffset = (int) (remotePosition - localPosition);
-                  final int chunkLength = length - chunkOffset;
+                  final int chunkLength = byteCount - chunkOffset;
                   final boolean uploadAlreadyComplete = remotePosition == -1;
                   // Enable isRetrying state to reduce number of calls to getRemotePosition()
                   if (!isRetrying()) {
-                    retrying = true;
+                    retryInProgress = true;
                   }
-                  if (uploadAlreadyComplete && lastChunk) {
+                  if (uploadAlreadyComplete && finalSegment) {
                     // Case 6
                     // Request object metadata if not available
-                    if (storageObject == null) {
-                      storageObject = getRemoteStorageObject();
+                    if (remoteObject == null) {
+                      remoteObject = getRemoteStorageObject();
                     }
                     // Verify that with the final chunk we match the blob length
-                    if (storageObject.getSize().longValue() != getPosition() + length) {
-                      throw unrecoverableState(
-                          chunkOffset, chunkLength, localPosition, remotePosition, lastChunk);
+                    if (remoteObject.getSize().longValue() != getPosition() + byteCount) {
+                      throw createUnrecoverableUploadException(
+                          chunkOffset, chunkLength, localPosition, remotePosition, finalSegment);
                     }
-                    retrying = false;
-                  } else if (uploadAlreadyComplete && !lastChunk && !checkingForLastChunk) {
+                    retryInProgress = false;
+                  } else if (uploadAlreadyComplete && !finalSegment && !detectingFinalSegment) {
                     // Case 7
                     // Make sure this is the second to last chunk.
-                    checkingForLastChunk = true;
+                    detectingFinalSegment = true;
                     // Continue onto next chunk in case this is the last chunk
                   } else if (localPosition <= remotePosition && chunkOffset < getChunkSize()) {
                     // Case 1 && Case 2
                     // We are in a position to send a chunk
-                    storageObject =
-                        transmitChunk(chunkOffset, chunkLength, remotePosition, lastChunk);
-                    retrying = false;
+                    remoteObject =
+                        uploadChunk(chunkOffset, chunkLength, remotePosition, finalSegment);
+                    retryInProgress = false;
                   } else if (localPosition < remotePosition && chunkOffset == getChunkSize()) {
                     // Case 3
                     // Continue to next chunk to catch up with remotePosition we are one chunk
                     // behind
-                    retrying = false;
+                    retryInProgress = false;
                   } else {
                     // Case 4 && Case 8 && Case 9
-                    throw unrecoverableState(
-                        chunkOffset, chunkLength, localPosition, remotePosition, lastChunk);
+                    throw createUnrecoverableUploadException(
+                        chunkOffset, chunkLength, localPosition, remotePosition, finalSegment);
                   }
                 }
               }),
           getOptions().getRetrySettings(),
           StorageImpl.EXCEPTION_HANDLER,
           getOptions().getClock());
-    } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw StorageException.translateAndThrow(ex);
     }
   }
 
-  protected StateImpl.Builder stateBuilder() {
-    return StateImpl.builder(getOptions(), getEntity(), getUploadId());
+  protected UploadStateImpl.ChunkedUploadBuilder stateBuilder() {
+    return UploadStateImpl.newBuilder(getOptions(), getEntity(), getUploadId());
   }
 
-  private static String open(
-      final StorageOptions options,
-      final BlobInfo blob,
-      final Map<StorageRpc.Option, ?> optionsMap) {
+  private static String openChannel(
+      final StorageOptions storageConfig,
+      final BlobInfo objectInfo,
+      final Map<StorageRpc.Option, ?> settingMap) {
     try {
       return runWithRetries(
           new Callable<String>() {
             @Override
             public String call() {
-              return options.getStorageRpcV1().open(blob.toPb(), optionsMap);
+              return storageConfig.getStorageRpcV1().open(objectInfo.toPb(), settingMap);
             }
           },
-          options.getRetrySettings(),
+          storageConfig.getRetrySettings(),
           StorageImpl.EXCEPTION_HANDLER,
-          options.getClock());
-    } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+          storageConfig.getClock());
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw StorageException.translateAndThrow(ex);
     }
   }
 
-  private static String open(final URL signedURL, final StorageOptions options) {
+  private static String openUploadChannel(final URL accessLink, final StorageOptions storageConfig) {
     try {
       return runWithRetries(
           new Callable<String>() {
             @Override
             public String call() {
-              if (!isValidSignedURL(signedURL.getQuery())) {
+              if (!isValidSignedURL(accessLink.getQuery())) {
                 throw new StorageException(2, "invalid signedURL");
               }
-              return options.getStorageRpcV1().open(signedURL.toString());
+              return storageConfig.getStorageRpcV1().open(accessLink.toString());
             }
           },
-          options.getRetrySettings(),
+          storageConfig.getRetrySettings(),
           StorageImpl.EXCEPTION_HANDLER,
-          options.getClock());
-    } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+          storageConfig.getClock());
+    } catch (RetryHelper.RetryHelperException ex) {
+      throw StorageException.translateAndThrow(ex);
     }
   }
 
-  private static boolean isValidSignedURL(String signedURLQuery) {
-    boolean isValid = true;
-    if (signedURLQuery.startsWith("X-Goog-Algorithm=")) {
-      if (!signedURLQuery.contains("&X-Goog-Credential=")
-          || !signedURLQuery.contains("&X-Goog-Date=")
-          || !signedURLQuery.contains("&X-Goog-Expires=")
-          || !signedURLQuery.contains("&X-Goog-SignedHeaders=")
-          || !signedURLQuery.contains("&X-Goog-Signature=")) {
-        isValid = false;
+  private static boolean isValidSignedURL(String signatureQuery) {
+    boolean validFlag = true;
+    if (signatureQuery.startsWith("X-Goog-Algorithm=")) {
+      if (!signatureQuery.contains("&X-Goog-Credential=")
+          || !signatureQuery.contains("&X-Goog-Date=")
+          || !signatureQuery.contains("&X-Goog-Expires=")
+          || !signatureQuery.contains("&X-Goog-SignedHeaders=")
+          || !signatureQuery.contains("&X-Goog-Signature=")) {
+        validFlag = false;
       }
-    } else if (signedURLQuery.startsWith("GoogleAccessId=")) {
-      if (!signedURLQuery.contains("&Expires=") || !signedURLQuery.contains("&Signature=")) {
-        isValid = false;
+    } else if (signatureQuery.startsWith("GoogleAccessId=")) {
+      if (!signatureQuery.contains("&Expires=") || !signatureQuery.contains("&Signature=")) {
+        validFlag = false;
       }
     } else {
-      isValid = false;
+      validFlag = false;
     }
-    return isValid;
+    return validFlag;
   }
 
-  static class StateImpl extends BaseWriteChannel.BaseState<StorageOptions, BlobInfo> {
+  static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageOptions, BlobInfo> {
 
-    private static final long serialVersionUID = -9028324143780151286L;
+    private static final long SERIAL_UID = -9028324143780151286L;
 
-    StateImpl(Builder builder) {
-      super(builder);
+    UploadStateImpl(ChunkedUploadBuilder chunkedCreator) {
+      super(chunkedCreator);
     }
 
-    static class Builder extends BaseWriteChannel.BaseState.Builder<StorageOptions, BlobInfo> {
+    static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageOptions, BlobInfo> {
 
-      private Builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
-        super(options, blobInfo, uploadId);
+      private ChunkedUploadBuilder(StorageOptions storageConfig, BlobInfo objectMetadata, String uploadToken) {
+        super(storageConfig, objectMetadata, uploadToken);
       }
 
       @Override
       public RestorableState<WriteChannel> build() {
-        return new StateImpl(this);
+        return new UploadStateImpl(this);
       }
     }
 
-    static Builder builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
-      return new Builder(options, blobInfo, uploadId);
+    static ChunkedUploadBuilder newBuilder(StorageOptions storageConfig, BlobInfo objectMetadata, String uploadToken) {
+      return new ChunkedUploadBuilder(storageConfig, objectMetadata, uploadToken);
     }
 
     @Override
     public WriteChannel restore() {
-      BlobWriteChannel channel = new BlobWriteChannel(serviceOptions, entity, uploadId);
-      channel.restore(this);
-      return channel;
+      BlobUploadChannel restoredChannel = new BlobUploadChannel(serviceOptions, entity, uploadId);
+      restoredChannel.restore(this);
+      return restoredChannel;
     }
   }
 }

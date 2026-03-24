@@ -308,7 +308,7 @@ public class SignatureInfo {
     private long timestamp;
 
     /**
-     * Constructs builder.
+     * Constructs newBuilder.
      *
      * @param httpVerb the HTTP method
      * @param expiration the EPOX expiration date
@@ -377,7 +377,7 @@ public class SignatureInfo {
       return this;
     }
 
-    /** Creates an {@code SignatureInfo} object from this builder. */
+    /** Creates an {@code SignatureInfo} object from this newBuilder. */
     public SignatureInfo build() {
       checkArgument(httpVerb != null, "Required HTTP method");
       checkArgument(canonicalizedResource != null, "Required canonicalized resource");

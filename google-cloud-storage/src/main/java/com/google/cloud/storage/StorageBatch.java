@@ -46,7 +46,7 @@ import java.util.Map;
  *     // delete failed
  *   }
  * });
- * batch.update(BlobInfo.builder(secondBlob).contentType("text/plain").build());
+ * batch.update(BlobInfo.newBuilder(secondBlob).contentType("text/plain").build());
  * StorageBatchResult<Blob> result = batch.get(secondBlob);
  * batch.submit();
  * Blob blob = result.get(); // returns get result or throws StorageException

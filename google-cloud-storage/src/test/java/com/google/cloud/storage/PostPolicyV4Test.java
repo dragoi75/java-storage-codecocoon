@@ -197,7 +197,7 @@ public class PostPolicyV4Test {
 
   interface ConditionTest {
     /**
-     * Calls one of addCondition method on the given builder and returns expected ConditionV4
+     * Calls one of addCondition method on the given newBuilder and returns expected ConditionV4
      * object.
      */
     PostPolicyV4.ConditionV4 addCondition(PostPolicyV4.PostConditionsV4.Builder builder);
