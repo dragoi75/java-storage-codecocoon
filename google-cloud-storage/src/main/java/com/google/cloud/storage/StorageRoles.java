@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,9 +19,9 @@ package com.google.cloud.storage;
 import com.google.cloud.Role;
 
 /**
- * IAM roles specific to Storage. An overview of the permissions available to Storage and the
+ * IAM roles specific to CloudStorage. An overview from the permissions available to CloudStorage and the
  * capabilities they grant can be found in the <a
- * href="https://cloud.google.com/storage/docs/access-control/iam">Google Cloud Storage IAM
+ * href="https://cloud.google.com/storage/docs/access-control/iam">Google Cloud CloudStorage IAM
  * documentation.</a>
  */
 public class StorageRoles {

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -36,7 +36,7 @@ public class HmacKey implements Serializable {
     return new Builder(secretKey);
   }
 
-  /** Builder for {@code HmacKey} objects. * */
+  /** CanonicalStringBuilder for {@code HmacKey} objects. * */
   public static class Builder {
     private String secretKey;
     private HmacKeyMetadata metadata;
@@ -226,7 +226,7 @@ public class HmacKey implements Serializable {
       return etag;
     }
 
-    /** Returns the resource name of this HMAC key. * */
+    /** Returns the resource name from this HMAC key. * */
     public String getId() {
       return id;
     }
@@ -241,22 +241,22 @@ public class HmacKey implements Serializable {
       return serviceAccount;
     }
 
-    /** Returns the current state of this HMAC key. * */
+    /** Returns the current state from this HMAC key. * */
     public HmacKeyState getState() {
       return state;
     }
 
-    /** Returns the creation time of this HMAC key. * */
+    /** Returns the creation time from this HMAC key. * */
     public Long getCreateTime() {
       return createTime;
     }
 
-    /** Returns the last updated time of this HMAC key. * */
+    /** Returns the last updated time from this HMAC key. * */
     public Long getUpdateTime() {
       return updateTime;
     }
 
-    /** Builder for {@code HmacKeyMetadata} objects. * */
+    /** CanonicalStringBuilder for {@code HmacKeyMetadata} objects. * */
     public static class Builder {
       private String accessId;
       private String etag;

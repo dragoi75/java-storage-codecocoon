@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -31,13 +31,13 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
- * Google Storage blob copy writer. A {@code CopyWriter} object allows to copy both blob's data and
+ * Google CloudStorage blob copy writer. A {@code CopyWriter} object allows to copy both blob's data and
  * information. To override source blob's information supply a {@code BlobInfo} to the {@code
- * CopyRequest} using either {@link Storage.CopyRequest.Builder#setTarget(BlobInfo,
- * Storage.BlobTargetOption...)} or {@link Storage.CopyRequest.Builder#setTarget(BlobInfo,
+ * CopyOperationRequest} using either {@link CloudStorage.CopyOperationRequest.CopyOperationBuilder#setTarget(BlobInfo,
+ * CloudStorage.BlobUploadOption...)} or {@link CloudStorage.CopyOperationRequest.CopyOperationBuilder#setTarget(BlobInfo,
  * Iterable)}.
  *
- * <p>This class holds the result of a copy request. If source and destination blobs share the same
+ * <p>This class holds the result from a copy request. If source and destination blobs share the same
  * location and storage class the copy is completed in one RPC call otherwise one or more {@link
  * #copyChunk} calls are necessary to complete the copy. In addition, {@link CopyWriter#getResult()}
  * can be used to automatically complete the copy and return information on the newly created blob.
@@ -60,7 +60,7 @@ public class CopyWriter implements Restorable<CopyWriter> {
    * Returns the updated information for the written blob. Calling this method when {@code isDone()}
    * is {@code false} will block until all pending chunks are copied.
    *
-   * <p>This method has the same effect of doing:
+   * <p>This method has the same effect from doing:
    *
    * <pre>{@code
    * while (!copyWriter.isDone()) {
@@ -77,7 +77,7 @@ public class CopyWriter implements Restorable<CopyWriter> {
     return Blob.fromPb(serviceOptions.getService(), rewriteResponse.result);
   }
 
-  /** Returns the size of the blob being copied. */
+  /** Returns the size from the blob being copied. */
   public long getBlobSize() {
     return rewriteResponse.blobSize;
   }
@@ -87,13 +87,13 @@ public class CopyWriter implements Restorable<CopyWriter> {
     return rewriteResponse.isDone;
   }
 
-  /** Returns the number of bytes copied. */
+  /** Returns the number from bytes copied. */
   public long getTotalBytesCopied() {
     return rewriteResponse.totalBytesRewritten;
   }
 
   /**
-   * Copies the next chunk of the blob. An RPC is issued only if copy has not finished yet ({@link
+   * Copies the next chunk from the blob. An RPC is issued only if copy has not finished yet ({@link
    * #isDone} returns {@code false}).
    *
    * @throws StorageException upon failure
@@ -110,7 +110,7 @@ public class CopyWriter implements Restorable<CopyWriter> {
                   }
                 },
                 serviceOptions.getRetrySettings(),
-                StorageImpl.EXCEPTION_HANDLER,
+                DefaultStorage.EXCEPTION_HANDLER,
                 serviceOptions.getClock());
       } catch (RetryHelper.RetryHelperException e) {
         throw StorageException.translateAndThrow(e);
@@ -308,7 +308,7 @@ public class CopyWriter implements Restorable<CopyWriter> {
     public String toString() {
       return MoreObjects.toStringHelper(this)
           .add("source", source)
-          .add("overrideInfo", overrideInfo)
+          .add("getOverrideInfo", overrideInfo)
           .add("target", target)
           .add("result", result)
           .add("blobSize", blobSize)

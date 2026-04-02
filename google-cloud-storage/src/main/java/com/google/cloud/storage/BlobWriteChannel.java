@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-/** Write channel implementation to upload Google Cloud Storage blobs. */
+/** Write channel implementation to upload Google Cloud CloudStorage blobs. */
 class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
 
   BlobWriteChannel(StorageOptions options, BlobInfo blob, Map<StorageRpc.Option, ?> optionsMap) {
@@ -61,7 +61,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
                 }
               }),
           getOptions().getRetrySettings(),
-          StorageImpl.EXCEPTION_HANDLER,
+          DefaultStorage.EXCEPTION_HANDLER,
           getOptions().getClock());
     } catch (RetryHelper.RetryHelperException e) {
       throw StorageException.translateAndThrow(e);
@@ -85,7 +85,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
             }
           },
           options.getRetrySettings(),
-          StorageImpl.EXCEPTION_HANDLER,
+          DefaultStorage.EXCEPTION_HANDLER,
           options.getClock());
     } catch (RetryHelper.RetryHelperException e) {
       throw StorageException.translateAndThrow(e);
@@ -105,7 +105,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
             }
           },
           options.getRetrySettings(),
-          StorageImpl.EXCEPTION_HANDLER,
+          DefaultStorage.EXCEPTION_HANDLER,
           options.getClock());
     } catch (RetryHelper.RetryHelperException e) {
       throw StorageException.translateAndThrow(e);

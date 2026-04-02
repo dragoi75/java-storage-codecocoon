@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,7 +19,6 @@ package com.google.cloud.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.google.cloud.storage.SignatureInfo.Builder;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,21 +31,21 @@ public class SignatureInfoTest {
   @Test(expected = IllegalArgumentException.class)
   public void requireHttpVerb() {
 
-    new SignatureInfo.Builder(null, 0L, URI.create(RESOURCE)).build();
+    new SignatureMetadata.CanonicalStringBuilder(null, 0L, URI.create(RESOURCE)).buildSignatureMetadata();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void requireResource() {
 
-    new SignatureInfo.Builder(HttpMethod.GET, 0L, null).build();
+    new SignatureMetadata.CanonicalStringBuilder(HttpMethod.GET, 0L, null).buildSignatureMetadata();
   }
 
   @Test
   public void constructUnsignedPayload() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    SignatureMetadata.CanonicalStringBuilder builder = new SignatureMetadata.CanonicalStringBuilder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignatureMetadata().buildUnsignedPayload();
 
     assertEquals("PUT\n\n\n0\n" + RESOURCE, unsignedPayload);
   }
@@ -54,7 +53,7 @@ public class SignatureInfoTest {
   @Test
   public void constructUnsignedPayloadWithExtensionHeaders() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    SignatureMetadata.CanonicalStringBuilder builder = new SignatureMetadata.CanonicalStringBuilder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
 
     Map<String, String> extensionHeaders = new HashMap<>();
     extensionHeaders.put("x-goog-acl", "public-read");
@@ -62,7 +61,7 @@ public class SignatureInfoTest {
 
     builder.setCanonicalizedExtensionHeaders(extensionHeaders);
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignatureMetadata().buildUnsignedPayload();
 
     String rawPayload = "PUT\n\n\n0\nx-goog-acl:public-read\nx-goog-meta-owner:myself\n" + RESOURCE;
 
@@ -71,13 +70,13 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4UnsignedPayload() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    SignatureMetadata.CanonicalStringBuilder builder = new SignatureMetadata.CanonicalStringBuilder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(CloudStorage.UrlSigningOption.SignatureProtocolVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignatureMetadata().buildUnsignedPayload();
 
     assertTrue(
         unsignedPayload.startsWith(
@@ -86,13 +85,13 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4QueryString() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    SignatureMetadata.CanonicalStringBuilder builder = new SignatureMetadata.CanonicalStringBuilder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(CloudStorage.UrlSigningOption.SignatureProtocolVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
-    String queryString = builder.build().constructV4QueryString();
+    String queryString = builder.buildSignatureMetadata().buildV4QueryString();
     assertEquals(
         "X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=me%40google.com%2F20010909%2F"
             + "auto%2Fstorage%2Fgoog4_request&X-Goog-Date=20010909T014640Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host",

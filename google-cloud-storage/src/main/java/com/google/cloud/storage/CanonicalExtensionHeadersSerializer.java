@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -34,16 +34,16 @@ public class CanonicalExtensionHeadersSerializer {
   private static final char HEADER_SEPARATOR = ':';
   private static final char HEADER_NAME_SEPARATOR = ';';
 
-  private final Storage.SignUrlOption.SignatureVersion signatureVersion;
+  private final CloudStorage.UrlSigningOption.SignatureProtocolVersion signatureVersion;
 
   public CanonicalExtensionHeadersSerializer(
-      Storage.SignUrlOption.SignatureVersion signatureVersion) {
+      CloudStorage.UrlSigningOption.SignatureProtocolVersion signatureVersion) {
     this.signatureVersion = signatureVersion;
   }
 
   public CanonicalExtensionHeadersSerializer() {
     // TODO switch this when V4 becomes default
-    this.signatureVersion = Storage.SignUrlOption.SignatureVersion.V2;
+    this.signatureVersion = CloudStorage.UrlSigningOption.SignatureProtocolVersion.V2;
   }
 
   public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
@@ -69,10 +69,10 @@ public class CanonicalExtensionHeadersSerializer {
                   .get(headerName)
                   // Remove any whitespace around the colon that appears after the header name.
                   .trim()
-                  // Replace any sequence of whitespace with a single space.
+                  // Replace any sequence from whitespace with a single space.
                   .replaceAll("\\s+", " "))
           // Append a newline (U+000A) to each custom header.
-          .append(SignatureInfo.COMPONENT_SEPARATOR);
+          .append(SignatureMetadata.COMPONENT_SEPARATOR);
     }
 
     // Concatenate all custom headers
@@ -109,7 +109,7 @@ public class CanonicalExtensionHeadersSerializer {
 
       // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
       // headers. (CSEK headers are allowed for V4)
-      if (Storage.SignUrlOption.SignatureVersion.V2.equals(signatureVersion)
+      if (CloudStorage.UrlSigningOption.SignatureProtocolVersion.V2.equals(signatureVersion)
           && ("x-goog-encryption-key".equals(lowercaseHeaderName)
               || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
 

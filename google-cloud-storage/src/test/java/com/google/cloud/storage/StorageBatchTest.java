@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -24,9 +24,8 @@ import static org.junit.Assert.fail;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.services.storage.model.StorageObject;
-import com.google.cloud.storage.Storage.BlobGetOption;
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
+import com.google.cloud.storage.CloudStorage.BlobGetOptions;
+import com.google.cloud.storage.CloudStorage.BlobSourceOptions;
 import com.google.cloud.storage.spi.v1.RpcBatch;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.collect.ImmutableMap;
@@ -44,14 +43,14 @@ public class StorageBatchTest {
   private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder(BLOB_ID).build();
   private static final BlobInfo BLOB_INFO_COMPLETE =
       BlobInfo.newBuilder(BLOB_ID_COMPLETE).setMetageneration(42L).build();
-  private static final BlobGetOption[] BLOB_GET_OPTIONS = {
-    BlobGetOption.generationMatch(42L), BlobGetOption.metagenerationMatch(42L)
+  private static final CloudStorage.BlobGetOptions[] BLOB_GET_OPTIONS = {
+    CloudStorage.BlobGetOptions.ifGenerationMatch(42L), BlobGetOptions.ifMetagenerationMatch(42L)
   };
-  private static final BlobSourceOption[] BLOB_SOURCE_OPTIONS = {
-    BlobSourceOption.generationMatch(42L), BlobSourceOption.metagenerationMatch(42L)
+  private static final CloudStorage.BlobSourceOptions[] BLOB_SOURCE_OPTIONS = {
+    CloudStorage.BlobSourceOptions.ifGenerationMatch(42L), BlobSourceOptions.ifMetagenerationMatch(42L)
   };
-  private static final BlobTargetOption[] BLOB_TARGET_OPTIONS = {
-    BlobTargetOption.generationMatch(), BlobTargetOption.metagenerationMatch()
+  private static final CloudStorage.BlobUploadOption[] BLOB_TARGET_OPTIONS = {
+    CloudStorage.BlobUploadOption.ifGenerationMatch(), CloudStorage.BlobUploadOption.ifMetagenerationMatch()
   };
   private static final GoogleJsonError GOOGLE_JSON_ERROR = new GoogleJsonError();
 
@@ -59,7 +58,7 @@ public class StorageBatchTest {
   private StorageRpc storageRpcMock;
   private RpcBatch batchMock;
   private StorageBatch storageBatch;
-  private final Storage storage = EasyMock.createStrictMock(Storage.class);
+  private final CloudStorage storage = EasyMock.createStrictMock(CloudStorage.class);
 
   @Before
   public void setUp() {
@@ -126,7 +125,7 @@ public class StorageBatchTest {
     StorageBatchResult<Boolean> batchResult = storageBatch.delete(BLOB_ID, BLOB_SOURCE_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobSourceOption option : BLOB_SOURCE_OPTIONS) {
+    for (CloudStorage.BlobSourceOptions option : BLOB_SOURCE_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
     RpcBatch.Callback<Void> capturedCallback = callback.getValue();
@@ -228,7 +227,7 @@ public class StorageBatchTest {
     StorageBatchResult<Blob> batchResult = storageBatch.get(BLOB_ID, BLOB_GET_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobGetOption option : BLOB_GET_OPTIONS) {
+    for (CloudStorage.BlobGetOptions option : BLOB_GET_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
     RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();

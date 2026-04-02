@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * Storage service exception.
+ * CloudStorage service exception.
  *
  * @see <a href="https://cloud.google.com/storage/docs/json_api/v1/status-codes">Google Cloud
- *     Storage error codes</a>
+ *     CloudStorage error codes</a>
  */
 @InternalApi
 public final class StorageException extends BaseHttpServiceException {

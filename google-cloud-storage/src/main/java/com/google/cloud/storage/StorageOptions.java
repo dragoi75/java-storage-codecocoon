@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,10 +28,10 @@ import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 
-public class StorageOptions extends ServiceOptions<Storage, StorageOptions> {
+public class StorageOptions extends ServiceOptions<CloudStorage, StorageOptions> {
 
   private static final long serialVersionUID = -2907268477247502947L;
-  private static final String API_SHORT_NAME = "Storage";
+  private static final String API_SHORT_NAME = "CloudStorage";
   private static final String GCS_SCOPE = "https://www.googleapis.com/auth/devstorage.full_control";
   private static final Set<String> SCOPES = ImmutableSet.of(GCS_SCOPE);
   private static final String DEFAULT_HOST = "https://storage.googleapis.com";
@@ -41,8 +41,8 @@ public class StorageOptions extends ServiceOptions<Storage, StorageOptions> {
     private static final StorageFactory INSTANCE = new DefaultStorageFactory();
 
     @Override
-    public Storage create(StorageOptions options) {
-      return new StorageImpl(options);
+    public CloudStorage create(StorageOptions options) {
+      return new DefaultStorage(options);
     }
   }
 
@@ -56,7 +56,7 @@ public class StorageOptions extends ServiceOptions<Storage, StorageOptions> {
     }
   }
 
-  public static class Builder extends ServiceOptions.Builder<Storage, StorageOptions, Builder> {
+  public static class Builder extends ServiceOptions.Builder<CloudStorage, StorageOptions, Builder> {
 
     private Builder() {}
 
@@ -83,7 +83,7 @@ public class StorageOptions extends ServiceOptions<Storage, StorageOptions> {
     super(StorageFactory.class, StorageRpcFactory.class, builder, new StorageDefaults());
   }
 
-  private static class StorageDefaults implements ServiceDefaults<Storage, StorageOptions> {
+  private static class StorageDefaults implements ServiceDefaults<CloudStorage, StorageOptions> {
 
     @Override
     public StorageFactory getDefaultServiceFactory() {

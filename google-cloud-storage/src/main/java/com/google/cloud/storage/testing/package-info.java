@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -15,7 +15,7 @@
  */
 
 /**
- * A testing helper for Google Cloud Storage.
+ * A testing helper for Google Cloud CloudStorage.
  *
  * <p>A simple usage example:
  *
@@ -23,9 +23,9 @@
  *
  * <pre>{@code
  * RemoteStorageHelper helper = RemoteStorageHelper.create();
- * Storage storage = helper.getOptions().getService();
+ * CloudStorage storage = helper.getOptions().getService();
  * String bucket = RemoteStorageHelper.generateBucketName();
- * storage.create(BucketInfo.of(bucket));
+ * storage.create(BucketInfo.from(bucket));
  * }</pre>
  *
  * <p>After the test:
