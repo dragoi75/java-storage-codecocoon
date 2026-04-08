@@ -44,7 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Google Storage object metadata.
+ * Google StorageService object metadata.
  *
  * @see <a href="https://cloud.google.com/storage/docs/concepts-techniques#concepts">Concepts and
  *     Terminology</a>
@@ -157,7 +157,7 @@ public class BlobInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BlobInfo}. */
+  /** SignatureBuilder for {@code BlobInfo}. */
   public abstract static class Builder {
 
     /** Sets the blob identity. */
@@ -686,7 +686,7 @@ public class BlobInfo implements Serializable {
 
   /**
    * Returns the number of components that make up this blob. Components are accumulated through the
-   * {@link Storage#compose(Storage.ComposeRequest)} operation and are limited to a count of 1024,
+   * {@link StorageService#compose(StorageService.ComposeBlobsRequest)} operation and are limited to a count of 1024,
    * counting 1 for each non-composite component blob and componentCount for each composite
    * component blob. This value is set only for composite blobs.
    *
@@ -812,8 +812,8 @@ public class BlobInfo implements Serializable {
 
   /**
    * Returns {@code true} if the current blob represents a directory. This can only happen if the
-   * blob is returned by {@link Storage#list(String, Storage.BlobListOption...)} when the {@link
-   * Storage.BlobListOption#currentDirectory()} option is used. When this is the case only {@link
+   * blob is returned by {@link StorageService#list(String, StorageService.BlobListOptions...)} when the {@link
+   * StorageService.BlobListOptions#currentDirectory()} option is used. When this is the case only {@link
    * #getBlobId()} and {@link #getSize()} are set for the current blob: {@link BlobId#getName()}
    * ends with the '/' character, {@link BlobId#getGeneration()} returns {@code null} and {@link
    * #getSize()} is {@code 0}.
@@ -845,21 +845,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and event-based hold for the blob is enabled.
+   * StorageService.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)} and event-based hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but event-based hold for the blob is not
+   * StorageService.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)}, but event-based hold for the blob is not
    * enabled. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * StorageService.BlobMetadataField#EVENT_BASED_HOLD} is not selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of event-based
+   * StorageService#update(BlobInfo, StorageService.BlobUploadOption...)} in which case the value of event-based
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -872,21 +872,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and temporary hold for the blob is enabled.
+   * StorageService.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)} and temporary hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but temporary hold for the blob is not enabled.
+   * StorageService.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)}, but temporary hold for the blob is not enabled.
    * This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * StorageService.BlobMetadataField#TEMPORARY_HOLD} is not selected in a {@link
+   * StorageService#get(BlobId, StorageService.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of temporary
+   * StorageService#update(BlobInfo, StorageService.BlobUploadOption...)} in which case the value of temporary
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi

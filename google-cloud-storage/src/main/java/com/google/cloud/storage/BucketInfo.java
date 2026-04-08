@@ -49,7 +49,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Google Storage bucket metadata;
+ * Google StorageService bucket metadata;
  *
  * @see <a href="https://cloud.google.com/storage/docs/concepts-techniques#concepts">Concepts and
  *     Terminology</a>
@@ -189,7 +189,7 @@ public class BucketInfo implements Serializable {
           .build();
     }
 
-    /** Builder for {@code IamConfiguration} */
+    /** SignatureBuilder for {@code IamConfiguration} */
     public static class Builder {
       private Boolean isUniformBucketLevelAccessEnabled;
       private Long uniformBucketLevelAccessLockedTime;
@@ -526,7 +526,7 @@ public class BucketInfo implements Serializable {
         return matchesStorageClass;
       }
 
-      /** Builder for {@code LifecycleCondition}. */
+      /** SignatureBuilder for {@code LifecycleCondition}. */
       public static class Builder {
         private Integer age;
         private DateTime createdBefore;
@@ -579,7 +579,7 @@ public class BucketInfo implements Serializable {
         }
 
         /**
-         * Sets a list of Storage Classes for a objects that satisfy the condition to execute the
+         * Sets a list of StorageService Classes for a objects that satisfy the condition to execute the
          * Action. *
          */
         public Builder setMatchesStorageClass(List<StorageClass> matchesStorageClass) {
@@ -757,10 +757,10 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and use {@code
-   *     LifecycleCondition.Builder.setAge} instead.
+   *     LifecycleCondition.SignatureBuilder.setAge} instead.
    *     <p>For example, {@code new DeleteLifecycleAction(1)} is equivalent to {@code new
    *     LifecycleRule( LifecycleAction.newDeleteAction(),
-   *     LifecycleCondition.newBuilder().setAge(1).build()))}
+   *     LifecycleCondition.newBuilder().setAge(1).buildSignatureMetadata()))}
    */
   @Deprecated
   public static class AgeDeleteRule extends DeleteRule {
@@ -827,7 +827,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with an action {@code DeleteLifecycleAction} and a
-   *     condition {@code LifecycleCondition.Builder.setCreatedBefore} instead.
+   *     condition {@code LifecycleCondition.SignatureBuilder.setCreatedBefore} instead.
    */
   @Deprecated
   public static class CreatedBeforeDeleteRule extends DeleteRule {
@@ -862,7 +862,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setNumberOfNewerVersions} instead.
+   *     {@code LifecycleCondition.SignatureBuilder.setNumberOfNewerVersions} instead.
    */
   @Deprecated
   public static class NumNewerVersionsDeleteRule extends DeleteRule {
@@ -896,7 +896,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setIsLive} instead.
+   *     {@code LifecycleCondition.SignatureBuilder.setIsLive} instead.
    */
   @Deprecated
   public static class IsLiveDeleteRule extends DeleteRule {
@@ -925,7 +925,7 @@ public class BucketInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BucketInfo}. */
+  /** SignatureBuilder for {@code BucketInfo}. */
   public abstract static class Builder {
     Builder() {}
 
@@ -964,7 +964,7 @@ public class BucketInfo implements Serializable {
      *
      * @deprecated Use {@code setLifecycleRules} instead, as in {@code
      *     setLifecycleRules(Collections.singletonList( new BucketInfo.LifecycleRule(
-     *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).build())));}
+     *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).buildSignatureMetadata())));}
      */
     @Deprecated
     public abstract Builder setDeleteRules(Iterable<? extends DeleteRule> rules);
@@ -1370,20 +1370,20 @@ public class BucketInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and versions for the bucket is enabled.
+   * StorageService.BucketAttribute#VERSIONING} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)} and versions for the bucket is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but versions for the bucket is not enabled.
+   * StorageService.BucketAttribute#VERSIONING} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)}, but versions for the bucket is not enabled.
    * This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is not selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is unknown.
+   * StorageService.BucketAttribute#VERSIONING} is not selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} versions is explicitly set to false client side for a follow-up
-   * request for example {@link Storage#update(BucketInfo, Storage.BucketTargetOption...)} in which
+   * request for example {@link StorageService#update(BucketInfo, StorageService.BucketTargetOptions...)} in which
    * case the value of versions will remain {@code false} for for the given instance.
    */
   public Boolean versioningEnabled() {
@@ -1394,16 +1394,16 @@ public class BucketInfo implements Serializable {
    * Returns a {@code Boolean} with either {@code true}, {@code false}, and in a specific case
    * {@code null}.
    *
-   * <p>Case 1: {@code true} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * is selected in a {@link Storage#get(String, Storage.BucketGetOption...)} and requester pays for
+   * <p>Case 1: {@code true} the field {@link StorageService.BucketAttribute#BILLING}
+   * is selected in a {@link StorageService#get(String, StorageService.GetBucketOption...)} and requester pays for
    * the bucket is enabled.
    *
-   * <p>Case 2: {@code false} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * in a {@link Storage#get(String, Storage.BucketGetOption...)} is selected and requester pays for
+   * <p>Case 2: {@code false} the field {@link StorageService.BucketAttribute#BILLING}
+   * in a {@link StorageService#get(String, StorageService.GetBucketOption...)} is selected and requester pays for
    * the bucket is disable.
    *
-   * <p>Case 3: {@code null} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * in a {@link Storage#get(String, Storage.BucketGetOption...)} is not selected, the value is
+   * <p>Case 3: {@code null} the field {@link StorageService.BucketAttribute#BILLING}
+   * in a {@link StorageService#get(String, StorageService.GetBucketOption...)} is not selected, the value is
    * unknown.
    */
   public Boolean requesterPays() {
@@ -1479,7 +1479,7 @@ public class BucketInfo implements Serializable {
    * Returns the bucket's storage class. This defines how blobs in the bucket are stored and
    * determines the SLA and the cost of storage.
    *
-   * @see <a href="https://cloud.google.com/storage/docs/storage-classes">Storage Classes</a>
+   * @see <a href="https://cloud.google.com/storage/docs/storage-classes">StorageService Classes</a>
    */
   public StorageClass getStorageClass() {
     return storageClass;
@@ -1530,23 +1530,23 @@ public class BucketInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and default event-based hold for the bucket is
+   * StorageService.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)} and default event-based hold for the bucket is
    * enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but default event-based hold for the bucket
+   * StorageService.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)}, but default event-based hold for the bucket
    * is not enabled. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is not selected in a
-   * {@link Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is
+   * StorageService.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is not selected in a
+   * {@link StorageService#get(String, StorageService.GetBucketOption...)}, and the state for this field is
    * unknown.
    *
    * <p>Case 3: {@code false} default event-based hold is explicitly set to false using in a {@link
    * Builder#setDefaultEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BucketInfo, Storage.BucketTargetOption...)} in which case the value of default
+   * StorageService#update(BucketInfo, StorageService.BucketTargetOptions...)} in which case the value of default
    * event-based hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -1567,17 +1567,17 @@ public class BucketInfo implements Serializable {
    * Returns a {@code Boolean} with either {@code true} or {@code null}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and retention policy for the bucket is locked.
+   * StorageService.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)} and retention policy for the bucket is locked.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but retention policy for the bucket is not
+   * StorageService.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)}, but retention policy for the bucket is not
    * locked. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is not selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is unknown.
+   * StorageService.BucketAttribute#RETENTION_POLICY} is not selected in a {@link
+   * StorageService#get(String, StorageService.GetBucketOption...)}, and the state for this field is unknown.
    */
   @BetaApi
   public Boolean retentionPolicyIsLocked() {

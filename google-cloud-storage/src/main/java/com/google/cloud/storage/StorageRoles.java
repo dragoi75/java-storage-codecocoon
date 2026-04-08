@@ -19,9 +19,9 @@ package com.google.cloud.storage;
 import com.google.cloud.Role;
 
 /**
- * IAM roles specific to Storage. An overview of the permissions available to Storage and the
+ * IAM roles specific to StorageService. An overview of the permissions available to StorageService and the
  * capabilities they grant can be found in the <a
- * href="https://cloud.google.com/storage/docs/access-control/iam">Google Cloud Storage IAM
+ * href="https://cloud.google.com/storage/docs/access-control/iam">Google Cloud StorageService IAM
  * documentation.</a>
  */
 public class StorageRoles {

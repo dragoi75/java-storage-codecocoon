@@ -128,7 +128,7 @@ class BlobReadChannel implements ReadChannel {
                   }
                 },
                 serviceOptions.getRetrySettings(),
-                StorageImpl.EXCEPTION_HANDLER,
+                StorageClientImpl.EXCEPTION_HANDLER,
                 serviceOptions.getClock());
         if (result.y().length > 0 && lastEtag != null && !Objects.equals(result.x(), lastEtag)) {
           StringBuilder messageBuilder = new StringBuilder();

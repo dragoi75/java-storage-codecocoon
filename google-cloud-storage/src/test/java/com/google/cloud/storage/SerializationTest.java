@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class SerializationTest extends BaseSerializationTest {
 
-  private static final Storage STORAGE =
+  private static final StorageService STORAGE =
       StorageOptions.newBuilder().setProjectId("p").build().getService();
   private static final Acl.Domain ACL_DOMAIN = new Acl.Domain("domain");
   private static final Acl.Group ACL_GROUP = new Acl.Group("group");
@@ -48,18 +48,18 @@ public class SerializationTest extends BaseSerializationTest {
   private static final PageImpl<Blob> PAGE_RESULT =
       new PageImpl<>(null, "c", Collections.singletonList(BLOB));
   private static final StorageException STORAGE_EXCEPTION = new StorageException(42, "message");
-  private static final Storage.BlobListOption BLOB_LIST_OPTIONS =
-      Storage.BlobListOption.pageSize(100);
-  private static final Storage.BlobSourceOption BLOB_SOURCE_OPTIONS =
-      Storage.BlobSourceOption.generationMatch(1);
-  private static final Storage.BlobTargetOption BLOB_TARGET_OPTIONS =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BucketListOption BUCKET_LIST_OPTIONS =
-      Storage.BucketListOption.prefix("bla");
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_OPTIONS =
-      Storage.BucketSourceOption.metagenerationMatch(1);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_OPTIONS =
-      Storage.BucketTargetOption.metagenerationNotMatch();
+  private static final StorageService.BlobListOptions BLOB_LIST_OPTIONS =
+      StorageService.BlobListOptions.pageSize(100);
+  private static final StorageService.BlobSourceOptions BLOB_SOURCE_OPTIONS =
+      StorageService.BlobSourceOptions.generationMatch(1);
+  private static final StorageService.BlobUploadOption BLOB_TARGET_OPTIONS =
+      StorageService.BlobUploadOption.generationMatch();
+  private static final StorageService.BucketListOptions BUCKET_LIST_OPTIONS =
+      StorageService.BucketListOptions.prefix("bla");
+  private static final StorageService.BucketSourceOptions BUCKET_SOURCE_OPTIONS =
+      StorageService.BucketSourceOptions.metagenerationMatch(1);
+  private static final StorageService.BucketTargetOptions BUCKET_TARGET_OPTIONS =
+      StorageService.BucketTargetOptions.metagenerationNotMatch();
   private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   @Override

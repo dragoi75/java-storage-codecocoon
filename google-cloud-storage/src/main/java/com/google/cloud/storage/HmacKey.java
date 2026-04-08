@@ -36,7 +36,7 @@ public class HmacKey implements Serializable {
     return new Builder(secretKey);
   }
 
-  /** Builder for {@code HmacKey} objects. * */
+  /** SignatureBuilder for {@code HmacKey} objects. * */
   public static class Builder {
     private String secretKey;
     private HmacKeyMetadata metadata;
@@ -256,7 +256,7 @@ public class HmacKey implements Serializable {
       return updateTime;
     }
 
-    /** Builder for {@code HmacKeyMetadata} objects. * */
+    /** SignatureBuilder for {@code HmacKeyMetadata} objects. * */
     public static class Builder {
       private String accessId;
       private String etag;

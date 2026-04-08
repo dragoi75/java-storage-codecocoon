@@ -15,18 +15,18 @@
  */
 
 /**
- * A client for Cloud Storage - Unified object storage.
+ * A client for Cloud StorageService - Unified object storage.
  *
  * <p>Here's a simple usage example for using google-cloud from App/Compute Engine. This example
- * shows how to create a Storage blob. For the complete source code see <a
+ * shows how to create a StorageService blob. For the complete source code see <a
  * href="https://github.com/googleapis/google-cloud-java/tree/master/google-cloud-examples/src/main/java/com/google/cloud/examples/storage/snippets/GetOrCreateBlob.java">
  * CreateBlob.java</a>.
  *
  * <pre>{@code
- * Storage storage = StorageOptions.getDefaultInstance().getService();
+ * StorageService storage = StorageOptions.getDefaultInstance().getService();
  * BlobId blobId = BlobId.of("bucket", "blob_name");
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
- * Blob blob = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes(UTF_8));
+ * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildSignatureMetadata();
+ * Blob blob = storage.create(blobInfo, "Hello, Cloud StorageService!".getBytes(UTF_8));
  * }</pre>
  *
  * <p>This second example shows how to update the blob's content if the blob exists. For the
@@ -35,7 +35,7 @@
  * UpdateBlob.java</a>.
  *
  * <pre>{@code
- * Storage storage = StorageOptions.getDefaultInstance().getService();
+ * StorageService storage = StorageOptions.getDefaultInstance().getService();
  * BlobId blobId = BlobId.of("bucket", "blob_name");
  * Blob blob = storage.get(blobId);
  * if (blob != null) {
@@ -52,6 +52,6 @@
  * ID</a> and <a href="https://github.com/googleapis/google-cloud-java#authentication">provide
  * credentials</a>.
  *
- * @see <a href="https://cloud.google.com/storage/">Google Cloud Storage</a>
+ * @see <a href="https://cloud.google.com/storage/">Google Cloud StorageService</a>
  */
 package com.google.cloud.storage;

@@ -24,9 +24,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.Tuple;
 import com.google.cloud.storage.Acl.Entity;
-import com.google.cloud.storage.Storage.BlobGetOption;
-import com.google.cloud.storage.Storage.BlobListOption;
-import com.google.cloud.storage.Storage.BucketTargetOption;
+import com.google.cloud.storage.StorageService.BlobGetOptions;
+import com.google.cloud.storage.StorageService.BlobListOptions;
+import com.google.cloud.storage.StorageService.BucketTargetOptions;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -56,7 +56,7 @@ public class Bucket extends BucketInfo {
   private static final long serialVersionUID = 8574601739542252586L;
 
   private final StorageOptions options;
-  private transient Storage storage;
+  private transient StorageService storage;
 
   /** Class for specifying bucket source options when {@code Bucket} methods are used. */
   public static class BucketSourceOption extends Option {
@@ -71,23 +71,23 @@ public class Bucket extends BucketInfo {
       super(rpcOption, value);
     }
 
-    private Storage.BucketSourceOption toSourceOption(BucketInfo bucketInfo) {
+    private StorageService.BucketSourceOptions toSourceOption(BucketInfo bucketInfo) {
       switch (getRpcOption()) {
         case IF_METAGENERATION_MATCH:
-          return Storage.BucketSourceOption.metagenerationMatch(bucketInfo.getMetageneration());
+          return StorageService.BucketSourceOptions.metagenerationMatch(bucketInfo.getMetageneration());
         case IF_METAGENERATION_NOT_MATCH:
-          return Storage.BucketSourceOption.metagenerationNotMatch(bucketInfo.getMetageneration());
+          return StorageService.BucketSourceOptions.metagenerationNotMatch(bucketInfo.getMetageneration());
         default:
           throw new AssertionError("Unexpected enum value");
       }
     }
 
-    private Storage.BucketGetOption toGetOption(BucketInfo bucketInfo) {
+    private StorageService.GetBucketOption toGetOption(BucketInfo bucketInfo) {
       switch (getRpcOption()) {
         case IF_METAGENERATION_MATCH:
-          return Storage.BucketGetOption.metagenerationMatch(bucketInfo.getMetageneration());
+          return StorageService.GetBucketOption.metagenerationMatch(bucketInfo.getMetageneration());
         case IF_METAGENERATION_NOT_MATCH:
-          return Storage.BucketGetOption.metagenerationNotMatch(bucketInfo.getMetageneration());
+          return StorageService.GetBucketOption.metagenerationNotMatch(bucketInfo.getMetageneration());
         default:
           throw new AssertionError("Unexpected enum value");
       }
@@ -117,10 +117,10 @@ public class Bucket extends BucketInfo {
       return new BucketSourceOption(StorageRpc.Option.USER_PROJECT, userProject);
     }
 
-    static Storage.BucketSourceOption[] toSourceOptions(
+    static StorageService.BucketSourceOptions[] toSourceOptions(
         BucketInfo bucketInfo, BucketSourceOption... options) {
-      Storage.BucketSourceOption[] convertedOptions =
-          new Storage.BucketSourceOption[options.length];
+      StorageService.BucketSourceOptions[] convertedOptions =
+          new StorageService.BucketSourceOptions[options.length];
       int index = 0;
       for (BucketSourceOption option : options) {
         convertedOptions[index++] = option.toSourceOption(bucketInfo);
@@ -128,9 +128,9 @@ public class Bucket extends BucketInfo {
       return convertedOptions;
     }
 
-    static Storage.BucketGetOption[] toGetOptions(
+    static StorageService.GetBucketOption[] toGetOptions(
         BucketInfo bucketInfo, BucketSourceOption... options) {
-      Storage.BucketGetOption[] convertedOptions = new Storage.BucketGetOption[options.length];
+      StorageService.GetBucketOption[] convertedOptions = new StorageService.GetBucketOption[options.length];
       int index = 0;
       for (BucketSourceOption option : options) {
         convertedOptions[index++] = option.toGetOption(bucketInfo);
@@ -155,43 +155,43 @@ public class Bucket extends BucketInfo {
       super(rpcOption, value);
     }
 
-    private Tuple<BlobInfo, Storage.BlobTargetOption> toTargetOption(BlobInfo blobInfo) {
+    private Tuple<BlobInfo, StorageService.BlobUploadOption> toTargetOption(BlobInfo blobInfo) {
       BlobId blobId = blobInfo.getBlobId();
       switch (getRpcOption()) {
         case PREDEFINED_ACL:
           return Tuple.of(
-              blobInfo, Storage.BlobTargetOption.predefinedAcl((Storage.PredefinedAcl) getValue()));
+              blobInfo, StorageService.BlobUploadOption.predefinedAcl((StorageService.PredefinedAccessControlList) getValue()));
         case IF_GENERATION_MATCH:
           blobId = BlobId.of(blobId.getBucket(), blobId.getName(), (Long) getValue());
           return Tuple.of(
               blobInfo.toBuilder().setBlobId(blobId).build(),
-              Storage.BlobTargetOption.generationMatch());
+              StorageService.BlobUploadOption.generationMatch());
         case IF_GENERATION_NOT_MATCH:
           blobId = BlobId.of(blobId.getBucket(), blobId.getName(), (Long) getValue());
           return Tuple.of(
               blobInfo.toBuilder().setBlobId(blobId).build(),
-              Storage.BlobTargetOption.generationNotMatch());
+              StorageService.BlobUploadOption.generationNotMatch());
         case IF_METAGENERATION_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setMetageneration((Long) getValue()).build(),
-              Storage.BlobTargetOption.metagenerationMatch());
+              StorageService.BlobUploadOption.metagenerationMatch());
         case IF_METAGENERATION_NOT_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setMetageneration((Long) getValue()).build(),
-              Storage.BlobTargetOption.metagenerationNotMatch());
+              StorageService.BlobUploadOption.metagenerationNotMatch());
         case CUSTOMER_SUPPLIED_KEY:
-          return Tuple.of(blobInfo, Storage.BlobTargetOption.encryptionKey((String) getValue()));
+          return Tuple.of(blobInfo, StorageService.BlobUploadOption.encryptionKey((String) getValue()));
         case KMS_KEY_NAME:
-          return Tuple.of(blobInfo, Storage.BlobTargetOption.kmsKeyName((String) getValue()));
+          return Tuple.of(blobInfo, StorageService.BlobUploadOption.kmsKeyName((String) getValue()));
         case USER_PROJECT:
-          return Tuple.of(blobInfo, Storage.BlobTargetOption.userProject((String) getValue()));
+          return Tuple.of(blobInfo, StorageService.BlobUploadOption.userProject((String) getValue()));
         default:
           throw new AssertionError("Unexpected enum value");
       }
     }
 
     /** Returns an option for specifying blob's predefined ACL configuration. */
-    public static BlobTargetOption predefinedAcl(Storage.PredefinedAcl acl) {
+    public static BlobTargetOption predefinedAcl(StorageService.PredefinedAccessControlList acl) {
       return new BlobTargetOption(StorageRpc.Option.PREDEFINED_ACL, acl);
     }
 
@@ -276,7 +276,7 @@ public class Bucket extends BucketInfo {
       return new BlobTargetOption(StorageRpc.Option.USER_PROJECT, userProject);
     }
 
-    static Tuple<BlobInfo, Storage.BlobTargetOption[]> toTargetOptions(
+    static Tuple<BlobInfo, StorageService.BlobUploadOption[]> toTargetOptions(
         BlobInfo info, BlobTargetOption... options) {
       Set<StorageRpc.Option> optionSet =
           Sets.immutableEnumSet(Lists.transform(Arrays.asList(options), TO_ENUM));
@@ -288,11 +288,11 @@ public class Bucket extends BucketInfo {
           !(optionSet.contains(StorageRpc.Option.IF_GENERATION_NOT_MATCH)
               && optionSet.contains(StorageRpc.Option.IF_GENERATION_MATCH)),
           "Only one option of generationMatch, doesNotExist or generationNotMatch can be provided");
-      Storage.BlobTargetOption[] convertedOptions = new Storage.BlobTargetOption[options.length];
+      StorageService.BlobUploadOption[] convertedOptions = new StorageService.BlobUploadOption[options.length];
       BlobInfo targetInfo = info;
       int index = 0;
       for (BlobTargetOption option : options) {
-        Tuple<BlobInfo, Storage.BlobTargetOption> target = option.toTargetOption(targetInfo);
+        Tuple<BlobInfo, StorageService.BlobUploadOption> target = option.toTargetOption(targetInfo);
         targetInfo = target.x();
         convertedOptions[index++] = target.y();
       }
@@ -303,62 +303,62 @@ public class Bucket extends BucketInfo {
   /** Class for specifying blob write options when {@code Bucket} methods are used. */
   public static class BlobWriteOption implements Serializable {
 
-    private static final Function<BlobWriteOption, Storage.BlobWriteOption.Option> TO_ENUM =
-        new Function<BlobWriteOption, Storage.BlobWriteOption.Option>() {
+    private static final Function<BlobWriteOption, StorageService.BlobWriteOptions.RequestOption> TO_ENUM =
+        new Function<BlobWriteOption, StorageService.BlobWriteOptions.RequestOption>() {
           @Override
-          public Storage.BlobWriteOption.Option apply(BlobWriteOption blobWriteOption) {
+          public StorageService.BlobWriteOptions.RequestOption apply(BlobWriteOption blobWriteOption) {
             return blobWriteOption.option;
           }
         };
     private static final long serialVersionUID = 4722190734541993114L;
 
-    private final Storage.BlobWriteOption.Option option;
+    private final StorageService.BlobWriteOptions.RequestOption option;
     private final Object value;
 
-    private Tuple<BlobInfo, Storage.BlobWriteOption> toWriteOption(BlobInfo blobInfo) {
+    private Tuple<BlobInfo, StorageService.BlobWriteOptions> toWriteOption(BlobInfo blobInfo) {
       BlobId blobId = blobInfo.getBlobId();
       switch (option) {
         case PREDEFINED_ACL:
           return Tuple.of(
-              blobInfo, Storage.BlobWriteOption.predefinedAcl((Storage.PredefinedAcl) value));
+              blobInfo, StorageService.BlobWriteOptions.predefinedAcl((StorageService.PredefinedAccessControlList) value));
         case IF_GENERATION_MATCH:
           blobId = BlobId.of(blobId.getBucket(), blobId.getName(), (Long) value);
           return Tuple.of(
               blobInfo.toBuilder().setBlobId(blobId).build(),
-              Storage.BlobWriteOption.generationMatch());
+              StorageService.BlobWriteOptions.generationMatch());
         case IF_GENERATION_NOT_MATCH:
           blobId = BlobId.of(blobId.getBucket(), blobId.getName(), (Long) value);
           return Tuple.of(
               blobInfo.toBuilder().setBlobId(blobId).build(),
-              Storage.BlobWriteOption.generationNotMatch());
+              StorageService.BlobWriteOptions.generationNotMatch());
         case IF_METAGENERATION_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setMetageneration((Long) value).build(),
-              Storage.BlobWriteOption.metagenerationMatch());
+              StorageService.BlobWriteOptions.metagenerationMatch());
         case IF_METAGENERATION_NOT_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setMetageneration((Long) value).build(),
-              Storage.BlobWriteOption.metagenerationNotMatch());
+              StorageService.BlobWriteOptions.metagenerationNotMatch());
         case IF_MD5_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setMd5((String) value).build(),
-              Storage.BlobWriteOption.md5Match());
+              StorageService.BlobWriteOptions.md5Match());
         case IF_CRC32C_MATCH:
           return Tuple.of(
               blobInfo.toBuilder().setCrc32c((String) value).build(),
-              Storage.BlobWriteOption.crc32cMatch());
+              StorageService.BlobWriteOptions.crc32cMatch());
         case CUSTOMER_SUPPLIED_KEY:
-          return Tuple.of(blobInfo, Storage.BlobWriteOption.encryptionKey((String) value));
+          return Tuple.of(blobInfo, StorageService.BlobWriteOptions.encryptionKey((String) value));
         case KMS_KEY_NAME:
-          return Tuple.of(blobInfo, Storage.BlobWriteOption.kmsKeyName((String) value));
+          return Tuple.of(blobInfo, StorageService.BlobWriteOptions.kmsKeyName((String) value));
         case USER_PROJECT:
-          return Tuple.of(blobInfo, Storage.BlobWriteOption.userProject((String) value));
+          return Tuple.of(blobInfo, StorageService.BlobWriteOptions.userProject((String) value));
         default:
           throw new AssertionError("Unexpected enum value");
       }
     }
 
-    private BlobWriteOption(Storage.BlobWriteOption.Option option, Object value) {
+    private BlobWriteOption(StorageService.BlobWriteOptions.RequestOption option, Object value) {
       this.option = option;
       this.value = value;
     }
@@ -381,8 +381,8 @@ public class Bucket extends BucketInfo {
     }
 
     /** Returns an option for specifying blob's predefined ACL configuration. */
-    public static BlobWriteOption predefinedAcl(Storage.PredefinedAcl acl) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.PREDEFINED_ACL, acl);
+    public static BlobWriteOption predefinedAcl(StorageService.PredefinedAccessControlList acl) {
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.PREDEFINED_ACL, acl);
     }
 
     /**
@@ -391,7 +391,7 @@ public class Bucket extends BucketInfo {
      * #generationNotMatch(long)}.
      */
     public static BlobWriteOption doesNotExist() {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.IF_GENERATION_MATCH, 0L);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.IF_GENERATION_MATCH, 0L);
     }
 
     /**
@@ -400,7 +400,7 @@ public class Bucket extends BucketInfo {
      * together with {@link #generationNotMatch(long)} or {@link #doesNotExist()}.
      */
     public static BlobWriteOption generationMatch(long generation) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.IF_GENERATION_MATCH, generation);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.IF_GENERATION_MATCH, generation);
     }
 
     /**
@@ -410,7 +410,7 @@ public class Bucket extends BucketInfo {
      */
     public static BlobWriteOption generationNotMatch(long generation) {
       return new BlobWriteOption(
-          Storage.BlobWriteOption.Option.IF_GENERATION_NOT_MATCH, generation);
+          StorageService.BlobWriteOptions.RequestOption.IF_GENERATION_NOT_MATCH, generation);
     }
 
     /**
@@ -420,7 +420,7 @@ public class Bucket extends BucketInfo {
      */
     public static BlobWriteOption metagenerationMatch(long metageneration) {
       return new BlobWriteOption(
-          Storage.BlobWriteOption.Option.IF_METAGENERATION_MATCH, metageneration);
+          StorageService.BlobWriteOptions.RequestOption.IF_METAGENERATION_MATCH, metageneration);
     }
 
     /**
@@ -430,7 +430,7 @@ public class Bucket extends BucketInfo {
      */
     public static BlobWriteOption metagenerationNotMatch(long metageneration) {
       return new BlobWriteOption(
-          Storage.BlobWriteOption.Option.IF_METAGENERATION_NOT_MATCH, metageneration);
+          StorageService.BlobWriteOptions.RequestOption.IF_METAGENERATION_NOT_MATCH, metageneration);
     }
 
     /**
@@ -438,7 +438,7 @@ public class Bucket extends BucketInfo {
      * fail if blobs' data MD5 hash does not match the provided value.
      */
     public static BlobWriteOption md5Match(String md5) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.IF_MD5_MATCH, md5);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.IF_MD5_MATCH, md5);
     }
 
     /**
@@ -446,7 +446,7 @@ public class Bucket extends BucketInfo {
      * will fail if blobs' data CRC32C checksum does not match the provided value.
      */
     public static BlobWriteOption crc32cMatch(String crc32c) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.IF_CRC32C_MATCH, crc32c);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.IF_CRC32C_MATCH, crc32c);
     }
 
     /**
@@ -455,7 +455,7 @@ public class Bucket extends BucketInfo {
      */
     public static BlobWriteOption encryptionKey(Key key) {
       String base64Key = BaseEncoding.base64().encode(key.getEncoded());
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.CUSTOMER_SUPPLIED_KEY, base64Key);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.CUSTOMER_SUPPLIED_KEY, base64Key);
     }
 
     /**
@@ -465,7 +465,7 @@ public class Bucket extends BucketInfo {
      * @param key the AES256 encoded in base64
      */
     public static BlobWriteOption encryptionKey(String key) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.CUSTOMER_SUPPLIED_KEY, key);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.CUSTOMER_SUPPLIED_KEY, key);
     }
 
     /**
@@ -473,26 +473,26 @@ public class Bucket extends BucketInfo {
      * with 'requester_pays' flag.
      */
     public static BlobWriteOption userProject(String userProject) {
-      return new BlobWriteOption(Storage.BlobWriteOption.Option.USER_PROJECT, userProject);
+      return new BlobWriteOption(StorageService.BlobWriteOptions.RequestOption.USER_PROJECT, userProject);
     }
 
-    static Tuple<BlobInfo, Storage.BlobWriteOption[]> toWriteOptions(
+    static Tuple<BlobInfo, StorageService.BlobWriteOptions[]> toWriteOptions(
         BlobInfo info, BlobWriteOption... options) {
-      Set<Storage.BlobWriteOption.Option> optionSet =
+      Set<StorageService.BlobWriteOptions.RequestOption> optionSet =
           Sets.immutableEnumSet(Lists.transform(Arrays.asList(options), TO_ENUM));
       checkArgument(
-          !(optionSet.contains(Storage.BlobWriteOption.Option.IF_METAGENERATION_NOT_MATCH)
-              && optionSet.contains(Storage.BlobWriteOption.Option.IF_METAGENERATION_MATCH)),
+          !(optionSet.contains(StorageService.BlobWriteOptions.RequestOption.IF_METAGENERATION_NOT_MATCH)
+              && optionSet.contains(StorageService.BlobWriteOptions.RequestOption.IF_METAGENERATION_MATCH)),
           "metagenerationMatch and metagenerationNotMatch options can not be both provided");
       checkArgument(
-          !(optionSet.contains(Storage.BlobWriteOption.Option.IF_GENERATION_NOT_MATCH)
-              && optionSet.contains(Storage.BlobWriteOption.Option.IF_GENERATION_MATCH)),
+          !(optionSet.contains(StorageService.BlobWriteOptions.RequestOption.IF_GENERATION_NOT_MATCH)
+              && optionSet.contains(StorageService.BlobWriteOptions.RequestOption.IF_GENERATION_MATCH)),
           "Only one option of generationMatch, doesNotExist or generationNotMatch can be provided");
-      Storage.BlobWriteOption[] convertedOptions = new Storage.BlobWriteOption[options.length];
+      StorageService.BlobWriteOptions[] convertedOptions = new StorageService.BlobWriteOptions[options.length];
       BlobInfo writeInfo = info;
       int index = 0;
       for (BlobWriteOption option : options) {
-        Tuple<BlobInfo, Storage.BlobWriteOption> write = option.toWriteOption(writeInfo);
+        Tuple<BlobInfo, StorageService.BlobWriteOptions> write = option.toWriteOption(writeInfo);
         writeInfo = write.x();
         convertedOptions[index++] = write.y();
       }
@@ -500,9 +500,9 @@ public class Bucket extends BucketInfo {
     }
   }
 
-  /** Builder for {@code Bucket}. */
+  /** SignatureBuilder for {@code Bucket}. */
   public static class Builder extends BucketInfo.Builder {
-    private final Storage storage;
+    private final StorageService storage;
     private final BucketInfo.BuilderImpl infoBuilder;
 
     Builder(Bucket bucket) {
@@ -679,7 +679,7 @@ public class Bucket extends BucketInfo {
     }
   }
 
-  Bucket(Storage storage, BucketInfo.BuilderImpl infoBuilder) {
+  Bucket(StorageService storage, BucketInfo.BuilderImpl infoBuilder) {
     super(infoBuilder);
     this.storage = checkNotNull(storage);
     this.options = storage.getOptions();
@@ -704,8 +704,8 @@ public class Bucket extends BucketInfo {
    */
   public boolean exists(BucketSourceOption... options) {
     int length = options.length;
-    Storage.BucketGetOption[] getOptions = Arrays.copyOf(toGetOptions(this, options), length + 1);
-    getOptions[length] = Storage.BucketGetOption.fields();
+    StorageService.GetBucketOption[] getOptions = Arrays.copyOf(toGetOptions(this, options), length + 1);
+    getOptions[length] = StorageService.GetBucketOption.fields();
     return storage.get(getName(), getOptions) != null;
   }
 
@@ -716,7 +716,7 @@ public class Bucket extends BucketInfo {
    * {@link Bucket#getMetageneration()} value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * Bucket latestBucket = bucket.reload(BucketSourceOption.metagenerationMatch());
+   * Bucket latestBucket = bucket.reload(BucketSourceOptions.metagenerationMatch());
    * if (latestBucket == null) {
    *   // the bucket was not found
    * }
@@ -735,19 +735,19 @@ public class Bucket extends BucketInfo {
    * is returned. By default no checks are made on the metadata generation of the current bucket. If
    * you want to update the information only if the current bucket metadata are at their latest
    * version use the {@code metagenerationMatch} option: {@code
-   * bucket.update(BucketTargetOption.metagenerationMatch())}
+   * bucket.update(BucketTargetOptions.metagenerationMatch())}
    *
    * <p>Example of updating the bucket's information.
    *
    * <pre>{@code
-   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).build().update();
+   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).buildSignatureMetadata().update();
    * }</pre>
    *
    * @param options update options
    * @return a {@code Bucket} object with updated information
    * @throws StorageException upon failure
    */
-  public Bucket update(BucketTargetOption... options) {
+  public Bucket update(BucketTargetOptions... options) {
     return storage.update(this, options);
   }
 
@@ -758,7 +758,7 @@ public class Bucket extends BucketInfo {
    * Bucket#getMetageneration()} value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
+   * boolean deleted = bucket.delete(BucketSourceOptions.metagenerationMatch());
    * if (deleted) {
    *   // the bucket was deleted
    * } else {
@@ -791,7 +791,7 @@ public class Bucket extends BucketInfo {
    * @param options options for listing blobs
    * @throws StorageException upon failure
    */
-  public Page<Blob> list(BlobListOption... options) {
+  public Page<Blob> list(BlobListOptions... options) {
     return storage.list(getName(), options);
   }
 
@@ -804,14 +804,14 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String blobName = "my_blob_name";
    * long generation = 42;
-   * Blob blob = bucket.get(blobName, BlobGetOption.generationMatch(generation));
+   * Blob blob = bucket.get(blobName, BlobGetOptions.generationMatch(generation));
    * }</pre>
    *
    * @param blob name of the requested blob
    * @param options blob search options
    * @throws StorageException upon failure
    */
-  public Blob get(String blob, BlobGetOption... options) {
+  public Blob get(String blob, BlobGetOptions... options) {
     return storage.get(BlobId.of(getName(), blob), options);
   }
 
@@ -880,7 +880,7 @@ public class Bucket extends BucketInfo {
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link Blob#writer(StorageService.BlobWriteOptions...)} is
    * recommended as it uses resumable upload. MD5 and CRC32C hashes of {@code content} are computed
    * and used for validating transferred data.
    *
@@ -901,14 +901,14 @@ public class Bucket extends BucketInfo {
   public Blob create(String blob, byte[] content, String contentType, BlobTargetOption... options) {
     BlobInfo blobInfo =
         BlobInfo.newBuilder(BlobId.of(getName(), blob)).setContentType(contentType).build();
-    Tuple<BlobInfo, Storage.BlobTargetOption[]> target =
+    Tuple<BlobInfo, StorageService.BlobUploadOption[]> target =
         BlobTargetOption.toTargetOptions(blobInfo, options);
     return storage.create(target.x(), content, target.y());
   }
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link Blob#writer(StorageService.BlobWriteOptions...)} is
    * recommended as it uses resumable upload.
    *
    * <p>Example of creating a blob in the bucket from an input stream with a content type.
@@ -930,14 +930,14 @@ public class Bucket extends BucketInfo {
       String blob, InputStream content, String contentType, BlobWriteOption... options) {
     BlobInfo blobInfo =
         BlobInfo.newBuilder(BlobId.of(getName(), blob)).setContentType(contentType).build();
-    Tuple<BlobInfo, Storage.BlobWriteOption[]> write =
+    Tuple<BlobInfo, StorageService.BlobWriteOptions[]> write =
         BlobWriteOption.toWriteOptions(blobInfo, options);
     return storage.create(write.x(), content, write.y());
   }
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link Blob#writer(StorageService.BlobWriteOptions...)} is
    * recommended as it uses resumable upload. MD5 and CRC32C hashes of {@code content} are computed
    * and used for validating transferred data.
    *
@@ -956,14 +956,14 @@ public class Bucket extends BucketInfo {
    */
   public Blob create(String blob, byte[] content, BlobTargetOption... options) {
     BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(getName(), blob)).build();
-    Tuple<BlobInfo, Storage.BlobTargetOption[]> target =
+    Tuple<BlobInfo, StorageService.BlobUploadOption[]> target =
         BlobTargetOption.toTargetOptions(blobInfo, options);
     return storage.create(target.x(), content, target.y());
   }
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link Blob#writer(StorageService.BlobWriteOptions...)} is
    * recommended as it uses resumable upload.
    *
    * <p>Example of creating a blob in the bucket from an input stream.
@@ -982,7 +982,7 @@ public class Bucket extends BucketInfo {
    */
   public Blob create(String blob, InputStream content, BlobWriteOption... options) {
     BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(getName(), blob)).build();
-    Tuple<BlobInfo, Storage.BlobWriteOption[]> write =
+    Tuple<BlobInfo, StorageService.BlobWriteOptions[]> write =
         BlobWriteOption.toWriteOptions(blobInfo, options);
     return storage.create(write.x(), content, write.y());
   }
@@ -1175,7 +1175,7 @@ public class Bucket extends BucketInfo {
    * Locks bucket retention policy. Requires a local metageneration value in the request. Review
    * example below.
    *
-   * <p>Accepts an optional userProject {@link BucketTargetOption} option which defines the project
+   * <p>Accepts an optional userProject {@link StorageService.BucketTargetOptions} option which defines the project
    * id to assign operational costs.
    *
    * <p>Warning: Once a retention policy is locked, it can't be unlocked, removed, or shortened.
@@ -1185,19 +1185,19 @@ public class Bucket extends BucketInfo {
    *
    * <pre>{@code
    * String bucketName = "my_unique_bucket";
-   * Bucket bucket = storage.get(bucketName, BucketGetOption.fields(BucketField.METAGENERATION));
-   * storage.lockRetentionPolicy(bucket, BucketTargetOption.metagenerationMatch());
+   * Bucket bucket = storage.get(bucketName, GetBucketOption.fields(BucketAttribute.METAGENERATION));
+   * storage.lockRetentionPolicy(bucket, BucketTargetOptions.metagenerationMatch());
    * }</pre>
    *
    * @return a {@code Bucket} object of the locked bucket
    * @throws StorageException upon failure
    */
-  public Bucket lockRetentionPolicy(BucketTargetOption... options) {
+  public Bucket lockRetentionPolicy(StorageService.BucketTargetOptions... options) {
     return storage.lockRetentionPolicy(this, options);
   }
 
-  /** Returns the bucket's {@code Storage} object used to issue requests. */
-  public Storage getStorage() {
+  /** Returns the bucket's {@code StorageService} object used to issue requests. */
+  public StorageService getStorage() {
     return storage;
   }
 
@@ -1228,7 +1228,7 @@ public class Bucket extends BucketInfo {
     this.storage = options.getService();
   }
 
-  static Bucket fromPb(Storage storage, com.google.api.services.storage.model.Bucket bucketPb) {
+  static Bucket fromPb(StorageService storage, com.google.api.services.storage.model.Bucket bucketPb) {
     return new Bucket(storage, new BucketInfo.BuilderImpl(BucketInfo.fromPb(bucketPb)));
   }
 }

@@ -25,7 +25,7 @@ import java.util.Objects;
  * A service account, with its specified scopes, authorized for this instance.
  *
  * @see <a href="https://cloud.google.com/storage/docs/authentication">Authenticating from Google
- *     Cloud Storage</a>
+ *     Cloud StorageService</a>
  */
 public final class ServiceAccount implements Serializable {
 

@@ -34,16 +34,16 @@ public class CanonicalExtensionHeadersSerializer {
   private static final char HEADER_SEPARATOR = ':';
   private static final char HEADER_NAME_SEPARATOR = ';';
 
-  private final Storage.SignUrlOption.SignatureVersion signatureVersion;
+  private final StorageService.UrlSigningOption.SignatureSchemeVersion signatureVersion;
 
   public CanonicalExtensionHeadersSerializer(
-      Storage.SignUrlOption.SignatureVersion signatureVersion) {
+      StorageService.UrlSigningOption.SignatureSchemeVersion signatureVersion) {
     this.signatureVersion = signatureVersion;
   }
 
   public CanonicalExtensionHeadersSerializer() {
     // TODO switch this when V4 becomes default
-    this.signatureVersion = Storage.SignUrlOption.SignatureVersion.V2;
+    this.signatureVersion = StorageService.UrlSigningOption.SignatureSchemeVersion.V2;
   }
 
   public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
@@ -72,7 +72,7 @@ public class CanonicalExtensionHeadersSerializer {
                   // Replace any sequence of whitespace with a single space.
                   .replaceAll("\\s+", " "))
           // Append a newline (U+000A) to each custom header.
-          .append(SignatureInfo.COMPONENT_SEPARATOR);
+          .append(SignatureMetadata.COMPONENT_SEPARATOR);
     }
 
     // Concatenate all custom headers
@@ -109,7 +109,7 @@ public class CanonicalExtensionHeadersSerializer {
 
       // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
       // headers. (CSEK headers are allowed for V4)
-      if (Storage.SignUrlOption.SignatureVersion.V2.equals(signatureVersion)
+      if (StorageService.UrlSigningOption.SignatureSchemeVersion.V2.equals(signatureVersion)
           && ("x-goog-encryption-key".equals(lowercaseHeaderName)
               || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
 

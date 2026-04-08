@@ -15,7 +15,7 @@
  */
 
 /**
- * A testing helper for Google Cloud Storage.
+ * A testing helper for Google Cloud StorageService.
  *
  * <p>A simple usage example:
  *
@@ -23,7 +23,7 @@
  *
  * <pre>{@code
  * RemoteStorageHelper helper = RemoteStorageHelper.create();
- * Storage storage = helper.getOptions().getService();
+ * StorageService storage = helper.getOptions().getService();
  * String bucket = RemoteStorageHelper.generateBucketName();
  * storage.create(BucketInfo.of(bucket));
  * }</pre>

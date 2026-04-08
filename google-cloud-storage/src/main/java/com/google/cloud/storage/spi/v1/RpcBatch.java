@@ -58,6 +58,6 @@ public interface RpcBatch {
       Callback<StorageObject> callback,
       Map<StorageRpc.Option, ?> options);
 
-  /** Submits a batch of requests for processing using a single RPC request to Cloud Storage. */
+  /** Submits a batch of requests for processing using a single RPC request to Cloud StorageService. */
   void submit();
 }

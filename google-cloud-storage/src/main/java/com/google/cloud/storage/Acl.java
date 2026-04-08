@@ -97,7 +97,7 @@ public final class Acl implements Serializable {
     }
   }
 
-  /** Builder for {@code Acl} objects. */
+  /** SignatureBuilder for {@code Acl} objects. */
   public static class Builder {
 
     private Entity entity;

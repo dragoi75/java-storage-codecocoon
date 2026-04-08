@@ -42,8 +42,7 @@ import com.google.cloud.storage.Acl.Project.ProjectRole;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Blob.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobWriteOption;
-import com.google.cloud.storage.Storage.CopyRequest;
+import com.google.cloud.storage.StorageService.BlobWriteOptions;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -153,15 +152,15 @@ public class BlobTest {
         }
       };
 
-  private Storage storage;
+  private StorageService storage;
   private Blob blob;
   private Blob expectedBlob;
-  private Storage serviceMockReturnsOptions = createMock(Storage.class);
+  private StorageService serviceMockReturnsOptions = createMock(StorageService.class);
   private StorageOptions mockOptions = createMock(StorageOptions.class);
 
   @Before
   public void setUp() {
-    storage = createStrictMock(Storage.class);
+    storage = createStrictMock(StorageService.class);
   }
 
   @After
@@ -182,7 +181,7 @@ public class BlobTest {
   @Test
   public void testExists_True() throws Exception {
     initializeExpectedBlob(1);
-    Storage.BlobGetOption[] expectedOptions = {Storage.BlobGetOption.fields()};
+    StorageService.BlobGetOptions[] expectedOptions = {StorageService.BlobGetOptions.fields()};
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(expectedBlob.getBlobId(), expectedOptions)).andReturn(expectedBlob);
     replay(storage);
@@ -192,7 +191,7 @@ public class BlobTest {
 
   @Test
   public void testExists_False() throws Exception {
-    Storage.BlobGetOption[] expectedOptions = {Storage.BlobGetOption.fields()};
+    StorageService.BlobGetOptions[] expectedOptions = {StorageService.BlobGetOptions.fields()};
     expect(storage.getOptions()).andReturn(null);
     expect(storage.get(BLOB_INFO.getBlobId(), expectedOptions)).andReturn(null);
     replay(storage);
@@ -218,7 +217,7 @@ public class BlobTest {
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(
             storage.readAllBytes(
-                BLOB_INFO.getBlobId(), Storage.BlobSourceOption.decryptionKey(BASE64_KEY)))
+                BLOB_INFO.getBlobId(), StorageService.BlobSourceOptions.decryptionKey(BASE64_KEY)))
         .andReturn(content)
         .times(2);
     replay(storage);
@@ -232,7 +231,7 @@ public class BlobTest {
     initializeExpectedBlob(2);
     Blob expectedReloadedBlob = expectedBlob.toBuilder().setCacheControl("c").build();
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.get(BLOB_INFO.getBlobId(), new Storage.BlobGetOption[0]))
+    expect(storage.get(BLOB_INFO.getBlobId(), new StorageService.BlobGetOptions[0]))
         .andReturn(expectedReloadedBlob);
     replay(storage);
     initializeBlob();
@@ -244,7 +243,7 @@ public class BlobTest {
   public void testReloadNull() throws Exception {
     initializeExpectedBlob(1);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.get(BLOB_INFO.getBlobId(), new Storage.BlobGetOption[0])).andReturn(null);
+    expect(storage.get(BLOB_INFO.getBlobId(), new StorageService.BlobGetOptions[0])).andReturn(null);
     replay(storage);
     initializeBlob();
     Blob reloadedBlob = blob.reload();
@@ -255,7 +254,7 @@ public class BlobTest {
   public void testReloadWithOptions() throws Exception {
     initializeExpectedBlob(2);
     Blob expectedReloadedBlob = expectedBlob.toBuilder().setCacheControl("c").build();
-    Storage.BlobGetOption[] options = {Storage.BlobGetOption.metagenerationMatch(42L)};
+    StorageService.BlobGetOptions[] options = {StorageService.BlobGetOptions.metagenerationMatch(42L)};
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(BLOB_INFO.getBlobId(), options)).andReturn(expectedReloadedBlob);
     replay(storage);
@@ -269,7 +268,7 @@ public class BlobTest {
     initializeExpectedBlob(2);
     Blob expectedUpdatedBlob = expectedBlob.toBuilder().setCacheControl("c").build();
     expect(storage.getOptions()).andReturn(mockOptions).times(2);
-    expect(storage.update(eq(expectedUpdatedBlob), new Storage.BlobTargetOption[0]))
+    expect(storage.update(eq(expectedUpdatedBlob), new StorageService.BlobUploadOption[0]))
         .andReturn(expectedUpdatedBlob);
     replay(storage);
     initializeBlob();
@@ -282,7 +281,7 @@ public class BlobTest {
   public void testDelete() throws Exception {
     initializeExpectedBlob(2);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.delete(BLOB_INFO.getBlobId(), new Storage.BlobSourceOption[0])).andReturn(true);
+    expect(storage.delete(BLOB_INFO.getBlobId(), new StorageService.BlobSourceOptions[0])).andReturn(true);
     replay(storage);
     initializeBlob();
     assertTrue(blob.delete());
@@ -293,7 +292,7 @@ public class BlobTest {
     initializeExpectedBlob(2);
     BlobInfo target = BlobInfo.newBuilder(BlobId.of("bt", "n")).build();
     CopyWriter copyWriter = createMock(CopyWriter.class);
-    Capture<CopyRequest> capturedCopyRequest = Capture.newInstance();
+    Capture<StorageService.DataCopyRequest> capturedCopyRequest = Capture.newInstance();
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.copy(capture(capturedCopyRequest))).andReturn(copyWriter);
     replay(storage);
@@ -312,7 +311,7 @@ public class BlobTest {
     initializeExpectedBlob(2);
     BlobInfo target = BlobInfo.newBuilder(BlobId.of("bt", "nt")).build();
     CopyWriter copyWriter = createMock(CopyWriter.class);
-    Capture<CopyRequest> capturedCopyRequest = Capture.newInstance();
+    Capture<StorageService.DataCopyRequest> capturedCopyRequest = Capture.newInstance();
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.copy(capture(capturedCopyRequest))).andReturn(copyWriter);
     replay(storage);
@@ -332,7 +331,7 @@ public class BlobTest {
     BlobInfo target = BlobInfo.newBuilder(BlobId.of("bt", "nt")).build();
     BlobId targetId = BlobId.of("bt", "nt");
     CopyWriter copyWriter = createMock(CopyWriter.class);
-    Capture<CopyRequest> capturedCopyRequest = Capture.newInstance();
+    Capture<StorageService.DataCopyRequest> capturedCopyRequest = Capture.newInstance();
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.copy(capture(capturedCopyRequest))).andReturn(copyWriter);
     replay(storage);
@@ -364,7 +363,7 @@ public class BlobTest {
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(
             storage.reader(
-                BLOB_INFO.getBlobId(), Storage.BlobSourceOption.decryptionKey(BASE64_KEY)))
+                BLOB_INFO.getBlobId(), StorageService.BlobSourceOptions.decryptionKey(BASE64_KEY)))
         .andReturn(channel)
         .times(2);
     replay(storage);
@@ -389,13 +388,13 @@ public class BlobTest {
     initializeExpectedBlob(2);
     BlobWriteChannel channel = createMock(BlobWriteChannel.class);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.writer(eq(expectedBlob), eq(BlobWriteOption.encryptionKey(BASE64_KEY))))
+    expect(storage.writer(eq(expectedBlob), eq(StorageService.BlobWriteOptions.encryptionKey(BASE64_KEY))))
         .andReturn(channel)
         .times(2);
     replay(storage);
     initializeBlob();
-    assertSame(channel, blob.writer(BlobWriteOption.encryptionKey(BASE64_KEY)));
-    assertSame(channel, blob.writer(BlobWriteOption.encryptionKey(KEY)));
+    assertSame(channel, blob.writer(BlobWriteOptions.encryptionKey(BASE64_KEY)));
+    assertSame(channel, blob.writer(StorageService.BlobWriteOptions.encryptionKey(KEY)));
   }
 
   @Test
@@ -403,11 +402,11 @@ public class BlobTest {
     initializeExpectedBlob(2);
     BlobWriteChannel channel = createMock(BlobWriteChannel.class);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.writer(eq(expectedBlob), eq(BlobWriteOption.kmsKeyName(KMS_KEY_NAME))))
+    expect(storage.writer(eq(expectedBlob), eq(StorageService.BlobWriteOptions.kmsKeyName(KMS_KEY_NAME))))
         .andReturn(channel);
     replay(storage);
     initializeBlob();
-    assertSame(channel, blob.writer(BlobWriteOption.kmsKeyName(KMS_KEY_NAME)));
+    assertSame(channel, blob.writer(BlobWriteOptions.kmsKeyName(KMS_KEY_NAME)));
   }
 
   @Test

@@ -31,10 +31,10 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
- * Google Storage blob copy writer. A {@code CopyWriter} object allows to copy both blob's data and
+ * Google StorageService blob copy writer. A {@code CopyWriter} object allows to copy both blob's data and
  * information. To override source blob's information supply a {@code BlobInfo} to the {@code
- * CopyRequest} using either {@link Storage.CopyRequest.Builder#setTarget(BlobInfo,
- * Storage.BlobTargetOption...)} or {@link Storage.CopyRequest.Builder#setTarget(BlobInfo,
+ * DataCopyRequest} using either {@link StorageService.DataCopyRequest.ChunkedCopyBuilder#setTarget(BlobInfo,
+ * StorageService.BlobUploadOption...)} or {@link StorageService.DataCopyRequest.ChunkedCopyBuilder#setTarget(BlobInfo,
  * Iterable)}.
  *
  * <p>This class holds the result of a copy request. If source and destination blobs share the same
@@ -110,7 +110,7 @@ public class CopyWriter implements Restorable<CopyWriter> {
                   }
                 },
                 serviceOptions.getRetrySettings(),
-                StorageImpl.EXCEPTION_HANDLER,
+                StorageClientImpl.EXCEPTION_HANDLER,
                 serviceOptions.getClock());
       } catch (RetryHelper.RetryHelperException e) {
         throw StorageException.translateAndThrow(e);

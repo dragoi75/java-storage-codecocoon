@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Google Storage Object identifier. A {@code BlobId} object includes the name of the containing
+ * Google StorageService Object identifier. A {@code BlobId} object includes the name of the containing
  * bucket, the blob's name and possibly the blob's generation. If {@link #getGeneration()} is {@code
  * null} the identifier refers to the latest blob's generation.
  */

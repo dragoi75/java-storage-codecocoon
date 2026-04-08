@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * Storage service exception.
+ * StorageService service exception.
  *
  * @see <a href="https://cloud.google.com/storage/docs/json_api/v1/status-codes">Google Cloud
- *     Storage error codes</a>
+ *     StorageService error codes</a>
  */
 @InternalApi
 public final class StorageException extends BaseHttpServiceException {
