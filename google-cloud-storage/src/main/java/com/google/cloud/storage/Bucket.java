@@ -572,7 +572,7 @@ public class Bucket extends BucketInfo {
     }
 
     @Override
-    public Builder setStorageClass(StorageClass storageClass) {
+    public Builder setStorageClass(StorageTier storageClass) {
       infoBuilder.setStorageClass(storageClass);
       return this;
     }

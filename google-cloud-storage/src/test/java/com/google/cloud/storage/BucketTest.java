@@ -81,7 +81,7 @@ public class BucketTest {
   private static final String INDEX_PAGE = "index.html";
   private static final String NOT_FOUND_PAGE = "error.html";
   private static final String LOCATION = "ASIA";
-  private static final StorageClass STORAGE_CLASS = StorageClass.STANDARD;
+  private static final StorageTier STORAGE_CLASS = StorageTier.STANDARD;
   private static final String DEFAULT_KMS_KEY_NAME =
       "projects/p/locations/kr-loc/keyRings/kr/cryptoKeys/key";
   private static final Boolean VERSIONING_ENABLED = true;

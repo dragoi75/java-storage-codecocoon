@@ -88,7 +88,7 @@ public class BucketInfo implements Serializable {
   private final List<Acl> acl;
   private final List<Acl> defaultAcl;
   private final String location;
-  private final StorageClass storageClass;
+  private final StorageTier storageClass;
   private final Map<String, String> labels;
   private final String defaultKmsKeyName;
   private final Boolean defaultEventBasedHold;
@@ -431,7 +431,7 @@ public class BucketInfo implements Serializable {
         case SetStorageClassLifecycleAction.TYPE:
           lifecycleAction =
               LifecycleAction.newSetStorageClassAction(
-                  StorageClass.valueOf(action.getStorageClass()));
+                  StorageTier.fromValue(action.getStorageClass()));
           break;
         default:
           throw new UnsupportedOperationException(
@@ -451,9 +451,9 @@ public class BucketInfo implements Serializable {
                       ? null
                       : transform(
                           condition.getMatchesStorageClass(),
-                          new Function<String, StorageClass>() {
-                            public StorageClass apply(String storageClass) {
-                              return StorageClass.valueOf(storageClass);
+                          new Function<String, StorageTier>() {
+                            public StorageTier apply(String storageClass) {
+                              return StorageTier.fromValue(storageClass);
                             }
                           }));
 
@@ -472,7 +472,7 @@ public class BucketInfo implements Serializable {
       private final DateTime createdBefore;
       private final Integer numberOfNewerVersions;
       private final Boolean isLive;
-      private final List<StorageClass> matchesStorageClass;
+      private final List<StorageTier> matchesStorageClass;
 
       private LifecycleCondition(Builder builder) {
         this.age = builder.age;
@@ -522,7 +522,7 @@ public class BucketInfo implements Serializable {
         return isLive;
       }
 
-      public List<StorageClass> getMatchesStorageClass() {
+      public List<StorageTier> getMatchesStorageClass() {
         return matchesStorageClass;
       }
 
@@ -532,7 +532,7 @@ public class BucketInfo implements Serializable {
         private DateTime createdBefore;
         private Integer numberOfNewerVersions;
         private Boolean isLive;
-        private List<StorageClass> matchesStorageClass;
+        private List<StorageTier> matchesStorageClass;
 
         private Builder() {}
 
@@ -582,7 +582,7 @@ public class BucketInfo implements Serializable {
          * Sets a list of Storage Classes for a objects that satisfy the condition to execute the
          * Action. *
          */
-        public Builder setMatchesStorageClass(List<StorageClass> matchesStorageClass) {
+        public Builder setMatchesStorageClass(List<StorageTier> matchesStorageClass) {
           this.matchesStorageClass = matchesStorageClass;
           return this;
         }
@@ -623,7 +623,7 @@ public class BucketInfo implements Serializable {
        * @param storageClass The new storage class to use when conditions are met for this action.
        */
       public static SetStorageClassLifecycleAction newSetStorageClassAction(
-          StorageClass storageClass) {
+          StorageTier storageClass) {
         return new SetStorageClassLifecycleAction(storageClass);
       }
     }
@@ -644,9 +644,9 @@ public class BucketInfo implements Serializable {
       public static final String TYPE = "SetStorageClass";
       private static final long serialVersionUID = -62615467186000899L;
 
-      private final StorageClass storageClass;
+      private final StorageTier storageClass;
 
-      private SetStorageClassLifecycleAction(StorageClass storageClass) {
+      private SetStorageClassLifecycleAction(StorageTier storageClass) {
         this.storageClass = storageClass;
       }
 
@@ -663,7 +663,7 @@ public class BucketInfo implements Serializable {
             .toString();
       }
 
-      StorageClass getStorageClass() {
+      StorageTier getStorageClass() {
         return storageClass;
       }
     }
@@ -983,7 +983,7 @@ public class BucketInfo implements Serializable {
      * determines the SLA and the cost of storage. A list of supported values is available <a
      * href="https://cloud.google.com/storage/docs/storage-classes">here</a>.
      */
-    public abstract Builder setStorageClass(StorageClass storageClass);
+    public abstract Builder setStorageClass(StorageTier storageClass);
 
     /**
      * Sets the bucket's location. Data for blobs in the bucket resides in physical storage within
@@ -1077,7 +1077,7 @@ public class BucketInfo implements Serializable {
     private String notFoundPage;
     private List<DeleteRule> deleteRules;
     private List<LifecycleRule> lifecycleRules;
-    private StorageClass storageClass;
+    private StorageTier storageClass;
     private String location;
     private String etag;
     private Long createTime;
@@ -1192,7 +1192,7 @@ public class BucketInfo implements Serializable {
     }
 
     @Override
-    public Builder setStorageClass(StorageClass storageClass) {
+    public Builder setStorageClass(StorageTier storageClass) {
       this.storageClass = storageClass;
       return this;
     }
@@ -1481,7 +1481,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/storage-classes">Storage Classes</a>
    */
-  public StorageClass getStorageClass() {
+  public StorageTier getStorageClass() {
     return storageClass;
   }
 
@@ -1781,7 +1781,7 @@ public class BucketInfo implements Serializable {
       builder.setLocation(bucketPb.getLocation());
     }
     if (bucketPb.getStorageClass() != null) {
-      builder.setStorageClass(StorageClass.valueOf(bucketPb.getStorageClass()));
+      builder.setStorageClass(StorageTier.fromValue(bucketPb.getStorageClass()));
     }
     if (bucketPb.getCors() != null) {
       builder.setCors(transform(bucketPb.getCors(), Cors.FROM_PB_FUNCTION));

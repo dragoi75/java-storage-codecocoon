@@ -69,7 +69,7 @@ public class BlobInfoTest {
       new CustomerEncryption(ENCRYPTION_ALGORITHM, KEY_SHA256);
   private static final String KMS_KEY_NAME =
       "projects/p/locations/kr-loc/keyRings/kr/cryptoKeys/key";
-  private static final StorageClass STORAGE_CLASS = StorageClass.COLDLINE;
+  private static final StorageTier STORAGE_CLASS = StorageTier.COLDLINE;
   private static final Boolean EVENT_BASED_HOLD = true;
   private static final Boolean TEMPORARY_HOLD = true;
   private static final Long RETENTION_EXPIRATION_TIME = 10L;

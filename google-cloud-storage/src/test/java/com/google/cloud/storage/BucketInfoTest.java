@@ -79,7 +79,7 @@ public class BucketInfoTest {
           .build();
   private static final String NOT_FOUND_PAGE = "error.html";
   private static final String LOCATION = "ASIA";
-  private static final StorageClass STORAGE_CLASS = StorageClass.STANDARD;
+  private static final StorageTier STORAGE_CLASS = StorageTier.STANDARD;
   private static final String DEFAULT_KMS_KEY_NAME =
       "projects/p/locations/kr-loc/keyRings/kr/cryptoKeys/key";
   private static final Boolean VERSIONING_ENABLED = true;
@@ -264,7 +264,7 @@ public class BucketInfoTest {
 
     Rule setStorageClassLifecycleRule =
         new LifecycleRule(
-                LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
+                LifecycleAction.newSetStorageClassAction(StorageTier.COLDLINE),
                 LifecycleCondition.newBuilder()
                     .setIsLive(true)
                     .setNumberOfNewerVersions(10)
@@ -272,7 +272,7 @@ public class BucketInfoTest {
             .toPb();
 
     assertEquals(
-        StorageClass.COLDLINE.toString(),
+        StorageTier.COLDLINE.toString(),
         setStorageClassLifecycleRule.getAction().getStorageClass());
     assertTrue(setStorageClassLifecycleRule.getCondition().getIsLive());
     assertEquals(10, setStorageClassLifecycleRule.getCondition().getNumNewerVersions().intValue());

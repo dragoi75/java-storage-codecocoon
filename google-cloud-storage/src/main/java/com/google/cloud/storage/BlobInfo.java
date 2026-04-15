@@ -80,7 +80,7 @@ public class BlobInfo implements Serializable {
   private final String contentEncoding;
   private final String contentDisposition;
   private final String contentLanguage;
-  private final StorageClass storageClass;
+  private final StorageTier storageClass;
   private final Integer componentCount;
   private final boolean isDirectory;
   private final CustomerEncryption customerEncryption;
@@ -258,7 +258,7 @@ public class BlobInfo implements Serializable {
     abstract Builder setMediaLink(String mediaLink);
 
     /** Sets the blob's storage class. */
-    public abstract Builder setStorageClass(StorageClass storageClass);
+    public abstract Builder setStorageClass(StorageTier storageClass);
 
     /** Sets the blob's user provided metadata. */
     public abstract Builder setMetadata(Map<String, String> metadata);
@@ -317,7 +317,7 @@ public class BlobInfo implements Serializable {
     private Long createTime;
     private Boolean isDirectory;
     private CustomerEncryption customerEncryption;
-    private StorageClass storageClass;
+    private StorageTier storageClass;
     private String kmsKeyName;
     private Boolean eventBasedHold;
     private Boolean temporaryHold;
@@ -492,7 +492,7 @@ public class BlobInfo implements Serializable {
     }
 
     @Override
-    public Builder setStorageClass(StorageClass storageClass) {
+    public Builder setStorageClass(StorageTier storageClass) {
       this.storageClass = storageClass;
       return this;
     }
@@ -831,7 +831,7 @@ public class BlobInfo implements Serializable {
   }
 
   /** Returns the storage class of the blob. */
-  public StorageClass getStorageClass() {
+  public StorageTier getStorageClass() {
     return storageClass;
   }
 
@@ -1103,7 +1103,7 @@ public class BlobInfo implements Serializable {
           CustomerEncryption.fromPb(storageObject.getCustomerEncryption()));
     }
     if (storageObject.getStorageClass() != null) {
-      builder.setStorageClass(StorageClass.valueOf(storageObject.getStorageClass()));
+      builder.setStorageClass(StorageTier.fromValue(storageObject.getStorageClass()));
     }
     if (storageObject.getKmsKeyName() != null) {
       builder.setKmsKeyName(storageObject.getKmsKeyName());
