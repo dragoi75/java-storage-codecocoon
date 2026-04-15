@@ -258,9 +258,9 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
       BlobInfo blobInfo, InputStream content, int bufferSize, BlobWriteOption... options)
       throws IOException {
 
-    BlobWriteChannel blobWriteChannel;
+    BlobUploadChannel blobWriteChannel;
     try (WriteChannel writer = writer(blobInfo, options)) {
-      blobWriteChannel = (BlobWriteChannel) writer;
+      blobWriteChannel = (BlobUploadChannel) writer;
       uploadHelper(Channels.newChannel(content), writer, bufferSize);
     }
     StorageObject objectProto = blobWriteChannel.getStorageObject();
@@ -695,19 +695,19 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public BlobWriteChannel writer(BlobInfo blobInfo, BlobWriteOption... options) {
+  public BlobUploadChannel writer(BlobInfo blobInfo, BlobWriteOption... options) {
     Tuple<BlobInfo, BlobTargetOption[]> targetOptions = BlobTargetOption.convert(blobInfo, options);
     return writer(targetOptions.x(), targetOptions.y());
   }
 
   @Override
-  public BlobWriteChannel writer(URL signedURL) {
-    return new BlobWriteChannel(getOptions(), signedURL);
+  public BlobUploadChannel writer(URL signedURL) {
+    return new BlobUploadChannel(getOptions(), signedURL);
   }
 
-  private BlobWriteChannel writer(BlobInfo blobInfo, BlobTargetOption... options) {
+  private BlobUploadChannel writer(BlobInfo blobInfo, BlobTargetOption... options) {
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(blobInfo, options);
-    return new BlobWriteChannel(getOptions(), blobInfo, optionsMap);
+    return new BlobUploadChannel(getOptions(), blobInfo, optionsMap);
   }
 
   @Override

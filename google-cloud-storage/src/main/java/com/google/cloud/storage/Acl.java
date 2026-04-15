@@ -97,7 +97,7 @@ public final class Acl implements Serializable {
     }
   }
 
-  /** Builder for {@code Acl} objects. */
+  /** ChunkedUploadBuilder for {@code Acl} objects. */
   public static class Builder {
 
     private Entity entity;
@@ -139,7 +139,7 @@ public final class Acl implements Serializable {
       return this;
     }
 
-    /** Creates an {@code Acl} object from this builder. */
+    /** Creates an {@code Acl} object from this chunkedUploadBuilder. */
     public Acl build() {
       return new Acl(this);
     }
@@ -428,7 +428,7 @@ public final class Acl implements Serializable {
     return etag;
   }
 
-  /** Returns a builder for this {@code Acl} object. */
+  /** Returns a chunkedUploadBuilder for this {@code Acl} object. */
   public Builder toBuilder() {
     return new Builder(this);
   }
@@ -444,7 +444,7 @@ public final class Acl implements Serializable {
   }
 
   /**
-   * Returns a builder for {@code Acl} objects.
+   * Returns a chunkedUploadBuilder for {@code Acl} objects.
    *
    * @param entity the entity for this ACL object
    * @param role the role to associate to the {@code entity} object

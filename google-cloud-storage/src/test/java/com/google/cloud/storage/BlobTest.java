@@ -389,7 +389,7 @@ public class BlobTest {
   @Test
   public void testWriter() throws Exception {
     initializeExpectedBlob(2);
-    BlobWriteChannel channel = createMock(BlobWriteChannel.class);
+    BlobUploadChannel channel = createMock(BlobUploadChannel.class);
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.writer(eq(expectedBlob))).andReturn(channel);
     replay(storage);
@@ -400,7 +400,7 @@ public class BlobTest {
   @Test
   public void testWriterWithEncryptionKey() throws Exception {
     initializeExpectedBlob(2);
-    BlobWriteChannel channel = createMock(BlobWriteChannel.class);
+    BlobUploadChannel channel = createMock(BlobUploadChannel.class);
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.writer(eq(expectedBlob), eq(BlobWriteOption.encryptionKey(BASE64_KEY))))
         .andReturn(channel)
@@ -414,7 +414,7 @@ public class BlobTest {
   @Test
   public void testWriterWithKmsKeyName() throws Exception {
     initializeExpectedBlob(2);
-    BlobWriteChannel channel = createMock(BlobWriteChannel.class);
+    BlobUploadChannel channel = createMock(BlobUploadChannel.class);
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.writer(eq(expectedBlob), eq(BlobWriteOption.kmsKeyName(KMS_KEY_NAME))))
         .andReturn(channel);

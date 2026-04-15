@@ -172,7 +172,7 @@ public class BlobInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BlobInfo}. */
+  /** ChunkedUploadBuilder for {@code BlobInfo}. */
   public abstract static class Builder {
 
     /** Sets the blob identity. */
@@ -1029,7 +1029,7 @@ public class BlobInfo implements Serializable {
     return Data.<Long>isNull(retentionExpirationTime) ? null : retentionExpirationTime;
   }
 
-  /** Returns a builder for the current blob. */
+  /** Returns a chunkedUploadBuilder for the current blob. */
   public Builder toBuilder() {
     return new BuilderImpl(this);
   }
@@ -1131,27 +1131,27 @@ public class BlobInfo implements Serializable {
     return storageObject;
   }
 
-  /** Returns a {@code BlobInfo} builder where blob identity is set using the provided values. */
+  /** Returns a {@code BlobInfo} chunkedUploadBuilder where blob identity is set using the provided values. */
   public static Builder newBuilder(BucketInfo bucketInfo, String name) {
     return newBuilder(bucketInfo.getName(), name);
   }
 
-  /** Returns a {@code BlobInfo} builder where blob identity is set using the provided values. */
+  /** Returns a {@code BlobInfo} chunkedUploadBuilder where blob identity is set using the provided values. */
   public static Builder newBuilder(String bucket, String name) {
     return newBuilder(BlobId.of(bucket, name));
   }
 
-  /** Returns a {@code BlobInfo} builder where blob identity is set using the provided values. */
+  /** Returns a {@code BlobInfo} chunkedUploadBuilder where blob identity is set using the provided values. */
   public static Builder newBuilder(BucketInfo bucketInfo, String name, Long generation) {
     return newBuilder(bucketInfo.getName(), name, generation);
   }
 
-  /** Returns a {@code BlobInfo} builder where blob identity is set using the provided values. */
+  /** Returns a {@code BlobInfo} chunkedUploadBuilder where blob identity is set using the provided values. */
   public static Builder newBuilder(String bucket, String name, Long generation) {
     return newBuilder(BlobId.of(bucket, name, generation));
   }
 
-  /** Returns a {@code BlobInfo} builder where blob identity is set using the provided value. */
+  /** Returns a {@code BlobInfo} chunkedUploadBuilder where blob identity is set using the provided value. */
   public static Builder newBuilder(BlobId blobId) {
     return new BuilderImpl(blobId);
   }

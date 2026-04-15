@@ -1540,7 +1540,7 @@ public interface Storage extends Service<StorageOptions> {
       return of(sources, BlobInfo.newBuilder(BlobId.of(bucket, target)).build());
     }
 
-    /** Returns a {@code ComposeRequest} builder. */
+    /** Returns a {@code ComposeRequest} chunkedUploadBuilder. */
     public static Builder newBuilder() {
       return new Builder();
     }
@@ -1570,7 +1570,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the blob to copy given bucket and blob name.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setSource(String bucket, String blob) {
         this.source = BlobId.of(bucket, blob);
@@ -1580,7 +1580,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the blob to copy given a {@link BlobId}.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setSource(BlobId source) {
         this.source = source;
@@ -1590,7 +1590,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets blob's source options.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setSourceOptions(BlobSourceOption... options) {
         Collections.addAll(sourceOptions, options);
@@ -1600,7 +1600,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets blob's source options.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setSourceOptions(Iterable<BlobSourceOption> options) {
         Iterables.addAll(sourceOptions, options);
@@ -1610,7 +1610,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the copy target. Target blob information is copied from source.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setTarget(BlobId targetId) {
         this.overrideInfo = false;
@@ -1622,7 +1622,7 @@ public interface Storage extends Service<StorageOptions> {
        * Sets the copy target. Target blob information is copied from source, except for those
        * options specified in {@code options}.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setTarget(BlobId targetId, BlobTargetOption... options) {
         this.overrideInfo = false;
@@ -1637,7 +1637,7 @@ public interface Storage extends Service<StorageOptions> {
        * information is set exactly to {@code target}, no information is inherited from the source
        * blob.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setTarget(BlobInfo target, BlobTargetOption... options) {
         this.overrideInfo = true;
@@ -1652,7 +1652,7 @@ public interface Storage extends Service<StorageOptions> {
        * information is set exactly to {@code target}, no information is inherited from the source
        * blob.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setTarget(BlobInfo target, Iterable<BlobTargetOption> options) {
         this.overrideInfo = true;
@@ -1665,7 +1665,7 @@ public interface Storage extends Service<StorageOptions> {
        * Sets the copy target and target options. Target blob information is copied from source,
        * except for those options specified in {@code options}.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setTarget(BlobId targetId, Iterable<BlobTargetOption> options) {
         this.overrideInfo = false;
@@ -1679,7 +1679,7 @@ public interface Storage extends Service<StorageOptions> {
        * if source and target blob share the same location and storage class as copy is made with
        * one single RPC.
        *
-       * @return the builder
+       * @return the chunkedUploadBuilder
        */
       public Builder setMegabytesCopiedPerChunk(Long megabytesCopiedPerChunk) {
         this.megabytesCopiedPerChunk = megabytesCopiedPerChunk;
@@ -1819,7 +1819,7 @@ public interface Storage extends Service<StorageOptions> {
       return CopyRequest.newBuilder().setSource(sourceBlobId).setTarget(targetBlobId).build();
     }
 
-    /** Creates a builder for {@code CopyRequest} objects. */
+    /** Creates a chunkedUploadBuilder for {@code CopyRequest} objects. */
     public static Builder newBuilder() {
       return new Builder();
     }
@@ -2702,7 +2702,7 @@ public interface Storage extends Service<StorageOptions> {
    * certain time period. This is particularly useful if you don't want publicly accessible blobs,
    * but also don't want to require users to explicitly log in. Signing a URL requires a service
    * account signer. If an instance of {@link com.google.auth.ServiceAccountSigner} was passed to
-   * {@link StorageOptions}' builder via {@code setCredentials(Credentials)} or the default
+   * {@link StorageOptions}' chunkedUploadBuilder via {@code setCredentials(Credentials)} or the default
    * credentials are being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS}
    * is set or your application is running in App Engine, then {@code signUrl} will use that
    * credentials to sign the URL. If the credentials passed to {@link StorageOptions} do not
@@ -2812,7 +2812,7 @@ public interface Storage extends Service<StorageOptions> {
    * Generates a URL and a map of fields that can be specified in an HTML form to submit a POST
    * request. The returned map includes a signature which must be provided with the request.
    * Generating a presigned POST policy requires a service account signer. If an instance of {@link
-   * com.google.auth.ServiceAccountSigner} was passed to {@link StorageOptions}' builder via {@code
+   * com.google.auth.ServiceAccountSigner} was passed to {@link StorageOptions}' chunkedUploadBuilder via {@code
    * setCredentials(Credentials)} or the default credentials are being used and the environment
    * variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set, generatPresignedPostPolicyV4 will use
    * that credentials to sign the URL. If the credentials passed to {@link StorageOptions} do not
@@ -2835,14 +2835,14 @@ public interface Storage extends Service<StorageOptions> {
    *
    * HttpClient client = HttpClientBuilder.create().build();
    * HttpPost request = new HttpPost(policy.getUrl());
-   * MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+   * MultipartEntityBuilder chunkedUploadBuilder = MultipartEntityBuilder.create();
    *
    * for (Map.Entry<String, String> entry : policy.getFields().entrySet()) {
-   *     builder.addTextBody(entry.getKey(), entry.getValue());
+   *     chunkedUploadBuilder.addTextBody(entry.getKey(), entry.getValue());
    * }
    * File file = new File("path/to/your/file/to/upload");
-   * builder.addBinaryBody("file", new FileInputStream(file), ContentType.APPLICATION_OCTET_STREAM, file.getName());
-   * request.setEntity(builder.build());
+   * chunkedUploadBuilder.addBinaryBody("file", new FileInputStream(file), ContentType.APPLICATION_OCTET_STREAM, file.getName());
+   * request.setEntity(chunkedUploadBuilder.build());
    * client.execute(request);
    * }</pre>
    *

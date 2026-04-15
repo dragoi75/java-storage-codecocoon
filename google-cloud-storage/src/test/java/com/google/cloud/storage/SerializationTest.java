@@ -102,8 +102,8 @@ public class SerializationTest extends BaseSerializationTest {
     ReadChannel reader = new BlobReadChannel(options, BlobId.of("b", "n"), EMPTY_RPC_OPTIONS);
     // avoid closing when you don't want partial writes to GCS upon failure
     @SuppressWarnings("resource")
-    BlobWriteChannel writer =
-        new BlobWriteChannel(
+    BlobUploadChannel writer =
+        new BlobUploadChannel(
             options, BlobInfo.newBuilder(BlobId.of("b", "n")).build(), "upload-id");
     return new Restorable<?>[] {reader, writer};
   }
