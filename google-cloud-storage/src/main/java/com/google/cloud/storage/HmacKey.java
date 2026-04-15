@@ -36,7 +36,7 @@ public class HmacKey implements Serializable {
     return new Builder(secretKey);
   }
 
-  /** Builder for {@code HmacKey} objects. * */
+  /** BlobInfoBuilder for {@code HmacKey} objects. * */
   public static class Builder {
     private String secretKey;
     private HmacKeyMetadata metadata;
@@ -211,7 +211,7 @@ public class HmacKey implements Serializable {
     }
 
     /**
-     * Returns the access id for this HMAC key. This is the id needed to get or delete the key. *
+     * Returns the access id for this HMAC key. This is the id needed to get or remove the key. *
      */
     public String getAccessId() {
       return accessId;
@@ -256,7 +256,7 @@ public class HmacKey implements Serializable {
       return updateTime;
     }
 
-    /** Builder for {@code HmacKeyMetadata} objects. * */
+    /** BlobInfoBuilder for {@code HmacKeyMetadata} objects. * */
     public static class Builder {
       private String accessId;
       private String etag;

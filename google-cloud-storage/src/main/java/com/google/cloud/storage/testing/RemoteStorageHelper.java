@@ -20,7 +20,7 @@ import com.google.api.gax.paging.Page;
 import com.google.api.gax.retrying.RetrySettings;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
@@ -81,7 +81,7 @@ public class RemoteStorageHelper {
             for (Bucket bucket : buckets.iterateAll()) {
               if (bucket.getCreateTime() < olderThan) {
                 try {
-                  for (Blob blob :
+                  for (StorageObject blob :
                       bucket
                           .list(
                               BlobListOption.fields(
@@ -115,7 +115,7 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the remove requests. Use {@link #forceDelete(Storage storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
@@ -135,7 +135,7 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the remove requests. Use {@link #forceDelete(Storage storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
@@ -261,7 +261,7 @@ public class RemoteStorageHelper {
     public Boolean call() {
       while (true) {
         ArrayList<BlobId> ids = new ArrayList<>();
-        Page<Blob> listedBlobs;
+        Page<StorageObject> listedBlobs;
         if (Strings.isNullOrEmpty(userProject)) {
           listedBlobs = storage.list(bucket, BlobListOption.versions(true));
         } else {

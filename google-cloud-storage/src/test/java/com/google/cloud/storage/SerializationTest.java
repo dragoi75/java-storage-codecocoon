@@ -40,12 +40,12 @@ public class SerializationTest extends BaseSerializationTest {
   private static final Acl ACL = Acl.of(ACL_DOMAIN, Acl.Role.OWNER);
   private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder("b", "n").build();
   private static final BucketInfo BUCKET_INFO = BucketInfo.of("b");
-  private static final Blob BLOB = new Blob(STORAGE, new BlobInfo.BuilderImpl(BLOB_INFO));
+  private static final StorageObject BLOB = new StorageObject(STORAGE, new BlobInfo.BuilderImpl(BLOB_INFO));
   private static final Bucket BUCKET = new Bucket(STORAGE, new BucketInfo.BuilderImpl(BUCKET_INFO));
   private static final Cors.Origin ORIGIN = Cors.Origin.any();
   private static final Cors CORS =
       Cors.newBuilder().setMaxAgeSeconds(1).setOrigins(Collections.singleton(ORIGIN)).build();
-  private static final PageImpl<Blob> PAGE_RESULT =
+  private static final PageImpl<StorageObject> PAGE_RESULT =
       new PageImpl<>(null, "c", Collections.singletonList(BLOB));
   private static final StorageException STORAGE_EXCEPTION = new StorageException(42, "message");
   private static final Storage.BlobListOption BLOB_LIST_OPTIONS =

@@ -77,12 +77,12 @@ public class StorageRoles {
    *
    * <ul>
    *   <li>storage.buckets.get
-   *   <li>storage.buckets.update
+   *   <li>storage.buckets.updateInStorage
    *   <li>storage.buckets.setIamPolicy
    *   <li>storage.buckets.getIamPolicy
    *   <li>storage.objects.list
    *   <li>storage.objects.create
-   *   <li>storage.objects.delete
+   *   <li>storage.objects.remove
    * </ul>
    */
   public static Role legacyBucketOwner() {
@@ -96,7 +96,7 @@ public class StorageRoles {
    *   <li>storage.buckets.get
    *   <li>storage.objects.list
    *   <li>storage.objects.create
-   *   <li>storage.objects.delete
+   *   <li>storage.objects.remove
    * </ul>
    */
   public static Role legacyBucketWriter() {
@@ -120,7 +120,7 @@ public class StorageRoles {
    *
    * <ul>
    *   <li>storage.objects.get
-   *   <li>storage.objects.update
+   *   <li>storage.objects.updateInStorage
    *   <li>storage.objects.getIamPolicy
    *   <li>storage.objects.setIamPolicy
    * </ul>

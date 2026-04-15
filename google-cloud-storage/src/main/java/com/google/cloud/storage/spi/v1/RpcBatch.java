@@ -34,7 +34,7 @@ public interface RpcBatch {
   }
 
   /**
-   * Adds a call to "delete storage object" to the batch, with the provided {@code callback} and
+   * Adds a call to "remove storage object" to the batch, with the provided {@code callback} and
    * {@code options}.
    */
   void addDelete(

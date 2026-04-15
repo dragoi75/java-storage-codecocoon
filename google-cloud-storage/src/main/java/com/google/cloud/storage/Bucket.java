@@ -283,7 +283,7 @@ public class Bucket extends BucketInfo {
       checkArgument(
           !(optionSet.contains(StorageRpc.Option.IF_METAGENERATION_NOT_MATCH)
               && optionSet.contains(StorageRpc.Option.IF_METAGENERATION_MATCH)),
-          "metagenerationMatch and metagenerationNotMatch options can not be both provided");
+          "ifMetagenerationMatch and metagenerationNotMatch options can not be both provided");
       checkArgument(
           !(optionSet.contains(StorageRpc.Option.IF_GENERATION_NOT_MATCH)
               && optionSet.contains(StorageRpc.Option.IF_GENERATION_MATCH)),
@@ -483,7 +483,7 @@ public class Bucket extends BucketInfo {
       checkArgument(
           !(optionSet.contains(Storage.BlobWriteOption.Option.IF_METAGENERATION_NOT_MATCH)
               && optionSet.contains(Storage.BlobWriteOption.Option.IF_METAGENERATION_MATCH)),
-          "metagenerationMatch and metagenerationNotMatch options can not be both provided");
+          "ifMetagenerationMatch and metagenerationNotMatch options can not be both provided");
       checkArgument(
           !(optionSet.contains(Storage.BlobWriteOption.Option.IF_GENERATION_NOT_MATCH)
               && optionSet.contains(Storage.BlobWriteOption.Option.IF_GENERATION_MATCH)),
@@ -500,7 +500,7 @@ public class Bucket extends BucketInfo {
     }
   }
 
-  /** Builder for {@code Bucket}. */
+  /** BlobInfoBuilder for {@code Bucket}. */
   public static class Builder extends BucketInfo.Builder {
     private final Storage storage;
     private final BucketInfo.BuilderImpl infoBuilder;
@@ -686,20 +686,20 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Checks if this bucket exists.
+   * Checks if this bucket existsInStorage.
    *
-   * <p>Example of checking if the bucket exists.
+   * <p>Example of checking if the bucket existsInStorage.
    *
    * <pre>{@code
-   * boolean exists = bucket.exists();
-   * if (exists) {
-   *   // the bucket exists
+   * boolean existsInStorage = bucket.existsInStorage();
+   * if (existsInStorage) {
+   *   // the bucket existsInStorage
    * } else {
    *   // the bucket was not found
    * }
    * }</pre>
    *
-   * @return true if this bucket exists, false otherwise
+   * @return true if this bucket existsInStorage, false otherwise
    * @throws StorageException upon failure
    */
   public boolean exists(BucketSourceOption... options) {
@@ -716,7 +716,7 @@ public class Bucket extends BucketInfo {
    * {@link Bucket#getMetageneration()} value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * Bucket latestBucket = bucket.reload(BucketSourceOption.metagenerationMatch());
+   * Bucket latestBucket = bucket.refresh(BucketSourceOption.ifMetagenerationMatch());
    * if (latestBucket == null) {
    *   // the bucket was not found
    * }
@@ -733,17 +733,17 @@ public class Bucket extends BucketInfo {
   /**
    * Updates the bucket's information. Bucket's name cannot be changed. A new {@code Bucket} object
    * is returned. By default no checks are made on the metadata generation of the current bucket. If
-   * you want to update the information only if the current bucket metadata are at their latest
-   * version use the {@code metagenerationMatch} option: {@code
-   * bucket.update(BucketTargetOption.metagenerationMatch())}
+   * you want to updateInStorage the information only if the current bucket metadata are at their latest
+   * version use the {@code ifMetagenerationMatch} option: {@code
+   * bucket.updateInStorage(BucketTargetOption.ifMetagenerationMatch())}
    *
    * <p>Example of updating the bucket's information.
    *
    * <pre>{@code
-   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).build().update();
+   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).build().updateInStorage();
    * }</pre>
    *
-   * @param options update options
+   * @param options updateInStorage options
    * @return a {@code Bucket} object with updated information
    * @throws StorageException upon failure
    */
@@ -758,7 +758,7 @@ public class Bucket extends BucketInfo {
    * Bucket#getMetageneration()} value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
+   * boolean deleted = bucket.remove(BucketSourceOption.ifMetagenerationMatch());
    * if (deleted) {
    *   // the bucket was deleted
    * } else {
@@ -766,7 +766,7 @@ public class Bucket extends BucketInfo {
    * }
    * }</pre>
    *
-   * @param options bucket delete options
+   * @param options bucket remove options
    * @return {@code true} if bucket was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
@@ -775,15 +775,15 @@ public class Bucket extends BucketInfo {
   }
 
   /**
-   * Returns the paginated list of {@code Blob} in this bucket.
+   * Returns the paginated list of {@code StorageObject} in this bucket.
    *
    * <p>Example of listing the blobs in the bucket.
    *
    * <pre>{@code
-   * Page<Blob> blobs = bucket.list();
-   * Iterator<Blob> blobIterator = blobs.iterateAll();
+   * Page<StorageObject> blobs = bucket.list();
+   * Iterator<StorageObject> blobIterator = blobs.iterateAll();
    * while (blobIterator.hasNext()) {
-   *   Blob blob = blobIterator.next();
+   *   StorageObject blob = blobIterator.next();
    *   // do something with the blob
    * }
    * }</pre>
@@ -791,7 +791,7 @@ public class Bucket extends BucketInfo {
    * @param options options for listing blobs
    * @throws StorageException upon failure
    */
-  public Page<Blob> list(BlobListOption... options) {
+  public Page<StorageObject> list(BlobListOption... options) {
     return storage.list(getName(), options);
   }
 
@@ -804,14 +804,14 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String blobName = "my_blob_name";
    * long generation = 42;
-   * Blob blob = bucket.get(blobName, BlobGetOption.generationMatch(generation));
+   * StorageObject blob = bucket.get(blobName, BlobGetOption.generationMatch(generation));
    * }</pre>
    *
    * @param blob name of the requested blob
    * @param options blob search options
    * @throws StorageException upon failure
    */
-  public Blob get(String blob, BlobGetOption... options) {
+  public StorageObject get(String blob, BlobGetOption... options) {
     return storage.get(BlobId.of(getName(), blob), options);
   }
 
@@ -823,8 +823,8 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String blobName1 = "my_blob_name1";
    * String blobName2 = "my_blob_name2";
-   * List<Blob> blobs = bucket.get(blobName1, blobName2);
-   * for (Blob blob : blobs) {
+   * List<StorageObject> blobs = bucket.get(blobName1, blobName2);
+   * for (StorageObject blob : blobs) {
    *   if (blob == null) {
    *     // the blob was not found
    *   }
@@ -834,10 +834,10 @@ public class Bucket extends BucketInfo {
    * @param blobName1 first blob to get
    * @param blobName2 second blob to get
    * @param blobNames other blobs to get
-   * @return an immutable list of {@code Blob} objects
+   * @return an immutable list of {@code StorageObject} objects
    * @throws StorageException upon failure
    */
-  public List<Blob> get(String blobName1, String blobName2, String... blobNames) {
+  public List<StorageObject> get(String blobName1, String blobName2, String... blobNames) {
     List<BlobId> blobIds = Lists.newArrayListWithCapacity(blobNames.length + 2);
     blobIds.add(BlobId.of(getName(), blobName1));
     blobIds.add(BlobId.of(getName(), blobName2));
@@ -858,8 +858,8 @@ public class Bucket extends BucketInfo {
    * List<String> blobNames = new LinkedList<>();
    * blobNames.add(blobName1);
    * blobNames.add(blobName2);
-   * List<Blob> blobs = bucket.get(blobNames);
-   * for (Blob blob : blobs) {
+   * List<StorageObject> blobs = bucket.get(blobNames);
+   * for (StorageObject blob : blobs) {
    *   if (blob == null) {
    *     // the blob was not found
    *   }
@@ -867,10 +867,10 @@ public class Bucket extends BucketInfo {
    * }</pre>
    *
    * @param blobNames blobs to get
-   * @return an immutable list of {@code Blob} objects
+   * @return an immutable list of {@code StorageObject} objects
    * @throws StorageException upon failure
    */
-  public List<Blob> get(Iterable<String> blobNames) {
+  public List<StorageObject> get(Iterable<String> blobNames) {
     ImmutableList.Builder<BlobId> builder = ImmutableList.builder();
     for (String blobName : blobNames) {
       builder.add(BlobId.of(getName(), blobName));
@@ -880,7 +880,7 @@ public class Bucket extends BucketInfo {
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link StorageObject#getWriter(com.google.cloud.storage.Storage.BlobWriteOption...)} is
    * recommended as it uses resumable upload. MD5 and CRC32C hashes of {@code content} are computed
    * and used for validating transferred data.
    *
@@ -888,7 +888,7 @@ public class Bucket extends BucketInfo {
    *
    * <pre>{@code
    * String blobName = "my_blob_name";
-   * Blob blob = bucket.create(blobName, "Hello, World!".getBytes(UTF_8), "text/plain");
+   * StorageObject blob = bucket.create(blobName, "Hello, World!".getBytes(UTF_8), "text/plain");
    * }</pre>
    *
    * @param blob a blob name
@@ -898,7 +898,7 @@ public class Bucket extends BucketInfo {
    * @return a complete blob information
    * @throws StorageException upon failure
    */
-  public Blob create(String blob, byte[] content, String contentType, BlobTargetOption... options) {
+  public StorageObject create(String blob, byte[] content, String contentType, BlobTargetOption... options) {
     BlobInfo blobInfo =
         BlobInfo.newBuilder(BlobId.of(getName(), blob)).setContentType(contentType).build();
     Tuple<BlobInfo, Storage.BlobTargetOption[]> target =
@@ -908,7 +908,7 @@ public class Bucket extends BucketInfo {
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link StorageObject#getWriter(com.google.cloud.storage.Storage.BlobWriteOption...)} is
    * recommended as it uses resumable upload.
    *
    * <p>Example of creating a blob in the bucket from an input stream with a content type.
@@ -916,7 +916,7 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String blobName = "my_blob_name";
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-   * Blob blob = bucket.create(blobName, content, "text/plain");
+   * StorageObject blob = bucket.create(blobName, content, "text/plain");
    * }</pre>
    *
    * @param blob a blob name
@@ -926,7 +926,7 @@ public class Bucket extends BucketInfo {
    * @return a complete blob information
    * @throws StorageException upon failure
    */
-  public Blob create(
+  public StorageObject create(
       String blob, InputStream content, String contentType, BlobWriteOption... options) {
     BlobInfo blobInfo =
         BlobInfo.newBuilder(BlobId.of(getName(), blob)).setContentType(contentType).build();
@@ -937,7 +937,7 @@ public class Bucket extends BucketInfo {
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link StorageObject#getWriter(com.google.cloud.storage.Storage.BlobWriteOption...)} is
    * recommended as it uses resumable upload. MD5 and CRC32C hashes of {@code content} are computed
    * and used for validating transferred data.
    *
@@ -945,7 +945,7 @@ public class Bucket extends BucketInfo {
    *
    * <pre>{@code
    * String blobName = "my_blob_name";
-   * Blob blob = bucket.create(blobName, "Hello, World!".getBytes(UTF_8));
+   * StorageObject blob = bucket.create(blobName, "Hello, World!".getBytes(UTF_8));
    * }</pre>
    *
    * @param blob a blob name
@@ -954,7 +954,7 @@ public class Bucket extends BucketInfo {
    * @return a complete blob information
    * @throws StorageException upon failure
    */
-  public Blob create(String blob, byte[] content, BlobTargetOption... options) {
+  public StorageObject create(String blob, byte[] content, BlobTargetOption... options) {
     BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(getName(), blob)).build();
     Tuple<BlobInfo, Storage.BlobTargetOption[]> target =
         BlobTargetOption.toTargetOptions(blobInfo, options);
@@ -963,7 +963,7 @@ public class Bucket extends BucketInfo {
 
   /**
    * Creates a new blob in this bucket. Direct upload is used to upload {@code content}. For large
-   * content, {@link Blob#writer(com.google.cloud.storage.Storage.BlobWriteOption...)} is
+   * content, {@link StorageObject#getWriter(com.google.cloud.storage.Storage.BlobWriteOption...)} is
    * recommended as it uses resumable upload.
    *
    * <p>Example of creating a blob in the bucket from an input stream.
@@ -971,7 +971,7 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String blobName = "my_blob_name";
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-   * Blob blob = bucket.create(blobName, content);
+   * StorageObject blob = bucket.create(blobName, content);
    * }</pre>
    *
    * @param blob a blob name
@@ -980,7 +980,7 @@ public class Bucket extends BucketInfo {
    * @return a complete blob information
    * @throws StorageException upon failure
    */
-  public Blob create(String blob, InputStream content, BlobWriteOption... options) {
+  public StorageObject create(String blob, InputStream content, BlobWriteOption... options) {
     BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(getName(), blob)).build();
     Tuple<BlobInfo, Storage.BlobWriteOption[]> write =
         BlobWriteOption.toWriteOptions(blobInfo, options);
@@ -1008,7 +1008,7 @@ public class Bucket extends BucketInfo {
    * <p>Example of deleting the ACL entry for an entity.
    *
    * <pre>{@code
-   * boolean deleted = bucket.deleteAcl(User.ofAllAuthenticatedUsers());
+   * boolean deleted = bucket.removeAclEntry(User.ofAllAuthenticatedUsers());
    * if (deleted) {
    *   // the acl entry was deleted
    * } else {
@@ -1029,7 +1029,7 @@ public class Bucket extends BucketInfo {
    * <p>Example of creating a new ACL entry.
    *
    * <pre>{@code
-   * Acl acl = bucket.createAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
+   * Acl acl = bucket.createAclForBlob(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -1044,7 +1044,7 @@ public class Bucket extends BucketInfo {
    * <p>Example of updating a new ACL entry.
    *
    * <pre>{@code
-   * Acl acl = bucket.updateAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
+   * Acl acl = bucket.updateAccessControlList(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -1059,7 +1059,7 @@ public class Bucket extends BucketInfo {
    * <p>Example of listing the ACL entries.
    *
    * <pre>{@code
-   * List<Acl> acls = bucket.listAcls();
+   * List<Acl> acls = bucket.getAcls();
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -1186,7 +1186,7 @@ public class Bucket extends BucketInfo {
    * <pre>{@code
    * String bucketName = "my_unique_bucket";
    * Bucket bucket = storage.get(bucketName, BucketGetOption.fields(BucketField.METAGENERATION));
-   * storage.lockRetentionPolicy(bucket, BucketTargetOption.metagenerationMatch());
+   * storage.lockRetentionPolicy(bucket, BucketTargetOption.ifMetagenerationMatch());
    * }</pre>
    *
    * @return a {@code Bucket} object of the locked bucket

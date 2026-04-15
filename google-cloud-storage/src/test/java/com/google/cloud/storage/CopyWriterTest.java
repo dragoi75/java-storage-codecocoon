@@ -70,7 +70,7 @@ public class CopyWriterTest {
   private StorageRpcFactory rpcFactoryMock;
   private StorageRpc storageRpcMock;
   private CopyWriter copyWriter;
-  private Blob result;
+  private StorageObject result;
 
   @Before
   public void setUp() {
@@ -84,7 +84,7 @@ public class CopyWriterTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .setRetrySettings(ServiceOptions.getNoRetrySettings())
             .build();
-    result = new Blob(options.getService(), new BlobInfo.BuilderImpl(RESULT_INFO));
+    result = new StorageObject(options.getService(), new BlobInfo.BuilderImpl(RESULT_INFO));
   }
 
   @After

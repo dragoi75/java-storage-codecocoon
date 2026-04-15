@@ -157,7 +157,7 @@ public class BlobInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BlobInfo}. */
+  /** BlobInfoBuilder for {@code BlobInfo}. */
   public abstract static class Builder {
 
     /** Sets the blob identity. */

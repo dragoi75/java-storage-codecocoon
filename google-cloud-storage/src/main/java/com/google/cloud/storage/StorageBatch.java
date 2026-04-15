@@ -19,7 +19,6 @@ package com.google.cloud.storage;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.Storage.BlobSourceOption;
 import com.google.cloud.storage.Storage.BlobTargetOption;
@@ -31,25 +30,25 @@ import java.util.Map;
 /**
  * A batch of operations to be submitted to Google Cloud Storage using a single RPC request.
  *
- * <p>Example of using a batch request to delete, update and get a blob:
+ * <p>Example of using a batch request to remove, updateInStorage and get a blob:
  *
  * <pre>{@code
  * StorageBatch batch = storage.batch();
  * BlobId firstBlob = BlobId.of("bucket", "blob1"));
  * BlobId secondBlob = BlobId.of("bucket", "blob2"));
- * batch.delete(firstBlob).notify(new BatchResult.Callback<Boolean, StorageException>() {
+ * batch.remove(firstBlob).notify(new BatchResult.Callback<Boolean, StorageException>() {
  *   public void success(Boolean result) {
  *     // deleted successfully
  *   }
  *
  *   public void error(StorageException exception) {
- *     // delete failed
+ *     // remove failed
  *   }
  * });
- * batch.update(BlobInfo.builder(secondBlob).contentType("text/plain").build());
- * StorageBatchResult<Blob> result = batch.get(secondBlob);
+ * batch.updateInStorage(BlobInfo.builder(secondBlob).contentType("text/plain").build());
+ * StorageBatchResult<StorageObject> result = batch.get(secondBlob);
  * batch.submit();
- * Blob blob = result.get(); // returns get result or throws StorageException
+ * StorageObject blob = result.get(); // returns get result or throws StorageException
  * }</pre>
  */
 public class StorageBatch {
@@ -80,7 +79,7 @@ public class StorageBatch {
   }
 
   /**
-   * Adds a request representing the "delete blob" operation to this batch. Calling {@link
+   * Adds a request representing the "remove blob" operation to this batch. Calling {@link
    * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
    * {@code false} if the blob was not found, or throws a {@link StorageException} if the operation
    * failed.
@@ -91,7 +90,7 @@ public class StorageBatch {
   }
 
   /**
-   * Adds a request representing the "delete blob" operation to this batch. Calling {@link
+   * Adds a request representing the "remove blob" operation to this batch. Calling {@link
    * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
    * {@code false} if the blob was not found, or throws a {@link StorageException} if the operation
    * failed.
@@ -105,14 +104,14 @@ public class StorageBatch {
   }
 
   /**
-   * Adds a request representing the "update blob" operation to this batch. The {@code options} can
+   * Adds a request representing the "updateInStorage blob" operation to this batch. The {@code options} can
    * be used in the same way as for {@link Storage#update(BlobInfo, BlobTargetOption...)}. Calling
-   * {@link StorageBatchResult#get()} on the return value yields the updated {@link Blob} if
+   * {@link StorageBatchResult#get()} on the return value yields the updated {@link StorageObject} if
    * successful, or throws a {@link StorageException} if the operation failed.
    */
-  public StorageBatchResult<Blob> update(BlobInfo blobInfo, BlobTargetOption... options) {
-    StorageBatchResult<Blob> result = new StorageBatchResult<>();
-    RpcBatch.Callback<StorageObject> callback = createUpdateCallback(this.options, result);
+  public StorageBatchResult<StorageObject> update(BlobInfo blobInfo, BlobTargetOption... options) {
+    StorageBatchResult<StorageObject> result = new StorageBatchResult<>();
+    RpcBatch.Callback<com.google.api.services.storage.model.StorageObject> callback = createUpdateCallback(this.options, result);
     Map<StorageRpc.Option, ?> optionMap = StorageImpl.optionMap(blobInfo, options);
     batch.addPatch(blobInfo.toPb(), callback, optionMap);
     return result;
@@ -121,24 +120,24 @@ public class StorageBatch {
   /**
    * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
    * used in the same way as for {@link Storage#get(BlobId, BlobGetOption...)}. Calling {@link
-   * StorageBatchResult#get()} on the return value yields the requested {@link Blob} if successful,
-   * {@code null} if no such blob exists, or throws a {@link StorageException} if the operation
+   * StorageBatchResult#get()} on the return value yields the requested {@link StorageObject} if successful,
+   * {@code null} if no such blob existsInStorage, or throws a {@link StorageException} if the operation
    * failed.
    */
-  public StorageBatchResult<Blob> get(String bucket, String blob, BlobGetOption... options) {
+  public StorageBatchResult<StorageObject> get(String bucket, String blob, BlobGetOption... options) {
     return get(BlobId.of(bucket, blob), options);
   }
 
   /**
    * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
    * used in the same way as for {@link Storage#get(BlobId, BlobGetOption...)}. Calling {@link
-   * StorageBatchResult#get()} on the return value yields the requested {@link Blob} if successful,
-   * {@code null} if no such blob exists, or throws a {@link StorageException} if the operation
+   * StorageBatchResult#get()} on the return value yields the requested {@link StorageObject} if successful,
+   * {@code null} if no such blob existsInStorage, or throws a {@link StorageException} if the operation
    * failed.
    */
-  public StorageBatchResult<Blob> get(BlobId blob, BlobGetOption... options) {
-    StorageBatchResult<Blob> result = new StorageBatchResult<>();
-    RpcBatch.Callback<StorageObject> callback = createGetCallback(this.options, result);
+  public StorageBatchResult<StorageObject> get(BlobId blob, BlobGetOption... options) {
+    StorageBatchResult<StorageObject> result = new StorageBatchResult<>();
+    RpcBatch.Callback<com.google.api.services.storage.model.StorageObject> callback = createGetCallback(this.options, result);
     Map<StorageRpc.Option, ?> optionMap = StorageImpl.optionMap(blob, options);
     batch.addGet(blob.toPb(), callback, optionMap);
     return result;
@@ -168,13 +167,13 @@ public class StorageBatch {
     };
   }
 
-  private RpcBatch.Callback<StorageObject> createGetCallback(
-      final StorageOptions serviceOptions, final StorageBatchResult<Blob> result) {
-    return new RpcBatch.Callback<StorageObject>() {
+  private RpcBatch.Callback<com.google.api.services.storage.model.StorageObject> createGetCallback(
+      final StorageOptions serviceOptions, final StorageBatchResult<StorageObject> result) {
+    return new RpcBatch.Callback<com.google.api.services.storage.model.StorageObject>() {
       @Override
-      public void onSuccess(StorageObject response) {
+      public void onSuccess(com.google.api.services.storage.model.StorageObject response) {
         result.success(
-            response == null ? null : Blob.fromPb(serviceOptions.getService(), response));
+            response == null ? null : StorageObject.fromProto(serviceOptions.getService(), response));
       }
 
       @Override
@@ -189,13 +188,13 @@ public class StorageBatch {
     };
   }
 
-  private RpcBatch.Callback<StorageObject> createUpdateCallback(
-      final StorageOptions serviceOptions, final StorageBatchResult<Blob> result) {
-    return new RpcBatch.Callback<StorageObject>() {
+  private RpcBatch.Callback<com.google.api.services.storage.model.StorageObject> createUpdateCallback(
+      final StorageOptions serviceOptions, final StorageBatchResult<StorageObject> result) {
+    return new RpcBatch.Callback<com.google.api.services.storage.model.StorageObject>() {
       @Override
-      public void onSuccess(StorageObject response) {
+      public void onSuccess(com.google.api.services.storage.model.StorageObject response) {
         result.success(
-            response == null ? null : Blob.fromPb(serviceOptions.getService(), response));
+            response == null ? null : StorageObject.fromProto(serviceOptions.getService(), response));
       }
 
       @Override

@@ -23,12 +23,9 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.*;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.Storage.BlobListOption;
-import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.ImmutableList;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -81,18 +78,18 @@ public class RemoteStorageHelperTest {
   private static final BlobId BLOB_ID1 = BlobId.of(BUCKET_NAME, "n1");
   private static final BlobId BLOB_ID2 = BlobId.of(BUCKET_NAME, BLOB_NAME2);
 
-  private Blob blob1;
-  private Blob blob2;
-  private List<Blob> blobList;
-  private Page<Blob> blobPage;
+  private StorageObject blob1;
+  private StorageObject blob2;
+  private List<StorageObject> blobList;
+  private Page<StorageObject> blobPage;
 
   @Before
   public void setUp() {
-    blob1 = EasyMock.createMock(Blob.class);
-    blob2 = EasyMock.createMock(Blob.class);
+    blob1 = EasyMock.createMock(StorageObject.class);
+    blob2 = EasyMock.createMock(StorageObject.class);
     blobList = ImmutableList.of(blob1, blob2);
     blobPage =
-        new Page<Blob>() {
+        new Page<StorageObject>() {
 
           @Override
           public boolean hasNextPage() {
@@ -105,17 +102,17 @@ public class RemoteStorageHelperTest {
           }
 
           @Override
-          public Page<Blob> getNextPage() {
+          public Page<StorageObject> getNextPage() {
             return null;
           }
 
           @Override
-          public Iterable<Blob> getValues() {
+          public Iterable<StorageObject> getValues() {
             return blobList;
           }
 
           @Override
-          public Iterable<Blob> iterateAll() {
+          public Iterable<StorageObject> iterateAll() {
             return blobList;
           }
         };

@@ -192,7 +192,7 @@ public class BlobReadChannelTest {
       fail("Expected ReadChannel read to throw StorageException");
     } catch (StorageException ex) {
       StringBuilder messageBuilder = new StringBuilder();
-      messageBuilder.append("Blob ").append(blobId).append(" was updated while reading");
+      messageBuilder.append("StorageObject ").append(blobId).append(" was updated while reading");
       assertEquals(messageBuilder.toString(), ex.getMessage());
     }
   }

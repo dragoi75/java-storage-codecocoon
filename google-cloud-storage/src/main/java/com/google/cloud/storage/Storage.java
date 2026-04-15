@@ -890,7 +890,7 @@ public interface Storage extends Service<StorageOptions> {
     /**
      * Returns an option to specify the blob's fields to be returned by the RPC call. If this option
      * is not provided all blob's fields are returned. {@code BlobGetOption.fields}) can be used to
-     * specify only the fields of interest. Blob name and bucket are always returned, even if not
+     * specify only the fields of interest. StorageObject name and bucket are always returned, even if not
      * specified.
      */
     public static BlobGetOption fields(BlobField... fields) {
@@ -1006,10 +1006,10 @@ public interface Storage extends Service<StorageOptions> {
      * If specified, results are returned in a directory-like mode. Blobs whose names, after a
      * possible {@link #prefix(String)}, do not contain the '/' delimiter are returned as is. Blobs
      * whose names, after a possible {@link #prefix(String)}, contain the '/' delimiter, will have
-     * their name truncated after the delimiter and will be returned as {@link Blob} objects where
-     * only {@link Blob#getBlobId()}, {@link Blob#getSize()} and {@link Blob#isDirectory()} are set.
+     * their name truncated after the delimiter and will be returned as {@link StorageObject} objects where
+     * only {@link StorageObject#getBlobId()}, {@link StorageObject#getSize()} and {@link StorageObject#isDirectory()} are set.
      * For such directory blobs, ({@link BlobId#getGeneration()} returns {@code null}), {@link
-     * Blob#getSize()} returns {@code 0} while {@link Blob#isDirectory()} returns {@code true}.
+     * StorageObject#getSize()} returns {@code 0} while {@link StorageObject#isDirectory()} returns {@code true}.
      * Duplicate directory blobs are omitted.
      */
     public static BlobListOption currentDirectory() {
@@ -1048,7 +1048,7 @@ public interface Storage extends Service<StorageOptions> {
     /**
      * Returns an option to specify the blob's fields to be returned by the RPC call. If this option
      * is not provided all blob's fields are returned. {@code BlobListOption.fields}) can be used to
-     * specify only the fields of interest. Blob name and bucket are always returned, even if not
+     * specify only the fields of interest. StorageObject name and bucket are always returned, even if not
      * specified.
      */
     public static BlobListOption fields(BlobField... fields) {
@@ -1713,13 +1713,13 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo);
+   * StorageObject blob = storage.create(blobInfo);
    * }</pre>
    *
-   * @return a [@code Blob} with complete information
+   * @return a [@code StorageObject} with complete information
    * @throws StorageException upon failure
    */
-  Blob create(BlobInfo blobInfo, BlobTargetOption... options);
+  StorageObject create(BlobInfo blobInfo, BlobTargetOption... options);
 
   /**
    * Creates a new blob. Direct upload is used to upload {@code content}. For large content, {@link
@@ -1734,14 +1734,14 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8));
+   * StorageObject blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8));
    * }</pre>
    *
-   * @return a [@code Blob} with complete information
+   * @return a [@code StorageObject} with complete information
    * @throws StorageException upon failure
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags">Hashes and ETags</a>
    */
-  Blob create(BlobInfo blobInfo, byte[] content, BlobTargetOption... options);
+  StorageObject create(BlobInfo blobInfo, byte[] content, BlobTargetOption... options);
 
   /**
    * Creates a new blob with the sub array of the given byte array. Direct upload is used to upload
@@ -1757,14 +1757,14 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8), 7, 5);
+   * StorageObject blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8), 7, 5);
    * }</pre>
    *
-   * @return a [@code Blob} with complete information
+   * @return a [@code StorageObject} with complete information
    * @throws StorageException upon failure
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags">Hashes and ETags</a>
    */
-  Blob create(
+  StorageObject create(
       BlobInfo blobInfo, byte[] content, int offset, int length, BlobTargetOption... options);
 
   /**
@@ -1785,7 +1785,7 @@ public interface Storage extends Service<StorageOptions> {
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * Blob blob = storage.create(blobInfo, content);
+   * StorageObject blob = storage.create(blobInfo, content);
    * }</pre>
    *
    * <p>Example of uploading an encrypted blob.
@@ -1800,14 +1800,14 @@ public interface Storage extends Service<StorageOptions> {
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
    *     .setContentType("text/plain")
    *     .build();
-   * Blob blob = storage.create(blobInfo, content, BlobWriteOption.encryptionKey(encryptionKey));
+   * StorageObject blob = storage.create(blobInfo, content, BlobWriteOption.encryptionKey(encryptionKey));
    * }</pre>
    *
-   * @return a [@code Blob} with complete information
+   * @return a [@code StorageObject} with complete information
    * @throws StorageException upon failure
    */
   @Deprecated
-  Blob create(BlobInfo blobInfo, InputStream content, BlobWriteOption... options);
+  StorageObject create(BlobInfo blobInfo, InputStream content, BlobWriteOption... options);
 
   /**
    * Returns the requested bucket or {@code null} if not found.
@@ -1822,7 +1822,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * long bucketMetageneration = 42;
    * Bucket bucket = storage.get(bucketName,
-   *     BucketGetOption.metagenerationMatch(bucketMetageneration));
+   *     BucketGetOption.ifMetagenerationMatch(bucketMetageneration));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -1844,7 +1844,7 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * Bucket bucket = storage.get(bucketName, BucketGetOption.fields(BucketField.METAGENERATION));
-   * storage.lockRetentionPolicy(bucket, BucketTargetOption.metagenerationMatch());
+   * storage.lockRetentionPolicy(bucket, BucketTargetOption.ifMetagenerationMatch());
    * }</pre>
    *
    * @return a {@code Bucket} object of the locked bucket
@@ -1865,13 +1865,13 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobMetageneration = 42;
-   * Blob blob = storage.get(bucketName, blobName,
-   *     BlobGetOption.metagenerationMatch(blobMetageneration));
+   * StorageObject blob = storage.get(bucketName, blobName,
+   *     BlobGetOption.ifMetagenerationMatch(blobMetageneration));
    * }</pre>
    *
    * @throws StorageException upon failure
    */
-  Blob get(String bucket, String blob, BlobGetOption... options);
+  StorageObject get(String bucket, String blob, BlobGetOption... options);
 
   /**
    * Returns the requested blob or {@code null} if not found.
@@ -1887,7 +1887,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobMetageneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId, BlobGetOption.metagenerationMatch(blobMetageneration));
+   * StorageObject blob = storage.get(blobId, BlobGetOption.ifMetagenerationMatch(blobMetageneration));
    * }</pre>
    *
    * <p>Example of getting information on a blob encrypted using Customer Supplied Encryption Keys,
@@ -1902,12 +1902,12 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * String blobEncryptionKey = "";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId, BlobGetOption.decryptionKey(blobEncryptionKey));
+   * StorageObject blob = storage.get(blobId, BlobGetOption.customerSuppliedKey(blobEncryptionKey));
    * }</pre>
    *
    * @throws StorageException upon failure
    */
-  Blob get(BlobId blob, BlobGetOption... options);
+  StorageObject get(BlobId blob, BlobGetOption... options);
 
   /**
    * Returns the requested blob or {@code null} if not found.
@@ -1918,12 +1918,12 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * Blob blob = storage.get(blobId);
+   * StorageObject blob = storage.get(blobId);
    * }</pre>
    *
    * @throws StorageException upon failure
    */
-  Blob get(BlobId blob);
+  StorageObject get(BlobId blob);
 
   /**
    * Lists the project's buckets.
@@ -1954,18 +1954,18 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String directory = "my_directory/";
-   * Page<Blob> blobs = storage.list(bucketName, BlobListOption.currentDirectory(),
+   * Page<StorageObject> blobs = storage.list(bucketName, BlobListOption.currentDirectory(),
    *     BlobListOption.prefix(directory));
-   * Iterator<Blob> blobIterator = blobs.iterateAll().iterator();
+   * Iterator<StorageObject> blobIterator = blobs.iterateAll().iterator();
    * while (blobIterator.hasNext()) {
-   *   Blob blob = blobIterator.next();
+   *   StorageObject blob = blobIterator.next();
    *   // do something with the blob
    * }
    * }</pre>
    *
    * @throws StorageException upon failure
    */
-  Page<Blob> list(String bucket, BlobListOption... options);
+  Page<StorageObject> list(String bucket, BlobListOption... options);
 
   /**
    * Updates bucket information.
@@ -1978,7 +1978,7 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * BucketInfo bucketInfo = BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build();
-   * Bucket bucket = storage.update(bucketInfo);
+   * Bucket bucket = storage.updateInStorage(bucketInfo);
    * }</pre>
    *
    * @return the updated bucket
@@ -1999,15 +1999,15 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * Blob blob = storage.get(bucketName, blobName);
+   * StorageObject blob = storage.get(bucketName, blobName);
    * BlobInfo updatedInfo = blob.toBuilder().setContentType("text/plain").build();
-   * storage.update(updatedInfo, BlobTargetOption.metagenerationMatch());
+   * storage.updateInStorage(updatedInfo, BlobTargetOption.ifMetagenerationMatch());
    * }</pre>
    *
    * @return the updated blob
    * @throws StorageException upon failure
    */
-  Blob update(BlobInfo blobInfo, BlobTargetOption... options);
+  StorageObject update(BlobInfo blobInfo, BlobTargetOption... options);
 
   /**
    * Updates blob information. Original metadata are merged with metadata in the provided {@code
@@ -2022,7 +2022,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * Map<String, String> newMetadata = new HashMap<>();
    * newMetadata.put("keyToAddOrUpdate", "value");
-   * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
+   * StorageObject blob = storage.updateInStorage(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
    *     .build());
    * }</pre>
@@ -2034,7 +2034,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * Map<String, String> newMetadata = new HashMap<>();
    * newMetadata.put("keyToRemove", null);
-   * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
+   * StorageObject blob = storage.updateInStorage(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
    *     .build());
    * }</pre>
@@ -2042,7 +2042,7 @@ public interface Storage extends Service<StorageOptions> {
    * @return the updated blob
    * @throws StorageException upon failure
    */
-  Blob update(BlobInfo blobInfo);
+  StorageObject update(BlobInfo blobInfo);
 
   /**
    * Deletes the requested bucket.
@@ -2056,8 +2056,8 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * long bucketMetageneration = 42;
-   * boolean deleted = storage.delete(bucketName,
-   *     BucketSourceOption.metagenerationMatch(bucketMetageneration));
+   * boolean deleted = storage.remove(bucketName,
+   *     BucketSourceOption.ifMetagenerationMatch(bucketMetageneration));
    * if (deleted) {
    *   // the bucket was deleted
    * } else {
@@ -2080,8 +2080,8 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
-   * boolean deleted = storage.delete(bucketName, blobName,
-   *     BlobSourceOption.generationMatch(blobGeneration));
+   * boolean deleted = storage.remove(bucketName, blobName,
+   *     BlobSourceOptions.generationMatch(blobGeneration));
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -2108,7 +2108,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * boolean deleted = storage.delete(blobId, BlobSourceOption.generationMatch(blobGeneration));
+   * boolean deleted = storage.remove(blobId, BlobSourceOptions.generationMatch(blobGeneration));
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -2130,7 +2130,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * boolean deleted = storage.delete(blobId);
+   * boolean deleted = storage.remove(blobId);
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -2163,13 +2163,13 @@ public interface Storage extends Service<StorageOptions> {
    *     .addSource(sourceBlob1)
    *     .addSource(sourceBlob2)
    *     .build();
-   * Blob blob = storage.compose(request);
+   * StorageObject blob = storage.compose(request);
    * }</pre>
    *
    * @return the composed blob
    * @throws StorageException upon failure
    */
-  Blob compose(ComposeRequest composeRequest);
+  StorageObject compose(ComposeRequest composeRequest);
 
   /**
    * Sends a copy request. This method copies both blob's data and information. To override source
@@ -2194,7 +2194,7 @@ public interface Storage extends Service<StorageOptions> {
    *     .setSource(BlobId.of(bucketName, blobName))
    *     .setTarget(BlobId.of(bucketName, copyBlobName))
    *     .build();
-   * Blob blob = storage.copy(request).getResult();
+   * StorageObject blob = storage.copy(request).getResult();
    * }</pre>
    *
    * <p>Example of copying a blob in chunks.
@@ -2211,7 +2211,7 @@ public interface Storage extends Service<StorageOptions> {
    * while (!copyWriter.isDone()) {
    *   copyWriter.copyChunk();
    * }
-   * Blob blob = copyWriter.getResult();
+   * StorageObject blob = copyWriter.getResult();
    * }</pre>
    *
    * <p>Example of rotating the encryption key of a blob.
@@ -2224,10 +2224,10 @@ public interface Storage extends Service<StorageOptions> {
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * CopyRequest request = CopyRequest.newBuilder()
    *     .setSource(blobId)
-   *     .setSourceOptions(BlobSourceOption.decryptionKey(oldEncryptionKey))
+   *     .setSourceOptions(BlobSourceOptions.customerSuppliedKey(oldEncryptionKey))
    *     .setTarget(blobId, BlobTargetOption.encryptionKey(newEncryptionKey))
    *     .build();
-   * Blob blob = storage.copy(request).getResult();
+   * StorageObject blob = storage.copy(request).getResult();
    * }</pre>
    *
    * @return a {@link CopyWriter} object that can be used to get information on the newly created
@@ -2248,7 +2248,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42";
    * byte[] content = storage.readAllBytes(bucketName, blobName,
-   *     BlobSourceOption.generationMatch(blobGeneration));
+   *     BlobSourceOptions.generationMatch(blobGeneration));
    * }</pre>
    *
    * @return the blob's content
@@ -2275,9 +2275,9 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * String decryptionKey = "my_encryption_key";
+   * String customerSuppliedKey = "my_encryption_key";
    * byte[] content = storage.readAllBytes(
-   *     bucketName, blobName, BlobSourceOption.decryptionKey(decryptionKey));
+   *     bucketName, blobName, BlobSourceOptions.customerSuppliedKey(customerSuppliedKey));
    * }</pre>
    *
    * @return the blob's content
@@ -2288,7 +2288,7 @@ public interface Storage extends Service<StorageOptions> {
   /**
    * Creates a new empty batch for grouping multiple service calls in one underlying RPC call.
    *
-   * <p>Example of using a batch request to delete, update and get a blob.
+   * <p>Example of using a batch request to remove, updateInStorage and get a blob.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -2297,19 +2297,19 @@ public interface Storage extends Service<StorageOptions> {
    * StorageBatch batch = storage.batch();
    * BlobId firstBlob = BlobId.of(bucketName, blobName1);
    * BlobId secondBlob = BlobId.of(bucketName, blobName2);
-   * batch.delete(firstBlob).notify(new BatchResult.Callback<Boolean, StorageException>() {
+   * batch.remove(firstBlob).notify(new BatchResult.Callback<Boolean, StorageException>() {
    *   public void success(Boolean result) {
    *     // deleted successfully
    *   }
    *
    *   public void error(StorageException exception) {
-   *     // delete failed
+   *     // remove failed
    *   }
    * });
-   * batch.update(BlobInfo.newBuilder(secondBlob).setContentType("text/plain").build());
-   * StorageBatchResult<Blob> result = batch.get(secondBlob);
+   * batch.updateInStorage(BlobInfo.newBuilder(secondBlob).setContentType("text/plain").build());
+   * StorageBatchResult<StorageObject> result = batch.get(secondBlob);
    * batch.submit();
-   * Blob blob = result.get(); // returns get result or throws StorageException
+   * StorageObject blob = result.get(); // returns get result or throws StorageException
    * }</pre>
    */
   StorageBatch batch();
@@ -2319,14 +2319,14 @@ public interface Storage extends Service<StorageOptions> {
    * blob changes while reading (i.e. {@link BlobInfo#getEtag()} changes), subsequent calls to
    * {@code blobReadChannel.read(ByteBuffer)} may throw {@link StorageException}.
    *
-   * <p>Example of reading a blob's content through a reader.
+   * <p>Example of reading a blob's content through a getReader.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * try (ReadChannel reader = storage.reader(bucketName, blobName)) {
+   * try (ReadChannel getReader = storage.getReader(bucketName, blobName)) {
    *   ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
-   *   while (reader.read(bytes) > 0) {
+   *   while (getReader.read(bytes) > 0) {
    *     bytes.flip();
    *     // do something with bytes
    *     bytes.clear();
@@ -2350,15 +2350,15 @@ public interface Storage extends Service<StorageOptions> {
    * blobReadChannel.read(ByteBuffer)} calls will throw {@link StorageException} if the blob`s
    * generation differs from the expected one.
    *
-   * <p>Example of reading a blob's content through a reader.
+   * <p>Example of reading a blob's content through a getReader.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * try (ReadChannel reader = storage.reader(blobId)) {
+   * try (ReadChannel getReader = storage.getReader(blobId)) {
    *   ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
-   *   while (reader.read(bytes) > 0) {
+   *   while (getReader.read(bytes) > 0) {
    *     bytes.flip();
    *     // do something with bytes
    *     bytes.clear();
@@ -2375,7 +2375,7 @@ public interface Storage extends Service<StorageOptions> {
    * values in the given {@code blobInfo} are ignored unless requested via the {@code
    * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options.
    *
-   * <p>Example of writing a blob's content through a writer.
+   * <p>Example of writing a blob's content through a getWriter.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -2383,9 +2383,9 @@ public interface Storage extends Service<StorageOptions> {
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * try (WriteChannel writer = storage.writer(blobInfo)) {
+   * try (WriteChannel getWriter = storage.getWriter(blobInfo)) {
    *   try {
-   *     writer.write(ByteBuffer.wrap(content, 0, content.length));
+   *     getWriter.write(ByteBuffer.wrap(content, 0, content.length));
    *   } catch (Exception ex) {
    *     // handle exception
    *   }
@@ -2399,7 +2399,7 @@ public interface Storage extends Service<StorageOptions> {
   /**
    * Accepts signed URL and return a channel for writing content.
    *
-   * <p>Example of writing content through a writer using signed URL.
+   * <p>Example of writing content through a getWriter using signed URL.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
@@ -2407,12 +2407,12 @@ public interface Storage extends Service<StorageOptions> {
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-   * URL signedURL = storage.signUrl(
+   * URL signedURL = storage.generateSignedUrl(
    *     blobInfo,
    *     1, TimeUnit.HOURS,
    *     Storage.SignUrlOption.httpMethod(HttpMethod.POST));
-   * try (WriteChannel writer = storage.writer(signedURL)) {
-   *    writer.write(ByteBuffer.wrap(content, 0, content.length));
+   * try (WriteChannel getWriter = storage.getWriter(signedURL)) {
+   *    getWriter.write(ByteBuffer.wrap(content, 0, content.length));
    * }
    * }</pre>
    *
@@ -2428,10 +2428,10 @@ public interface Storage extends Service<StorageOptions> {
    * account signer. If an instance of {@link com.google.auth.ServiceAccountSigner} was passed to
    * {@link StorageOptions}' builder via {@code setCredentials(Credentials)} or the default
    * credentials are being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS}
-   * is set or your application is running in App Engine, then {@code signUrl} will use that
+   * is set or your application is running in App Engine, then {@code generateSignedUrl} will use that
    * credentials to sign the URL. If the credentials passed to {@link StorageOptions} do not
    * implement {@link ServiceAccountSigner} (this is the case, for instance, for Google Cloud SDK
-   * credentials) then {@code signUrl} will throw an {@link IllegalStateException} unless an
+   * credentials) then {@code generateSignedUrl} will throw an {@link IllegalStateException} unless an
    * implementation of {@link ServiceAccountSigner} is passed using the {@link
    * SignUrlOption#signWith(ServiceAccountSigner)} option.
    *
@@ -2449,7 +2449,7 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName).build(),
    *     7, TimeUnit.DAYS);
    * }</pre>
@@ -2460,7 +2460,7 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName).build(),
    *     7, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withV4Signature());
@@ -2470,7 +2470,7 @@ public interface Storage extends Service<StorageOptions> {
    * option, which specifies the bucket name in the hostname of the URI, rather than in the path:
    *
    * <pre>{@code
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName).build(),
    *     1, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withVirtualHostedStyle());
@@ -2480,7 +2480,7 @@ public interface Storage extends Service<StorageOptions> {
    * which specifies the bucket name in path portion of the URI, rather than in the hostname:
    *
    * <pre>{@code
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName).build(),
    *     1, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withPathStyle());
@@ -2493,7 +2493,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * String kfPath = "/path/to/keyfile.json";
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName).build(),
    *     7, TimeUnit.DAYS,
    *     SignUrlOption.signWith(ServiceAccountCredentials.fromStream(new FileInputStream(kfPath))));
@@ -2509,7 +2509,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long generation = 1576656755290328L;
    *
-   * URL signedUrl = storage.signUrl(
+   * URL signedUrl = storage.generateSignedUrl(
    *     BlobInfo.newBuilder(bucketName, blobName, generation).build(),
    *     7, TimeUnit.DAYS,
    *     SignUrlOption.withQueryParams(ImmutableMap.of("generation", String.valueOf(generation))));
@@ -2543,15 +2543,15 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName2 = "my-blob-name2";
    * BlobId firstBlob = BlobId.of(bucketName, blobName1);
    * BlobId secondBlob = BlobId.of(bucketName, blobName2);
-   * List<Blob> blobs = storage.get(firstBlob, secondBlob);
+   * List<StorageObject> blobs = storage.get(firstBlob, secondBlob);
    * }</pre>
    *
    * @param blobIds blobs to get
-   * @return an immutable list of {@code Blob} objects. If a blob does not exist or access to it has
+   * @return an immutable list of {@code StorageObject} objects. If a blob does not exist or access to it has
    *     been denied the corresponding item in the list is {@code null}.
    * @throws StorageException upon failure
    */
-  List<Blob> get(BlobId... blobIds);
+  List<StorageObject> get(BlobId... blobIds);
 
   /**
    * Gets the requested blobs. A batch request is used to perform this call.
@@ -2565,15 +2565,15 @@ public interface Storage extends Service<StorageOptions> {
    * List<BlobId> blobIds = new LinkedList<>();
    * blobIds.add(BlobId.of(bucketName, blobName1));
    * blobIds.add(BlobId.of(bucketName, blobName2));
-   * List<Blob> blobs = storage.get(blobIds);
+   * List<StorageObject> blobs = storage.get(blobIds);
    * }</pre>
    *
    * @param blobIds blobs to get
-   * @return an immutable list of {@code Blob} objects. If a blob does not exist or access to it has
+   * @return an immutable list of {@code StorageObject} objects. If a blob does not exist or access to it has
    *     been denied the corresponding item in the list is {@code null}.
    * @throws StorageException upon failure
    */
-  List<Blob> get(Iterable<BlobId> blobIds);
+  List<StorageObject> get(Iterable<BlobId> blobIds);
 
   /**
    * Updates the requested blobs. A batch request is used to perform this call. Original metadata
@@ -2587,19 +2587,19 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName1 = "my-blob-name1";
    * String blobName2 = "my-blob-name2";
-   * Blob firstBlob = storage.get(bucketName, blobName1);
-   * Blob secondBlob = storage.get(bucketName, blobName2);
-   * List<Blob> updatedBlobs = storage.update(
+   * StorageObject firstBlob = storage.get(bucketName, blobName1);
+   * StorageObject secondBlob = storage.get(bucketName, blobName2);
+   * List<StorageObject> updatedBlobs = storage.updateInStorage(
    *     firstBlob.toBuilder().setContentType("text/plain").build(),
    *     secondBlob.toBuilder().setContentType("text/plain").build());
    * }</pre>
    *
-   * @param blobInfos blobs to update
-   * @return an immutable list of {@code Blob} objects. If a blob does not exist or access to it has
+   * @param blobInfos blobs to updateInStorage
+   * @return an immutable list of {@code StorageObject} objects. If a blob does not exist or access to it has
    *     been denied the corresponding item in the list is {@code null}.
    * @throws StorageException upon failure
    */
-  List<Blob> update(BlobInfo... blobInfos);
+  List<StorageObject> update(BlobInfo... blobInfos);
 
   /**
    * Updates the requested blobs. A batch request is used to perform this call. Original metadata
@@ -2613,20 +2613,20 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName1 = "my-blob-name1";
    * String blobName2 = "my-blob-name2";
-   * Blob firstBlob = storage.get(bucketName, blobName1);
-   * Blob secondBlob = storage.get(bucketName, blobName2);
+   * StorageObject firstBlob = storage.get(bucketName, blobName1);
+   * StorageObject secondBlob = storage.get(bucketName, blobName2);
    * List<BlobInfo> blobs = new LinkedList<>();
    * blobs.add(firstBlob.toBuilder().setContentType("text/plain").build());
    * blobs.add(secondBlob.toBuilder().setContentType("text/plain").build());
-   * List<Blob> updatedBlobs = storage.update(blobs);
+   * List<StorageObject> updatedBlobs = storage.updateInStorage(blobs);
    * }</pre>
    *
-   * @param blobInfos blobs to update
-   * @return an immutable list of {@code Blob} objects. If a blob does not exist or access to it has
+   * @param blobInfos blobs to updateInStorage
+   * @return an immutable list of {@code StorageObject} objects. If a blob does not exist or access to it has
    *     been denied the corresponding item in the list is {@code null}.
    * @throws StorageException upon failure
    */
-  List<Blob> update(Iterable<BlobInfo> blobInfos);
+  List<StorageObject> update(Iterable<BlobInfo> blobInfos);
 
   /**
    * Deletes the requested blobs. A batch request is used to perform this call.
@@ -2639,10 +2639,10 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName2 = "my-blob-name2";
    * BlobId firstBlob = BlobId.of(bucketName, blobName1);
    * BlobId secondBlob = BlobId.of(bucketName, blobName2);
-   * List<Boolean> deleted = storage.delete(firstBlob, secondBlob);
+   * List<Boolean> deleted = storage.remove(firstBlob, secondBlob);
    * }</pre>
    *
-   * @param blobIds blobs to delete
+   * @param blobIds blobs to remove
    * @return an immutable list of booleans. If a blob has been deleted the corresponding item in the
    *     list is {@code true}. If a blob was not found, deletion failed or access to the resource
    *     was denied the corresponding item is {@code false}.
@@ -2662,10 +2662,10 @@ public interface Storage extends Service<StorageOptions> {
    * List<BlobId> blobIds = new LinkedList<>();
    * blobIds.add(BlobId.of(bucketName, blobName1));
    * blobIds.add(BlobId.of(bucketName, blobName2));
-   * List<Boolean> deleted = storage.delete(blobIds);
+   * List<Boolean> deleted = storage.remove(blobIds);
    * }</pre>
    *
-   * @param blobIds blobs to delete
+   * @param blobIds blobs to remove
    * @return an immutable list of booleans. If a blob has been deleted the corresponding item in the
    *     list is {@code true}. If a blob was not found, deletion failed or access to the resource
    *     was denied the corresponding item is {@code false}.
@@ -2711,7 +2711,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * boolean deleted = storage.deleteAcl(bucketName, User.ofAllAuthenticatedUsers());
+   * boolean deleted = storage.removeAclEntry(bucketName, User.ofAllAuthenticatedUsers());
    * if (deleted) {
    *   // the acl entry was deleted
    * } else {
@@ -2725,11 +2725,11 @@ public interface Storage extends Service<StorageOptions> {
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
    * BucketSourceOption userProject = BucketSourceOption.userProject("myProject");
-   * boolean deleted = storage.deleteAcl(bucketName, User.ofAllAuthenticatedUsers(), userProject);
+   * boolean deleted = storage.removeAclEntry(bucketName, User.ofAllAuthenticatedUsers(), userProject);
    * }</pre>
    *
-   * @param bucket name of the bucket to delete an ACL from
-   * @param entity ACL entity to delete
+   * @param bucket name of the bucket to remove an ACL from
+   * @param entity ACL entity to remove
    * @param options extra parameters to apply to this operation
    * @return {@code true} if the ACL was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
@@ -2746,14 +2746,14 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * Acl acl = storage.createAcl(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
+   * Acl acl = storage.createAclForBlob(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
    * }</pre>
    *
    * <p>Example of creating a new ACL entry on a requester_pays bucket with a user_project option.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * Acl acl = storage.createAcl(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER),
+   * Acl acl = storage.createAclForBlob(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER),
    *     BucketSourceOption.userProject("myProject"));
    * }</pre>
    *
@@ -2774,19 +2774,19 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * Acl acl = storage.updateAcl(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
+   * Acl acl = storage.updateAccessControlList(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
    * }</pre>
    *
    * <p>Example of updating a new ACL entry on a requester_pays bucket with a user_project option.
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * Acl acl = storage.updateAcl(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER),
+   * Acl acl = storage.updateAccessControlList(bucketName, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER),
    *     BucketSourceOption.userProject("myProject"));
    * }</pre>
    *
-   * @param bucket name of the bucket where the updateAcl operation takes place
-   * @param acl ACL to update
+   * @param bucket name of the bucket where the updateAccessControlList operation takes place
+   * @param acl ACL to updateInStorage
    * @param options extra parameters to apply to this operation
    * @throws StorageException upon failure
    */
@@ -2802,7 +2802,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * List<Acl> acls = storage.listAcls(bucketName);
+   * List<Acl> acls = storage.getAcls(bucketName);
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -2813,7 +2813,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * List<Acl> acls = storage.listAcls(bucketName, BucketSourceOption.userProject("myProject"));
+   * List<Acl> acls = storage.getAcls(bucketName, BucketSourceOption.userProject("myProject"));
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -2963,7 +2963,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * boolean deleted = storage.deleteAcl(blobId, User.ofAllAuthenticatedUsers());
+   * boolean deleted = storage.removeAclEntry(blobId, User.ofAllAuthenticatedUsers());
    * if (deleted) {
    *   // the acl entry was deleted
    * } else {
@@ -2986,7 +2986,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.createAcl(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
+   * Acl acl = storage.createAclForBlob(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.READER));
    * }</pre>
    *
    * <p>Example of updating a blob to be public-read.
@@ -2996,7 +2996,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.createAcl(blobId, Acl.of(User.ofAllUsers(), Role.READER));
+   * Acl acl = storage.createAclForBlob(blobId, Acl.of(User.ofAllUsers(), Role.READER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3013,7 +3013,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * Acl acl = storage.updateAcl(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
+   * Acl acl = storage.updateAccessControlList(blobId, Acl.of(User.ofAllAuthenticatedUsers(), Role.OWNER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -3030,7 +3030,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * long blobGeneration = 42;
    * BlobId blobId = BlobId.of(bucketName, blobName, blobGeneration);
-   * List<Acl> acls = storage.listAcls(blobId);
+   * List<Acl> acls = storage.getAcls(blobId);
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -3111,7 +3111,7 @@ public interface Storage extends Service<StorageOptions> {
 
   /**
    * Deletes an HMAC key. Note that only an {@code INACTIVE} key can be deleted. Attempting to
-   * delete a key whose {@code HmacKey.HmacKeyState} is anything other than {@code INACTIVE} will
+   * remove a key whose {@code HmacKey.HmacKeyState} is anything other than {@code INACTIVE} will
    * fail.
    *
    * <p>Example of updating an HMAC key's state to INACTIVE and then deleting it.
