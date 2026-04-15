@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -141,7 +141,7 @@ class BlobReadChannel implements ReadChannel {
         String etag = result.x();
         byte[] bytes = result.y();
         if (bytes.length > 0 && lastEtag != null && !Objects.equals(etag, lastEtag)) {
-          throw new IOException("Blob " + blob + " was updated while reading");
+          throw new IOException("StorageBlob " + blob + " was updated while reading");
         }
         lastEtag = etag;
         buffer = bytes;

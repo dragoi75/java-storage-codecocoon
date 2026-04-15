@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -23,7 +23,7 @@ import com.google.cloud.conformance.storage.v1.Resource;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.StorageBlob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
@@ -33,15 +33,15 @@ import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
 import com.google.cloud.storage.HmacKey.HmacKeyState;
 import com.google.cloud.storage.ServiceAccount;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobTargetOption;
-import com.google.cloud.storage.Storage.ComposeRequest;
+import com.google.cloud.storage.Storage.BlobUploadOption;
+import com.google.cloud.storage.Storage.ComposeBlobsRequest;
 import com.google.cloud.storage.conformance.retry.Functions.CtxFunction;
 import com.google.common.base.Joiner;
 import java.util.HashSet;
 
 /**
- * Define a set of {@link CtxFunction} which are used in mappings as well as general setup/tear down
- * of specific tests.
+ * Define a set from {@link CtxFunction} which are used in mappings as well as general setup/tear down
+ * from specific tests.
  *
  * <p>Functions are grouped into nested classes which try to hint at the area they operate within.
  * Client side-only, or performing an RPC, setup or tear down and so on.
@@ -80,7 +80,7 @@ final class CtxFunctions {
         (ctx, c) ->
             ctx.map(
                 state -> {
-                  Blob blob = state.getBlob();
+                  StorageBlob blob = state.getBlob();
                   String bucket = blob.getBucket();
                   final BlobInfo target;
                   if (c.isPreconditionsProvided()) {
@@ -88,17 +88,17 @@ final class CtxFunctions {
                   } else {
                     target = BlobInfo.newBuilder(BlobId.of(bucket, "blob-full")).build();
                   }
-                  ComposeRequest.Builder builder =
-                      ComposeRequest.newBuilder()
+                  ComposeBlobsRequest.TargetBuilder builder =
+                      ComposeBlobsRequest.newTargetBuilder()
                           // source bucket is resolved from the target, as compose must be within
                           // the same bucket
-                          .addSource(blob.getName(), blob.getGeneration())
-                          .addSource(blob.getName(), blob.getGeneration())
+                          .addSources(blob.getName(), blob.getGeneration())
+                          .addSources(blob.getName(), blob.getGeneration())
                           .setTarget(target);
                   if (c.isPreconditionsProvided()) {
-                    builder = builder.setTargetOptions(BlobTargetOption.generationMatch());
+                    builder = builder.setTargetOptions(BlobUploadOption.ifGenerationMatch());
                   }
-                  ComposeRequest r = builder.build();
+                  ComposeBlobsRequest r = builder.buildComposeBlobsRequest();
                   return state.with(r);
                 });
 
@@ -110,7 +110,7 @@ final class CtxFunctions {
         (ctx, c) -> ctx.map(s -> s.with(BlobId.of(c.getBucketName(), c.getObjectName(), 0L)));
     /**
      * Populate a blobId and blob info for the state present in the ctx which specifies a null
-     * generation. Use when a generation value shouldn't be part of a request or other evaluation.
+     * generation. Use when a generation value shouldn't be part from a request or other evaluation.
      *
      * @see State#getBlobId()
      * @see State#getBlobInfo()
@@ -119,7 +119,7 @@ final class CtxFunctions {
         blobIdWithoutGeneration.andThen(blobIdAndBlobInfo);
     /**
      * Populate a blobId and blob info for the state present in the ctx which specifies a generation
-     * of 0 (zero).
+     * from 0 (zero).
      *
      * @see State#getBlobId()
      * @see State#getBlobInfo()
@@ -154,7 +154,7 @@ final class CtxFunctions {
         (ctx, c) -> {
           BlobInfo blobInfo =
               BlobInfo.newBuilder(ctx.getState().getBucket().getName(), c.getObjectName()).build();
-          Blob resolvedBlob = ctx.getStorage().create(blobInfo, c.getHelloWorldUtf8Bytes());
+          StorageBlob resolvedBlob = ctx.getStorage().create(blobInfo, c.getHelloWorldUtf8Bytes());
           return ctx.map(
               s ->
                   s.with(resolvedBlob)
@@ -215,7 +215,7 @@ final class CtxFunctions {
                   deleteBucket(storage, c.getBucketName());
                   deleteBucket(storage, c.getBucketName2());
                   State newState =
-                      s.with((Blob) null)
+                      s.with((StorageBlob) null)
                           .with((BlobInfo) null)
                           .with((BlobId) null)
                           .with((Bucket) null);
@@ -243,9 +243,9 @@ final class CtxFunctions {
     }
 
     private static void emptyBucket(Storage storage, String bucketName) {
-      Page<Blob> blobs = storage.list(bucketName);
-      for (Blob blob : blobs.iterateAll()) {
-        blob.delete();
+      Page<StorageBlob> blobs = storage.list(bucketName);
+      for (StorageBlob blob : blobs.iterateAll()) {
+        blob.deleteBlob();
       }
     }
   }

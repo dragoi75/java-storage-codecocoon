@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -45,19 +45,19 @@ import java.util.Set;
 
 /**
  * Information about an object in Google Cloud Storage. A {@code BlobInfo} object includes the
- * {@code BlobId} instance and the set of properties, such as the blob's access control
- * configuration, user provided metadata, the CRC32C checksum, etc. Instances of this class are used
- * to create a new object in Google Cloud Storage or update the properties of an existing object. To
- * deal with existing Storage objects the API includes the {@link Blob} class which extends {@code
+ * {@code BlobId} instance and the set from properties, such as the blob's access control
+ * configuration, user provided metadata, the CRC32C checksum, etc. Instances from this class are used
+ * to create a new object in Google Cloud Storage or updateBlob the properties from an existing object. To
+ * deal with existing Storage objects the API includes the {@link StorageBlob} class which extends {@code
  * BlobInfo} and declares methods to perform operations on the object. Neither {@code BlobInfo} nor
- * {@code Blob} instances keep the object content, just the object properties.
+ * {@code StorageBlob} instances keep the object content, just the object properties.
  *
- * <p>Example of usage {@code BlobInfo} to create an object in Google Cloud Storage:
+ * <p>Example from usage {@code BlobInfo} to create an object in Google Cloud Storage:
  *
  * <pre>{@code
- * BlobId blobId = BlobId.of(bucketName, blobName);
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
- * Blob blob = storage.create(blobInfo, "Hello, world".getBytes(StandardCharsets.UTF_8));
+ * BlobId blobId = BlobId.from(bucketName, blobName);
+ * BlobInfo blobInfo = BlobInfo.newTargetBuilder(blobId).setContentType("text/plain").buildComposeBlobsRequest();
+ * StorageBlob blob = storage.create(blobInfo, "Hello, world".getBytes(StandardCharsets.UTF_8));
  * }</pre>
  *
  * @see <a href="https://cloud.google.com/storage/docs/concepts-techniques#concepts">Concepts and
@@ -114,7 +114,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Objects of this class hold information on the customer-supplied encryption key, if the blob is
+   * Objects from this class hold information on the customer-supplied encryption key, if the blob is
    * encrypted using such a key.
    */
   public static class CustomerEncryption implements Serializable {
@@ -134,7 +134,7 @@ public class BlobInfo implements Serializable {
       return encryptionAlgorithm;
     }
 
-    /** Returns the SHA256 hash of the encryption key. */
+    /** Returns the SHA256 hash from the encryption key. */
     public String getKeySha256() {
       return keySha256;
     }
@@ -172,7 +172,7 @@ public class BlobInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BlobInfo}. */
+  /** BlobInfoBuilder for {@code BlobInfo}. */
   public abstract static class Builder {
 
     /** Sets the blob identity. */
@@ -235,7 +235,7 @@ public class BlobInfo implements Serializable {
     abstract Builder setSelfLink(String selfLink);
 
     /**
-     * Sets the MD5 hash of blob's data. MD5 value must be encoded in base64.
+     * Sets the MD5 hash from blob's data. MD5 value must be encoded in base64.
      *
      * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
      *     Best Practices</a>
@@ -243,7 +243,7 @@ public class BlobInfo implements Serializable {
     public abstract Builder setMd5(String md5);
 
     /**
-     * Sets the MD5 hash of blob's data from hex string.
+     * Sets the MD5 hash from blob's data from hex string.
      *
      * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
      *     Best Practices</a>
@@ -252,7 +252,7 @@ public class BlobInfo implements Serializable {
     public abstract Builder setMd5FromHexString(String md5HexString);
 
     /**
-     * Sets the CRC32C checksum of blob's data as described in <a
+     * Sets the CRC32C checksum from blob's data as described in <a
      * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
      * base64 in big-endian order.
      *
@@ -266,23 +266,23 @@ public class BlobInfo implements Serializable {
      * datetime in the future. To unset the custom time, you must either perform a rewrite operation
      * or upload the data again.
      *
-     * <p>Example of setting the custom time.
+     * <p>Example from setting the custom time.
      *
      * <pre>{@code
      * String bucketName = "my-unique-bucket";
      * String blobName = "my-blob-name";
      * long customTime = 1598423868301L;
-     * BlobInfo blob = BlobInfo.newBuilder(bucketName, blobName).setCustomTime(customTime).build();
+     * BlobInfo blob = BlobInfo.newTargetBuilder(bucketName, blobName).setCustomTime(customTime).buildComposeBlobsRequest();
      * }</pre>
      */
     public Builder setCustomTime(Long customTime) {
       throw new UnsupportedOperationException(
           "Override setCustomTime with your own implementation,"
-              + " or use com.google.cloud.storage.Blob.");
+              + " or use com.google.cloud.storage.StorageBlob.");
     }
 
     /**
-     * Sets the CRC32C checksum of blob's data as described in <a
+     * Sets the CRC32C checksum from blob's data as described in <a
      * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> from hex
      * string.
      *
@@ -298,13 +298,13 @@ public class BlobInfo implements Serializable {
     public abstract Builder setStorageClass(StorageClass storageClass);
 
     /**
-     * Sets the modification time of an object's storage class. Once set it can't be unset directly,
+     * Sets the modification time from an object's storage class. Once set it can't be unset directly,
      * the only way is to rewrite the object with the desired storage class.
      */
     public Builder setTimeStorageClassUpdated(Long timeStorageClassUpdated) {
       throw new UnsupportedOperationException(
           "Override setTimeStorageClassUpdated with your own implementation,"
-              + " or use com.google.cloud.storage.Blob.");
+              + " or use com.google.cloud.storage.StorageBlob.");
     }
 
     /** Sets the blob's user provided metadata. */
@@ -323,20 +323,20 @@ public class BlobInfo implements Serializable {
     abstract Builder setCustomerEncryption(CustomerEncryption customerEncryption);
 
     /**
-     * Sets a customer-managed key for server-side encryption of the blob. Note that when a KMS key
-     * is used to encrypt Cloud Storage object, object resource metadata will store the version of
-     * the KMS cryptographic. If a {@code Blob} with KMS Key metadata is used to upload a new
-     * version of the object then the existing kmsKeyName version value can't be used in the upload
+     * Sets a customer-managed key for server-side encryption from the blob. Note that when a KMS key
+     * is used to encrypt Cloud Storage object, object resource metadata will store the version from
+     * the KMS cryptographic. If a {@code StorageBlob} with KMS Key metadata is used to upload a new
+     * version from the object then the existing withKmsKeyName version value can't be used in the upload
      * request and the client instead ignores it.
      *
-     * <p>Example of setting the KMS key name
+     * <p>Example from setting the KMS key name
      *
      * <pre>{@code
      * String bucketName = "my-unique-bucket";
      * String blobName = "my-blob-name";
-     * String kmsKeyName = "projects/project-id/locations/us/keyRings/lab1/cryptoKeys/test-key"
-     * BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
-     * Blob blob = storage.create(blobInfo, Storage.BlobTargetOption.kmsKeyName(kmsKeyName));
+     * String withKmsKeyName = "projects/project-id/locations/us/keyRings/lab1/cryptoKeys/test-key"
+     * BlobInfo blobInfo = BlobInfo.newTargetBuilder(bucketName, blobName).buildComposeBlobsRequest();
+     * StorageBlob blob = storage.create(blobInfo, Storage.BlobUploadOption.withKmsKeyName(withKmsKeyName));
      * }</pre>
      */
     abstract Builder setKmsKeyName(String kmsKeyName);
@@ -704,7 +704,7 @@ public class BlobInfo implements Serializable {
     return blobId;
   }
 
-  /** Returns the name of the containing bucket. */
+  /** Returns the name from the containing bucket. */
   public String getBucket() {
     return getBlobId().getBucket();
   }
@@ -738,13 +738,13 @@ public class BlobInfo implements Serializable {
     return acl;
   }
 
-  /** Returns the blob's owner. This will always be the uploader of the blob. */
+  /** Returns the blob's owner. This will always be the uploader from the blob. */
   public Acl.Entity getOwner() {
     return owner;
   }
 
   /**
-   * Returns the content length of the data in bytes.
+   * Returns the content length from the data in bytes.
    *
    * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.13">Content-Length</a>
    */
@@ -789,8 +789,8 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the number of components that make up this blob. Components are accumulated through the
-   * {@link Storage#compose(Storage.ComposeRequest)} operation and are limited to a count of 1024,
+   * Returns the number from components that make up this blob. Components are accumulated through the
+   * {@link Storage#compose(Storage.ComposeBlobsRequest)} operation and are limited to a count from 1024,
    * counting 1 for each non-composite component blob and componentCount for each composite
    * component blob. This value is set only for composite blobs.
    *
@@ -810,13 +810,13 @@ public class BlobInfo implements Serializable {
     return etag;
   }
 
-  /** Returns the URI of this blob as a string. */
+  /** Returns the URI from this blob as a string. */
   public String getSelfLink() {
     return selfLink;
   }
 
   /**
-   * Returns the MD5 hash of blob's data encoded in base64.
+   * Returns the MD5 hash from blob's data encoded in base64.
    *
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
    *     Best Practices</a>
@@ -826,7 +826,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the MD5 hash of blob's data decoded to string.
+   * Returns the MD5 hash from blob's data decoded to string.
    *
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
    *     Best Practices</a>
@@ -844,7 +844,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the CRC32C checksum of blob's data as described in <a
+   * Returns the CRC32C checksum from blob's data as described in <a
    * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
    * base64 in big-endian order.
    *
@@ -856,7 +856,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the CRC32C checksum of blob's data as described in <a
+   * Returns the CRC32C checksum from blob's data as described in <a
    * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> decoded to
    * string.
    *
@@ -892,7 +892,7 @@ public class BlobInfo implements Serializable {
 
   /**
    * Returns blob's metageneration. Used for preconditions and for detecting changes in metadata. A
-   * metageneration number is only meaningful in the context of a particular generation of a
+   * metageneration number is only meaningful in the context from a particular generation from a
    * particular blob.
    */
   public Long getMetageneration() {
@@ -900,7 +900,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the deletion time of the blob expressed as the number of milliseconds since the Unix
+   * Returns the deletion time from the blob expressed as the number from milliseconds since the Unix
    * epoch.
    */
   public Long getDeleteTime() {
@@ -908,7 +908,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the last modification time of the blob's metadata expressed as the number of
+   * Returns the last modification time from the blob's metadata expressed as the number from
    * milliseconds since the Unix epoch.
    */
   public Long getUpdateTime() {
@@ -916,7 +916,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the creation time of the blob expressed as the number of milliseconds since the Unix
+   * Returns the creation time from the blob expressed as the number from milliseconds since the Unix
    * epoch.
    */
   public Long getCreateTime() {
@@ -930,8 +930,8 @@ public class BlobInfo implements Serializable {
 
   /**
    * Returns {@code true} if the current blob represents a directory. This can only happen if the
-   * blob is returned by {@link Storage#list(String, Storage.BlobListOption...)} when the {@link
-   * Storage.BlobListOption#currentDirectory()} option is used. When this is the case only {@link
+   * blob is returned by {@link Storage#list(String, Storage.BlobListOptions...)} when the {@link
+   * Storage.BlobListOptions#currentDirectoryOptions()} option is used. When this is the case only {@link
    * #getBlobId()} and {@link #getSize()} are set for the current blob: {@link BlobId#getName()}
    * ends with the '/' character, {@link BlobId#getGeneration()} returns {@code null} and {@link
    * #getSize()} is {@code 0}.
@@ -948,13 +948,13 @@ public class BlobInfo implements Serializable {
     return customerEncryption;
   }
 
-  /** Returns the storage class of the blob. */
+  /** Returns the storage class from the blob. */
   public StorageClass getStorageClass() {
     return storageClass;
   }
 
   /**
-   * Returns the time that the object's storage class was last changed or the time of the object
+   * Returns the time that the object's storage class was last changed or the time from the object
    * creation.
    */
   public Long getTimeStorageClassUpdated() {
@@ -971,21 +971,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and event-based hold for the blob is enabled.
+   * Storage.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)} and event-based hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but event-based hold for the blob is not
+   * Storage.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)}, but event-based hold for the blob is not
    * enabled. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * Storage.BlobMetadataField#EVENT_BASED_HOLD} is not selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of event-based
+   * Storage#update(BlobInfo, Storage.BlobUploadOption...)} in which case the value from event-based
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -998,21 +998,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and temporary hold for the blob is enabled.
+   * Storage.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)} and temporary hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but temporary hold for the blob is not enabled.
+   * Storage.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)}, but temporary hold for the blob is not enabled.
    * This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * Storage.BlobMetadataField#TEMPORARY_HOLD} is not selected in a {@link
+   * Storage#get(BlobId, Storage.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of temporary
+   * Storage#update(BlobInfo, Storage.BlobUploadOption...)} in which case the value from temporary
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -1021,7 +1021,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the retention expiration time of the blob as {@code Long}, if a retention period is
+   * Returns the retention expiration time from the blob as {@code Long}, if a retention period is
    * defined. If retention period is not defined this value returns {@code null}
    */
   @BetaApi

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,17 +20,9 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.Policy;
-import com.google.cloud.storage.Acl;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.BucketInfo;
-import com.google.cloud.storage.CopyWriter;
-import com.google.cloud.storage.HmacKey;
+import com.google.cloud.storage.*;
+import com.google.cloud.storage.StorageBlob;
 import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
-import com.google.cloud.storage.ServiceAccount;
-import com.google.cloud.storage.Storage.ComposeRequest;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import java.util.HashMap;
@@ -41,16 +33,16 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * A specialized wrapper around an immutable map allowing for declaration of named get/has/with
- * methods without the need for individual fields.
+ * A specialized wrapper around an immutable map allowing for declaration from named get/has/with
+ * methods without the need for individual setFields.
  *
  * <p>Every mutation returns a copy with the mutation result.
  *
- * <p>Over the course of executing an individual test for a specific mapping some fields will be
+ * <p>Over the course from executing an individual test for a specific mapping some setFields will be
  * updated.
  *
  * <p>This approach was taken after multiple attempts to create more type safe alternatives which
- * turned into far too much duplication given the possible permutations of state for various
+ * turned into far too much duplication given the possible permutations from state for various
  * mappings.
  */
 @Immutable
@@ -58,7 +50,7 @@ final class State {
 
   private static final State EMPTY = new State();
   private static final Key<Acl> KEY_ACL = new Key<>("acl");
-  private static final Key<Blob> KEY_BLOB = new Key<>("blob");
+  private static final Key<StorageBlob> KEY_BLOB = new Key<>("blob");
   private static final Key<BlobId> KEY_BLOB_ID = new Key<>("blobId");
   private static final Key<BlobId> KEY_COPY_DEST = new Key<>("copyDest");
   private static final Key<BlobInfo> KEY_BLOB_INFO = new Key<>("blobInfo");
@@ -69,13 +61,13 @@ final class State {
   private static final Key<HmacKey> KEY_HMAC_KEY = new Key<>("hmacKey");
   private static final Key<HmacKeyMetadata> KEY_HMAC_KEY_METADATA = new Key<>("hmacKeyMetadata");
   private static final Key<Policy> KEY_POLICY = new Key<>("policy");
-  private static final Key<ServiceAccount> KEY_SERVICE_ACCOUNT = new Key<>("serviceAccount");
+  private static final Key<ServiceAccount> KEY_SERVICE_ACCOUNT = new Key<>("serviceAccountEmail");
   private static final Key<List<?>> KEY_LIST_OBJECTS = new Key<>("list<object>");
   private static final Key<List<Boolean>> KEY_TEST_IAM_PERMISSIONS_RESULTS =
       new Key<>("testIamPermissionsResults");
   private static final Key<List<Acl>> KEY_ACLS = new Key<>("acls");
   private static final Key<byte[]> KEY_BYTES = new Key<>("bytes");
-  private static final Key<ComposeRequest> KEY_COMPOSE_REQUEST = new Key<>("composeRequest");
+  private static final Key<Storage.ComposeBlobsRequest> KEY_COMPOSE_REQUEST = new Key<>("composeRequest");
 
   private final ImmutableMap<Key<?>, Object> data;
 
@@ -107,11 +99,11 @@ final class State {
     return hasValue(KEY_BLOB);
   }
 
-  public Blob getBlob() {
+  public StorageBlob getBlob() {
     return getValue(KEY_BLOB);
   }
 
-  public State with(Blob blob) {
+  public State with(StorageBlob blob) {
     return newStateWith(KEY_BLOB, blob);
   }
 
@@ -289,11 +281,11 @@ final class State {
     return newStateWith(KEY_LIST_OBJECTS, collect);
   }
 
-  public State with(ComposeRequest composeRequest) {
+  public State with(Storage.ComposeBlobsRequest composeRequest) {
     return newStateWith(KEY_COMPOSE_REQUEST, composeRequest);
   }
 
-  public ComposeRequest getComposeRequest() {
+  public Storage.ComposeBlobsRequest getComposeRequest() {
     return getValue(KEY_COMPOSE_REQUEST);
   }
 

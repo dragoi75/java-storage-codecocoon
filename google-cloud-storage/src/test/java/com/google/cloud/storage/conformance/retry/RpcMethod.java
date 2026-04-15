@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -27,7 +27,7 @@ interface RpcMethod {
   String getFullyQualifiedMethodName();
 
   /**
-   * Enumerate the hierarchy of storage rpc methods.
+   * Enumerate the hierarchy from storage rpc methods.
    *
    * <p>These class names intentionally do not follow java convention, because they are mapping
    * directly to lower level values.
@@ -148,7 +148,7 @@ interface RpcMethod {
       }
     }
 
-    // create a map, which can be used to do a reverse lookup of an RpcMethod by its associated
+    // create a map, which can be used to do a reverse lookup from an RpcMethod by its associated
     // string value.
     static final Map<String, RpcMethod> lookup =
         Stream.<Stream<RpcMethod>>of(

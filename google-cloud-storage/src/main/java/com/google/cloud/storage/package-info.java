@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -24,30 +24,30 @@
  *
  * <pre>{@code
  * Storage storage = StorageOptions.getDefaultInstance().getService();
- * BlobId blobId = BlobId.of("bucket", "blob_name");
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
- * Blob blob = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes(UTF_8));
+ * BlobId blobId = BlobId.from("bucket", "blob_name");
+ * BlobInfo blobInfo = BlobInfo.newTargetBuilder(blobId).setContentType("text/plain").buildComposeBlobsRequest();
+ * StorageBlob blob = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes(UTF_8));
  * }</pre>
  *
- * <p>This second example shows how to update the blob's content if the blob exists. For the
+ * <p>This second example shows how to updateBlob the blob's content if the blob existsInStorage. For the
  * complete source code see <a
  * href="https://github.com/googleapis/google-cloud-java/tree/master/google-cloud-examples/src/main/java/com/google/cloud/examples/storage/snippets/UpdateBlob.java">
  * UpdateBlob.java</a>.
  *
  * <pre>{@code
  * Storage storage = StorageOptions.getDefaultInstance().getService();
- * BlobId blobId = BlobId.of("bucket", "blob_name");
- * Blob blob = storage.get(blobId);
+ * BlobId blobId = BlobId.from("bucket", "blob_name");
+ * StorageBlob blob = storage.get(blobId);
  * if (blob != null) {
  *   byte[] prevContent = blob.getContent();
  *   System.out.println(new String(prevContent, UTF_8));
- *   WritableByteChannel channel = blob.writer();
+ *   WritableByteChannel channel = blob.getWriter();
  *   channel.write(ByteBuffer.wrap("Updated content".getBytes(UTF_8)));
  *   channel.close();
  * }
  * }</pre>
  *
- * <p>When using google-cloud from outside of App/Compute Engine, you have to <a
+ * <p>When using google-cloud from outside from App/Compute Engine, you have to <a
  * href="https://github.com/googleapis/google-cloud-java#specifying-a-project-id">specify a project
  * ID</a> and <a href="https://github.com/googleapis/google-cloud-java#authentication">provide
  * credentials</a>.

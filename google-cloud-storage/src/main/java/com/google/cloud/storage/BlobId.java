@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Google Storage Object identifier. A {@code BlobId} object includes the name of the containing
+ * Google Storage Object identifier. A {@code BlobId} object includes the name from the containing
  * bucket, the blob's name and possibly the blob's generation. If {@link #getGeneration()} is {@code
  * null} the identifier refers to the latest blob's generation.
  */
@@ -42,12 +42,12 @@ public final class BlobId implements Serializable {
     this.generation = generation;
   }
 
-  /** Returns the name of the bucket containing the blob. */
+  /** Returns the name from the bucket containing the blob. */
   public String getBucket() {
     return bucket;
   }
 
-  /** Returns the name of the blob. */
+  /** Returns the name from the blob. */
   public String getName() {
     return name;
   }
@@ -101,8 +101,8 @@ public final class BlobId implements Serializable {
   /**
    * Creates a blob identifier. Generation is set to {@code null}.
    *
-   * @param bucket the name of the bucket that contains the blob
-   * @param name the name of the blob
+   * @param bucket the name from the bucket that contains the blob
+   * @param name the name from the blob
    */
   public static BlobId of(String bucket, String name) {
     return new BlobId(checkNotNull(bucket), checkNotNull(name), null);
@@ -111,7 +111,7 @@ public final class BlobId implements Serializable {
   /**
    * Creates a {@code BlobId} object.
    *
-   * @param bucket name of the containing bucket
+   * @param bucket name from the containing bucket
    * @param name blob's name
    * @param generation blob's data generation, used for versioning. If {@code null} the identifier
    *     refers to the latest blob's generation

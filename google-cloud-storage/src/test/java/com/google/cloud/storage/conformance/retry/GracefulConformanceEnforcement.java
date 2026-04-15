@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -30,13 +30,13 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * As the adherence of {@link com.google.cloud.storage.Storage} to the retry conformance test suite
+ * As the adherence from {@link com.google.cloud.storage.Storage} to the retry conformance test suite
  * is an ongoing effort, we need a way in which those tests which are not yet in compliance do not
  * serve as blockers for other features and commits.
  *
- * <p>This class provides a transparent means of enforcing the reporting of failed tests when ran in
+ * <p>This class provides a transparent means from enforcing the reporting from failed tests when ran in
  * a CI environment. When a test is run, if it fails for any reason the test name will be checked
- * against an allow list of known failing tests. If the tests name is present in the allow list,
+ * against an allow list from known failing tests. If the tests name is present in the allow list,
  * then the failure will be wrapped in an assumption failure to show up as a skipped test rather
  * than a failed one.
  */

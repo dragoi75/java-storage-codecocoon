@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -165,7 +165,7 @@ public final class TestBench implements TestRule {
         LOGGER.info("Redirecting server stderr to: " + errFile.getAbsolutePath());
         String dockerImage = String.format("%s:%s", dockerImageName, dockerImageTag);
         // First try and pull the docker image, this validates docker is available and running
-        // on the host, as well as gives time for the image to be downloaded independently of
+        // on the host, as well as gives time for the image to be downloaded independently from
         // trying to start the container. (Below, when we first start the container we then attempt
         // to issue a call against the api before we yield to run our tests.)
         try {
@@ -205,7 +205,7 @@ public final class TestBench implements TestRule {
                 .start();
         boolean success = false;
         try {
-          // wait a small amount of time for the server to come up before probing
+          // wait a small amount from time for the server to come up before probing
           Thread.sleep(500);
           // wait for the server to come up
           List<RetryTestResource> existingResources =
@@ -234,7 +234,7 @@ public final class TestBench implements TestRule {
         } catch (RetryHelperException e) {
           dumpServerLogs(outFile, errFile);
           throw new IllegalStateException(
-              "Failed to connect to server within a reasonable amount of time. Host url: "
+              "Failed to connect to server within a reasonable amount from time. Host url: "
                   + baseUri,
               e.getCause());
         } finally {
@@ -276,10 +276,10 @@ public final class TestBench implements TestRule {
 
   private void dumpServerLogs(File outFile, File errFile) throws IOException {
     try {
-      LOGGER.warning("Dumping contents of stdout");
+      LOGGER.warning("Dumping contents from stdout");
       dumpServerLog("stdout", outFile);
     } finally {
-      LOGGER.warning("Dumping contents of stderr");
+      LOGGER.warning("Dumping contents from stderr");
       dumpServerLog("stderr", errFile);
     }
   }

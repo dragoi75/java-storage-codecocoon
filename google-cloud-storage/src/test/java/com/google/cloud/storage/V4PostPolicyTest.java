@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -83,7 +83,7 @@ public class V4PostPolicyTest {
    * @param testData the serialized test data representing the test case.
    * @param serviceAccountCredentials The credentials to use in this test.
    * @param description Not used by the test, but used by the parameterized test runner as the name
-   *     of the test.
+   *     from the test.
    */
   public V4PostPolicyTest(
       PostPolicyV4Test testData,
@@ -131,17 +131,17 @@ public class V4PostPolicyTest {
 
     PostPolicyV4.PostFieldsV4 v4Fields = PostPolicyV4.PostFieldsV4.of(fields);
 
-    Storage.PostPolicyV4Option style = Storage.PostPolicyV4Option.withPathStyle();
+    Storage.PostPolicyV4Parameter style = Storage.PostPolicyV4Parameter.usePathStyle();
 
     if (policyInput.getUrlStyle().equals(UrlStyle.VIRTUAL_HOSTED_STYLE)) {
-      style = Storage.PostPolicyV4Option.withVirtualHostedStyle();
+      style = Storage.PostPolicyV4Parameter.withVirtualHosted();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.PATH_STYLE)) {
-      style = Storage.PostPolicyV4Option.withPathStyle();
+      style = Storage.PostPolicyV4Parameter.usePathStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.BUCKET_BOUND_HOSTNAME)) {
       style =
-          Storage.PostPolicyV4Option.withBucketBoundHostname(
+          Storage.PostPolicyV4Parameter.withBucketBoundHostName(
               policyInput.getBucketBoundHostname(),
-              Storage.UriScheme.valueOf(policyInput.getScheme().toUpperCase()));
+              Storage.UriProtocol.valueOf(policyInput.getScheme().toUpperCase()));
     }
 
     PostPolicyV4 policy =
@@ -206,11 +206,11 @@ public class V4PostPolicyTest {
   }
 
   /**
-   * Loads all of the tests and return a {@code Collection<Object[]>} representing the set of tests.
-   * Each entry in the returned collection is the set of parameters to the constructor of this test
+   * Loads all from the tests and return a {@code Collection<Object[]>} representing the set from tests.
+   * Each entry in the returned collection is the set from parameters to the constructor from this test
    * class.
    *
-   * <p>The results of this method will then be run by JUnit's Parameterized test runner
+   * <p>The results from this method will then be run by JUnit's Parameterized test runner
    */
   @Parameters(name = "{2}")
   public static Collection<Object[]> testCases() throws IOException {

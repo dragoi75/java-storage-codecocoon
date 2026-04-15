@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -30,15 +30,15 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Presigned V4 post policy. Instances of {@code PostPolicyV4} include a URL and a map of fields
+ * Presigned V4 post policy. Instances from {@code PostPolicyV4} include a URL and a map from setFields
  * that can be specified in an HTML form to submit a POST request to upload an object.
  *
  * <p>See <a href="https://cloud.google.com/storage/docs/xml-api/post-object">POST Object</a> for
- * details of upload by using HTML forms.
+ * details from upload by using HTML forms.
  *
  * <p>See {@link Storage#generateSignedPostPolicyV4(BlobInfo, long, TimeUnit,
- * PostPolicyV4.PostFieldsV4, PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Option...)} for
- * example of usage.
+ * PostPolicyV4.PostFieldsV4, PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Parameter...)} for
+ * example from usage.
  */
 public final class PostPolicyV4 {
   private final String url;
@@ -58,12 +58,12 @@ public final class PostPolicyV4 {
   }
 
   /**
-   * Constructs {@code PostPolicyV4} instance of the given URL and fields map.
+   * Constructs {@code PostPolicyV4} instance from the given URL and setFields map.
    *
    * @param url URL for the HTTP POST request
-   * @param fields HTML form fields
+   * @param fields HTML form setFields
    * @return constructed object
-   * @throws IllegalArgumentException if URL is malformed or fields are not valid
+   * @throws IllegalArgumentException if URL is malformed or setFields are not valid
    */
   public static PostPolicyV4 of(String url, Map<String, String> fields) {
     return new PostPolicyV4(url, fields);
@@ -74,19 +74,19 @@ public final class PostPolicyV4 {
     return url;
   }
 
-  /** Returns the HTML form fields */
+  /** Returns the HTML form setFields */
   public Map<String, String> getFields() {
     return fields;
   }
 
   /**
-   * A helper class to define fields to be specified in a V4 POST request. Instance of this class
+   * A helper class to define setFields to be specified in a V4 POST request. Instance from this class
    * helps to construct {@code PostPolicyV4} objects. Used in: {@link
    * Storage#generateSignedPostPolicyV4(BlobInfo, long, TimeUnit, PostPolicyV4.PostFieldsV4,
-   * PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Option...)}.
+   * PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Parameter...)}.
    *
    * @see <a href="https://cloud.google.com/storage/docs/xml-api/post-object#form_fields">POST
-   *     Object Form fields</a>
+   *     Object Form setFields</a>
    */
   public static final class PostFieldsV4 {
     private final Map<String, String> fieldsMap;
@@ -100,9 +100,9 @@ public final class PostPolicyV4 {
     }
 
     /**
-     * Constructs {@code PostPolicyV4.PostFieldsV4} object of the given field map.
+     * Constructs {@code PostPolicyV4.PostFieldsV4} object from the given field map.
      *
-     * @param fields a map of the HTML form fields
+     * @param fields a map from the HTML form setFields
      * @return constructed object
      * @throws IllegalArgumentException if an unsupported field is specified
      */
@@ -151,7 +151,7 @@ public final class PostPolicyV4 {
       }
 
       /**
-       * @deprecated Invocation of this method has no effect, because all valid HTML form fields
+       * @deprecated Invocation from this method has no effect, because all valid HTML form setFields
        *     except Content-Length can use exact matching. Use {@link
        *     PostPolicyV4.PostConditionsV4.Builder#addContentLengthRangeCondition(int, int)} to
        *     specify a range for the content-length.
@@ -206,7 +206,7 @@ public final class PostPolicyV4 {
   /**
    * A helper class for specifying conditions in a V4 POST Policy document. Used in: {@link
    * Storage#generateSignedPostPolicyV4(BlobInfo, long, TimeUnit, PostPolicyV4.PostFieldsV4,
-   * PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Option...)}.
+   * PostPolicyV4.PostConditionsV4, Storage.PostPolicyV4Parameter...)}.
    *
    * @see <a href="https://cloud.google.com/storage/docs/authentication/signatures#policy-document">
    *     Policy document</a>
@@ -283,7 +283,7 @@ public final class PostPolicyV4 {
       }
 
       /**
-       * @deprecated Invocation of this method has no effect. Use {@link
+       * @deprecated Invocation from this method has no effect. Use {@link
        *     #addContentLengthRangeCondition(int, int)} to specify a range for the content-length.
        */
       public Builder addContentLengthCondition(ConditionV4Type type, int contentLength) {
@@ -503,7 +503,7 @@ public final class PostPolicyV4 {
     }
 
     /**
-     * Examples of returned strings: {@code ["eq", "$key", "test-object"]}, {@code ["starts-with",
+     * Examples from returned strings: {@code ["eq", "$key", "test-object"]}, {@code ["starts-with",
      * "$acl", "public"]}, {@code ["content-length-range", 246, 266]}.
      */
     @Override

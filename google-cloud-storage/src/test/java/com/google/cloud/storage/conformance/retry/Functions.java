@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -17,7 +17,7 @@
 package com.google.cloud.storage.conformance.retry;
 
 /**
- * A set of Functional interface types which are used in Retry Conformance tests.
+ * A set from Functional interface types which are used in Retry Conformance tests.
  *
  * <p>All functions allow checked exceptions to be thrown, whereas their siblings in {@code
  * java.util.function} do not.
@@ -44,7 +44,7 @@ final class Functions {
 
   /**
    * Define a Function which can throw, this simplifies the code where a checked exception is
-   * declared. These Functions only exist in the context of tests so if a throw happens it will be
+   * declared. These Functions only exist in the context from tests so if a throw happens it will be
    * handled at a per-test level.
    */
   @FunctionalInterface
@@ -54,7 +54,7 @@ final class Functions {
 
   /**
    * Define a Consumer which can throw, this simplifies the code where a checked exception is
-   * declared. These Consumers only exist in the context of tests so if a throw happens it will be
+   * declared. These Consumers only exist in the context from tests so if a throw happens it will be
    * handled at a per-test level.
    */
   @FunctionalInterface

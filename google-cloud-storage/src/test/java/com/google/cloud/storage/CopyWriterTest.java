@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -70,7 +70,7 @@ public class CopyWriterTest {
   private StorageRpcFactory rpcFactoryMock;
   private StorageRpc storageRpcMock;
   private CopyWriter copyWriter;
-  private Blob result;
+  private StorageBlob result;
 
   @Before
   public void setUp() {
@@ -84,7 +84,7 @@ public class CopyWriterTest {
             .setServiceRpcFactory(rpcFactoryMock)
             .setRetrySettings(ServiceOptions.getNoRetrySettings())
             .build();
-    result = new Blob(options.getService(), new BlobInfo.BuilderImpl(RESULT_INFO));
+    result = new StorageBlob(options.getService(), new BlobInfo.BuilderImpl(RESULT_INFO));
   }
 
   @After

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -29,24 +29,15 @@ import com.google.cloud.Policy;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.WriteChannel;
+import com.google.cloud.storage.*;
 import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.StorageBlob;
 import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
 import com.google.cloud.storage.HmacKey.HmacKeyState;
-import com.google.cloud.storage.HttpMethod;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobGetOption;
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
-import com.google.cloud.storage.Storage.BlobWriteOption;
-import com.google.cloud.storage.Storage.BucketSourceOption;
-import com.google.cloud.storage.Storage.BucketTargetOption;
-import com.google.cloud.storage.Storage.CopyRequest;
-import com.google.cloud.storage.Storage.SignUrlOption;
-import com.google.cloud.storage.Storage.UriScheme;
-import com.google.cloud.storage.StorageRoles;
+import com.google.cloud.storage.Storage.BlobWriteOptions;
+import com.google.cloud.storage.Storage.BucketRequestOption;
+import com.google.cloud.storage.Storage.CopyOperationRequest;
+import com.google.cloud.storage.Storage.UrlSigningOption;
 import com.google.cloud.storage.conformance.retry.CtxFunctions.Local;
 import com.google.cloud.storage.conformance.retry.CtxFunctions.ResourceSetup;
 import com.google.cloud.storage.conformance.retry.CtxFunctions.Rpc;
@@ -95,13 +86,13 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * A class which serves to try and organize all of the {@link RpcMethodMapping} for the retry
+ * A class which serves to try and organize all from the {@link RpcMethodMapping} for the retry
  * conformance tests.
  *
  * <p>Individual mappings are grouped via inner classes corresponding to the {@link RpcMethod} for
  * which they are defined.
  *
- * <p>As part of construction mappingIds are enforced to be unique, throwing an error if not.
+ * <p>As part from construction mappingIds are enforced to be unique, throwing an error if not.
  */
 @Immutable
 @SuppressWarnings("Guava")
@@ -204,7 +195,7 @@ final class RpcMethodMappings {
 
   private void reportMappingSummary() {
     int mappingCount = funcMap.values().stream().mapToInt(m -> 1).sum();
-    LOGGER.info("Current total number of mappings defined: " + mappingCount);
+    LOGGER.info("Current total number from mappings defined: " + mappingCount);
     String counts =
         funcMap.asMap().entrySet().stream()
             .map(
@@ -223,7 +214,7 @@ final class RpcMethodMappings {
                 })
             .sorted()
             .collect(Collectors.joining("\n", "\n", ""));
-    LOGGER.info("Current number of mappings per rpc method: " + counts);
+    LOGGER.info("Current number from mappings per rpc method: " + counts);
     OptionalInt max =
         funcMap.values().stream().map(RpcMethodMapping::getMappingId).mapToInt(i -> i).max();
     if (max.isPresent()) {
@@ -273,7 +264,7 @@ final class RpcMethodMappings {
                                       .deleteAcl(
                                           c.getBucketName(),
                                           User.ofAllUsers(),
-                                          BucketSourceOption.userProject(c.getUserProject()));
+                                          BucketRequestOption.ofUserProject(c.getUserProject()));
                               assertTrue(success);
                               return state.with(success);
                             }))
@@ -313,7 +304,7 @@ final class RpcMethodMappings {
                                         .getAcl(
                                             c.getBucketName(),
                                             User.ofAllUsers(),
-                                            BucketSourceOption.userProject(c.getUserProject())))))
+                                            BucketRequestOption.ofUserProject(c.getUserProject())))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(88, bucket_acl.get)
@@ -346,7 +337,7 @@ final class RpcMethodMappings {
                                         .createAcl(
                                             c.getBucketName(),
                                             state.getAcl(),
-                                            BucketSourceOption.userProject(c.getUserProject())))))
+                                            Storage.BucketRequestOption.ofUserProject(c.getUserProject())))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(89, bucket_acl.insert)
@@ -374,7 +365,7 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .listAcls(
                                             c.getBucketName(),
-                                            BucketSourceOption.userProject(c.getUserProject())))))
+                                            BucketRequestOption.ofUserProject(c.getUserProject())))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(90, bucket_acl.list)
@@ -404,7 +395,7 @@ final class RpcMethodMappings {
                                         .updateAcl(
                                             c.getBucketName(),
                                             state.getAcl(),
-                                            BucketSourceOption.userProject(c.getUserProject())))))
+                                            BucketRequestOption.ofUserProject(c.getUserProject())))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(91, bucket_acl.patch)
@@ -427,7 +418,7 @@ final class RpcMethodMappings {
                                   ctx.getStorage()
                                       .delete(
                                           c.getBucketName(),
-                                          BucketSourceOption.userProject(c.getUserProject()));
+                                          BucketRequestOption.ofUserProject(c.getUserProject()));
                               assertTrue(success);
                               return state.with(success);
                             }))
@@ -551,7 +542,7 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .update(
                                             state.getBucket(),
-                                            BucketTargetOption.metagenerationMatch()))))
+                                            Storage.BucketOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(101, buckets.patch)
@@ -563,7 +554,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBucket()
-                                        .update(BucketTargetOption.metagenerationMatch()))))
+                                        .update(Storage.BucketOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(243, buckets.patch)
@@ -596,7 +587,7 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .lockRetentionPolicy(
                                             state.getBucket(),
-                                            BucketTargetOption.metagenerationMatch()))))
+                                            Storage.BucketOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(100, buckets.lockRetentionPolicy)
@@ -609,7 +600,7 @@ final class RpcMethodMappings {
                                     state
                                         .getBucket()
                                         .lockRetentionPolicy(
-                                            BucketTargetOption.metagenerationMatch()))))
+                                            Storage.BucketOption.ifMetagenerationMatch()))))
                 .build());
       }
 
@@ -668,7 +659,7 @@ final class RpcMethodMappings {
                                                                         .getValue()))
                                                             .build()))
                                                 .build(),
-                                            BucketSourceOption.userProject(c.getProjectId())))))
+                                            Storage.BucketRequestOption.ofUserProject(c.getProjectId())))))
                 .build());
       }
 
@@ -817,7 +808,7 @@ final class RpcMethodMappings {
                                 state -> {
                                   Storage storage = ctx.getStorage();
                                   HmacKeyMetadata metadata = state.getHmacKey().getMetadata();
-                                  // for delete we're only using the metadata, clear the key that
+                                  // for deleteBlob we're only using the metadata, clear the key that
                                   // was populated in defaultSetup and specify the updated metadata
                                   return state
                                       .withHmacKey(null)
@@ -923,7 +914,7 @@ final class RpcMethodMappings {
                         ctx.map(
                             state -> {
                               boolean success =
-                                  state.getBlob().deleteAcl(state.getAcl().getEntity());
+                                  state.getBlob().deleteBlobAcl(state.getAcl().getEntity());
                               assertTrue(success);
                               return state.with(success);
                             }))
@@ -968,7 +959,7 @@ final class RpcMethodMappings {
             RpcMethodMapping.newBuilder(64, object_acl.insert)
                 .withTest(
                     (ctx, c) ->
-                        ctx.map(state -> state.with(state.getBlob().createAcl(state.getAcl()))))
+                        ctx.map(state -> state.with(state.getBlob().createAccessControlList(state.getAcl()))))
                 .build());
       }
 
@@ -984,7 +975,7 @@ final class RpcMethodMappings {
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(65, object_acl.list)
-                .withTest((ctx, c) -> ctx.map(state -> state.withAcls(state.getBlob().listAcls())))
+                .withTest((ctx, c) -> ctx.map(state -> state.withAcls(state.getBlob().listBlobAcls())))
                 .build());
       }
 
@@ -1003,7 +994,7 @@ final class RpcMethodMappings {
             RpcMethodMapping.newBuilder(66, object_acl.patch)
                 .withTest(
                     (ctx, c) ->
-                        ctx.map(state -> state.with(state.getBlob().updateAcl(state.getAcl()))))
+                        ctx.map(state -> state.with(state.getBlob().updateAccessControlList(state.getAcl()))))
                 .build());
       }
 
@@ -1037,7 +1028,7 @@ final class RpcMethodMappings {
                                   ctx.getStorage()
                                       .delete(
                                           state.getBlob().getBlobId(),
-                                          BlobSourceOption.generationMatch());
+                                          Storage.BlobReadOption.ifGenerationMatch());
                               assertTrue(success);
                               return state.with(success);
                             }))
@@ -1054,7 +1045,7 @@ final class RpcMethodMappings {
                                       .delete(
                                           state.getBlob().getBlobId().getBucket(),
                                           state.getBlob().getBlobId().getName(),
-                                          BlobSourceOption.generationMatch(
+                                          Storage.BlobReadOption.ifGenerationMatch(
                                               state.getBlob().getGeneration()));
                               assertTrue(success);
                               return state.with(success);
@@ -1063,7 +1054,7 @@ final class RpcMethodMappings {
         a.add(
             RpcMethodMapping.newBuilder(67, objects.delete)
                 .withApplicable(not(TestRetryConformance::isPreconditionsProvided))
-                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().delete()))
+                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().deleteBlob()))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(68, objects.delete)
@@ -1072,7 +1063,7 @@ final class RpcMethodMappings {
                     (ctx, c) ->
                         ctx.peek(
                             state ->
-                                state.getBlob().delete(Blob.BlobSourceOption.generationMatch())))
+                                state.getBlob().deleteBlob(StorageBlob.BlobReadOption.ifGenerationMatch())))
                 .build());
       }
 
@@ -1103,7 +1094,7 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .get(
                                             state.getBlob().getBlobId(),
-                                            BlobGetOption.metagenerationMatch(
+                                            Storage.BlobGetOptions.ifMetagenerationMatch(
                                                 state.getBlob().getMetageneration())))))
                 .build());
         a.add(
@@ -1117,7 +1108,7 @@ final class RpcMethodMappings {
                                         .get(
                                             state.getBlob().getBlobId().getBucket(),
                                             state.getBlob().getBlobId().getName(),
-                                            BlobGetOption.metagenerationMatch(
+                                            Storage.BlobGetOptions.ifMetagenerationMatch(
                                                 state.getBlob().getMetageneration())))))
                 .build());
         a.add(
@@ -1130,7 +1121,7 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .readAllBytes(
                                             state.getBlob().getBlobId(),
-                                            BlobSourceOption.metagenerationMatch(
+                                            Storage.BlobReadOption.ifMetagenerationMatch(
                                                 state.getBlob().getMetageneration())))))
                 .build());
         a.add(
@@ -1144,7 +1135,7 @@ final class RpcMethodMappings {
                                         .readAllBytes(
                                             state.getBlob().getBlobId().getBucket(),
                                             state.getBlob().getBlobId().getName(),
-                                            BlobSourceOption.metagenerationMatch(
+                                            Storage.BlobReadOption.ifMetagenerationMatch(
                                                 state.getBlob().getMetageneration())))))
                 .build());
         a.add(
@@ -1197,7 +1188,7 @@ final class RpcMethodMappings {
         a.add(
             RpcMethodMapping.newBuilder(60, objects.get)
                 .withApplicable(not(TestRetryConformance::isPreconditionsProvided))
-                .withTest((ctx, c) -> ctx.peek(state -> assertTrue(state.getBlob().exists())))
+                .withTest((ctx, c) -> ctx.peek(state -> assertTrue(state.getBlob().existsInStorage())))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(61, objects.get)
@@ -1209,7 +1200,7 @@ final class RpcMethodMappings {
                                 assertTrue(
                                     state
                                         .getBlob()
-                                        .exists(Blob.BlobSourceOption.generationMatch()))))
+                                        .existsInStorage(StorageBlob.BlobReadOption.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(69, objects.get)
@@ -1239,8 +1230,8 @@ final class RpcMethodMappings {
                                     (tmpOutFile) -> {
                                       state
                                           .getBlob()
-                                          .downloadTo(
-                                              tmpOutFile, Blob.BlobSourceOption.generationMatch());
+                                          .writeToInternal(
+                                              tmpOutFile, StorageBlob.BlobReadOption.ifGenerationMatch());
                                       byte[] downloadedBytes = Files.readAllBytes(tmpOutFile);
                                       assertThat(downloadedBytes)
                                           .isEqualTo(c.getHelloWorldUtf8Bytes());
@@ -1267,7 +1258,7 @@ final class RpcMethodMappings {
                               ByteArrayOutputStream baos = new ByteArrayOutputStream();
                               state
                                   .getBlob()
-                                  .downloadTo(baos, Blob.BlobSourceOption.generationMatch());
+                                  .downloadTo(baos, StorageBlob.BlobReadOption.ifGenerationMatch());
                               byte[] downloadedBytes = baos.toByteArray();
                               assertThat(downloadedBytes).isEqualTo(c.getHelloWorldUtf8Bytes());
                             }))
@@ -1291,13 +1282,13 @@ final class RpcMethodMappings {
                               byte[] downloadedBytes =
                                   state
                                       .getBlob()
-                                      .getContent(Blob.BlobSourceOption.metagenerationMatch());
+                                      .getContent(StorageBlob.BlobReadOption.ifMetagenerationMatch());
                               assertThat(downloadedBytes).isEqualTo(c.getHelloWorldUtf8Bytes());
                             }))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(75, objects.get)
-                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().reload()))
+                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().refresh()))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(76, objects.get)
@@ -1307,7 +1298,7 @@ final class RpcMethodMappings {
                             state ->
                                 state
                                     .getBlob()
-                                    .reload(Blob.BlobSourceOption.metagenerationMatch())))
+                                    .refresh(StorageBlob.BlobReadOption.ifMetagenerationMatch())))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(107, objects.get)
@@ -1332,7 +1323,7 @@ final class RpcMethodMappings {
                                         .create(
                                             ctx.getState().getBlobInfo(),
                                             c.getHelloWorldUtf8Bytes(),
-                                            BlobTargetOption.generationMatch()))))
+                                            Storage.BlobUploadOption.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(47, objects.insert)
@@ -1349,7 +1340,7 @@ final class RpcMethodMappings {
                                             c.getHelloWorldUtf8Bytes(),
                                             0,
                                             c.getHelloWorldUtf8Bytes().length / 2,
-                                            BlobTargetOption.generationMatch()))))
+                                            Storage.BlobUploadOption.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(48, objects.insert)
@@ -1364,7 +1355,7 @@ final class RpcMethodMappings {
                                         .create(
                                             ctx.getState().getBlobInfo(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes()),
-                                            BlobWriteOption.generationMatch()))))
+                                            Storage.BlobWriteOptions.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(49, objects.insert)
@@ -1379,7 +1370,7 @@ final class RpcMethodMappings {
                                         .createFrom(
                                             ctx.getState().getBlobInfo(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes()),
-                                            BlobWriteOption.generationMatch()))))
+                                            Storage.BlobWriteOptions.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(50, objects.insert)
@@ -1394,7 +1385,7 @@ final class RpcMethodMappings {
                                         .createFrom(
                                             ctx.getState().getBlobInfo(),
                                             c.getHelloWorldFilePath(),
-                                            BlobWriteOption.generationMatch()))))
+                                            BlobWriteOptions.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(51, objects.insert)
@@ -1410,7 +1401,7 @@ final class RpcMethodMappings {
                                             ctx.getState().getBlobInfo(),
                                             c.getHelloWorldFilePath(),
                                             _2MiB,
-                                            BlobWriteOption.generationMatch()))))
+                                            BlobWriteOptions.ifGenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(52, objects.insert)
@@ -1438,7 +1429,7 @@ final class RpcMethodMappings {
                                   ctx.getStorage()
                                       .writer(
                                           ctx.getState().getBlobInfo(),
-                                          BlobWriteOption.generationMatch())) {
+                                          BlobWriteOptions.ifGenerationMatch())) {
                                 writer.write(ByteBuffer.wrap(c.getHelloWorldUtf8Bytes()));
                               }
                             }))
@@ -1457,27 +1448,27 @@ final class RpcMethodMappings {
                                       state.getBlobInfo(),
                                       1,
                                       TimeUnit.HOURS,
-                                      SignUrlOption.httpMethod(HttpMethod.POST),
-                                      // TODO(#1094): Instead of using bucketBoundHostname fix
+                                      UrlSigningOption.withHttpMethod(HttpMethod.POST),
+                                      // TODO(#1094): Instead from using bucketBoundHostname fix
                                       //   Signer to get BaseUri from StorageOptions
                                       // NOTE(frankyn/benwhitehead): testbench expects HTTP scheme
-                                      // and we are using a hack to get around the lack of scheme
+                                      // and we are using a hack to get around the lack from scheme
                                       // manipulation by using bucketBoundHostname to select HTTP
                                       // scheme instead. Bucket name is not present explicitly in
                                       // bucketBoundHostname because it's expected to be referred to
                                       // by the Bucket Bound Hostname so we must append it, being
                                       // the hack, to get around the limitation.
-                                      SignUrlOption.withBucketBoundHostname(
+                                      Storage.UrlSigningOption.withBucketBoundHostName(
                                           c.getHost()
                                               + "/"
                                               + c.getBucketName()
                                               + "/"
                                               + c.getObjectName(),
-                                          UriScheme.HTTP),
-                                      SignUrlOption.withExtHeaders(
+                                          Storage.UriProtocol.HTTP),
+                                      UrlSigningOption.withExternalHeaders(
                                           ImmutableMap.of("x-goog-resumable", "start")),
-                                      SignUrlOption.signWith(c.getServiceAccountSigner()),
-                                      SignUrlOption.withV4Signature());
+                                      Storage.UrlSigningOption.withSigner(c.getServiceAccountSigner()),
+                                      Storage.UrlSigningOption.withV4SignatureScheme());
                               try (WriteChannel writer = storage.writer(signedUrl)) {
                                 writer.write(ByteBuffer.wrap(c.getHelloWorldUtf8Bytes()));
                               }
@@ -1494,7 +1485,7 @@ final class RpcMethodMappings {
                     (ctx, c) ->
                         ctx.peek(
                             state -> {
-                              try (WriteChannel writer = state.getBlob().writer()) {
+                              try (WriteChannel writer = state.getBlob().getWriter()) {
                                 writer.write(ByteBuffer.wrap(c.getHelloWorldUtf8Bytes()));
                               }
                             }))
@@ -1511,7 +1502,7 @@ final class RpcMethodMappings {
                         ctx.peek(
                             state -> {
                               try (WriteChannel writer =
-                                  state.getBlob().writer(BlobWriteOption.generationMatch())) {
+                                  state.getBlob().getWriter(BlobWriteOptions.ifGenerationMatch())) {
                                 writer.write(ByteBuffer.wrap(c.getHelloWorldUtf8Bytes()));
                               }
                             }))
@@ -1752,12 +1743,12 @@ final class RpcMethodMappings {
                                     ctx.getStorage()
                                         .update(
                                             ctx.getState().getBlob(),
-                                            BlobTargetOption.metagenerationMatch()))))
+                                            Storage.BlobUploadOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(79, objects.patch)
                 .withApplicable(not(TestRetryConformance::isPreconditionsProvided))
-                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().update()))
+                .withTest((ctx, c) -> ctx.peek(state -> state.getBlob().updateBlob()))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(80, objects.patch)
@@ -1769,7 +1760,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBlob()
-                                        .update(BlobTargetOption.metagenerationMatch()))))
+                                        .updateBlob(Storage.BlobUploadOption.ifMetagenerationMatch()))))
                 .build());
       }
 
@@ -1806,13 +1797,13 @@ final class RpcMethodMappings {
                     (ctx, c) ->
                         ctx.map(
                             state -> {
-                              CopyRequest copyRequest =
-                                  CopyRequest.newBuilder()
+                              Storage.CopyOperationRequest copyRequest =
+                                  Storage.CopyOperationRequest.builder()
                                       .setSource(c.getBucketName(), c.getObjectName())
                                       .setTarget(
                                           BlobId.of(c.getBucketName(), "destination-blob"),
-                                          BlobTargetOption.doesNotExist())
-                                      .build();
+                                          Storage.BlobUploadOption.ifDoesNotExist())
+                                      .buildCopyOperationRequest();
                               return state.with(ctx.getStorage().copy(copyRequest));
                             }))
                 .build());
@@ -1823,11 +1814,11 @@ final class RpcMethodMappings {
                     (ctx, c) ->
                         ctx.map(
                             state -> {
-                              CopyRequest copyRequest =
-                                  CopyRequest.newBuilder()
+                              CopyOperationRequest copyRequest =
+                                  CopyOperationRequest.builder()
                                       .setSource(c.getBucketName(), c.getObjectName())
                                       .setTarget(BlobId.of(c.getBucketName(), "destination-blob"))
-                                      .build();
+                                      .buildCopyOperationRequest();
                               return state.with(ctx.getStorage().copy(copyRequest));
                             }))
                 .build());
@@ -1837,7 +1828,7 @@ final class RpcMethodMappings {
                 .withSetup(defaultSetup.andThen(Local.blobCopy))
                 .withTest(
                     (ctx, c) ->
-                        ctx.map(state -> state.with(state.getBlob().copyTo(state.getCopyDest()))))
+                        ctx.map(state -> state.with(state.getBlob().copyToBlob(state.getCopyDest()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(82, objects.rewrite)
@@ -1850,9 +1841,9 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBlob()
-                                        .copyTo(
+                                        .copyToBlob(
                                             state.getCopyDest(),
-                                            Blob.BlobSourceOption.metagenerationMatch()))))
+                                            StorageBlob.BlobReadOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(83, objects.rewrite)
@@ -1863,7 +1854,7 @@ final class RpcMethodMappings {
                         ctx.map(
                             state ->
                                 state.with(
-                                    state.getBlob().copyTo(state.getCopyDest().getBucket()))))
+                                    state.getBlob().copyToBlob(state.getCopyDest().getBucket()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(84, objects.rewrite)
@@ -1876,9 +1867,9 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBlob()
-                                        .copyTo(
+                                        .copyToBlob(
                                             state.getCopyDest().getBucket(),
-                                            Blob.BlobSourceOption.metagenerationMatch()))))
+                                            StorageBlob.BlobReadOption.ifMetagenerationMatch()))))
                 .build());
         a.add(
             RpcMethodMapping.newBuilder(85, objects.rewrite)
@@ -1891,7 +1882,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBlob()
-                                        .copyTo(
+                                        .copyToBlob(
                                             state.getCopyDest().getBucket(),
                                             state.getCopyDest().getName()))))
                 .build());
@@ -1906,10 +1897,10 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBlob()
-                                        .copyTo(
+                                        .copyToBlob(
                                             state.getCopyDest().getBucket(),
                                             state.getCopyDest().getName(),
-                                            Blob.BlobSourceOption.metagenerationMatch()))))
+                                            StorageBlob.BlobReadOption.ifMetagenerationMatch()))))
                 .build());
       }
 

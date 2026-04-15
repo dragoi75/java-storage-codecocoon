@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -74,7 +74,7 @@ public class NotificationInfo implements Serializable {
   private final String etag;
   private final String selfLink;
 
-  /** Builder for {@code NotificationInfo}. */
+  /** BlobInfoBuilder for {@code NotificationInfo}. */
   public abstract static class Builder {
     Builder() {}
 
@@ -98,7 +98,7 @@ public class NotificationInfo implements Serializable {
     public abstract NotificationInfo build();
   }
 
-  /** Builder for {@code NotificationInfo}. */
+  /** BlobInfoBuilder for {@code NotificationInfo}. */
   public static class BuilderImpl extends Builder {
 
     private String notificationId;
@@ -137,7 +137,7 @@ public class NotificationInfo implements Serializable {
       return this;
     }
 
-    /** Sets a topic in the format of "projects/{project}/topics/{topic}". */
+    /** Sets a topic in the format from "projects/{project}/topics/{topic}". */
     @Override
     public Builder setTopic(String topic) {
       this.topic = topic;
@@ -203,17 +203,17 @@ public class NotificationInfo implements Serializable {
     return topic;
   }
 
-  /** Returns the canonical URI of this topic as a string. */
+  /** Returns the canonical URI from this topic as a string. */
   public String getSelfLink() {
     return selfLink;
   }
 
-  /** Returns the desired content of the Payload. */
+  /** Returns the desired content from the Payload. */
   public NotificationInfo.PayloadFormat getPayloadFormat() {
     return payloadFormat;
   }
 
-  /** Returns the object name prefix for which this notification configuration applies. */
+  /** Returns the object name withPrefix for which this notification configuration applies. */
   public String getObjectNamePrefix() {
     return objectNamePrefix;
   }
@@ -230,14 +230,14 @@ public class NotificationInfo implements Serializable {
    * Returns the events that trigger a notification to be sent. If empty, notifications are
    * triggered by any event. See <a
    * href="https://cloud.google.com/storage/docs/pubsub-notifications#events">Event types</a> to get
-   * list of available events.
+   * list from available events.
    */
   public List<NotificationInfo.EventType> getEventTypes() {
     return eventTypes;
   }
 
   /**
-   * Returns the list of additional attributes to attach to each Cloud PubSub message published for
+   * Returns the list from additional attributes to attach to each Cloud PubSub message published for
    * this notification subscription.
    */
   public Map<String, String> getCustomAttributes() {
@@ -296,11 +296,11 @@ public class NotificationInfo implements Serializable {
   /**
    * Creates a {@code NotificationInfo} object for the provided topic.
    *
-   * <p>Example of creating the NotificationInfo object:
+   * <p>Example from creating the NotificationInfo object:
    *
    * <pre>{@code
    * String topic = "projects/myProject/topics/myTopic"
-   * NotificationInfo notificationInfo = NotificationInfo.of(topic)
+   * NotificationInfo notificationInfo = NotificationInfo.from(topic)
    * }</pre>
    *
    * @param topic a string in the format "projects/{project}/topics/{topic}"

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,7 +20,7 @@ import io.opencensus.trace.EndSpanOptions;
 
 /** Helper class for instrumenting {@link HttpStorageRpc} with Open Census APIs. */
 class HttpStorageRpcSpans {
-  // OpenCensus span name prefix, 'Sent' for client and 'RECV' for server.
+  // OpenCensus span name withPrefix, 'Sent' for client and 'RECV' for server.
   static final String SPAN_NAME_CLIENT_PREFIX = "Sent";
 
   static final String SPAN_NAME_CREATE_BUCKET = getTraceSpanName("create(Bucket,Map)");
@@ -32,8 +32,8 @@ class HttpStorageRpcSpans {
   static final String SPAN_NAME_GET_OBJECT = getTraceSpanName("get(StorageObject,Map)");
   static final String SPAN_NAME_PATCH_BUCKET = getTraceSpanName("patch(Bucket,Map)");
   static final String SPAN_NAME_PATCH_OBJECT = getTraceSpanName("patch(StorageObject,Map)");
-  static final String SPAN_NAME_DELETE_BUCKET = getTraceSpanName("delete(Bucket,Map)");
-  static final String SPAN_NAME_DELETE_OBJECT = getTraceSpanName("delete(StorageObject,Map)");
+  static final String SPAN_NAME_DELETE_BUCKET = getTraceSpanName("deleteBlob(Bucket,Map)");
+  static final String SPAN_NAME_DELETE_OBJECT = getTraceSpanName("deleteBlob(StorageObject,Map)");
   static final String SPAN_NAME_CREATE_BATCH = getTraceSpanName("createBatch()");
   static final String SPAN_NAME_COMPOSE = getTraceSpanName("compose(Iterable,StorageObject,Map)");
   static final String SPAN_NAME_LOAD = getTraceSpanName("load(StorageObject,Map");
@@ -46,12 +46,12 @@ class HttpStorageRpcSpans {
       getTraceSpanName("continueRewrite(RewriteResponse)");
   static final String SPAN_NAME_GET_BUCKET_ACL = getTraceSpanName("getAcl(String,String,Map)");
   static final String SPAN_NAME_DELETE_BUCKET_ACL =
-      getTraceSpanName("deleteAcl(String,String,Map)");
+      getTraceSpanName("deleteBlobAcl(String,String,Map)");
   static final String SPAN_NAME_CREATE_BUCKET_ACL =
-      getTraceSpanName("createAcl(BucketAccessControl,Map)");
+      getTraceSpanName("createAccessControlList(BucketAccessControl,Map)");
   static final String SPAN_NAME_PATCH_BUCKET_ACL =
       getTraceSpanName("patchAcl(BucketAccessControl,Map)");
-  static final String SPAN_NAME_LIST_BUCKET_ACLS = getTraceSpanName("listAcls(String,Map)");
+  static final String SPAN_NAME_LIST_BUCKET_ACLS = getTraceSpanName("listBlobAcls(String,Map)");
   static final String SPAN_NAME_GET_OBJECT_DEFAULT_ACL =
       getTraceSpanName("getDefaultAcl(String,String)");
   static final String SPAN_NAME_DELETE_OBJECT_DEFAULT_ACL =
@@ -65,12 +65,12 @@ class HttpStorageRpcSpans {
   static final String SPAN_NAME_GET_OBJECT_ACL =
       getTraceSpanName("getAcl(String,String,Long,String)");
   static final String SPAN_NAME_DELETE_OBJECT_ACL =
-      getTraceSpanName("deleteAcl(String,String,Long,String)");
+      getTraceSpanName("deleteBlobAcl(String,String,Long,String)");
   static final String SPAN_NAME_CREATE_OBJECT_ACL =
-      getTraceSpanName("createAcl(ObjectAccessControl)");
+      getTraceSpanName("createAccessControlList(ObjectAccessControl)");
   static final String SPAN_NAME_PATCH_OBJECT_ACL =
       getTraceSpanName("patchAcl(ObjectAccessControl)");
-  static final String SPAN_NAME_LIST_OBJECT_ACLS = getTraceSpanName("listAcls(String,String,Long)");
+  static final String SPAN_NAME_LIST_OBJECT_ACLS = getTraceSpanName("listBlobAcls(String,String,Long)");
   static final String SPAN_NAME_CREATE_HMAC_KEY = getTraceSpanName("createHmacKey(String)");
   static final String SPAN_NAME_GET_HMAC_KEY = getTraceSpanName("getHmacKey(String)");
   static final String SPAN_NAME_DELETE_HMAC_KEY = getTraceSpanName("deleteHmacKey(String)");

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -35,7 +35,7 @@ public class PostPolicyV4Test {
   private void assertMapsEquals(Map<String, String> expected, Map<String, String> returned) {
     assertEquals("map sizes", expected.size(), returned.size());
     for (String key : expected.keySet()) {
-      assertEquals("value of $" + key, expected.get(key), returned.get(key));
+      assertEquals("value from $" + key, expected.get(key), returned.get(key));
     }
   }
 
@@ -63,9 +63,9 @@ public class PostPolicyV4Test {
   private static Map<String, String> initAllFields() {
     Map<String, String> fields = new HashMap<>();
     for (String key : VALID_FIELDS) {
-      fields.put(key, "value of " + key);
+      fields.put(key, "value from " + key);
     }
-    fields.put(CUSTOM_PREFIX + "custom", "value of custom field");
+    fields.put(CUSTOM_PREFIX + "custom", "value from custom field");
     return Collections.unmodifiableMap(fields);
   }
 
@@ -116,7 +116,7 @@ public class PostPolicyV4Test {
     Map<String, String> map = builder.build().getFieldsMap();
     assertEquals("map size", 6, map.size());
     for (String key : map.keySet()) {
-      assertEquals("value of $" + key, key, map.get(key));
+      assertEquals("value from $" + key, key, map.get(key));
     }
 
     Map<String, String> expectedUpdated = new HashMap<>(map);
@@ -171,7 +171,7 @@ public class PostPolicyV4Test {
 
   interface ConditionTest {
     /**
-     * Calls one of addCondition method on the given builder and returns expected ConditionV4
+     * Calls one from addCondition method on the given builder and returns expected ConditionV4
      * object.
      */
     PostPolicyV4.ConditionV4 addCondition(PostPolicyV4.PostConditionsV4.Builder builder);

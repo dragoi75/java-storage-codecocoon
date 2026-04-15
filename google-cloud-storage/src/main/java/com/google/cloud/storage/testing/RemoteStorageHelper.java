@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,12 +20,12 @@ import com.google.api.gax.paging.Page;
 import com.google.api.gax.retrying.RetrySettings;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.StorageBlob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobListOption;
+import com.google.cloud.storage.Storage.BlobListOptions;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.base.Strings;
@@ -76,23 +76,23 @@ public class RemoteStorageHelper {
           public void run() {
             Page<Bucket> buckets =
                 storage.list(
-                    Storage.BucketListOption.prefix(BUCKET_NAME_PREFIX),
-                    Storage.BucketListOption.userProject(storage.getOptions().getProjectId()));
+                    Storage.BucketListOptions.withPrefix(BUCKET_NAME_PREFIX),
+                    Storage.BucketListOptions.withUserProject(storage.getOptions().getProjectId()));
             for (Bucket bucket : buckets.iterateAll()) {
               if (bucket.getCreateTime() < olderThan) {
                 try {
-                  for (Blob blob :
+                  for (StorageBlob blob :
                       bucket
                           .list(
-                              BlobListOption.fields(
-                                  Storage.BlobField.EVENT_BASED_HOLD,
-                                  Storage.BlobField.TEMPORARY_HOLD))
+                              Storage.BlobListOptions.selectedFields(
+                                  Storage.BlobMetadataField.EVENT_BASED_HOLD,
+                                  Storage.BlobMetadataField.TEMPORARY_HOLD))
                           .iterateAll()) {
                     if (Boolean.TRUE.equals(blob.getEventBasedHold())
                         || Boolean.TRUE.equals(blob.getTemporaryHold())) {
                       storage.update(
                           blob.toBuilder().setTemporaryHold(false).setEventBasedHold(false).build(),
-                          Storage.BlobTargetOption.userProject(
+                          Storage.BlobUploadOption.withUserProject(
                               storage.getOptions().getProjectId()));
                     }
                   }
@@ -116,14 +116,14 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the deleteBlob requests. Use {@link #forceDelete(Storage storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
    * @throws ExecutionException if an exception was thrown while deleting bucket or bucket objects
@@ -136,14 +136,14 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the deleteBlob requests. Use {@link #forceDelete(Storage storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @param userProject the project to bill for requester-pays buckets (or "")
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
@@ -183,7 +183,7 @@ public class RemoteStorageHelper {
    * Creates a {@code RemoteStorageHelper} object for the given project id and JSON key input
    * stream.
    *
-   * @param projectId id of the project to be used for running the tests
+   * @param projectId id from the project to be used for running the tests
    * @param keyStream input stream for a JSON key
    * @return A {@code RemoteStorageHelper} object for the provided options
    * @throws com.google.cloud.storage.testing.RemoteStorageHelper.StorageHelperException if {@code
@@ -262,13 +262,13 @@ public class RemoteStorageHelper {
     public Boolean call() {
       while (true) {
         ArrayList<BlobId> ids = new ArrayList<>();
-        Page<Blob> listedBlobs;
+        Page<StorageBlob> listedBlobs;
         if (Strings.isNullOrEmpty(userProject)) {
-          listedBlobs = storage.list(bucket, BlobListOption.versions(true));
+          listedBlobs = storage.list(bucket, BlobListOptions.includeVersions(true));
         } else {
           listedBlobs =
               storage.list(
-                  bucket, BlobListOption.versions(true), BlobListOption.userProject(userProject));
+                  bucket, Storage.BlobListOptions.includeVersions(true), Storage.BlobListOptions.withUserProject(userProject));
         }
         for (BlobInfo info : listedBlobs.getValues()) {
           ids.add(info.getBlobId());
@@ -282,7 +282,7 @@ public class RemoteStorageHelper {
                 storage.delete(
                     bucket,
                     ids.get(i).getName(),
-                    Storage.BlobSourceOption.userProject(userProject));
+                    Storage.BlobReadOption.withUserProject(userProject));
               }
             }
           }
@@ -291,7 +291,7 @@ public class RemoteStorageHelper {
           if (Strings.isNullOrEmpty(userProject)) {
             storage.delete(bucket);
           } else {
-            storage.delete(bucket, Storage.BucketSourceOption.userProject(userProject));
+            storage.delete(bucket, Storage.BucketRequestOption.ofUserProject(userProject));
           }
           return true;
         } catch (StorageException e) {

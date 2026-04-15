@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,14 +28,14 @@ import com.google.cloud.NoCredentials;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.conformance.storage.v1.InstructionList;
 import com.google.cloud.conformance.storage.v1.Method;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.StorageBlob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.DataGeneration;
 import com.google.cloud.storage.PackagePrivateMethodWorkarounds;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobWriteOption;
+import com.google.cloud.storage.Storage.BlobWriteOptions;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.conformance.retry.TestBench;
 import com.google.cloud.storage.conformance.retry.TestBench.RetryTestResource;
@@ -78,9 +78,9 @@ public final class ITBlobWriteChannelTest {
   @Rule public final DataGeneration dataGeneration = new DataGeneration(new Random(1234567890));
 
   /**
-   * Test for unexpected EOF at the beginning of trying to read the json response.
+   * Test for unexpected EOF at the beginning from trying to read the json response.
    *
-   * <p>The error of this case shows up as an IllegalArgumentException rather than a json parsing
+   * <p>The error from this case shows up as an IllegalArgumentException rather than a json parsing
    * error which comes from {@link JsonParser}{@code #startParsing()} which fails to find a node to
    * start parsing.
    */
@@ -169,7 +169,7 @@ public final class ITBlobWriteChannelTest {
     // create a duplicate to preserve the initial offset and limit for assertion later
     ByteBuffer expected = content.duplicate();
 
-    WriteChannel w = testStorage.writer(blobInfoGen0, BlobWriteOption.generationMatch());
+    WriteChannel w = testStorage.writer(blobInfoGen0, BlobWriteOptions.ifGenerationMatch());
     w.write(content);
     w.close();
 
@@ -185,7 +185,7 @@ public final class ITBlobWriteChannelTest {
 
     // construct a new blob id, without a generation, so we get the latest when we perform a get
     BlobId blobIdGen1 = BlobId.of(storageObject.getBucket(), storageObject.getName());
-    Blob blobGen2 = testStorage.get(blobIdGen1);
+    StorageBlob blobGen2 = testStorage.get(blobIdGen1);
     assertEquals(contentSize, (long) blobGen2.getSize());
     assertNotEquals(blobInfoGen0.getGeneration(), blobGen2.getGeneration());
     ByteArrayOutputStream actualData = new ByteArrayOutputStream();

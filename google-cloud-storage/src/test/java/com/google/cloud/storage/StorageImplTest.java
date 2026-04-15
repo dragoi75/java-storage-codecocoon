@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -42,11 +42,11 @@ import com.google.cloud.storage.Acl.Project;
 import com.google.cloud.storage.Acl.Project.ProjectRole;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
-import com.google.cloud.storage.Storage.BlobWriteOption;
-import com.google.cloud.storage.Storage.BucketSourceOption;
-import com.google.cloud.storage.Storage.CopyRequest;
+import com.google.cloud.storage.Storage.BlobReadOption;
+import com.google.cloud.storage.Storage.BlobUploadOption;
+import com.google.cloud.storage.Storage.BlobWriteOptions;
+import com.google.cloud.storage.Storage.BucketRequestOption;
+import com.google.cloud.storage.Storage.CopyOperationRequest;
 import com.google.cloud.storage.spi.StorageRpcFactory;
 import com.google.cloud.storage.spi.v1.RpcBatch;
 import com.google.cloud.storage.spi.v1.StorageRpc;
@@ -132,12 +132,12 @@ public class StorageImplTest {
   private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   // Bucket target options
-  private static final Storage.BucketTargetOption BUCKET_TARGET_METAGENERATION =
-      Storage.BucketTargetOption.metagenerationMatch();
-  private static final Storage.BucketTargetOption BUCKET_TARGET_PREDEFINED_ACL =
-      Storage.BucketTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_USER_PROJECT =
-      Storage.BucketTargetOption.userProject(USER_PROJECT);
+  private static final Storage.BucketOption BUCKET_TARGET_METAGENERATION =
+      Storage.BucketOption.ifMetagenerationMatch();
+  private static final Storage.BucketOption BUCKET_TARGET_PREDEFINED_ACL =
+      Storage.BucketOption.withPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
+  private static final Storage.BucketOption BUCKET_TARGET_USER_PROJECT =
+      Storage.BucketOption.userProjectOption(USER_PROJECT);
   private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
@@ -149,15 +149,15 @@ public class StorageImplTest {
           StorageRpc.Option.USER_PROJECT,
           USER_PROJECT);
 
-  // Blob target options (create, update, compose)
-  private static final BlobTargetOption BLOB_TARGET_GENERATION = BlobTargetOption.generationMatch();
-  private static final BlobTargetOption BLOB_TARGET_METAGENERATION =
-      BlobTargetOption.metagenerationMatch();
-  private static final BlobTargetOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
-      BlobTargetOption.disableGzipContent();
-  private static final BlobTargetOption BLOB_TARGET_NOT_EXIST = BlobTargetOption.doesNotExist();
-  private static final BlobTargetOption BLOB_TARGET_PREDEFINED_ACL =
-      BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
+  // StorageBlob target options (create, updateBlob, compose)
+  private static final Storage.BlobUploadOption BLOB_TARGET_GENERATION = BlobUploadOption.ifGenerationMatch();
+  private static final BlobUploadOption BLOB_TARGET_METAGENERATION =
+      Storage.BlobUploadOption.ifMetagenerationMatch();
+  private static final BlobUploadOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
+      Storage.BlobUploadOption.setDisableGzipContent();
+  private static final Storage.BlobUploadOption BLOB_TARGET_NOT_EXIST = BlobUploadOption.ifDoesNotExist();
+  private static final BlobUploadOption BLOB_TARGET_PREDEFINED_ACL =
+      Storage.BlobUploadOption.withPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
   private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
@@ -174,51 +174,51 @@ public class StorageImplTest {
           StorageRpc.Option.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
 
-  // Blob write options (create, writer)
-  private static final BlobWriteOption BLOB_WRITE_METAGENERATION =
-      BlobWriteOption.metagenerationMatch();
-  private static final BlobWriteOption BLOB_WRITE_NOT_EXIST = BlobWriteOption.doesNotExist();
-  private static final BlobWriteOption BLOB_WRITE_PREDEFINED_ACL =
-      BlobWriteOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final BlobWriteOption BLOB_WRITE_MD5_HASH = BlobWriteOption.md5Match();
-  private static final BlobWriteOption BLOB_WRITE_CRC2C = BlobWriteOption.crc32cMatch();
+  // StorageBlob write options (create, getWriter)
+  private static final BlobWriteOptions BLOB_WRITE_METAGENERATION =
+      BlobWriteOptions.ifMetagenerationMatch();
+  private static final BlobWriteOptions BLOB_WRITE_NOT_EXIST = BlobWriteOptions.ifNotExists();
+  private static final BlobWriteOptions BLOB_WRITE_PREDEFINED_ACL =
+      BlobWriteOptions.withPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
+  private static final BlobWriteOptions BLOB_WRITE_MD5_HASH = BlobWriteOptions.ifMd5Match();
+  private static final Storage.BlobWriteOptions BLOB_WRITE_CRC2C = BlobWriteOptions.withCrc32cMatch();
 
   // Bucket get/source options
-  private static final BucketSourceOption BUCKET_SOURCE_METAGENERATION =
-      BucketSourceOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final BucketRequestOption BUCKET_SOURCE_METAGENERATION =
+      Storage.BucketRequestOption.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
   private static final Map<StorageRpc.Option, ?> BUCKET_SOURCE_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
-  private static final Storage.BucketGetOption BUCKET_GET_METAGENERATION =
-      Storage.BucketGetOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Storage.BucketGetOption BUCKET_GET_FIELDS =
-      Storage.BucketGetOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketGetOption BUCKET_GET_EMPTY_FIELDS =
-      Storage.BucketGetOption.fields();
+  private static final Storage.BucketGetOptions BUCKET_GET_METAGENERATION =
+      Storage.BucketGetOptions.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Storage.BucketGetOptions BUCKET_GET_FIELDS =
+      Storage.BucketGetOptions.setFields(Storage.BucketMetadataField.LOCATION, Storage.BucketMetadataField.ACL);
+  private static final Storage.BucketGetOptions BUCKET_GET_EMPTY_FIELDS =
+      Storage.BucketGetOptions.setFields();
   private static final Map<StorageRpc.Option, ?> BUCKET_GET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
 
-  // Blob get/source options
-  private static final Storage.BlobGetOption BLOB_GET_METAGENERATION =
-      Storage.BlobGetOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION =
-      Storage.BlobGetOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION_FROM_BLOB_ID =
-      Storage.BlobGetOption.generationMatch();
-  private static final Storage.BlobGetOption BLOB_GET_FIELDS =
-      Storage.BlobGetOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.CRC32C);
-  private static final Storage.BlobGetOption BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOption.fields();
+  // StorageBlob get/source options
+  private static final Storage.BlobGetOptions BLOB_GET_METAGENERATION =
+      Storage.BlobGetOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION =
+      Storage.BlobGetOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION_FROM_BLOB_ID =
+      Storage.BlobGetOptions.ifGenerationMatch();
+  private static final Storage.BlobGetOptions BLOB_GET_FIELDS =
+      Storage.BlobGetOptions.withFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.CRC32C);
+  private static final Storage.BlobGetOptions BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOptions.withFields();
   private static final Map<StorageRpc.Option, ?> BLOB_GET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
           StorageRpc.Option.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
-  private static final BlobSourceOption BLOB_SOURCE_METAGENERATION =
-      BlobSourceOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final BlobSourceOption BLOB_SOURCE_GENERATION =
-      BlobSourceOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final BlobSourceOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
-      BlobSourceOption.generationMatch();
+  private static final BlobReadOption BLOB_SOURCE_METAGENERATION =
+      Storage.BlobReadOption.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobReadOption BLOB_SOURCE_GENERATION =
+      BlobReadOption.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobReadOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
+      BlobReadOption.ifGenerationMatch();
   private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
@@ -229,30 +229,30 @@ public class StorageImplTest {
           StorageRpc.Option.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
 
   // Bucket list options
-  private static final Storage.BucketListOption BUCKET_LIST_PAGE_SIZE =
-      Storage.BucketListOption.pageSize(42L);
-  private static final Storage.BucketListOption BUCKET_LIST_PREFIX =
-      Storage.BucketListOption.prefix("prefix");
-  private static final Storage.BucketListOption BUCKET_LIST_FIELDS =
-      Storage.BucketListOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketListOption BUCKET_LIST_EMPTY_FIELDS =
-      Storage.BucketListOption.fields();
+  private static final Storage.BucketListOptions BUCKET_LIST_PAGE_SIZE =
+      Storage.BucketListOptions.getPageSize(42L);
+  private static final Storage.BucketListOptions BUCKET_LIST_PREFIX =
+      Storage.BucketListOptions.withPrefix("withPrefix");
+  private static final Storage.BucketListOptions BUCKET_LIST_FIELDS =
+      Storage.BucketListOptions.selectFields(Storage.BucketMetadataField.LOCATION, Storage.BucketMetadataField.ACL);
+  private static final Storage.BucketListOptions BUCKET_LIST_EMPTY_FIELDS =
+      Storage.BucketListOptions.selectFields();
   private static final Map<StorageRpc.Option, ?> BUCKET_LIST_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
           StorageRpc.Option.PREFIX, BUCKET_LIST_PREFIX.getValue());
 
-  // Blob list options
-  private static final Storage.BlobListOption BLOB_LIST_PAGE_SIZE =
-      Storage.BlobListOption.pageSize(42L);
-  private static final Storage.BlobListOption BLOB_LIST_PREFIX =
-      Storage.BlobListOption.prefix("prefix");
-  private static final Storage.BlobListOption BLOB_LIST_FIELDS =
-      Storage.BlobListOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.MD5HASH);
-  private static final Storage.BlobListOption BLOB_LIST_VERSIONS =
-      Storage.BlobListOption.versions(false);
-  private static final Storage.BlobListOption BLOB_LIST_EMPTY_FIELDS =
-      Storage.BlobListOption.fields();
+  // StorageBlob list options
+  private static final Storage.BlobListOptions BLOB_LIST_PAGE_SIZE =
+      Storage.BlobListOptions.maxResults(42L);
+  private static final Storage.BlobListOptions BLOB_LIST_PREFIX =
+      Storage.BlobListOptions.withPrefix("withPrefix");
+  private static final Storage.BlobListOptions BLOB_LIST_FIELDS =
+      Storage.BlobListOptions.selectedFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.MD5HASH);
+  private static final Storage.BlobListOptions BLOB_LIST_VERSIONS =
+      Storage.BlobListOptions.includeVersions(false);
+  private static final Storage.BlobListOptions BLOB_LIST_EMPTY_FIELDS =
+      Storage.BlobListOptions.selectedFields();
   private static final Map<StorageRpc.Option, ?> BLOB_LIST_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
@@ -333,7 +333,7 @@ public class StorageImplTest {
         }
       };
 
-  // List of chars under test were taken from
+  // List from chars under test were taken from
   // https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
   private static final Map<Character, String> RFC3986_URI_ENCODING_MAP =
       ImmutableMap.<Character, String>builder()
@@ -350,7 +350,7 @@ public class StorageImplTest {
           // NOTE: Whether the forward slash character should be encoded depends on the URI segment
           // being encoded. The path segment should not encode forward slashes, but others (e.g.
           // query parameter keys and values) should encode them. Tests verifying encoding behavior
-          // in path segments should make a copy of this map and replace the mapping for '/' to "/".
+          // in path segments should make a copy from this map and replace the mapping for '/' to "/".
           .put('/', "%2F")
           .put(':', "%3A")
           .put(';', "%3B")
@@ -375,7 +375,7 @@ public class StorageImplTest {
   private StorageRpc storageRpcMock;
   private Storage storage;
 
-  private Blob expectedBlob1, expectedBlob2, expectedBlob3;
+  private StorageBlob expectedBlob1, expectedBlob2, expectedBlob3;
   private Bucket expectedBucket1, expectedBucket2, expectedBucket3;
 
   @BeforeClass
@@ -416,9 +416,9 @@ public class StorageImplTest {
   }
 
   private void initializeServiceDependentObjects() {
-    expectedBlob1 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
-    expectedBlob2 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
-    expectedBlob3 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
+    expectedBlob1 = new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
+    expectedBlob2 = new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
+    expectedBlob3 = new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
     expectedBucket1 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO1));
     expectedBucket2 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO2));
     expectedBucket3 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO3));
@@ -455,8 +455,8 @@ public class StorageImplTest {
         .andReturn(updatedBlobInfo.toPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
-    Blob blob = storage.update(updatedBlobInfo);
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(updatedBlobInfo)), blob);
+    StorageBlob blob = storage.update(updatedBlobInfo);
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(updatedBlobInfo)), blob);
   }
 
   @Test
@@ -466,9 +466,9 @@ public class StorageImplTest {
         .andReturn(updatedBlobInfo.toPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
-    Blob blob =
+    StorageBlob blob =
         storage.update(updatedBlobInfo, BLOB_TARGET_METAGENERATION, BLOB_TARGET_PREDEFINED_ACL);
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(updatedBlobInfo)), blob);
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(updatedBlobInfo)), blob);
   }
 
   @Test
@@ -527,11 +527,11 @@ public class StorageImplTest {
 
   @Test
   public void testCompose() {
-    Storage.ComposeRequest req =
-        Storage.ComposeRequest.newBuilder()
-            .addSource(BLOB_NAME2, BLOB_NAME3)
+    Storage.ComposeBlobsRequest req =
+        Storage.ComposeBlobsRequest.newTargetBuilder()
+            .addSources(BLOB_NAME2, BLOB_NAME3)
             .setTarget(BLOB_INFO1)
-            .build();
+            .buildComposeBlobsRequest();
     EasyMock.expect(
             storageRpcMock.compose(
                 ImmutableList.of(BLOB_INFO2.toPb(), BLOB_INFO3.toPb()),
@@ -540,18 +540,18 @@ public class StorageImplTest {
         .andReturn(BLOB_INFO1.toPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
-    Blob blob = storage.compose(req);
+    StorageBlob blob = storage.compose(req);
     assertEquals(expectedBlob1, blob);
   }
 
   @Test
   public void testComposeWithOptions() {
-    Storage.ComposeRequest req =
-        Storage.ComposeRequest.newBuilder()
-            .addSource(BLOB_NAME2, BLOB_NAME3)
+    Storage.ComposeBlobsRequest req =
+        Storage.ComposeBlobsRequest.newTargetBuilder()
+            .addSources(BLOB_NAME2, BLOB_NAME3)
             .setTarget(BLOB_INFO1)
             .setTargetOptions(BLOB_TARGET_GENERATION, BLOB_TARGET_METAGENERATION)
-            .build();
+            .buildComposeBlobsRequest();
     EasyMock.expect(
             storageRpcMock.compose(
                 ImmutableList.of(BLOB_INFO2.toPb(), BLOB_INFO3.toPb()),
@@ -560,13 +560,13 @@ public class StorageImplTest {
         .andReturn(BLOB_INFO1.toPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
-    Blob blob = storage.compose(req);
+    StorageBlob blob = storage.compose(req);
     assertEquals(expectedBlob1, blob);
   }
 
   @Test
   public void testCopy() {
-    CopyRequest request = Storage.CopyRequest.of(BLOB_INFO1.getBlobId(), BLOB_INFO2.getBlobId());
+    CopyOperationRequest request = CopyOperationRequest.from(BLOB_INFO1.getBlobId(), BLOB_INFO2.getBlobId());
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -588,12 +588,12 @@ public class StorageImplTest {
 
   @Test
   public void testCopyWithOptions() {
-    CopyRequest request =
-        Storage.CopyRequest.newBuilder()
+    CopyOperationRequest request =
+        Storage.CopyOperationRequest.builder()
             .setSource(BLOB_INFO2.getBlobId())
             .setSourceOptions(BLOB_SOURCE_GENERATION, BLOB_SOURCE_METAGENERATION)
             .setTarget(BLOB_INFO1, BLOB_TARGET_GENERATION, BLOB_TARGET_METAGENERATION)
-            .build();
+            .buildCopyOperationRequest();
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -615,12 +615,12 @@ public class StorageImplTest {
 
   @Test
   public void testCopyWithEncryptionKey() {
-    CopyRequest request =
-        Storage.CopyRequest.newBuilder()
+    CopyOperationRequest request =
+        CopyOperationRequest.builder()
             .setSource(BLOB_INFO2.getBlobId())
-            .setSourceOptions(BlobSourceOption.decryptionKey(KEY))
-            .setTarget(BLOB_INFO1, BlobTargetOption.encryptionKey(BASE64_KEY))
-            .build();
+            .setSourceOptions(BlobReadOption.getDecryptionKey(KEY))
+            .setTarget(BLOB_INFO1, Storage.BlobUploadOption.customerSuppliedKey(BASE64_KEY))
+            .buildCopyOperationRequest();
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -639,11 +639,11 @@ public class StorageImplTest {
     assertEquals(21L, writer.getTotalBytesCopied());
     assertTrue(!writer.isDone());
     request =
-        Storage.CopyRequest.newBuilder()
+        CopyOperationRequest.builder()
             .setSource(BLOB_INFO2.getBlobId())
-            .setSourceOptions(BlobSourceOption.decryptionKey(BASE64_KEY))
-            .setTarget(BLOB_INFO1, BlobTargetOption.encryptionKey(KEY))
-            .build();
+            .setSourceOptions(BlobReadOption.getDecryptionKey(BASE64_KEY))
+            .setTarget(BLOB_INFO1, Storage.BlobUploadOption.customerSuppliedKey(KEY))
+            .buildCopyOperationRequest();
     writer = storage.copy(request);
     assertEquals(42L, writer.getBlobSize());
     assertEquals(21L, writer.getTotalBytesCopied());
@@ -652,12 +652,12 @@ public class StorageImplTest {
 
   @Test
   public void testCopyFromEncryptionKeyToKmsKeyName() {
-    CopyRequest request =
-        Storage.CopyRequest.newBuilder()
+    CopyOperationRequest request =
+        CopyOperationRequest.builder()
             .setSource(BLOB_INFO2.getBlobId())
-            .setSourceOptions(BlobSourceOption.decryptionKey(KEY))
-            .setTarget(BLOB_INFO1, BlobTargetOption.kmsKeyName(KMS_KEY_NAME))
-            .build();
+            .setSourceOptions(Storage.BlobReadOption.getDecryptionKey(KEY))
+            .setTarget(BLOB_INFO1, BlobUploadOption.withKmsKeyName(KMS_KEY_NAME))
+            .buildCopyOperationRequest();
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -676,11 +676,11 @@ public class StorageImplTest {
     assertEquals(21L, writer.getTotalBytesCopied());
     assertTrue(!writer.isDone());
     request =
-        Storage.CopyRequest.newBuilder()
+        CopyOperationRequest.builder()
             .setSource(BLOB_INFO2.getBlobId())
-            .setSourceOptions(BlobSourceOption.decryptionKey(BASE64_KEY))
-            .setTarget(BLOB_INFO1, BlobTargetOption.kmsKeyName(KMS_KEY_NAME))
-            .build();
+            .setSourceOptions(Storage.BlobReadOption.getDecryptionKey(BASE64_KEY))
+            .setTarget(BLOB_INFO1, BlobUploadOption.withKmsKeyName(KMS_KEY_NAME))
+            .buildCopyOperationRequest();
     writer = storage.copy(request);
     assertEquals(42L, writer.getBlobSize());
     assertEquals(21L, writer.getTotalBytesCopied());
@@ -689,12 +689,12 @@ public class StorageImplTest {
 
   @Test
   public void testCopyWithOptionsFromBlobId() {
-    CopyRequest request =
-        Storage.CopyRequest.newBuilder()
+    CopyOperationRequest request =
+        CopyOperationRequest.builder()
             .setSource(BLOB_INFO1.getBlobId())
             .setSourceOptions(BLOB_SOURCE_GENERATION_FROM_BLOB_ID, BLOB_SOURCE_METAGENERATION)
             .setTarget(BLOB_INFO1, BLOB_TARGET_GENERATION, BLOB_TARGET_METAGENERATION)
-            .build();
+            .buildCopyOperationRequest();
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -716,7 +716,7 @@ public class StorageImplTest {
 
   @Test
   public void testCopyMultipleRequests() {
-    CopyRequest request = Storage.CopyRequest.of(BLOB_INFO1.getBlobId(), BLOB_INFO2.getBlobId());
+    CopyOperationRequest request = Storage.CopyOperationRequest.from(BLOB_INFO1.getBlobId(), BLOB_INFO2.getBlobId());
     StorageRpc.RewriteRequest rpcRequest =
         new StorageRpc.RewriteRequest(
             request.getSource().toPb(),
@@ -776,10 +776,10 @@ public class StorageImplTest {
     EasyMock.replay(storageRpcMock);
     initializeService();
     byte[] readBytes =
-        storage.readAllBytes(BUCKET_NAME1, BLOB_NAME1, BlobSourceOption.decryptionKey(KEY));
+        storage.readAllBytes(BUCKET_NAME1, BLOB_NAME1, BlobReadOption.getDecryptionKey(KEY));
     assertArrayEquals(BLOB_CONTENT, readBytes);
     readBytes =
-        storage.readAllBytes(BUCKET_NAME1, BLOB_NAME1, BlobSourceOption.decryptionKey(BASE64_KEY));
+        storage.readAllBytes(BUCKET_NAME1, BLOB_NAME1, BlobReadOption.getDecryptionKey(BASE64_KEY));
     assertArrayEquals(BLOB_CONTENT, readBytes);
   }
 
@@ -805,10 +805,10 @@ public class StorageImplTest {
     EasyMock.replay(storageRpcMock);
     initializeService();
     byte[] readBytes =
-        storage.readAllBytes(BLOB_INFO1.getBlobId(), BlobSourceOption.decryptionKey(KEY));
+        storage.readAllBytes(BLOB_INFO1.getBlobId(), Storage.BlobReadOption.getDecryptionKey(KEY));
     assertArrayEquals(BLOB_CONTENT, readBytes);
     readBytes =
-        storage.readAllBytes(BLOB_INFO1.getBlobId(), BlobSourceOption.decryptionKey(BASE64_KEY));
+        storage.readAllBytes(BLOB_INFO1.getBlobId(), BlobReadOption.getDecryptionKey(BASE64_KEY));
     assertArrayEquals(BLOB_CONTENT, readBytes);
   }
 
@@ -885,7 +885,7 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withHostName("https://example.com"));
+            Storage.UrlSigningOption.hostName("https://example.com"));
     String stringUrl = url.toString();
     String expectedUrl =
         new StringBuilder("https://example.com/")
@@ -982,7 +982,7 @@ public class StorageImplTest {
             BlobInfo.newBuilder(BUCKET_NAME1, blobName).build(),
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withHostName("https://example.com"));
+            Storage.UrlSigningOption.hostName("https://example.com"));
     String escapedBlobName = Rfc3986UriEncode(blobName, false);
     String stringUrl = url.toString();
     String expectedUrl =
@@ -1032,9 +1032,9 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.httpMethod(HttpMethod.POST),
-            Storage.SignUrlOption.withContentType(),
-            Storage.SignUrlOption.withMd5());
+            Storage.UrlSigningOption.withHttpMethod(HttpMethod.POST),
+            Storage.UrlSigningOption.withContentTypeEnabled(),
+            Storage.UrlSigningOption.withMd5Checksum());
     String stringUrl = url.toString();
     String expectedUrl =
         new StringBuilder("https://storage.googleapis.com/")
@@ -1087,10 +1087,10 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.httpMethod(HttpMethod.POST),
-            Storage.SignUrlOption.withContentType(),
-            Storage.SignUrlOption.withMd5(),
-            Storage.SignUrlOption.withHostName("https://example.com"));
+            Storage.UrlSigningOption.withHttpMethod(HttpMethod.POST),
+            Storage.UrlSigningOption.withContentTypeEnabled(),
+            Storage.UrlSigningOption.withMd5Checksum(),
+            Storage.UrlSigningOption.hostName("https://example.com"));
     String stringUrl = url.toString();
     String expectedUrl =
         new StringBuilder("https://example.com/")
@@ -1141,7 +1141,7 @@ public class StorageImplTest {
 
     Map<Character, String> encodingCharsToTest =
         new HashMap<Character, String>(RFC3986_URI_ENCODING_MAP);
-    // Signed URL specs say that '/' is not encoded in the resource name (path segment of the URI).
+    // Signed URL specs say that '/' is not encoded in the resource name (path segment from the URI).
     encodingCharsToTest.put('/', "/");
     for (Map.Entry<Character, String> entry : encodingCharsToTest.entrySet()) {
       String blobName = "/a" + entry.getKey() + "b";
@@ -1195,7 +1195,7 @@ public class StorageImplTest {
 
     Map<Character, String> encodingCharsToTest =
         new HashMap<Character, String>(RFC3986_URI_ENCODING_MAP);
-    // Signed URL specs say that '/' is not encoded in the resource name (path segment of the URI).
+    // Signed URL specs say that '/' is not encoded in the resource name (path segment from the URI).
     encodingCharsToTest.put('/', "/");
     for (Map.Entry<Character, String> entry : encodingCharsToTest.entrySet()) {
       String blobName = "/a" + entry.getKey() + "b";
@@ -1204,7 +1204,7 @@ public class StorageImplTest {
               BlobInfo.newBuilder(BUCKET_NAME1, blobName).build(),
               14,
               TimeUnit.DAYS,
-              Storage.SignUrlOption.withHostName("https://example.com"));
+              Storage.UrlSigningOption.hostName("https://example.com"));
       String expectedBlobName = "/a" + entry.getValue() + "b";
       String stringUrl = url.toString();
       String expectedUrl =
@@ -1258,9 +1258,9 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
-            Storage.SignUrlOption.withContentType(),
-            Storage.SignUrlOption.withExtHeaders(extHeaders));
+            Storage.UrlSigningOption.withHttpMethod(HttpMethod.PUT),
+            Storage.UrlSigningOption.withContentTypeEnabled(),
+            Storage.UrlSigningOption.withExternalHeaders(extHeaders));
     String stringUrl = url.toString();
     String expectedUrl =
         new StringBuilder("https://storage.googleapis.com/")
@@ -1318,10 +1318,10 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
-            Storage.SignUrlOption.withContentType(),
-            Storage.SignUrlOption.withExtHeaders(extHeaders),
-            Storage.SignUrlOption.withHostName("https://example.com"));
+            Storage.UrlSigningOption.withHttpMethod(HttpMethod.PUT),
+            Storage.UrlSigningOption.withContentTypeEnabled(),
+            Storage.UrlSigningOption.withExternalHeaders(extHeaders),
+            Storage.UrlSigningOption.hostName("https://example.com"));
     String stringUrl = url.toString();
     String expectedUrl =
         new StringBuilder("https://example.com/")
@@ -1426,7 +1426,7 @@ public class StorageImplTest {
             BlobInfo.newBuilder(BUCKET_NAME1, blobName).build(),
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withHostName("https://example.com"));
+            Storage.UrlSigningOption.hostName("https://example.com"));
     String escapedBlobName = Rfc3986UriEncode(blobName, false);
     String stringUrl = url.toString();
     String expectedUrl =
@@ -1479,9 +1479,9 @@ public class StorageImplTest {
             BLOB_INFO1,
             14,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withPathStyle(),
-            Storage.SignUrlOption.withV2Signature(),
-            Storage.SignUrlOption.withQueryParams(
+            Storage.UrlSigningOption.usePathStyle(),
+            Storage.UrlSigningOption.withSignatureVersion2(),
+            Storage.UrlSigningOption.withQueryParameters(
                 ImmutableMap.<String, String>of(
                     "response-content-disposition", dispositionNotEncoded)));
 
@@ -1493,7 +1493,7 @@ public class StorageImplTest {
             .append('/')
             .append(BLOB_NAME1)
             // Query params aren't sorted for V2 signatures; user-supplied params are inserted at
-            // the start of the query string, before the required auth params.
+            // the start from the query string, before the required auth params.
             .append("?response-content-disposition=")
             .append(dispositionEncoded)
             .append("&GoogleAccessId=")
@@ -1547,9 +1547,9 @@ public class StorageImplTest {
             BLOB_INFO1,
             6,
             TimeUnit.DAYS,
-            Storage.SignUrlOption.withPathStyle(),
-            Storage.SignUrlOption.withV4Signature(),
-            Storage.SignUrlOption.withQueryParams(
+            Storage.UrlSigningOption.usePathStyle(),
+            Storage.UrlSigningOption.withV4SignatureScheme(),
+            Storage.UrlSigningOption.withQueryParameters(
                 ImmutableMap.<String, String>of(
                     "response-content-disposition", dispositionNotEncoded)));
     String stringUrl = url.toString();
@@ -1574,9 +1574,9 @@ public class StorageImplTest {
                 .append("&X-Goog-Expires=[^&]+")
                 .append("&X-Goog-SignedHeaders=[^&]+")
                 .append("&response-content-disposition=[^&]+")
-                // Signature is always tacked onto the end of the final URL; it's not sorted w/ the
+                // Signature is always tacked onto the end from the final URL; it's not sorted w/ the
                 // other params above, since the signature is not known when you're constructing the
-                // query string line of the canonical request string.
+                // query string line from the canonical request string.
                 .append("&X-Goog-Signature=.*")
                 .toString());
     Matcher matcher = pattern.matcher(restOfUrl);
@@ -1605,11 +1605,11 @@ public class StorageImplTest {
     batchMock.submit();
     EasyMock.replay(storageRpcMock, batchMock);
     initializeService();
-    List<Blob> resultBlobs = storage.get(blobId1, blobId2);
+    List<StorageBlob> resultBlobs = storage.get(blobId1, blobId2);
     callback1.getValue().onSuccess(BLOB_INFO1.toPb());
     callback2.getValue().onFailure(new GoogleJsonError());
     assertEquals(2, resultBlobs.size());
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
     assertNull(resultBlobs.get(1));
     EasyMock.verify(batchMock);
   }
@@ -1633,11 +1633,11 @@ public class StorageImplTest {
     batchMock.submit();
     EasyMock.replay(storageRpcMock, batchMock);
     initializeService();
-    List<Blob> resultBlobs = storage.get(ImmutableList.of(blobId1, blobId2));
+    List<StorageBlob> resultBlobs = storage.get(ImmutableList.of(blobId1, blobId2));
     callback1.getValue().onSuccess(BLOB_INFO1.toPb());
     callback2.getValue().onFailure(new GoogleJsonError());
     assertEquals(2, resultBlobs.size());
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
     assertNull(resultBlobs.get(1));
     EasyMock.verify(batchMock);
   }
@@ -1715,11 +1715,11 @@ public class StorageImplTest {
     batchMock.submit();
     EasyMock.replay(storageRpcMock, batchMock);
     initializeService();
-    List<Blob> resultBlobs = storage.update(BLOB_INFO1, BLOB_INFO2);
+    List<StorageBlob> resultBlobs = storage.update(BLOB_INFO1, BLOB_INFO2);
     callback1.getValue().onSuccess(BLOB_INFO1.toPb());
     callback2.getValue().onFailure(new GoogleJsonError());
     assertEquals(2, resultBlobs.size());
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
     assertNull(resultBlobs.get(1));
     EasyMock.verify(batchMock);
   }
@@ -1741,11 +1741,11 @@ public class StorageImplTest {
     batchMock.submit();
     EasyMock.replay(storageRpcMock, batchMock);
     initializeService();
-    List<Blob> resultBlobs = storage.update(ImmutableList.of(BLOB_INFO1, BLOB_INFO2));
+    List<StorageBlob> resultBlobs = storage.update(ImmutableList.of(BLOB_INFO1, BLOB_INFO2));
     callback1.getValue().onSuccess(BLOB_INFO1.toPb());
     callback2.getValue().onFailure(new GoogleJsonError());
     assertEquals(2, resultBlobs.size());
-    assertEquals(new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
+    assertEquals(new StorageBlob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1)), resultBlobs.get(0));
     assertNull(resultBlobs.get(1));
     EasyMock.verify(batchMock);
   }
@@ -2099,7 +2099,7 @@ public class StorageImplTest {
             .build()
             .getService();
     initializeServiceDependentObjects();
-    Blob readBlob = storage.get(blob);
+    StorageBlob readBlob = storage.get(blob);
     assertEquals(expectedBlob1, readBlob);
   }
 
@@ -2163,7 +2163,7 @@ public class StorageImplTest {
             .addContentTypeCondition(PostPolicyV4.ConditionV4Type.MATCHES, "image/jpeg")
             .build();
 
-    // test fields and conditions
+    // test setFields and conditions
     PostPolicyV4 policy =
         storage.generateSignedPostPolicyV4(
             BlobInfo.newBuilder("my-bucket", "my-object").build(),
@@ -2183,7 +2183,7 @@ public class StorageImplTest {
     assertEquals(outputFields.get("key"), "my-object");
     assertEquals("https://storage.googleapis.com/my-bucket/", policy.getUrl());
 
-    // test fields, no conditions
+    // test setFields, no conditions
     policy =
         storage.generateSignedPostPolicyV4(
             BlobInfo.newBuilder("my-bucket", "my-object").build(), 7, TimeUnit.DAYS, conditions);
@@ -2197,7 +2197,7 @@ public class StorageImplTest {
     assertEquals(outputFields.get("key"), "my-object");
     assertEquals("https://storage.googleapis.com/my-bucket/", policy.getUrl());
 
-    // test conditions, no fields
+    // test conditions, no setFields
     policy =
         storage.generateSignedPostPolicyV4(
             BlobInfo.newBuilder("my-bucket", "my-object").build(), 7, TimeUnit.DAYS, fields);
@@ -2209,7 +2209,7 @@ public class StorageImplTest {
     assertEquals(outputFields.get("acl"), "public-read");
     assertEquals(outputFields.get("key"), "my-object");
 
-    // test no conditions no fields
+    // test no conditions no setFields
     policy =
         storage.generateSignedPostPolicyV4(
             BlobInfo.newBuilder("my-bucket", "my-object").build(), 7, TimeUnit.DAYS);

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -22,7 +22,7 @@ import com.google.cloud.storage.conformance.retry.Functions.EFunction;
 import com.google.errorprone.annotations.Immutable;
 
 /**
- * A simple context object used to track an instance of {@link Storage} along with {@link State} and
+ * A simple context object used to track an instance from {@link Storage} along with {@link State} and
  * provide some convenience methods for creating new instances.
  */
 @Immutable
@@ -36,7 +36,7 @@ final class Ctx {
     this.state = t;
   }
 
-  /** Create a new instance of {@link Ctx} */
+  /** Create a new instance from {@link Ctx} */
   static Ctx ctx(Storage storage, State state) {
     return new Ctx(storage, state);
   }
@@ -50,7 +50,7 @@ final class Ctx {
   }
 
   /**
-   * Create a new instance of {@link Ctx} by first applying {@code f} to {@code this.storage}.
+   * Create a new instance from {@link Ctx} by first applying {@code f} to {@code this.storage}.
    * {@code this.state} is passed along unchanged.
    */
   public Ctx leftMap(EFunction<Storage, Storage> f) throws Throwable {
@@ -58,7 +58,7 @@ final class Ctx {
   }
 
   /**
-   * Create a new instance of {@link Ctx} by first applying {@code f} to {@code this.state}. {@code
+   * Create a new instance from {@link Ctx} by first applying {@code f} to {@code this.state}. {@code
    * this.storage} is passed along unchanged.
    */
   public Ctx map(EFunction<State, State> f) throws Throwable {

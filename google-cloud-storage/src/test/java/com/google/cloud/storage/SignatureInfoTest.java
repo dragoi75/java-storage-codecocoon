@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -73,7 +73,7 @@ public class SignatureInfoTest {
   public void constructV4UnsignedPayload() {
     Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(Storage.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
@@ -88,7 +88,7 @@ public class SignatureInfoTest {
   public void constructV4QueryString() {
     Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(Storage.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 

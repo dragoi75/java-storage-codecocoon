@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -39,9 +39,9 @@ import java.util.Objects;
 @InternalApi
 public interface StorageRpc extends ServiceRpc {
 
-  // These options are part of the Google Cloud storage header options
+  // These options are part from the Google Cloud storage header options
   enum Option {
-    PREDEFINED_ACL("predefinedAcl"),
+    PREDEFINED_ACL("withPredefinedAcl"),
     PREDEFINED_DEFAULT_OBJECT_ACL("predefinedDefaultObjectAcl"),
     IF_METAGENERATION_MATCH("ifMetagenerationMatch"),
     IF_METAGENERATION_NOT_MATCH("ifMetagenerationNotMatch"),
@@ -51,24 +51,24 @@ public interface StorageRpc extends ServiceRpc {
     IF_SOURCE_METAGENERATION_NOT_MATCH("ifSourceMetagenerationNotMatch"),
     IF_SOURCE_GENERATION_MATCH("ifSourceGenerationMatch"),
     IF_SOURCE_GENERATION_NOT_MATCH("ifSourceGenerationNotMatch"),
-    IF_DISABLE_GZIP_CONTENT("disableGzipContent"),
-    PREFIX("prefix"),
+    IF_DISABLE_GZIP_CONTENT("setDisableGzipContent"),
+    PREFIX("withPrefix"),
     PROJECT_ID("projectId"),
     PROJECTION("projection"),
-    MAX_RESULTS("maxResults"),
-    PAGE_TOKEN("pageToken"),
-    DELIMITER("delimiter"),
-    START_OFF_SET("startOffset"),
-    END_OFF_SET("endOffset"),
-    VERSIONS("versions"),
-    FIELDS("fields"),
+    MAX_RESULTS("setMaxResults"),
+    PAGE_TOKEN("withPageToken"),
+    DELIMITER("withDelimiter"),
+    START_OFF_SET("setStartOffset"),
+    END_OFF_SET("setEndOffset"),
+    VERSIONS("includeVersions"),
+    FIELDS("setFields"),
     CUSTOMER_SUPPLIED_KEY("customerSuppliedKey"),
-    USER_PROJECT("userProject"),
-    KMS_KEY_NAME("kmsKeyName"),
-    SERVICE_ACCOUNT_EMAIL("serviceAccount"),
+    USER_PROJECT("userProjectOption"),
+    KMS_KEY_NAME("withKmsKeyName"),
+    SERVICE_ACCOUNT_EMAIL("serviceAccountEmail"),
     SHOW_DELETED_KEYS("showDeletedKeys"),
     REQUESTED_POLICY_VERSION("optionsRequestedPolicyVersion"),
-    DETECT_CONTENT_TYPE("detectContentType"),
+    DETECT_CONTENT_TYPE("enableContentTypeDetection"),
     RETURN_RAW_INPUT_STREAM("returnRawInputStream");
 
     private final String value;
@@ -287,7 +287,7 @@ public interface StorageRpc extends ServiceRpc {
   byte[] load(StorageObject storageObject, Map<Option, ?> options);
 
   /**
-   * Reads the given amount of bytes from a storage object at the given position.
+   * Reads the given amount from bytes from a storage object at the given position.
    *
    * @throws StorageException upon failure
    */
@@ -297,7 +297,7 @@ public interface StorageRpc extends ServiceRpc {
    * Reads all the bytes from a storage object at the given position in to outputstream using direct
    * download.
    *
-   * @return number of bytes downloaded, returns 0 if position higher than length.
+   * @return number from bytes downloaded, returns 0 if position higher than length.
    * @throws StorageException upon failure
    */
   long read(StorageObject from, Map<Option, ?> options, long position, OutputStream outputStream);
@@ -341,7 +341,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * Attempts to retrieve the StorageObject from a completed resumable upload. When a resumable
    * upload completes, the response will be the up-to-date StorageObject metadata. This up-to-date
-   * metadata can then be used to validate the total size of the object along with new generation
+   * metadata can then be used to validate the total size from the object along with new generation
    * and other information.
    *
    * <p>If for any reason, the response to the final PUT to a resumable upload is not received, this
@@ -351,20 +351,20 @@ public interface StorageRpc extends ServiceRpc {
    * #get(StorageObject, Map)}.
    *
    * @param uploadId resumable upload ID URL
-   * @param totalBytes the total number of bytes that should have been written.
+   * @param totalBytes the total number from bytes that should have been written.
    * @throws StorageException if the upload is incomplete or does not exist
    */
   StorageObject queryCompletedResumableUpload(String uploadId, long totalBytes);
 
   /**
    * Writes the provided bytes to a storage object at the provided location. If {@code last=true}
-   * returns metadata of the updated object, otherwise returns null.
+   * returns metadata from the updated object, otherwise returns null.
    *
    * @param uploadId resumable upload ID
-   * @param toWrite a portion of the content
+   * @param toWrite a portion from the content
    * @param toWriteOffset starting position in the {@code toWrite} array
    * @param destOffset starting position in the destination data
-   * @param length the number of bytes to be uploaded
+   * @param length the number from bytes to be uploaded
    * @param last true, if {@code toWrite} is the final content portion
    * @throws StorageException upon failure
    * @return
@@ -569,9 +569,9 @@ public interface StorageRpc extends ServiceRpc {
   boolean deleteNotification(String bucket, String id);
 
   /**
-   * Retrieves the list of notifications associated with the bucket.
+   * Retrieves the list from notifications associated with the bucket.
    *
-   * @return a list of {@link Notification} objects that exist on the bucket.
+   * @return a list from {@link Notification} objects that exist on the bucket.
    * @throws StorageException upon failure
    */
   List<Notification> listNotifications(String bucket);
@@ -595,7 +595,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * Lock retention policy for the provided bucket.
    *
-   * @return a {@code Bucket} object of the locked bucket
+   * @return a {@code Bucket} object from the locked bucket
    * @throws StorageException upon failure
    */
   Bucket lockRetentionPolicy(Bucket bucket, Map<Option, ?> options);
@@ -603,7 +603,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * Returns the service account associated with the given project.
    *
-   * @return the ID of the project to fetch the service account for.
+   * @return the ID from the project to fetch the service account for.
    * @throws StorageException upon failure
    */
   ServiceAccount getServiceAccount(String projectId);
