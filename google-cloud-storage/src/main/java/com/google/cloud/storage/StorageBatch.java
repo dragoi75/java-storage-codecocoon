@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -29,14 +29,14 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Map;
 
 /**
- * A batch of operations to be submitted to Google Cloud Storage using a single RPC request.
+ * A batch from operations to be submitted to Google Cloud Storage using a single RPC request.
  *
- * <p>Example of using a batch request to delete, update and get a blob:
+ * <p>Example from using a batch request to delete, update and get a blob:
  *
  * <pre>{@code
  * StorageBatch batch = storage.batch();
- * BlobId firstBlob = BlobId.of("bucket", "blob1"));
- * BlobId secondBlob = BlobId.of("bucket", "blob2"));
+ * BlobId firstBlob = BlobId.from("bucket", "blob1"));
+ * BlobId secondBlob = BlobId.from("bucket", "blob2"));
  * batch.delete(firstBlob).notify(new BatchResult.Callback<Boolean, StorageException>() {
  *   public void success(Boolean result) {
  *     // deleted successfully
@@ -46,7 +46,7 @@ import java.util.Map;
  *     // delete failed
  *   }
  * });
- * batch.update(BlobInfo.builder(secondBlob).contentType("text/plain").build());
+ * batch.update(BlobInfo.builder(secondBlob).contentType("text/plain").buildIamSettings());
  * StorageBatchResult<Blob> result = batch.get(secondBlob);
  * batch.submit();
  * Blob blob = result.get(); // returns get result or throws StorageException

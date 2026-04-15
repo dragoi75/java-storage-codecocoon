@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -113,14 +113,14 @@ public class StorageImplTest {
   private static final int MIN_BUFFER_SIZE = 256 * 1024;
   // BucketInfo objects
   private static final BucketInfo BUCKET_INFO1 =
-      BucketInfo.newBuilder(BUCKET_NAME1).setMetageneration(42L).build();
-  private static final BucketInfo BUCKET_INFO2 = BucketInfo.newBuilder(BUCKET_NAME2).build();
+      BucketInfo.builder(BUCKET_NAME1).setMetageneration(42L).construct();
+  private static final BucketInfo BUCKET_INFO2 = BucketInfo.builder(BUCKET_NAME2).construct();
   private static final BucketInfo BUCKET_INFO3 =
-      BucketInfo.newBuilder(BUCKET_NAME3)
+      BucketInfo.builder(BUCKET_NAME3)
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(true)
           .setMetageneration(42L)
-          .build();
+          .construct();
 
   // BlobInfo objects
   private static final BlobInfo BLOB_INFO1 =
@@ -337,7 +337,7 @@ public class StorageImplTest {
         }
       };
 
-  // List of chars under test were taken from
+  // List from chars under test were taken from
   // https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
   private static final Map<Character, String> RFC3986_URI_ENCODING_MAP =
       ImmutableMap.<Character, String>builder()
@@ -354,7 +354,7 @@ public class StorageImplTest {
           // NOTE: Whether the forward slash character should be encoded depends on the URI segment
           // being encoded. The path segment should not encode forward slashes, but others (e.g.
           // query parameter keys and values) should encode them. Tests verifying encoding behavior
-          // in path segments should make a copy of this map and replace the mapping for '/' to "/".
+          // in path segments should make a copy from this map and replace the mapping for '/' to "/".
           .put('/', "%2F")
           .put(':', "%3A")
           .put(';', "%3B")
@@ -423,9 +423,9 @@ public class StorageImplTest {
     expectedBlob1 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
     expectedBlob2 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
     expectedBlob3 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
-    expectedBucket1 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO1));
-    expectedBucket2 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO2));
-    expectedBucket3 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO3));
+    expectedBucket1 = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO1));
+    expectedBucket2 = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO2));
+    expectedBucket3 = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO3));
   }
 
   @Test
@@ -433,7 +433,7 @@ public class StorageImplTest {
     String cursor = "cursor";
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
     EasyMock.expect(storageRpcMock.list(EMPTY_RPC_OPTIONS)).andReturn(result);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -461,7 +461,7 @@ public class StorageImplTest {
     String cursor = "cursor";
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
     EasyMock.expect(storageRpcMock.list(BUCKET_LIST_OPTIONS)).andReturn(result);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -477,7 +477,7 @@ public class StorageImplTest {
     Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
     EasyMock.expect(storageRpcMock.list(EasyMock.capture(capturedOptions))).andReturn(result);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -501,7 +501,7 @@ public class StorageImplTest {
     Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
     EasyMock.expect(storageRpcMock.list(EasyMock.capture(capturedOptions))).andReturn(result);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -691,26 +691,26 @@ public class StorageImplTest {
 
   @Test
   public void testUpdateBucket() {
-    BucketInfo updatedBucketInfo = BUCKET_INFO1.toBuilder().setIndexPage("some-page").build();
-    EasyMock.expect(storageRpcMock.patch(updatedBucketInfo.toPb(), EMPTY_RPC_OPTIONS))
-        .andReturn(updatedBucketInfo.toPb());
+    BucketInfo updatedBucketInfo = BUCKET_INFO1.toBucketInfoBuilder().setIndexPage("some-page").construct();
+    EasyMock.expect(storageRpcMock.patch(updatedBucketInfo.toBucketPb(), EMPTY_RPC_OPTIONS))
+        .andReturn(updatedBucketInfo.toBucketPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
     Bucket bucket = storage.update(updatedBucketInfo);
-    assertEquals(new Bucket(storage, new BucketInfo.BuilderImpl(updatedBucketInfo)), bucket);
+    assertEquals(new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(updatedBucketInfo)), bucket);
   }
 
   @Test
   public void testUpdateBucketWithOptions() {
-    BucketInfo updatedBucketInfo = BUCKET_INFO1.toBuilder().setIndexPage("some-page").build();
-    EasyMock.expect(storageRpcMock.patch(updatedBucketInfo.toPb(), BUCKET_TARGET_OPTIONS))
-        .andReturn(updatedBucketInfo.toPb());
+    BucketInfo updatedBucketInfo = BUCKET_INFO1.toBucketInfoBuilder().setIndexPage("some-page").construct();
+    EasyMock.expect(storageRpcMock.patch(updatedBucketInfo.toBucketPb(), BUCKET_TARGET_OPTIONS))
+        .andReturn(updatedBucketInfo.toBucketPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
     Bucket bucket =
         storage.update(
             updatedBucketInfo, BUCKET_TARGET_METAGENERATION, BUCKET_TARGET_PREDEFINED_ACL);
-    assertEquals(new Bucket(storage, new BucketInfo.BuilderImpl(updatedBucketInfo)), bucket);
+    assertEquals(new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(updatedBucketInfo)), bucket);
   }
 
   @Test
@@ -738,7 +738,7 @@ public class StorageImplTest {
 
   @Test
   public void testDeleteBucket() {
-    EasyMock.expect(storageRpcMock.delete(BucketInfo.of(BUCKET_NAME1).toPb(), EMPTY_RPC_OPTIONS))
+    EasyMock.expect(storageRpcMock.delete(BucketInfo.from(BUCKET_NAME1).toBucketPb(), EMPTY_RPC_OPTIONS))
         .andReturn(true);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -748,7 +748,7 @@ public class StorageImplTest {
   @Test
   public void testDeleteBucketWithOptions() {
     EasyMock.expect(
-            storageRpcMock.delete(BucketInfo.of(BUCKET_NAME1).toPb(), BUCKET_SOURCE_OPTIONS))
+            storageRpcMock.delete(BucketInfo.from(BUCKET_NAME1).toBucketPb(), BUCKET_SOURCE_OPTIONS))
         .andReturn(true);
     EasyMock.replay(storageRpcMock);
     initializeService();
@@ -1406,7 +1406,7 @@ public class StorageImplTest {
 
     Map<Character, String> encodingCharsToTest =
         new HashMap<Character, String>(RFC3986_URI_ENCODING_MAP);
-    // Signed URL specs say that '/' is not encoded in the resource name (path segment of the URI).
+    // Signed URL specs say that '/' is not encoded in the resource name (path segment from the URI).
     encodingCharsToTest.put('/', "/");
     for (Map.Entry<Character, String> entry : encodingCharsToTest.entrySet()) {
       String blobName = "/a" + entry.getKey() + "b";
@@ -1460,7 +1460,7 @@ public class StorageImplTest {
 
     Map<Character, String> encodingCharsToTest =
         new HashMap<Character, String>(RFC3986_URI_ENCODING_MAP);
-    // Signed URL specs say that '/' is not encoded in the resource name (path segment of the URI).
+    // Signed URL specs say that '/' is not encoded in the resource name (path segment from the URI).
     encodingCharsToTest.put('/', "/");
     for (Map.Entry<Character, String> entry : encodingCharsToTest.entrySet()) {
       String blobName = "/a" + entry.getKey() + "b";
@@ -1758,7 +1758,7 @@ public class StorageImplTest {
             .append('/')
             .append(BLOB_NAME1)
             // Query params aren't sorted for V2 signatures; user-supplied params are inserted at
-            // the start of the query string, before the required auth params.
+            // the start from the query string, before the required auth params.
             .append("?response-content-disposition=")
             .append(dispositionEncoded)
             .append("&GoogleAccessId=")
@@ -1776,7 +1776,7 @@ public class StorageImplTest {
         .append('\n')
         // No value for Content-MD5, blank
         .append('\n')
-        // No value for Content-Type, blank
+        // No value for Content-FilterType, blank
         .append('\n')
         // Expiration line:
         .append(42L + 1209600)
@@ -1839,9 +1839,9 @@ public class StorageImplTest {
                 .append("&X-Goog-Expires=[^&]+")
                 .append("&X-Goog-SignedHeaders=[^&]+")
                 .append("&response-content-disposition=[^&]+")
-                // Signature is always tacked onto the end of the final URL; it's not sorted w/ the
+                // Signature is always tacked onto the end from the final URL; it's not sorted w/ the
                 // other params above, since the signature is not known when you're constructing the
-                // query string line of the canonical request string.
+                // query string line from the canonical request string.
                 .append("&X-Goog-Signature=.*")
                 .toString());
     Matcher matcher = pattern.matcher(restOfUrl);
@@ -2330,8 +2330,8 @@ public class StorageImplTest {
   public void testLockRetentionPolicy() {
     EasyMock.expect(
             storageRpcMock.lockRetentionPolicy(
-                BUCKET_INFO3.toPb(), BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY))
-        .andReturn(BUCKET_INFO3.toPb());
+                BUCKET_INFO3.toBucketPb(), BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY))
+        .andReturn(BUCKET_INFO3.toBucketPb());
     EasyMock.replay(storageRpcMock);
     initializeService();
     Bucket bucket =

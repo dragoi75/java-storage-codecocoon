@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -853,7 +853,7 @@ public class HttpStorageRpc implements StorageRpc {
       HttpRequest httpRequest =
           requestFactory.buildPostRequest(url, new JsonHttpContent(jsonFactory, object));
       HttpHeaders requestHeaders = httpRequest.getHeaders();
-      requestHeaders.set("X-Upload-Content-Type", detectContentType(object, options));
+      requestHeaders.set("X-Upload-Content-FilterType", detectContentType(object, options));
       String key = Option.CUSTOMER_SUPPLIED_KEY.getString(options);
       if (key != null) {
         BaseEncoding base64 = BaseEncoding.base64();
@@ -895,7 +895,7 @@ public class HttpStorageRpc implements StorageRpc {
           requestFactory.buildPostRequest(
               url, new ByteArrayContent("", bytesArray, 0, bytesArray.length));
       HttpHeaders requestHeaders = httpRequest.getHeaders();
-      requestHeaders.set("X-Upload-Content-Type", "");
+      requestHeaders.set("X-Upload-Content-FilterType", "");
       requestHeaders.set("x-goog-resumable", "start");
       HttpResponse response = httpRequest.execute();
       if (response.getStatusCode() != 201) {

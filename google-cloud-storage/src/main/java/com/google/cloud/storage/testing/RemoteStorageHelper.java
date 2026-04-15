@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -122,7 +122,7 @@ public class RemoteStorageHelper {
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
    * @throws ExecutionException if an exception was thrown while deleting bucket or bucket objects
@@ -142,7 +142,7 @@ public class RemoteStorageHelper {
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @param userProject the project to bill for requester-pays buckets (or "")
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
@@ -182,7 +182,7 @@ public class RemoteStorageHelper {
    * Creates a {@code RemoteStorageHelper} object for the given project id and JSON key input
    * stream.
    *
-   * @param projectId id of the project to be used for running the tests
+   * @param projectId id from the project to be used for running the tests
    * @param keyStream input stream for a JSON key
    * @return A {@code RemoteStorageHelper} object for the provided options
    * @throws com.google.cloud.storage.testing.RemoteStorageHelper.StorageHelperException if {@code

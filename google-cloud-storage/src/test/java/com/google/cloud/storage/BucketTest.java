@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -37,9 +37,9 @@ import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.BucketInfo.AgeDeleteRule;
 import com.google.cloud.storage.BucketInfo.DeleteRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleAction;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleCondition;
+import com.google.cloud.storage.BucketInfo.ObjectLifecycleRule;
+import com.google.cloud.storage.BucketInfo.ObjectLifecycleRule.LifecycleOperation;
+import com.google.cloud.storage.BucketInfo.ObjectLifecycleRule.LifecycleRuleCondition;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -77,11 +77,11 @@ public class BucketTest {
   private static final List<? extends DeleteRule> DELETE_RULES =
       Collections.singletonList(new AgeDeleteRule(5));
 
-  private static final List<? extends BucketInfo.LifecycleRule> LIFECYCLE_RULES =
+  private static final List<? extends BucketInfo.ObjectLifecycleRule> LIFECYCLE_RULES =
       Collections.singletonList(
-          new LifecycleRule(
-              LifecycleAction.newDeleteAction(),
-              LifecycleCondition.newBuilder().setAge(5).build()));
+          new ObjectLifecycleRule(
+              LifecycleOperation.createRemoveLifecycleAction(),
+              LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(5).buildLifecycleRuleCondition()));
   private static final String INDEX_PAGE = "index.html";
   private static final String NOT_FOUND_PAGE = "error.html";
   private static final String LOCATION = "ASIA";
@@ -102,7 +102,7 @@ public class BucketTest {
 
   @SuppressWarnings({"unchecked", "deprecation"})
   private static final BucketInfo FULL_BUCKET_INFO =
-      BucketInfo.newBuilder("b")
+      BucketInfo.builder("b")
           .setAcl(ACLS)
           .setEtag(ETAG)
           .setGeneratedId(GENERATED_ID)
@@ -126,10 +126,10 @@ public class BucketTest {
           .setRetentionEffectiveTime(RETENTION_EFFECTIVE_TIME)
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
-          .build();
+          .construct();
 
   private static final BucketInfo BUCKET_INFO =
-      BucketInfo.newBuilder("b").setMetageneration(42L).build();
+      BucketInfo.builder("b").setMetageneration(42L).construct();
   private static final String CONTENT_TYPE = "text/plain";
   private static final String BASE64_KEY = "JVzfVl8NLD9FjedFuStegjRfES5ll5zc59CIXw572OA=";
   private static final Key KEY =
@@ -155,7 +155,7 @@ public class BucketTest {
   private void initializeExpectedBucket(int optionsCalls) {
     expect(serviceMockReturnsOptions.getOptions()).andReturn(mockOptions).times(optionsCalls);
     replay(serviceMockReturnsOptions);
-    expectedBucket = new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(BUCKET_INFO));
+    expectedBucket = new Bucket(serviceMockReturnsOptions, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO));
     blobResults =
         ImmutableList.of(
             new Blob(
@@ -170,7 +170,7 @@ public class BucketTest {
   }
 
   private void initializeBucket() {
-    bucket = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO));
+    bucket = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO));
   }
 
   @Test
@@ -198,9 +198,9 @@ public class BucketTest {
   @Test
   public void testReload() throws Exception {
     initializeExpectedBucket(5);
-    BucketInfo updatedInfo = BUCKET_INFO.toBuilder().setNotFoundPage("p").build();
+    BucketInfo updatedInfo = BUCKET_INFO.toBucketInfoBuilder().setNotFoundPage("p").construct();
     Bucket expectedUpdatedBucket =
-        new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(updatedInfo));
+        new Bucket(serviceMockReturnsOptions, new BucketInfo.BucketInfoBuilderImpl(updatedInfo));
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(updatedInfo.getName())).andReturn(expectedUpdatedBucket);
     replay(storage);
@@ -222,9 +222,9 @@ public class BucketTest {
   @Test
   public void testReloadWithOptions() throws Exception {
     initializeExpectedBucket(5);
-    BucketInfo updatedInfo = BUCKET_INFO.toBuilder().setNotFoundPage("p").build();
+    BucketInfo updatedInfo = BUCKET_INFO.toBucketInfoBuilder().setNotFoundPage("p").construct();
     Bucket expectedUpdatedBucket =
-        new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(updatedInfo));
+        new Bucket(serviceMockReturnsOptions, new BucketInfo.BucketInfoBuilderImpl(updatedInfo));
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(updatedInfo.getName(), Storage.BucketGetOption.metagenerationMatch(42L)))
         .andReturn(expectedUpdatedBucket);
@@ -237,12 +237,12 @@ public class BucketTest {
   @Test
   public void testUpdate() throws Exception {
     initializeExpectedBucket(5);
-    Bucket expectedUpdatedBucket = expectedBucket.toBuilder().setNotFoundPage("p").build();
+    Bucket expectedUpdatedBucket = expectedBucket.toBucketInfoBuilder().setNotFoundPage("p").construct();
     expect(storage.getOptions()).andReturn(mockOptions).times(2);
     expect(storage.update(expectedUpdatedBucket)).andReturn(expectedUpdatedBucket);
     replay(storage);
     initializeBucket();
-    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BuilderImpl(expectedUpdatedBucket));
+    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(expectedUpdatedBucket));
     Bucket actualUpdatedBucket = updatedBucket.update();
     assertEquals(expectedUpdatedBucket, actualUpdatedBucket);
   }
@@ -752,10 +752,10 @@ public class BucketTest {
     initializeExpectedBucket(5);
     Bucket expectedRetentionLockedBucket =
         expectedBucket
-            .toBuilder()
+            .toBucketInfoBuilder()
             .setRetentionPeriod(RETENTION_PERIOD)
             .setRetentionPolicyIsLocked(true)
-            .build();
+            .construct();
     expect(storage.getOptions()).andReturn(mockOptions).times(2);
     expect(
             storage.lockRetentionPolicy(
@@ -766,7 +766,7 @@ public class BucketTest {
     replay(storage);
     initializeBucket();
     Bucket lockedRetentionPolicyBucket =
-        new Bucket(storage, new BucketInfo.BuilderImpl(expectedRetentionLockedBucket));
+        new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(expectedRetentionLockedBucket));
     Bucket actualRetentionLockedBucket =
         lockedRetentionPolicyBucket.lockRetentionPolicy(
             Storage.BucketTargetOption.metagenerationMatch(),
@@ -779,10 +779,10 @@ public class BucketTest {
   public void testToBuilder() {
     expect(storage.getOptions()).andReturn(mockOptions).times(4);
     replay(storage);
-    Bucket fullBucket = new Bucket(storage, new BucketInfo.BuilderImpl(FULL_BUCKET_INFO));
-    assertEquals(fullBucket, fullBucket.toBuilder().build());
-    Bucket simpleBlob = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO));
-    assertEquals(simpleBlob, simpleBlob.toBuilder().build());
+    Bucket fullBucket = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(FULL_BUCKET_INFO));
+    assertEquals(fullBucket, fullBucket.toBucketInfoBuilder().construct());
+    Bucket simpleBlob = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO));
+    assertEquals(simpleBlob, simpleBlob.toBucketInfoBuilder().construct());
   }
 
   @Test
@@ -792,7 +792,7 @@ public class BucketTest {
     expect(storage.getOptions()).andReturn(mockOptions).times(4);
     replay(storage);
     Bucket.Builder builder =
-        new Bucket.Builder(new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO)));
+        new Bucket.Builder(new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(BUCKET_INFO)));
     Bucket bucket =
         builder
             .setAcl(ACLS)
@@ -819,7 +819,7 @@ public class BucketTest {
             .setRetentionEffectiveTime(RETENTION_EFFECTIVE_TIME)
             .setRetentionPeriod(RETENTION_PERIOD)
             .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
-            .build();
+            .construct();
     assertEquals("b", bucket.getName());
     assertEquals(ACLS, bucket.getAcl());
     assertEquals(ETAG, bucket.getEtag());
@@ -836,9 +836,9 @@ public class BucketTest {
     assertEquals(NOT_FOUND_PAGE, bucket.getNotFoundPage());
     assertEquals(LOCATION, bucket.getLocation());
     assertEquals(STORAGE_CLASS, bucket.getStorageClass());
-    assertEquals(VERSIONING_ENABLED, bucket.versioningEnabled());
+    assertEquals(VERSIONING_ENABLED, bucket.isVersioningEnabled());
     assertEquals(BUCKET_LABELS, bucket.getLabels());
-    assertEquals(REQUESTER_PAYS, bucket.requesterPays());
+    assertEquals(REQUESTER_PAYS, bucket.getRequesterPays());
     assertEquals(DEFAULT_KMS_KEY_NAME, bucket.getDefaultKmsKeyName());
     assertEquals(DEFAULT_EVENT_BASED_HOLD, bucket.getDefaultEventBasedHold());
     assertEquals(RETENTION_EFFECTIVE_TIME, bucket.getRetentionEffectiveTime());
@@ -852,14 +852,14 @@ public class BucketTest {
   public void testDeleteLifecycleRules() {
     initializeExpectedBucket(6);
     Bucket bucket =
-        new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(FULL_BUCKET_INFO));
+        new Bucket(serviceMockReturnsOptions, new BucketInfo.BucketInfoBuilderImpl(FULL_BUCKET_INFO));
     assertThat(bucket.getLifecycleRules()).hasSize(1);
-    Bucket expectedUpdatedBucket = bucket.toBuilder().deleteLifecycleRules().build();
+    Bucket expectedUpdatedBucket = bucket.toBucketInfoBuilder().deleteLifecycleRules().construct();
     expect(storage.getOptions()).andReturn(mockOptions).times(2);
     expect(storage.update(expectedUpdatedBucket)).andReturn(expectedUpdatedBucket);
     replay(storage);
     initializeBucket();
-    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BuilderImpl(expectedUpdatedBucket));
+    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(expectedUpdatedBucket));
     Bucket actualUpdatedBucket = updatedBucket.update();
     assertThat(actualUpdatedBucket.getLifecycleRules()).hasSize(0);
   }
@@ -867,21 +867,21 @@ public class BucketTest {
   @Test
   public void testUpdateBucketLogging() {
     initializeExpectedBucket(6);
-    BucketInfo.Logging logging =
-        BucketInfo.Logging.newBuilder()
+    BucketInfo.BucketLogging logging =
+        BucketInfo.BucketLogging.newLogConfigBuilder()
             .setLogBucket("logs-bucket")
             .setLogObjectPrefix("test-logs")
-            .build();
-    BucketInfo bucketInfo = BucketInfo.newBuilder("b").setLogging(logging).build();
-    Bucket bucket = new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(bucketInfo));
+            .buildBucketLogging();
+    BucketInfo bucketInfo = BucketInfo.builder("b").setLogging(logging).construct();
+    Bucket bucket = new Bucket(serviceMockReturnsOptions, new BucketInfo.BucketInfoBuilderImpl(bucketInfo));
     assertThat(bucket.getLogging().getLogBucket()).isEqualTo("logs-bucket");
     assertThat(bucket.getLogging().getLogObjectPrefix()).isEqualTo("test-logs");
-    Bucket expectedUpdatedBucket = bucket.toBuilder().setLogging(null).build();
+    Bucket expectedUpdatedBucket = bucket.toBucketInfoBuilder().setLogging(null).construct();
     expect(storage.getOptions()).andReturn(mockOptions).times(2);
     expect(storage.update(expectedUpdatedBucket)).andReturn(expectedUpdatedBucket);
     replay(storage);
     initializeBucket();
-    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BuilderImpl(expectedUpdatedBucket));
+    Bucket updatedBucket = new Bucket(storage, new BucketInfo.BucketInfoBuilderImpl(expectedUpdatedBucket));
     Bucket actualUpdatedBucket = updatedBucket.update();
     assertThat(actualUpdatedBucket.getLogging().getLogBucket()).isNull();
     assertThat(actualUpdatedBucket.getLogging().getLogObjectPrefix()).isNull();
