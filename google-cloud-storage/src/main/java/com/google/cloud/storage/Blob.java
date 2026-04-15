@@ -265,7 +265,7 @@ public class Blob extends BlobInfo {
     downloadTo(path, new BlobSourceOption[0]);
   }
 
-  /** Builder for {@code Blob}. */
+  /** BlobDownloadOptionsBuilder for {@code Blob}. */
   public static class Builder extends BlobInfo.Builder {
 
     private final Storage storage;
@@ -553,7 +553,7 @@ public class Blob extends BlobInfo {
    * newMetadata.put("keyToAddOrUpdate", "value");
    * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
-   *     .build());
+   *     .buildBlobReadState());
    * }</pre>
    *
    * <p>Example of removing metadata values.
@@ -565,7 +565,7 @@ public class Blob extends BlobInfo {
    * newMetadata.put("keyToRemove", null);
    * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
-   *     .build());
+   *     .buildBlobReadState());
    * }</pre>
    *
    * @param options update options
@@ -751,7 +751,7 @@ public class Blob extends BlobInfo {
    * period. This is particularly useful if you don't want publicly accessible blobs, but also don't
    * want to require users to explicitly log in. Signing a URL requires a service account signer. If
    * an instance of {@link com.google.auth.ServiceAccountSigner} was passed to {@link
-   * StorageOptions}' builder via {@code setCredentials(Credentials)} or the default credentials are
+   * StorageOptions}' toBuilder via {@code setCredentials(Credentials)} or the default credentials are
    * being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set or your
    * application is running in App Engine, then {@code signUrl} will use that credentials to sign
    * the URL. If the credentials passed to {@link StorageOptions} do not implement {@link

@@ -1388,7 +1388,7 @@ public interface Storage extends Service<StorageOptions> {
       return of(sources, BlobInfo.newBuilder(BlobId.of(bucket, target)).build());
     }
 
-    /** Returns a {@code ComposeRequest} builder. */
+    /** Returns a {@code ComposeRequest} toBuilder. */
     public static Builder newBuilder() {
       return new Builder();
     }
@@ -1418,7 +1418,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the blob to copy given bucket and blob name.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setSource(String bucket, String blob) {
         this.source = BlobId.of(bucket, blob);
@@ -1428,7 +1428,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the blob to copy given a {@link BlobId}.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setSource(BlobId source) {
         this.source = source;
@@ -1438,7 +1438,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets blob's source options.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setSourceOptions(BlobSourceOption... options) {
         Collections.addAll(sourceOptions, options);
@@ -1448,7 +1448,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets blob's source options.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setSourceOptions(Iterable<BlobSourceOption> options) {
         Iterables.addAll(sourceOptions, options);
@@ -1458,7 +1458,7 @@ public interface Storage extends Service<StorageOptions> {
       /**
        * Sets the copy target. Target blob information is copied from source.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setTarget(BlobId targetId) {
         this.overrideInfo = false;
@@ -1470,7 +1470,7 @@ public interface Storage extends Service<StorageOptions> {
        * Sets the copy target. Target blob information is copied from source, except for those
        * options specified in {@code options}.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setTarget(BlobId targetId, BlobTargetOption... options) {
         this.overrideInfo = false;
@@ -1485,7 +1485,7 @@ public interface Storage extends Service<StorageOptions> {
        * information is set exactly to {@code target}, no information is inherited from the source
        * blob.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setTarget(BlobInfo target, BlobTargetOption... options) {
         this.overrideInfo = true;
@@ -1500,7 +1500,7 @@ public interface Storage extends Service<StorageOptions> {
        * information is set exactly to {@code target}, no information is inherited from the source
        * blob.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setTarget(BlobInfo target, Iterable<BlobTargetOption> options) {
         this.overrideInfo = true;
@@ -1513,7 +1513,7 @@ public interface Storage extends Service<StorageOptions> {
        * Sets the copy target and target options. Target blob information is copied from source,
        * except for those options specified in {@code options}.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setTarget(BlobId targetId, Iterable<BlobTargetOption> options) {
         this.overrideInfo = false;
@@ -1527,7 +1527,7 @@ public interface Storage extends Service<StorageOptions> {
        * if source and target blob share the same location and storage class as copy is made with
        * one single RPC.
        *
-       * @return the builder
+       * @return the toBuilder
        */
       public Builder setMegabytesCopiedPerChunk(Long megabytesCopiedPerChunk) {
         this.megabytesCopiedPerChunk = megabytesCopiedPerChunk;
@@ -1667,7 +1667,7 @@ public interface Storage extends Service<StorageOptions> {
       return CopyRequest.newBuilder().setSource(sourceBlobId).setTarget(targetBlobId).build();
     }
 
-    /** Creates a builder for {@code CopyRequest} objects. */
+    /** Creates a toBuilder for {@code CopyRequest} objects. */
     public static Builder newBuilder() {
       return new Builder();
     }
@@ -1695,7 +1695,7 @@ public interface Storage extends Service<StorageOptions> {
    *     .setStorageClass(StorageClass.COLDLINE)
    *     // Possible values: http://g.co/cloud/storage/docs/bucket-locations#location-mr
    *     .setLocation("asia")
-   *     .build());
+   *     .buildBlobReadState());
    * }</pre>
    *
    * @return a complete bucket
@@ -1712,7 +1712,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * Blob blob = storage.create(blobInfo);
    * }</pre>
    *
@@ -1733,7 +1733,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8));
    * }</pre>
    *
@@ -1756,7 +1756,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * Blob blob = storage.create(blobInfo, "Hello, World!".getBytes(UTF_8), 7, 5);
    * }</pre>
    *
@@ -1784,7 +1784,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * Blob blob = storage.create(blobInfo, content);
    * }</pre>
    *
@@ -1799,7 +1799,7 @@ public interface Storage extends Service<StorageOptions> {
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
    *     .setContentType("text/plain")
-   *     .build();
+   *     .buildBlobReadState();
    * Blob blob = storage.create(blobInfo, content, BlobWriteOption.encryptionKey(encryptionKey));
    * }</pre>
    *
@@ -1977,7 +1977,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * String bucketName = "my-unique-bucket";
-   * BucketInfo bucketInfo = BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build();
+   * BucketInfo bucketInfo = BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).buildBlobReadState();
    * Bucket bucket = storage.update(bucketInfo);
    * }</pre>
    *
@@ -2000,7 +2000,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * Blob blob = storage.get(bucketName, blobName);
-   * BlobInfo updatedInfo = blob.toBuilder().setContentType("text/plain").build();
+   * BlobInfo updatedInfo = blob.toBuilder().setContentType("text/plain").buildBlobReadState();
    * storage.update(updatedInfo, BlobTargetOption.metagenerationMatch());
    * }</pre>
    *
@@ -2024,7 +2024,7 @@ public interface Storage extends Service<StorageOptions> {
    * newMetadata.put("keyToAddOrUpdate", "value");
    * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
-   *     .build());
+   *     .buildBlobReadState());
    * }</pre>
    *
    * <p>Example of removing metadata values.
@@ -2036,7 +2036,7 @@ public interface Storage extends Service<StorageOptions> {
    * newMetadata.put("keyToRemove", null);
    * Blob blob = storage.update(BlobInfo.newBuilder(bucketName, blobName)
    *     .setMetadata(newMetadata)
-   *     .build());
+   *     .buildBlobReadState());
    * }</pre>
    *
    * @return the updated blob
@@ -2157,12 +2157,12 @@ public interface Storage extends Service<StorageOptions> {
    * String sourceBlob1 = "source_blob_1";
    * String sourceBlob2 = "source_blob_2";
    * BlobId blobId = BlobId.of(bucketName, blobName);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * ComposeRequest request = ComposeRequest.newBuilder()
    *     .setTarget(blobInfo)
    *     .addSource(sourceBlob1)
    *     .addSource(sourceBlob2)
-   *     .build();
+   *     .buildBlobReadState();
    * Blob blob = storage.compose(request);
    * }</pre>
    *
@@ -2193,7 +2193,7 @@ public interface Storage extends Service<StorageOptions> {
    * CopyRequest request = CopyRequest.newBuilder()
    *     .setSource(BlobId.of(bucketName, blobName))
    *     .setTarget(BlobId.of(bucketName, copyBlobName))
-   *     .build();
+   *     .buildBlobReadState();
    * Blob blob = storage.copy(request).getResult();
    * }</pre>
    *
@@ -2206,7 +2206,7 @@ public interface Storage extends Service<StorageOptions> {
    * CopyRequest request = CopyRequest.newBuilder()
    *     .setSource(BlobId.of(bucketName, blobName))
    *     .setTarget(BlobId.of(bucketName, copyBlobName))
-   *     .build();
+   *     .buildBlobReadState();
    * CopyWriter copyWriter = storage.copy(request);
    * while (!copyWriter.isDone()) {
    *   copyWriter.copyChunk();
@@ -2226,7 +2226,7 @@ public interface Storage extends Service<StorageOptions> {
    *     .setSource(blobId)
    *     .setSourceOptions(BlobSourceOption.decryptionKey(oldEncryptionKey))
    *     .setTarget(blobId, BlobTargetOption.encryptionKey(newEncryptionKey))
-   *     .build();
+   *     .buildBlobReadState();
    * Blob blob = storage.copy(request).getResult();
    * }</pre>
    *
@@ -2306,7 +2306,7 @@ public interface Storage extends Service<StorageOptions> {
    *     // delete failed
    *   }
    * });
-   * batch.update(BlobInfo.newBuilder(secondBlob).setContentType("text/plain").build());
+   * batch.update(BlobInfo.newBuilder(secondBlob).setContentType("text/plain").buildBlobReadState());
    * StorageBatchResult<Blob> result = batch.get(secondBlob);
    * batch.submit();
    * Blob blob = result.get(); // returns get result or throws StorageException
@@ -2382,7 +2382,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * try (WriteChannel writer = storage.writer(blobInfo)) {
    *   try {
    *     writer.write(ByteBuffer.wrap(content, 0, content.length));
@@ -2406,7 +2406,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * BlobId blobId = BlobId.of(bucketName, blobName);
    * byte[] content = "Hello, World!".getBytes(UTF_8);
-   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+   * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
    * URL signedURL = storage.signUrl(
    *     blobInfo,
    *     1, TimeUnit.HOURS,
@@ -2426,7 +2426,7 @@ public interface Storage extends Service<StorageOptions> {
    * certain time period. This is particularly useful if you don't want publicly accessible blobs,
    * but also don't want to require users to explicitly log in. Signing a URL requires a service
    * account signer. If an instance of {@link com.google.auth.ServiceAccountSigner} was passed to
-   * {@link StorageOptions}' builder via {@code setCredentials(Credentials)} or the default
+   * {@link StorageOptions}' toBuilder via {@code setCredentials(Credentials)} or the default
    * credentials are being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS}
    * is set or your application is running in App Engine, then {@code signUrl} will use that
    * credentials to sign the URL. If the credentials passed to {@link StorageOptions} do not
@@ -2450,7 +2450,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName).buildBlobReadState(),
    *     7, TimeUnit.DAYS);
    * }</pre>
    *
@@ -2461,7 +2461,7 @@ public interface Storage extends Service<StorageOptions> {
    * String bucketName = "my-unique-bucket";
    * String blobName = "my-blob-name";
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName).buildBlobReadState(),
    *     7, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withV4Signature());
    * }</pre>
@@ -2471,7 +2471,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName).buildBlobReadState(),
    *     1, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withVirtualHostedStyle());
    * }</pre>
@@ -2481,7 +2481,7 @@ public interface Storage extends Service<StorageOptions> {
    *
    * <pre>{@code
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName).buildBlobReadState(),
    *     1, TimeUnit.DAYS,
    *     Storage.SignUrlOption.withPathStyle());
    * }</pre>
@@ -2494,7 +2494,7 @@ public interface Storage extends Service<StorageOptions> {
    * String blobName = "my-blob-name";
    * String kfPath = "/path/to/keyfile.json";
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName).buildBlobReadState(),
    *     7, TimeUnit.DAYS,
    *     SignUrlOption.signWith(ServiceAccountCredentials.fromStream(new FileInputStream(kfPath))));
    * }</pre>
@@ -2510,7 +2510,7 @@ public interface Storage extends Service<StorageOptions> {
    * long generation = 1576656755290328L;
    *
    * URL signedUrl = storage.signUrl(
-   *     BlobInfo.newBuilder(bucketName, blobName, generation).build(),
+   *     BlobInfo.newBuilder(bucketName, blobName, generation).buildBlobReadState(),
    *     7, TimeUnit.DAYS,
    *     SignUrlOption.withQueryParams(ImmutableMap.of("generation", String.valueOf(generation))));
    * }</pre>
@@ -2590,8 +2590,8 @@ public interface Storage extends Service<StorageOptions> {
    * Blob firstBlob = storage.get(bucketName, blobName1);
    * Blob secondBlob = storage.get(bucketName, blobName2);
    * List<Blob> updatedBlobs = storage.update(
-   *     firstBlob.toBuilder().setContentType("text/plain").build(),
-   *     secondBlob.toBuilder().setContentType("text/plain").build());
+   *     firstBlob.toBuilder().setContentType("text/plain").buildBlobReadState(),
+   *     secondBlob.toBuilder().setContentType("text/plain").buildBlobReadState());
    * }</pre>
    *
    * @param blobInfos blobs to update
@@ -2616,8 +2616,8 @@ public interface Storage extends Service<StorageOptions> {
    * Blob firstBlob = storage.get(bucketName, blobName1);
    * Blob secondBlob = storage.get(bucketName, blobName2);
    * List<BlobInfo> blobs = new LinkedList<>();
-   * blobs.add(firstBlob.toBuilder().setContentType("text/plain").build());
-   * blobs.add(secondBlob.toBuilder().setContentType("text/plain").build());
+   * blobs.add(firstBlob.toBuilder().setContentType("text/plain").buildBlobReadState());
+   * blobs.add(secondBlob.toBuilder().setContentType("text/plain").buildBlobReadState());
    * List<Blob> updatedBlobs = storage.update(blobs);
    * }</pre>
    *
@@ -3176,7 +3176,7 @@ public interface Storage extends Service<StorageOptions> {
    *         bucketName,
    *         currentPolicy.toBuilder()
    *             .addIdentity(StorageRoles.objectViewer(), Identity.allUsers())
-   *             .build());
+   *             .buildBlobReadState());
    * }</pre>
    *
    * @param bucket name of the bucket where the setIamPolicy operation takes place

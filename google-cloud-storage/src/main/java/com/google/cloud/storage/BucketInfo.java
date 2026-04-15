@@ -189,7 +189,7 @@ public class BucketInfo implements Serializable {
           .build();
     }
 
-    /** Builder for {@code IamConfiguration} */
+    /** BlobDownloadOptionsBuilder for {@code IamConfiguration} */
     public static class Builder {
       private Boolean isUniformBucketLevelAccessEnabled;
       private Long uniformBucketLevelAccessLockedTime;
@@ -526,7 +526,7 @@ public class BucketInfo implements Serializable {
         return matchesStorageClass;
       }
 
-      /** Builder for {@code LifecycleCondition}. */
+      /** BlobDownloadOptionsBuilder for {@code LifecycleCondition}. */
       public static class Builder {
         private Integer age;
         private DateTime createdBefore;
@@ -757,10 +757,10 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and use {@code
-   *     LifecycleCondition.Builder.setAge} instead.
+   *     LifecycleCondition.BlobDownloadOptionsBuilder.setAge} instead.
    *     <p>For example, {@code new DeleteLifecycleAction(1)} is equivalent to {@code new
    *     LifecycleRule( LifecycleAction.newDeleteAction(),
-   *     LifecycleCondition.newBuilder().setAge(1).build()))}
+   *     LifecycleCondition.newBuilder().setAge(1).buildBlobReadState()))}
    */
   @Deprecated
   public static class AgeDeleteRule extends DeleteRule {
@@ -827,7 +827,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with an action {@code DeleteLifecycleAction} and a
-   *     condition {@code LifecycleCondition.Builder.setCreatedBefore} instead.
+   *     condition {@code LifecycleCondition.BlobDownloadOptionsBuilder.setCreatedBefore} instead.
    */
   @Deprecated
   public static class CreatedBeforeDeleteRule extends DeleteRule {
@@ -862,7 +862,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setNumberOfNewerVersions} instead.
+   *     {@code LifecycleCondition.BlobDownloadOptionsBuilder.setNumberOfNewerVersions} instead.
    */
   @Deprecated
   public static class NumNewerVersionsDeleteRule extends DeleteRule {
@@ -896,7 +896,7 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle Management</a>
    * @deprecated Use a {@code LifecycleRule} with a {@code DeleteLifecycleAction} and a condition
-   *     {@code LifecycleCondition.Builder.setIsLive} instead.
+   *     {@code LifecycleCondition.BlobDownloadOptionsBuilder.setIsLive} instead.
    */
   @Deprecated
   public static class IsLiveDeleteRule extends DeleteRule {
@@ -925,7 +925,7 @@ public class BucketInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BucketInfo}. */
+  /** BlobDownloadOptionsBuilder for {@code BucketInfo}. */
   public abstract static class Builder {
     Builder() {}
 
@@ -964,7 +964,7 @@ public class BucketInfo implements Serializable {
      *
      * @deprecated Use {@code setLifecycleRules} instead, as in {@code
      *     setLifecycleRules(Collections.singletonList( new BucketInfo.LifecycleRule(
-     *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).build())));}
+     *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).buildBlobReadState())));}
      */
     @Deprecated
     public abstract Builder setDeleteRules(Iterable<? extends DeleteRule> rules);
@@ -1601,7 +1601,7 @@ public class BucketInfo implements Serializable {
     return logging;
   }
 
-  /** Returns a builder for the current bucket. */
+  /** Returns a toBuilder for the current bucket. */
   public Builder toBuilder() {
     return new BuilderImpl(this);
   }
@@ -1755,7 +1755,7 @@ public class BucketInfo implements Serializable {
     return newBuilder(name).build();
   }
 
-  /** Returns a {@code BucketInfo} builder where the bucket's name is set to the provided name. */
+  /** Returns a {@code BucketInfo} toBuilder where the bucket's name is set to the provided name. */
   public static Builder newBuilder(String name) {
     return new BuilderImpl(name);
   }

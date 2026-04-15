@@ -99,7 +99,7 @@ public class SerializationTest extends BaseSerializationTest {
   @Override
   protected Restorable<?>[] restorableObjects() {
     StorageOptions options = StorageOptions.newBuilder().setProjectId("p2").build();
-    ReadChannel reader = new BlobReadChannel(options, BlobId.of("b", "n"), EMPTY_RPC_OPTIONS);
+    ReadChannel reader = new ReadableBlobChannel(options, BlobId.of("b", "n"), EMPTY_RPC_OPTIONS);
     // avoid closing when you don't want partial writes to GCS upon failure
     @SuppressWarnings("resource")
     BlobWriteChannel writer =

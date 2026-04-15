@@ -500,7 +500,7 @@ public class Bucket extends BucketInfo {
     }
   }
 
-  /** Builder for {@code Bucket}. */
+  /** BlobDownloadOptionsBuilder for {@code Bucket}. */
   public static class Builder extends BucketInfo.Builder {
     private final Storage storage;
     private final BucketInfo.BuilderImpl infoBuilder;
@@ -740,7 +740,7 @@ public class Bucket extends BucketInfo {
    * <p>Example of updating the bucket's information.
    *
    * <pre>{@code
-   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).build().update();
+   * Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(true).buildBlobReadState().update();
    * }</pre>
    *
    * @param options update options

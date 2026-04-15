@@ -36,7 +36,7 @@ public class HmacKey implements Serializable {
     return new Builder(secretKey);
   }
 
-  /** Builder for {@code HmacKey} objects. * */
+  /** BlobDownloadOptionsBuilder for {@code HmacKey} objects. * */
   public static class Builder {
     private String secretKey;
     private HmacKeyMetadata metadata;
@@ -55,7 +55,7 @@ public class HmacKey implements Serializable {
       return this;
     }
 
-    /** Creates an {@code HmacKey} object from this builder. * */
+    /** Creates an {@code HmacKey} object from this toBuilder. * */
     public HmacKey build() {
       return new HmacKey(this);
     }
@@ -256,7 +256,7 @@ public class HmacKey implements Serializable {
       return updateTime;
     }
 
-    /** Builder for {@code HmacKeyMetadata} objects. * */
+    /** BlobDownloadOptionsBuilder for {@code HmacKeyMetadata} objects. * */
     public static class Builder {
       private String accessId;
       private String etag;
@@ -317,7 +317,7 @@ public class HmacKey implements Serializable {
         return this;
       }
 
-      /** Creates an {@code HmacKeyMetadata} object from this builder. * */
+      /** Creates an {@code HmacKeyMetadata} object from this toBuilder. * */
       public HmacKeyMetadata build() {
         return new HmacKeyMetadata(this);
       }

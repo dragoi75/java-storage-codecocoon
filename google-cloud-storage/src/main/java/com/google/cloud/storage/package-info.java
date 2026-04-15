@@ -25,7 +25,7 @@
  * <pre>{@code
  * Storage storage = StorageOptions.getDefaultInstance().getService();
  * BlobId blobId = BlobId.of("bucket", "blob_name");
- * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
+ * BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").buildBlobReadState();
  * Blob blob = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes(UTF_8));
  * }</pre>
  *
