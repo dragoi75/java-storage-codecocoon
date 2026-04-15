@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -62,9 +62,9 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
-import com.google.cloud.storage.BucketInfo.LifecycleRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleAction;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleCondition;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition;
 import com.google.cloud.storage.CopyWriter;
 import com.google.cloud.storage.Cors;
 import com.google.cloud.storage.HmacKey;
@@ -183,19 +183,19 @@ public class ITStorageTest {
           && System.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC").equalsIgnoreCase("true");
   private static final List<String> LOCATION_TYPES =
       ImmutableList.of("multi-region", "region", "dual-region");
-  private static final LifecycleRule LIFECYCLE_RULE_1 =
-      new LifecycleRule(
-          LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-          LifecycleCondition.newBuilder()
+  private static final BucketInfo.LifecycleRuleDefinition LIFECYCLE_RULE_1 =
+      new LifecycleRuleDefinition(
+          LifecycleRuleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+          LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder()
               .setAge(1)
               .setNumberOfNewerVersions(3)
               .setIsLive(false)
               .setMatchesStorageClass(ImmutableList.of(StorageClass.COLDLINE))
-              .build());
-  private static final LifecycleRule LIFECYCLE_RULE_2 =
-      new LifecycleRule(
-          LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(1).build());
-  private static final ImmutableList<LifecycleRule> LIFECYCLE_RULES =
+              .buildLifecycleRuleCondition());
+  private static final BucketInfo.LifecycleRuleDefinition LIFECYCLE_RULE_2 =
+      new BucketInfo.LifecycleRuleDefinition(
+          BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction.newRemoveAction(), LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(1).buildLifecycleRuleCondition());
+  private static final ImmutableList<BucketInfo.LifecycleRuleDefinition> LIFECYCLE_RULES =
       ImmutableList.of(LIFECYCLE_RULE_1, LIFECYCLE_RULE_2);
 
   @BeforeClass
@@ -204,16 +204,16 @@ public class ITStorageTest {
     storage = remoteStorageHelper.getOptions().getService();
 
     storage.create(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.toBuilder(BUCKET)
             .setLocation("us")
             .setLifecycleRules(
                 ImmutableList.of(
-                    new LifecycleRule(
-                        LifecycleAction.newDeleteAction(),
-                        LifecycleCondition.newBuilder().setAge(1).build())))
-            .build());
+                    new LifecycleRuleDefinition(
+                        BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction.newRemoveAction(),
+                        BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(1).buildLifecycleRuleCondition())))
+            .buildInstance());
 
-    storage.create(BucketInfo.newBuilder(BUCKET_REQUESTER_PAYS).build());
+    storage.create(BucketInfo.toBuilder(BUCKET_REQUESTER_PAYS).buildInstance());
 
     // Prepare KMS KeyRing for CMEK tests
     prepareKmsKeys();
@@ -226,11 +226,11 @@ public class ITStorageTest {
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING),
             Storage.BucketGetOption.userProject(storage.getOptions().getProjectId()));
     // Disable requester pays in case a test fails to clean up.
-    if (remoteBucket.requesterPays() != null && remoteBucket.requesterPays() == true) {
+    if (remoteBucket.getRequesterPays() != null && remoteBucket.getRequesterPays() == true) {
       remoteBucket
-          .toBuilder()
+          .toBucketBuilder()
           .setRequesterPays(false)
-          .build()
+          .buildInstance()
           .update(Storage.BucketTargetOption.userProject(storage.getOptions().getProjectId()));
     }
   }
@@ -246,7 +246,7 @@ public class ITStorageTest {
 
       boolean wasDeleted = RemoteStorageHelper.forceDelete(storage, BUCKET, 1, TimeUnit.MINUTES);
       if (!wasDeleted && log.isLoggable(Level.WARNING)) {
-        log.log(Level.WARNING, "Deletion of bucket {0} timed out, bucket is not empty", BUCKET);
+        log.log(Level.WARNING, "Deletion from bucket {0} timed out, bucket is not empty", BUCKET);
       }
       unsetRequesterPays();
       RemoteStorageHelper.forceDelete(storage, BUCKET_REQUESTER_PAYS, 5, TimeUnit.SECONDS);
@@ -444,13 +444,13 @@ public class ITStorageTest {
   public void testGetBucketLifecycleRules() {
     String lifecycleTestBucketName = RemoteStorageHelper.generateBucketName();
     storage.create(
-        BucketInfo.newBuilder(lifecycleTestBucketName)
+        BucketInfo.toBuilder(lifecycleTestBucketName)
             .setLocation("us")
             .setLifecycleRules(
                 ImmutableList.of(
-                    new LifecycleRule(
-                        LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-                        LifecycleCondition.newBuilder()
+                    new LifecycleRuleDefinition(
+                        LifecycleRuleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+                        LifecycleRuleCondition.newLifecycleConditionBuilder()
                             .setAge(1)
                             .setNumberOfNewerVersions(3)
                             .setIsLive(false)
@@ -458,17 +458,17 @@ public class ITStorageTest {
                             .setMatchesStorageClass(ImmutableList.of(StorageClass.COLDLINE))
                             .setDaysSinceNoncurrentTime(30)
                             .setNoncurrentTimeBefore(new DateTime(System.currentTimeMillis()))
-                            .build())))
-            .build());
+                            .buildLifecycleRuleCondition())))
+            .buildInstance());
     Bucket remoteBucket =
         storage.get(lifecycleTestBucketName, Storage.BucketGetOption.fields(BucketField.LIFECYCLE));
-    LifecycleRule lifecycleRule = remoteBucket.getLifecycleRules().get(0);
+    LifecycleRuleDefinition lifecycleRule = remoteBucket.getLifecycleRules().get(0);
     try {
       assertTrue(
           lifecycleRule
               .getAction()
               .getActionType()
-              .equals(LifecycleRule.SetStorageClassLifecycleAction.TYPE));
+              .equals(BucketInfo.LifecycleRuleDefinition.StorageClassLifecycleSetAction.TYPE));
       assertEquals(3, lifecycleRule.getCondition().getNumberOfNewerVersions().intValue());
       assertNotNull(lifecycleRule.getCondition().getCreatedBefore());
       assertFalse(lifecycleRule.getCondition().getIsLive());
@@ -486,14 +486,14 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
 
     try {
       assertEquals(kmsKeyOneResourcePath, remoteBucket.getDefaultKmsKeyName());
-      Bucket updatedBucket = remoteBucket.toBuilder().setDefaultKmsKeyName(null).build().update();
+      Bucket updatedBucket = remoteBucket.toBucketBuilder().setDefaultKmsKeyName(null).buildInstance().update();
       assertNull(updatedBucket.getDefaultKmsKeyName());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -505,15 +505,15 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
 
     try {
       assertEquals(kmsKeyOneResourcePath, remoteBucket.getDefaultKmsKeyName());
       Bucket updatedBucket =
-          remoteBucket.toBuilder().setDefaultKmsKeyName(kmsKeyTwoResourcePath).build().update();
+          remoteBucket.toBucketBuilder().setDefaultKmsKeyName(kmsKeyTwoResourcePath).buildInstance().update();
       assertEquals(kmsKeyTwoResourcePath, updatedBucket.getDefaultKmsKeyName());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -612,10 +612,10 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket bucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
     assertEquals(bucket.getDefaultKmsKeyName(), kmsKeyOneResourcePath);
 
     try {
@@ -821,7 +821,7 @@ public class ITStorageTest {
             BUCKET,
             Storage.BlobListOption.prefix("test-list-blobs-selected-fields-blob"),
             Storage.BlobListOption.fields(BlobField.METADATA));
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the list is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
@@ -861,7 +861,7 @@ public class ITStorageTest {
             BUCKET,
             Storage.BlobListOption.prefix("test-list-blobs-selected-field-kms-key-name-blob"),
             Storage.BlobListOption.fields(BlobField.KMS_KEY_NAME));
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the list is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
@@ -898,7 +898,7 @@ public class ITStorageTest {
             BUCKET,
             Storage.BlobListOption.prefix("test-list-blobs-empty-selected-fields-blob"),
             Storage.BlobListOption.fields());
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the list is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
@@ -933,10 +933,10 @@ public class ITStorageTest {
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
 
-    assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
+    assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
     Bucket updatedBucket = storage.update(remoteBucket);
-    assertTrue(updatedBucket.requesterPays());
+    assertTrue(updatedBucket.getRequesterPays());
     try {
       storage.list(
           BUCKET_REQUESTER_PAYS,
@@ -971,7 +971,7 @@ public class ITStorageTest {
   public void testListBlobsVersioned() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket bucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build());
+        storage.create(BucketInfo.toBuilder(bucketName).setVersioningEnabled(true).buildInstance());
     try {
       String[] blobNames = {"test-list-blobs-versioned-blob1", "test-list-blobs-versioned-blob2"};
       BlobInfo blob1 =
@@ -989,7 +989,7 @@ public class ITStorageTest {
               bucketName,
               Storage.BlobListOption.prefix("test-list-blobs-versioned-blob"),
               Storage.BlobListOption.versions(true));
-      // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+      // Listing blobs is eventually consistent, we loop until the list is from the expected size. The
       // test fails if timeout is reached.
       while (Iterators.size(page.iterateAll().iterator()) != 3) {
         Thread.sleep(500);
@@ -1016,7 +1016,7 @@ public class ITStorageTest {
   public void testListBlobsWithOffset() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket bucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build());
+        storage.create(BucketInfo.toBuilder(bucketName).setVersioningEnabled(true).buildInstance());
     try {
       List<String> blobNames =
           ImmutableList.of("startOffset_blob1", "startOffset_blob2", "blob3_endOffset");
@@ -1075,7 +1075,7 @@ public class ITStorageTest {
             BUCKET,
             Storage.BlobListOption.prefix("test-list-blobs-current-directory/"),
             Storage.BlobListOption.currentDirectory());
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the list is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
@@ -2255,10 +2255,10 @@ public class ITStorageTest {
           storage.get(
               BUCKET_REQUESTER_PAYS,
               Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-      assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-      remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
+      assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+      remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
       Bucket updatedBucket = storage.update(remoteBucket);
-      assertTrue(updatedBucket.requesterPays());
+      assertTrue(updatedBucket.getRequesterPays());
     }
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
@@ -2291,11 +2291,11 @@ public class ITStorageTest {
               BUCKET_REQUESTER_PAYS,
               Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING),
               Storage.BucketGetOption.userProject(projectId));
-      assertTrue(remoteBucket.requesterPays());
-      remoteBucket = remoteBucket.toBuilder().setRequesterPays(false).build();
+      assertTrue(remoteBucket.getRequesterPays());
+      remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(false).buildInstance();
       Bucket updatedBucket =
           storage.update(remoteBucket, Storage.BucketTargetOption.userProject(projectId));
-      assertFalse(updatedBucket.requesterPays());
+      assertFalse(updatedBucket.getRequesterPays());
     }
   }
 
@@ -2485,10 +2485,10 @@ public class ITStorageTest {
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-    assertTrue(bucketDefault.requesterPays() == null || !bucketDefault.requesterPays());
+    assertTrue(bucketDefault.getRequesterPays() == null || !bucketDefault.getRequesterPays());
 
-    Bucket bucketTrue = storage.update(bucketDefault.toBuilder().setRequesterPays(true).build());
-    assertTrue(bucketTrue.requesterPays());
+    Bucket bucketTrue = storage.update(bucketDefault.toBucketBuilder().setRequesterPays(true).buildInstance());
+    assertTrue(bucketTrue.getRequesterPays());
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
 
@@ -2546,9 +2546,9 @@ public class ITStorageTest {
             bucketOptions));
     Bucket bucketFalse =
         storage.update(
-            bucketTrue.toBuilder().setRequesterPays(false).build(),
+            bucketTrue.toBucketBuilder().setRequesterPays(false).buildInstance(),
             Storage.BucketTargetOption.userProject(projectId));
-    assertFalse(bucketFalse.requesterPays());
+    assertFalse(bucketFalse.getRequesterPays());
   }
 
   @Test
@@ -2612,12 +2612,12 @@ public class ITStorageTest {
   public void testBucketPolicyV3() {
     // Enable Uniform Bucket-Level Access
     storage.update(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.toBuilder(BUCKET)
             .setIamConfiguration(
-                BucketInfo.IamConfiguration.newBuilder()
+                BucketInfo.BucketIamConfiguration.createBuilder()
                     .setIsUniformBucketLevelAccessEnabled(true)
-                    .build())
-            .build());
+                    .buildBucketIamConfiguration())
+            .buildInstance());
     String projectId = remoteStorageHelper.getOptions().getProjectId();
 
     Storage.BucketSourceOption[] bucketOptions =
@@ -2756,12 +2756,12 @@ public class ITStorageTest {
 
     // Disable Uniform Bucket-Level Access
     storage.update(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.toBuilder(BUCKET)
             .setIamConfiguration(
-                BucketInfo.IamConfiguration.newBuilder()
+                BucketInfo.BucketIamConfiguration.createBuilder()
                     .setIsUniformBucketLevelAccessEnabled(false)
-                    .build())
-            .build());
+                    .buildBucketIamConfiguration())
+            .buildInstance());
   }
 
   @Test
@@ -2769,10 +2769,10 @@ public class ITStorageTest {
     Bucket remoteBucket =
         storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
     assertNull(remoteBucket.getLabels());
-    remoteBucket = remoteBucket.toBuilder().setLabels(BUCKET_LABELS).build();
+    remoteBucket = remoteBucket.toBucketBuilder().setLabels(BUCKET_LABELS).buildInstance();
     Bucket updatedBucket = storage.update(remoteBucket);
     assertEquals(BUCKET_LABELS, updatedBucket.getLabels());
-    remoteBucket.toBuilder().setLabels(REMOVE_BUCKET_LABELS).build().update();
+    remoteBucket.toBucketBuilder().setLabels(REMOVE_BUCKET_LABELS).buildInstance().update();
     assertNull(storage.get(BUCKET).getLabels());
   }
 
@@ -2783,10 +2783,10 @@ public class ITStorageTest {
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-    assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
+    assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
     Bucket updatedBucket = storage.update(remoteBucket);
-    assertTrue(updatedBucket.requesterPays());
+    assertTrue(updatedBucket.getRequesterPays());
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
     Bucket.BlobTargetOption option = Bucket.BlobTargetOption.userProject(projectId);
@@ -2797,9 +2797,9 @@ public class ITStorageTest {
         storage.readAllBytes(
             BUCKET_REQUESTER_PAYS, blobName, Storage.BlobSourceOption.userProject(projectId));
     assertArrayEquals(BLOB_BYTE_CONTENT, readBytes);
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(false).build();
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(false).buildInstance();
     updatedBucket = storage.update(remoteBucket, Storage.BucketTargetOption.userProject(projectId));
-    assertFalse(updatedBucket.requesterPays());
+    assertFalse(updatedBucket.getRequesterPays());
   }
 
   @Test
@@ -2834,10 +2834,10 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
     assertNotNull(remoteBucket);
     assertTrue(remoteBucket.getDefaultKmsKeyName().startsWith(kmsKeyOneResourcePath));
     try {
@@ -2876,7 +2876,7 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build());
+            BucketInfo.toBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance());
     try {
       assertEquals(RETENTION_PERIOD, remoteBucket.getRetentionPeriod());
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
@@ -2890,9 +2890,9 @@ public class ITStorageTest {
       BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
       Blob remoteBlob = storage.create(blobInfo);
       assertNotNull(remoteBlob.getRetentionExpirationTime());
-      remoteBucket = remoteBucket.toBuilder().setRetentionPeriod(null).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setRetentionPeriod(null).buildInstance().update();
       assertNull(remoteBucket.getRetentionPeriod());
-      remoteBucket = remoteBucket.toBuilder().setRetentionPeriod(null).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setRetentionPeriod(null).buildInstance().update();
       assertNull(remoteBucket.getRetentionPeriod());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -2912,12 +2912,12 @@ public class ITStorageTest {
     BucketInfo bucketInfo;
     if (requesterPays) {
       bucketInfo =
-          BucketInfo.newBuilder(bucketName)
+          BucketInfo.toBuilder(bucketName)
               .setRetentionPeriod(RETENTION_PERIOD)
               .setRequesterPays(true)
-              .build();
+              .buildInstance();
     } else {
-      bucketInfo = BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build();
+      bucketInfo = BucketInfo.toBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance();
     }
     Bucket remoteBucket = storage.create(bucketInfo);
     try {
@@ -2939,10 +2939,10 @@ public class ITStorageTest {
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
     } finally {
       if (requesterPays) {
-        bucketInfo = bucketInfo.toBuilder().setRequesterPays(false).build();
+        bucketInfo = bucketInfo.toBucketBuilder().setRequesterPays(false).buildInstance();
         Bucket updateBucket =
             storage.update(bucketInfo, Storage.BucketTargetOption.userProject(projectId));
-        assertFalse(updateBucket.requesterPays());
+        assertFalse(updateBucket.getRequesterPays());
       }
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
     }
@@ -2954,7 +2954,7 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build());
+            BucketInfo.toBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance());
     assertEquals(RETENTION_PERIOD, remoteBucket.getRetentionPeriod());
     String blobName = "test-create-with-retention-policy";
     BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
@@ -2976,7 +2976,7 @@ public class ITStorageTest {
       throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket remoteBucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setDefaultEventBasedHold(true).build());
+        storage.create(BucketInfo.toBuilder(bucketName).setDefaultEventBasedHold(true).buildInstance());
     try {
       assertTrue(remoteBucket.getDefaultEventBasedHold());
       remoteBucket =
@@ -2993,7 +2993,7 @@ public class ITStorageTest {
       assertTrue(remoteBlob.getEventBasedHold());
       remoteBlob = remoteBlob.toBuilder().setEventBasedHold(false).build().update();
       assertFalse(remoteBlob.getEventBasedHold());
-      remoteBucket = remoteBucket.toBuilder().setDefaultEventBasedHold(false).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setDefaultEventBasedHold(false).buildInstance().update();
       assertFalse(remoteBucket.getDefaultEventBasedHold());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -3059,12 +3059,12 @@ public class ITStorageTest {
     String bucket = RemoteStorageHelper.generateBucketName();
     try {
       storage.create(
-          Bucket.newBuilder(bucket)
+          Bucket.toBuilder(bucket)
               .setIamConfiguration(
-                  BucketInfo.IamConfiguration.newBuilder()
+                  BucketInfo.BucketIamConfiguration.createBuilder()
                       .setIsBucketPolicyOnlyEnabled(true)
-                      .build())
-              .build());
+                      .buildBucketIamConfiguration())
+              .buildInstance());
 
       Bucket remoteBucket =
           storage.get(bucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
@@ -3094,12 +3094,12 @@ public class ITStorageTest {
     String bucket = RemoteStorageHelper.generateBucketName();
     try {
       storage.create(
-          Bucket.newBuilder(bucket)
+          Bucket.toBuilder(bucket)
               .setIamConfiguration(
-                  BucketInfo.IamConfiguration.newBuilder()
+                  BucketInfo.BucketIamConfiguration.createBuilder()
                       .setIsUniformBucketLevelAccessEnabled(true)
-                      .build())
-              .build());
+                      .buildBucketIamConfiguration())
+              .buildInstance());
 
       Bucket remoteBucket =
           storage.get(bucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
@@ -3131,20 +3131,20 @@ public class ITStorageTest {
       // BPO is disabled by default.
       Bucket bucket =
           storage.create(
-              Bucket.newBuilder(bpoBucket)
+              Bucket.toBuilder(bpoBucket)
                   .setAcl(ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
                   .setDefaultAcl(
                       ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
-                  .build());
+                  .buildInstance());
 
-      BucketInfo.IamConfiguration bpoEnabledIamConfiguration =
-          BucketInfo.IamConfiguration.newBuilder().setIsBucketPolicyOnlyEnabled(true).build();
+      BucketInfo.BucketIamConfiguration bpoEnabledIamConfiguration =
+          BucketInfo.BucketIamConfiguration.createBuilder().setIsBucketPolicyOnlyEnabled(true).buildBucketIamConfiguration();
       bucket
-          .toBuilder()
+          .toBucketBuilder()
           .setAcl(null)
           .setDefaultAcl(null)
           .setIamConfiguration(bpoEnabledIamConfiguration)
-          .build()
+          .buildInstance()
           .update();
 
       Bucket remoteBucket =
@@ -3154,10 +3154,10 @@ public class ITStorageTest {
       assertNotNull(remoteBucket.getIamConfiguration().getBucketPolicyOnlyLockedTime());
 
       remoteBucket
-          .toBuilder()
+          .toBucketBuilder()
           .setIamConfiguration(
-              bpoEnabledIamConfiguration.toBuilder().setIsBucketPolicyOnlyEnabled(false).build())
-          .build()
+              bpoEnabledIamConfiguration.toUniformBucketLevelAccessBuilder().setIsBucketPolicyOnlyEnabled(false).buildBucketIamConfiguration())
+          .buildInstance()
           .update();
 
       remoteBucket =
@@ -3180,29 +3180,29 @@ public class ITStorageTest {
   public void testEnableAndDisableUniformBucketLevelAccessOnExistingBucket() throws Exception {
     String bpoBucket = RemoteStorageHelper.generateBucketName();
     try {
-      BucketInfo.IamConfiguration ublaDisabledIamConfiguration =
-          BucketInfo.IamConfiguration.newBuilder()
+      BucketInfo.BucketIamConfiguration ublaDisabledIamConfiguration =
+          BucketInfo.BucketIamConfiguration.createBuilder()
               .setIsUniformBucketLevelAccessEnabled(false)
-              .build();
+              .buildBucketIamConfiguration();
       Bucket bucket =
           storage.create(
-              Bucket.newBuilder(bpoBucket)
+              Bucket.toBuilder(bpoBucket)
                   .setIamConfiguration(ublaDisabledIamConfiguration)
                   .setAcl(ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
                   .setDefaultAcl(
                       ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
-                  .build());
+                  .buildInstance());
 
       bucket
-          .toBuilder()
+          .toBucketBuilder()
           .setAcl(null)
           .setDefaultAcl(null)
           .setIamConfiguration(
               ublaDisabledIamConfiguration
-                  .toBuilder()
+                  .toUniformBucketLevelAccessBuilder()
                   .setIsUniformBucketLevelAccessEnabled(true)
-                  .build())
-          .build()
+                  .buildBucketIamConfiguration())
+          .buildInstance()
           .update();
 
       Bucket remoteBucket =
@@ -3211,7 +3211,7 @@ public class ITStorageTest {
       assertTrue(remoteBucket.getIamConfiguration().isUniformBucketLevelAccessEnabled());
       assertNotNull(remoteBucket.getIamConfiguration().getUniformBucketLevelAccessLockedTime());
 
-      remoteBucket.toBuilder().setIamConfiguration(ublaDisabledIamConfiguration).build().update();
+      remoteBucket.toBucketBuilder().setIamConfiguration(ublaDisabledIamConfiguration).buildInstance().update();
 
       remoteBucket =
           storage.get(
@@ -3264,10 +3264,10 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     long bucketMetageneration = 42;
     storage.create(
-        BucketInfo.newBuilder(bucketName)
+        BucketInfo.toBuilder(bucketName)
             .setLocation("us")
             .setRetentionPeriod(RETENTION_PERIOD)
-            .build());
+            .buildInstance());
     Bucket bucket =
         storage.get(
             bucketName, Storage.BucketGetOption.metagenerationNotMatch(bucketMetageneration));
@@ -3279,10 +3279,10 @@ public class ITStorageTest {
 
     Bucket updatedBucket =
         storage.update(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setLocation("asia")
                 .setRetentionPeriod(RETENTION_PERIOD)
-                .build());
+                .buildInstance());
     assertTrue(LOCATION_TYPES.contains(updatedBucket.getLocationType()));
 
     Iterator<Bucket> bucketIterator =
@@ -3299,22 +3299,22 @@ public class ITStorageTest {
     String logsBucket = RemoteStorageHelper.generateBucketName();
     String loggingBucket = RemoteStorageHelper.generateBucketName();
     try {
-      assertNotNull(storage.create(BucketInfo.newBuilder(logsBucket).setLocation("us").build()));
+      assertNotNull(storage.create(BucketInfo.toBuilder(logsBucket).setLocation("us").buildInstance()));
       Policy policy = storage.getIamPolicy(logsBucket);
       assertNotNull(policy);
-      BucketInfo.Logging logging =
-          BucketInfo.Logging.newBuilder()
+      BucketInfo.LoggingConfig logging =
+          BucketInfo.LoggingConfig.newLogLocationBuilder()
               .setLogBucket(logsBucket)
               .setLogObjectPrefix("test-logs")
-              .build();
+              .buildLoggingConfig();
       Bucket bucket =
           storage.create(
-              BucketInfo.newBuilder(loggingBucket).setLocation("us").setLogging(logging).build());
+              BucketInfo.toBuilder(loggingBucket).setLocation("us").setLogging(logging).buildInstance());
       assertEquals(logsBucket, bucket.getLogging().getLogBucket());
       assertEquals("test-logs", bucket.getLogging().getLogObjectPrefix());
 
       // Disable bucket logging.
-      Bucket updatedBucket = bucket.toBuilder().setLogging(null).build().update();
+      Bucket updatedBucket = bucket.toBucketBuilder().setLogging(null).buildInstance().update();
       assertNull(updatedBucket.getLogging());
 
     } finally {
@@ -3382,14 +3382,14 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     Bucket bucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.toBuilder(bucketName)
                 .setLocation("us")
                 .setLifecycleRules(LIFECYCLE_RULES)
-                .build());
+                .buildInstance());
     assertThat(bucket.getLifecycleRules()).isNotNull();
     assertThat(bucket.getLifecycleRules()).hasSize(2);
     try {
-      Bucket updatedBucket = bucket.toBuilder().deleteLifecycleRules().build().update();
+      Bucket updatedBucket = bucket.toBucketBuilder().deleteLifecycleRules().buildInstance().update();
       assertThat(updatedBucket.getLifecycleRules()).hasSize(0);
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -3499,7 +3499,7 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     List<Cors.Origin> origins = ImmutableList.of(Cors.Origin.of("http://cloud.google.com"));
     List<HttpMethod> httpMethods = ImmutableList.of(HttpMethod.GET);
-    List<String> responseHeaders = ImmutableList.of("Content-Type");
+    List<String> responseHeaders = ImmutableList.of("Content-RetentionCriterion");
     try {
       Cors cors =
           Cors.newBuilder()
@@ -3508,7 +3508,7 @@ public class ITStorageTest {
               .setResponseHeaders(responseHeaders)
               .setMaxAgeSeconds(100)
               .build();
-      storage.create(BucketInfo.newBuilder(bucketName).setCors(ImmutableList.of(cors)).build());
+      storage.create(BucketInfo.toBuilder(bucketName).setCors(ImmutableList.of(cors)).buildInstance());
 
       // case-1 : Cors are set and field selector is selected then returns not-null.
       Bucket remoteBucket =
@@ -3524,7 +3524,7 @@ public class ITStorageTest {
       assertThat(remoteBucket.getCors()).isNotNull();
 
       // Remove CORS configuration from the bucket.
-      Bucket updatedBucket = remoteBucket.toBuilder().setCors(null).build().update();
+      Bucket updatedBucket = remoteBucket.toBucketBuilder().setCors(null).buildInstance().update();
       assertThat(updatedBucket.getCors()).isNull();
 
       // case-3 : Cors are not set and field selector is selected then returns null.
@@ -3544,16 +3544,16 @@ public class ITStorageTest {
   public void testBucketUpdateTime() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
     BucketInfo bucketInfo =
-        BucketInfo.newBuilder(bucketName).setLocation("us").setVersioningEnabled(true).build();
+        BucketInfo.toBuilder(bucketName).setLocation("us").setVersioningEnabled(true).buildInstance();
     try {
       Bucket bucket = storage.create(bucketInfo);
       assertThat(bucket).isNotNull();
-      assertThat(bucket.versioningEnabled()).isTrue();
+      assertThat(bucket.isVersioningEnabled()).isTrue();
       assertThat(bucket.getCreateTime()).isNotNull();
       assertThat(bucket.getUpdateTime()).isEqualTo(bucket.getCreateTime());
 
-      Bucket updatedBucket = bucket.toBuilder().setVersioningEnabled(false).build().update();
-      assertThat(updatedBucket.versioningEnabled()).isFalse();
+      Bucket updatedBucket = bucket.toBucketBuilder().setVersioningEnabled(false).buildInstance().update();
+      assertThat(updatedBucket.isVersioningEnabled()).isFalse();
       assertThat(updatedBucket.getUpdateTime()).isNotNull();
       assertThat(updatedBucket.getCreateTime()).isEqualTo(bucket.getCreateTime());
       assertThat(updatedBucket.getUpdateTime()).isGreaterThan(bucket.getCreateTime());

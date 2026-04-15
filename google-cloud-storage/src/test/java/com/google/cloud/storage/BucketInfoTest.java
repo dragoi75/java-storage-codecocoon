@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -30,13 +30,13 @@ import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.BucketInfo.AgeDeleteRule;
 import com.google.cloud.storage.BucketInfo.CreatedBeforeDeleteRule;
 import com.google.cloud.storage.BucketInfo.DeleteRule;
-import com.google.cloud.storage.BucketInfo.DeleteRule.Type;
+import com.google.cloud.storage.BucketInfo.DeleteRule.RetentionCriterion;
 import com.google.cloud.storage.BucketInfo.IsLiveDeleteRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleAction;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleCondition;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition;
 import com.google.cloud.storage.BucketInfo.NumNewerVersionsDeleteRule;
-import com.google.cloud.storage.BucketInfo.RawDeleteRule;
+import com.google.cloud.storage.BucketInfo.RawDeletionRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
@@ -66,22 +66,22 @@ public class BucketInfoTest {
   private static final List<? extends DeleteRule> DELETE_RULES =
       Collections.singletonList(new AgeDeleteRule(5));
 
-  private static final List<? extends BucketInfo.LifecycleRule> LIFECYCLE_RULES =
+  private static final List<? extends LifecycleRuleDefinition> LIFECYCLE_RULES =
       Collections.singletonList(
-          new BucketInfo.LifecycleRule(
-              LifecycleAction.newDeleteAction(),
-              LifecycleCondition.newBuilder().setAge(5).build()));
+          new BucketInfo.LifecycleRuleDefinition(
+              BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction.newRemoveAction(),
+              LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(5).buildLifecycleRuleCondition()));
   private static final String INDEX_PAGE = "index.html";
-  private static final BucketInfo.IamConfiguration IAM_CONFIGURATION =
-      BucketInfo.IamConfiguration.newBuilder()
+  private static final BucketInfo.BucketIamConfiguration IAM_CONFIGURATION =
+      BucketInfo.BucketIamConfiguration.createBuilder()
           .setIsUniformBucketLevelAccessEnabled(true)
           .setUniformBucketLevelAccessLockedTime(System.currentTimeMillis())
-          .build();
-  private static final BucketInfo.Logging LOGGING =
-      BucketInfo.Logging.newBuilder()
+          .buildBucketIamConfiguration();
+  private static final BucketInfo.LoggingConfig LOGGING =
+      BucketInfo.LoggingConfig.newLogLocationBuilder()
           .setLogBucket("test-bucket")
           .setLogObjectPrefix("test-")
-          .build();
+          .buildLoggingConfig();
   private static final String NOT_FOUND_PAGE = "error.html";
   private static final String LOCATION = "ASIA";
   private static final StorageClass STORAGE_CLASS = StorageClass.STANDARD;
@@ -110,7 +110,7 @@ public class BucketInfoTest {
 
   @SuppressWarnings({"unchecked", "deprecation"})
   private static final BucketInfo BUCKET_INFO =
-      BucketInfo.newBuilder("b")
+      BucketInfo.toBuilder("b")
           .setAcl(ACL)
           .setEtag(ETAG)
           .setGeneratedId(GENERATED_ID)
@@ -138,11 +138,11 @@ public class BucketInfoTest {
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
           .setLogging(LOGGING)
-          .build();
+          .buildInstance();
 
   @SuppressWarnings({"unchecked", "deprecation"})
   private static final BucketInfo BUCKET_INFO_ARCHIVE =
-      BucketInfo.newBuilder("b")
+      BucketInfo.toBuilder("b")
           .setAcl(ACL)
           .setEtag(ETAG)
           .setGeneratedId(GENERATED_ID)
@@ -170,28 +170,28 @@ public class BucketInfoTest {
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
           .setLogging(LOGGING)
-          .build();
+          .buildInstance();
 
   @Test
   public void testToBuilder() {
-    compareBuckets(BUCKET_INFO, BUCKET_INFO.toBuilder().build());
-    BucketInfo bucketInfo = BUCKET_INFO.toBuilder().setName("B").setGeneratedId("id").build();
+    compareBuckets(BUCKET_INFO, BUCKET_INFO.toBucketBuilder().buildInstance());
+    BucketInfo bucketInfo = BUCKET_INFO.toBucketBuilder().setName("B").setGeneratedId("id").buildInstance();
     assertEquals("B", bucketInfo.getName());
     assertEquals("id", bucketInfo.getGeneratedId());
-    bucketInfo = bucketInfo.toBuilder().setName("b").setGeneratedId(GENERATED_ID).build();
+    bucketInfo = bucketInfo.toBucketBuilder().setName("b").setGeneratedId(GENERATED_ID).buildInstance();
     compareBuckets(BUCKET_INFO, bucketInfo);
     assertEquals(ARCHIVE_STORAGE_CLASS, BUCKET_INFO_ARCHIVE.getStorageClass());
   }
 
   @Test
   public void testToBuilderIncomplete() {
-    BucketInfo incompleteBucketInfo = BucketInfo.newBuilder("b").build();
-    compareBuckets(incompleteBucketInfo, incompleteBucketInfo.toBuilder().build());
+    BucketInfo incompleteBucketInfo = BucketInfo.toBuilder("b").buildInstance();
+    compareBuckets(incompleteBucketInfo, incompleteBucketInfo.toBucketBuilder().buildInstance());
   }
 
   @Test
   public void testOf() {
-    BucketInfo bucketInfo = BucketInfo.of("bucket");
+    BucketInfo bucketInfo = BucketInfo.from("bucket");
     assertEquals("bucket", bucketInfo.getName());
   }
 
@@ -216,9 +216,9 @@ public class BucketInfoTest {
     assertEquals(LOCATION, BUCKET_INFO.getLocation());
     assertEquals(STORAGE_CLASS, BUCKET_INFO.getStorageClass());
     assertEquals(DEFAULT_KMS_KEY_NAME, BUCKET_INFO.getDefaultKmsKeyName());
-    assertEquals(VERSIONING_ENABLED, BUCKET_INFO.versioningEnabled());
+    assertEquals(VERSIONING_ENABLED, BUCKET_INFO.isVersioningEnabled());
     assertEquals(BUCKET_LABELS_TARGET, BUCKET_INFO.getLabels());
-    assertEquals(REQUESTER_PAYS, BUCKET_INFO.requesterPays());
+    assertEquals(REQUESTER_PAYS, BUCKET_INFO.getRequesterPays());
     assertEquals(DEFAULT_EVENT_BASED_HOLD, BUCKET_INFO.getDefaultEventBasedHold());
     assertEquals(RETENTION_EFFECTIVE_TIME, BUCKET_INFO.getRetentionEffectiveTime());
     assertEquals(RETENTION_PERIOD, BUCKET_INFO.getRetentionPeriod());
@@ -230,14 +230,14 @@ public class BucketInfoTest {
   @Test
   @SuppressWarnings({"unchecked", "deprecation"})
   public void testToPbAndFromPb() {
-    compareBuckets(BUCKET_INFO, BucketInfo.fromPb(BUCKET_INFO.toPb()));
+    compareBuckets(BUCKET_INFO, BucketInfo.fromProto(BUCKET_INFO.toBucketPb()));
     BucketInfo bucketInfo =
-        BucketInfo.newBuilder("b")
+        BucketInfo.toBuilder("b")
             .setDeleteRules(DELETE_RULES)
             .setLifecycleRules(LIFECYCLE_RULES)
             .setLogging(LOGGING)
-            .build();
-    compareBuckets(bucketInfo, BucketInfo.fromPb(bucketInfo.toPb()));
+            .buildInstance();
+    compareBuckets(bucketInfo, BucketInfo.fromProto(bucketInfo.toBucketPb()));
   }
 
   @SuppressWarnings({"unchecked", "deprecation"})
@@ -262,9 +262,9 @@ public class BucketInfoTest {
     assertEquals(expected.getLocation(), value.getLocation());
     assertEquals(expected.getStorageClass(), value.getStorageClass());
     assertEquals(expected.getDefaultKmsKeyName(), value.getDefaultKmsKeyName());
-    assertEquals(expected.versioningEnabled(), value.versioningEnabled());
+    assertEquals(expected.isVersioningEnabled(), value.isVersioningEnabled());
     assertEquals(expected.getLabels(), value.getLabels());
-    assertEquals(expected.requesterPays(), value.requesterPays());
+    assertEquals(expected.getRequesterPays(), value.getRequesterPays());
     assertEquals(expected.getDefaultEventBasedHold(), value.getDefaultEventBasedHold());
     assertEquals(expected.getRetentionEffectiveTime(), value.getRetentionEffectiveTime());
     assertEquals(expected.getRetentionPeriod(), value.getRetentionPeriod());
@@ -278,51 +278,51 @@ public class BucketInfoTest {
     AgeDeleteRule ageRule = new AgeDeleteRule(10);
     assertEquals(10, ageRule.getDaysToLive());
     assertEquals(10, ageRule.getDaysToLive());
-    assertEquals(Type.AGE, ageRule.getType());
-    assertEquals(Type.AGE, ageRule.getType());
+    assertEquals(DeleteRule.RetentionCriterion.AGE, ageRule.getType());
+    assertEquals(RetentionCriterion.AGE, ageRule.getType());
     CreatedBeforeDeleteRule createBeforeRule = new CreatedBeforeDeleteRule(1);
     assertEquals(1, createBeforeRule.getTimeMillis());
     assertEquals(1, createBeforeRule.getTimeMillis());
-    assertEquals(Type.CREATE_BEFORE, createBeforeRule.getType());
+    assertEquals(RetentionCriterion.CREATE_BEFORE, createBeforeRule.getType());
     NumNewerVersionsDeleteRule versionsRule = new NumNewerVersionsDeleteRule(2);
     assertEquals(2, versionsRule.getNumNewerVersions());
     assertEquals(2, versionsRule.getNumNewerVersions());
-    assertEquals(Type.NUM_NEWER_VERSIONS, versionsRule.getType());
+    assertEquals(RetentionCriterion.NUM_NEWER_VERSIONS, versionsRule.getType());
     IsLiveDeleteRule isLiveRule = new IsLiveDeleteRule(true);
     assertTrue(isLiveRule.isLive());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
+    assertEquals(RetentionCriterion.IS_LIVE, isLiveRule.getType());
+    assertEquals(RetentionCriterion.IS_LIVE, isLiveRule.getType());
     Rule rule = new Rule().set("a", "b");
-    RawDeleteRule rawRule = new RawDeleteRule(rule);
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
+    RawDeletionRule rawRule = new BucketInfo.RawDeletionRule(rule);
+    assertEquals(RetentionCriterion.IS_LIVE, isLiveRule.getType());
+    assertEquals(RetentionCriterion.IS_LIVE, isLiveRule.getType());
     ImmutableList<DeleteRule> rules =
         ImmutableList.of(ageRule, createBeforeRule, versionsRule, isLiveRule, rawRule);
     for (DeleteRule delRule : rules) {
-      assertEquals(delRule, DeleteRule.fromPb(delRule.toPb()));
+      assertEquals(delRule, DeleteRule.fromProto(delRule.toProto()));
     }
   }
 
   @Test
   public void testLifecycleRules() {
     Rule deleteLifecycleRule =
-        new LifecycleRule(
-                LifecycleAction.newDeleteAction(),
-                LifecycleCondition.newBuilder().setAge(10).build())
-            .toPb();
+        new LifecycleRuleDefinition(
+                BucketInfo.LifecycleRuleDefinition.LifecycleRuleAction.newRemoveAction(),
+                LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(10).buildLifecycleRuleCondition())
+            .toProto();
 
     assertEquals(
-        LifecycleRule.DeleteLifecycleAction.TYPE, deleteLifecycleRule.getAction().getType());
+        BucketInfo.LifecycleRuleDefinition.RemoveLifecycleAction.TYPE, deleteLifecycleRule.getAction().getType());
     assertEquals(10, deleteLifecycleRule.getCondition().getAge().intValue());
 
     Rule setStorageClassLifecycleRule =
-        new LifecycleRule(
-                LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-                LifecycleCondition.newBuilder()
+        new BucketInfo.LifecycleRuleDefinition(
+                LifecycleRuleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+                BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder()
                     .setIsLive(true)
                     .setNumberOfNewerVersions(10)
-                    .build())
-            .toPb();
+                    .buildLifecycleRuleCondition())
+            .toProto();
 
     assertEquals(
         StorageClass.COLDLINE.toString(),
@@ -331,15 +331,15 @@ public class BucketInfoTest {
     assertEquals(10, setStorageClassLifecycleRule.getCondition().getNumNewerVersions().intValue());
 
     Rule lifecycleRule =
-        new LifecycleRule(
-                LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-                LifecycleCondition.newBuilder()
+        new BucketInfo.LifecycleRuleDefinition(
+                LifecycleRuleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+                BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder()
                     .setIsLive(true)
                     .setNumberOfNewerVersions(10)
                     .setDaysSinceNoncurrentTime(30)
                     .setNoncurrentTimeBefore(new DateTime(System.currentTimeMillis()))
-                    .build())
-            .toPb();
+                    .buildLifecycleRuleCondition())
+            .toProto();
     assertEquals(StorageClass.COLDLINE.toString(), lifecycleRule.getAction().getStorageClass());
     assertTrue(lifecycleRule.getCondition().getIsLive());
     assertEquals(10, lifecycleRule.getCondition().getNumNewerVersions().intValue());
@@ -350,11 +350,11 @@ public class BucketInfoTest {
   @Test
   public void testIamConfiguration() {
     Bucket.IamConfiguration iamConfiguration =
-        BucketInfo.IamConfiguration.newBuilder()
+        BucketInfo.BucketIamConfiguration.createBuilder()
             .setIsUniformBucketLevelAccessEnabled(true)
             .setUniformBucketLevelAccessLockedTime(System.currentTimeMillis())
-            .build()
-            .toPb();
+            .buildBucketIamConfiguration()
+            .toProto();
 
     assertEquals(Boolean.TRUE, iamConfiguration.getUniformBucketLevelAccess().getEnabled());
     assertNotNull(iamConfiguration.getUniformBucketLevelAccess().getLockedTime());
@@ -363,11 +363,11 @@ public class BucketInfoTest {
   @Test
   public void testLogging() {
     Bucket.Logging logging =
-        BucketInfo.Logging.newBuilder()
+        BucketInfo.LoggingConfig.newLogLocationBuilder()
             .setLogBucket("test-bucket")
             .setLogObjectPrefix("test-")
-            .build()
-            .toPb();
+            .buildLoggingConfig()
+            .toProto();
     assertEquals("test-bucket", logging.getLogBucket());
     assertEquals("test-", logging.getLogObjectPrefix());
   }

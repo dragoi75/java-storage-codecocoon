@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -95,14 +95,14 @@ public class StorageImplMockitoTest {
   private static final int MIN_BUFFER_SIZE = 256 * 1024;
   // BucketInfo objects
   private static final BucketInfo BUCKET_INFO1 =
-      BucketInfo.newBuilder(BUCKET_NAME1).setMetageneration(42L).build();
-  private static final BucketInfo BUCKET_INFO2 = BucketInfo.newBuilder(BUCKET_NAME2).build();
+      BucketInfo.toBuilder(BUCKET_NAME1).setMetageneration(42L).buildInstance();
+  private static final BucketInfo BUCKET_INFO2 = BucketInfo.toBuilder(BUCKET_NAME2).buildInstance();
   private static final BucketInfo BUCKET_INFO3 =
-      BucketInfo.newBuilder(BUCKET_NAME3)
+      BucketInfo.toBuilder(BUCKET_NAME3)
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(true)
           .setMetageneration(42L)
-          .build();
+          .buildInstance();
 
   // BlobInfo objects
   private static final BlobInfo BLOB_INFO1 =
@@ -330,7 +330,7 @@ public class StorageImplMockitoTest {
         }
       };
 
-  // List of chars under test were taken from
+  // List from chars under test were taken from
   // https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
   private static final Map<Character, String> RFC3986_URI_ENCODING_MAP =
       ImmutableMap.<Character, String>builder()
@@ -347,7 +347,7 @@ public class StorageImplMockitoTest {
           // NOTE: Whether the forward slash character should be encoded depends on the URI segment
           // being encoded. The path segment should not encode forward slashes, but others (e.g.
           // query parameter keys and values) should encode them. Tests verifying encoding behavior
-          // in path segments should make a copy of this map and replace the mapping for '/' to "/".
+          // in path segments should make a copy from this map and replace the mapping for '/' to "/".
           .put('/', "%2F")
           .put(':', "%3A")
           .put(';', "%3B")
@@ -396,7 +396,7 @@ public class StorageImplMockitoTest {
         @Override
         public Object answer(InvocationOnMock invocation) {
           throw new IllegalArgumentException(
-              "Unexpected call of "
+              "Unexpected call from "
                   + invocation.getMethod()
                   + " with "
                   + Arrays.toString(invocation.getArguments()));
@@ -426,9 +426,9 @@ public class StorageImplMockitoTest {
     expectedBlob1 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
     expectedBlob2 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
     expectedBlob3 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
-    expectedBucket1 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO1));
-    expectedBucket2 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO2));
-    expectedBucket3 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO3));
+    expectedBucket1 = new Bucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO1));
+    expectedBucket2 = new Bucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO2));
+    expectedBucket3 = new Bucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO3));
     expectedUpdated = null;
   }
 
@@ -440,10 +440,10 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testCreateBucket() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .create(BUCKET_INFO1.toPb(), EMPTY_RPC_OPTIONS);
+        .create(BUCKET_INFO1.toBucketPb(), EMPTY_RPC_OPTIONS);
     initializeService();
     Bucket bucket = storage.create(BUCKET_INFO1);
     assertEquals(expectedBucket1, bucket);
@@ -451,10 +451,10 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testCreateBucketWithOptions() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .create(BUCKET_INFO1.toPb(), BUCKET_TARGET_OPTIONS);
+        .create(BUCKET_INFO1.toBucketPb(), BUCKET_TARGET_OPTIONS);
     initializeService();
     Bucket bucket =
         storage.create(BUCKET_INFO1, BUCKET_TARGET_METAGENERATION, BUCKET_TARGET_PREDEFINED_ACL);
@@ -463,7 +463,7 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testCreateBucketFailure() {
-    doThrow(STORAGE_FAILURE).when(storageRpcMock).create(BUCKET_INFO1.toPb(), EMPTY_RPC_OPTIONS);
+    doThrow(STORAGE_FAILURE).when(storageRpcMock).create(BUCKET_INFO1.toBucketPb(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.create(BUCKET_INFO1);
@@ -475,10 +475,10 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBucket() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BucketInfo.from(BUCKET_NAME1).toBucketPb(), EMPTY_RPC_OPTIONS);
     initializeService();
     Bucket bucket = storage.get(BUCKET_NAME1);
     assertEquals(expectedBucket1, bucket);
@@ -486,10 +486,10 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBucketWithOptions() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), BUCKET_GET_OPTIONS);
+        .get(BucketInfo.from(BUCKET_NAME1).toBucketPb(), BUCKET_GET_OPTIONS);
     initializeService();
     Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION);
     assertEquals(expectedBucket1, bucket);
@@ -499,10 +499,10 @@ public class StorageImplMockitoTest {
   public void testGetBucketWithSelectedFields() {
     ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BucketInfo.of(BUCKET_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BucketInfo.from(BUCKET_NAME1).toBucketPb()), capturedOptions.capture());
     initializeService();
     Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_FIELDS);
     assertEquals(
@@ -520,10 +520,10 @@ public class StorageImplMockitoTest {
   public void testGetBucketWithEmptyFields() {
     ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toBucketPb())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BucketInfo.of(BUCKET_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BucketInfo.from(BUCKET_NAME1).toBucketPb()), capturedOptions.capture());
     initializeService();
     Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_EMPTY_FIELDS);
     assertEquals(
@@ -539,7 +539,7 @@ public class StorageImplMockitoTest {
   public void testGetBucketFailure() {
     doThrow(STORAGE_FAILURE)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BucketInfo.from(BUCKET_NAME1).toBucketPb(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.get(BUCKET_NAME1);
