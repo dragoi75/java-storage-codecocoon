@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -95,12 +95,12 @@ public class StorageImplMockitoTest {
   private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   // Bucket target options
-  private static final Storage.BucketTargetOption BUCKET_TARGET_METAGENERATION =
-      Storage.BucketTargetOption.metagenerationMatch();
-  private static final Storage.BucketTargetOption BUCKET_TARGET_PREDEFINED_ACL =
-      Storage.BucketTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_USER_PROJECT =
-      Storage.BucketTargetOption.userProject(USER_PROJECT);
+  private static final Storage.BucketTargetOptions BUCKET_TARGET_METAGENERATION =
+      Storage.BucketTargetOptions.ifMetagenerationMatch();
+  private static final Storage.BucketTargetOptions BUCKET_TARGET_PREDEFINED_ACL =
+      Storage.BucketTargetOptions.withPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
+  private static final Storage.BucketTargetOptions BUCKET_TARGET_USER_PROJECT =
+      Storage.BucketTargetOptions.setUserProject(USER_PROJECT);
   private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
@@ -112,17 +112,17 @@ public class StorageImplMockitoTest {
           StorageRpc.Option.USER_PROJECT,
           USER_PROJECT);
 
-  // Blob target options (create, update, compose)
-  private static final Storage.BlobTargetOption BLOB_TARGET_GENERATION =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_METAGENERATION =
-      Storage.BlobTargetOption.metagenerationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
-      Storage.BlobTargetOption.disableGzipContent();
-  private static final Storage.BlobTargetOption BLOB_TARGET_NOT_EXIST =
-      Storage.BlobTargetOption.doesNotExist();
-  private static final Storage.BlobTargetOption BLOB_TARGET_PREDEFINED_ACL =
-      Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
+  // StorageObject target options (create, save, compose)
+  private static final Storage.BlobTargetOptions BLOB_TARGET_GENERATION =
+      Storage.BlobTargetOptions.ifGenerationMatch();
+  private static final Storage.BlobTargetOptions BLOB_TARGET_METAGENERATION =
+      Storage.BlobTargetOptions.ifMetagenerationMatch();
+  private static final Storage.BlobTargetOptions BLOB_TARGET_DISABLE_GZIP_CONTENT =
+      Storage.BlobTargetOptions.setDisableGzipContent();
+  private static final Storage.BlobTargetOptions BLOB_TARGET_NOT_EXIST =
+      Storage.BlobTargetOptions.ifNotExists();
+  private static final Storage.BlobTargetOptions BLOB_TARGET_PREDEFINED_ACL =
+      Storage.BlobTargetOptions.setPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
   private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
@@ -139,54 +139,54 @@ public class StorageImplMockitoTest {
           StorageRpc.Option.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
 
-  // Blob write options (create, writer)
-  private static final Storage.BlobWriteOption BLOB_WRITE_METAGENERATION =
-      Storage.BlobWriteOption.metagenerationMatch();
-  private static final Storage.BlobWriteOption BLOB_WRITE_NOT_EXIST =
-      Storage.BlobWriteOption.doesNotExist();
-  private static final Storage.BlobWriteOption BLOB_WRITE_PREDEFINED_ACL =
-      Storage.BlobWriteOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BlobWriteOption BLOB_WRITE_MD5_HASH =
-      Storage.BlobWriteOption.md5Match();
-  private static final Storage.BlobWriteOption BLOB_WRITE_CRC2C =
-      Storage.BlobWriteOption.crc32cMatch();
+  // StorageObject write options (create, getWriter)
+  private static final Storage.BlobWriteOptions BLOB_WRITE_METAGENERATION =
+      Storage.BlobWriteOptions.ifMetagenerationMatch();
+  private static final Storage.BlobWriteOptions BLOB_WRITE_NOT_EXIST =
+      Storage.BlobWriteOptions.ifNotExists();
+  private static final Storage.BlobWriteOptions BLOB_WRITE_PREDEFINED_ACL =
+      Storage.BlobWriteOptions.withPredefinedAcl(Storage.PredefinedAccessControlList.PRIVATE);
+  private static final Storage.BlobWriteOptions BLOB_WRITE_MD5_HASH =
+      Storage.BlobWriteOptions.requireMd5Match();
+  private static final Storage.BlobWriteOptions BLOB_WRITE_CRC2C =
+      Storage.BlobWriteOptions.ifCrc32cMatch();
 
   // Bucket get/source options
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_METAGENERATION =
-      Storage.BucketSourceOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Storage.BucketOption BUCKET_SOURCE_METAGENERATION =
+      Storage.BucketOption.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
   private static final Map<StorageRpc.Option, ?> BUCKET_SOURCE_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
-  private static final Storage.BucketGetOption BUCKET_GET_METAGENERATION =
-      Storage.BucketGetOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Storage.BucketGetOption BUCKET_GET_FIELDS =
-      Storage.BucketGetOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketGetOption BUCKET_GET_EMPTY_FIELDS =
-      Storage.BucketGetOption.fields();
+  private static final Storage.GetBucketOption BUCKET_GET_METAGENERATION =
+      Storage.GetBucketOption.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Storage.GetBucketOption BUCKET_GET_FIELDS =
+      Storage.GetBucketOption.withFields(Storage.BucketAttribute.LOCATION, Storage.BucketAttribute.ACL);
+  private static final Storage.GetBucketOption BUCKET_GET_EMPTY_FIELDS =
+      Storage.GetBucketOption.withFields();
   private static final Map<StorageRpc.Option, ?> BUCKET_GET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
 
-  // Blob get/source options
-  private static final Storage.BlobGetOption BLOB_GET_METAGENERATION =
-      Storage.BlobGetOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION =
-      Storage.BlobGetOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION_FROM_BLOB_ID =
-      Storage.BlobGetOption.generationMatch();
-  private static final Storage.BlobGetOption BLOB_GET_FIELDS =
-      Storage.BlobGetOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.CRC32C);
-  private static final Storage.BlobGetOption BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOption.fields();
+  // StorageObject get/source options
+  private static final Storage.BlobGetOptions BLOB_GET_METAGENERATION =
+      Storage.BlobGetOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION =
+      Storage.BlobGetOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobGetOptions BLOB_GET_GENERATION_FROM_BLOB_ID =
+      Storage.BlobGetOptions.ifGenerationMatch();
+  private static final Storage.BlobGetOptions BLOB_GET_FIELDS =
+      Storage.BlobGetOptions.withFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.CRC32C);
+  private static final Storage.BlobGetOptions BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOptions.withFields();
   private static final Map<StorageRpc.Option, ?> BLOB_GET_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
           StorageRpc.Option.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_METAGENERATION =
-      Storage.BlobSourceOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION =
-      Storage.BlobSourceOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
-      Storage.BlobSourceOption.generationMatch();
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_METAGENERATION =
+      Storage.BlobSourceOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_GENERATION =
+      Storage.BlobSourceOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final Storage.BlobSourceOptions BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
+      Storage.BlobSourceOptions.ifGenerationMatch();
   private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
@@ -197,30 +197,30 @@ public class StorageImplMockitoTest {
           StorageRpc.Option.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
 
   // Bucket list options
-  private static final Storage.BucketListOption BUCKET_LIST_PAGE_SIZE =
-      Storage.BucketListOption.pageSize(42L);
-  private static final Storage.BucketListOption BUCKET_LIST_PREFIX =
-      Storage.BucketListOption.prefix("prefix");
-  private static final Storage.BucketListOption BUCKET_LIST_FIELDS =
-      Storage.BucketListOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketListOption BUCKET_LIST_EMPTY_FIELDS =
-      Storage.BucketListOption.fields();
+  private static final Storage.BucketListOptions BUCKET_LIST_PAGE_SIZE =
+      Storage.BucketListOptions.setPageSize(42L);
+  private static final Storage.BucketListOptions BUCKET_LIST_PREFIX =
+      Storage.BucketListOptions.withPrefix("withPrefix");
+  private static final Storage.BucketListOptions BUCKET_LIST_FIELDS =
+      Storage.BucketListOptions.setFields(Storage.BucketAttribute.LOCATION, Storage.BucketAttribute.ACL);
+  private static final Storage.BucketListOptions BUCKET_LIST_EMPTY_FIELDS =
+      Storage.BucketListOptions.setFields();
   private static final Map<StorageRpc.Option, ?> BUCKET_LIST_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
           StorageRpc.Option.PREFIX, BUCKET_LIST_PREFIX.getValue());
 
-  // Blob list options
-  private static final Storage.BlobListOption BLOB_LIST_PAGE_SIZE =
-      Storage.BlobListOption.pageSize(42L);
-  private static final Storage.BlobListOption BLOB_LIST_PREFIX =
-      Storage.BlobListOption.prefix("prefix");
-  private static final Storage.BlobListOption BLOB_LIST_FIELDS =
-      Storage.BlobListOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.MD5HASH);
-  private static final Storage.BlobListOption BLOB_LIST_VERSIONS =
-      Storage.BlobListOption.versions(false);
-  private static final Storage.BlobListOption BLOB_LIST_EMPTY_FIELDS =
-      Storage.BlobListOption.fields();
+  // StorageObject list options
+  private static final Storage.BlobListOptions BLOB_LIST_PAGE_SIZE =
+      Storage.BlobListOptions.maxResults(42L);
+  private static final Storage.BlobListOptions BLOB_LIST_PREFIX =
+      Storage.BlobListOptions.withPrefix("withPrefix");
+  private static final Storage.BlobListOptions BLOB_LIST_FIELDS =
+      Storage.BlobListOptions.setFields(Storage.BlobMetadataField.CONTENT_TYPE, Storage.BlobMetadataField.MD5HASH);
+  private static final Storage.BlobListOptions BLOB_LIST_VERSIONS =
+      Storage.BlobListOptions.includeVersions(false);
+  private static final Storage.BlobListOptions BLOB_LIST_EMPTY_FIELDS =
+      Storage.BlobListOptions.setFields();
   private static final Map<StorageRpc.Option, ?> BLOB_LIST_OPTIONS =
       ImmutableMap.of(
           StorageRpc.Option.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
@@ -302,7 +302,7 @@ public class StorageImplMockitoTest {
         }
       };
 
-  // List of chars under test were taken from
+  // List from chars under test were taken from
   // https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
   private static final Map<Character, String> RFC3986_URI_ENCODING_MAP =
       ImmutableMap.<Character, String>builder()
@@ -319,7 +319,7 @@ public class StorageImplMockitoTest {
           // NOTE: Whether the forward slash character should be encoded depends on the URI segment
           // being encoded. The path segment should not encode forward slashes, but others (e.g.
           // query parameter keys and values) should encode them. Tests verifying encoding behavior
-          // in path segments should make a copy of this map and replace the mapping for '/' to "/".
+          // in path segments should make a copy from this map and replace the mapping for '/' to "/".
           .put('/', "%2F")
           .put(':', "%3A")
           .put(';', "%3B")
@@ -344,7 +344,7 @@ public class StorageImplMockitoTest {
   private StorageRpc storageRpcMock;
   private Storage storage;
 
-  private Blob expectedBlob1, expectedBlob2, expectedBlob3, expectedUpdated;
+  private StorageObject expectedBlob1, expectedBlob2, expectedBlob3, expectedUpdated;
   private Bucket expectedBucket1, expectedBucket2, expectedBucket3;
 
   @BeforeClass
@@ -378,9 +378,9 @@ public class StorageImplMockitoTest {
   }
 
   private void initializeServiceDependentObjects() {
-    expectedBlob1 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
-    expectedBlob2 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
-    expectedBlob3 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
+    expectedBlob1 = new StorageObject(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
+    expectedBlob2 = new StorageObject(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
+    expectedBlob3 = new StorageObject(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
     expectedBucket1 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO1));
     expectedBucket2 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO2));
     expectedBucket3 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO3));

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -52,10 +52,10 @@ public final class PostPolicyV4 {
   }
 
   /**
-   * Class representing which fields to specify in a V4 POST request.
+   * Class representing which withFields to specify in a V4 POST request.
    *
    * @see <a href="https://cloud.google.com/storage/docs/xml-api/post-object#form_fields">POST
-   *     Object Form fields</a>
+   *     Object Form withFields</a>
    */
   public static final class PostFieldsV4 {
     private Map<String, String> fieldsMap;
