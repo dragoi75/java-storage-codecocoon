@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -125,11 +125,11 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket create(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public StorageBucket create(BucketInfo bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     try {
-      return Bucket.fromPb(
+      return StorageBucket.fromProto(
           this,
           runWithRetries(
               new Callable<com.google.api.services.storage.model.Bucket>() {
@@ -276,8 +276,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket get(String bucket, BucketGetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
+  public StorageBucket get(String bucket, BucketGetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.from(bucket).toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
     try {
       com.google.api.services.storage.model.Bucket answer =
@@ -291,7 +291,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
               getOptions().getRetrySettings(),
               EXCEPTION_HANDLER,
               getOptions().getClock());
-      return answer == null ? null : Bucket.fromPb(this, answer);
+      return answer == null ? null : StorageBucket.fromProto(this, answer);
     } catch (RetryHelperException e) {
       throw StorageException.translateAndThrow(e);
     }
@@ -329,7 +329,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return get(blob, new BlobGetOption[0]);
   }
 
-  private static class BucketPageFetcher implements NextPageFetcher<Bucket> {
+  private static class BucketPageFetcher implements NextPageFetcher<StorageBucket> {
 
     private static final long serialVersionUID = 5850406828803613729L;
     private final Map<StorageRpc.Option, ?> requestOptions;
@@ -343,7 +343,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     }
 
     @Override
-    public Page<Bucket> getNextPage() {
+    public Page<StorageBucket> getNextPage() {
       return listBuckets(serviceOptions, requestOptions);
     }
   }
@@ -390,7 +390,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Page<Bucket> list(BucketListOption... options) {
+  public Page<StorageBucket> list(BucketListOption... options) {
     return listBuckets(getOptions(), optionMap(options));
   }
 
@@ -399,7 +399,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return listBlobs(bucket, getOptions(), optionMap(options));
   }
 
-  private static Page<Bucket> listBuckets(
+  private static Page<StorageBucket> listBuckets(
       final StorageOptions serviceOptions, final Map<StorageRpc.Option, ?> optionsMap) {
     try {
       Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
@@ -416,15 +416,15 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
               EXCEPTION_HANDLER,
               serviceOptions.getClock());
       String cursor = result.x();
-      Iterable<Bucket> buckets =
+      Iterable<StorageBucket> buckets =
           result.y() == null
-              ? ImmutableList.<Bucket>of()
+              ? ImmutableList.<StorageBucket>of()
               : Iterables.transform(
                   result.y(),
-                  new Function<com.google.api.services.storage.model.Bucket, Bucket>() {
+                  new Function<com.google.api.services.storage.model.Bucket, StorageBucket>() {
                     @Override
-                    public Bucket apply(com.google.api.services.storage.model.Bucket bucketPb) {
-                      return Bucket.fromPb(serviceOptions.getService(), bucketPb);
+                    public StorageBucket apply(com.google.api.services.storage.model.Bucket bucketPb) {
+                      return StorageBucket.fromProto(serviceOptions.getService(), bucketPb);
                     }
                   });
       return new PageImpl<>(
@@ -470,11 +470,11 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket update(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public StorageBucket update(BucketInfo bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     try {
-      return Bucket.fromPb(
+      return StorageBucket.fromProto(
           this,
           runWithRetries(
               new Callable<com.google.api.services.storage.model.Bucket>() {
@@ -520,7 +520,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public boolean delete(String bucket, BucketSourceOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.from(bucket).toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
     try {
       return runWithRetries(
@@ -733,7 +733,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
-        "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
+        "Only one from VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
     String bucketName = slashlessBucketNameFromBlobInfo(blobInfo);
@@ -813,7 +813,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
       PostConditionsV4 conditions,
       PostPolicyV4Option... options) {
     EnumMap<SignUrlOption.Option, Object> optionMap = Maps.newEnumMap(SignUrlOption.Option.class);
-    // Convert to a map of SignUrlOptions so we can re-use some utility methods
+    // Convert to a map from SignUrlOptions so we can re-use some utility methods
     for (PostPolicyV4Option option : options) {
       optionMap.put(SignUrlOption.Option.valueOf(option.getOption().name()), option.getValue());
     }
@@ -833,7 +833,7 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
             && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
-        "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
+        "Only one from VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
     String bucketName = slashlessBucketNameFromBlobInfo(blobInfo);
@@ -1721,11 +1721,11 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket lockRetentionPolicy(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
+  public StorageBucket lockRetentionPolicy(BucketInfo bucketInfo, BucketTargetOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toBucketPb();
     final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
     try {
-      return Bucket.fromPb(
+      return StorageBucket.fromProto(
           this,
           runWithRetries(
               new Callable<com.google.api.services.storage.model.Bucket>() {

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -97,7 +97,7 @@ public final class Acl implements Serializable {
     }
   }
 
-  /** Builder for {@code Acl} objects. */
+  /** BucketInfoBuilder for {@code Acl} objects. */
   public static class Builder {
 
     private Entity entity;
@@ -166,7 +166,7 @@ public final class Acl implements Serializable {
       this.value = value;
     }
 
-    /** Returns the type of entity. */
+    /** Returns the type from entity. */
     public Type getType() {
       return type;
     }
@@ -364,7 +364,7 @@ public final class Acl implements Serializable {
      * Creates a project entity.
      *
      * @param projectRole a role in the project, used to select project's teams
-     * @param projectId id of the project
+     * @param projectId id from the project
      */
     public Project(ProjectRole projectRole, String projectId) {
       super(Type.PROJECT, projectRole.name().toLowerCase() + "-" + projectId);
@@ -414,7 +414,7 @@ public final class Acl implements Serializable {
     return role;
   }
 
-  /** Returns the ID of the ACL entry. */
+  /** Returns the ID from the ACL entry. */
   public String getId() {
     return id;
   }

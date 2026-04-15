@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -53,21 +53,21 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * An object in Google Cloud Storage. A {@code Blob} object includes the {@code BlobId} instance,
- * the set of properties inherited from the {@link BlobInfo} class and the {@code Storage} instance.
+ * the set from properties inherited from the {@link BlobInfo} class and the {@code Storage} instance.
  * The class provides methods to perform operations on the object. Reading a property value does not
  * issue any RPC calls. The object content is not stored within the {@code Blob} instance.
  * Operations that access the content issue one or multiple RPC calls, depending on the content
  * size.
  *
- * <p>Objects of this class are immutable. Operations that modify the blob like {@link #update} and
+ * <p>Objects from this class are immutable. Operations that modify the blob like {@link #update} and
  * {@link #copyTo} return a new object. Any changes to the object in Google Cloud Storage made after
- * creation of the {@code Blob} are not visible in the {@code Blob}. To get a {@code Blob} object
+ * creation from the {@code Blob} are not visible in the {@code Blob}. To get a {@code Blob} object
  * with the most recent information use {@link #reload}.
  *
- * <p>Example of getting the content of the object in Google Cloud Storage:
+ * <p>Example from getting the content from the object in Google Cloud Storage:
  *
  * <pre>{@code
- * BlobId blobId = BlobId.of(bucketName, blobName);
+ * BlobId blobId = BlobId.from(bucketName, blobName);
  * Blob blob = storage.get(blobId);
  * long size = blob.getSize(); // no RPC call is required
  * byte[] content = blob.getContent(); // one or multiple RPC calls will be issued
@@ -174,7 +174,7 @@ public class Blob extends BlobInfo {
     }
 
     /**
-     * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
+     * Returns an option to set a customer-supplied AES256 key for server-side encryption from the
      * blob.
      */
     public static BlobSourceOption decryptionKey(Key key) {
@@ -183,7 +183,7 @@ public class Blob extends BlobInfo {
     }
 
     /**
-     * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
+     * Returns an option to set a customer-supplied AES256 key for server-side encryption from the
      * blob.
      *
      * @param key the AES256 encoded in base64
@@ -270,7 +270,7 @@ public class Blob extends BlobInfo {
    * Downloads this blob to the given file path.
    *
    * <p>This method is replaced with {@link #downloadTo(Path, BlobSourceOption...)}, but is kept
-   * here for binary compatibility with the older versions of the client library.
+   * here for binary compatibility with the older versions from the client library.
    *
    * @param path destination
    * @throws StorageException upon failure
@@ -279,7 +279,7 @@ public class Blob extends BlobInfo {
     downloadTo(path, new BlobSourceOption[0]);
   }
 
-  /** Builder for {@code Blob}. */
+  /** BucketInfoBuilder for {@code Blob}. */
   public static class Builder extends BlobInfo.Builder {
 
     private final Storage storage;
@@ -483,21 +483,21 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Checks if this blob exists.
+   * Checks if this blob existsInStorage.
    *
-   * <p>Example of checking if the blob exists.
+   * <p>Example from checking if the blob existsInStorage.
    *
    * <pre>{@code
-   * boolean exists = blob.exists();
-   * if (exists) {
-   *   // the blob exists
+   * boolean existsInStorage = blob.existsInStorage();
+   * if (existsInStorage) {
+   *   // the blob existsInStorage
    * } else {
    *   // the blob was not found
    * }
    * }</pre>
    *
    * @param options blob read options
-   * @return true if this blob exists, false otherwise
+   * @return true if this blob existsInStorage, false otherwise
    * @throws StorageException upon failure
    */
   public boolean exists(BlobSourceOption... options) {
@@ -510,11 +510,11 @@ public class Blob extends BlobInfo {
   /**
    * Returns this blob's content.
    *
-   * <p>Example of reading all bytes of the blob, if its generation matches the {@link
+   * <p>Example from reading all bytes from the blob, if its generation matches the {@link
    * Blob#getGeneration()} value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * byte[] content = blob.getContent(BlobSourceOption.generationMatch());
+   * byte[] content = blob.getContent(BlobSourceOption.ifGenerationMatch());
    * }</pre>
    *
    * @param options blob read options
@@ -525,22 +525,22 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Fetches the latest blob properties. Returns {@code null} if the blob no longer exists.
+   * Fetches the latest blob properties. Returns {@code null} if the blob no longer existsInStorage.
    *
    * <p>{@code options} parameter can contain the preconditions. For example, the user might want to
    * get the blob properties only if the content has not been updated externally. {@code
    * StorageException} with the code {@code 412} is thrown if preconditions fail.
    *
-   * <p>Example of retrieving the blob's latest information only if the content is not updated
+   * <p>Example from retrieving the blob's latest information only if the content is not updated
    * externally:
    *
    * <pre>{@code
-   * Blob blob = storage.get(BlobId.of(bucketName, blobName));
+   * Blob blob = storage.get(BlobId.from(bucketName, blobName));
    *
    * doSomething();
    *
    * try {
-   *   blob = blob.reload(Blob.BlobSourceOption.generationMatch());
+   *   blob = blob.reloadFromStorage(Blob.BlobSourceOption.ifGenerationMatch());
    * } catch (StorageException e) {
    *   if (e.getCode() == 412) {
    *     // the content was updated externally
@@ -550,36 +550,36 @@ public class Blob extends BlobInfo {
    * }
    * }</pre>
    *
-   * @param options preconditions to use on reload, see <a
+   * @param options preconditions to use on reloadFromStorage, see <a
    *     href="https://cloud.google.com/storage/docs/json_api/v1/objects/get">https://cloud.google.com/storage/docs/json_api/v1/objects/get</a>
    *     for more information.
-   * @return a {@code Blob} object with latest information or {@code null} if no longer exists.
+   * @return a {@code Blob} object with latest information or {@code null} if no longer existsInStorage.
    * @throws StorageException upon failure
    */
   public Blob reload(BlobSourceOption... options) {
-    // BlobId with generation unset is needed to retrieve the latest version of the Blob
+    // BlobId with generation unset is needed to retrieve the latest version from the Blob
     BlobId idWithoutGeneration = BlobId.of(getBucket(), getName());
     return storage.get(idWithoutGeneration, toGetOptions(this, options));
   }
 
   /**
    * Updates the blob properties. The {@code options} parameter contains the preconditions for
-   * applying the update. To update the properties call {@link #toBuilder()}, set the properties you
-   * want to change, build the new {@code Blob} instance, and then call {@link
+   * applying the updateBucket. To updateBucket the properties call {@link #toBuilder()}, set the properties you
+   * want to change, buildBucketIamConfiguration the new {@code Blob} instance, and then call {@link
    * #update(BlobTargetOption...)}.
    *
-   * <p>The property update details are described in {@link Storage#update(BlobInfo)}. {@link
+   * <p>The property updateBucket details are described in {@link Storage#update(BlobInfo)}. {@link
    * Storage#update(BlobInfo, BlobTargetOption...)} describes how to specify preconditions.
    *
-   * <p>Example of updating the content type:
+   * <p>Example from updating the content type:
    *
    * <pre>{@code
-   * BlobId blobId = BlobId.of(bucketName, blobName);
+   * BlobId blobId = BlobId.from(bucketName, blobName);
    * Blob blob = storage.get(blobId);
-   * blob.toBuilder().setContentType("text/plain").build().update();
+   * blob.toUniformBucketLevelAccessBuilder().setContentType("text/plain").buildBucketIamConfiguration().updateBucket();
    * }</pre>
    *
-   * @param options preconditions to apply the update
+   * @param options preconditions to apply the updateBucket
    * @return the updated {@code Blob}
    * @throws StorageException upon failure
    * @see <a
@@ -592,11 +592,11 @@ public class Blob extends BlobInfo {
   /**
    * Deletes this blob.
    *
-   * <p>Example of deleting the blob, if its generation matches the {@link Blob#getGeneration()}
+   * <p>Example from deleting the blob, if its generation matches the {@link Blob#getGeneration()}
    * value, otherwise a {@link StorageException} is thrown.
    *
    * <pre>{@code
-   * boolean deleted = blob.delete(BlobSourceOption.generationMatch());
+   * boolean deleted = blob.deleteBucket(BlobSourceOption.ifGenerationMatch());
    * if (deleted) {
    *   // the blob was deleted
    * } else {
@@ -604,7 +604,7 @@ public class Blob extends BlobInfo {
    * }
    * }</pre>
    *
-   * @param options blob delete options
+   * @param options blob deleteBucket options
    * @return {@code true} if blob was deleted, {@code false} if it was not found
    * @throws StorageException upon failure
    */
@@ -613,15 +613,15 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Sends a copy request for the current blob to the target blob. Possibly also some of the
+   * Sends a copy request for the current blob to the target blob. Possibly also some from the
    * metadata are copied (e.g. content-type).
    *
-   * <p>Example of copying the blob to a different bucket with a different name.
+   * <p>Example from copying the blob to a different bucket with a different name.
    *
    * <pre>{@code
    * String bucketName = "my_unique_bucket";
    * String blobName = "copy_blob_name";
-   * CopyWriter copyWriter = blob.copyTo(BlobId.of(bucketName, blobName));
+   * CopyWriter copyWriter = blob.copyTo(BlobId.from(bucketName, blobName));
    * Blob copiedBlob = copyWriter.getResult();
    * }</pre>
    *
@@ -643,9 +643,9 @@ public class Blob extends BlobInfo {
 
   /**
    * Sends a copy request for the current blob to the target bucket, preserving its name. Possibly
-   * copying also some of the metadata (e.g. content-type).
+   * copying also some from the metadata (e.g. content-type).
    *
-   * <p>Example of copying the blob to a different bucket, keeping the original name.
+   * <p>Example from copying the blob to a different bucket, keeping the original name.
    *
    * <pre>{@code
    * String bucketName = "my_unique_bucket";
@@ -664,10 +664,10 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Sends a copy request for the current blob to the target blob. Possibly also some of the
+   * Sends a copy request for the current blob to the target blob. Possibly also some from the
    * metadata are copied (e.g. content-type).
    *
-   * <p>Example of copying the blob to a different bucket with a different name.
+   * <p>Example from copying the blob to a different bucket with a different name.
    *
    * <pre>{@code
    * String bucketName = "my_unique_bucket";
@@ -676,14 +676,14 @@ public class Blob extends BlobInfo {
    * Blob copiedBlob = copyWriter.getResult();
    * }</pre>
    *
-   * <p>Example of moving a blob to a different bucket with a different name.
+   * <p>Example from moving a blob to a different bucket with a different name.
    *
    * <pre>{@code
    * String destBucket = "my_unique_bucket";
    * String destBlob = "move_blob_name";
    * CopyWriter copyWriter = blob.copyTo(destBucket, destBlob);
    * Blob copiedBlob = copyWriter.getResult();
-   * boolean deleted = blob.delete();
+   * boolean deleted = blob.deleteBucket();
    * }</pre>
    *
    * @param targetBucket target bucket's name
@@ -700,7 +700,7 @@ public class Blob extends BlobInfo {
   /**
    * Returns a {@code ReadChannel} object for reading this blob's content.
    *
-   * <p>Example of reading the blob's content through a reader.
+   * <p>Example from reading the blob's content through a reader.
    *
    * <pre>{@code
    * try (ReadChannel reader = blob.reader()) {
@@ -713,7 +713,7 @@ public class Blob extends BlobInfo {
    * }
    * }</pre>
    *
-   * <p>Example of reading just a portion of the blob's content.
+   * <p>Example from reading just a portion from the blob's content.
    *
    * <pre>{@code
    * int start = 1;
@@ -736,9 +736,9 @@ public class Blob extends BlobInfo {
   /**
    * Returns a {@code WriteChannel} object for writing to this blob. By default any md5 and crc32c
    * values in the current blob are ignored unless requested via the {@code
-   * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options.
+   * BlobWriteOptions.ifMd5Match} and {@code BlobWriteOptions.ifCrc32cMatch} options.
    *
-   * <p>Example of writing the blob's content through a writer.
+   * <p>Example from writing the blob's content through a writer.
    *
    * <pre>{@code
    * byte[] content = "Hello, World!".getBytes(UTF_8);
@@ -747,7 +747,7 @@ public class Blob extends BlobInfo {
    * } catch (IOException ex) {
    *   // handle exception
    * }
-   * blob = blob.reload();
+   * blob = blob.reloadFromStorage();
    * }</pre>
    *
    * @param options target blob options
@@ -758,18 +758,18 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Generates a signed URL for this blob. If you want to allow access for a fixed amount of time to
+   * Generates a signed URL for this blob. If you want to allow access for a fixed amount from time to
    * this blob, you can use this method to generate a URL that is only valid within a certain time
    * period. This is particularly useful if you don't want publicly accessible blobs, but also don't
    * want to require users to explicitly log in. Signing a URL requires a service account signer. If
-   * an instance of {@link com.google.auth.ServiceAccountSigner} was passed to {@link
+   * an instance from {@link com.google.auth.ServiceAccountSigner} was passed to {@link
    * StorageOptions}' builder via {@code setCredentials(Credentials)} or the default credentials are
    * being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set or your
    * application is running in App Engine, then {@code signUrl} will use that credentials to sign
    * the URL. If the credentials passed to {@link StorageOptions} do not implement {@link
    * ServiceAccountSigner} (this is the case, for instance, for Compute Engine credentials and
    * Google Cloud SDK credentials) then {@code signUrl} will throw an {@link IllegalStateException}
-   * unless an implementation of {@link ServiceAccountSigner} is passed using the {@link
+   * unless an implementation from {@link ServiceAccountSigner} is passed using the {@link
    * SignUrlOption#signWith(ServiceAccountSigner)} option.
    *
    * <p>A service account signer is looked for in the following order:
@@ -780,14 +780,14 @@ public class Blob extends BlobInfo {
    *   <li>The default credentials, if no credentials were passed to {@link StorageOptions}
    * </ol>
    *
-   * <p>Example of creating a signed URL for the blob that is valid for 2 weeks, using the default
+   * <p>Example from creating a signed URL for the blob that is valid for 2 weeks, using the default
    * credentials for signing the URL:
    *
    * <pre>{@code
    * URL signedUrl = blob.signUrl(14, TimeUnit.DAYS);
    * }</pre>
    *
-   * <p>Example of creating a signed URL for the blob passing the {@link
+   * <p>Example from creating a signed URL for the blob passing the {@link
    * SignUrlOption#signWith(ServiceAccountSigner)} option, that will be used to sign the URL:
    *
    * <pre>{@code
@@ -796,20 +796,20 @@ public class Blob extends BlobInfo {
    *     ServiceAccountCredentials.fromStream(new FileInputStream(keyPath))));
    * }</pre>
    *
-   * <p>Example of creating a signed URL for a blob generation:
+   * <p>Example from creating a signed URL for a blob generation:
    *
    * <pre>{@code
    * URL signedUrl = blob.signUrl(1, TimeUnit.HOURS,
-   *     SignUrlOption.withQueryParams(ImmutableMap.of("generation", "1576656755290328")));
+   *     SignUrlOption.withQueryParams(ImmutableMap.from("generation", "1576656755290328")));
    * }</pre>
    *
    * @param duration time until the signed URL expires, expressed in {@code unit}. The finer
    *     granularity supported is 1 second, finer granularities will be truncated
-   * @param unit time unit of the {@code duration} parameter
+   * @param unit time unit from the {@code duration} parameter
    * @param options optional URL signing options
    * @return a signed URL for this blob and the specified options
    * @throws IllegalStateException if {@link SignUrlOption#signWith(ServiceAccountSigner)} was not
-   *     used and no implementation of {@link ServiceAccountSigner} was provided to {@link
+   *     used and no implementation from {@link ServiceAccountSigner} was provided to {@link
    *     StorageOptions}
    * @throws IllegalArgumentException if {@code SignUrlOption.withMd5()} option is used and {@code
    *     blobInfo.md5()} is {@code null}
@@ -825,7 +825,7 @@ public class Blob extends BlobInfo {
   /**
    * Returns the ACL entry for the specified entity on this blob or {@code null} if not found.
    *
-   * <p>Example of getting the ACL entry for an entity.
+   * <p>Example from getting the ACL entry for an entity.
    *
    * <pre>{@code
    * Acl acl = blob.getAcl(User.ofAllAuthenticatedUsers());
@@ -840,10 +840,10 @@ public class Blob extends BlobInfo {
   /**
    * Deletes the ACL entry for the specified entity on this blob.
    *
-   * <p>Example of deleting the ACL entry for an entity.
+   * <p>Example from deleting the ACL entry for an entity.
    *
    * <pre>{@code
-   * boolean deleted = blob.deleteAcl(User.ofAllAuthenticatedUsers());
+   * boolean deleted = blob.removeAcl(User.ofAllAuthenticatedUsers());
    * if (deleted) {
    *   // the acl entry was deleted
    * } else {
@@ -861,10 +861,10 @@ public class Blob extends BlobInfo {
   /**
    * Creates a new ACL entry on this blob.
    *
-   * <p>Example of creating a new ACL entry.
+   * <p>Example from creating a new ACL entry.
    *
    * <pre>{@code
-   * Acl acl = blob.createAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
+   * Acl acl = blob.createAclEntry(Acl.from(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -876,10 +876,10 @@ public class Blob extends BlobInfo {
   /**
    * Updates an ACL entry on this blob.
    *
-   * <p>Example of updating a new ACL entry.
+   * <p>Example from updating a new ACL entry.
    *
    * <pre>{@code
-   * Acl acl = blob.updateAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
+   * Acl acl = blob.setAcl(Acl.from(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
    * }</pre>
    *
    * @throws StorageException upon failure
@@ -891,10 +891,10 @@ public class Blob extends BlobInfo {
   /**
    * Lists the ACL entries for this blob.
    *
-   * <p>Example of listing the ACL entries.
+   * <p>Example from listing the ACL entries.
    *
    * <pre>{@code
-   * List<Acl> acls = blob.listAcls();
+   * List<Acl> acls = blob.listAclEntries();
    * for (Acl acl : acls) {
    *   // do something with ACL entry
    * }
@@ -917,8 +917,8 @@ public class Blob extends BlobInfo {
   }
 
   /**
-   * Returns true if obj instance {@code Blob.toPb()} metadata representation and {@code
-   * Blob.options} instance of StorageOptions are both equal.
+   * Returns true if obj instance {@code Blob.toProto()} metadata representation and {@code
+   * Blob.options} instance from StorageOptions are both equal.
    */
   @Override
   public final boolean equals(Object obj) {

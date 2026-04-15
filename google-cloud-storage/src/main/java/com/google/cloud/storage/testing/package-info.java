@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -22,10 +22,10 @@
  * <p>Before the test:
  *
  * <pre>{@code
- * RemoteStorageHelper helper = RemoteStorageHelper.create();
+ * RemoteStorageHelper helper = RemoteStorageHelper.upload();
  * Storage storage = helper.getOptions().getService();
  * String bucket = RemoteStorageHelper.generateBucketName();
- * storage.create(BucketInfo.of(bucket));
+ * storage.upload(BucketInfo.from(bucket));
  * }</pre>
  *
  * <p>After the test:

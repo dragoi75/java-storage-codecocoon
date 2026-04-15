@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -54,34 +54,16 @@ import com.google.cloud.kms.v1.KeyManagementServiceGrpc;
 import com.google.cloud.kms.v1.KeyManagementServiceGrpc.KeyManagementServiceBlockingStub;
 import com.google.cloud.kms.v1.KeyRingName;
 import com.google.cloud.kms.v1.LocationName;
-import com.google.cloud.storage.Acl;
+import com.google.cloud.storage.*;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.BucketInfo;
-import com.google.cloud.storage.BucketInfo.LifecycleRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleAction;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleCondition;
-import com.google.cloud.storage.CopyWriter;
-import com.google.cloud.storage.Cors;
-import com.google.cloud.storage.HmacKey;
-import com.google.cloud.storage.HttpMethod;
-import com.google.cloud.storage.PostPolicyV4;
+import com.google.cloud.storage.StorageBucket;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition;
+import com.google.cloud.storage.BucketInfo.LifecycleRuleDefinition.AbstractLifecycleAction;
 import com.google.cloud.storage.PostPolicyV4.PostFieldsV4;
-import com.google.cloud.storage.ServiceAccount;
-import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobField;
 import com.google.cloud.storage.Storage.BlobWriteOption;
 import com.google.cloud.storage.Storage.BucketField;
-import com.google.cloud.storage.StorageBatch;
-import com.google.cloud.storage.StorageBatchResult;
-import com.google.cloud.storage.StorageClass;
-import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.storage.StorageRoles;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -183,19 +165,19 @@ public class ITStorageTest {
           && System.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC").equalsIgnoreCase("true");
   private static final List<String> LOCATION_TYPES =
       ImmutableList.of("multi-region", "region", "dual-region");
-  private static final LifecycleRule LIFECYCLE_RULE_1 =
-      new LifecycleRule(
-          LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-          LifecycleCondition.newBuilder()
+  private static final LifecycleRuleDefinition LIFECYCLE_RULE_1 =
+      new LifecycleRuleDefinition(
+          LifecycleRuleDefinition.AbstractLifecycleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+          BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder()
               .setAge(1)
               .setNumberOfNewerVersions(3)
               .setIsLive(false)
               .setMatchesStorageClass(ImmutableList.of(StorageClass.COLDLINE))
-              .build());
-  private static final LifecycleRule LIFECYCLE_RULE_2 =
-      new LifecycleRule(
-          LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(1).build());
-  private static final ImmutableList<LifecycleRule> LIFECYCLE_RULES =
+              .buildLifecycleRuleCondition());
+  private static final LifecycleRuleDefinition LIFECYCLE_RULE_2 =
+      new LifecycleRuleDefinition(
+          AbstractLifecycleAction.createRemoveAction(), BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(1).buildLifecycleRuleCondition());
+  private static final ImmutableList<BucketInfo.LifecycleRuleDefinition> LIFECYCLE_RULES =
       ImmutableList.of(LIFECYCLE_RULE_1, LIFECYCLE_RULE_2);
 
   @BeforeClass
@@ -204,49 +186,49 @@ public class ITStorageTest {
     storage = remoteStorageHelper.getOptions().getService();
 
     storage.create(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.newBucketBuilder(BUCKET)
             .setLocation("us")
             .setLifecycleRules(
                 ImmutableList.of(
-                    new LifecycleRule(
-                        LifecycleAction.newDeleteAction(),
-                        LifecycleCondition.newBuilder().setAge(1).build())))
-            .build());
+                    new LifecycleRuleDefinition(
+                        LifecycleRuleDefinition.AbstractLifecycleAction.createRemoveAction(),
+                        BucketInfo.LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder().setAge(1).buildLifecycleRuleCondition())))
+            .buildInstance());
 
-    storage.create(BucketInfo.newBuilder(BUCKET_REQUESTER_PAYS).build());
+    storage.create(BucketInfo.newBucketBuilder(BUCKET_REQUESTER_PAYS).buildInstance());
 
     // Prepare KMS KeyRing for CMEK tests
     prepareKmsKeys();
   }
 
   private static void unsetRequesterPays() {
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING),
             Storage.BucketGetOption.userProject(storage.getOptions().getProjectId()));
     // Disable requester pays in case a test fails to clean up.
-    if (remoteBucket.requesterPays() != null && remoteBucket.requesterPays() == true) {
+    if (remoteBucket.getRequesterPays() != null && remoteBucket.getRequesterPays() == true) {
       remoteBucket
-          .toBuilder()
+          .toBucketBuilder()
           .setRequesterPays(false)
-          .build()
-          .update(Storage.BucketTargetOption.userProject(storage.getOptions().getProjectId()));
+          .buildInstance()
+          .updateBucket(Storage.BucketTargetOption.userProject(storage.getOptions().getProjectId()));
     }
   }
 
   @AfterClass
   public static void afterClass() throws ExecutionException, InterruptedException {
     if (storage != null) {
-      // In beforeClass, we make buckets auto-delete blobs older than a day old.
-      // Here, delete all buckets older than 2 days. They should already be empty and easy.
+      // In beforeClass, we make buckets auto-deleteBucket blobs older than a day old.
+      // Here, deleteBucket all buckets older than 2 days. They should already be empty and easy.
       long cleanTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2);
       long cleanTimeout = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(1);
       RemoteStorageHelper.cleanBuckets(storage, cleanTime, cleanTimeout);
 
       boolean wasDeleted = RemoteStorageHelper.forceDelete(storage, BUCKET, 1, TimeUnit.MINUTES);
       if (!wasDeleted && log.isLoggable(Level.WARNING)) {
-        log.log(Level.WARNING, "Deletion of bucket {0} timed out, bucket is not empty", BUCKET);
+        log.log(Level.WARNING, "Deletion from bucket {0} timed out, bucket is not empty", BUCKET);
       }
       unsetRequesterPays();
       RemoteStorageHelper.forceDelete(storage, BUCKET_REQUESTER_PAYS, 5, TimeUnit.SECONDS);
@@ -395,7 +377,7 @@ public class ITStorageTest {
 
   @Test(timeout = 5000)
   public void testListBuckets() throws InterruptedException {
-    Iterator<Bucket> bucketIterator =
+    Iterator<StorageBucket> bucketIterator =
         storage
             .list(Storage.BucketListOption.prefix(BUCKET), Storage.BucketListOption.fields())
             .iterateAll()
@@ -409,7 +391,7 @@ public class ITStorageTest {
               .iterator();
     }
     while (bucketIterator.hasNext()) {
-      Bucket remoteBucket = bucketIterator.next();
+      StorageBucket remoteBucket = bucketIterator.next();
       assertTrue(remoteBucket.getName().startsWith(BUCKET));
       assertNull(remoteBucket.getCreateTime());
       assertNull(remoteBucket.getSelfLink());
@@ -418,7 +400,7 @@ public class ITStorageTest {
 
   @Test
   public void testGetBucketSelectedFields() {
-    Bucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.ID));
+    StorageBucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.ID));
     assertEquals(BUCKET, remoteBucket.getName());
     assertNull(remoteBucket.getCreateTime());
     assertNotNull(remoteBucket.getGeneratedId());
@@ -426,7 +408,7 @@ public class ITStorageTest {
 
   @Test
   public void testGetBucketAllSelectedFields() {
-    Bucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.values()));
+    StorageBucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.values()));
     assertEquals(BUCKET, remoteBucket.getName());
     assertNotNull(remoteBucket.getCreateTime());
     assertNotNull(remoteBucket.getSelfLink());
@@ -434,7 +416,7 @@ public class ITStorageTest {
 
   @Test
   public void testGetBucketEmptyFields() {
-    Bucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields());
+    StorageBucket remoteBucket = storage.get(BUCKET, Storage.BucketGetOption.fields());
     assertEquals(BUCKET, remoteBucket.getName());
     assertNull(remoteBucket.getCreateTime());
     assertNull(remoteBucket.getSelfLink());
@@ -444,29 +426,29 @@ public class ITStorageTest {
   public void testGetBucketLifecycleRules() {
     String lifecycleTestBucketName = RemoteStorageHelper.generateBucketName();
     storage.create(
-        BucketInfo.newBuilder(lifecycleTestBucketName)
+        BucketInfo.newBucketBuilder(lifecycleTestBucketName)
             .setLocation("us")
             .setLifecycleRules(
                 ImmutableList.of(
-                    new LifecycleRule(
-                        LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-                        LifecycleCondition.newBuilder()
+                    new LifecycleRuleDefinition(
+                        LifecycleRuleDefinition.AbstractLifecycleAction.createSetStorageClassAction(StorageClass.COLDLINE),
+                        LifecycleRuleDefinition.LifecycleRuleCondition.newLifecycleConditionBuilder()
                             .setAge(1)
                             .setNumberOfNewerVersions(3)
                             .setIsLive(false)
                             .setCreatedBefore(new DateTime(System.currentTimeMillis()))
                             .setMatchesStorageClass(ImmutableList.of(StorageClass.COLDLINE))
-                            .build())))
-            .build());
-    Bucket remoteBucket =
+                            .buildLifecycleRuleCondition())))
+            .buildInstance());
+    StorageBucket remoteBucket =
         storage.get(lifecycleTestBucketName, Storage.BucketGetOption.fields(BucketField.LIFECYCLE));
-    LifecycleRule lifecycleRule = remoteBucket.getLifecycleRules().get(0);
+    LifecycleRuleDefinition lifecycleRule = remoteBucket.getLifecycleRules().get(0);
     try {
       assertTrue(
           lifecycleRule
               .getAction()
               .getActionType()
-              .equals(LifecycleRule.SetStorageClassLifecycleAction.TYPE));
+              .equals(LifecycleRuleDefinition.SetStorageClassLifecycleOperation.TYPE));
       assertEquals(3, lifecycleRule.getCondition().getNumberOfNewerVersions().intValue());
       assertNotNull(lifecycleRule.getCondition().getCreatedBefore());
       assertFalse(lifecycleRule.getCondition().getIsLive());
@@ -480,16 +462,16 @@ public class ITStorageTest {
   @Test
   public void testClearBucketDefaultKmsKeyName() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
 
     try {
       assertEquals(kmsKeyOneResourcePath, remoteBucket.getDefaultKmsKeyName());
-      Bucket updatedBucket = remoteBucket.toBuilder().setDefaultKmsKeyName(null).build().update();
+      StorageBucket updatedBucket = remoteBucket.toBucketBuilder().setDefaultKmsKeyName(null).buildInstance().updateBucket();
       assertNull(updatedBucket.getDefaultKmsKeyName());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -499,17 +481,17 @@ public class ITStorageTest {
   @Test
   public void testUpdateBucketDefaultKmsKeyName() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
 
     try {
       assertEquals(kmsKeyOneResourcePath, remoteBucket.getDefaultKmsKeyName());
-      Bucket updatedBucket =
-          remoteBucket.toBuilder().setDefaultKmsKeyName(kmsKeyTwoResourcePath).build().update();
+      StorageBucket updatedBucket =
+          remoteBucket.toBucketBuilder().setDefaultKmsKeyName(kmsKeyTwoResourcePath).buildInstance().updateBucket();
       assertEquals(kmsKeyTwoResourcePath, updatedBucket.getDefaultKmsKeyName());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -518,7 +500,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateBlob() {
-    String blobName = "test-create-blob";
+    String blobName = "test-upload-blob";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob, BLOB_BYTE_CONTENT);
     assertNotNull(remoteBlob);
@@ -531,7 +513,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateBlobMd5Crc32cFromHexString() {
-    String blobName = "test-create-blob-md5-crc32c-from-hex-string";
+    String blobName = "test-upload-blob-md5-crc32c-from-hex-string";
     BlobInfo blob =
         BlobInfo.newBuilder(BUCKET, blobName)
             .setContentType(CONTENT_TYPE)
@@ -551,7 +533,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateGetBlobWithEncryptionKey() {
-    String blobName = "test-create-with-customer-key-blob";
+    String blobName = "test-upload-with-customer-key-blob";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob =
         storage.create(blob, BLOB_BYTE_CONTENT, Storage.BlobTargetOption.encryptionKey(KEY));
@@ -572,7 +554,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateBlobWithKmsKeyName() {
-    String blobName = "test-create-with-kms-key-name-blob";
+    String blobName = "test-upload-with-kms-key-name-blob";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob =
         storage.create(
@@ -589,7 +571,7 @@ public class ITStorageTest {
   @Test
   public void testCreateBlobWithKmsKeyNameAndCustomerSuppliedKey() {
     try {
-      String blobName = "test-create-with-kms-key-name-blob";
+      String blobName = "test-upload-with-kms-key-name-blob";
       BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
       storage.create(
           blob,
@@ -606,16 +588,16 @@ public class ITStorageTest {
   public void testCreateBlobWithDefaultKmsKeyName()
       throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket bucket =
+    StorageBucket bucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
     assertEquals(bucket.getDefaultKmsKeyName(), kmsKeyOneResourcePath);
 
     try {
-      String blobName = "test-create-with-default-kms-key-name-blob";
+      String blobName = "test-upload-with-default-kms-key-name-blob";
       BlobInfo blob = BlobInfo.newBuilder(bucket, blobName).build();
       Blob remoteBlob = storage.create(blob, BLOB_BYTE_CONTENT);
       assertNotNull(remoteBlob);
@@ -632,7 +614,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateEmptyBlob() {
-    String blobName = "test-create-empty-blob";
+    String blobName = "test-upload-empty-blob";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob);
     assertNotNull(remoteBlob);
@@ -645,7 +627,7 @@ public class ITStorageTest {
   @Test
   @SuppressWarnings({"unchecked", "deprecation"})
   public void testCreateBlobStream() {
-    String blobName = "test-create-blob-stream";
+    String blobName = "test-upload-blob-stream";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).setContentType(CONTENT_TYPE).build();
     ByteArrayInputStream stream = new ByteArrayInputStream(BLOB_STRING_CONTENT.getBytes(UTF_8));
     Blob remoteBlob = storage.create(blob, stream);
@@ -660,7 +642,7 @@ public class ITStorageTest {
   @Test
   @SuppressWarnings({"unchecked", "deprecation"})
   public void testCreateBlobStreamDisableGzipContent() {
-    String blobName = "test-create-blob-stream-disable-gzip-compression";
+    String blobName = "test-upload-blob-stream-disable-gzip-compression";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).setContentType(CONTENT_TYPE).build();
     ByteArrayInputStream stream = new ByteArrayInputStream(BLOB_STRING_CONTENT.getBytes(UTF_8));
     Blob remoteBlob = storage.create(blob, stream, BlobWriteOption.disableGzipContent());
@@ -674,7 +656,7 @@ public class ITStorageTest {
 
   @Test
   public void testCreateBlobFail() {
-    String blobName = "test-create-blob-fail";
+    String blobName = "test-upload-blob-fail";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob);
     assertNotNull(remoteBlob);
@@ -691,7 +673,7 @@ public class ITStorageTest {
   @Test
   @SuppressWarnings({"unchecked", "deprecation"})
   public void testCreateBlobMd5Fail() {
-    String blobName = "test-create-blob-md5-fail";
+    String blobName = "test-upload-blob-md5-fail";
     BlobInfo blob =
         BlobInfo.newBuilder(BUCKET, blobName)
             .setContentType(CONTENT_TYPE)
@@ -795,7 +777,7 @@ public class ITStorageTest {
   @Test(timeout = 5000)
   public void testListBlobsSelectedFields() throws InterruptedException {
     String[] blobNames = {
-      "test-list-blobs-selected-fields-blob1", "test-list-blobs-selected-fields-blob2"
+      "test-listObjects-blobs-selected-fields-blob1", "test-listObjects-blobs-selected-fields-blob2"
     };
     ImmutableMap<String, String> metadata = ImmutableMap.of("k", "v");
     BlobInfo blob1 =
@@ -815,16 +797,16 @@ public class ITStorageTest {
     Page<Blob> page =
         storage.list(
             BUCKET,
-            Storage.BlobListOption.prefix("test-list-blobs-selected-fields-blob"),
+            Storage.BlobListOption.prefix("test-listObjects-blobs-selected-fields-blob"),
             Storage.BlobListOption.fields(BlobField.METADATA));
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the listObjects is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
       page =
           storage.list(
               BUCKET,
-              Storage.BlobListOption.prefix("test-list-blobs-selected-fields-blob"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-selected-fields-blob"),
               Storage.BlobListOption.fields(BlobField.METADATA));
     }
     Set<String> blobSet = ImmutableSet.of(blobNames[0], blobNames[1]);
@@ -841,8 +823,8 @@ public class ITStorageTest {
   @Test(timeout = 5000)
   public void testListBlobsKmsKeySelectedFields() throws InterruptedException {
     String[] blobNames = {
-      "test-list-blobs-selected-field-kms-key-name-blob1",
-      "test-list-blobs-selected-field-kms-key-name-blob2"
+      "test-listObjects-blobs-selected-field-kms-key-name-blob1",
+      "test-listObjects-blobs-selected-field-kms-key-name-blob2"
     };
     BlobInfo blob1 = BlobInfo.newBuilder(BUCKET, blobNames[0]).setContentType(CONTENT_TYPE).build();
     BlobInfo blob2 = BlobInfo.newBuilder(BUCKET, blobNames[1]).setContentType(CONTENT_TYPE).build();
@@ -855,16 +837,16 @@ public class ITStorageTest {
     Page<Blob> page =
         storage.list(
             BUCKET,
-            Storage.BlobListOption.prefix("test-list-blobs-selected-field-kms-key-name-blob"),
+            Storage.BlobListOption.prefix("test-listObjects-blobs-selected-field-kms-key-name-blob"),
             Storage.BlobListOption.fields(BlobField.KMS_KEY_NAME));
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the listObjects is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
       page =
           storage.list(
               BUCKET,
-              Storage.BlobListOption.prefix("test-list-blobs-selected-field-kms-key-name-blob"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-selected-field-kms-key-name-blob"),
               Storage.BlobListOption.fields(BlobField.KMS_KEY_NAME));
     }
     Set<String> blobSet = ImmutableSet.of(blobNames[0], blobNames[1]);
@@ -881,7 +863,7 @@ public class ITStorageTest {
   @Test(timeout = 5000)
   public void testListBlobsEmptySelectedFields() throws InterruptedException {
     String[] blobNames = {
-      "test-list-blobs-empty-selected-fields-blob1", "test-list-blobs-empty-selected-fields-blob2"
+      "test-listObjects-blobs-empty-selected-fields-blob1", "test-listObjects-blobs-empty-selected-fields-blob2"
     };
     BlobInfo blob1 = BlobInfo.newBuilder(BUCKET, blobNames[0]).setContentType(CONTENT_TYPE).build();
     BlobInfo blob2 = BlobInfo.newBuilder(BUCKET, blobNames[1]).setContentType(CONTENT_TYPE).build();
@@ -892,16 +874,16 @@ public class ITStorageTest {
     Page<Blob> page =
         storage.list(
             BUCKET,
-            Storage.BlobListOption.prefix("test-list-blobs-empty-selected-fields-blob"),
+            Storage.BlobListOption.prefix("test-listObjects-blobs-empty-selected-fields-blob"),
             Storage.BlobListOption.fields());
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the listObjects is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
       page =
           storage.list(
               BUCKET,
-              Storage.BlobListOption.prefix("test-list-blobs-empty-selected-fields-blob"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-empty-selected-fields-blob"),
               Storage.BlobListOption.fields());
     }
     Set<String> blobSet = ImmutableSet.of(blobNames[0], blobNames[1]);
@@ -918,25 +900,25 @@ public class ITStorageTest {
   public void testListBlobRequesterPays() throws InterruptedException {
     unsetRequesterPays();
     BlobInfo blob1 =
-        BlobInfo.newBuilder(BUCKET_REQUESTER_PAYS, "test-list-blobs-empty-selected-fields-blob1")
+        BlobInfo.newBuilder(BUCKET_REQUESTER_PAYS, "test-listObjects-blobs-empty-selected-fields-blob1")
             .setContentType(CONTENT_TYPE)
             .build();
     assertNotNull(storage.create(blob1));
 
     // Test listing a Requester Pays bucket.
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
 
-    assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
-    Bucket updatedBucket = storage.update(remoteBucket);
-    assertTrue(updatedBucket.requesterPays());
+    assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
+    StorageBucket updatedBucket = storage.update(remoteBucket);
+    assertTrue(updatedBucket.getRequesterPays());
     try {
       storage.list(
           BUCKET_REQUESTER_PAYS,
-          Storage.BlobListOption.prefix("test-list-blobs-empty-selected-fields-blob"),
+          Storage.BlobListOption.prefix("test-listObjects-blobs-empty-selected-fields-blob"),
           Storage.BlobListOption.fields(),
           Storage.BlobListOption.userProject("fakeBillingProjectId"));
       fail("Expected bad user project error.");
@@ -949,11 +931,11 @@ public class ITStorageTest {
       Page<Blob> page =
           storage.list(
               BUCKET_REQUESTER_PAYS,
-              Storage.BlobListOption.prefix("test-list-blobs-empty-selected-fields-blob"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-empty-selected-fields-blob"),
               Storage.BlobListOption.fields(),
               Storage.BlobListOption.userProject(projectId));
       List<Blob> blobs = Lists.newArrayList(page.iterateAll());
-      // If the list is empty, maybe the blob isn't visible yet; wait and try again.
+      // If the listObjects is empty, maybe the blob isn't visible yet; wait and try again.
       // Otherwise, expect one blob, since we only put in one above.
       if (!blobs.isEmpty()) {
         assertThat(blobs).hasSize(1);
@@ -966,10 +948,10 @@ public class ITStorageTest {
   @Test(timeout = 15000)
   public void testListBlobsVersioned() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket bucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build());
+    StorageBucket bucket =
+        storage.create(BucketInfo.newBucketBuilder(bucketName).setVersioningEnabled(true).buildInstance());
     try {
-      String[] blobNames = {"test-list-blobs-versioned-blob1", "test-list-blobs-versioned-blob2"};
+      String[] blobNames = {"test-listObjects-blobs-versioned-blob1", "test-listObjects-blobs-versioned-blob2"};
       BlobInfo blob1 =
           BlobInfo.newBuilder(bucket, blobNames[0]).setContentType(CONTENT_TYPE).build();
       BlobInfo blob2 =
@@ -983,16 +965,16 @@ public class ITStorageTest {
       Page<Blob> page =
           storage.list(
               bucketName,
-              Storage.BlobListOption.prefix("test-list-blobs-versioned-blob"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-versioned-blob"),
               Storage.BlobListOption.versions(true));
-      // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+      // Listing blobs is eventually consistent, we loop until the listObjects is from the expected size. The
       // test fails if timeout is reached.
       while (Iterators.size(page.iterateAll().iterator()) != 3) {
         Thread.sleep(500);
         page =
             storage.list(
                 bucketName,
-                Storage.BlobListOption.prefix("test-list-blobs-versioned-blob"),
+                Storage.BlobListOption.prefix("test-listObjects-blobs-versioned-blob"),
                 Storage.BlobListOption.versions(true));
       }
       Set<String> blobSet = ImmutableSet.of(blobNames[0], blobNames[1]);
@@ -1011,8 +993,8 @@ public class ITStorageTest {
   @Test
   public void testListBlobsWithOffset() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket bucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setVersioningEnabled(true).build());
+    StorageBucket bucket =
+        storage.create(BucketInfo.newBucketBuilder(bucketName).setVersioningEnabled(true).buildInstance());
     try {
       List<String> blobNames =
           ImmutableList.of("startOffset_blob1", "startOffset_blob2", "blob3_endOffset");
@@ -1057,7 +1039,7 @@ public class ITStorageTest {
 
   @Test(timeout = 5000)
   public void testListBlobsCurrentDirectory() throws InterruptedException {
-    String directoryName = "test-list-blobs-current-directory/";
+    String directoryName = "test-listObjects-blobs-current-directory/";
     String subdirectoryName = "subdirectory/";
     String[] blobNames = {directoryName + subdirectoryName + "blob1", directoryName + "blob2"};
     BlobInfo blob1 = BlobInfo.newBuilder(BUCKET, blobNames[0]).setContentType(CONTENT_TYPE).build();
@@ -1069,16 +1051,16 @@ public class ITStorageTest {
     Page<Blob> page =
         storage.list(
             BUCKET,
-            Storage.BlobListOption.prefix("test-list-blobs-current-directory/"),
+            Storage.BlobListOption.prefix("test-listObjects-blobs-current-directory/"),
             Storage.BlobListOption.currentDirectory());
-    // Listing blobs is eventually consistent, we loop until the list is of the expected size. The
+    // Listing blobs is eventually consistent, we loop until the listObjects is from the expected size. The
     // test fails if timeout is reached.
     while (Iterators.size(page.iterateAll().iterator()) != 2) {
       Thread.sleep(500);
       page =
           storage.list(
               BUCKET,
-              Storage.BlobListOption.prefix("test-list-blobs-current-directory/"),
+              Storage.BlobListOption.prefix("test-listObjects-blobs-current-directory/"),
               Storage.BlobListOption.currentDirectory());
     }
     Iterator<Blob> iterator = page.iterateAll().iterator();
@@ -1100,7 +1082,7 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlob() {
-    String blobName = "test-update-blob";
+    String blobName = "test-updateBucket-blob";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob);
     assertNotNull(remoteBlob);
@@ -1113,7 +1095,7 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobReplaceMetadata() {
-    String blobName = "test-update-blob-replace-metadata";
+    String blobName = "test-updateBucket-blob-replace-metadata";
     ImmutableMap<String, String> metadata = ImmutableMap.of("k1", "a");
     ImmutableMap<String, String> newMetadata = ImmutableMap.of("k2", "b");
     BlobInfo blob =
@@ -1134,7 +1116,7 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobMergeMetadata() {
-    String blobName = "test-update-blob-merge-metadata";
+    String blobName = "test-updateBucket-blob-merge-metadata";
     ImmutableMap<String, String> metadata = ImmutableMap.of("k1", "a");
     ImmutableMap<String, String> newMetadata = ImmutableMap.of("k2", "b");
     ImmutableMap<String, String> expectedMetadata = ImmutableMap.of("k1", "a", "k2", "b");
@@ -1154,7 +1136,7 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobUnsetMetadata() {
-    String blobName = "test-update-blob-unset-metadata";
+    String blobName = "test-updateBucket-blob-unset-metadata";
     ImmutableMap<String, String> metadata = ImmutableMap.of("k1", "a", "k2", "b");
     Map<String, String> newMetadata = new HashMap<>();
     newMetadata.put("k1", "a");
@@ -1176,7 +1158,7 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobFail() {
-    String blobName = "test-update-blob-fail";
+    String blobName = "test-updateBucket-blob-fail";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob);
     assertNotNull(remoteBlob);
@@ -1192,13 +1174,13 @@ public class ITStorageTest {
 
   @Test
   public void testDeleteNonExistingBlob() {
-    String blobName = "test-delete-non-existing-blob";
+    String blobName = "test-deleteBucket-non-existing-blob";
     assertFalse(storage.delete(BUCKET, blobName));
   }
 
   @Test
   public void testDeleteBlobNonExistingGeneration() {
-    String blobName = "test-delete-blob-non-existing-generation";
+    String blobName = "test-deleteBucket-blob-non-existing-generation";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     assertNotNull(storage.create(blob));
     try {
@@ -1211,7 +1193,7 @@ public class ITStorageTest {
 
   @Test
   public void testDeleteBlobFail() {
-    String blobName = "test-delete-blob-fail";
+    String blobName = "test-deleteBucket-blob-fail";
     BlobInfo blob = BlobInfo.newBuilder(BUCKET, blobName).build();
     Blob remoteBlob = storage.create(blob);
     assertNotNull(remoteBlob);
@@ -1472,11 +1454,11 @@ public class ITStorageTest {
 
   @Test
   public void testCopyBlobUpdateMetadata() {
-    String sourceBlobName = "test-copy-blob-update-metadata-source";
+    String sourceBlobName = "test-copy-blob-updateBucket-metadata-source";
     BlobId source = BlobId.of(BUCKET, sourceBlobName);
     Blob remoteSourceBlob = storage.create(BlobInfo.newBuilder(source).build(), BLOB_BYTE_CONTENT);
     assertNotNull(remoteSourceBlob);
-    String targetBlobName = "test-copy-blob-update-metadata-target";
+    String targetBlobName = "test-copy-blob-updateBucket-metadata-target";
     ImmutableMap<String, String> metadata = ImmutableMap.of("k", "v");
     BlobInfo target =
         BlobInfo.newBuilder(BUCKET, targetBlobName)
@@ -1497,7 +1479,7 @@ public class ITStorageTest {
   // Re-enable this test when it stops failing
   // @Test
   public void testCopyBlobUpdateStorageClass() {
-    String sourceBlobName = "test-copy-blob-update-storage-class-source";
+    String sourceBlobName = "test-copy-blob-updateBucket-storage-class-source";
     BlobId source = BlobId.of(BUCKET, sourceBlobName);
     BlobInfo sourceInfo =
         BlobInfo.newBuilder(source).setStorageClass(StorageClass.STANDARD).build();
@@ -1505,7 +1487,7 @@ public class ITStorageTest {
     assertNotNull(remoteSourceBlob);
     assertEquals(StorageClass.STANDARD, remoteSourceBlob.getStorageClass());
 
-    String targetBlobName = "test-copy-blob-update-storage-class-target";
+    String targetBlobName = "test-copy-blob-updateBucket-storage-class-target";
     BlobInfo targetInfo =
         BlobInfo.newBuilder(BUCKET, targetBlobName).setStorageClass(StorageClass.COLDLINE).build();
     Storage.CopyRequest req = Storage.CopyRequest.of(source, targetInfo);
@@ -1582,7 +1564,7 @@ public class ITStorageTest {
     assertNotNull(storage.create(sourceBlob1));
     assertNotNull(storage.create(sourceBlob2));
 
-    // Batch update request
+    // Batch updateBucket request
     BlobInfo updatedBlob1 = sourceBlob1.toBuilder().setContentType(CONTENT_TYPE).build();
     BlobInfo updatedBlob2 = sourceBlob2.toBuilder().setContentType(CONTENT_TYPE).build();
     StorageBatch updateBatch = storage.batch();
@@ -1608,7 +1590,7 @@ public class ITStorageTest {
     assertEquals(remoteUpdatedBlob1, remoteBlob1);
     assertEquals(remoteUpdatedBlob2, remoteBlob2);
 
-    // Batch delete request
+    // Batch deleteBucket request
     StorageBatch deleteBatch = storage.batch();
     StorageBatchResult<Boolean> deleteResult1 = deleteBatch.delete(BUCKET, sourceBlobName1);
     StorageBatchResult<Boolean> deleteResult2 = deleteBatch.delete(BUCKET, sourceBlobName2);
@@ -2110,7 +2092,7 @@ public class ITStorageTest {
   @Test
   public void testDownloadPublicBlobWithoutAuthentication() {
     assumeFalse(IS_VPC_TEST);
-    // create an unauthorized user
+    // upload an unauthorized user
     Storage unauthorizedStorage = StorageOptions.getUnauthenticatedInstance().getService();
 
     // try to download blobs from a public bucket
@@ -2175,8 +2157,8 @@ public class ITStorageTest {
 
   @Test
   public void testDeleteBlobs() {
-    String sourceBlobName1 = "test-delete-blobs-1";
-    String sourceBlobName2 = "test-delete-blobs-2";
+    String sourceBlobName1 = "test-deleteBucket-blobs-1";
+    String sourceBlobName2 = "test-deleteBucket-blobs-2";
     BlobInfo sourceBlob1 = BlobInfo.newBuilder(BUCKET, sourceBlobName1).build();
     BlobInfo sourceBlob2 = BlobInfo.newBuilder(BUCKET, sourceBlobName2).build();
     assertNotNull(storage.create(sourceBlob1));
@@ -2188,8 +2170,8 @@ public class ITStorageTest {
 
   @Test
   public void testDeleteBlobsFail() {
-    String sourceBlobName1 = "test-delete-blobs-fail-1";
-    String sourceBlobName2 = "test-delete-blobs-fail-2";
+    String sourceBlobName1 = "test-deleteBucket-blobs-fail-1";
+    String sourceBlobName2 = "test-deleteBucket-blobs-fail-2";
     BlobInfo sourceBlob1 = BlobInfo.newBuilder(BUCKET, sourceBlobName1).build();
     BlobInfo sourceBlob2 = BlobInfo.newBuilder(BUCKET, sourceBlobName2).build();
     assertNotNull(storage.create(sourceBlob1));
@@ -2200,8 +2182,8 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobs() {
-    String sourceBlobName1 = "test-update-blobs-1";
-    String sourceBlobName2 = "test-update-blobs-2";
+    String sourceBlobName1 = "test-updateBucket-blobs-1";
+    String sourceBlobName2 = "test-updateBucket-blobs-2";
     BlobInfo sourceBlob1 = BlobInfo.newBuilder(BUCKET, sourceBlobName1).build();
     BlobInfo sourceBlob2 = BlobInfo.newBuilder(BUCKET, sourceBlobName2).build();
     Blob remoteBlob1 = storage.create(sourceBlob1);
@@ -2222,8 +2204,8 @@ public class ITStorageTest {
 
   @Test
   public void testUpdateBlobsFail() {
-    String sourceBlobName1 = "test-update-blobs-fail-1";
-    String sourceBlobName2 = "test-update-blobs-fail-2";
+    String sourceBlobName1 = "test-updateBucket-blobs-fail-1";
+    String sourceBlobName2 = "test-updateBucket-blobs-fail-2";
     BlobInfo sourceBlob1 = BlobInfo.newBuilder(BUCKET, sourceBlobName1).build();
     BlobInfo sourceBlob2 = BlobInfo.newBuilder(BUCKET, sourceBlobName2).build();
     BlobInfo remoteBlob1 = storage.create(sourceBlob1);
@@ -2247,14 +2229,14 @@ public class ITStorageTest {
 
   private void testBucketAclRequesterPays(boolean requesterPays) {
     if (requesterPays) {
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(
               BUCKET_REQUESTER_PAYS,
               Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-      assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-      remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
-      Bucket updatedBucket = storage.update(remoteBucket);
-      assertTrue(updatedBucket.requesterPays());
+      assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+      remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
+      StorageBucket updatedBucket = storage.update(remoteBucket);
+      assertTrue(updatedBucket.getRequesterPays());
     }
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
@@ -2282,16 +2264,16 @@ public class ITStorageTest {
     assertNull(
         storage.getAcl(BUCKET_REQUESTER_PAYS, User.ofAllAuthenticatedUsers(), bucketOptions));
     if (requesterPays) {
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(
               BUCKET_REQUESTER_PAYS,
               Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING),
               Storage.BucketGetOption.userProject(projectId));
-      assertTrue(remoteBucket.requesterPays());
-      remoteBucket = remoteBucket.toBuilder().setRequesterPays(false).build();
-      Bucket updatedBucket =
+      assertTrue(remoteBucket.getRequesterPays());
+      remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(false).buildInstance();
+      StorageBucket updatedBucket =
           storage.update(remoteBucket, Storage.BucketTargetOption.userProject(projectId));
-      assertFalse(updatedBucket.requesterPays());
+      assertFalse(updatedBucket.getRequesterPays());
     }
   }
 
@@ -2391,7 +2373,7 @@ public class ITStorageTest {
       }
 
       if (!createdHmacKeyIsInList) {
-        fail("Created an HMAC key but it didn't show up in list()");
+        fail("Created an HMAC key but it didn't show up in listObjects()");
       }
 
       HmacKey.HmacKeyMetadata getResult = storage.getHmacKey(accessId);
@@ -2411,7 +2393,7 @@ public class ITStorageTest {
       }
 
       if (createdHmacKeyIsInList) {
-        fail("Deleted an HMAC key but it showed up in list()");
+        fail("Deleted an HMAC key but it showed up in listObjects()");
       }
 
       storage.createHmacKey(serviceAccount);
@@ -2477,14 +2459,14 @@ public class ITStorageTest {
   @Test
   public void testBucketPolicyV1RequesterPays() throws ExecutionException, InterruptedException {
     unsetRequesterPays();
-    Bucket bucketDefault =
+    StorageBucket bucketDefault =
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-    assertTrue(bucketDefault.requesterPays() == null || !bucketDefault.requesterPays());
+    assertTrue(bucketDefault.getRequesterPays() == null || !bucketDefault.getRequesterPays());
 
-    Bucket bucketTrue = storage.update(bucketDefault.toBuilder().setRequesterPays(true).build());
-    assertTrue(bucketTrue.requesterPays());
+    StorageBucket bucketTrue = storage.update(bucketDefault.toBucketBuilder().setRequesterPays(true).buildInstance());
+    assertTrue(bucketTrue.getRequesterPays());
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
 
@@ -2540,11 +2522,11 @@ public class ITStorageTest {
             BUCKET_REQUESTER_PAYS,
             ImmutableList.of("storage.buckets.getIamPolicy", "storage.buckets.setIamPolicy"),
             bucketOptions));
-    Bucket bucketFalse =
+    StorageBucket bucketFalse =
         storage.update(
-            bucketTrue.toBuilder().setRequesterPays(false).build(),
+            bucketTrue.toBucketBuilder().setRequesterPays(false).buildInstance(),
             Storage.BucketTargetOption.userProject(projectId));
-    assertFalse(bucketFalse.requesterPays());
+    assertFalse(bucketFalse.getRequesterPays());
   }
 
   @Test
@@ -2606,14 +2588,14 @@ public class ITStorageTest {
 
   @Test
   public void testBucketPolicyV3() {
-    // Enable Uniform Bucket-Level Access
+    // Enable Uniform StorageBucket-Level Access
     storage.update(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.newBucketBuilder(BUCKET)
             .setIamConfiguration(
-                BucketInfo.IamConfiguration.newBuilder()
+                BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
                     .setIsUniformBucketLevelAccessEnabled(true)
-                    .build())
-            .build());
+                    .buildBucketIamConfiguration())
+            .buildInstance());
     String projectId = remoteStorageHelper.getOptions().getProjectId();
 
     Storage.BucketSourceOption[] bucketOptions =
@@ -2750,58 +2732,58 @@ public class ITStorageTest {
             ImmutableList.of("storage.buckets.getIamPolicy", "storage.buckets.setIamPolicy"),
             bucketOptions));
 
-    // Disable Uniform Bucket-Level Access
+    // Disable Uniform StorageBucket-Level Access
     storage.update(
-        BucketInfo.newBuilder(BUCKET)
+        BucketInfo.newBucketBuilder(BUCKET)
             .setIamConfiguration(
-                BucketInfo.IamConfiguration.newBuilder()
+                BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
                     .setIsUniformBucketLevelAccessEnabled(false)
-                    .build())
-            .build());
+                    .buildBucketIamConfiguration())
+            .buildInstance());
   }
 
   @Test
   public void testUpdateBucketLabel() {
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.get(BUCKET, Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
     assertNull(remoteBucket.getLabels());
-    remoteBucket = remoteBucket.toBuilder().setLabels(BUCKET_LABELS).build();
-    Bucket updatedBucket = storage.update(remoteBucket);
+    remoteBucket = remoteBucket.toBucketBuilder().setLabels(BUCKET_LABELS).buildInstance();
+    StorageBucket updatedBucket = storage.update(remoteBucket);
     assertEquals(BUCKET_LABELS, updatedBucket.getLabels());
-    remoteBucket.toBuilder().setLabels(REMOVE_BUCKET_LABELS).build().update();
+    remoteBucket.toBucketBuilder().setLabels(REMOVE_BUCKET_LABELS).buildInstance().updateBucket();
     assertNull(storage.get(BUCKET).getLabels());
   }
 
   @Test
   public void testUpdateBucketRequesterPays() {
     unsetRequesterPays();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.get(
             BUCKET_REQUESTER_PAYS,
             Storage.BucketGetOption.fields(BucketField.ID, BucketField.BILLING));
-    assertTrue(remoteBucket.requesterPays() == null || !remoteBucket.requesterPays());
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(true).build();
-    Bucket updatedBucket = storage.update(remoteBucket);
-    assertTrue(updatedBucket.requesterPays());
+    assertTrue(remoteBucket.getRequesterPays() == null || !remoteBucket.getRequesterPays());
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(true).buildInstance();
+    StorageBucket updatedBucket = storage.update(remoteBucket);
+    assertTrue(updatedBucket.getRequesterPays());
 
     String projectId = remoteStorageHelper.getOptions().getProjectId();
-    Bucket.BlobTargetOption option = Bucket.BlobTargetOption.userProject(projectId);
-    String blobName = "test-create-empty-blob-requester-pays";
-    Blob remoteBlob = updatedBucket.create(blobName, BLOB_BYTE_CONTENT, option);
+    StorageBucket.BlobUploadOption option = StorageBucket.BlobUploadOption.setUserProject(projectId);
+    String blobName = "test-upload-empty-blob-requester-pays";
+    Blob remoteBlob = updatedBucket.upload(blobName, BLOB_BYTE_CONTENT, option);
     assertNotNull(remoteBlob);
     byte[] readBytes =
         storage.readAllBytes(
             BUCKET_REQUESTER_PAYS, blobName, Storage.BlobSourceOption.userProject(projectId));
     assertArrayEquals(BLOB_BYTE_CONTENT, readBytes);
-    remoteBucket = remoteBucket.toBuilder().setRequesterPays(false).build();
+    remoteBucket = remoteBucket.toBucketBuilder().setRequesterPays(false).buildInstance();
     updatedBucket = storage.update(remoteBucket, Storage.BucketTargetOption.userProject(projectId));
-    assertFalse(updatedBucket.requesterPays());
+    assertFalse(updatedBucket.getRequesterPays());
   }
 
   @Test
   public void testListBucketRequesterPaysFails() throws InterruptedException {
     String projectId = remoteStorageHelper.getOptions().getProjectId();
-    Iterator<Bucket> bucketIterator =
+    Iterator<StorageBucket> bucketIterator =
         storage
             .list(
                 Storage.BucketListOption.prefix(BUCKET),
@@ -2818,7 +2800,7 @@ public class ITStorageTest {
               .iterator();
     }
     while (bucketIterator.hasNext()) {
-      Bucket remoteBucket = bucketIterator.next();
+      StorageBucket remoteBucket = bucketIterator.next();
       assertTrue(remoteBucket.getName().startsWith(BUCKET));
       assertNull(remoteBucket.getCreateTime());
       assertNull(remoteBucket.getSelfLink());
@@ -2828,16 +2810,16 @@ public class ITStorageTest {
   @Test
   public void testListBucketDefaultKmsKeyName() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setDefaultKmsKeyName(kmsKeyOneResourcePath)
                 .setLocation(KMS_KEY_RING_LOCATION)
-                .build());
+                .buildInstance());
     assertNotNull(remoteBucket);
     assertTrue(remoteBucket.getDefaultKmsKeyName().startsWith(kmsKeyOneResourcePath));
     try {
-      Iterator<Bucket> bucketIterator =
+      Iterator<StorageBucket> bucketIterator =
           storage
               .list(
                   Storage.BucketListOption.prefix(bucketName),
@@ -2855,7 +2837,7 @@ public class ITStorageTest {
                 .iterator();
       }
       while (bucketIterator.hasNext()) {
-        Bucket bucket = bucketIterator.next();
+        StorageBucket bucket = bucketIterator.next();
         assertTrue(bucket.getName().startsWith(bucketName));
         assertNotNull(bucket.getDefaultKmsKeyName());
         assertTrue(bucket.getDefaultKmsKeyName().startsWith(kmsKeyOneResourcePath));
@@ -2870,9 +2852,9 @@ public class ITStorageTest {
   @Test
   public void testRetentionPolicyNoLock() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build());
+            BucketInfo.newBucketBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance());
     try {
       assertEquals(RETENTION_PERIOD, remoteBucket.getRetentionPeriod());
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
@@ -2882,13 +2864,13 @@ public class ITStorageTest {
       assertEquals(RETENTION_PERIOD, remoteBucket.getRetentionPeriod());
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
       assertNull(remoteBucket.retentionPolicyIsLocked());
-      String blobName = "test-create-with-retention-policy-hold";
+      String blobName = "test-upload-with-retention-policy-hold";
       BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
       Blob remoteBlob = storage.create(blobInfo);
       assertNotNull(remoteBlob.getRetentionExpirationTime());
-      remoteBucket = remoteBucket.toBuilder().setRetentionPeriod(null).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setRetentionPeriod(null).buildInstance().updateBucket();
       assertNull(remoteBucket.getRetentionPeriod());
-      remoteBucket = remoteBucket.toBuilder().setRetentionPeriod(null).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setRetentionPeriod(null).buildInstance().updateBucket();
       assertNull(remoteBucket.getRetentionPeriod());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -2908,14 +2890,14 @@ public class ITStorageTest {
     BucketInfo bucketInfo;
     if (requesterPays) {
       bucketInfo =
-          BucketInfo.newBuilder(bucketName)
+          BucketInfo.newBucketBuilder(bucketName)
               .setRetentionPeriod(RETENTION_PERIOD)
               .setRequesterPays(true)
-              .build();
+              .buildInstance();
     } else {
-      bucketInfo = BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build();
+      bucketInfo = BucketInfo.newBucketBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance();
     }
-    Bucket remoteBucket = storage.create(bucketInfo);
+    StorageBucket remoteBucket = storage.create(bucketInfo);
     try {
       assertNull(remoteBucket.retentionPolicyIsLocked());
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
@@ -2935,10 +2917,10 @@ public class ITStorageTest {
       assertNotNull(remoteBucket.getRetentionEffectiveTime());
     } finally {
       if (requesterPays) {
-        bucketInfo = bucketInfo.toBuilder().setRequesterPays(false).build();
-        Bucket updateBucket =
+        bucketInfo = bucketInfo.toBucketBuilder().setRequesterPays(false).buildInstance();
+        StorageBucket updateBucket =
             storage.update(bucketInfo, Storage.BucketTargetOption.userProject(projectId));
-        assertFalse(updateBucket.requesterPays());
+        assertFalse(updateBucket.getRequesterPays());
       }
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
     }
@@ -2948,17 +2930,17 @@ public class ITStorageTest {
   public void testAttemptObjectDeleteWithRetentionPolicy()
       throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
+    StorageBucket remoteBucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).build());
+            BucketInfo.newBucketBuilder(bucketName).setRetentionPeriod(RETENTION_PERIOD).buildInstance());
     assertEquals(RETENTION_PERIOD, remoteBucket.getRetentionPeriod());
-    String blobName = "test-create-with-retention-policy";
+    String blobName = "test-upload-with-retention-policy";
     BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
     Blob remoteBlob = storage.create(blobInfo);
     assertNotNull(remoteBlob.getRetentionExpirationTime());
     try {
       remoteBlob.delete();
-      fail("Expected failure on delete from retentionPolicy");
+      fail("Expected failure on deleteBucket from retentionPolicy");
     } catch (StorageException ex) {
       // expected
     } finally {
@@ -2971,15 +2953,15 @@ public class ITStorageTest {
   public void testEnableDisableBucketDefaultEventBasedHold()
       throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket remoteBucket =
-        storage.create(BucketInfo.newBuilder(bucketName).setDefaultEventBasedHold(true).build());
+    StorageBucket remoteBucket =
+        storage.create(BucketInfo.newBucketBuilder(bucketName).setDefaultEventBasedHold(true).buildInstance());
     try {
       assertTrue(remoteBucket.getDefaultEventBasedHold());
       remoteBucket =
           storage.get(
               bucketName, Storage.BucketGetOption.fields(BucketField.DEFAULT_EVENT_BASED_HOLD));
       assertTrue(remoteBucket.getDefaultEventBasedHold());
-      String blobName = "test-create-with-event-based-hold";
+      String blobName = "test-upload-with-event-based-hold";
       BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, blobName).build();
       Blob remoteBlob = storage.create(blobInfo);
       assertTrue(remoteBlob.getEventBasedHold());
@@ -2989,7 +2971,7 @@ public class ITStorageTest {
       assertTrue(remoteBlob.getEventBasedHold());
       remoteBlob = remoteBlob.toBuilder().setEventBasedHold(false).build().update();
       assertFalse(remoteBlob.getEventBasedHold());
-      remoteBucket = remoteBucket.toBuilder().setDefaultEventBasedHold(false).build().update();
+      remoteBucket = remoteBucket.toBucketBuilder().setDefaultEventBasedHold(false).buildInstance().updateBucket();
       assertFalse(remoteBucket.getDefaultEventBasedHold());
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -2998,7 +2980,7 @@ public class ITStorageTest {
 
   @Test
   public void testEnableDisableTemporaryHold() {
-    String blobName = "test-create-with-temporary-hold";
+    String blobName = "test-upload-with-temporary-hold";
     BlobInfo blobInfo = BlobInfo.newBuilder(BUCKET, blobName).setTemporaryHold(true).build();
     Blob remoteBlob = storage.create(blobInfo);
     assertTrue(remoteBlob.getTemporaryHold());
@@ -3011,13 +2993,13 @@ public class ITStorageTest {
 
   @Test
   public void testAttemptObjectDeleteWithEventBasedHold() {
-    String blobName = "test-create-with-event-based-hold";
+    String blobName = "test-upload-with-event-based-hold";
     BlobInfo blobInfo = BlobInfo.newBuilder(BUCKET, blobName).setEventBasedHold(true).build();
     Blob remoteBlob = storage.create(blobInfo);
     assertTrue(remoteBlob.getEventBasedHold());
     try {
       remoteBlob.delete();
-      fail("Expected failure on delete from eventBasedHold");
+      fail("Expected failure on deleteBucket from eventBasedHold");
     } catch (StorageException ex) {
       // expected
     } finally {
@@ -3027,13 +3009,13 @@ public class ITStorageTest {
 
   @Test
   public void testAttemptDeletionObjectTemporaryHold() {
-    String blobName = "test-create-with-temporary-hold";
+    String blobName = "test-upload-with-temporary-hold";
     BlobInfo blobInfo = BlobInfo.newBuilder(BUCKET, blobName).setTemporaryHold(true).build();
     Blob remoteBlob = storage.create(blobInfo);
     assertTrue(remoteBlob.getTemporaryHold());
     try {
       remoteBlob.delete();
-      fail("Expected failure on delete from temporaryHold");
+      fail("Expected failure on deleteBucket from temporaryHold");
     } catch (StorageException ex) {
       // expected
     } finally {
@@ -3055,27 +3037,27 @@ public class ITStorageTest {
     String bucket = RemoteStorageHelper.generateBucketName();
     try {
       storage.create(
-          Bucket.newBuilder(bucket)
+          StorageBucket.newBucketBuilder(bucket)
               .setIamConfiguration(
-                  BucketInfo.IamConfiguration.newBuilder()
+                  BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
                       .setIsBucketPolicyOnlyEnabled(true)
-                      .build())
-              .build());
+                      .buildBucketIamConfiguration())
+              .buildInstance());
 
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(bucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
 
       assertTrue(remoteBucket.getIamConfiguration().isBucketPolicyOnlyEnabled());
       assertNotNull(remoteBucket.getIamConfiguration().getBucketPolicyOnlyLockedTime());
 
       try {
-        remoteBucket.listAcls();
+        remoteBucket.listAclEntries();
         fail("StorageException was expected.");
       } catch (StorageException e) {
         // Expected: Listing legacy ACLs should fail on a BPO enabled bucket
       }
       try {
-        remoteBucket.listDefaultAcls();
+        remoteBucket.getDefaultAcls();
         fail("StorageException was expected");
       } catch (StorageException e) {
         // Expected: Listing legacy ACLs should fail on a BPO enabled bucket
@@ -3090,26 +3072,26 @@ public class ITStorageTest {
     String bucket = RemoteStorageHelper.generateBucketName();
     try {
       storage.create(
-          Bucket.newBuilder(bucket)
+          StorageBucket.newBucketBuilder(bucket)
               .setIamConfiguration(
-                  BucketInfo.IamConfiguration.newBuilder()
+                  BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
                       .setIsUniformBucketLevelAccessEnabled(true)
-                      .build())
-              .build());
+                      .buildBucketIamConfiguration())
+              .buildInstance());
 
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(bucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
 
       assertTrue(remoteBucket.getIamConfiguration().isUniformBucketLevelAccessEnabled());
       assertNotNull(remoteBucket.getIamConfiguration().getUniformBucketLevelAccessLockedTime());
       try {
-        remoteBucket.listAcls();
+        remoteBucket.listAclEntries();
         fail("StorageException was expected.");
       } catch (StorageException e) {
         // Expected: Listing legacy ACLs should fail on a BPO enabled bucket
       }
       try {
-        remoteBucket.listDefaultAcls();
+        remoteBucket.getDefaultAcls();
         fail("StorageException was expected");
       } catch (StorageException e) {
         // Expected: Listing legacy ACLs should fail on a BPO enabled bucket
@@ -3125,36 +3107,36 @@ public class ITStorageTest {
     String bpoBucket = RemoteStorageHelper.generateBucketName();
     try {
       // BPO is disabled by default.
-      Bucket bucket =
+      StorageBucket bucket =
           storage.create(
-              Bucket.newBuilder(bpoBucket)
+              StorageBucket.newBucketBuilder(bpoBucket)
                   .setAcl(ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
                   .setDefaultAcl(
                       ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
-                  .build());
+                  .buildInstance());
 
-      BucketInfo.IamConfiguration bpoEnabledIamConfiguration =
-          BucketInfo.IamConfiguration.newBuilder().setIsBucketPolicyOnlyEnabled(true).build();
+      BucketInfo.BucketIamConfiguration bpoEnabledIamConfiguration =
+          BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder().setIsBucketPolicyOnlyEnabled(true).buildBucketIamConfiguration();
       bucket
-          .toBuilder()
+          .toBucketBuilder()
           .setAcl(null)
           .setDefaultAcl(null)
           .setIamConfiguration(bpoEnabledIamConfiguration)
-          .build()
-          .update();
+          .buildInstance()
+          .updateBucket();
 
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(bpoBucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
 
       assertTrue(remoteBucket.getIamConfiguration().isBucketPolicyOnlyEnabled());
       assertNotNull(remoteBucket.getIamConfiguration().getBucketPolicyOnlyLockedTime());
 
       remoteBucket
-          .toBuilder()
+          .toBucketBuilder()
           .setIamConfiguration(
-              bpoEnabledIamConfiguration.toBuilder().setIsBucketPolicyOnlyEnabled(false).build())
-          .build()
-          .update();
+              bpoEnabledIamConfiguration.toUniformBucketLevelAccessBuilder().setIsBucketPolicyOnlyEnabled(false).buildBucketIamConfiguration())
+          .buildInstance()
+          .updateBucket();
 
       remoteBucket =
           storage.get(
@@ -3176,38 +3158,38 @@ public class ITStorageTest {
   public void testEnableAndDisableUniformBucketLevelAccessOnExistingBucket() throws Exception {
     String bpoBucket = RemoteStorageHelper.generateBucketName();
     try {
-      BucketInfo.IamConfiguration ublaDisabledIamConfiguration =
-          BucketInfo.IamConfiguration.newBuilder()
+      BucketInfo.BucketIamConfiguration ublaDisabledIamConfiguration =
+          BucketInfo.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
               .setIsUniformBucketLevelAccessEnabled(false)
-              .build();
-      Bucket bucket =
+              .buildBucketIamConfiguration();
+      StorageBucket bucket =
           storage.create(
-              Bucket.newBuilder(bpoBucket)
+              StorageBucket.newBucketBuilder(bpoBucket)
                   .setIamConfiguration(ublaDisabledIamConfiguration)
                   .setAcl(ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
                   .setDefaultAcl(
                       ImmutableList.of(Acl.of(User.ofAllAuthenticatedUsers(), Role.READER)))
-                  .build());
+                  .buildInstance());
 
       bucket
-          .toBuilder()
+          .toBucketBuilder()
           .setAcl(null)
           .setDefaultAcl(null)
           .setIamConfiguration(
               ublaDisabledIamConfiguration
-                  .toBuilder()
+                  .toUniformBucketLevelAccessBuilder()
                   .setIsUniformBucketLevelAccessEnabled(true)
-                  .build())
-          .build()
-          .update();
+                  .buildBucketIamConfiguration())
+          .buildInstance()
+          .updateBucket();
 
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(bpoBucket, Storage.BucketGetOption.fields(BucketField.IAMCONFIGURATION));
 
       assertTrue(remoteBucket.getIamConfiguration().isUniformBucketLevelAccessEnabled());
       assertNotNull(remoteBucket.getIamConfiguration().getUniformBucketLevelAccessLockedTime());
 
-      remoteBucket.toBuilder().setIamConfiguration(ublaDisabledIamConfiguration).build().update();
+      remoteBucket.toBucketBuilder().setIamConfiguration(ublaDisabledIamConfiguration).buildInstance().updateBucket();
 
       remoteBucket =
           storage.get(
@@ -3260,31 +3242,31 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     long bucketMetageneration = 42;
     storage.create(
-        BucketInfo.newBuilder(bucketName)
+        BucketInfo.newBucketBuilder(bucketName)
             .setLocation("us")
             .setRetentionPeriod(RETENTION_PERIOD)
-            .build());
-    Bucket bucket =
+            .buildInstance());
+    StorageBucket bucket =
         storage.get(
             bucketName, Storage.BucketGetOption.metagenerationNotMatch(bucketMetageneration));
     assertTrue(LOCATION_TYPES.contains(bucket.getLocationType()));
 
-    Bucket bucket1 =
+    StorageBucket bucket1 =
         storage.lockRetentionPolicy(bucket, Storage.BucketTargetOption.metagenerationMatch());
     assertTrue(LOCATION_TYPES.contains(bucket1.getLocationType()));
 
-    Bucket updatedBucket =
+    StorageBucket updatedBucket =
         storage.update(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setLocation("asia")
                 .setRetentionPeriod(RETENTION_PERIOD)
-                .build());
+                .buildInstance());
     assertTrue(LOCATION_TYPES.contains(updatedBucket.getLocationType()));
 
-    Iterator<Bucket> bucketIterator =
+    Iterator<StorageBucket> bucketIterator =
         storage.list(Storage.BucketListOption.prefix(bucketName)).iterateAll().iterator();
     while (bucketIterator.hasNext()) {
-      Bucket remoteBucket = bucketIterator.next();
+      StorageBucket remoteBucket = bucketIterator.next();
       assertTrue(LOCATION_TYPES.contains(remoteBucket.getLocationType()));
     }
     RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -3295,22 +3277,22 @@ public class ITStorageTest {
     String logsBucket = RemoteStorageHelper.generateBucketName();
     String loggingBucket = RemoteStorageHelper.generateBucketName();
     try {
-      assertNotNull(storage.create(BucketInfo.newBuilder(logsBucket).setLocation("us").build()));
+      assertNotNull(storage.create(BucketInfo.newBucketBuilder(logsBucket).setLocation("us").buildInstance()));
       Policy policy = storage.getIamPolicy(logsBucket);
       assertNotNull(policy);
-      BucketInfo.Logging logging =
-          BucketInfo.Logging.newBuilder()
+      BucketInfo.LogConfig logging =
+          BucketInfo.LogConfig.newLogConfigBuilder()
               .setLogBucket(logsBucket)
               .setLogObjectPrefix("test-logs")
-              .build();
-      Bucket bucket =
+              .buildLogConfig();
+      StorageBucket bucket =
           storage.create(
-              BucketInfo.newBuilder(loggingBucket).setLocation("us").setLogging(logging).build());
+              BucketInfo.newBucketBuilder(loggingBucket).setLocation("us").setLogging(logging).buildInstance());
       assertEquals(logsBucket, bucket.getLogging().getLogBucket());
       assertEquals("test-logs", bucket.getLogging().getLogObjectPrefix());
 
       // Disable bucket logging.
-      Bucket updatedBucket = bucket.toBuilder().setLogging(null).build().update();
+      StorageBucket updatedBucket = bucket.toBucketBuilder().setLogging(null).buildInstance().updateBucket();
       assertNull(updatedBucket.getLogging());
 
     } finally {
@@ -3346,7 +3328,7 @@ public class ITStorageTest {
 
   @Test
   public void testBlobReload() throws Exception {
-    String blobName = "test-blob-reload";
+    String blobName = "test-blob-reloadFromStorage";
     BlobId blobId = BlobId.of(BUCKET, blobName);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
     Blob blob = storage.create(blobInfo, new byte[] {0, 1, 2});
@@ -3376,16 +3358,16 @@ public class ITStorageTest {
   @Test
   public void testDeleteLifecycleRules() throws ExecutionException, InterruptedException {
     String bucketName = RemoteStorageHelper.generateBucketName();
-    Bucket bucket =
+    StorageBucket bucket =
         storage.create(
-            BucketInfo.newBuilder(bucketName)
+            BucketInfo.newBucketBuilder(bucketName)
                 .setLocation("us")
                 .setLifecycleRules(LIFECYCLE_RULES)
-                .build());
+                .buildInstance());
     assertThat(bucket.getLifecycleRules()).isNotNull();
     assertThat(bucket.getLifecycleRules()).hasSize(2);
     try {
-      Bucket updatedBucket = bucket.toBuilder().deleteLifecycleRules().build().update();
+      StorageBucket updatedBucket = bucket.toBucketBuilder().deleteLifecycleRules().buildInstance().updateBucket();
       assertThat(updatedBucket.getLifecycleRules()).hasSize(0);
     } finally {
       RemoteStorageHelper.forceDelete(storage, bucketName, 5, TimeUnit.SECONDS);
@@ -3435,7 +3417,7 @@ public class ITStorageTest {
 
   private Blob createBlob(String method, BlobInfo blobInfo, boolean detectType) throws IOException {
     switch (method) {
-      case "create":
+      case "upload":
         return detectType
             ? storage.create(blobInfo, Storage.BlobTargetOption.detectContentType())
             : storage.create(blobInfo);
@@ -3477,7 +3459,7 @@ public class ITStorageTest {
 
   @Test
   public void testAutoContentTypeCreate() throws IOException {
-    testAutoContentType("create");
+    testAutoContentType("upload");
   }
 
   @Test
@@ -3495,7 +3477,7 @@ public class ITStorageTest {
     String bucketName = RemoteStorageHelper.generateBucketName();
     List<Cors.Origin> origins = ImmutableList.of(Cors.Origin.of("http://cloud.google.com"));
     List<HttpMethod> httpMethods = ImmutableList.of(HttpMethod.GET);
-    List<String> responseHeaders = ImmutableList.of("Content-Type");
+    List<String> responseHeaders = ImmutableList.of("Content-VersionType");
     try {
       Cors cors =
           Cors.newBuilder()
@@ -3504,10 +3486,10 @@ public class ITStorageTest {
               .setResponseHeaders(responseHeaders)
               .setMaxAgeSeconds(100)
               .build();
-      storage.create(BucketInfo.newBuilder(bucketName).setCors(ImmutableList.of(cors)).build());
+      storage.create(BucketInfo.newBucketBuilder(bucketName).setCors(ImmutableList.of(cors)).buildInstance());
 
       // case-1 : Cors are set and field selector is selected then returns not-null.
-      Bucket remoteBucket =
+      StorageBucket remoteBucket =
           storage.get(bucketName, Storage.BucketGetOption.fields(BucketField.CORS));
       assertThat(remoteBucket.getCors()).isNotNull();
       assertThat(remoteBucket.getCors().get(0).getMaxAgeSeconds()).isEqualTo(100);
@@ -3520,7 +3502,7 @@ public class ITStorageTest {
       assertThat(remoteBucket.getCors()).isNotNull();
 
       // Remove CORS configuration from the bucket.
-      Bucket updatedBucket = remoteBucket.toBuilder().setCors(null).build().update();
+      StorageBucket updatedBucket = remoteBucket.toBucketBuilder().setCors(null).buildInstance().updateBucket();
       assertThat(updatedBucket.getCors()).isNull();
 
       // case-3 : Cors are not set and field selector is selected then returns null.
