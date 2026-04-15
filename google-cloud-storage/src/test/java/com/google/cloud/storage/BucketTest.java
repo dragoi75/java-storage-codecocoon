@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -128,8 +128,8 @@ public class BucketTest {
   private static final Key KEY =
       new SecretKeySpec(BaseEncoding.base64().decode(BASE64_KEY), "AES256");
 
-  private Storage storage;
-  private Storage serviceMockReturnsOptions = createMock(Storage.class);
+  private StorageClient storage;
+  private StorageClient serviceMockReturnsOptions = createMock(StorageClient.class);
   private StorageOptions mockOptions = createMock(StorageOptions.class);
   private Bucket bucket;
   private Bucket expectedBucket;
@@ -137,7 +137,7 @@ public class BucketTest {
 
   @Before
   public void setUp() {
-    storage = createStrictMock(Storage.class);
+    storage = createStrictMock(StorageClient.class);
   }
 
   @After
@@ -169,7 +169,7 @@ public class BucketTest {
   @Test
   public void testExists_True() throws Exception {
     initializeExpectedBucket(4);
-    Storage.BucketGetOption[] expectedOptions = {Storage.BucketGetOption.fields()};
+    StorageClient.BucketGetOptions[] expectedOptions = {StorageClient.BucketGetOptions.withFields()};
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(BUCKET_INFO.getName(), expectedOptions)).andReturn(expectedBucket);
     replay(storage);
@@ -180,7 +180,7 @@ public class BucketTest {
   @Test
   public void testExists_False() throws Exception {
     initializeExpectedBucket(4);
-    Storage.BucketGetOption[] expectedOptions = {Storage.BucketGetOption.fields()};
+    StorageClient.BucketGetOptions[] expectedOptions = {StorageClient.BucketGetOptions.withFields()};
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(storage.get(BUCKET_INFO.getName(), expectedOptions)).andReturn(null);
     replay(storage);
@@ -219,7 +219,7 @@ public class BucketTest {
     Bucket expectedUpdatedBucket =
         new Bucket(serviceMockReturnsOptions, new BucketInfo.BuilderImpl(updatedInfo));
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.get(updatedInfo.getName(), Storage.BucketGetOption.metagenerationMatch(42L)))
+    expect(storage.get(updatedInfo.getName(), StorageClient.BucketGetOptions.ifMetagenerationMatch(42L)))
         .andReturn(expectedUpdatedBucket);
     replay(storage);
     initializeBucket();
@@ -277,7 +277,7 @@ public class BucketTest {
             serviceMockReturnsOptions,
             new BlobInfo.BuilderImpl(BlobInfo.newBuilder("b", "n").build()));
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.get(BlobId.of(expectedBucket.getName(), "n"), new Storage.BlobGetOption[0]))
+    expect(storage.get(BlobId.of(expectedBucket.getName(), "n"), new StorageClient.BlobGetOptions[0]))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -361,17 +361,17 @@ public class BucketTest {
             .build();
     Blob expectedBlob = new Blob(serviceMockReturnsOptions, new BlobInfo.BuilderImpl(info));
     byte[] content = {0xD, 0xE, 0xA, 0xD};
-    Storage.PredefinedAcl acl = Storage.PredefinedAcl.ALL_AUTHENTICATED_USERS;
+    StorageClient.PredefinedAccessControlList acl = StorageClient.PredefinedAccessControlList.ALL_AUTHENTICATED_USERS;
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(
             storage.create(
                 info,
                 content,
-                Storage.BlobTargetOption.generationMatch(),
-                Storage.BlobTargetOption.metagenerationMatch(),
-                Storage.BlobTargetOption.predefinedAcl(acl),
-                Storage.BlobTargetOption.encryptionKey(BASE64_KEY),
-                Storage.BlobTargetOption.userProject(USER_PROJECT)))
+                StorageClient.BlobUploadOption.ifGenerationMatch(),
+                StorageClient.BlobUploadOption.ifMetagenerationMatch(),
+                StorageClient.BlobUploadOption.predefinedAclOption(acl),
+                StorageClient.BlobUploadOption.customerSuppliedKey(BASE64_KEY),
+                StorageClient.BlobUploadOption.getUserProject(USER_PROJECT)))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -395,7 +395,7 @@ public class BucketTest {
     Blob expectedBlob = new Blob(serviceMockReturnsOptions, new BlobInfo.BuilderImpl(info));
     byte[] content = {0xD, 0xE, 0xA, 0xD};
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.create(info, content, Storage.BlobTargetOption.encryptionKey(KEY)))
+    expect(storage.create(info, content, StorageClient.BlobUploadOption.customerSuppliedKey(KEY)))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -411,7 +411,7 @@ public class BucketTest {
     Blob expectedBlob = new Blob(serviceMockReturnsOptions, new BlobInfo.BuilderImpl(info));
     byte[] content = {0xD, 0xE, 0xA, 0xD};
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.create(info, content, Storage.BlobTargetOption.kmsKeyName(DEFAULT_KMS_KEY_NAME)))
+    expect(storage.create(info, content, StorageClient.BlobUploadOption.withKmsKeyName(DEFAULT_KMS_KEY_NAME)))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -429,7 +429,7 @@ public class BucketTest {
     Blob expectedBlob = new Blob(serviceMockReturnsOptions, new BlobInfo.BuilderImpl(info));
     byte[] content = {0xD, 0xE, 0xA, 0xD};
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.create(info, content, Storage.BlobTargetOption.generationMatch()))
+    expect(storage.create(info, content, StorageClient.BlobUploadOption.ifGenerationMatch()))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -519,20 +519,20 @@ public class BucketTest {
             .build();
     Blob expectedBlob = new Blob(serviceMockReturnsOptions, new BlobInfo.BuilderImpl(info));
     byte[] content = {0xD, 0xE, 0xA, 0xD};
-    Storage.PredefinedAcl acl = Storage.PredefinedAcl.ALL_AUTHENTICATED_USERS;
+    StorageClient.PredefinedAccessControlList acl = StorageClient.PredefinedAccessControlList.ALL_AUTHENTICATED_USERS;
     InputStream streamContent = new ByteArrayInputStream(content);
     expect(storage.getOptions()).andReturn(mockOptions);
     expect(
             storage.create(
                 info,
                 streamContent,
-                Storage.BlobWriteOption.generationMatch(),
-                Storage.BlobWriteOption.metagenerationMatch(),
-                Storage.BlobWriteOption.predefinedAcl(acl),
-                Storage.BlobWriteOption.crc32cMatch(),
-                Storage.BlobWriteOption.md5Match(),
-                Storage.BlobWriteOption.encryptionKey(BASE64_KEY),
-                Storage.BlobWriteOption.userProject(USER_PROJECT)))
+                StorageClient.WriteBlobOption.ifGenerationMatch(),
+                StorageClient.WriteBlobOption.ifMetagenerationMatch(),
+                StorageClient.WriteBlobOption.withPredefinedAcl(acl),
+                StorageClient.WriteBlobOption.ifCrc32cMatch(),
+                StorageClient.WriteBlobOption.ifMd5Match(),
+                StorageClient.WriteBlobOption.customerSuppliedKey(BASE64_KEY),
+                StorageClient.WriteBlobOption.withUserProject(USER_PROJECT)))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -559,7 +559,7 @@ public class BucketTest {
     byte[] content = {0xD, 0xE, 0xA, 0xD};
     InputStream streamContent = new ByteArrayInputStream(content);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.create(info, streamContent, Storage.BlobWriteOption.encryptionKey(KEY)))
+    expect(storage.create(info, streamContent, StorageClient.WriteBlobOption.customerSuppliedKey(KEY)))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -577,7 +577,7 @@ public class BucketTest {
     byte[] content = {0xD, 0xE, 0xA, 0xD};
     InputStream streamContent = new ByteArrayInputStream(content);
     expect(storage.getOptions()).andReturn(mockOptions);
-    expect(storage.create(info, streamContent, Storage.BlobWriteOption.generationMatch()))
+    expect(storage.create(info, streamContent, StorageClient.WriteBlobOption.ifGenerationMatch()))
         .andReturn(expectedBlob);
     replay(storage);
     initializeBucket();
@@ -748,8 +748,8 @@ public class BucketTest {
     expect(
             storage.lockRetentionPolicy(
                 expectedRetentionLockedBucket,
-                Storage.BucketTargetOption.metagenerationMatch(),
-                Storage.BucketTargetOption.userProject(USER_PROJECT)))
+                StorageClient.BucketTargetOptions.withMetagenerationMatch(),
+                StorageClient.BucketTargetOptions.withUserProject(USER_PROJECT)))
         .andReturn(expectedRetentionLockedBucket);
     replay(storage);
     initializeBucket();
@@ -757,8 +757,8 @@ public class BucketTest {
         new Bucket(storage, new BucketInfo.BuilderImpl(expectedRetentionLockedBucket));
     Bucket actualRetentionLockedBucket =
         lockedRetentionPolicyBucket.lockRetentionPolicy(
-            Storage.BucketTargetOption.metagenerationMatch(),
-            Storage.BucketTargetOption.userProject(USER_PROJECT));
+            StorageClient.BucketTargetOptions.withMetagenerationMatch(),
+            StorageClient.BucketTargetOptions.withUserProject(USER_PROJECT));
     assertEquals(expectedRetentionLockedBucket, actualRetentionLockedBucket);
   }
 

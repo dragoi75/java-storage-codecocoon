@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class SerializationTest extends BaseSerializationTest {
 
-  private static final Storage STORAGE =
+  private static final StorageClient STORAGE =
       StorageOptions.newBuilder().setProjectId("p").build().getService();
   private static final Acl.Domain ACL_DOMAIN = new Acl.Domain("domain");
   private static final Acl.Group ACL_GROUP = new Acl.Group("group");
@@ -48,18 +48,18 @@ public class SerializationTest extends BaseSerializationTest {
   private static final PageImpl<Blob> PAGE_RESULT =
       new PageImpl<>(null, "c", Collections.singletonList(BLOB));
   private static final StorageException STORAGE_EXCEPTION = new StorageException(42, "message");
-  private static final Storage.BlobListOption BLOB_LIST_OPTIONS =
-      Storage.BlobListOption.pageSize(100);
-  private static final Storage.BlobSourceOption BLOB_SOURCE_OPTIONS =
-      Storage.BlobSourceOption.generationMatch(1);
-  private static final Storage.BlobTargetOption BLOB_TARGET_OPTIONS =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BucketListOption BUCKET_LIST_OPTIONS =
-      Storage.BucketListOption.prefix("bla");
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_OPTIONS =
-      Storage.BucketSourceOption.metagenerationMatch(1);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_OPTIONS =
-      Storage.BucketTargetOption.metagenerationNotMatch();
+  private static final StorageClient.BlobListOptions BLOB_LIST_OPTIONS =
+      StorageClient.BlobListOptions.maxResults(100);
+  private static final StorageClient.BlobSourceOptions BLOB_SOURCE_OPTIONS =
+      StorageClient.BlobSourceOptions.ifGenerationMatch(1);
+  private static final StorageClient.BlobUploadOption BLOB_TARGET_OPTIONS =
+      StorageClient.BlobUploadOption.ifGenerationMatch();
+  private static final StorageClient.BucketListOptions BUCKET_LIST_OPTIONS =
+      StorageClient.BucketListOptions.withPrefix("bla");
+  private static final StorageClient.BucketSourceOptions BUCKET_SOURCE_OPTIONS =
+      StorageClient.BucketSourceOptions.withMetagenerationMatch(1);
+  private static final StorageClient.BucketTargetOptions BUCKET_TARGET_OPTIONS =
+      StorageClient.BucketTargetOptions.ifMetagenerationNotMatch();
   private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   @Override

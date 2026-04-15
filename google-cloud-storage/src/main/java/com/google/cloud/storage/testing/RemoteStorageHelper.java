@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -20,14 +20,9 @@ import com.google.api.gax.paging.Page;
 import com.google.api.gax.retrying.RetrySettings;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobListOption;
-import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
+import com.google.cloud.storage.StorageClient;
+import com.google.cloud.storage.StorageClient.BlobListOptions;
 import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +41,7 @@ import java.util.logging.Logger;
 import org.threeten.bp.Duration;
 
 /**
- * Utility to create a remote storage configuration for testing. Storage options can be obtained via
+ * Utility to create a remote storage configuration for testing. StorageClient options can be obtained via
  * the {@link #getOptions()} ()} method. Returned options have custom {@link
  * StorageOptions#getRetrySettings()}: {@link RetrySettings#getMaxAttempts()} is {@code 10}, {@link
  * RetrySettings#getMaxRetryDelay()} is {@code 30000}, {@link RetrySettings#getTotalTimeout()} is
@@ -69,22 +64,22 @@ public class RemoteStorageHelper {
     return options;
   }
 
-  public static void cleanBuckets(final Storage storage, final long olderThan, long timeoutMs) {
+  public static void cleanBuckets(final StorageClient storage, final long olderThan, long timeoutMs) {
     Runnable task =
         new Runnable() {
           @Override
           public void run() {
             Page<Bucket> buckets =
-                storage.list(Storage.BucketListOption.prefix(BUCKET_NAME_PREFIX));
+                storage.list(StorageClient.BucketListOptions.withPrefix(BUCKET_NAME_PREFIX));
             for (Bucket bucket : buckets.iterateAll()) {
               if (bucket.getCreateTime() < olderThan) {
                 try {
                   for (Blob blob :
                       bucket
                           .list(
-                              BlobListOption.fields(
-                                  Storage.BlobField.EVENT_BASED_HOLD,
-                                  Storage.BlobField.TEMPORARY_HOLD))
+                              StorageClient.BlobListOptions.withFields(
+                                  StorageClient.BlobMetadataField.EVENT_BASED_HOLD,
+                                  StorageClient.BlobMetadataField.TEMPORARY_HOLD))
                           .iterateAll()) {
                     if (blob.getEventBasedHold() == true || blob.getTemporaryHold() == true) {
                       storage.update(
@@ -114,19 +109,19 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the delete requests. Use {@link #forceDelete(StorageClient storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
    * @throws ExecutionException if an exception was thrown while deleting bucket or bucket objects
    */
-  public static Boolean forceDelete(Storage storage, String bucket, long timeout, TimeUnit unit)
+  public static Boolean forceDelete(StorageClient storage, String bucket, long timeout, TimeUnit unit)
       throws InterruptedException, ExecutionException {
     return forceDelete(storage, bucket, timeout, unit, "");
   }
@@ -134,21 +129,21 @@ public class RemoteStorageHelper {
   /**
    * Deletes a bucket, even if non-empty. Objects in the bucket are listed and deleted until bucket
    * deletion succeeds or {@code timeout} expires. To allow for the timeout, this method uses a
-   * separate thread to send the delete requests. Use {@link #forceDelete(Storage storage, String
+   * separate thread to send the delete requests. Use {@link #forceDelete(StorageClient storage, String
    * bucket)} if spawning an additional thread is undesirable, such as in the App Engine production
    * runtime.
    *
    * @param storage the storage service to be used to issue requests
    * @param bucket the bucket to be deleted
    * @param timeout the maximum time to wait
-   * @param unit the time unit of the timeout argument
+   * @param unit the time unit from the timeout argument
    * @param userProject the project to bill for requester-pays buckets (or "")
    * @return true if deletion succeeded, false if timeout expired
    * @throws InterruptedException if the thread deleting the bucket is interrupted while waiting
    * @throws ExecutionException if an exception was thrown while deleting bucket or bucket objects
    */
   public static Boolean forceDelete(
-      Storage storage, String bucket, long timeout, TimeUnit unit, String userProject)
+          StorageClient storage, String bucket, long timeout, TimeUnit unit, String userProject)
       throws InterruptedException, ExecutionException {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Future<Boolean> future = executor.submit(new DeleteBucketTask(storage, bucket, userProject));
@@ -168,7 +163,7 @@ public class RemoteStorageHelper {
    * @param bucket the bucket to be deleted
    * @throws StorageException if an exception is encountered during bucket deletion
    */
-  public static void forceDelete(Storage storage, String bucket) {
+  public static void forceDelete(StorageClient storage, String bucket) {
     new DeleteBucketTask(storage, bucket).call();
   }
 
@@ -181,7 +176,7 @@ public class RemoteStorageHelper {
    * Creates a {@code RemoteStorageHelper} object for the given project id and JSON key input
    * stream.
    *
-   * @param projectId id of the project to be used for running the tests
+   * @param projectId id from the project to be used for running the tests
    * @param keyStream input stream for a JSON key
    * @return A {@code RemoteStorageHelper} object for the provided options
    * @throws com.google.cloud.storage.testing.RemoteStorageHelper.StorageHelperException if {@code
@@ -240,17 +235,17 @@ public class RemoteStorageHelper {
 
   private static class DeleteBucketTask implements Callable<Boolean> {
 
-    private final Storage storage;
+    private final StorageClient storage;
     private final String bucket;
     private final String userProject;
 
-    public DeleteBucketTask(Storage storage, String bucket) {
+    public DeleteBucketTask(StorageClient storage, String bucket) {
       this.storage = storage;
       this.bucket = bucket;
       this.userProject = "";
     }
 
-    public DeleteBucketTask(Storage storage, String bucket, String userProject) {
+    public DeleteBucketTask(StorageClient storage, String bucket, String userProject) {
       this.storage = storage;
       this.bucket = bucket;
       this.userProject = userProject;
@@ -262,11 +257,11 @@ public class RemoteStorageHelper {
         ArrayList<BlobId> ids = new ArrayList<>();
         Page<Blob> listedBlobs;
         if (Strings.isNullOrEmpty(userProject)) {
-          listedBlobs = storage.list(bucket, BlobListOption.versions(true));
+          listedBlobs = storage.list(bucket, StorageClient.BlobListOptions.includeVersions(true));
         } else {
           listedBlobs =
               storage.list(
-                  bucket, BlobListOption.versions(true), BlobListOption.userProject(userProject));
+                  bucket, StorageClient.BlobListOptions.includeVersions(true), BlobListOptions.withUserProject(userProject));
         }
         for (BlobInfo info : listedBlobs.getValues()) {
           ids.add(info.getBlobId());
@@ -280,7 +275,7 @@ public class RemoteStorageHelper {
                 storage.delete(
                     bucket,
                     ids.get(i).getName(),
-                    Storage.BlobSourceOption.userProject(userProject));
+                    StorageClient.BlobSourceOptions.setUserProject(userProject));
               }
             }
           }
@@ -289,7 +284,7 @@ public class RemoteStorageHelper {
           if (Strings.isNullOrEmpty(userProject)) {
             storage.delete(bucket);
           } else {
-            storage.delete(bucket, Storage.BucketSourceOption.userProject(userProject));
+            storage.delete(bucket, StorageClient.BucketSourceOptions.setUserProject(userProject));
           }
           return true;
         } catch (StorageException e) {

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,7 +26,7 @@ import com.google.api.core.ApiClock;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.conformance.storage.v1.SigningV4Test;
 import com.google.cloud.conformance.storage.v1.TestFile;
-import com.google.cloud.storage.Storage.SignUrlOption;
+import com.google.cloud.storage.StorageClient.UrlSigningOption;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.base.Charsets;
 import com.google.protobuf.Timestamp;
@@ -82,7 +82,7 @@ public class V4SigningTest {
    * @param testData The serialized test data representing the test case.
    * @param serviceAccountCredentials The credentials to use in this test.
    * @param description Not used by the test, but used by the parameterized test runner as the name
-   *     of the test.
+   *     from the test.
    */
   public V4SigningTest(
       SigningV4Test testData,
@@ -99,7 +99,7 @@ public class V4SigningTest {
         testName.getMethodName(),
         is(not("test[Headers should be trimmed]")));
 
-    Storage storage =
+    StorageClient storage =
         RemoteStorageHelper.create()
             .getOptions()
             .toBuilder()
@@ -116,19 +116,19 @@ public class V4SigningTest {
                 blob,
                 testData.getExpiration(),
                 TimeUnit.SECONDS,
-                SignUrlOption.httpMethod(HttpMethod.valueOf(testData.getMethod())),
-                SignUrlOption.withExtHeaders(testData.getHeadersMap()),
-                SignUrlOption.withV4Signature())
+                UrlSigningOption.requestMethod(HttpMethod.valueOf(testData.getMethod())),
+                StorageClient.UrlSigningOption.withExternalHeaders(testData.getHeadersMap()),
+                UrlSigningOption.withSignatureV4())
             .toString();
     assertEquals(testData.getExpectedUrl(), signedUrl);
   }
 
   /**
-   * Load all of the tests and return a {@code Collection<Object[]>} representing the set of tests.
-   * Each entry in the returned collection is the set of parameters to the constructor of this test
+   * Load all from the tests and return a {@code Collection<Object[]>} representing the set from tests.
+   * Each entry in the returned collection is the set from parameters to the constructor from this test
    * class.
    *
-   * <p>The results of this method will then be run by JUnit's Parameterized test runner
+   * <p>The results from this method will then be run by JUnit's Parameterized test runner
    */
   @Parameters(name = "{2}")
   public static Collection<Object[]> testCases() throws IOException {

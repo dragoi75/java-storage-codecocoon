@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,7 +19,7 @@ package com.google.cloud.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.google.cloud.storage.SignatureInfo.Builder;
+import com.google.cloud.storage.SignatureDetails.SignatureBuilder;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,21 +32,21 @@ public class SignatureInfoTest {
   @Test(expected = IllegalArgumentException.class)
   public void requireHttpVerb() {
 
-    new SignatureInfo.Builder(null, 0L, URI.create(RESOURCE)).build();
+    new SignatureDetails.SignatureBuilder(null, 0L, URI.create(RESOURCE)).buildSignature();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void requireResource() {
 
-    new SignatureInfo.Builder(HttpMethod.GET, 0L, null).build();
+    new SignatureDetails.SignatureBuilder(HttpMethod.GET, 0L, null).buildSignature();
   }
 
   @Test
   public void constructUnsignedPayload() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    SignatureBuilder builder = new SignatureDetails.SignatureBuilder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignature().buildUnsignedPayload();
 
     assertEquals("PUT\n\n\n0\n" + RESOURCE, unsignedPayload);
   }
@@ -54,7 +54,7 @@ public class SignatureInfoTest {
   @Test
   public void constructUnsignedPayloadWithExtensionHeaders() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    SignatureDetails.SignatureBuilder builder = new SignatureDetails.SignatureBuilder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
 
     Map<String, String> extensionHeaders = new HashMap<>();
     extensionHeaders.put("x-goog-acl", "public-read");
@@ -62,7 +62,7 @@ public class SignatureInfoTest {
 
     builder.setCanonicalizedExtensionHeaders(extensionHeaders);
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignature().buildUnsignedPayload();
 
     String rawPayload = "PUT\n\n\n0\nx-goog-acl:public-read\nx-goog-meta-owner:myself\n" + RESOURCE;
 
@@ -71,13 +71,13 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4UnsignedPayload() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    SignatureDetails.SignatureBuilder builder = new SignatureBuilder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(StorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
-    String unsignedPayload = builder.build().constructUnsignedPayload();
+    String unsignedPayload = builder.buildSignature().buildUnsignedPayload();
 
     assertTrue(
         unsignedPayload.startsWith(
@@ -86,13 +86,13 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4QueryString() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    SignatureDetails.SignatureBuilder builder = new SignatureDetails.SignatureBuilder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(StorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
-    String queryString = builder.build().constructV4QueryString();
+    String queryString = builder.buildSignature().buildV4QueryString();
     assertEquals(
         "X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=me%40google.com%2F20010909%2F"
             + "auto%2Fstorage%2Fgoog4_request&X-Goog-Date=20010909T014640Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host",

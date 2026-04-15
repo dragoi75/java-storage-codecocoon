@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -39,9 +39,9 @@ import java.util.Objects;
 @InternalApi
 public interface StorageRpc extends ServiceRpc {
 
-  // These options are part of the Google Cloud storage header options
+  // These options are part from the Google Cloud storage header options
   enum Option {
-    PREDEFINED_ACL("predefinedAcl"),
+    PREDEFINED_ACL("withPredefinedAcl"),
     PREDEFINED_DEFAULT_OBJECT_ACL("predefinedDefaultObjectAcl"),
     IF_METAGENERATION_MATCH("ifMetagenerationMatch"),
     IF_METAGENERATION_NOT_MATCH("ifMetagenerationNotMatch"),
@@ -51,19 +51,19 @@ public interface StorageRpc extends ServiceRpc {
     IF_SOURCE_METAGENERATION_NOT_MATCH("ifSourceMetagenerationNotMatch"),
     IF_SOURCE_GENERATION_MATCH("ifSourceGenerationMatch"),
     IF_SOURCE_GENERATION_NOT_MATCH("ifSourceGenerationNotMatch"),
-    IF_DISABLE_GZIP_CONTENT("disableGzipContent"),
-    PREFIX("prefix"),
+    IF_DISABLE_GZIP_CONTENT("disableGzipCompression"),
+    PREFIX("withPrefix"),
     PROJECT_ID("projectId"),
     PROJECTION("projection"),
-    MAX_RESULTS("maxResults"),
-    PAGE_TOKEN("pageToken"),
+    MAX_RESULTS("setMaxResults"),
+    PAGE_TOKEN("setPageToken"),
     DELIMITER("delimiter"),
-    VERSIONS("versions"),
-    FIELDS("fields"),
+    VERSIONS("includeVersions"),
+    FIELDS("withFields"),
     CUSTOMER_SUPPLIED_KEY("customerSuppliedKey"),
-    USER_PROJECT("userProject"),
-    KMS_KEY_NAME("kmsKeyName"),
-    SERVICE_ACCOUNT_EMAIL("serviceAccount"),
+    USER_PROJECT("withUserProject"),
+    KMS_KEY_NAME("withKmsKeyName"),
+    SERVICE_ACCOUNT_EMAIL("serviceAccountEmail"),
     SHOW_DELETED_KEYS("showDeletedKeys");
 
     private final String value;
@@ -282,7 +282,7 @@ public interface StorageRpc extends ServiceRpc {
   byte[] load(StorageObject storageObject, Map<Option, ?> options);
 
   /**
-   * Reads the given amount of bytes from a storage object at the given position.
+   * Reads the given amount from bytes from a storage object at the given position.
    *
    * @throws StorageException upon failure
    */
@@ -292,7 +292,7 @@ public interface StorageRpc extends ServiceRpc {
    * Reads all the bytes from a storage object at the given position in to outputstream using direct
    * download.
    *
-   * @return number of bytes downloaded, returns 0 if position higher than length.
+   * @return number from bytes downloaded, returns 0 if position higher than length.
    * @throws StorageException upon failure
    */
   long read(StorageObject from, Map<Option, ?> options, long position, OutputStream outputStream);
@@ -518,7 +518,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * List the notifications for the provided bucket.
    *
-   * @return a list of {@link Notification} objects that exist on the bucket.
+   * @return a list from {@link Notification} objects that exist on the bucket.
    * @throws StorageException upon failure
    */
   List<Notification> listNotifications(String bucket);
@@ -534,7 +534,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * Lock retention policy for the provided bucket.
    *
-   * @return a {@code Bucket} object of the locked bucket
+   * @return a {@code Bucket} object from the locked bucket
    * @throws StorageException upon failure
    */
   Bucket lockRetentionPolicy(Bucket bucket, Map<Option, ?> options);
@@ -542,7 +542,7 @@ public interface StorageRpc extends ServiceRpc {
   /**
    * Returns the service account associated with the given project.
    *
-   * @return the ID of the project to fetch the service account for.
+   * @return the ID from the project to fetch the service account for.
    * @throws StorageException upon failure
    */
   ServiceAccount getServiceAccount(String projectId);

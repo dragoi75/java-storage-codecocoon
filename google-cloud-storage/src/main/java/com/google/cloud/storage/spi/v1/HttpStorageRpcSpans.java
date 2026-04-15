@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -21,7 +21,7 @@ import io.opencensus.trace.Tracing;
 
 /** Helper class for instrumenting {@link HttpStorageRpc} with Open Census APIs. */
 class HttpStorageRpcSpans {
-  // OpenCensus span name prefix, 'Sent' for client and 'RECV' for server.
+  // OpenCensus span name withPrefix, 'Sent' for client and 'RECV' for server.
   static final String SPAN_NAME_CLIENT_PREFIX = "Sent";
 
   static final String SPAN_NAME_CREATE_BUCKET = getTraceSpanName("create(Bucket,Map)");

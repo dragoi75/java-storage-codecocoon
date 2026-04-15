@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -44,7 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Google Storage object metadata.
+ * Google StorageClient object metadata.
  *
  * @see <a href="https://cloud.google.com/storage/docs/concepts-techniques#concepts">Concepts and
  *     Terminology</a>
@@ -99,7 +99,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Objects of this class hold information on the customer-supplied encryption key, if the blob is
+   * Objects from this class hold information on the customer-supplied encryption key, if the blob is
    * encrypted using such a key.
    */
   public static class CustomerEncryption implements Serializable {
@@ -119,7 +119,7 @@ public class BlobInfo implements Serializable {
       return encryptionAlgorithm;
     }
 
-    /** Returns the SHA256 hash of the encryption key. */
+    /** Returns the SHA256 hash from the encryption key. */
     public String getKeySha256() {
       return keySha256;
     }
@@ -157,7 +157,7 @@ public class BlobInfo implements Serializable {
     }
   }
 
-  /** Builder for {@code BlobInfo}. */
+  /** SignatureBuilder for {@code BlobInfo}. */
   public abstract static class Builder {
 
     /** Sets the blob identity. */
@@ -220,7 +220,7 @@ public class BlobInfo implements Serializable {
     abstract Builder setSelfLink(String selfLink);
 
     /**
-     * Sets the MD5 hash of blob's data. MD5 value must be encoded in base64.
+     * Sets the MD5 hash from blob's data. MD5 value must be encoded in base64.
      *
      * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
      *     Best Practices</a>
@@ -228,7 +228,7 @@ public class BlobInfo implements Serializable {
     public abstract Builder setMd5(String md5);
 
     /**
-     * Sets the MD5 hash of blob's data from hex string.
+     * Sets the MD5 hash from blob's data from hex string.
      *
      * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
      *     Best Practices</a>
@@ -236,7 +236,7 @@ public class BlobInfo implements Serializable {
     public abstract Builder setMd5FromHexString(String md5HexString);
 
     /**
-     * Sets the CRC32C checksum of blob's data as described in <a
+     * Sets the CRC32C checksum from blob's data as described in <a
      * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
      * base64 in big-endian order.
      *
@@ -246,7 +246,7 @@ public class BlobInfo implements Serializable {
     public abstract Builder setCrc32c(String crc32c);
 
     /**
-     * Sets the CRC32C checksum of blob's data as described in <a
+     * Sets the CRC32C checksum from blob's data as described in <a
      * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> from hex
      * string.
      *
@@ -600,7 +600,7 @@ public class BlobInfo implements Serializable {
     return blobId;
   }
 
-  /** Returns the name of the containing bucket. */
+  /** Returns the name from the containing bucket. */
   public String getBucket() {
     return getBlobId().getBucket();
   }
@@ -634,13 +634,13 @@ public class BlobInfo implements Serializable {
     return acl;
   }
 
-  /** Returns the blob's owner. This will always be the uploader of the blob. */
+  /** Returns the blob's owner. This will always be the uploader from the blob. */
   public Acl.Entity getOwner() {
     return owner;
   }
 
   /**
-   * Returns the content length of the data in bytes.
+   * Returns the content length from the data in bytes.
    *
    * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.13">Content-Length</a>
    */
@@ -685,8 +685,8 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the number of components that make up this blob. Components are accumulated through the
-   * {@link Storage#compose(Storage.ComposeRequest)} operation and are limited to a count of 1024,
+   * Returns the number from components that make up this blob. Components are accumulated through the
+   * {@link StorageClient#compose(StorageClient.ComposeObjectsRequest)} operation and are limited to a count from 1024,
    * counting 1 for each non-composite component blob and componentCount for each composite
    * component blob. This value is set only for composite blobs.
    *
@@ -706,13 +706,13 @@ public class BlobInfo implements Serializable {
     return etag;
   }
 
-  /** Returns the URI of this blob as a string. */
+  /** Returns the URI from this blob as a string. */
   public String getSelfLink() {
     return selfLink;
   }
 
   /**
-   * Returns the MD5 hash of blob's data encoded in base64.
+   * Returns the MD5 hash from blob's data encoded in base64.
    *
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
    *     Best Practices</a>
@@ -722,7 +722,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the MD5 hash of blob's data decoded to string.
+   * Returns the MD5 hash from blob's data decoded to string.
    *
    * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
    *     Best Practices</a>
@@ -740,7 +740,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the CRC32C checksum of blob's data as described in <a
+   * Returns the CRC32C checksum from blob's data as described in <a
    * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
    * base64 in big-endian order.
    *
@@ -752,7 +752,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the CRC32C checksum of blob's data as described in <a
+   * Returns the CRC32C checksum from blob's data as described in <a
    * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> decoded to
    * string.
    *
@@ -788,32 +788,32 @@ public class BlobInfo implements Serializable {
 
   /**
    * Returns blob's metageneration. Used for preconditions and for detecting changes in metadata. A
-   * metageneration number is only meaningful in the context of a particular generation of a
+   * metageneration number is only meaningful in the context from a particular generation from a
    * particular blob.
    */
   public Long getMetageneration() {
     return metageneration;
   }
 
-  /** Returns the deletion time of the blob. */
+  /** Returns the deletion time from the blob. */
   public Long getDeleteTime() {
     return deleteTime;
   }
 
-  /** Returns the last modification time of the blob's metadata. */
+  /** Returns the last modification time from the blob's metadata. */
   public Long getUpdateTime() {
     return updateTime;
   }
 
-  /** Returns the creation time of the blob. */
+  /** Returns the creation time from the blob. */
   public Long getCreateTime() {
     return createTime;
   }
 
   /**
    * Returns {@code true} if the current blob represents a directory. This can only happen if the
-   * blob is returned by {@link Storage#list(String, Storage.BlobListOption...)} when the {@link
-   * Storage.BlobListOption#currentDirectory()} option is used. When this is the case only {@link
+   * blob is returned by {@link StorageClient#list(String, StorageClient.BlobListOptions...)} when the {@link
+   * StorageClient.BlobListOptions#currentDirectoryOnly()} option is used. When this is the case only {@link
    * #getBlobId()} and {@link #getSize()} are set for the current blob: {@link BlobId#getName()}
    * ends with the '/' character, {@link BlobId#getGeneration()} returns {@code null} and {@link
    * #getSize()} is {@code 0}.
@@ -830,7 +830,7 @@ public class BlobInfo implements Serializable {
     return customerEncryption;
   }
 
-  /** Returns the storage class of the blob. */
+  /** Returns the storage class from the blob. */
   public StorageClass getStorageClass() {
     return storageClass;
   }
@@ -845,21 +845,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and event-based hold for the blob is enabled.
+   * StorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)} and event-based hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but event-based hold for the blob is not
+   * StorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)}, but event-based hold for the blob is not
    * enabled. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#EVENT_BASED_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * StorageClient.BlobMetadataField#EVENT_BASED_HOLD} is not selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of event-based
+   * StorageClient#update(BlobInfo, StorageClient.BlobUploadOption...)} in which case the value from event-based
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -872,21 +872,21 @@ public class BlobInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)} and temporary hold for the blob is enabled.
+   * StorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)} and temporary hold for the blob is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, but temporary hold for the blob is not enabled.
+   * StorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)}, but temporary hold for the blob is not enabled.
    * This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BlobField#TEMPORARY_HOLD} is not selected in a {@link
-   * Storage#get(BlobId, Storage.BlobGetOption...)}, and the state for this field is unknown.
+   * StorageClient.BlobMetadataField#TEMPORARY_HOLD} is not selected in a {@link
+   * StorageClient#get(BlobId, StorageClient.BlobGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
    * Builder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BlobInfo, Storage.BlobTargetOption...)} in which case the value of temporary
+   * StorageClient#update(BlobInfo, StorageClient.BlobUploadOption...)} in which case the value from temporary
    * hold will remain {@code false} for the given instance.
    */
   @BetaApi
@@ -895,7 +895,7 @@ public class BlobInfo implements Serializable {
   }
 
   /**
-   * Returns the retention expiration time of the blob as {@code Long}, if a retention period is
+   * Returns the retention expiration time from the blob as {@code Long}, if a retention period is
    * defined. If retention period is not defined this value returns {@code null}
    */
   @BetaApi

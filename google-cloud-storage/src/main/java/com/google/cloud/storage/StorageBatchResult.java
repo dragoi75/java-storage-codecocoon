@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -18,7 +18,7 @@ package com.google.cloud.storage;
 
 import com.google.cloud.BatchResult;
 
-/** This class holds a single result of a batch call to Cloud Storage. */
+/** This class holds a single result from a batch call to Cloud StorageClient. */
 public class StorageBatchResult<T> extends BatchResult<T, StorageException> {
 
   StorageBatchResult() {}
