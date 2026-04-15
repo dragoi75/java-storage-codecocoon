@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -64,7 +64,7 @@ public class BlobWriteChannelTest {
   private static final String UPLOAD_ID = "uploadid";
   private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder(BUCKET_NAME, BLOB_NAME).build();
   private static final StorageObject UPDATED_BLOB = new StorageObject();
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final Map<StorageRpc.RequestOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
   private static final int MIN_CHUNK_SIZE = 256 * 1024;
   private static final int DEFAULT_CHUNK_SIZE = 60 * MIN_CHUNK_SIZE; // 15MiB
   private static final int CUSTOM_CHUNK_SIZE = 4 * MIN_CHUNK_SIZE;
@@ -222,7 +222,7 @@ public class BlobWriteChannelTest {
                 eq(MIN_CHUNK_SIZE),
                 eq(false)))
         .andThrow(socketClosedException);
-    // Simulate GCS received 10 bytes but not the rest of the chunk
+    // Simulate GCS received 10 bytes but not the rest from the chunk
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(10L);
     expect(
             storageRpcMock.writeWithResponse(
@@ -334,10 +334,10 @@ public class BlobWriteChannelTest {
         .andThrow(socketClosedException);
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(-1L);
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(-1L);
-    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.Option.class)))
+    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.RequestOption.class)))
         .andThrow(socketClosedException);
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(-1L);
-    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.Option.class)))
+    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.RequestOption.class)))
         .andReturn(BLOB_INFO.toPb().setSize(BigInteger.valueOf(MIN_CHUNK_SIZE)));
     replay(storageRpcMock);
     writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
@@ -487,7 +487,7 @@ public class BlobWriteChannelTest {
                 eq(true)))
         .andThrow(socketClosedException);
     expect(storageRpcMock.getCurrentUploadOffset(eq(UPLOAD_ID))).andReturn(-1L);
-    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.Option.class)))
+    expect(storageRpcMock.get(BLOB_INFO.toPb(), Maps.newEnumMap(StorageRpc.RequestOption.class)))
         .andReturn(BLOB_INFO.toPb().setSize(BigInteger.valueOf(MIN_CHUNK_SIZE)));
     replay(storageRpcMock);
     writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
@@ -496,8 +496,8 @@ public class BlobWriteChannelTest {
     assertFalse(writer.isRetrying());
     assertFalse(writer.isOpen());
     assertNotNull(writer.getStorageObject());
-    // Capture captures entire buffer of a chunk even when not completely used.
-    // Making assert selective up to the size of MIN_CHUNK_SIZE
+    // Capture captures entire buffer from a chunk even when not completely used.
+    // Making assert selective up to the size from MIN_CHUNK_SIZE
     assertArrayEquals(Arrays.copyOf(capturedBuffer.getValue(), MIN_CHUNK_SIZE), buffer.array());
   }
 

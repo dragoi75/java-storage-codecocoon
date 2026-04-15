@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -23,12 +23,9 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobListOption;
-import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
+import com.google.cloud.storage.StorageObject;
+import com.google.cloud.storage.Storage.ListBlobsOption;
 import com.google.common.collect.ImmutableList;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -81,18 +78,18 @@ public class RemoteStorageHelperTest {
   private static final BlobId BLOB_ID1 = BlobId.of(BUCKET_NAME, "n1");
   private static final BlobId BLOB_ID2 = BlobId.of(BUCKET_NAME, BLOB_NAME2);
 
-  private Blob blob1;
-  private Blob blob2;
-  private List<Blob> blobList;
-  private Page<Blob> blobPage;
+  private StorageObject blob1;
+  private StorageObject blob2;
+  private List<StorageObject> blobList;
+  private Page<StorageObject> blobPage;
 
   @Before
   public void setUp() {
-    blob1 = EasyMock.createMock(Blob.class);
-    blob2 = EasyMock.createMock(Blob.class);
+    blob1 = EasyMock.createMock(StorageObject.class);
+    blob2 = EasyMock.createMock(StorageObject.class);
     blobList = ImmutableList.of(blob1, blob2);
     blobPage =
-        new Page<Blob>() {
+        new Page<StorageObject>() {
 
           @Override
           public boolean hasNextPage() {
@@ -105,17 +102,17 @@ public class RemoteStorageHelperTest {
           }
 
           @Override
-          public Page<Blob> getNextPage() {
+          public Page<StorageObject> getNextPage() {
             return null;
           }
 
           @Override
-          public Iterable<Blob> getValues() {
+          public Iterable<StorageObject> getValues() {
             return blobList;
           }
 
           @Override
-          public Iterable<Blob> iterateAll() {
+          public Iterable<StorageObject> iterateAll() {
             return blobList;
           }
         };
@@ -131,7 +128,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true));
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, ListBlobsOption.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -150,7 +147,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
 
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.ListBlobsOption.includeVersions(true)))
         .andReturn(blobPage)
         .anyTimes();
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(RETRYABLE_EXCEPTION).anyTimes();
@@ -169,7 +166,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.ListBlobsOption.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -192,7 +189,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, ListBlobsOption.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -209,7 +206,7 @@ public class RemoteStorageHelperTest {
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.ListBlobsOption.includeVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -238,17 +235,17 @@ public class RemoteStorageHelperTest {
         .anyTimes();
     EasyMock.expect(
             storageMock.delete(
-                BUCKET_NAME, BLOB_NAME2, Storage.BlobSourceOption.userProject(USER_PROJECT)))
+                BUCKET_NAME, BLOB_NAME2, Storage.BlobReadOption.withUserProject(USER_PROJECT)))
         .andReturn(true)
         .anyTimes();
     EasyMock.expect(
             storageMock.list(
                 BUCKET_NAME,
-                BlobListOption.versions(true),
-                BlobListOption.userProject(USER_PROJECT)))
+                ListBlobsOption.includeVersions(true),
+                ListBlobsOption.withUserProject(USER_PROJECT)))
         .andReturn(blobPage);
     EasyMock.expect(
-            storageMock.delete(BUCKET_NAME, Storage.BucketSourceOption.userProject(USER_PROJECT)))
+            storageMock.delete(BUCKET_NAME, Storage.BucketReadOption.withUserProject(USER_PROJECT)))
         .andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
     try {

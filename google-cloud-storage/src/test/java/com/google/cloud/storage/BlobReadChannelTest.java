@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -48,7 +48,7 @@ public class BlobReadChannelTest {
   private static final String BUCKET_NAME = "b";
   private static final String BLOB_NAME = "n";
   private static final BlobId BLOB_ID = BlobId.of(BUCKET_NAME, BLOB_NAME, -1L);
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final Map<StorageRpc.RequestOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
   private static final int DEFAULT_CHUNK_SIZE = 2 * 1024 * 1024;
   private static final int CUSTOM_CHUNK_SIZE = 2 * 1024 * 1024;
   private static final Random RANDOM = new Random();
@@ -193,7 +193,7 @@ public class BlobReadChannelTest {
       fail("Expected ReadChannel read to throw StorageException");
     } catch (IOException ex) {
       StringBuilder messageBuilder = new StringBuilder();
-      messageBuilder.append("Blob ").append(blobId).append(" was updated while reading");
+      messageBuilder.append("StorageObject ").append(blobId).append(" was updated while reading");
       assertEquals(messageBuilder.toString(), ex.getMessage());
     }
   }

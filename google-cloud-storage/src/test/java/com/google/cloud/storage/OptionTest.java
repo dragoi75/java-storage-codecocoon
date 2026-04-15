@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy from the License at
  *
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,10 +26,10 @@ import org.junit.Test;
 
 public class OptionTest {
 
-  private static final StorageRpc.Option RPC_OPTION = StorageRpc.Option.DELIMITER;
-  private static final StorageRpc.Option ANOTHER_RPC_OPTION = StorageRpc.Option.FIELDS;
-  private static final String VALUE = "some value";
-  private static final String OTHER_VALUE = "another value";
+  private static final StorageRpc.RequestOption RPC_OPTION = StorageRpc.RequestOption.DELIMITER;
+  private static final StorageRpc.RequestOption ANOTHER_RPC_OPTION = StorageRpc.RequestOption.FIELDS;
+  private static final String VALUE = "some getValue";
+  private static final String OTHER_VALUE = "another getValue";
   private static final Option OPTION = new Option(RPC_OPTION, VALUE) {};
   private static final Option OPTION_EQUALS = new Option(RPC_OPTION, VALUE) {};
   private static final Option OPTION_NOT_EQUALS1 = new Option(RPC_OPTION, OTHER_VALUE) {};
