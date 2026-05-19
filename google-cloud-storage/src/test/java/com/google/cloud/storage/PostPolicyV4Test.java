@@ -76,7 +76,7 @@ public class PostPolicyV4Test {
   @Test
   public void testPostPolicyV4_of() {
     String url = "http://example.com";
-    PostPolicyV4 policy = PostPolicyV4.of(url, ALL_FIELDS);
+    FormPostPolicyV4 policy = FormPostPolicyV4.create(url, ALL_FIELDS);
     assertEquals(url, policy.getUrl());
     assertNotSameButEqual(ALL_FIELDS, policy.getFields());
   }
@@ -84,14 +84,14 @@ public class PostPolicyV4Test {
   @Test
   public void testPostPolicyV4_ofMalformedURL() {
     try {
-      PostPolicyV4.of("example.com", new HashMap<String, String>());
+      FormPostPolicyV4.create("example.com", new HashMap<String, String>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("example.com is not an absolute URL", e.getMessage());
     }
 
     try {
-      PostPolicyV4.of("Scio nescio", new HashMap<String, String>());
+      FormPostPolicyV4.create("Scio nescio", new HashMap<String, String>());
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals(
@@ -105,7 +105,7 @@ public class PostPolicyV4Test {
     Map<String, String> fields = new HashMap<>(ALL_FIELDS);
     fields.put("$file", "file.txt");
     try {
-      PostPolicyV4.of("http://google.com", fields);
+      FormPostPolicyV4.create("http://google.com", fields);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Invalid key: $file", e.getMessage());
@@ -114,7 +114,7 @@ public class PostPolicyV4Test {
 
   @Test
   public void testPostFieldsV4_of() {
-    PostPolicyV4.PostFieldsV4 fields = PostPolicyV4.PostFieldsV4.of(ALL_FIELDS);
+    FormPostPolicyV4.PostFieldsMapV4 fields = FormPostPolicyV4.PostFieldsMapV4.create(ALL_FIELDS);
     assertNotSameButEqual(ALL_FIELDS, fields.getFieldsMap());
   }
 
@@ -123,7 +123,7 @@ public class PostPolicyV4Test {
     Map<String, String> map = new HashMap<>();
     map.put("$file", "file.txt");
     try {
-      PostPolicyV4.PostFieldsV4.of(map);
+      FormPostPolicyV4.PostFieldsMapV4.create(map);
       fail();
     } catch (IllegalArgumentException e) {
       assertEquals("Invalid key: $file", e.getMessage());
@@ -132,14 +132,14 @@ public class PostPolicyV4Test {
 
   @Test
   public void testPostPolicyV4_builder() {
-    PostPolicyV4.PostFieldsV4.Builder builder = PostPolicyV4.PostFieldsV4.newBuilder();
+    FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder builder = FormPostPolicyV4.PostFieldsMapV4.builder();
     builder.setAcl("acl");
     builder.setCacheControl("cache-control");
     builder.setContentDisposition("content-disposition");
     builder.setContentType("content-type");
     builder.setExpires("expires");
     builder.setSuccessActionRedirect("success_action_redirect");
-    Map<String, String> map = builder.build().getFieldsMap();
+    Map<String, String> map = builder.create().getFieldsMap();
     assertEquals("map size", 6, map.size());
     for (String key : map.keySet()) {
       assertEquals("value of $" + key, key, map.get(key));
@@ -156,28 +156,28 @@ public class PostPolicyV4Test {
     expectedUpdated.put("acl", null);
     expectedUpdated.put("content-type", "new-content-type");
     expectedUpdated.put("success_action_status", "42");
-    Map<String, String> updated = builder.build().getFieldsMap();
+    Map<String, String> updated = builder.create().getFieldsMap();
     assertNotSameButEqual(expectedUpdated, updated);
   }
 
   @Test
   public void testPostPolicyV4_setContentLength() {
-    PostPolicyV4.PostFieldsV4.Builder builder = PostPolicyV4.PostFieldsV4.newBuilder();
+    FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder builder = FormPostPolicyV4.PostFieldsMapV4.builder();
     builder.setContentLength(12345);
-    assertTrue(builder.build().getFieldsMap().isEmpty());
+    assertTrue(builder.create().getFieldsMap().isEmpty());
   }
 
   @Test
   public void testPostConditionsV4_builder() {
-    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
-    assertTrue(builder.build().getConditions().isEmpty());
+    FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder = FormPostPolicyV4.PostConditionsVersion4.builder();
+    assertTrue(builder.create().getConditions().isEmpty());
 
-    builder.addAclCondition(PostPolicyV4.ConditionV4Type.STARTS_WITH, "public");
-    builder.addBucketCondition(PostPolicyV4.ConditionV4Type.MATCHES, "travel-maps");
-    builder.addContentLengthRangeCondition(0, 100000);
+    builder.addAcl(FormPostPolicyV4.ConditionV4Operator.STARTS_WITH, "public");
+    builder.addBucket(FormPostPolicyV4.ConditionV4Operator.MATCHES, "travel-maps");
+    builder.addContentLengthRange(0, 100000);
 
-    PostPolicyV4.PostConditionsV4 postConditionsV4 = builder.build();
-    Set<PostPolicyV4.ConditionV4> conditions = postConditionsV4.getConditions();
+    FormPostPolicyV4.PostConditionsVersion4 postConditionsV4 = builder.create();
+    Set<FormPostPolicyV4.BinaryConditionV4> conditions = postConditionsV4.getConditions();
     assertEquals(3, conditions.size());
 
     try {
@@ -187,11 +187,11 @@ public class PostPolicyV4Test {
       // expected
     }
 
-    PostPolicyV4.PostConditionsV4 postConditionsV4Extended =
+    FormPostPolicyV4.PostConditionsVersion4 postConditionsV4Extended =
         postConditionsV4
-            .toBuilder()
-            .addCustomCondition(PostPolicyV4.ConditionV4Type.STARTS_WITH, "key", "")
-            .build();
+            .asBuilder()
+            .addCustom(FormPostPolicyV4.ConditionV4Operator.STARTS_WITH, "key", "")
+            .create();
     assertEquals(4, postConditionsV4Extended.getConditions().size());
   }
 
@@ -200,23 +200,23 @@ public class PostPolicyV4Test {
      * Calls one of addCondition method on the given builder and returns expected ConditionV4
      * object.
      */
-    PostPolicyV4.ConditionV4 addCondition(PostPolicyV4.PostConditionsV4.Builder builder);
+    FormPostPolicyV4.BinaryConditionV4 addCondition(FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder);
   }
 
   @Test
   public void testPostConditionsV4_addCondition() {
     // shortcuts
-    final PostPolicyV4.ConditionV4Type eq = PostPolicyV4.ConditionV4Type.MATCHES;
-    final PostPolicyV4.ConditionV4Type startsWith = PostPolicyV4.ConditionV4Type.STARTS_WITH;
-    final PostPolicyV4.ConditionV4Type range = PostPolicyV4.ConditionV4Type.CONTENT_LENGTH_RANGE;
+    final FormPostPolicyV4.ConditionV4Operator eq = FormPostPolicyV4.ConditionV4Operator.MATCHES;
+    final FormPostPolicyV4.ConditionV4Operator startsWith = FormPostPolicyV4.ConditionV4Operator.STARTS_WITH;
+    final FormPostPolicyV4.ConditionV4Operator range = FormPostPolicyV4.ConditionV4Operator.CONTENT_LENGTH_RANGE;
 
     ConditionTest[] cases = {
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addContentLengthRangeCondition(123, 456);
-          return new PostPolicyV4.ConditionV4(range, "123", "456");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addContentLengthRange(123, 456);
+          return new FormPostPolicyV4.BinaryConditionV4(range, "123", "456");
         }
 
         @Override
@@ -226,11 +226,11 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
           long date = 2000000000000L;
-          builder.addExpiresCondition(date);
-          return new PostPolicyV4.ConditionV4(eq, "expires", dateFormat.format(date));
+          builder.addExpires(date);
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "expires", dateFormat.format(date));
         }
 
         @Override
@@ -240,10 +240,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addExpiresCondition("2030-Dec-31");
-          return new PostPolicyV4.ConditionV4(eq, "expires", "2030-Dec-31");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addExpires("2030-Dec-31");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "expires", "2030-Dec-31");
         }
 
         @Override
@@ -253,10 +253,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addExpiresCondition(range, 0);
-          return new PostPolicyV4.ConditionV4(eq, "expires", dateFormat.format(0));
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addExpires(range, 0);
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "expires", dateFormat.format(0));
         }
 
         @Override
@@ -266,10 +266,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addExpiresCondition(startsWith, "2030-Dec-31");
-          return new PostPolicyV4.ConditionV4(eq, "expires", "2030-Dec-31");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addExpires(startsWith, "2030-Dec-31");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "expires", "2030-Dec-31");
         }
 
         @Override
@@ -279,10 +279,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addSuccessActionStatusCondition(202);
-          return new PostPolicyV4.ConditionV4(eq, "success_action_status", "202");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addSuccessActionStatus(202);
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "success_action_status", "202");
         }
 
         @Override
@@ -292,10 +292,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addSuccessActionStatusCondition(startsWith, 202);
-          return new PostPolicyV4.ConditionV4(eq, "success_action_status", "202");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addSuccessActionStatus(startsWith, 202);
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "success_action_status", "202");
         }
 
         @Override
@@ -305,10 +305,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addAclCondition(startsWith, "read");
-          return new PostPolicyV4.ConditionV4(startsWith, "acl", "read");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addAcl(startsWith, "read");
+          return new FormPostPolicyV4.BinaryConditionV4(startsWith, "acl", "read");
         }
 
         @Override
@@ -318,10 +318,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addBucketCondition(eq, "my-bucket");
-          return new PostPolicyV4.ConditionV4(eq, "bucket", "my-bucket");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addBucket(eq, "my-bucket");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "bucket", "my-bucket");
         }
 
         @Override
@@ -331,10 +331,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addCacheControlCondition(eq, "false");
-          return new PostPolicyV4.ConditionV4(eq, "cache-control", "false");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addCacheControl(eq, "false");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "cache-control", "false");
         }
 
         @Override
@@ -344,10 +344,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addContentDispositionCondition(startsWith, "gzip");
-          return new PostPolicyV4.ConditionV4(startsWith, "content-disposition", "gzip");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addContentDisposition(startsWith, "gzip");
+          return new FormPostPolicyV4.BinaryConditionV4(startsWith, "content-disposition", "gzip");
         }
 
         @Override
@@ -357,10 +357,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addContentEncodingCondition(eq, "koi8");
-          return new PostPolicyV4.ConditionV4(eq, "content-encoding", "koi8");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addContentEncoding(eq, "koi8");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "content-encoding", "koi8");
         }
 
         @Override
@@ -370,10 +370,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addContentTypeCondition(startsWith, "application/");
-          return new PostPolicyV4.ConditionV4(startsWith, "content-type", "application/");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addContentType(startsWith, "application/");
+          return new FormPostPolicyV4.BinaryConditionV4(startsWith, "content-type", "application/");
         }
 
         @Override
@@ -383,10 +383,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addKeyCondition(startsWith, "");
-          return new PostPolicyV4.ConditionV4(startsWith, "key", "");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addKey(startsWith, "");
+          return new FormPostPolicyV4.BinaryConditionV4(startsWith, "key", "");
         }
 
         @Override
@@ -396,10 +396,10 @@ public class PostPolicyV4Test {
       },
       new ConditionTest() {
         @Override
-        public PostPolicyV4.ConditionV4 addCondition(
-            PostPolicyV4.PostConditionsV4.Builder builder) {
-          builder.addSuccessActionRedirectUrlCondition(eq, "fail");
-          return new PostPolicyV4.ConditionV4(eq, "success_action_redirect", "fail");
+        public FormPostPolicyV4.BinaryConditionV4 addCondition(
+            FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder) {
+          builder.addSuccessActionRedirect(eq, "fail");
+          return new FormPostPolicyV4.BinaryConditionV4(eq, "success_action_redirect", "fail");
         }
 
         @Override
@@ -410,26 +410,26 @@ public class PostPolicyV4Test {
     };
 
     for (ConditionTest testCase : cases) {
-      PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
-      PostPolicyV4.ConditionV4 expected = testCase.addCondition(builder);
-      Set<PostPolicyV4.ConditionV4> conditions = builder.build().getConditions();
+      FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder = FormPostPolicyV4.PostConditionsVersion4.builder();
+      FormPostPolicyV4.BinaryConditionV4 expected = testCase.addCondition(builder);
+      Set<FormPostPolicyV4.BinaryConditionV4> conditions = builder.create().getConditions();
       assertEquals("size", 1, conditions.size());
-      PostPolicyV4.ConditionV4 actual = conditions.toArray(new PostPolicyV4.ConditionV4[1])[0];
+      FormPostPolicyV4.BinaryConditionV4 actual = conditions.toArray(new FormPostPolicyV4.BinaryConditionV4[1])[0];
       assertEquals(testCase.toString(), expected, actual);
     }
   }
 
   @Test
   public void testPostConditionsV4_addConditionFail() {
-    final PostPolicyV4.PostConditionsV4.Builder builder =
-        PostPolicyV4.PostConditionsV4.newBuilder();
-    final PostPolicyV4.ConditionV4Type range = PostPolicyV4.ConditionV4Type.CONTENT_LENGTH_RANGE;
+    final FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder =
+        FormPostPolicyV4.PostConditionsVersion4.builder();
+    final FormPostPolicyV4.ConditionV4Operator range = FormPostPolicyV4.ConditionV4Operator.CONTENT_LENGTH_RANGE;
 
     Callable[] cases = {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addAclCondition(range, "");
+          builder.addAcl(range, "");
           return null;
         }
 
@@ -441,7 +441,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addBucketCondition(range, "");
+          builder.addBucket(range, "");
           return null;
         }
 
@@ -453,7 +453,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addCacheControlCondition(range, "");
+          builder.addCacheControl(range, "");
           return null;
         }
 
@@ -465,7 +465,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addContentDispositionCondition(range, "");
+          builder.addContentDisposition(range, "");
           return null;
         }
 
@@ -477,7 +477,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addContentEncodingCondition(range, "");
+          builder.addContentEncoding(range, "");
           return null;
         }
 
@@ -489,7 +489,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addContentTypeCondition(range, "");
+          builder.addContentType(range, "");
           return null;
         }
 
@@ -501,7 +501,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addKeyCondition(range, "");
+          builder.addKey(range, "");
           return null;
         }
 
@@ -513,7 +513,7 @@ public class PostPolicyV4Test {
       new Callable<Void>() {
         @Override
         public Void call() {
-          builder.addSuccessActionRedirectUrlCondition(range, "");
+          builder.addSuccessActionRedirect(range, "");
           return null;
         }
 
@@ -536,18 +536,18 @@ public class PostPolicyV4Test {
         assertEquals(expected, e.toString());
       }
     }
-    assertTrue(builder.build().getConditions().isEmpty());
+    assertTrue(builder.create().getConditions().isEmpty());
   }
 
   @Test
   public void testPostConditionsV4_toString() {
-    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
-    builder.addKeyCondition(PostPolicyV4.ConditionV4Type.MATCHES, "test-object");
-    builder.addAclCondition(PostPolicyV4.ConditionV4Type.STARTS_WITH, "public");
-    builder.addContentLengthRangeCondition(246, 266);
+    FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder builder = FormPostPolicyV4.PostConditionsVersion4.builder();
+    builder.addKey(FormPostPolicyV4.ConditionV4Operator.MATCHES, "test-object");
+    builder.addAcl(FormPostPolicyV4.ConditionV4Operator.STARTS_WITH, "public");
+    builder.addContentLengthRange(246, 266);
 
     Set<String> toStringSet = new HashSet<>();
-    for (PostPolicyV4.ConditionV4 conditionV4 : builder.build().getConditions()) {
+    for (FormPostPolicyV4.BinaryConditionV4 conditionV4 : builder.create().getConditions()) {
       toStringSet.add(conditionV4.toString());
     }
     assertEquals(3, toStringSet.size());
@@ -565,24 +565,24 @@ public class PostPolicyV4Test {
 
   @Test
   public void testPostPolicyV4Document_of_toJson() {
-    PostPolicyV4.PostConditionsV4 emptyConditions =
-        PostPolicyV4.PostConditionsV4.newBuilder().build();
-    PostPolicyV4.PostPolicyV4Document emptyDocument =
-        PostPolicyV4.PostPolicyV4Document.of("", emptyConditions);
-    String emptyJson = emptyDocument.toJson();
+    FormPostPolicyV4.PostConditionsVersion4 emptyConditions =
+        FormPostPolicyV4.PostConditionsVersion4.builder().create();
+    FormPostPolicyV4.PostPolicyV4DocumentModel emptyDocument =
+        FormPostPolicyV4.PostPolicyV4DocumentModel.create("", emptyConditions);
+    String emptyJson = emptyDocument.toJsonString();
     assertEquals(emptyJson, "{\"conditions\":[],\"expiration\":\"\"}");
 
-    PostPolicyV4.PostConditionsV4 postConditionsV4 =
-        PostPolicyV4.PostConditionsV4.newBuilder()
-            .addBucketCondition(PostPolicyV4.ConditionV4Type.MATCHES, "my-bucket")
-            .addKeyCondition(PostPolicyV4.ConditionV4Type.STARTS_WITH, "")
-            .addContentLengthRangeCondition(1, 1000)
-            .build();
+    FormPostPolicyV4.PostConditionsVersion4 postConditionsV4 =
+        FormPostPolicyV4.PostConditionsVersion4.builder()
+            .addBucket(FormPostPolicyV4.ConditionV4Operator.MATCHES, "my-bucket")
+            .addKey(FormPostPolicyV4.ConditionV4Operator.STARTS_WITH, "")
+            .addContentLengthRange(1, 1000)
+            .create();
 
     String expiration = dateFormat.format(System.currentTimeMillis());
-    PostPolicyV4.PostPolicyV4Document document =
-        PostPolicyV4.PostPolicyV4Document.of(expiration, postConditionsV4);
-    String json = document.toJson();
+    FormPostPolicyV4.PostPolicyV4DocumentModel document =
+        FormPostPolicyV4.PostPolicyV4DocumentModel.create(expiration, postConditionsV4);
+    String json = document.toJsonString();
     assertEquals(
         json,
         "{\"conditions\":[{\"bucket\":\"my-bucket\"},[\"starts-with\",\"$key\",\"\"],[\"content-length-range\",1,1000]],\"expiration\":\""

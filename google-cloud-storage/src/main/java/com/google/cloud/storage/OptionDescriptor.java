@@ -18,51 +18,51 @@ package com.google.cloud.storage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.StorageServiceRpc;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;
 
 /** Base class for Storage operation option. */
-public abstract class Option implements Serializable {
+public abstract class OptionDescriptor implements Serializable {
 
   private static final long serialVersionUID = -73199088766477208L;
 
-  private final StorageRpc.Option rpcOption;
-  private final Object value;
+  private final StorageServiceRpc.StorageOption storageOption;
+  private final Object optionValue;
 
-  Option(StorageRpc.Option rpcOption, Object value) {
-    this.rpcOption = checkNotNull(rpcOption);
-    this.value = value;
+  OptionDescriptor(StorageServiceRpc.StorageOption storageOption, Object optionValue) {
+    this.storageOption = checkNotNull(storageOption);
+    this.optionValue = optionValue;
   }
 
-  StorageRpc.Option getRpcOption() {
-    return rpcOption;
+  StorageServiceRpc.StorageOption getRpcOption() {
+    return storageOption;
   }
 
   Object getValue() {
-    return value;
+    return optionValue;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof Option)) {
+  public boolean equals(Object candidate) {
+    if (!(candidate instanceof OptionDescriptor)) {
       return false;
     }
-    Option other = (Option) obj;
-    return Objects.equals(rpcOption, other.rpcOption) && Objects.equals(value, other.value);
+    OptionDescriptor thatDescriptor = (OptionDescriptor) candidate;
+    return Objects.equals(storageOption, thatDescriptor.storageOption) && Objects.equals(optionValue, thatDescriptor.optionValue);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rpcOption, value);
+    return Objects.hash(storageOption, optionValue);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", rpcOption.value())
-        .add("value", value)
+        .add("name", storageOption.getValue())
+        .add("value", optionValue)
         .toString();
   }
 }

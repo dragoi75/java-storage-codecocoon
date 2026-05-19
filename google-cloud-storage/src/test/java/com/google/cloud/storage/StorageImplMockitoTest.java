@@ -36,8 +36,8 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.ServiceOptions;
 import com.google.cloud.Tuple;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.spi.StorageRpcFactory;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.StorageRpcProvider;
+import com.google.cloud.storage.spi.v1.StorageServiceRpc;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -95,178 +95,178 @@ public class StorageImplMockitoTest {
   private static final int MIN_BUFFER_SIZE = 256 * 1024;
   // BucketInfo objects
   private static final BucketInfo BUCKET_INFO1 =
-      BucketInfo.newBuilder(BUCKET_NAME1).setMetageneration(42L).build();
-  private static final BucketInfo BUCKET_INFO2 = BucketInfo.newBuilder(BUCKET_NAME2).build();
+      BucketInfo.newBucketBuilder(BUCKET_NAME1).setMetageneration(42L).buildBucketInfo();
+  private static final BucketInfo BUCKET_INFO2 = BucketInfo.newBucketBuilder(BUCKET_NAME2).buildBucketInfo();
   private static final BucketInfo BUCKET_INFO3 =
-      BucketInfo.newBuilder(BUCKET_NAME3)
+      BucketInfo.newBucketBuilder(BUCKET_NAME3)
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(true)
           .setMetageneration(42L)
-          .build();
+          .buildBucketInfo();
 
   // BlobInfo objects
-  private static final BlobInfo BLOB_INFO1 =
-      BlobInfo.newBuilder(BUCKET_NAME1, BLOB_NAME1, 24L)
+  private static final BlobMetadata BLOB_INFO1 =
+      BlobMetadata.newBuilder(BUCKET_NAME1, BLOB_NAME1, 24L)
           .setMetageneration(42L)
           .setContentType("application/json")
           .setMd5("md5string")
-          .build();
-  private static final BlobInfo BLOB_INFO2 = BlobInfo.newBuilder(BUCKET_NAME1, BLOB_NAME2).build();
-  private static final BlobInfo BLOB_INFO3 = BlobInfo.newBuilder(BUCKET_NAME1, BLOB_NAME3).build();
+          .buildObject();
+  private static final BlobMetadata BLOB_INFO2 = BlobMetadata.newBuilder(BUCKET_NAME1, BLOB_NAME2).buildObject();
+  private static final BlobMetadata BLOB_INFO3 = BlobMetadata.newBuilder(BUCKET_NAME1, BLOB_NAME3).buildObject();
 
-  private static final BlobInfo BLOB_INFO_WITH_HASHES =
-      BLOB_INFO1.toBuilder().setMd5(CONTENT_MD5).setCrc32c(CONTENT_CRC32C).build();
-  private static final BlobInfo BLOB_INFO_WITHOUT_HASHES =
-      BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+  private static final BlobMetadata BLOB_INFO_WITH_HASHES =
+      BLOB_INFO1.asBuilder().setMd5(CONTENT_MD5).setCrc32c(CONTENT_CRC32C).buildObject();
+  private static final BlobMetadata BLOB_INFO_WITHOUT_HASHES =
+      BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
 
   // Empty StorageRpc options
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final Map<StorageServiceRpc.StorageOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   // Bucket target options
-  private static final Storage.BucketTargetOption BUCKET_TARGET_METAGENERATION =
-      Storage.BucketTargetOption.metagenerationMatch();
-  private static final Storage.BucketTargetOption BUCKET_TARGET_PREDEFINED_ACL =
-      Storage.BucketTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_USER_PROJECT =
-      Storage.BucketTargetOption.userProject(USER_PROJECT);
-  private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS =
+  private static final CloudStorageClient.BucketTargetOptions BUCKET_TARGET_METAGENERATION =
+      CloudStorageClient.BucketTargetOptions.ifMetagenerationMatch();
+  private static final CloudStorageClient.BucketTargetOptions BUCKET_TARGET_PREDEFINED_ACL =
+      CloudStorageClient.BucketTargetOptions.withPredefinedAcl(CloudStorageClient.PredefinedAccessControlList.PRIVATE);
+  private static final CloudStorageClient.BucketTargetOptions BUCKET_TARGET_USER_PROJECT =
+      CloudStorageClient.BucketTargetOptions.withUserProject(USER_PROJECT);
+  private static final Map<StorageServiceRpc.StorageOption, ?> BUCKET_TARGET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BUCKET_INFO1.getMetageneration(),
+          StorageServiceRpc.StorageOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageServiceRpc.StorageOption, ?> BUCKET_TARGET_OPTIONS_LOCK_RETENTION_POLICY =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH,
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH,
           BUCKET_INFO3.getMetageneration(),
-          StorageRpc.Option.USER_PROJECT,
+          StorageServiceRpc.StorageOption.USER_PROJECT,
           USER_PROJECT);
 
   // Blob target options (create, update, compose)
-  private static final Storage.BlobTargetOption BLOB_TARGET_GENERATION =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_METAGENERATION =
-      Storage.BlobTargetOption.metagenerationMatch();
-  private static final Storage.BlobTargetOption BLOB_TARGET_DISABLE_GZIP_CONTENT =
-      Storage.BlobTargetOption.disableGzipContent();
-  private static final Storage.BlobTargetOption BLOB_TARGET_NOT_EXIST =
-      Storage.BlobTargetOption.doesNotExist();
-  private static final Storage.BlobTargetOption BLOB_TARGET_PREDEFINED_ACL =
-      Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE =
+  private static final CloudStorageClient.BlobUploadOptions BLOB_TARGET_GENERATION =
+      CloudStorageClient.BlobUploadOptions.ifGenerationMatch();
+  private static final CloudStorageClient.BlobUploadOptions BLOB_TARGET_METAGENERATION =
+      CloudStorageClient.BlobUploadOptions.ifMetagenerationMatch();
+  private static final CloudStorageClient.BlobUploadOptions BLOB_TARGET_DISABLE_GZIP_CONTENT =
+      CloudStorageClient.BlobUploadOptions.disableGzip();
+  private static final CloudStorageClient.BlobUploadOptions BLOB_TARGET_NOT_EXIST =
+      CloudStorageClient.BlobUploadOptions.ifDoesNotExist();
+  private static final CloudStorageClient.BlobUploadOptions BLOB_TARGET_PREDEFINED_ACL =
+      CloudStorageClient.BlobUploadOptions.withPredefinedAcl(CloudStorageClient.PredefinedAccessControlList.PRIVATE);
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_TARGET_OPTIONS_CREATE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
-          StorageRpc.Option.IF_GENERATION_MATCH, 0L,
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT =
-      ImmutableMap.of(StorageRpc.Option.IF_DISABLE_GZIP_CONTENT, true);
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_UPDATE =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
+          StorageServiceRpc.StorageOption.IF_GENERATION_MATCH, 0L,
+          StorageServiceRpc.StorageOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT =
+      ImmutableMap.of(StorageServiceRpc.StorageOption.IF_DISABLE_GZIP_CONTENT, true);
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_TARGET_OPTIONS_UPDATE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
-          StorageRpc.Option.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_TARGET_OPTIONS_COMPOSE =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration(),
+          StorageServiceRpc.StorageOption.PREDEFINED_ACL, BUCKET_TARGET_PREDEFINED_ACL.getValue());
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_TARGET_OPTIONS_COMPOSE =
       ImmutableMap.of(
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
+          StorageServiceRpc.StorageOption.IF_GENERATION_MATCH, BLOB_INFO1.getGeneration(),
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BLOB_INFO1.getMetageneration());
 
   // Blob write options (create, writer)
-  private static final Storage.BlobWriteOption BLOB_WRITE_METAGENERATION =
-      Storage.BlobWriteOption.metagenerationMatch();
-  private static final Storage.BlobWriteOption BLOB_WRITE_NOT_EXIST =
-      Storage.BlobWriteOption.doesNotExist();
-  private static final Storage.BlobWriteOption BLOB_WRITE_PREDEFINED_ACL =
-      Storage.BlobWriteOption.predefinedAcl(Storage.PredefinedAcl.PRIVATE);
-  private static final Storage.BlobWriteOption BLOB_WRITE_MD5_HASH =
-      Storage.BlobWriteOption.md5Match();
-  private static final Storage.BlobWriteOption BLOB_WRITE_CRC2C =
-      Storage.BlobWriteOption.crc32cMatch();
+  private static final CloudStorageClient.BlobWriteOptions BLOB_WRITE_METAGENERATION =
+      CloudStorageClient.BlobWriteOptions.ifMetagenerationMatch();
+  private static final CloudStorageClient.BlobWriteOptions BLOB_WRITE_NOT_EXIST =
+      CloudStorageClient.BlobWriteOptions.ifNotExists();
+  private static final CloudStorageClient.BlobWriteOptions BLOB_WRITE_PREDEFINED_ACL =
+      CloudStorageClient.BlobWriteOptions.withPredefinedAcl(CloudStorageClient.PredefinedAccessControlList.PRIVATE);
+  private static final CloudStorageClient.BlobWriteOptions BLOB_WRITE_MD5_HASH =
+      CloudStorageClient.BlobWriteOptions.ifMd5Match();
+  private static final CloudStorageClient.BlobWriteOptions BLOB_WRITE_CRC2C =
+      CloudStorageClient.BlobWriteOptions.ifCrc32cMatch();
 
   // Bucket get/source options
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_METAGENERATION =
-      Storage.BucketSourceOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Map<StorageRpc.Option, ?> BUCKET_SOURCE_OPTIONS =
+  private static final CloudStorageClient.BucketSourceRequestOption BUCKET_SOURCE_METAGENERATION =
+      CloudStorageClient.BucketSourceRequestOption.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final Map<StorageServiceRpc.StorageOption, ?> BUCKET_SOURCE_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
-  private static final Storage.BucketGetOption BUCKET_GET_METAGENERATION =
-      Storage.BucketGetOption.metagenerationMatch(BUCKET_INFO1.getMetageneration());
-  private static final Storage.BucketGetOption BUCKET_GET_FIELDS =
-      Storage.BucketGetOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketGetOption BUCKET_GET_EMPTY_FIELDS =
-      Storage.BucketGetOption.fields();
-  private static final Map<StorageRpc.Option, ?> BUCKET_GET_OPTIONS =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
+  private static final CloudStorageClient.BucketGetOptions BUCKET_GET_METAGENERATION =
+      CloudStorageClient.BucketGetOptions.ifMetagenerationMatch(BUCKET_INFO1.getMetageneration());
+  private static final CloudStorageClient.BucketGetOptions BUCKET_GET_FIELDS =
+      CloudStorageClient.BucketGetOptions.selectFields(CloudStorageClient.BucketProperty.LOCATION, CloudStorageClient.BucketProperty.ACL);
+  private static final CloudStorageClient.BucketGetOptions BUCKET_GET_EMPTY_FIELDS =
+      CloudStorageClient.BucketGetOptions.selectFields();
+  private static final Map<StorageServiceRpc.StorageOption, ?> BUCKET_GET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BUCKET_SOURCE_METAGENERATION.getValue());
 
   // Blob get/source options
-  private static final Storage.BlobGetOption BLOB_GET_METAGENERATION =
-      Storage.BlobGetOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION =
-      Storage.BlobGetOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobGetOption BLOB_GET_GENERATION_FROM_BLOB_ID =
-      Storage.BlobGetOption.generationMatch();
-  private static final Storage.BlobGetOption BLOB_GET_FIELDS =
-      Storage.BlobGetOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.CRC32C);
-  private static final Storage.BlobGetOption BLOB_GET_EMPTY_FIELDS = Storage.BlobGetOption.fields();
-  private static final Map<StorageRpc.Option, ?> BLOB_GET_OPTIONS =
+  private static final CloudStorageClient.BlobGetOptions BLOB_GET_METAGENERATION =
+      CloudStorageClient.BlobGetOptions.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final CloudStorageClient.BlobGetOptions BLOB_GET_GENERATION =
+      CloudStorageClient.BlobGetOptions.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final CloudStorageClient.BlobGetOptions BLOB_GET_GENERATION_FROM_BLOB_ID =
+      CloudStorageClient.BlobGetOptions.ifGenerationMatch();
+  private static final CloudStorageClient.BlobGetOptions BLOB_GET_FIELDS =
+      CloudStorageClient.BlobGetOptions.selectFields(CloudStorageClient.BlobMetadataField.CONTENT_TYPE, CloudStorageClient.BlobMetadataField.CRC32C);
+  private static final CloudStorageClient.BlobGetOptions BLOB_GET_EMPTY_FIELDS = CloudStorageClient.BlobGetOptions.selectFields();
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_GET_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_METAGENERATION =
-      Storage.BlobSourceOption.metagenerationMatch(BLOB_INFO1.getMetageneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION =
-      Storage.BlobSourceOption.generationMatch(BLOB_INFO1.getGeneration());
-  private static final Storage.BlobSourceOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
-      Storage.BlobSourceOption.generationMatch();
-  private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BLOB_GET_METAGENERATION.getValue(),
+          StorageServiceRpc.StorageOption.IF_GENERATION_MATCH, BLOB_GET_GENERATION.getValue());
+  private static final CloudStorageClient.BlobReadOption BLOB_SOURCE_METAGENERATION =
+      CloudStorageClient.BlobReadOption.ifMetagenerationMatch(BLOB_INFO1.getMetageneration());
+  private static final CloudStorageClient.BlobReadOption BLOB_SOURCE_GENERATION =
+      CloudStorageClient.BlobReadOption.ifGenerationMatch(BLOB_INFO1.getGeneration());
+  private static final CloudStorageClient.BlobReadOption BLOB_SOURCE_GENERATION_FROM_BLOB_ID =
+      CloudStorageClient.BlobReadOption.ifGenerationMatch();
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_SOURCE_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
-  private static final Map<StorageRpc.Option, ?> BLOB_SOURCE_OPTIONS_COPY =
+          StorageServiceRpc.StorageOption.IF_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
+          StorageServiceRpc.StorageOption.IF_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_SOURCE_OPTIONS_COPY =
       ImmutableMap.of(
-          StorageRpc.Option.IF_SOURCE_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
-          StorageRpc.Option.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
+          StorageServiceRpc.StorageOption.IF_SOURCE_METAGENERATION_MATCH, BLOB_SOURCE_METAGENERATION.getValue(),
+          StorageServiceRpc.StorageOption.IF_SOURCE_GENERATION_MATCH, BLOB_SOURCE_GENERATION.getValue());
 
   // Bucket list options
-  private static final Storage.BucketListOption BUCKET_LIST_PAGE_SIZE =
-      Storage.BucketListOption.pageSize(42L);
-  private static final Storage.BucketListOption BUCKET_LIST_PREFIX =
-      Storage.BucketListOption.prefix("prefix");
-  private static final Storage.BucketListOption BUCKET_LIST_FIELDS =
-      Storage.BucketListOption.fields(Storage.BucketField.LOCATION, Storage.BucketField.ACL);
-  private static final Storage.BucketListOption BUCKET_LIST_EMPTY_FIELDS =
-      Storage.BucketListOption.fields();
-  private static final Map<StorageRpc.Option, ?> BUCKET_LIST_OPTIONS =
+  private static final CloudStorageClient.BucketListOptions BUCKET_LIST_PAGE_SIZE =
+      CloudStorageClient.BucketListOptions.withPageSize(42L);
+  private static final CloudStorageClient.BucketListOptions BUCKET_LIST_PREFIX =
+      CloudStorageClient.BucketListOptions.withPrefix("prefix");
+  private static final CloudStorageClient.BucketListOptions BUCKET_LIST_FIELDS =
+      CloudStorageClient.BucketListOptions.selectFields(CloudStorageClient.BucketProperty.LOCATION, CloudStorageClient.BucketProperty.ACL);
+  private static final CloudStorageClient.BucketListOptions BUCKET_LIST_EMPTY_FIELDS =
+      CloudStorageClient.BucketListOptions.selectFields();
+  private static final Map<StorageServiceRpc.StorageOption, ?> BUCKET_LIST_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
-          StorageRpc.Option.PREFIX, BUCKET_LIST_PREFIX.getValue());
+          StorageServiceRpc.StorageOption.MAX_RESULTS, BUCKET_LIST_PAGE_SIZE.getValue(),
+          StorageServiceRpc.StorageOption.PREFIX, BUCKET_LIST_PREFIX.getValue());
 
   // Blob list options
-  private static final Storage.BlobListOption BLOB_LIST_PAGE_SIZE =
-      Storage.BlobListOption.pageSize(42L);
-  private static final Storage.BlobListOption BLOB_LIST_PREFIX =
-      Storage.BlobListOption.prefix("prefix");
-  private static final Storage.BlobListOption BLOB_LIST_FIELDS =
-      Storage.BlobListOption.fields(Storage.BlobField.CONTENT_TYPE, Storage.BlobField.MD5HASH);
-  private static final Storage.BlobListOption BLOB_LIST_VERSIONS =
-      Storage.BlobListOption.versions(false);
-  private static final Storage.BlobListOption BLOB_LIST_EMPTY_FIELDS =
-      Storage.BlobListOption.fields();
-  private static final Map<StorageRpc.Option, ?> BLOB_LIST_OPTIONS =
+  private static final CloudStorageClient.BlobListOptions BLOB_LIST_PAGE_SIZE =
+      CloudStorageClient.BlobListOptions.withPageSize(42L);
+  private static final CloudStorageClient.BlobListOptions BLOB_LIST_PREFIX =
+      CloudStorageClient.BlobListOptions.withPrefix("prefix");
+  private static final CloudStorageClient.BlobListOptions BLOB_LIST_FIELDS =
+      CloudStorageClient.BlobListOptions.withFields(CloudStorageClient.BlobMetadataField.CONTENT_TYPE, CloudStorageClient.BlobMetadataField.MD5HASH);
+  private static final CloudStorageClient.BlobListOptions BLOB_LIST_VERSIONS =
+      CloudStorageClient.BlobListOptions.withVersions(false);
+  private static final CloudStorageClient.BlobListOptions BLOB_LIST_EMPTY_FIELDS =
+      CloudStorageClient.BlobListOptions.withFields();
+  private static final Map<StorageServiceRpc.StorageOption, ?> BLOB_LIST_OPTIONS =
       ImmutableMap.of(
-          StorageRpc.Option.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
-          StorageRpc.Option.PREFIX, BLOB_LIST_PREFIX.getValue(),
-          StorageRpc.Option.VERSIONS, BLOB_LIST_VERSIONS.getValue());
+          StorageServiceRpc.StorageOption.MAX_RESULTS, BLOB_LIST_PAGE_SIZE.getValue(),
+          StorageServiceRpc.StorageOption.PREFIX, BLOB_LIST_PREFIX.getValue(),
+          StorageServiceRpc.StorageOption.VERSIONS, BLOB_LIST_VERSIONS.getValue());
 
   // ACLs
-  private static final Acl ACL = Acl.of(Acl.User.ofAllAuthenticatedUsers(), Acl.Role.OWNER);
-  private static final Acl OTHER_ACL =
-      Acl.of(new Acl.Project(Acl.Project.ProjectRole.OWNERS, "p"), Acl.Role.READER);
+  private static final AccessControlEntry ACL = AccessControlEntry.create(AccessControlEntry.UserPrincipal.allAuthenticatedUsers(), AccessControlEntry.UserRole.OWNER);
+  private static final AccessControlEntry OTHER_ACL =
+      AccessControlEntry.create(new AccessControlEntry.ProjectInfo(AccessControlEntry.ProjectInfo.ProjectUserRole.OWNERS, "p"), AccessControlEntry.UserRole.READER);
 
   // Customer supplied encryption key options
-  private static final Map<StorageRpc.Option, ?> ENCRYPTION_KEY_OPTIONS =
-      ImmutableMap.of(StorageRpc.Option.CUSTOMER_SUPPLIED_KEY, BASE64_KEY);
+  private static final Map<StorageServiceRpc.StorageOption, ?> ENCRYPTION_KEY_OPTIONS =
+      ImmutableMap.of(StorageServiceRpc.StorageOption.CUSTOMER_SUPPLIED_KEY, BASE64_KEY);
 
   // Customer managed encryption key options
-  private static final Map<StorageRpc.Option, ?> KMS_KEY_NAME_OPTIONS =
-      ImmutableMap.of(StorageRpc.Option.KMS_KEY_NAME, KMS_KEY_NAME);
+  private static final Map<StorageServiceRpc.StorageOption, ?> KMS_KEY_NAME_OPTIONS =
+      ImmutableMap.of(StorageServiceRpc.StorageOption.KMS_KEY_NAME, KMS_KEY_NAME);
   // IAM policies
   private static final String POLICY_ETAG1 = "CAE=";
   private static final String POLICY_ETAG2 = "CAI=";
@@ -281,7 +281,7 @@ public class StorageImplMockitoTest {
           .setVersion(1)
           .build();
 
-  private static final ServiceAccount SERVICE_ACCOUNT = ServiceAccount.of("test@google.com");
+  private static final ServiceAccountIdentity SERVICE_ACCOUNT = ServiceAccountIdentity.create("test@google.com");
 
   private static final com.google.api.services.storage.model.Policy API_POLICY1 =
       new com.google.api.services.storage.model.Policy()
@@ -367,13 +367,13 @@ public class StorageImplMockitoTest {
   private static PrivateKey privateKey;
   private static PublicKey publicKey;
 
-  private StorageOptions options;
-  private StorageRpcFactory rpcFactoryMock;
-  private StorageRpc storageRpcMock;
-  private Storage storage;
+  private StorageClientOptions options;
+  private StorageRpcProvider rpcFactoryMock;
+  private StorageServiceRpc storageRpcMock;
+  private CloudStorageClient storage;
 
-  private Blob expectedBlob1, expectedBlob2, expectedBlob3, expectedUpdated;
-  private Bucket expectedBucket1, expectedBucket2, expectedBucket3;
+  private StorageBlob expectedBlob1, expectedBlob2, expectedBlob3, expectedUpdated;
+  private StorageBucket expectedBucket1, expectedBucket2, expectedBucket3;
 
   @BeforeClass
   public static void beforeClass() throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -405,11 +405,11 @@ public class StorageImplMockitoTest {
 
   @Before
   public void setUp() {
-    rpcFactoryMock = mock(StorageRpcFactory.class, UNEXPECTED_CALL_ANSWER);
-    storageRpcMock = mock(StorageRpc.class, UNEXPECTED_CALL_ANSWER);
-    doReturn(storageRpcMock).when(rpcFactoryMock).create(Mockito.any(StorageOptions.class));
+    rpcFactoryMock = mock(StorageRpcProvider.class, UNEXPECTED_CALL_ANSWER);
+    storageRpcMock = mock(StorageServiceRpc.class, UNEXPECTED_CALL_ANSWER);
+    doReturn(storageRpcMock).when(rpcFactoryMock).create(Mockito.any(StorageClientOptions.class));
     options =
-        StorageOptions.newBuilder()
+        StorageClientOptions.createBuilder()
             .setProjectId("projectId")
             .setClock(TIME_SOURCE)
             .setServiceRpcFactory(rpcFactoryMock)
@@ -423,12 +423,12 @@ public class StorageImplMockitoTest {
   }
 
   private void initializeServiceDependentObjects() {
-    expectedBlob1 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO1));
-    expectedBlob2 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO2));
-    expectedBlob3 = new Blob(storage, new BlobInfo.BuilderImpl(BLOB_INFO3));
-    expectedBucket1 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO1));
-    expectedBucket2 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO2));
-    expectedBucket3 = new Bucket(storage, new BucketInfo.BuilderImpl(BUCKET_INFO3));
+    expectedBlob1 = new StorageBlob(storage, new BlobMetadata.BlobInfoBuilderImpl(BLOB_INFO1));
+    expectedBlob2 = new StorageBlob(storage, new BlobMetadata.BlobInfoBuilderImpl(BLOB_INFO2));
+    expectedBlob3 = new StorageBlob(storage, new BlobMetadata.BlobInfoBuilderImpl(BLOB_INFO3));
+    expectedBucket1 = new StorageBucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO1));
+    expectedBucket2 = new StorageBucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO2));
+    expectedBucket3 = new StorageBucket(storage, new BucketInfo.BucketBuilderImpl(BUCKET_INFO3));
     expectedUpdated = null;
   }
 
@@ -440,71 +440,71 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testCreateBucket() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .create(BUCKET_INFO1.toPb(), EMPTY_RPC_OPTIONS);
+        .create(BUCKET_INFO1.toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
-    Bucket bucket = storage.create(BUCKET_INFO1);
+    StorageBucket bucket = storage.create(BUCKET_INFO1);
     assertEquals(expectedBucket1, bucket);
   }
 
   @Test
   public void testCreateBucketWithOptions() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .create(BUCKET_INFO1.toPb(), BUCKET_TARGET_OPTIONS);
+        .create(BUCKET_INFO1.toProto(), BUCKET_TARGET_OPTIONS);
     initializeService();
-    Bucket bucket =
+    StorageBucket bucket =
         storage.create(BUCKET_INFO1, BUCKET_TARGET_METAGENERATION, BUCKET_TARGET_PREDEFINED_ACL);
     assertEquals(expectedBucket1, bucket);
   }
 
   @Test
   public void testCreateBucketFailure() {
-    doThrow(STORAGE_FAILURE).when(storageRpcMock).create(BUCKET_INFO1.toPb(), EMPTY_RPC_OPTIONS);
+    doThrow(STORAGE_FAILURE).when(storageRpcMock).create(BUCKET_INFO1.toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.create(BUCKET_INFO1);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(STORAGE_FAILURE, e.getCause());
     }
   }
 
   @Test
   public void testGetBucket() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BucketInfo.ofName(BUCKET_NAME1).toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
-    Bucket bucket = storage.get(BUCKET_NAME1);
+    StorageBucket bucket = storage.get(BUCKET_NAME1);
     assertEquals(expectedBucket1, bucket);
   }
 
   @Test
   public void testGetBucketWithOptions() {
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), BUCKET_GET_OPTIONS);
+        .get(BucketInfo.ofName(BUCKET_NAME1).toProto(), BUCKET_GET_OPTIONS);
     initializeService();
-    Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION);
+    StorageBucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION);
     assertEquals(expectedBucket1, bucket);
   }
 
   @Test
   public void testGetBucketWithSelectedFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BucketInfo.of(BUCKET_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BucketInfo.ofName(BUCKET_NAME1).toProto()), capturedOptions.capture());
     initializeService();
-    Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_FIELDS);
+    StorageBucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_FIELDS);
     assertEquals(
         BUCKET_GET_METAGENERATION.getValue(),
         capturedOptions.getValue().get(BUCKET_GET_METAGENERATION.getRpcOption()));
@@ -518,14 +518,14 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBucketWithEmptyFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BUCKET_INFO1.toPb())
+    doReturn(BUCKET_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BucketInfo.of(BUCKET_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BucketInfo.ofName(BUCKET_NAME1).toProto()), capturedOptions.capture());
     initializeService();
-    Bucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_EMPTY_FIELDS);
+    StorageBucket bucket = storage.get(BUCKET_NAME1, BUCKET_GET_METAGENERATION, BUCKET_GET_EMPTY_FIELDS);
     assertEquals(
         BUCKET_GET_METAGENERATION.getValue(),
         capturedOptions.getValue().get(BUCKET_GET_METAGENERATION.getRpcOption()));
@@ -539,46 +539,46 @@ public class StorageImplMockitoTest {
   public void testGetBucketFailure() {
     doThrow(STORAGE_FAILURE)
         .when(storageRpcMock)
-        .get(BucketInfo.of(BUCKET_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BucketInfo.ofName(BUCKET_NAME1).toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.get(BUCKET_NAME1);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(STORAGE_FAILURE, e.getCause());
     }
   }
 
   @Test
   public void testGetBlob() {
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BlobId.of(BUCKET_NAME1, BLOB_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BlobIdentifier.create(BUCKET_NAME1, BLOB_NAME1).toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
-    Blob blob = storage.get(BUCKET_NAME1, BLOB_NAME1);
+    StorageBlob blob = storage.get(BUCKET_NAME1, BLOB_NAME1);
     assertEquals(expectedBlob1, blob);
   }
 
   @Test
   public void testGetBlobWithOptions() {
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BlobId.of(BUCKET_NAME1, BLOB_NAME1).toPb(), BLOB_GET_OPTIONS);
+        .get(BlobIdentifier.create(BUCKET_NAME1, BLOB_NAME1).toProto(), BLOB_GET_OPTIONS);
     initializeService();
-    Blob blob = storage.get(BUCKET_NAME1, BLOB_NAME1, BLOB_GET_METAGENERATION, BLOB_GET_GENERATION);
+    StorageBlob blob = storage.get(BUCKET_NAME1, BLOB_NAME1, BLOB_GET_METAGENERATION, BLOB_GET_GENERATION);
     assertEquals(expectedBlob1, blob);
   }
 
   @Test
   public void testGetBlobWithOptionsFromBlobId() {
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(BLOB_INFO1.getBlobId().toPb(), BLOB_GET_OPTIONS);
+        .get(BLOB_INFO1.getBlobId().toProto(), BLOB_GET_OPTIONS);
     initializeService();
-    Blob blob =
+    StorageBlob blob =
         storage.get(
             BLOB_INFO1.getBlobId(), BLOB_GET_METAGENERATION, BLOB_GET_GENERATION_FROM_BLOB_ID);
     assertEquals(expectedBlob1, blob);
@@ -586,14 +586,14 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBlobWithSelectedFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BlobId.of(BUCKET_NAME1, BLOB_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BlobIdentifier.create(BUCKET_NAME1, BLOB_NAME1).toProto()), capturedOptions.capture());
     initializeService();
-    Blob blob =
+    StorageBlob blob =
         storage.get(
             BUCKET_NAME1,
             BLOB_NAME1,
@@ -617,14 +617,14 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testGetBlobWithEmptyFields() {
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .get(Mockito.eq(BlobId.of(BUCKET_NAME1, BLOB_NAME1).toPb()), capturedOptions.capture());
+        .get(Mockito.eq(BlobIdentifier.create(BUCKET_NAME1, BLOB_NAME1).toProto()), capturedOptions.capture());
     initializeService();
-    Blob blob =
+    StorageBlob blob =
         storage.get(
             BUCKET_NAME1,
             BLOB_NAME1,
@@ -648,12 +648,12 @@ public class StorageImplMockitoTest {
   public void testGetBlobFailure() {
     doThrow(STORAGE_FAILURE)
         .when(storageRpcMock)
-        .get(BlobId.of(BUCKET_NAME1, BLOB_NAME1).toPb(), EMPTY_RPC_OPTIONS);
+        .get(BlobIdentifier.create(BUCKET_NAME1, BLOB_NAME1).toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.get(BUCKET_NAME1, BLOB_NAME1);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(STORAGE_FAILURE, e.getCause());
     }
   }
@@ -671,16 +671,16 @@ public class StorageImplMockitoTest {
   public void testCreateBlob() throws IOException {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITH_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITH_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(EMPTY_RPC_OPTIONS));
     initializeService();
 
-    Blob blob = storage.create(BLOB_INFO1, BLOB_CONTENT);
+    StorageBlob blob = storage.create(BLOB_INFO1, BLOB_CONTENT);
 
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
@@ -690,22 +690,22 @@ public class StorageImplMockitoTest {
   public void testCreateBlobWithSubArrayFromByteArray() throws IOException {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
             Mockito.eq(
                 BLOB_INFO1
-                    .toBuilder()
+                    .asBuilder()
                     .setMd5(SUB_CONTENT_MD5)
                     .setCrc32c(SUB_CONTENT_CRC32C)
-                    .build()
-                    .toPb()),
+                    .buildObject()
+                    .toProto()),
             capturedStream.capture(),
             Mockito.eq(EMPTY_RPC_OPTIONS));
     initializeService();
 
-    Blob blob = storage.create(BLOB_INFO1, BLOB_CONTENT, 1, 2);
+    StorageBlob blob = storage.create(BLOB_INFO1, BLOB_CONTENT, 1, 2);
 
     assertEquals(expectedBlob1, blob);
     ByteArrayInputStream byteStream = capturedStream.getValue();
@@ -720,10 +720,10 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    StorageObject storageObject = BLOB_INFO_WITH_HASHES.toPb();
+    StorageObject storageObject = BLOB_INFO_WITH_HASHES.toProto();
 
-    doThrow(new StorageException(500, "internalError"))
-        .doReturn(BLOB_INFO1.toPb())
+    doThrow(new StorageServiceException(500, "internalError"))
+        .doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(Mockito.eq(storageObject), capturedStream.capture(), Mockito.eq(EMPTY_RPC_OPTIONS));
@@ -736,7 +736,7 @@ public class StorageImplMockitoTest {
             .getService();
     initializeServiceDependentObjects();
 
-    Blob blob = storage.create(BLOB_INFO1, BLOB_CONTENT);
+    StorageBlob blob = storage.create(BLOB_INFO1, BLOB_CONTENT);
 
     assertEquals(expectedBlob1, blob);
 
@@ -753,22 +753,22 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
             Mockito.eq(
                 BLOB_INFO1
-                    .toBuilder()
+                    .asBuilder()
                     .setMd5("1B2M2Y8AsgTpgAmY7PhCfg==")
                     .setCrc32c("AAAAAA==")
-                    .build()
-                    .toPb()),
+                    .buildObject()
+                    .toProto()),
             capturedStream.capture(),
             Mockito.eq(EMPTY_RPC_OPTIONS));
     initializeService();
 
-    Blob blob = storage.create(BLOB_INFO1);
+    StorageBlob blob = storage.create(BLOB_INFO1);
     assertEquals(expectedBlob1, blob);
     ByteArrayInputStream byteStream = capturedStream.getValue();
     byte[] streamBytes = new byte[BLOB_CONTENT.length];
@@ -780,16 +780,16 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITH_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITH_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(BLOB_TARGET_OPTIONS_CREATE));
     initializeService();
 
-    Blob blob =
+    StorageBlob blob =
         storage.create(
             BLOB_INFO1,
             BLOB_CONTENT,
@@ -805,16 +805,16 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITH_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITH_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT));
     initializeService();
 
-    Blob blob = storage.create(BLOB_INFO1, BLOB_CONTENT, BLOB_TARGET_DISABLE_GZIP_CONTENT);
+    StorageBlob blob = storage.create(BLOB_INFO1, BLOB_CONTENT, BLOB_TARGET_DISABLE_GZIP_CONTENT);
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
   }
@@ -824,23 +824,23 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    doReturn(BLOB_INFO1.toPb())
-        .doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
+        .doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITH_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITH_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(ENCRYPTION_KEY_OPTIONS));
     initializeService();
 
-    Blob blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.encryptionKey(KEY));
+    StorageBlob blob =
+        storage.create(BLOB_INFO1, BLOB_CONTENT, CloudStorageClient.BlobUploadOptions.customerSuppliedKey(KEY));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
     blob =
         storage.create(
-            BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO1, BLOB_CONTENT, CloudStorageClient.BlobUploadOptions.customerSuppliedKey(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
   }
@@ -850,22 +850,22 @@ public class StorageImplMockitoTest {
     ArgumentCaptor<ByteArrayInputStream> capturedStream =
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
-    doReturn(BLOB_INFO1.toPb())
-        .doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
+        .doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITH_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITH_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(KMS_KEY_NAME_OPTIONS));
     initializeService();
 
-    Blob blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.kmsKeyName(KMS_KEY_NAME));
+    StorageBlob blob =
+        storage.create(BLOB_INFO1, BLOB_CONTENT, CloudStorageClient.BlobUploadOptions.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
     blob =
-        storage.create(BLOB_INFO1, BLOB_CONTENT, Storage.BlobTargetOption.kmsKeyName(KMS_KEY_NAME));
+        storage.create(BLOB_INFO1, BLOB_CONTENT, CloudStorageClient.BlobUploadOptions.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
   }
@@ -878,16 +878,16 @@ public class StorageImplMockitoTest {
 
     ByteArrayInputStream fileStream = new ByteArrayInputStream(BLOB_CONTENT);
 
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITHOUT_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITHOUT_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(EMPTY_RPC_OPTIONS));
     initializeService();
 
-    Blob blob = storage.create(BLOB_INFO_WITH_HASHES, fileStream);
+    StorageBlob blob = storage.create(BLOB_INFO_WITH_HASHES, fileStream);
 
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
@@ -900,18 +900,18 @@ public class StorageImplMockitoTest {
         ArgumentCaptor.forClass(ByteArrayInputStream.class);
 
     ByteArrayInputStream fileStream = new ByteArrayInputStream(BLOB_CONTENT);
-    doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .create(
-            Mockito.eq(BLOB_INFO_WITHOUT_HASHES.toPb()),
+            Mockito.eq(BLOB_INFO_WITHOUT_HASHES.toProto()),
             capturedStream.capture(),
             Mockito.eq(BLOB_TARGET_OPTIONS_CREATE_DISABLE_GZIP_CONTENT));
     initializeService();
 
-    Blob blob =
+    StorageBlob blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.disableGzipContent());
+            BLOB_INFO_WITH_HASHES, fileStream, CloudStorageClient.BlobWriteOptions.disableGzip());
 
     assertEquals(expectedBlob1, blob);
     verifyCreateBlobCapturedStream(capturedStream);
@@ -922,19 +922,19 @@ public class StorageImplMockitoTest {
   public void testCreateBlobFromStreamWithEncryptionKey() throws IOException {
     ByteArrayInputStream fileStream = new ByteArrayInputStream(BLOB_CONTENT);
 
-    doReturn(BLOB_INFO1.toPb())
-        .doReturn(BLOB_INFO1.toPb())
+    doReturn(BLOB_INFO1.toProto())
+        .doReturn(BLOB_INFO1.toProto())
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .create(BLOB_INFO_WITHOUT_HASHES.toPb(), fileStream, ENCRYPTION_KEY_OPTIONS);
+        .create(BLOB_INFO_WITHOUT_HASHES.toProto(), fileStream, ENCRYPTION_KEY_OPTIONS);
     initializeService();
-    Blob blob =
+    StorageBlob blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO_WITH_HASHES, fileStream, CloudStorageClient.BlobWriteOptions.customerSuppliedKey(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
     blob =
         storage.create(
-            BLOB_INFO_WITH_HASHES, fileStream, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+            BLOB_INFO_WITH_HASHES, fileStream, CloudStorageClient.BlobWriteOptions.customerSuppliedKey(BASE64_KEY));
     assertEquals(expectedBlob1, blob);
   }
 
@@ -944,10 +944,10 @@ public class StorageImplMockitoTest {
 
     ByteArrayInputStream fileStream = new ByteArrayInputStream(BLOB_CONTENT);
 
-    Exception internalErrorException = new StorageException(500, "internalError");
+    Exception internalErrorException = new StorageServiceException(500, "internalError");
     doThrow(internalErrorException)
         .when(storageRpcMock)
-        .create(BLOB_INFO_WITHOUT_HASHES.toPb(), fileStream, EMPTY_RPC_OPTIONS);
+        .create(BLOB_INFO_WITHOUT_HASHES.toProto(), fileStream, EMPTY_RPC_OPTIONS);
 
     storage =
         options
@@ -961,7 +961,7 @@ public class StorageImplMockitoTest {
     try {
       storage.create(BLOB_INFO_WITH_HASHES, fileStream);
       fail();
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       assertSame(internalErrorException, ex);
     }
   }
@@ -973,25 +973,25 @@ public class StorageImplMockitoTest {
     try {
       storage.createFrom(BLOB_INFO1, dir);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(dir + " is a directory", e.getMessage());
     }
   }
 
-  private BlobInfo initializeUpload(byte[] bytes) {
+  private BlobMetadata initializeUpload(byte[] bytes) {
     return initializeUpload(bytes, DEFAULT_BUFFER_SIZE, EMPTY_RPC_OPTIONS);
   }
 
-  private BlobInfo initializeUpload(byte[] bytes, int bufferSize) {
+  private BlobMetadata initializeUpload(byte[] bytes, int bufferSize) {
     return initializeUpload(bytes, bufferSize, EMPTY_RPC_OPTIONS);
   }
 
-  private BlobInfo initializeUpload(
-      byte[] bytes, int bufferSize, Map<StorageRpc.Option, ?> rpcOptions) {
+  private BlobMetadata initializeUpload(
+      byte[] bytes, int bufferSize, Map<StorageServiceRpc.StorageOption, ?> rpcOptions) {
     String uploadId = "upload-id";
     byte[] buffer = new byte[bufferSize];
     System.arraycopy(bytes, 0, buffer, 0, bytes.length);
-    BlobInfo blobInfo = BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+    BlobMetadata blobInfo = BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
     StorageObject storageObject = new StorageObject();
     storageObject.setBucket(BLOB_INFO1.getBucket());
     storageObject.setName(BLOB_INFO1.getName());
@@ -999,7 +999,7 @@ public class StorageImplMockitoTest {
     doReturn(uploadId)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(blobInfo.toPb(), rpcOptions);
+        .open(blobInfo.toProto(), rpcOptions);
 
     doReturn(storageObject)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -1007,7 +1007,7 @@ public class StorageImplMockitoTest {
         .writeWithResponse(uploadId, buffer, 0, 0L, bytes.length, true);
 
     initializeService();
-    expectedUpdated = Blob.fromPb(storage, storageObject);
+    expectedUpdated = StorageBlob.fromProto(storage, storageObject);
     return blobInfo;
   }
 
@@ -1017,8 +1017,8 @@ public class StorageImplMockitoTest {
     Path tempFile = Files.createTempFile("testCreateFrom", ".tmp");
     Files.write(tempFile, dataToSend);
 
-    BlobInfo blobInfo = initializeUpload(dataToSend);
-    Blob blob = storage.createFrom(blobInfo, tempFile);
+    BlobMetadata blobInfo = initializeUpload(dataToSend);
+    StorageBlob blob = storage.createFrom(blobInfo, tempFile);
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1027,8 +1027,8 @@ public class StorageImplMockitoTest {
     byte[] dataToSend = {1, 2, 3, 4, 5};
     ByteArrayInputStream stream = new ByteArrayInputStream(dataToSend);
 
-    BlobInfo blobInfo = initializeUpload(dataToSend);
-    Blob blob = storage.createFrom(blobInfo, stream);
+    BlobMetadata blobInfo = initializeUpload(dataToSend);
+    StorageBlob blob = storage.createFrom(blobInfo, stream);
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1037,9 +1037,9 @@ public class StorageImplMockitoTest {
     byte[] dataToSend = {1, 2, 3, 4, 5, 6};
     ByteArrayInputStream stream = new ByteArrayInputStream(dataToSend);
 
-    BlobInfo blobInfo = initializeUpload(dataToSend, DEFAULT_BUFFER_SIZE, KMS_KEY_NAME_OPTIONS);
-    Blob blob =
-        storage.createFrom(blobInfo, stream, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+    BlobMetadata blobInfo = initializeUpload(dataToSend, DEFAULT_BUFFER_SIZE, KMS_KEY_NAME_OPTIONS);
+    StorageBlob blob =
+        storage.createFrom(blobInfo, stream, CloudStorageClient.BlobWriteOptions.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1049,8 +1049,8 @@ public class StorageImplMockitoTest {
     ByteArrayInputStream stream = new ByteArrayInputStream(dataToSend);
     int bufferSize = MIN_BUFFER_SIZE * 2;
 
-    BlobInfo blobInfo = initializeUpload(dataToSend, bufferSize);
-    Blob blob = storage.createFrom(blobInfo, stream, bufferSize);
+    BlobMetadata blobInfo = initializeUpload(dataToSend, bufferSize);
+    StorageBlob blob = storage.createFrom(blobInfo, stream, bufferSize);
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1060,10 +1060,10 @@ public class StorageImplMockitoTest {
     ByteArrayInputStream stream = new ByteArrayInputStream(dataToSend);
     int bufferSize = MIN_BUFFER_SIZE * 2;
 
-    BlobInfo blobInfo = initializeUpload(dataToSend, bufferSize, KMS_KEY_NAME_OPTIONS);
-    Blob blob =
+    BlobMetadata blobInfo = initializeUpload(dataToSend, bufferSize, KMS_KEY_NAME_OPTIONS);
+    StorageBlob blob =
         storage.createFrom(
-            blobInfo, stream, bufferSize, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+            blobInfo, stream, bufferSize, CloudStorageClient.BlobWriteOptions.withKmsKeyName(KMS_KEY_NAME));
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1073,8 +1073,8 @@ public class StorageImplMockitoTest {
     ByteArrayInputStream stream = new ByteArrayInputStream(dataToSend);
     int smallBufferSize = 100;
 
-    BlobInfo blobInfo = initializeUpload(dataToSend, MIN_BUFFER_SIZE);
-    Blob blob = storage.createFrom(blobInfo, stream, smallBufferSize);
+    BlobMetadata blobInfo = initializeUpload(dataToSend, MIN_BUFFER_SIZE);
+    StorageBlob blob = storage.createFrom(blobInfo, stream, smallBufferSize);
     assertEquals(expectedUpdated, blob);
   }
 
@@ -1085,11 +1085,11 @@ public class StorageImplMockitoTest {
     byte[] bytes = new byte[10];
     byte[] buffer = new byte[MIN_BUFFER_SIZE];
     System.arraycopy(bytes, 0, buffer, 0, bytes.length);
-    BlobInfo info = BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+    BlobMetadata info = BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
     doReturn(uploadId)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(info.toPb(), EMPTY_RPC_OPTIONS);
+        .open(info.toProto(), EMPTY_RPC_OPTIONS);
 
     Exception runtimeException = new RuntimeException("message");
     doThrow(runtimeException)
@@ -1100,7 +1100,7 @@ public class StorageImplMockitoTest {
     try {
       storage.createFrom(info, input, MIN_BUFFER_SIZE);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertSame(runtimeException, e.getCause());
     }
   }
@@ -1120,11 +1120,11 @@ public class StorageImplMockitoTest {
     storageObject.setName(BLOB_INFO1.getName());
     storageObject.setSize(BigInteger.valueOf(totalSize));
 
-    BlobInfo info = BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+    BlobMetadata info = BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
     doReturn(uploadId)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(info.toPb(), EMPTY_RPC_OPTIONS);
+        .open(info.toProto(), EMPTY_RPC_OPTIONS);
 
     byte[] buffer1 = new byte[MIN_BUFFER_SIZE];
     System.arraycopy(dataToSend, 0, buffer1, 0, MIN_BUFFER_SIZE);
@@ -1141,8 +1141,8 @@ public class StorageImplMockitoTest {
         .writeWithResponse(uploadId, buffer2, 0, (long) MIN_BUFFER_SIZE, extraBytes, true);
 
     InputStream input = new ByteArrayInputStream(dataToSend);
-    Blob blob = storage.createFrom(info, input, MIN_BUFFER_SIZE);
-    assertEquals(Blob.fromPb(storage, storageObject), blob);
+    StorageBlob blob = storage.createFrom(info, input, MIN_BUFFER_SIZE);
+    assertEquals(StorageBlob.fromProto(storage, storageObject), blob);
   }
 
   @Test
@@ -1150,7 +1150,7 @@ public class StorageImplMockitoTest {
     String cursor = "cursor";
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
 
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -1158,10 +1158,10 @@ public class StorageImplMockitoTest {
         .list(EMPTY_RPC_OPTIONS);
 
     initializeService();
-    ImmutableList<Bucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
-    Page<Bucket> page = storage.list();
+    ImmutableList<StorageBucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
+    Page<StorageBucket> page = storage.list();
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), Bucket.class));
+    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), StorageBucket.class));
   }
 
   @Test
@@ -1172,10 +1172,10 @@ public class StorageImplMockitoTest {
         .list(EMPTY_RPC_OPTIONS);
 
     initializeService();
-    Page<Bucket> page = storage.list();
+    Page<StorageBucket> page = storage.list();
     assertNull(page.getNextPageToken());
     assertArrayEquals(
-        ImmutableList.of().toArray(), Iterables.toArray(page.getValues(), Bucket.class));
+        ImmutableList.of().toArray(), Iterables.toArray(page.getValues(), StorageBucket.class));
   }
 
   @Test
@@ -1183,7 +1183,7 @@ public class StorageImplMockitoTest {
     String cursor = "cursor";
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
 
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -1191,29 +1191,29 @@ public class StorageImplMockitoTest {
         .list(BUCKET_LIST_OPTIONS);
 
     initializeService();
-    ImmutableList<Bucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
-    Page<Bucket> page = storage.list(BUCKET_LIST_PAGE_SIZE, BUCKET_LIST_PREFIX);
+    ImmutableList<StorageBucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
+    Page<StorageBucket> page = storage.list(BUCKET_LIST_PAGE_SIZE, BUCKET_LIST_PREFIX);
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), Bucket.class));
+    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), StorageBucket.class));
   }
 
   @Test
   public void testListBucketsWithSelectedFields() {
     String cursor = "cursor";
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
 
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
 
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(capturedOptions.capture());
     initializeService();
-    ImmutableList<Bucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
-    Page<Bucket> page = storage.list(BUCKET_LIST_FIELDS);
+    ImmutableList<StorageBucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
+    Page<StorageBucket> page = storage.list(BUCKET_LIST_FIELDS);
     String selector = (String) capturedOptions.getValue().get(BUCKET_LIST_FIELDS.getRpcOption());
     assertTrue(selector.contains("items("));
     assertTrue(selector.contains("name"));
@@ -1223,25 +1223,25 @@ public class StorageImplMockitoTest {
     assertTrue(selector.endsWith(")"));
     assertEquals(38, selector.length());
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), Bucket.class));
+    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), StorageBucket.class));
   }
 
   @Test
   public void testListBucketsWithEmptyFields() {
     String cursor = "cursor";
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
     ImmutableList<BucketInfo> bucketInfoList = ImmutableList.of(BUCKET_INFO1, BUCKET_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.Bucket>> result =
-        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(bucketInfoList, BucketInfo.INFO_TO_BUCKET_FUNCTION));
 
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(capturedOptions.capture());
     initializeService();
-    ImmutableList<Bucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
-    Page<Bucket> page = storage.list(BUCKET_LIST_EMPTY_FIELDS);
+    ImmutableList<StorageBucket> bucketList = ImmutableList.of(expectedBucket1, expectedBucket2);
+    Page<StorageBucket> page = storage.list(BUCKET_LIST_EMPTY_FIELDS);
     String selector =
         (String) capturedOptions.getValue().get(BUCKET_LIST_EMPTY_FIELDS.getRpcOption());
     assertTrue(selector.contains("items("));
@@ -1250,7 +1250,7 @@ public class StorageImplMockitoTest {
     assertTrue(selector.endsWith(")"));
     assertEquals(25, selector.length());
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), Bucket.class));
+    assertArrayEquals(bucketList.toArray(), Iterables.toArray(page.getValues(), StorageBucket.class));
   }
 
   @Test
@@ -1260,7 +1260,7 @@ public class StorageImplMockitoTest {
     try {
       storage.list();
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(STORAGE_FAILURE.toString(), e.getMessage());
     }
   }
@@ -1268,9 +1268,9 @@ public class StorageImplMockitoTest {
   @Test
   public void testListBlobs() {
     String cursor = "cursor";
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
 
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
@@ -1278,10 +1278,10 @@ public class StorageImplMockitoTest {
         .list(BUCKET_NAME1, EMPTY_RPC_OPTIONS);
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page = storage.list(BUCKET_NAME1);
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page = storage.list(BUCKET_NAME1);
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
@@ -1294,46 +1294,46 @@ public class StorageImplMockitoTest {
         .list(BUCKET_NAME1, EMPTY_RPC_OPTIONS);
 
     initializeService();
-    Page<Blob> page = storage.list(BUCKET_NAME1);
+    Page<StorageBlob> page = storage.list(BUCKET_NAME1);
     assertNull(page.getNextPageToken());
     assertArrayEquals(
-        ImmutableList.of().toArray(), Iterables.toArray(page.getValues(), Blob.class));
+        ImmutableList.of().toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
   public void testListBlobsWithOptions() {
     String cursor = "cursor";
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(BUCKET_NAME1, BLOB_LIST_OPTIONS);
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page =
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page =
         storage.list(BUCKET_NAME1, BLOB_LIST_PAGE_SIZE, BLOB_LIST_PREFIX, BLOB_LIST_VERSIONS);
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
   public void testListBlobsWithSelectedFields() {
     String cursor = "cursor";
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(Mockito.eq(BUCKET_NAME1), capturedOptions.capture());
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page =
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page =
         storage.list(BUCKET_NAME1, BLOB_LIST_PAGE_SIZE, BLOB_LIST_PREFIX, BLOB_LIST_FIELDS);
     assertEquals(
         BLOB_LIST_PAGE_SIZE.getValue(),
@@ -1352,25 +1352,25 @@ public class StorageImplMockitoTest {
     assertTrue(selector.endsWith(")"));
     assertEquals(61, selector.length());
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
   public void testListBlobsWithEmptyFields() {
     String cursor = "cursor";
-    ArgumentCaptor<Map<StorageRpc.Option, Object>> capturedOptions =
+    ArgumentCaptor<Map<StorageServiceRpc.StorageOption, Object>> capturedOptions =
         ArgumentCaptor.forClass(Map.class);
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(Mockito.eq(BUCKET_NAME1), capturedOptions.capture());
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page =
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page =
         storage.list(BUCKET_NAME1, BLOB_LIST_PAGE_SIZE, BLOB_LIST_PREFIX, BLOB_LIST_EMPTY_FIELDS);
     assertEquals(
         BLOB_LIST_PAGE_SIZE.getValue(),
@@ -1388,46 +1388,46 @@ public class StorageImplMockitoTest {
     assertTrue(selector.endsWith(")"));
     assertEquals(41, selector.length());
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
   public void testListBlobsCurrentDirectory() {
     String cursor = "cursor";
-    Map<StorageRpc.Option, ?> options = ImmutableMap.of(StorageRpc.Option.DELIMITER, "/");
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    Map<StorageServiceRpc.StorageOption, ?> options = ImmutableMap.of(StorageServiceRpc.StorageOption.DELIMITER, "/");
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(BUCKET_NAME1, options);
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page = storage.list(BUCKET_NAME1, Storage.BlobListOption.currentDirectory());
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page = storage.list(BUCKET_NAME1, CloudStorageClient.BlobListOptions.restrictToCurrentDirectory());
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
   public void testListBlobsDelimiter() {
     String cursor = "cursor";
     String delimiter = "/";
-    Map<StorageRpc.Option, ?> options = ImmutableMap.of(StorageRpc.Option.DELIMITER, delimiter);
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+    Map<StorageServiceRpc.StorageOption, ?> options = ImmutableMap.of(StorageServiceRpc.StorageOption.DELIMITER, delimiter);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(BUCKET_NAME1, options);
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page = storage.list(BUCKET_NAME1, Storage.BlobListOption.delimiter(delimiter));
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page = storage.list(BUCKET_NAME1, CloudStorageClient.BlobListOptions.withDelimiter(delimiter));
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
@@ -1435,26 +1435,26 @@ public class StorageImplMockitoTest {
     String cursor = "cursor";
     String startOffset = "startOffset";
     String endOffset = "endOffset";
-    Map<StorageRpc.Option, ?> options =
+    Map<StorageServiceRpc.StorageOption, ?> options =
         ImmutableMap.of(
-            StorageRpc.Option.START_OFF_SET, startOffset, StorageRpc.Option.END_OFF_SET, endOffset);
-    ImmutableList<BlobInfo> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
+            StorageServiceRpc.StorageOption.START_OFF_SET, startOffset, StorageServiceRpc.StorageOption.END_OFF_SET, endOffset);
+    ImmutableList<BlobMetadata> blobInfoList = ImmutableList.of(BLOB_INFO1, BLOB_INFO2);
     Tuple<String, Iterable<com.google.api.services.storage.model.StorageObject>> result =
-        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobInfo.INFO_TO_PB_FUNCTION));
+        Tuple.of(cursor, Iterables.transform(blobInfoList, BlobMetadata.METADATA_TO_PB_FUNCTION));
     doReturn(result)
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
         .list(BUCKET_NAME1, options);
 
     initializeService();
-    ImmutableList<Blob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
-    Page<Blob> page =
+    ImmutableList<StorageBlob> blobList = ImmutableList.of(expectedBlob1, expectedBlob2);
+    Page<StorageBlob> page =
         storage.list(
             BUCKET_NAME1,
-            Storage.BlobListOption.startOffset(startOffset),
-            Storage.BlobListOption.endOffset(endOffset));
+            CloudStorageClient.BlobListOptions.withStartOffset(startOffset),
+            CloudStorageClient.BlobListOptions.withEndOffset(endOffset));
     assertEquals(cursor, page.getNextPageToken());
-    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), Blob.class));
+    assertArrayEquals(blobList.toArray(), Iterables.toArray(page.getValues(), StorageBlob.class));
   }
 
   @Test
@@ -1464,7 +1464,7 @@ public class StorageImplMockitoTest {
     try {
       storage.list(BUCKET_NAME1);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertEquals(STORAGE_FAILURE.toString(), e.getMessage());
     }
   }
@@ -1503,7 +1503,7 @@ public class StorageImplMockitoTest {
     doReturn(Tuple.of("etag", BLOB_CONTENT))
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .read(BLOB_INFO2.toPb(), BLOB_SOURCE_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
+        .read(BLOB_INFO2.toProto(), BLOB_SOURCE_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
     initializeService();
     ReadChannel channel =
         storage.reader(
@@ -1516,15 +1516,15 @@ public class StorageImplMockitoTest {
     doReturn(Tuple.of("a", BLOB_CONTENT), Tuple.of("b", BLOB_SUB_CONTENT))
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .read(BLOB_INFO2.toPb(), ENCRYPTION_KEY_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
+        .read(BLOB_INFO2.toProto(), ENCRYPTION_KEY_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
     initializeService();
     ReadChannel channel =
-        storage.reader(BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOption.decryptionKey(KEY));
+        storage.reader(BUCKET_NAME1, BLOB_NAME2, CloudStorageClient.BlobReadOption.customerSuppliedKey(KEY));
 
     verifyChannelRead(channel, BLOB_CONTENT);
     channel =
         storage.reader(
-            BUCKET_NAME1, BLOB_NAME2, Storage.BlobSourceOption.decryptionKey(BASE64_KEY));
+            BUCKET_NAME1, BLOB_NAME2, CloudStorageClient.BlobReadOption.customerSuppliedKey(BASE64_KEY));
     verifyChannelRead(channel, BLOB_SUB_CONTENT);
   }
 
@@ -1533,7 +1533,7 @@ public class StorageImplMockitoTest {
     doReturn(Tuple.of("etag", BLOB_CONTENT))
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .read(BLOB_INFO1.getBlobId().toPb(), BLOB_SOURCE_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
+        .read(BLOB_INFO1.getBlobId().toProto(), BLOB_SOURCE_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
     initializeService();
     ReadChannel channel =
         storage.reader(
@@ -1547,7 +1547,7 @@ public class StorageImplMockitoTest {
   public void testReaderFailure() throws IOException {
     doThrow(STORAGE_FAILURE)
         .when(storageRpcMock)
-        .read(BLOB_INFO2.getBlobId().toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
+        .read(BLOB_INFO2.getBlobId().toProto(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE);
     initializeService();
     ReadChannel channel = storage.reader(BUCKET_NAME1, BLOB_NAME2);
     assertNotNull(channel);
@@ -1565,7 +1565,7 @@ public class StorageImplMockitoTest {
     doReturn("upload-id")
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(BLOB_INFO_WITHOUT_HASHES.toPb(), EMPTY_RPC_OPTIONS);
+        .open(BLOB_INFO_WITHOUT_HASHES.toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
     WriteChannel channel = storage.writer(BLOB_INFO_WITH_HASHES);
     assertNotNull(channel);
@@ -1574,11 +1574,11 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testWriterWithOptions() {
-    BlobInfo info = BLOB_INFO1.toBuilder().setMd5(CONTENT_MD5).setCrc32c(CONTENT_CRC32C).build();
+    BlobMetadata info = BLOB_INFO1.asBuilder().setMd5(CONTENT_MD5).setCrc32c(CONTENT_CRC32C).buildObject();
     doReturn("upload-id")
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(info.toPb(), BLOB_TARGET_OPTIONS_CREATE);
+        .open(info.toProto(), BLOB_TARGET_OPTIONS_CREATE);
     initializeService();
     WriteChannel channel =
         storage.writer(
@@ -1594,32 +1594,32 @@ public class StorageImplMockitoTest {
 
   @Test
   public void testWriterWithEncryptionKey() {
-    BlobInfo info = BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+    BlobMetadata info = BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
     doReturn("upload-id-1", "upload-id-2")
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(info.toPb(), ENCRYPTION_KEY_OPTIONS);
+        .open(info.toProto(), ENCRYPTION_KEY_OPTIONS);
     initializeService();
-    WriteChannel channel = storage.writer(info, Storage.BlobWriteOption.encryptionKey(KEY));
+    WriteChannel channel = storage.writer(info, CloudStorageClient.BlobWriteOptions.customerSuppliedKey(KEY));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
-    channel = storage.writer(info, Storage.BlobWriteOption.encryptionKey(BASE64_KEY));
+    channel = storage.writer(info, CloudStorageClient.BlobWriteOptions.customerSuppliedKey(BASE64_KEY));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
   }
 
   @Test
   public void testWriterWithKmsKeyName() {
-    BlobInfo info = BLOB_INFO1.toBuilder().setMd5(null).setCrc32c(null).build();
+    BlobMetadata info = BLOB_INFO1.asBuilder().setMd5(null).setCrc32c(null).buildObject();
     doReturn("upload-id-1", "upload-id-2")
         .doThrow(UNEXPECTED_CALL_EXCEPTION)
         .when(storageRpcMock)
-        .open(info.toPb(), KMS_KEY_NAME_OPTIONS);
+        .open(info.toProto(), KMS_KEY_NAME_OPTIONS);
     initializeService();
-    WriteChannel channel = storage.writer(info, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+    WriteChannel channel = storage.writer(info, CloudStorageClient.BlobWriteOptions.withKmsKeyName(KMS_KEY_NAME));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
-    channel = storage.writer(info, Storage.BlobWriteOption.kmsKeyName(KMS_KEY_NAME));
+    channel = storage.writer(info, CloudStorageClient.BlobWriteOptions.withKmsKeyName(KMS_KEY_NAME));
     assertNotNull(channel);
     assertTrue(channel.isOpen());
   }
@@ -1628,12 +1628,12 @@ public class StorageImplMockitoTest {
   public void testWriterFailure() {
     doThrow(STORAGE_FAILURE)
         .when(storageRpcMock)
-        .open(BLOB_INFO_WITHOUT_HASHES.toPb(), EMPTY_RPC_OPTIONS);
+        .open(BLOB_INFO_WITHOUT_HASHES.toProto(), EMPTY_RPC_OPTIONS);
     initializeService();
     try {
       storage.writer(BLOB_INFO_WITH_HASHES);
       fail();
-    } catch (StorageException e) {
+    } catch (StorageServiceException e) {
       assertSame(STORAGE_FAILURE, e.getCause());
     }
   }

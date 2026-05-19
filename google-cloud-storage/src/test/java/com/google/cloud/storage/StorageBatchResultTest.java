@@ -58,21 +58,21 @@ public class StorageBatchResultTest {
     } catch (IllegalStateException ex) {
       // expected
     }
-    StorageException ex = new StorageException(new IOException("some error"));
+    StorageServiceException ex = new StorageServiceException(new IOException("some error"));
     result.error(ex);
     try {
       result.get();
       fail("This is a failed operation and should have thrown a StorageException.");
-    } catch (StorageException real) {
+    } catch (StorageServiceException real) {
       assertSame(ex, real);
     }
   }
 
   @Test
   public void testNotifyError() {
-    StorageException ex = new StorageException(new IOException("some error"));
+    StorageServiceException ex = new StorageServiceException(new IOException("some error"));
     assertFalse(result.completed());
-    BatchResult.Callback<Boolean, StorageException> callback =
+    BatchResult.Callback<Boolean, StorageServiceException> callback =
         EasyMock.createStrictMock(BatchResult.Callback.class);
     callback.error(ex);
     EasyMock.replay(callback);
@@ -90,7 +90,7 @@ public class StorageBatchResultTest {
   @Test
   public void testNotifySuccess() {
     assertFalse(result.completed());
-    BatchResult.Callback<Boolean, StorageException> callback =
+    BatchResult.Callback<Boolean, StorageServiceException> callback =
         EasyMock.createStrictMock(BatchResult.Callback.class);
     callback.success(true);
     EasyMock.replay(callback);

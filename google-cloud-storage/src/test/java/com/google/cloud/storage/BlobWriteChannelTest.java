@@ -37,8 +37,8 @@ import static org.junit.Assert.fail;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.RestorableState;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.spi.StorageRpcFactory;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.StorageRpcProvider;
+import com.google.cloud.storage.spi.v1.StorageServiceRpc;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -60,9 +60,9 @@ public class BlobWriteChannelTest {
   private static final String BUCKET_NAME = "b";
   private static final String BLOB_NAME = "n";
   private static final String UPLOAD_ID = "uploadid";
-  private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder(BUCKET_NAME, BLOB_NAME).build();
+  private static final BlobMetadata BLOB_INFO = BlobMetadata.newBuilder(BUCKET_NAME, BLOB_NAME).buildObject();
   private static final StorageObject UPDATED_BLOB = new StorageObject();
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final Map<StorageServiceRpc.StorageOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
   private static final int MIN_CHUNK_SIZE = 256 * 1024;
   private static final int DEFAULT_CHUNK_SIZE = 60 * MIN_CHUNK_SIZE; // 15MiB
   private static final int CUSTOM_CHUNK_SIZE = 4 * MIN_CHUNK_SIZE;
@@ -70,19 +70,19 @@ public class BlobWriteChannelTest {
   private static final String SIGNED_URL =
       "http://www.test.com/test-bucket/test1.txt?GoogleAccessId=testClient-test@test.com&Expires=1553839761&Signature=MJUBXAZ7";
 
-  private StorageOptions options;
-  private StorageRpcFactory rpcFactoryMock;
-  private StorageRpc storageRpcMock;
-  private BlobWriteChannel writer;
+  private StorageClientOptions options;
+  private StorageRpcProvider rpcFactoryMock;
+  private StorageServiceRpc storageRpcMock;
+  private BlobUploadChannel writer;
 
   @Before
   public void setUp() {
-    rpcFactoryMock = createMock(StorageRpcFactory.class);
-    storageRpcMock = createMock(StorageRpc.class);
-    expect(rpcFactoryMock.create(anyObject(StorageOptions.class))).andReturn(storageRpcMock);
+    rpcFactoryMock = createMock(StorageRpcProvider.class);
+    storageRpcMock = createMock(StorageServiceRpc.class);
+    expect(rpcFactoryMock.create(anyObject(StorageClientOptions.class))).andReturn(storageRpcMock);
     replay(rpcFactoryMock);
     options =
-        StorageOptions.newBuilder()
+        StorageClientOptions.createBuilder()
             .setProjectId("projectid")
             .setServiceRpcFactory(rpcFactoryMock)
             .build();
@@ -95,31 +95,31 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testCreate() {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertTrue(writer.isOpen());
     assertNull(writer.getStorageObject());
   }
 
   @Test
   public void testCreateRetryableError() {
-    StorageException exception = new StorageException(new SocketException("Socket closed"));
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andThrow(exception);
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    StorageServiceException exception = new StorageServiceException(new SocketException("Socket closed"));
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andThrow(exception);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertTrue(writer.isOpen());
     assertNull(writer.getStorageObject());
   }
 
   @Test
   public void testCreateNonRetryableError() {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS))
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS))
         .andThrow(new RuntimeException());
     replay(storageRpcMock);
     try {
-      new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+      new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
       Assert.fail();
     } catch (RuntimeException ex) {
       assertNotNull(ex.getMessage());
@@ -128,18 +128,18 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testWriteWithoutFlush() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertEquals(MIN_CHUNK_SIZE, writer.write(ByteBuffer.allocate(MIN_CHUNK_SIZE)));
   }
 
   @Test
   public void testWriteWithFlushRetryChunk() throws IOException {
-    StorageException exception = new StorageException(new SocketException("Socket closed"));
+    StorageServiceException exception = new StorageServiceException(new SocketException("Socket closed"));
     ByteBuffer buffer = randomBuffer(MIN_CHUNK_SIZE);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     expect(
             storageRpcMock.writeWithResponse(
                 eq(UPLOAD_ID),
@@ -160,7 +160,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     writer.setChunkSize(MIN_CHUNK_SIZE);
     assertEquals(MIN_CHUNK_SIZE, writer.write(buffer));
     assertTrue(writer.isOpen());
@@ -170,10 +170,10 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testWriteWithFlushRetryChunkWithDrift() throws IOException {
-    StorageException exception = new StorageException(new SocketException("Socket closed"));
+    StorageServiceException exception = new StorageServiceException(new SocketException("Socket closed"));
     ByteBuffer buffer = randomBuffer(MIN_CHUNK_SIZE);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     expect(
             storageRpcMock.writeWithResponse(
                 eq(UPLOAD_ID),
@@ -194,7 +194,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     writer.setChunkSize(MIN_CHUNK_SIZE);
     assertEquals(MIN_CHUNK_SIZE, writer.write(buffer));
     assertTrue(writer.isOpen());
@@ -204,7 +204,7 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testWriteWithFlush() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     expect(
             storageRpcMock.writeWithResponse(
@@ -216,7 +216,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     writer.setChunkSize(CUSTOM_CHUNK_SIZE);
     ByteBuffer buffer = randomBuffer(CUSTOM_CHUNK_SIZE);
     assertEquals(CUSTOM_CHUNK_SIZE, writer.write(buffer));
@@ -226,7 +226,7 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testWritesAndFlush() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     expect(
             storageRpcMock.writeWithResponse(
@@ -238,7 +238,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     ByteBuffer[] buffers = new ByteBuffer[DEFAULT_CHUNK_SIZE / MIN_CHUNK_SIZE];
     for (int i = 0; i < buffers.length; i++) {
       buffers[i] = randomBuffer(MIN_CHUNK_SIZE);
@@ -255,14 +255,14 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testCloseWithoutFlush() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     expect(
             storageRpcMock.writeWithResponse(
                 eq(UPLOAD_ID), capture(capturedBuffer), eq(0), eq(0L), eq(0), eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertTrue(writer.isOpen());
     writer.close();
     assertArrayEquals(new byte[0], capturedBuffer.getValue());
@@ -272,7 +272,7 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testCloseWithFlush() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     ByteBuffer buffer = randomBuffer(MIN_CHUNK_SIZE);
     expect(
@@ -285,7 +285,7 @@ public class BlobWriteChannelTest {
                 eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertTrue(writer.isOpen());
     writer.write(buffer);
     writer.close();
@@ -297,14 +297,14 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testWriteClosed() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     expect(
             storageRpcMock.writeWithResponse(
                 eq(UPLOAD_ID), capture(capturedBuffer), eq(0), eq(0L), eq(0), eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     writer.close();
     try {
       writer.write(ByteBuffer.allocate(MIN_CHUNK_SIZE));
@@ -317,7 +317,7 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testSaveAndRestore() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance(CaptureType.ALL);
     Capture<Long> capturedPosition = Capture.newInstance(CaptureType.ALL);
     expect(
@@ -333,7 +333,7 @@ public class BlobWriteChannelTest {
     replay(storageRpcMock);
     ByteBuffer buffer1 = randomBuffer(DEFAULT_CHUNK_SIZE);
     ByteBuffer buffer2 = randomBuffer(DEFAULT_CHUNK_SIZE);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     assertEquals(DEFAULT_CHUNK_SIZE, writer.write(buffer1));
     assertArrayEquals(buffer1.array(), capturedBuffer.getValues().get(0));
     assertEquals(new Long(0L), capturedPosition.getValues().get(0));
@@ -346,18 +346,18 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testSaveAndRestoreClosed() throws IOException {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID);
     Capture<byte[]> capturedBuffer = Capture.newInstance();
     expect(
             storageRpcMock.writeWithResponse(
                 eq(UPLOAD_ID), capture(capturedBuffer), eq(0), eq(0L), eq(0), eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     writer.close();
     RestorableState<WriteChannel> writerState = writer.capture();
     RestorableState<WriteChannel> expectedWriterState =
-        BlobWriteChannel.StateImpl.builder(options, BLOB_INFO, UPLOAD_ID)
+        BlobUploadChannel.UploadStateImpl.newBuilder(options, BLOB_INFO, UPLOAD_ID)
             .setBuffer(null)
             .setChunkSize(DEFAULT_CHUNK_SIZE)
             .setIsOpen(false)
@@ -370,12 +370,12 @@ public class BlobWriteChannelTest {
 
   @Test
   public void testStateEquals() {
-    expect(storageRpcMock.open(BLOB_INFO.toPb(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID).times(2);
+    expect(storageRpcMock.open(BLOB_INFO.toProto(), EMPTY_RPC_OPTIONS)).andReturn(UPLOAD_ID).times(2);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    writer = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     // avoid closing when you don't want partial writes to GCS upon failure
     @SuppressWarnings("resource")
-    WriteChannel writer2 = new BlobWriteChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
+    WriteChannel writer2 = new BlobUploadChannel(options, BLOB_INFO, EMPTY_RPC_OPTIONS);
     RestorableState<WriteChannel> state = writer.capture();
     RestorableState<WriteChannel> state2 = writer2.capture();
     assertEquals(state, state2);
@@ -387,7 +387,7 @@ public class BlobWriteChannelTest {
   public void testWriteWithSignedURLAndWithoutFlush() throws IOException {
     expect(storageRpcMock.open(SIGNED_URL)).andReturn(UPLOAD_ID);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     assertEquals(MIN_CHUNK_SIZE, writer.write(ByteBuffer.allocate(MIN_CHUNK_SIZE)));
   }
 
@@ -405,7 +405,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     writer.setChunkSize(CUSTOM_CHUNK_SIZE);
     ByteBuffer buffer = randomBuffer(CUSTOM_CHUNK_SIZE);
     assertEquals(CUSTOM_CHUNK_SIZE, writer.write(buffer));
@@ -426,7 +426,7 @@ public class BlobWriteChannelTest {
                 eq(false)))
         .andReturn(null);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     ByteBuffer[] buffers = new ByteBuffer[DEFAULT_CHUNK_SIZE / MIN_CHUNK_SIZE];
     for (int i = 0; i < buffers.length; i++) {
       buffers[i] = randomBuffer(MIN_CHUNK_SIZE);
@@ -449,7 +449,7 @@ public class BlobWriteChannelTest {
                 eq(UPLOAD_ID), capture(capturedBuffer), eq(0), eq(0L), eq(0), eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     assertTrue(writer.isOpen());
     writer.close();
     assertArrayEquals(new byte[0], capturedBuffer.getValue());
@@ -471,7 +471,7 @@ public class BlobWriteChannelTest {
                 eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     assertTrue(writer.isOpen());
     writer.write(buffer);
     writer.close();
@@ -489,7 +489,7 @@ public class BlobWriteChannelTest {
                 eq(UPLOAD_ID), capture(capturedBuffer), eq(0), eq(0L), eq(0), eq(true)))
         .andReturn(UPDATED_BLOB);
     replay(storageRpcMock);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     writer.close();
     try {
       writer.write(ByteBuffer.allocate(MIN_CHUNK_SIZE));
@@ -517,7 +517,7 @@ public class BlobWriteChannelTest {
     replay(storageRpcMock);
     ByteBuffer buffer1 = randomBuffer(DEFAULT_CHUNK_SIZE);
     ByteBuffer buffer2 = randomBuffer(DEFAULT_CHUNK_SIZE);
-    writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+    writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
     assertEquals(DEFAULT_CHUNK_SIZE, writer.write(buffer1));
     assertArrayEquals(buffer1.array(), capturedBuffer.getValues().get(0));
     assertEquals(new Long(0L), capturedPosition.getValues().get(0));
@@ -531,13 +531,13 @@ public class BlobWriteChannelTest {
   @Test
   public void testRuntimeExceptionWithSignedURL() throws MalformedURLException {
     String exceptionMessage = "invalid signedURL";
-    expect(new BlobWriteChannel(options, new URL(SIGNED_URL)))
+    expect(new BlobUploadChannel(options, new URL(SIGNED_URL)))
         .andThrow(new RuntimeException(exceptionMessage));
     replay(storageRpcMock);
     try {
-      writer = new BlobWriteChannel(options, new URL(SIGNED_URL));
+      writer = new BlobUploadChannel(options, new URL(SIGNED_URL));
       Assert.fail();
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       assertNotNull(ex.getMessage());
     }
   }
