@@ -21,43 +21,43 @@ import com.google.api.services.storage.model.StorageObject;
 import java.util.Map;
 
 /** An interface for the collection of batch operations. */
-public interface RpcBatch {
+public interface RpcBatchRequest {
 
   /** An interface for batch callbacks. */
-  interface Callback<T> {
+  interface CompletionHandler<T> {
 
     /** This method will be called upon success of the batch operation. */
-    void onSuccess(T response);
+    void handleSuccess(T response);
 
     /** This method will be called upon failure of the batch operation. */
-    void onFailure(GoogleJsonError googleJsonError);
+    void handleFailure(GoogleJsonError googleJsonError);
   }
 
   /**
    * Adds a call to "delete storage object" to the batch, with the provided {@code callback} and
    * {@code options}.
    */
-  void addDelete(
-      StorageObject storageObject, Callback<Void> callback, Map<StorageRpc.Option, ?> options);
+  void addDeleteOperation(
+          StorageObject storageObject, CompletionHandler<Void> callback, Map<StorageRpcClient.StorageOption, ?> options);
 
   /**
    * Adds a call to "patch storage object" to the batch, with the provided {@code callback} and
    * {@code options}.
    */
-  void addPatch(
+  void addPatchOperation(
       StorageObject storageObject,
-      Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      CompletionHandler<StorageObject> callback,
+      Map<StorageRpcClient.StorageOption, ?> options);
 
   /**
    * Adds a call to "get storage object" to the batch, with the provided {@code callback} and {@code
    * options}.
    */
-  void addGet(
+  void addGetRequest(
       StorageObject storageObject,
-      Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      CompletionHandler<StorageObject> callback,
+      Map<StorageRpcClient.StorageOption, ?> options);
 
   /** Submits a batch of requests for processing using a single RPC request to Cloud Storage. */
-  void submit();
+  void submitBatch();
 }

@@ -23,12 +23,11 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobIdentifier;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobListOption;
-import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.StorageServiceException;
+import com.google.cloud.storage.StorageSettings;
 import com.google.common.collect.ImmutableList;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -75,24 +74,24 @@ public class RemoteStorageHelperTest {
           + "  \"type\": \"service_account\"\n"
           + "}";
   private static final InputStream JSON_KEY_STREAM = new ByteArrayInputStream(JSON_KEY.getBytes());
-  private static final StorageException RETRYABLE_EXCEPTION = new StorageException(409, "");
-  private static final StorageException FATAL_EXCEPTION = new StorageException(500, "");
+  private static final StorageServiceException RETRYABLE_EXCEPTION = new StorageServiceException(409, "");
+  private static final StorageServiceException FATAL_EXCEPTION = new StorageServiceException(500, "");
   private static final String BLOB_NAME2 = "n2";
-  private static final BlobId BLOB_ID1 = BlobId.of(BUCKET_NAME, "n1");
-  private static final BlobId BLOB_ID2 = BlobId.of(BUCKET_NAME, BLOB_NAME2);
+  private static final BlobIdentifier BLOB_ID1 = BlobIdentifier.create(BUCKET_NAME, "n1");
+  private static final BlobIdentifier BLOB_ID2 = BlobIdentifier.create(BUCKET_NAME, BLOB_NAME2);
 
-  private Blob blob1;
-  private Blob blob2;
-  private List<Blob> blobList;
-  private Page<Blob> blobPage;
+  private StorageObject blob1;
+  private StorageObject blob2;
+  private List<StorageObject> blobList;
+  private Page<StorageObject> blobPage;
 
   @Before
   public void setUp() {
-    blob1 = EasyMock.createMock(Blob.class);
-    blob2 = EasyMock.createMock(Blob.class);
+    blob1 = EasyMock.createMock(StorageObject.class);
+    blob2 = EasyMock.createMock(StorageObject.class);
     blobList = ImmutableList.of(blob1, blob2);
     blobPage =
-        new Page<Blob>() {
+        new Page<StorageObject>() {
 
           @Override
           public boolean hasNextPage() {
@@ -105,17 +104,17 @@ public class RemoteStorageHelperTest {
           }
 
           @Override
-          public Page<Blob> getNextPage() {
+          public Page<StorageObject> getNextPage() {
             return null;
           }
 
           @Override
-          public Iterable<Blob> getValues() {
+          public Iterable<StorageObject> getValues() {
             return blobList;
           }
 
           @Override
-          public Iterable<Blob> iterateAll() {
+          public Iterable<StorageObject> iterateAll() {
             return blobList;
           }
         };
@@ -127,11 +126,11 @@ public class RemoteStorageHelperTest {
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1);
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2);
 
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true));
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.withVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -145,12 +144,12 @@ public class RemoteStorageHelperTest {
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1).anyTimes();
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2).anyTimes();
 
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
 
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.withVersions(true)))
         .andReturn(blobPage)
         .anyTimes();
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(RETRYABLE_EXCEPTION).anyTimes();
@@ -165,11 +164,11 @@ public class RemoteStorageHelperTest {
     Storage storageMock = EasyMock.createMock(Storage.class);
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1);
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2);
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.withVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -188,11 +187,11 @@ public class RemoteStorageHelperTest {
     Storage storageMock = EasyMock.createMock(Storage.class);
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1);
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2);
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.withVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
@@ -205,18 +204,18 @@ public class RemoteStorageHelperTest {
     Storage storageMock = EasyMock.createMock(Storage.class);
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1);
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2);
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids)).andReturn(Collections.nCopies(2, true)).anyTimes();
-    EasyMock.expect(storageMock.list(BUCKET_NAME, BlobListOption.versions(true)))
+    EasyMock.expect(storageMock.list(BUCKET_NAME, Storage.BlobListOptions.withVersions(true)))
         .andReturn(blobPage);
     EasyMock.expect(storageMock.delete(BUCKET_NAME)).andThrow(FATAL_EXCEPTION);
     EasyMock.replay(storageMock, blob1, blob2);
     try {
       RemoteStorageHelper.forceDelete(storageMock, BUCKET_NAME);
       Assert.fail();
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       assertNotNull(ex.getMessage());
     } finally {
       EasyMock.verify(storageMock);
@@ -230,7 +229,7 @@ public class RemoteStorageHelperTest {
     EasyMock.expect(blob1.getBlobId()).andReturn(BLOB_ID1);
     EasyMock.expect(blob2.getBlobId()).andReturn(BLOB_ID2);
     EasyMock.expect(blob2.getName()).andReturn(BLOB_NAME2);
-    ArrayList<BlobId> ids = new ArrayList<>();
+    ArrayList<BlobIdentifier> ids = new ArrayList<>();
     ids.add(BLOB_ID1);
     ids.add(BLOB_ID2);
     EasyMock.expect(storageMock.delete(ids))
@@ -238,17 +237,17 @@ public class RemoteStorageHelperTest {
         .anyTimes();
     EasyMock.expect(
             storageMock.delete(
-                BUCKET_NAME, BLOB_NAME2, Storage.BlobSourceOption.userProject(USER_PROJECT)))
+                BUCKET_NAME, BLOB_NAME2, Storage.BlobSourceSettings.withUserProject(USER_PROJECT)))
         .andReturn(true)
         .anyTimes();
     EasyMock.expect(
             storageMock.list(
                 BUCKET_NAME,
-                BlobListOption.versions(true),
-                BlobListOption.userProject(USER_PROJECT)))
+                Storage.BlobListOptions.withVersions(true),
+                Storage.BlobListOptions.withUserProject(USER_PROJECT)))
         .andReturn(blobPage);
     EasyMock.expect(
-            storageMock.delete(BUCKET_NAME, Storage.BucketSourceOption.userProject(USER_PROJECT)))
+            storageMock.delete(BUCKET_NAME, Storage.BucketSourceRequestOption.withUserProject(USER_PROJECT)))
         .andReturn(true);
     EasyMock.replay(storageMock, blob1, blob2);
     try {
@@ -261,7 +260,7 @@ public class RemoteStorageHelperTest {
   @Test
   public void testCreateFromStream() {
     RemoteStorageHelper helper = RemoteStorageHelper.create(PROJECT_ID, JSON_KEY_STREAM);
-    StorageOptions options = helper.getOptions();
+    StorageSettings options = helper.getOptions();
     assertEquals(PROJECT_ID, options.getProjectId());
     assertEquals(60000, ((HttpTransportOptions) options.getTransportOptions()).getConnectTimeout());
     assertEquals(60000, ((HttpTransportOptions) options.getTransportOptions()).getReadTimeout());

@@ -16,26 +16,24 @@
 
 package com.google.cloud.storage;
 
-import static com.google.cloud.storage.Acl.Project.ProjectRole.VIEWERS;
+import static com.google.cloud.storage.AclEntry.ProjectInfo.ProjectAccessLevel.VIEWERS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.api.services.storage.model.Bucket;
 import com.google.api.services.storage.model.Bucket.Lifecycle.Rule;
-import com.google.cloud.storage.Acl.Project;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.BucketInfo.AgeDeleteRule;
-import com.google.cloud.storage.BucketInfo.CreatedBeforeDeleteRule;
-import com.google.cloud.storage.BucketInfo.DeleteRule;
-import com.google.cloud.storage.BucketInfo.DeleteRule.Type;
-import com.google.cloud.storage.BucketInfo.IsLiveDeleteRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleAction;
-import com.google.cloud.storage.BucketInfo.LifecycleRule.LifecycleCondition;
-import com.google.cloud.storage.BucketInfo.NumNewerVersionsDeleteRule;
-import com.google.cloud.storage.BucketInfo.RawDeleteRule;
+import com.google.cloud.storage.AclEntry.ProjectInfo;
+import com.google.cloud.storage.AclEntry.AccessRole;
+import com.google.cloud.storage.AclEntry.UserPrincipal;
+import com.google.cloud.storage.BucketMetadata.CreationPrecedesDeletionRule;
+import com.google.cloud.storage.BucketMetadata.DeletionRule;
+import com.google.cloud.storage.BucketMetadata.DeletionRule.VersionFilterType;
+import com.google.cloud.storage.BucketMetadata.LiveDeleteRulePredicate;
+import com.google.cloud.storage.BucketMetadata.LifecycleRuleSpec.LifecycleOperation;
+import com.google.cloud.storage.BucketMetadata.LifecycleRuleSpec.LifecycleRuleCondition;
+import com.google.cloud.storage.BucketMetadata.NewerVersionsCountDeletionRule;
+import com.google.cloud.storage.BucketMetadata.RawDeletionRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
@@ -46,41 +44,41 @@ import org.junit.Test;
 
 public class BucketInfoTest {
 
-  private static final List<Acl> ACL =
+  private static final List<AclEntry> ACL =
       ImmutableList.of(
-          Acl.of(User.ofAllAuthenticatedUsers(), Role.READER),
-          Acl.of(new Project(VIEWERS, "p1"), Role.WRITER));
+          AclEntry.ofEntry(UserPrincipal.allAuthenticatedUsers(), AccessRole.READER),
+          AclEntry.ofEntry(new ProjectInfo(VIEWERS, "p1"), AclEntry.AccessRole.WRITER));
   private static final String ETAG = "0xFF00";
   private static final String GENERATED_ID = "B/N:1";
   private static final Long META_GENERATION = 10L;
-  private static final User OWNER = new User("user@gmail.com");
+  private static final UserPrincipal OWNER = new AclEntry.UserPrincipal("user@gmail.com");
   private static final String SELF_LINK = "http://storage/b/n";
   private static final Long CREATE_TIME = System.currentTimeMillis();
-  private static final List<Cors> CORS = Collections.singletonList(Cors.newBuilder().build());
-  private static final List<Acl> DEFAULT_ACL =
-      Collections.singletonList(Acl.of(User.ofAllAuthenticatedUsers(), Role.WRITER));
-  private static final List<? extends DeleteRule> DELETE_RULES =
-      Collections.singletonList(new AgeDeleteRule(5));
-  private static final List<? extends BucketInfo.LifecycleRule> LIFECYCLE_RULES =
+  private static final List<CorsConfig> CORS = Collections.singletonList(CorsConfig.builder().buildConfig());
+  private static final List<AclEntry> DEFAULT_ACL =
+      Collections.singletonList(AclEntry.ofEntry(AclEntry.UserPrincipal.allAuthenticatedUsers(), AclEntry.AccessRole.WRITER));
+  private static final List<? extends BucketMetadata.DeletionRule> DELETE_RULES =
+      Collections.singletonList(new BucketMetadata.AgeBasedDeletionRule(5));
+  private static final List<? extends BucketMetadata.LifecycleRuleSpec> LIFECYCLE_RULES =
       Collections.singletonList(
-          new BucketInfo.LifecycleRule(
-              LifecycleAction.newDeleteAction(),
-              LifecycleCondition.newBuilder().setAge(5).build()));
+          new BucketMetadata.LifecycleRuleSpec(
+              LifecycleOperation.createDeleteAction(),
+              BucketMetadata.LifecycleRuleSpec.LifecycleRuleCondition.newConditionBuilder().setAge(5).buildCondition()));
   private static final String INDEX_PAGE = "index.html";
-  private static final BucketInfo.IamConfiguration IAM_CONFIGURATION =
-      BucketInfo.IamConfiguration.newBuilder()
+  private static final BucketMetadata.BucketIamConfiguration IAM_CONFIGURATION =
+      BucketMetadata.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
           .setIsUniformBucketLevelAccessEnabled(true)
           .setUniformBucketLevelAccessLockedTime(System.currentTimeMillis())
-          .build();
-  private static final BucketInfo.Logging LOGGING =
-      BucketInfo.Logging.newBuilder()
+          .buildInstance();
+  private static final BucketMetadata.LoggingConfig LOGGING =
+      BucketMetadata.LoggingConfig.newLogConfigBuilder()
           .setLogBucket("test-bucket")
           .setLogObjectPrefix("test-")
-          .build();
+          .buildConfig();
   private static final String NOT_FOUND_PAGE = "error.html";
   private static final String LOCATION = "ASIA";
-  private static final StorageClass STORAGE_CLASS = StorageClass.STANDARD;
-  private static final StorageClass ARCHIVE_STORAGE_CLASS = StorageClass.ARCHIVE;
+  private static final StorageTier STORAGE_CLASS = StorageTier.STANDARD;
+  private static final StorageTier ARCHIVE_STORAGE_CLASS = StorageTier.ARCHIVE;
   private static final String DEFAULT_KMS_KEY_NAME =
       "projects/p/locations/kr-loc/keyRings/kr/cryptoKeys/key";
   private static final Boolean VERSIONING_ENABLED = true;
@@ -102,8 +100,8 @@ public class BucketInfoTest {
   private static final List<String> LOCATION_TYPES =
       ImmutableList.of("multi-region", "region", "dual-region");
   private static final String LOCATION_TYPE = "multi-region";
-  private static final BucketInfo BUCKET_INFO =
-      BucketInfo.newBuilder("b")
+  private static final BucketMetadata BUCKET_INFO =
+      BucketMetadata.newBucketBuilder("b")
           .setAcl(ACL)
           .setEtag(ETAG)
           .setGeneratedId(GENERATED_ID)
@@ -130,9 +128,9 @@ public class BucketInfoTest {
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
           .setLogging(LOGGING)
-          .build();
-  private static final BucketInfo BUCKET_INFO_ARCHIVE =
-      BucketInfo.newBuilder("b")
+          .buildBucket();
+  private static final BucketMetadata BUCKET_INFO_ARCHIVE =
+      BucketMetadata.newBucketBuilder("b")
           .setAcl(ACL)
           .setEtag(ETAG)
           .setGeneratedId(GENERATED_ID)
@@ -159,28 +157,28 @@ public class BucketInfoTest {
           .setRetentionPeriod(RETENTION_PERIOD)
           .setRetentionPolicyIsLocked(RETENTION_POLICY_IS_LOCKED)
           .setLogging(LOGGING)
-          .build();
+          .buildBucket();
 
   @Test
   public void testToBuilder() {
-    compareBuckets(BUCKET_INFO, BUCKET_INFO.toBuilder().build());
-    BucketInfo bucketInfo = BUCKET_INFO.toBuilder().setName("B").setGeneratedId("id").build();
+    compareBuckets(BUCKET_INFO, BUCKET_INFO.asBuilder().buildBucket());
+    BucketMetadata bucketInfo = BUCKET_INFO.asBuilder().setName("B").setGeneratedId("id").buildBucket();
     assertEquals("B", bucketInfo.getName());
     assertEquals("id", bucketInfo.getGeneratedId());
-    bucketInfo = bucketInfo.toBuilder().setName("b").setGeneratedId(GENERATED_ID).build();
+    bucketInfo = bucketInfo.asBuilder().setName("b").setGeneratedId(GENERATED_ID).buildBucket();
     compareBuckets(BUCKET_INFO, bucketInfo);
     assertEquals(ARCHIVE_STORAGE_CLASS, BUCKET_INFO_ARCHIVE.getStorageClass());
   }
 
   @Test
   public void testToBuilderIncomplete() {
-    BucketInfo incompleteBucketInfo = BucketInfo.newBuilder("b").build();
-    compareBuckets(incompleteBucketInfo, incompleteBucketInfo.toBuilder().build());
+    BucketMetadata incompleteBucketInfo = BucketMetadata.newBucketBuilder("b").buildBucket();
+    compareBuckets(incompleteBucketInfo, incompleteBucketInfo.asBuilder().buildBucket());
   }
 
   @Test
   public void testOf() {
-    BucketInfo bucketInfo = BucketInfo.of("bucket");
+    BucketMetadata bucketInfo = BucketMetadata.ofName("bucket");
     assertEquals("bucket", bucketInfo.getName());
   }
 
@@ -203,25 +201,25 @@ public class BucketInfoTest {
     assertEquals(LOCATION, BUCKET_INFO.getLocation());
     assertEquals(STORAGE_CLASS, BUCKET_INFO.getStorageClass());
     assertEquals(DEFAULT_KMS_KEY_NAME, BUCKET_INFO.getDefaultKmsKeyName());
-    assertEquals(VERSIONING_ENABLED, BUCKET_INFO.versioningEnabled());
+    assertEquals(VERSIONING_ENABLED, BUCKET_INFO.isVersioningEnabled());
     assertEquals(BUCKET_LABELS_TARGET, BUCKET_INFO.getLabels());
-    assertEquals(REQUESTER_PAYS, BUCKET_INFO.requesterPays());
+    assertEquals(REQUESTER_PAYS, BUCKET_INFO.isRequesterPays());
     assertEquals(DEFAULT_EVENT_BASED_HOLD, BUCKET_INFO.getDefaultEventBasedHold());
     assertEquals(RETENTION_EFFECTIVE_TIME, BUCKET_INFO.getRetentionEffectiveTime());
     assertEquals(RETENTION_PERIOD, BUCKET_INFO.getRetentionPeriod());
-    assertEquals(RETENTION_POLICY_IS_LOCKED, BUCKET_INFO.retentionPolicyIsLocked());
+    assertEquals(RETENTION_POLICY_IS_LOCKED, BUCKET_INFO.isRetentionPolicyLocked());
     assertTrue(LOCATION_TYPES.contains(BUCKET_INFO.getLocationType()));
     assertEquals(LOGGING, BUCKET_INFO.getLogging());
   }
 
   @Test
   public void testToPbAndFromPb() {
-    compareBuckets(BUCKET_INFO, BucketInfo.fromPb(BUCKET_INFO.toPb()));
-    BucketInfo bucketInfo = BucketInfo.of("b");
-    compareBuckets(bucketInfo, BucketInfo.fromPb(bucketInfo.toPb()));
+    compareBuckets(BUCKET_INFO, BucketMetadata.fromProto(BUCKET_INFO.toProto()));
+    BucketMetadata bucketInfo = BucketMetadata.ofName("b");
+    compareBuckets(bucketInfo, BucketMetadata.fromProto(bucketInfo.toProto()));
   }
 
-  private void compareBuckets(BucketInfo expected, BucketInfo value) {
+  private void compareBuckets(BucketMetadata expected, BucketMetadata value) {
     assertEquals(expected, value);
     assertEquals(expected.getName(), value.getName());
     assertEquals(expected.getAcl(), value.getAcl());
@@ -241,69 +239,69 @@ public class BucketInfoTest {
     assertEquals(expected.getLocation(), value.getLocation());
     assertEquals(expected.getStorageClass(), value.getStorageClass());
     assertEquals(expected.getDefaultKmsKeyName(), value.getDefaultKmsKeyName());
-    assertEquals(expected.versioningEnabled(), value.versioningEnabled());
+    assertEquals(expected.isVersioningEnabled(), value.isVersioningEnabled());
     assertEquals(expected.getLabels(), value.getLabels());
-    assertEquals(expected.requesterPays(), value.requesterPays());
+    assertEquals(expected.isRequesterPays(), value.isRequesterPays());
     assertEquals(expected.getDefaultEventBasedHold(), value.getDefaultEventBasedHold());
     assertEquals(expected.getRetentionEffectiveTime(), value.getRetentionEffectiveTime());
     assertEquals(expected.getRetentionPeriod(), value.getRetentionPeriod());
-    assertEquals(expected.retentionPolicyIsLocked(), value.retentionPolicyIsLocked());
+    assertEquals(expected.isRetentionPolicyLocked(), value.isRetentionPolicyLocked());
     assertEquals(expected.getLogging(), value.getLogging());
   }
 
   @Test
   public void testDeleteRules() {
-    AgeDeleteRule ageRule = new AgeDeleteRule(10);
+    BucketMetadata.AgeBasedDeletionRule ageRule = new BucketMetadata.AgeBasedDeletionRule(10);
     assertEquals(10, ageRule.getDaysToLive());
     assertEquals(10, ageRule.getDaysToLive());
-    assertEquals(Type.AGE, ageRule.getType());
-    assertEquals(Type.AGE, ageRule.getType());
-    CreatedBeforeDeleteRule createBeforeRule = new CreatedBeforeDeleteRule(1);
+    assertEquals(BucketMetadata.DeletionRule.VersionFilterType.AGE, ageRule.getType());
+    assertEquals(VersionFilterType.AGE, ageRule.getType());
+    BucketMetadata.CreationPrecedesDeletionRule createBeforeRule = new CreationPrecedesDeletionRule(1);
     assertEquals(1, createBeforeRule.getTimeMillis());
     assertEquals(1, createBeforeRule.getTimeMillis());
-    assertEquals(Type.CREATE_BEFORE, createBeforeRule.getType());
-    NumNewerVersionsDeleteRule versionsRule = new NumNewerVersionsDeleteRule(2);
+    assertEquals(BucketMetadata.DeletionRule.VersionFilterType.CREATE_BEFORE, createBeforeRule.getType());
+    NewerVersionsCountDeletionRule versionsRule = new BucketMetadata.NewerVersionsCountDeletionRule(2);
     assertEquals(2, versionsRule.getNumNewerVersions());
     assertEquals(2, versionsRule.getNumNewerVersions());
-    assertEquals(Type.NUM_NEWER_VERSIONS, versionsRule.getType());
-    IsLiveDeleteRule isLiveRule = new IsLiveDeleteRule(true);
+    assertEquals(VersionFilterType.NUM_NEWER_VERSIONS, versionsRule.getType());
+    LiveDeleteRulePredicate isLiveRule = new LiveDeleteRulePredicate(true);
     assertTrue(isLiveRule.isLive());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
+    assertEquals(BucketMetadata.DeletionRule.VersionFilterType.IS_LIVE, isLiveRule.getType());
+    assertEquals(VersionFilterType.IS_LIVE, isLiveRule.getType());
     Rule rule = new Rule().set("a", "b");
-    RawDeleteRule rawRule = new RawDeleteRule(rule);
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
-    assertEquals(Type.IS_LIVE, isLiveRule.getType());
-    ImmutableList<DeleteRule> rules =
+    RawDeletionRule rawRule = new RawDeletionRule(rule);
+    assertEquals(DeletionRule.VersionFilterType.IS_LIVE, isLiveRule.getType());
+    assertEquals(BucketMetadata.DeletionRule.VersionFilterType.IS_LIVE, isLiveRule.getType());
+    ImmutableList<BucketMetadata.DeletionRule> rules =
         ImmutableList.of(ageRule, createBeforeRule, versionsRule, isLiveRule, rawRule);
-    for (DeleteRule delRule : rules) {
-      assertEquals(delRule, DeleteRule.fromPb(delRule.toPb()));
+    for (BucketMetadata.DeletionRule delRule : rules) {
+      assertEquals(delRule, BucketMetadata.DeletionRule.fromProto(delRule.toProto()));
     }
   }
 
   @Test
   public void testLifecycleRules() {
     Rule deleteLifecycleRule =
-        new LifecycleRule(
-                LifecycleAction.newDeleteAction(),
-                LifecycleCondition.newBuilder().setAge(10).build())
-            .toPb();
+        new BucketMetadata.LifecycleRuleSpec(
+                LifecycleOperation.createDeleteAction(),
+                LifecycleRuleCondition.newConditionBuilder().setAge(10).buildCondition())
+            .toProto();
 
     assertEquals(
-        LifecycleRule.DeleteLifecycleAction.TYPE, deleteLifecycleRule.getAction().getType());
+        BucketMetadata.LifecycleRuleSpec.RemoveLifecycleAction.TYPE, deleteLifecycleRule.getAction().getType());
     assertEquals(10, deleteLifecycleRule.getCondition().getAge().intValue());
 
     Rule setStorageClassLifecycleRule =
-        new LifecycleRule(
-                LifecycleAction.newSetStorageClassAction(StorageClass.COLDLINE),
-                LifecycleCondition.newBuilder()
+        new BucketMetadata.LifecycleRuleSpec(
+                LifecycleOperation.createSetStorageClassAction(StorageTier.COLDLINE),
+                LifecycleRuleCondition.newConditionBuilder()
                     .setIsLive(true)
                     .setNumberOfNewerVersions(10)
-                    .build())
-            .toPb();
+                    .buildCondition())
+            .toProto();
 
     assertEquals(
-        StorageClass.COLDLINE.toString(),
+        StorageTier.COLDLINE.toString(),
         setStorageClassLifecycleRule.getAction().getStorageClass());
     assertTrue(setStorageClassLifecycleRule.getCondition().getIsLive());
     assertEquals(10, setStorageClassLifecycleRule.getCondition().getNumNewerVersions().intValue());
@@ -312,11 +310,11 @@ public class BucketInfoTest {
   @Test
   public void testIamConfiguration() {
     Bucket.IamConfiguration iamConfiguration =
-        BucketInfo.IamConfiguration.newBuilder()
+        BucketMetadata.BucketIamConfiguration.newUniformBucketLevelAccessBuilder()
             .setIsUniformBucketLevelAccessEnabled(true)
             .setUniformBucketLevelAccessLockedTime(System.currentTimeMillis())
-            .build()
-            .toPb();
+            .buildInstance()
+            .toProto();
 
     assertEquals(Boolean.TRUE, iamConfiguration.getUniformBucketLevelAccess().getEnabled());
     assertNotNull(iamConfiguration.getUniformBucketLevelAccess().getLockedTime());
@@ -325,11 +323,11 @@ public class BucketInfoTest {
   @Test
   public void testLogging() {
     Bucket.Logging logging =
-        BucketInfo.Logging.newBuilder()
+        BucketMetadata.LoggingConfig.newLogConfigBuilder()
             .setLogBucket("test-bucket")
             .setLogObjectPrefix("test-")
-            .build()
-            .toPb();
+            .buildConfig()
+            .toProto();
     assertEquals("test-bucket", logging.getLogBucket());
     assertEquals("test-", logging.getLogObjectPrefix());
   }

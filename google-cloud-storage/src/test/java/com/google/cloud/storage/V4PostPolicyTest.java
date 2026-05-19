@@ -108,52 +108,52 @@ public class V4PostPolicyTest {
     BlobInfo blob =
         BlobInfo.newBuilder(
                 testData.getPolicyInput().getBucket(), testData.getPolicyInput().getObject())
-            .build();
+            .buildMetadata();
 
     PolicyInput policyInput = testData.getPolicyInput();
-    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
+    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.builder();
 
     Map<String, String> fields = policyInput.getFieldsMap();
 
     PolicyConditions conditions = policyInput.getConditions();
 
     if (!Strings.isNullOrEmpty(fields.get("success_action_redirect"))) {
-      builder.addSuccessActionRedirectUrlCondition(
+      builder.addSuccessRedirect(
           PostPolicyV4.ConditionV4Type.MATCHES, fields.get("success_action_redirect"));
     }
 
     if (!Strings.isNullOrEmpty(fields.get("success_action_status"))) {
-      builder.addSuccessActionStatusCondition(
+      builder.addSuccessStatus(
           PostPolicyV4.ConditionV4Type.MATCHES,
           Integer.parseInt(fields.get("success_action_status")));
     }
 
     if (conditions != null) {
       if (!conditions.getStartsWithList().isEmpty()) {
-        builder.addCustomCondition(
+        builder.addCondition(
             PostPolicyV4.ConditionV4Type.STARTS_WITH,
             conditions.getStartsWith(0).replace("$", ""),
             conditions.getStartsWith(1));
       }
       if (!conditions.getContentLengthRangeList().isEmpty()) {
-        builder.addContentLengthRangeCondition(
+        builder.addContentLengthRange(
             conditions.getContentLengthRange(0), conditions.getContentLengthRange(1));
       }
     }
 
-    PostPolicyV4.PostFieldsV4 v4Fields = PostPolicyV4.PostFieldsV4.of(fields);
+    PostPolicyV4.PostFieldsV4 v4Fields = PostPolicyV4.PostFieldsV4.create(fields);
 
-    Storage.PostPolicyV4Option style = Storage.PostPolicyV4Option.withPathStyle();
+    Storage.PostPolicyV4Parameter style = Storage.PostPolicyV4Parameter.usePathStyle();
 
     if (policyInput.getUrlStyle().equals(UrlStyle.VIRTUAL_HOSTED_STYLE)) {
-      style = Storage.PostPolicyV4Option.withVirtualHostedStyle();
+      style = Storage.PostPolicyV4Parameter.useVirtualHostedStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.PATH_STYLE)) {
-      style = Storage.PostPolicyV4Option.withPathStyle();
+      style = Storage.PostPolicyV4Parameter.usePathStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.BUCKET_BOUND_HOSTNAME)) {
       style =
-          Storage.PostPolicyV4Option.withBucketBoundHostname(
+          Storage.PostPolicyV4Parameter.withBucketBoundHostname(
               policyInput.getBucketBoundHostname(),
-              Storage.UriScheme.valueOf(policyInput.getScheme().toUpperCase()));
+              Storage.UriProtocol.valueOf(policyInput.getScheme().toUpperCase()));
     }
 
     PostPolicyV4 policy =
@@ -162,7 +162,7 @@ public class V4PostPolicyTest {
             testData.getPolicyInput().getExpiration(),
             TimeUnit.SECONDS,
             v4Fields,
-            builder.build(),
+            builder.buildInstance(),
             style);
 
     String expectedPolicy = testData.getPolicyOutput().getExpectedDecodedPolicy();

@@ -20,20 +20,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class OptionTest {
 
-  private static final StorageRpc.Option RPC_OPTION = StorageRpc.Option.DELIMITER;
-  private static final StorageRpc.Option ANOTHER_RPC_OPTION = StorageRpc.Option.FIELDS;
+  private static final StorageRpcClient.StorageOption RPC_OPTION = StorageRpcClient.StorageOption.DELIMITER;
+  private static final StorageRpcClient.StorageOption ANOTHER_RPC_OPTION = StorageRpcClient.StorageOption.FIELDS;
   private static final String VALUE = "some value";
   private static final String OTHER_VALUE = "another value";
-  private static final Option OPTION = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_EQUALS = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_NOT_EQUALS1 = new Option(RPC_OPTION, OTHER_VALUE) {};
-  private static final Option OPTION_NOT_EQUALS2 = new Option(ANOTHER_RPC_OPTION, VALUE) {};
+  private static final AbstractOption OPTION = new AbstractOption(RPC_OPTION, VALUE) {};
+  private static final AbstractOption OPTION_EQUALS = new AbstractOption(RPC_OPTION, VALUE) {};
+  private static final AbstractOption OPTION_NOT_EQUALS1 = new AbstractOption(RPC_OPTION, OTHER_VALUE) {};
+  private static final AbstractOption OPTION_NOT_EQUALS2 = new AbstractOption(ANOTHER_RPC_OPTION, VALUE) {};
 
   @Test
   public void testEquals() {
@@ -51,11 +51,11 @@ public class OptionTest {
   public void testConstructor() {
     assertEquals(RPC_OPTION, OPTION.getRpcOption());
     assertEquals(VALUE, OPTION.getValue());
-    Option option = new Option(RPC_OPTION, null) {};
+    AbstractOption option = new AbstractOption(RPC_OPTION, null) {};
     assertEquals(RPC_OPTION, option.getRpcOption());
     assertNull(option.getValue());
     try {
-      new Option(null, VALUE) {};
+      new AbstractOption(null, VALUE) {};
       Assert.fail();
     } catch (NullPointerException expected) {
     }

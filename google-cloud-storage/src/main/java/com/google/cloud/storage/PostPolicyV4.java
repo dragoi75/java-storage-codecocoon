@@ -31,24 +31,24 @@ import java.util.Set;
  * @see <a href="https://cloud.google.com/storage/docs/xml-api/post-object">POST Object</a>
  */
 public final class PostPolicyV4 {
-  private String url;
-  private Map<String, String> fields;
+  private String endpointAddress;
+  private Map<String, String> attributes;
 
-  private PostPolicyV4(String url, Map<String, String> fields) {
-    this.url = url;
-    this.fields = fields;
+  private PostPolicyV4(String endpointAddress, Map<String, String> attributes) {
+    this.endpointAddress = endpointAddress;
+    this.attributes = attributes;
   }
 
-  public static PostPolicyV4 of(String url, Map<String, String> fields) {
-    return new PostPolicyV4(url, fields);
+  public static PostPolicyV4 create(String endpointAddress, Map<String, String> attributes) {
+    return new PostPolicyV4(endpointAddress, attributes);
   }
 
   public String getUrl() {
-    return url;
+    return endpointAddress;
   }
 
   public Map<String, String> getFields() {
-    return fields;
+    return attributes;
   }
 
   /**
@@ -58,86 +58,86 @@ public final class PostPolicyV4 {
    *     Object Form fields</a>
    */
   public static final class PostFieldsV4 {
-    private Map<String, String> fieldsMap;
+    private Map<String, String> entriesMap;
 
-    private PostFieldsV4(Builder builder) {
-      this.fieldsMap = builder.fieldsMap;
+    private PostFieldsV4(Builder creator) {
+      this.entriesMap = creator.entriesMap;
     }
 
-    private PostFieldsV4(Map<String, String> fields) {
-      this.fieldsMap = fields;
+    private PostFieldsV4(Map<String, String> attributes) {
+      this.entriesMap = attributes;
     }
 
-    public static PostFieldsV4 of(Map<String, String> fields) {
-      return new PostFieldsV4(fields);
+    public static PostFieldsV4 create(Map<String, String> attributes) {
+      return new PostFieldsV4(attributes);
     }
 
-    public static Builder newBuilder() {
+    public static Builder builder() {
       return new Builder();
     }
 
     public Map<String, String> getFieldsMap() {
-      return fieldsMap;
+      return entriesMap;
     }
 
     public static class Builder {
-      private Map<String, String> fieldsMap;
+      private Map<String, String> entriesMap;
 
       private Builder() {
-        fieldsMap = new HashMap<>();
+        entriesMap = new HashMap<>();
       }
 
-      public PostFieldsV4 build() {
+      public PostFieldsV4 buildInstance() {
         return new PostFieldsV4(this);
       }
 
-      public Builder setAcl(String acl) {
-        fieldsMap.put("acl", acl);
+      public Builder setAcl(String accessControl) {
+        entriesMap.put("acl", accessControl);
         return this;
       }
 
-      public Builder setCacheControl(String cacheControl) {
-        fieldsMap.put("cache-control", cacheControl);
+      public Builder setCacheControl(String cachingPolicy) {
+        entriesMap.put("cache-control", cachingPolicy);
         return this;
       }
 
-      public Builder setContentDisposition(String contentDisposition) {
-        fieldsMap.put("content-disposition", contentDisposition);
+      public Builder setContentDisposition(String dispositionHeader) {
+        entriesMap.put("content-disposition", dispositionHeader);
         return this;
       }
 
-      public Builder setContentEncoding(String contentEncoding) {
-        fieldsMap.put("content-encoding", contentEncoding);
+      public Builder setContentEncoding(String encodingScheme) {
+        entriesMap.put("content-encoding", encodingScheme);
         return this;
       }
 
-      public Builder setContentLength(int contentLength) {
-        fieldsMap.put("content-length", "" + contentLength);
+      public Builder setContentLength(int lengthBytes) {
+        entriesMap.put("content-length", "" + lengthBytes);
         return this;
       }
 
-      public Builder setContentType(String contentType) {
-        fieldsMap.put("content-type", contentType);
+      public Builder setContentType(String mimeType) {
+        entriesMap.put("content-type", mimeType);
         return this;
       }
 
-      public Builder Expires(String expires) {
-        fieldsMap.put("expires", expires);
+      public Builder Expires(String expiryTimestamp) {
+        entriesMap.put("expires", expiryTimestamp);
         return this;
       }
 
-      public Builder setSuccessActionRedirect(String successActionRedirect) {
-        fieldsMap.put("success_action_redirect", successActionRedirect);
+      public Builder setSuccessActionRedirect(String redirectLocation) {
+        entriesMap.put("success_action_redirect", redirectLocation);
         return this;
       }
 
-      public Builder setSuccessActionStatus(int successActionStatus) {
-        fieldsMap.put("success_action_status", "" + successActionStatus);
+      public Builder setSuccessActionStatus(int successStatusCode) {
+        entriesMap.put("success_action_status", "" + successStatusCode);
         return this;
       }
 
-      public Builder AddCustomMetadataField(String field, String value) {
-        fieldsMap.put("x-goog-meta-" + field, value);
+      public Builder AddCustomMetadataField(String metadataKey, String metadataContent) {
+        entriesMap.put("x-goog-meta-" + metadataKey, metadataContent);
         return this;
       }
     }
@@ -150,114 +150,114 @@ public final class PostPolicyV4 {
    *     Policy document</a>
    */
   public static final class PostConditionsV4 {
-    private Set<ConditionV4> conditions;
+    private Set<ConditionV4> constraints;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public PostConditionsV4(Builder builder) {
-      this.conditions = builder.conditions;
+    public PostConditionsV4(Builder creator) {
+      this.constraints = creator.constraints;
     }
 
-    public Builder toBuilder() {
-      return new Builder(conditions);
+    public Builder asBuilder() {
+      return new Builder(constraints);
     }
 
-    public static Builder newBuilder() {
+    public static Builder builder() {
       return new Builder();
     }
 
     public Set<ConditionV4> getConditions() {
-      return conditions;
+      return constraints;
     }
 
     public static class Builder {
-      Set<ConditionV4> conditions;
+      Set<ConditionV4> constraints;
 
       private Builder() {
-        this.conditions = new LinkedHashSet<>();
+        this.constraints = new LinkedHashSet<>();
       }
 
-      private Builder(Set<ConditionV4> conditions) {
-        this.conditions = conditions;
+      private Builder(Set<ConditionV4> constraints) {
+        this.constraints = constraints;
       }
 
       public static Builder newBuilder() {
         return new Builder();
       }
 
-      public PostConditionsV4 build() {
+      public PostConditionsV4 buildInstance() {
         return new PostConditionsV4(this);
       }
 
-      public Builder addAclCondition(ConditionV4Type type, String acl) {
-        conditions.add(new ConditionV4(type, "acl", acl));
+      public Builder addAclCondition(ConditionV4Type conditionCategory, String accessControl) {
+        constraints.add(new ConditionV4(conditionCategory, "acl", accessControl));
         return this;
       }
 
-      public Builder addBucketCondition(ConditionV4Type type, String bucket) {
-        conditions.add(new ConditionV4(type, "bucket", bucket));
+      public Builder withBucketCondition(ConditionV4Type conditionCategory, String containerName) {
+        constraints.add(new ConditionV4(conditionCategory, "bucket", containerName));
         return this;
       }
 
-      public Builder addCacheControlCondition(ConditionV4Type type, String cacheControl) {
-        conditions.add(new ConditionV4(type, "cache-control", cacheControl));
+      public Builder addCacheControlCondition(ConditionV4Type conditionCategory, String cachingPolicy) {
+        constraints.add(new ConditionV4(conditionCategory, "cache-control", cachingPolicy));
         return this;
       }
 
       public Builder addContentDispositionCondition(
-          ConditionV4Type type, String contentDisposition) {
-        conditions.add(new ConditionV4(type, "content-disposition", contentDisposition));
+              ConditionV4Type conditionCategory, String dispositionHeader) {
+        constraints.add(new ConditionV4(conditionCategory, "content-disposition", dispositionHeader));
         return this;
       }
 
-      public Builder addContentEncodingCondition(ConditionV4Type type, String contentEncoding) {
-        conditions.add(new ConditionV4(type, "content-encoding", contentEncoding));
+      public Builder addContentEncodingCondition(ConditionV4Type conditionCategory, String encodingScheme) {
+        constraints.add(new ConditionV4(conditionCategory, "content-encoding", encodingScheme));
         return this;
       }
 
-      public Builder addContentLengthCondition(ConditionV4Type type, int contentLength) {
-        conditions.add(new ConditionV4(type, "content-length", "" + contentLength));
+      public Builder addContentLengthCondition(ConditionV4Type conditionCategory, int lengthBytes) {
+        constraints.add(new ConditionV4(conditionCategory, "content-length", "" + lengthBytes));
         return this;
       }
 
-      public Builder addContentTypeCondition(ConditionV4Type type, String contentType) {
-        conditions.add(new ConditionV4(type, "content-type", contentType));
+      public Builder withContentTypeCondition(ConditionV4Type conditionCategory, String mimeType) {
+        constraints.add(new ConditionV4(conditionCategory, "content-type", mimeType));
         return this;
       }
 
-      public Builder addExpiresCondition(ConditionV4Type type, long expires) {
-        conditions.add(new ConditionV4(type, "expires", dateFormat.format(expires)));
+      public Builder addExpiresCondition(ConditionV4Type conditionCategory, long expiryTimestamp) {
+        constraints.add(new ConditionV4(conditionCategory, "expires", dateFormatter.format(expiryTimestamp)));
         return this;
       }
 
-      public Builder addExpiresCondition(ConditionV4Type type, String expires) {
-        conditions.add(new ConditionV4(type, "expires", expires));
+      public Builder addExpiresCondition(ConditionV4Type conditionCategory, String expiryTimestamp) {
+        constraints.add(new ConditionV4(conditionCategory, "expires", expiryTimestamp));
         return this;
       }
 
-      public Builder addKeyCondition(ConditionV4Type type, String key) {
-        conditions.add(new ConditionV4(type, "key", key));
+      public Builder withKeyCondition(ConditionV4Type conditionCategory, String objectName) {
+        constraints.add(new ConditionV4(conditionCategory, "key", objectName));
         return this;
       }
 
-      public Builder addSuccessActionRedirectUrlCondition(
-          ConditionV4Type type, String successActionRedirectUrl) {
-        conditions.add(new ConditionV4(type, "success_action_redirect", successActionRedirectUrl));
+      public Builder addSuccessRedirect(
+              ConditionV4Type conditionCategory, String redirectDestinationUrl) {
+        constraints.add(new ConditionV4(conditionCategory, "success_action_redirect", redirectDestinationUrl));
         return this;
       }
 
-      public Builder addSuccessActionStatusCondition(ConditionV4Type type, int status) {
-        conditions.add(new ConditionV4(type, "success_action_status", "" + status));
+      public Builder addSuccessStatus(ConditionV4Type conditionCategory, int responseCode) {
+        constraints.add(new ConditionV4(conditionCategory, "success_action_status", "" + responseCode));
         return this;
       }
 
-      public Builder addContentLengthRangeCondition(int min, int max) {
-        conditions.add(new ConditionV4(ConditionV4Type.CONTENT_LENGTH_RANGE, "" + min, "" + max));
+      public Builder addContentLengthRange(int lowerLimit, int upperLimit) {
+        constraints.add(new ConditionV4(ConditionV4Type.CONTENT_LENGTH_RANGE, "" + lowerLimit, "" + upperLimit));
         return this;
       }
 
-      Builder addCustomCondition(ConditionV4Type type, String field, String value) {
-        conditions.add(new ConditionV4(type, field, value));
+      Builder addCondition(ConditionV4Type conditionCategory, String metadataKey, String metadataContent) {
+        constraints.add(new ConditionV4(conditionCategory, metadataKey, metadataContent));
         return this;
       }
     }
@@ -270,83 +270,83 @@ public final class PostPolicyV4 {
    *     Policy document</a>
    */
   public static final class PostPolicyV4Document {
-    private String expiration;
-    private PostConditionsV4 conditions;
+    private String expiryDate;
+    private PostConditionsV4 constraints;
 
-    private PostPolicyV4Document(String expiration, PostConditionsV4 conditions) {
-      this.expiration = expiration;
-      this.conditions = conditions;
+    private PostPolicyV4Document(String expiryDate, PostConditionsV4 constraints) {
+      this.expiryDate = expiryDate;
+      this.constraints = constraints;
     }
 
-    public static PostPolicyV4Document of(String expiration, PostConditionsV4 conditions) {
-      return new PostPolicyV4Document(expiration, conditions);
+    public static PostPolicyV4Document create(String expiryDate, PostConditionsV4 constraints) {
+      return new PostPolicyV4Document(expiryDate, constraints);
     }
 
-    public String toJson() {
-      JsonObject object = new JsonObject();
-      JsonArray conditions = new JsonArray();
-      for (ConditionV4 condition : this.conditions.conditions) {
-        switch (condition.type) {
+    public String toJsonString() {
+      JsonObject jsonObj = new JsonObject();
+      JsonArray constraints = new JsonArray();
+      for (ConditionV4 condElement : this.constraints.constraints) {
+        switch (condElement.conditionCategory) {
           case MATCHES:
-            JsonObject match = new JsonObject();
-            match.addProperty(condition.operand1, condition.operand2);
-            conditions.add(match);
+            JsonObject comparisonObject = new JsonObject();
+            comparisonObject.addProperty(condElement.leftOperand, condElement.rightOperand);
+            constraints.add(comparisonObject);
             break;
           case STARTS_WITH:
-            JsonArray startsWith = new JsonArray();
-            startsWith.add("starts-with");
-            startsWith.add("$" + condition.operand1);
-            startsWith.add(condition.operand2);
-            conditions.add(startsWith);
+            JsonArray prefixArray = new JsonArray();
+            prefixArray.add("starts-with");
+            prefixArray.add("$" + condElement.leftOperand);
+            prefixArray.add(condElement.rightOperand);
+            constraints.add(prefixArray);
             break;
           case CONTENT_LENGTH_RANGE:
-            JsonArray contentLengthRange = new JsonArray();
-            contentLengthRange.add("content-length-range");
-            contentLengthRange.add(Integer.parseInt(condition.operand1));
-            contentLengthRange.add(Integer.parseInt(condition.operand2));
-            conditions.add(contentLengthRange);
+            JsonArray lengthRangeArray = new JsonArray();
+            lengthRangeArray.add("content-length-range");
+            lengthRangeArray.add(Integer.parseInt(condElement.leftOperand));
+            lengthRangeArray.add(Integer.parseInt(condElement.rightOperand));
+            constraints.add(lengthRangeArray);
             break;
         }
       }
-      object.add("conditions", conditions);
-      object.addProperty("expiration", expiration);
+      jsonObj.add("conditions", constraints);
+      jsonObj.addProperty("expiration", expiryDate);
 
-      String json = object.toString();
-      StringBuilder escapedJson = new StringBuilder();
+      String serialized = jsonObj.toString();
+      StringBuilder escapedString = new StringBuilder();
 
       // Certain characters in a policy must be escaped
-      for (char c : json.toCharArray()) {
-        if (c >= 128) { // is a unicode character
-          escapedJson.append(String.format("\\u%04x", (int) c));
+      for (char ch : serialized.toCharArray()) {
+        if (ch >= 128) { // is a unicode character
+          escapedString.append(String.format("\\u%04x", (int) ch));
         } else {
-          switch (c) {
+          switch (ch) {
             case '\\':
-              escapedJson.append("\\\\");
+              escapedString.append("\\\\");
               break;
             case '\b':
-              escapedJson.append("\\b");
+              escapedString.append("\\b");
               break;
             case '\f':
-              escapedJson.append("\\f");
+              escapedString.append("\\f");
               break;
             case '\n':
-              escapedJson.append("\\n");
+              escapedString.append("\\n");
               break;
             case '\r':
-              escapedJson.append("\\r");
+              escapedString.append("\\r");
               break;
             case '\t':
-              escapedJson.append("\\t");
+              escapedString.append("\\t");
               break;
             case '\u000b':
-              escapedJson.append("\\v");
+              escapedString.append("\\v");
               break;
             default:
-              escapedJson.append(c);
+              escapedString.append(ch);
           }
         }
       }
-      return escapedJson.toString();
+      return escapedString.toString();
     }
   }
 
@@ -363,27 +363,27 @@ public final class PostPolicyV4 {
    *     Policy document</a>
    */
   static final class ConditionV4 {
-    ConditionV4Type type;
-    String operand1;
-    String operand2;
+    ConditionV4Type conditionCategory;
+    String leftOperand;
+    String rightOperand;
 
-    private ConditionV4(ConditionV4Type type, String operand1, String operand2) {
-      this.type = type;
-      this.operand1 = operand1;
-      this.operand2 = operand2;
+    private ConditionV4(ConditionV4Type conditionCategory, String leftOperand, String rightOperand) {
+      this.conditionCategory = conditionCategory;
+      this.leftOperand = leftOperand;
+      this.rightOperand = rightOperand;
     }
 
     @Override
-    public boolean equals(Object other) {
-      ConditionV4 condition = (ConditionV4) other;
-      return this.type == condition.type
-          && this.operand1.equals(condition.operand1)
-          && this.operand2.equals(condition.operand2);
+    public boolean equals(Object obj) {
+      ConditionV4 condElement = (ConditionV4) obj;
+      return this.conditionCategory == condElement.conditionCategory
+          && this.leftOperand.equals(condElement.leftOperand)
+          && this.rightOperand.equals(condElement.rightOperand);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(type, operand1, operand2);
+      return Objects.hash(conditionCategory, leftOperand, rightOperand);
     }
   }
 }

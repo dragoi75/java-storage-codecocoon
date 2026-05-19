@@ -24,23 +24,23 @@ import com.google.cloud.StringEnumValue;
  * href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a>
  * for details.
  */
-public final class StorageClass extends StringEnumValue {
+public final class StorageTier extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageClass(String constant) {
-    super(constant);
+  private StorageTier(String value) {
+    super(value);
   }
 
-  private static final ApiFunction<String, StorageClass> CONSTRUCTOR =
-      new ApiFunction<String, StorageClass>() {
+  private static final ApiFunction<String, StorageTier> STORAGE_TIER_CONSTRUCTOR =
+      new ApiFunction<String, StorageTier>() {
         @Override
-        public StorageClass apply(String constant) {
-          return new StorageClass(constant);
+        public StorageTier apply(String constant) {
+          return new StorageTier(constant);
         }
       };
 
-  private static final StringEnumType<StorageClass> type =
-      new StringEnumType(StorageClass.class, CONSTRUCTOR);
+  private static final StringEnumType<StorageTier> STORAGE_TIER_TYPE =
+      new StringEnumType(StorageTier.class, STORAGE_TIER_CONSTRUCTOR);
 
   /**
    * Standard storage class.
@@ -48,7 +48,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#standard">https://cloud.google.com/storage/docs/storage-classes#standard</a>
    */
-  public static final StorageClass STANDARD = type.createAndRegister("STANDARD");
+  public static final StorageTier STANDARD = STORAGE_TIER_TYPE.createAndRegister("STANDARD");
 
   /**
    * Nearline storage class.
@@ -56,7 +56,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#nearline</a>
    */
-  public static final StorageClass NEARLINE = type.createAndRegister("NEARLINE");
+  public static final StorageTier NEARLINE = STORAGE_TIER_TYPE.createAndRegister("NEARLINE");
 
   /**
    * Coldline storage class.
@@ -64,7 +64,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#coldline">https://cloud.google.com/storage/docs/storage-classes#coldline</a>
    */
-  public static final StorageClass COLDLINE = type.createAndRegister("COLDLINE");
+  public static final StorageTier COLDLINE = STORAGE_TIER_TYPE.createAndRegister("COLDLINE");
 
   /**
    * Archive storage class.
@@ -72,7 +72,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#archive">https://cloud.google.com/storage/docs/storage-classes#archive</a>
    */
-  public static final StorageClass ARCHIVE = type.createAndRegister("ARCHIVE");
+  public static final StorageTier ARCHIVE = STORAGE_TIER_TYPE.createAndRegister("ARCHIVE");
 
   /**
    * Legacy Regional storage class, use {@link #STANDARD} instead. This class will be deprecated in
@@ -81,7 +81,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#legacy">https://cloud.google.com/storage/docs/storage-classes#legacy</a>
    */
-  public static final StorageClass REGIONAL = type.createAndRegister("REGIONAL");
+  public static final StorageTier REGIONAL = STORAGE_TIER_TYPE.createAndRegister("REGIONAL");
 
   /**
    * Legacy Multi-regional storage class, use {@link #STANDARD} instead. This class will be
@@ -90,7 +90,7 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#legacy">https://cloud.google.com/storage/docs/storage-classes#legacy</a>
    */
-  public static final StorageClass MULTI_REGIONAL = type.createAndRegister("MULTI_REGIONAL");
+  public static final StorageTier MULTI_REGIONAL = STORAGE_TIER_TYPE.createAndRegister("MULTI_REGIONAL");
 
   /**
    * Legacy Durable Reduced Availability storage class, use {@link #STANDARD} instead. This class
@@ -99,24 +99,24 @@ public final class StorageClass extends StringEnumValue {
    * @see <a
    *     href="https://cloud.google.com/storage/docs/storage-classes#legacy">https://cloud.google.com/storage/docs/storage-classes#legacy</a>
    */
-  public static final StorageClass DURABLE_REDUCED_AVAILABILITY =
-      type.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
+  public static final StorageTier DURABLE_REDUCED_AVAILABILITY =
+      STORAGE_TIER_TYPE.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
   /**
    * Get the StorageClass for the given String constant, and throw an exception if the constant is
    * not recognized.
    */
-  public static StorageClass valueOfStrict(String constant) {
-    return type.valueOfStrict(constant);
+  public static StorageTier valueOfStrict(String value) {
+    return STORAGE_TIER_TYPE.valueOfStrict(value);
   }
 
   /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageClass valueOf(String constant) {
-    return type.valueOf(constant);
+  public static StorageTier fromValue(String value) {
+    return STORAGE_TIER_TYPE.valueOf(value);
   }
 
   /** Return the known values for StorageClass. */
-  public static StorageClass[] values() {
-    return type.values();
+  public static StorageTier[] values() {
+    return STORAGE_TIER_TYPE.values();
   }
 }

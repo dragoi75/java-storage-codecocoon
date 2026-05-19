@@ -18,51 +18,51 @@ package com.google.cloud.storage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;
 
 /** Base class for Storage operation option. */
-public abstract class Option implements Serializable {
+public abstract class AbstractOption implements Serializable {
 
   private static final long serialVersionUID = -73199088766477208L;
 
-  private final StorageRpc.Option rpcOption;
-  private final Object value;
+  private final StorageRpcClient.StorageOption remoteCallOption;
+  private final Object payload;
 
-  Option(StorageRpc.Option rpcOption, Object value) {
-    this.rpcOption = checkNotNull(rpcOption);
-    this.value = value;
+  AbstractOption(StorageRpcClient.StorageOption remoteCallOption, Object payload) {
+    this.remoteCallOption = checkNotNull(remoteCallOption);
+    this.payload = payload;
   }
 
-  StorageRpc.Option getRpcOption() {
-    return rpcOption;
+  StorageRpcClient.StorageOption getRpcOption() {
+    return remoteCallOption;
   }
 
   Object getValue() {
-    return value;
+    return payload;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof Option)) {
+  public boolean equals(Object candidate) {
+    if (!(candidate instanceof AbstractOption)) {
       return false;
     }
-    Option other = (Option) obj;
-    return Objects.equals(rpcOption, other.rpcOption) && Objects.equals(value, other.value);
+    AbstractOption thatOption = (AbstractOption) candidate;
+    return Objects.equals(remoteCallOption, thatOption.remoteCallOption) && Objects.equals(payload, thatOption.payload);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rpcOption, value);
+    return Objects.hash(remoteCallOption, payload);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", rpcOption.value())
-        .add("value", value)
+        .add("name", remoteCallOption.getValue())
+        .add("value", payload)
         .toString();
   }
 }

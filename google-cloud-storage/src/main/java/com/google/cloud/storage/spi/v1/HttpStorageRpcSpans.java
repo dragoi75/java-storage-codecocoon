@@ -18,7 +18,7 @@ package com.google.cloud.storage.spi.v1;
 
 import io.opencensus.trace.EndSpanOptions;
 
-/** Helper class for instrumenting {@link HttpStorageRpc} with Open Census APIs. */
+/** Helper class for instrumenting {@link HttpStorageRpcClient} with Open Census APIs. */
 class HttpStorageRpcSpans {
   // OpenCensus span name prefix, 'Sent' for client and 'RECV' for server.
   static final String SPAN_NAME_CLIENT_PREFIX = "Sent";
@@ -93,13 +93,13 @@ class HttpStorageRpcSpans {
       getTraceSpanName("lockRetentionPolicy(String,Long)");
   static final String SPAN_NAME_GET_SERVICE_ACCOUNT = getTraceSpanName("getServiceAccount(String)");
   static final String SPAN_NAME_BATCH_SUBMIT =
-      getTraceSpanName(RpcBatch.class.getName() + ".submit()");
+      getTraceSpanName(RpcBatchRequest.class.getName() + ".submit()");
   static final EndSpanOptions END_SPAN_OPTIONS =
       EndSpanOptions.builder().setSampleToLocalSpanStore(true).build();
 
   static String getTraceSpanName(String methodDescriptor) {
     return String.format(
-        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageRpc.class.getName(), methodDescriptor);
+        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageRpcClient.class.getName(), methodDescriptor);
   }
 
   private HttpStorageRpcSpans() {}

@@ -32,9 +32,9 @@ public class CanonicalExtensionHeadersSerializerTest {
   @Before
   public void setUp() {
     v2Serializer =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V2);
+        new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SignatureSchemeVersion.V2);
     v4Serializer =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V4);
+        new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SignatureSchemeVersion.V4);
   }
 
   @Test
