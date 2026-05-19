@@ -16,13 +16,13 @@
 
 package com.google.cloud.storage;
 
-import static com.google.cloud.storage.Storage.PredefinedAcl.PUBLIC_READ;
+import static com.google.cloud.storage.StorageService.PredefinedAccessControlList.PUBLIC_READ;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
+import com.google.cloud.storage.StorageService.BlobReadOption;
+import com.google.cloud.storage.StorageService.BlobUploadOption;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
@@ -33,88 +33,88 @@ public class CopyRequestTest {
   private static final String TARGET_BUCKET_NAME = "b1";
   private static final String TARGET_BLOB_NAME = "o1";
   private static final String TARGET_BLOB_CONTENT_TYPE = "contentType";
-  private static final BlobId SOURCE_BLOB_ID = BlobId.of(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME);
-  private static final BlobId TARGET_BLOB_ID = BlobId.of(TARGET_BUCKET_NAME, TARGET_BLOB_NAME);
-  private static final BlobInfo TARGET_BLOB_INFO =
-      BlobInfo.newBuilder(TARGET_BLOB_ID).setContentType(TARGET_BLOB_CONTENT_TYPE).build();
+  private static final BlobIdentifier SOURCE_BLOB_ID = BlobIdentifier.create(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME);
+  private static final BlobIdentifier TARGET_BLOB_ID = BlobIdentifier.create(TARGET_BUCKET_NAME, TARGET_BLOB_NAME);
+  private static final BlobMetadata TARGET_BLOB_INFO =
+      BlobMetadata.newBuilder(TARGET_BLOB_ID).setContentType(TARGET_BLOB_CONTENT_TYPE).buildObject();
 
   @Test
   public void testCopyRequest() {
-    Storage.CopyRequest copyRequest1 =
-        Storage.CopyRequest.newBuilder()
+    StorageService.CopyOperationRequest copyRequest1 =
+        StorageService.CopyOperationRequest.newCopyBuilder()
             .setSource(SOURCE_BLOB_ID)
-            .setSourceOptions(BlobSourceOption.generationMatch(1))
-            .setTarget(TARGET_BLOB_INFO, BlobTargetOption.predefinedAcl(PUBLIC_READ))
-            .build();
+            .setSourceOptions(StorageService.BlobReadOption.ifGenerationMatch(1))
+            .setTarget(TARGET_BLOB_INFO, BlobUploadOption.withPredefinedAcl(PUBLIC_READ))
+            .buildCopyRequest();
     assertEquals(SOURCE_BLOB_ID, copyRequest1.getSource());
     assertEquals(1, copyRequest1.getSourceOptions().size());
-    assertEquals(BlobSourceOption.generationMatch(1), copyRequest1.getSourceOptions().get(0));
+    assertEquals(BlobReadOption.ifGenerationMatch(1), copyRequest1.getSourceOptions().get(0));
     assertEquals(TARGET_BLOB_INFO, copyRequest1.getTarget());
-    assertTrue(copyRequest1.overrideInfo());
+    assertTrue(copyRequest1.getOverrideInfo());
     assertEquals(1, copyRequest1.getTargetOptions().size());
     assertEquals(
-        BlobTargetOption.predefinedAcl(PUBLIC_READ), copyRequest1.getTargetOptions().get(0));
+        BlobUploadOption.withPredefinedAcl(PUBLIC_READ), copyRequest1.getTargetOptions().get(0));
 
-    Storage.CopyRequest copyRequest2 =
-        Storage.CopyRequest.newBuilder()
+    StorageService.CopyOperationRequest copyRequest2 =
+        StorageService.CopyOperationRequest.newCopyBuilder()
             .setSource(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME)
             .setTarget(TARGET_BLOB_ID)
-            .build();
+            .buildCopyRequest();
     assertEquals(SOURCE_BLOB_ID, copyRequest2.getSource());
-    assertEquals(BlobInfo.newBuilder(TARGET_BLOB_ID).build(), copyRequest2.getTarget());
-    assertFalse(copyRequest2.overrideInfo());
+    assertEquals(BlobMetadata.newBuilder(TARGET_BLOB_ID).buildObject(), copyRequest2.getTarget());
+    assertFalse(copyRequest2.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest3 =
-        Storage.CopyRequest.newBuilder()
+    StorageService.CopyOperationRequest copyRequest3 =
+        StorageService.CopyOperationRequest.newCopyBuilder()
             .setSource(SOURCE_BLOB_ID)
             .setTarget(
-                TARGET_BLOB_INFO, ImmutableList.of(BlobTargetOption.predefinedAcl(PUBLIC_READ)))
-            .build();
+                TARGET_BLOB_INFO, ImmutableList.of(BlobUploadOption.withPredefinedAcl(PUBLIC_READ)))
+            .buildCopyRequest();
     assertEquals(SOURCE_BLOB_ID, copyRequest3.getSource());
     assertEquals(TARGET_BLOB_INFO, copyRequest3.getTarget());
-    assertTrue(copyRequest3.overrideInfo());
+    assertTrue(copyRequest3.getOverrideInfo());
     assertEquals(
-        ImmutableList.of(BlobTargetOption.predefinedAcl(PUBLIC_READ)),
+        ImmutableList.of(BlobUploadOption.withPredefinedAcl(PUBLIC_READ)),
         copyRequest3.getTargetOptions());
   }
 
   @Test
   public void testCopyRequestOf() {
-    Storage.CopyRequest copyRequest1 = Storage.CopyRequest.of(SOURCE_BLOB_ID, TARGET_BLOB_INFO);
+    StorageService.CopyOperationRequest copyRequest1 = StorageService.CopyOperationRequest.from(SOURCE_BLOB_ID, TARGET_BLOB_INFO);
     assertEquals(SOURCE_BLOB_ID, copyRequest1.getSource());
     assertEquals(TARGET_BLOB_INFO, copyRequest1.getTarget());
-    assertTrue(copyRequest1.overrideInfo());
+    assertTrue(copyRequest1.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest2 = Storage.CopyRequest.of(SOURCE_BLOB_ID, TARGET_BLOB_NAME);
+    StorageService.CopyOperationRequest copyRequest2 = StorageService.CopyOperationRequest.from(SOURCE_BLOB_ID, TARGET_BLOB_NAME);
     assertEquals(SOURCE_BLOB_ID, copyRequest2.getSource());
     assertEquals(
-        BlobInfo.newBuilder(BlobId.of(SOURCE_BUCKET_NAME, TARGET_BLOB_NAME)).build(),
+        BlobMetadata.newBuilder(BlobIdentifier.create(SOURCE_BUCKET_NAME, TARGET_BLOB_NAME)).buildObject(),
         copyRequest2.getTarget());
-    assertFalse(copyRequest2.overrideInfo());
+    assertFalse(copyRequest2.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest3 =
-        Storage.CopyRequest.of(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_INFO);
+    StorageService.CopyOperationRequest copyRequest3 =
+        StorageService.CopyOperationRequest.from(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_INFO);
     assertEquals(SOURCE_BLOB_ID, copyRequest3.getSource());
     assertEquals(TARGET_BLOB_INFO, copyRequest3.getTarget());
-    assertTrue(copyRequest3.overrideInfo());
+    assertTrue(copyRequest3.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest4 =
-        Storage.CopyRequest.of(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_NAME);
+    StorageService.CopyOperationRequest copyRequest4 =
+        StorageService.CopyOperationRequest.from(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_NAME);
     assertEquals(SOURCE_BLOB_ID, copyRequest4.getSource());
     assertEquals(
-        BlobInfo.newBuilder(BlobId.of(SOURCE_BUCKET_NAME, TARGET_BLOB_NAME)).build(),
+        BlobMetadata.newBuilder(BlobIdentifier.create(SOURCE_BUCKET_NAME, TARGET_BLOB_NAME)).buildObject(),
         copyRequest4.getTarget());
-    assertFalse(copyRequest4.overrideInfo());
+    assertFalse(copyRequest4.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest5 = Storage.CopyRequest.of(SOURCE_BLOB_ID, TARGET_BLOB_ID);
+    StorageService.CopyOperationRequest copyRequest5 = StorageService.CopyOperationRequest.from(SOURCE_BLOB_ID, TARGET_BLOB_ID);
     assertEquals(SOURCE_BLOB_ID, copyRequest5.getSource());
-    assertEquals(BlobInfo.newBuilder(TARGET_BLOB_ID).build(), copyRequest5.getTarget());
-    assertFalse(copyRequest5.overrideInfo());
+    assertEquals(BlobMetadata.newBuilder(TARGET_BLOB_ID).buildObject(), copyRequest5.getTarget());
+    assertFalse(copyRequest5.getOverrideInfo());
 
-    Storage.CopyRequest copyRequest6 =
-        Storage.CopyRequest.of(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_ID);
+    StorageService.CopyOperationRequest copyRequest6 =
+        StorageService.CopyOperationRequest.from(SOURCE_BUCKET_NAME, SOURCE_BLOB_NAME, TARGET_BLOB_ID);
     assertEquals(SOURCE_BLOB_ID, copyRequest6.getSource());
-    assertEquals(BlobInfo.newBuilder(TARGET_BLOB_ID).build(), copyRequest6.getTarget());
-    assertFalse(copyRequest6.overrideInfo());
+    assertEquals(BlobMetadata.newBuilder(TARGET_BLOB_ID).buildObject(), copyRequest6.getTarget());
+    assertFalse(copyRequest6.getOverrideInfo());
   }
 }

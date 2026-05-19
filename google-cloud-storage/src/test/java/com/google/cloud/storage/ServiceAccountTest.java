@@ -22,19 +22,19 @@ import org.junit.Test;
 
 public class ServiceAccountTest {
 
-  private static final ServiceAccount SERVICE_ACCOUNT = ServiceAccount.of("email");
+  private static final ServiceAccountInfo SERVICE_ACCOUNT = ServiceAccountInfo.from("email");
 
   @Test
   public void testOf() {
-    compareServiceAccount(SERVICE_ACCOUNT, ServiceAccount.of("email"));
+    compareServiceAccount(SERVICE_ACCOUNT, ServiceAccountInfo.from("email"));
   }
 
   @Test
   public void testToAndFromPb() {
-    compareServiceAccount(SERVICE_ACCOUNT, ServiceAccount.fromPb(SERVICE_ACCOUNT.toPb()));
+    compareServiceAccount(SERVICE_ACCOUNT, ServiceAccountInfo.fromProto(SERVICE_ACCOUNT.toProto()));
   }
 
-  public void compareServiceAccount(ServiceAccount expected, ServiceAccount value) {
+  public void compareServiceAccount(ServiceAccountInfo expected, ServiceAccountInfo value) {
     assertEquals(expected, value);
     assertEquals(expected.getEmail(), value.getEmail());
     assertEquals(expected.hashCode(), value.hashCode());
