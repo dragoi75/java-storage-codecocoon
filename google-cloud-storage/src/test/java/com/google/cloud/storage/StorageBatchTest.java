@@ -23,12 +23,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.services.storage.model.StorageObject;
-import com.google.cloud.storage.Storage.BlobGetOption;
-import com.google.cloud.storage.Storage.BlobSourceOption;
-import com.google.cloud.storage.Storage.BlobTargetOption;
-import com.google.cloud.storage.spi.v1.RpcBatch;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.CloudStorageClient.BlobGetOptions;
+import com.google.cloud.storage.CloudStorageClient.BlobReadOption;
+import com.google.cloud.storage.spi.v1.RpcRequestBatch;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import org.easymock.Capture;
@@ -39,37 +37,37 @@ import org.junit.Test;
 
 public class StorageBatchTest {
 
-  private static final BlobId BLOB_ID = BlobId.of("b1", "n1");
-  private static final BlobId BLOB_ID_COMPLETE = BlobId.of("b1", "n1", 42L);
-  private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder(BLOB_ID).build();
-  private static final BlobInfo BLOB_INFO_COMPLETE =
-      BlobInfo.newBuilder(BLOB_ID_COMPLETE).setMetageneration(42L).build();
-  private static final BlobGetOption[] BLOB_GET_OPTIONS = {
-    BlobGetOption.generationMatch(42L), BlobGetOption.metagenerationMatch(42L)
+  private static final BlobIdentifier BLOB_ID = BlobIdentifier.from("b1", "n1");
+  private static final BlobIdentifier BLOB_ID_COMPLETE = BlobIdentifier.from("b1", "n1", 42L);
+  private static final BlobMetadata BLOB_INFO = BlobMetadata.newBuilder(BLOB_ID).buildMetadata();
+  private static final BlobMetadata BLOB_INFO_COMPLETE =
+      BlobMetadata.newBuilder(BLOB_ID_COMPLETE).setMetageneration(42L).buildMetadata();
+  private static final BlobGetOptions[] BLOB_GET_OPTIONS = {
+    BlobGetOptions.ifGenerationMatch(42L), CloudStorageClient.BlobGetOptions.ifMetagenerationMatch(42L)
   };
-  private static final BlobSourceOption[] BLOB_SOURCE_OPTIONS = {
-    BlobSourceOption.generationMatch(42L), BlobSourceOption.metagenerationMatch(42L)
+  private static final BlobReadOption[] BLOB_SOURCE_OPTIONS = {
+    BlobReadOption.ifGenerationMatch(42L), BlobReadOption.ifMetagenerationMatch(42L)
   };
-  private static final BlobTargetOption[] BLOB_TARGET_OPTIONS = {
-    BlobTargetOption.generationMatch(), BlobTargetOption.metagenerationMatch()
+  private static final CloudStorageClient.BlobUploadOption[] BLOB_TARGET_OPTIONS = {
+    CloudStorageClient.BlobUploadOption.ifGenerationMatch(), CloudStorageClient.BlobUploadOption.ifMetagenerationMatch()
   };
   private static final GoogleJsonError GOOGLE_JSON_ERROR = new GoogleJsonError();
 
-  private StorageOptions optionsMock;
-  private StorageRpc storageRpcMock;
-  private RpcBatch batchMock;
-  private StorageBatch storageBatch;
-  private final Storage storage = EasyMock.createStrictMock(Storage.class);
+  private StorageClientOptions optionsMock;
+  private StorageRpcClient storageRpcMock;
+  private RpcRequestBatch batchMock;
+  private StorageRpcBatch storageBatch;
+  private final CloudStorageClient storage = EasyMock.createStrictMock(CloudStorageClient.class);
 
   @Before
   public void setUp() {
-    optionsMock = EasyMock.createMock(StorageOptions.class);
-    storageRpcMock = EasyMock.createMock(StorageRpc.class);
-    batchMock = EasyMock.createMock(RpcBatch.class);
+    optionsMock = EasyMock.createMock(StorageClientOptions.class);
+    storageRpcMock = EasyMock.createMock(StorageRpcClient.class);
+    batchMock = EasyMock.createMock(RpcRequestBatch.class);
     EasyMock.expect(optionsMock.getStorageRpcV1()).andReturn(storageRpcMock);
     EasyMock.expect(storageRpcMock.createBatch()).andReturn(batchMock);
     EasyMock.replay(optionsMock, storageRpcMock, batchMock, storage);
-    storageBatch = new StorageBatch(optionsMock);
+    storageBatch = new StorageRpcBatch(optionsMock);
   }
 
   @After
@@ -87,14 +85,14 @@ public class StorageBatchTest {
   @Test
   public void testDelete() {
     EasyMock.reset(batchMock);
-    Capture<RpcBatch.Callback<Void>> callback = Capture.newInstance();
-    batchMock.addDelete(
-        EasyMock.eq(BLOB_INFO.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<Void>> callback = Capture.newInstance();
+    batchMock.addDeleteOperation(
+        EasyMock.eq(BLOB_INFO.toProto()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpcClient.StorageOption, Object>of()));
     EasyMock.replay(batchMock);
     StorageBatchResult<Boolean> batchResult =
-        storageBatch.delete(BLOB_ID.getBucket(), BLOB_ID.getName());
+        storageBatch.remove(BLOB_ID.getBucket(), BLOB_ID.getName());
     assertNotNull(callback.getValue());
     try {
       batchResult.get();
@@ -103,12 +101,12 @@ public class StorageBatchTest {
       // expected
     }
     // testing error here, success is tested with options
-    RpcBatch.Callback<Void> capturedCallback = callback.getValue();
-    capturedCallback.onFailure(GOOGLE_JSON_ERROR);
+    RpcRequestBatch.ResultCallback<Void> capturedCallback = callback.getValue();
+    capturedCallback.handleFailure(GOOGLE_JSON_ERROR);
     try {
       batchResult.get();
       fail("Should throw a StorageExcetion on error.");
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       // expected
     }
   }
@@ -116,34 +114,34 @@ public class StorageBatchTest {
   @Test
   public void testDeleteWithOptions() {
     EasyMock.reset(batchMock);
-    Capture<RpcBatch.Callback<Void>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
-    batchMock.addDelete(
-        EasyMock.eq(BLOB_INFO.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<Void>> callback = Capture.newInstance();
+    Capture<Map<StorageRpcClient.StorageOption, Object>> capturedOptions = Capture.newInstance();
+    batchMock.addDeleteOperation(
+        EasyMock.eq(BLOB_INFO.toProto()),
         EasyMock.capture(callback),
         EasyMock.capture(capturedOptions));
     EasyMock.replay(batchMock);
-    StorageBatchResult<Boolean> batchResult = storageBatch.delete(BLOB_ID, BLOB_SOURCE_OPTIONS);
+    StorageBatchResult<Boolean> batchResult = storageBatch.remove(BLOB_ID, BLOB_SOURCE_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobSourceOption option : BLOB_SOURCE_OPTIONS) {
+    for (BlobReadOption option : BLOB_SOURCE_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
-    RpcBatch.Callback<Void> capturedCallback = callback.getValue();
-    capturedCallback.onSuccess(null);
+    RpcRequestBatch.ResultCallback<Void> capturedCallback = callback.getValue();
+    capturedCallback.handleSuccess(null);
     assertTrue(batchResult.get());
   }
 
   @Test
   public void testUpdate() {
     EasyMock.reset(batchMock);
-    Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    batchMock.addPatch(
-        EasyMock.eq(BLOB_INFO.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>> callback = Capture.newInstance();
+    batchMock.addPatchOperation(
+        EasyMock.eq(BLOB_INFO.toProto()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpcClient.StorageOption, Object>of()));
     EasyMock.replay(batchMock);
-    StorageBatchResult<Blob> batchResult = storageBatch.update(BLOB_INFO);
+    StorageBatchResult<StorageObject> batchResult = storageBatch.modify(BLOB_INFO);
     assertNotNull(callback.getValue());
     try {
       batchResult.get();
@@ -152,12 +150,12 @@ public class StorageBatchTest {
       // expected
     }
     // testing error here, success is tested with options
-    RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();
-    capturedCallback.onFailure(GOOGLE_JSON_ERROR);
+    RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> capturedCallback = callback.getValue();
+    capturedCallback.handleFailure(GOOGLE_JSON_ERROR);
     try {
       batchResult.get();
       fail("Should throw a StorageExcetion on error.");
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       // expected
     }
   }
@@ -167,34 +165,34 @@ public class StorageBatchTest {
     EasyMock.reset(storage, batchMock, optionsMock);
     EasyMock.expect(storage.getOptions()).andReturn(optionsMock).times(2);
     EasyMock.expect(optionsMock.getService()).andReturn(storage);
-    Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
-    batchMock.addPatch(
-        EasyMock.eq(BLOB_INFO_COMPLETE.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>> callback = Capture.newInstance();
+    Capture<Map<StorageRpcClient.StorageOption, Object>> capturedOptions = Capture.newInstance();
+    batchMock.addPatchOperation(
+        EasyMock.eq(BLOB_INFO_COMPLETE.toProto()),
         EasyMock.capture(callback),
         EasyMock.capture(capturedOptions));
     EasyMock.replay(batchMock, storage, optionsMock);
-    StorageBatchResult<Blob> batchResult =
-        storageBatch.update(BLOB_INFO_COMPLETE, BLOB_TARGET_OPTIONS);
+    StorageBatchResult<StorageObject> batchResult =
+        storageBatch.modify(BLOB_INFO_COMPLETE, BLOB_TARGET_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
     assertEquals(42L, capturedOptions.getValue().get(BLOB_TARGET_OPTIONS[0].getRpcOption()));
     assertEquals(42L, capturedOptions.getValue().get(BLOB_TARGET_OPTIONS[1].getRpcOption()));
-    RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();
-    capturedCallback.onSuccess(BLOB_INFO.toPb());
-    assertEquals(new Blob(storage, new Blob.BuilderImpl(BLOB_INFO)), batchResult.get());
+    RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> capturedCallback = callback.getValue();
+    capturedCallback.handleSuccess(BLOB_INFO.toProto());
+    assertEquals(new StorageObject(storage, new BlobMetadata.BlobMetadataBuilderImpl(BLOB_INFO)), batchResult.get());
   }
 
   @Test
   public void testGet() {
     EasyMock.reset(batchMock);
-    Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    batchMock.addGet(
-        EasyMock.eq(BLOB_INFO.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>> callback = Capture.newInstance();
+    batchMock.addGetRequest(
+        EasyMock.eq(BLOB_INFO.toProto()),
         EasyMock.capture(callback),
-        EasyMock.eq(ImmutableMap.<StorageRpc.Option, Object>of()));
+        EasyMock.eq(ImmutableMap.<StorageRpcClient.StorageOption, Object>of()));
     EasyMock.replay(batchMock);
-    StorageBatchResult<Blob> batchResult = storageBatch.get(BLOB_ID.getBucket(), BLOB_ID.getName());
+    StorageBatchResult<StorageObject> batchResult = storageBatch.get(BLOB_ID.getBucket(), BLOB_ID.getName());
     assertNotNull(callback.getValue());
     try {
       batchResult.get();
@@ -203,12 +201,12 @@ public class StorageBatchTest {
       // expected
     }
     // testing error here, success is tested with options
-    RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();
-    capturedCallback.onFailure(GOOGLE_JSON_ERROR);
+    RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> capturedCallback = callback.getValue();
+    capturedCallback.handleFailure(GOOGLE_JSON_ERROR);
     try {
       batchResult.get();
       fail("Should throw a StorageExcetion on error.");
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       // expected
     }
   }
@@ -218,21 +216,21 @@ public class StorageBatchTest {
     EasyMock.reset(storage, batchMock, optionsMock);
     EasyMock.expect(storage.getOptions()).andReturn(optionsMock).times(2);
     EasyMock.expect(optionsMock.getService()).andReturn(storage);
-    Capture<RpcBatch.Callback<StorageObject>> callback = Capture.newInstance();
-    Capture<Map<StorageRpc.Option, Object>> capturedOptions = Capture.newInstance();
-    batchMock.addGet(
-        EasyMock.eq(BLOB_INFO.toPb()),
+    Capture<RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>> callback = Capture.newInstance();
+    Capture<Map<StorageRpcClient.StorageOption, Object>> capturedOptions = Capture.newInstance();
+    batchMock.addGetRequest(
+        EasyMock.eq(BLOB_INFO.toProto()),
         EasyMock.capture(callback),
         EasyMock.capture(capturedOptions));
     EasyMock.replay(storage, batchMock, optionsMock);
-    StorageBatchResult<Blob> batchResult = storageBatch.get(BLOB_ID, BLOB_GET_OPTIONS);
+    StorageBatchResult<StorageObject> batchResult = storageBatch.get(BLOB_ID, BLOB_GET_OPTIONS);
     assertNotNull(callback.getValue());
     assertEquals(2, capturedOptions.getValue().size());
-    for (BlobGetOption option : BLOB_GET_OPTIONS) {
+    for (BlobGetOptions option : BLOB_GET_OPTIONS) {
       assertEquals(option.getValue(), capturedOptions.getValue().get(option.getRpcOption()));
     }
-    RpcBatch.Callback<StorageObject> capturedCallback = callback.getValue();
-    capturedCallback.onSuccess(BLOB_INFO.toPb());
-    assertEquals(new Blob(storage, new Blob.BuilderImpl(BLOB_INFO)), batchResult.get());
+    RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> capturedCallback = callback.getValue();
+    capturedCallback.handleSuccess(BLOB_INFO.toProto());
+    assertEquals(new StorageObject(storage, new BlobMetadata.BlobMetadataBuilderImpl(BLOB_INFO)), batchResult.get());
   }
 }

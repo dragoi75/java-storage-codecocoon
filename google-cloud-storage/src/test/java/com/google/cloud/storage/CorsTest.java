@@ -36,7 +36,7 @@ public class CorsTest {
   public void corsTest() {
     List<Origin> origins = ImmutableList.of(Origin.any(), Origin.of("o"));
     List<String> headers = ImmutableList.of("h1", "h2");
-    List<HttpMethod> methods = ImmutableList.of(HttpMethod.GET);
+    List<HttpRequestMethod> methods = ImmutableList.of(HttpRequestMethod.GET);
     Cors cors =
         Cors.newBuilder()
             .setMaxAgeSeconds(100)

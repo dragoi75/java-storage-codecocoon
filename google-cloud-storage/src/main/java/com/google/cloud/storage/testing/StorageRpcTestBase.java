@@ -27,99 +27,100 @@ import com.google.api.services.storage.model.ServiceAccount;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.api.services.storage.model.TestIamPermissionsResponse;
 import com.google.cloud.Tuple;
-import com.google.cloud.storage.spi.v1.RpcBatch;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.RpcRequestBatch;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 /**
- * A stub implementation of {@link StorageRpc} which can be used outside of the Storage module for
+ * A stub implementation of {@link StorageRpcClient} which can be used outside of the Storage module for
  * testing purposes. All the methods throw an {@code UnsupportedOperationException}.
  */
-public class StorageRpcTestBase implements StorageRpc {
+public class StorageRpcTestBase implements StorageRpcClient {
 
   @Override
-  public Bucket create(Bucket bucket, Map<Option, ?> options) {
+  public Bucket create(Bucket bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public StorageObject create(StorageObject object, InputStream content, Map<Option, ?> options) {
+  public StorageObject create(StorageObject object, InputStream content, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Tuple<String, Iterable<Bucket>> list(Map<Option, ?> options) {
+  public Tuple<String, Iterable<Bucket>> list(Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Tuple<String, Iterable<StorageObject>> list(String bucket, Map<Option, ?> options) {
+  public Tuple<String, Iterable<StorageObject>> list(String bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Bucket get(Bucket bucket, Map<Option, ?> options) {
+  public Bucket get(Bucket bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public StorageObject get(StorageObject object, Map<Option, ?> options) {
+  public StorageObject get(StorageObject object, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Bucket patch(Bucket bucket, Map<Option, ?> options) {
+  public Bucket patch(Bucket bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public StorageObject patch(StorageObject storageObject, Map<Option, ?> options) {
+  public StorageObject patch(StorageObject storageObject, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public boolean delete(Bucket bucket, Map<Option, ?> options) {
+  public boolean delete(Bucket bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public boolean delete(StorageObject object, Map<Option, ?> options) {
+  public boolean delete(StorageObject object, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public RpcBatch createBatch() {
+  public RpcRequestBatch createBatch() {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public StorageObject compose(
-      Iterable<StorageObject> sources, StorageObject target, Map<Option, ?> targetOptions) {
+      Iterable<StorageObject> sources, StorageObject target, Map<StorageOption, ?> targetOptions) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public byte[] load(StorageObject storageObject, Map<Option, ?> options) {
+  public byte[] load(StorageObject storageObject, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public Tuple<String, byte[]> read(
-      StorageObject from, Map<Option, ?> options, long position, int bytes) {
+          StorageObject from, Map<StorageOption, ?> options, long position, int bytes) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public long read(
-      StorageObject from, Map<Option, ?> options, long position, OutputStream outputStream) {
+          StorageObject from, Map<StorageOption, ?> options, long position, OutputStream outputStream) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public String open(StorageObject object, Map<Option, ?> options) {
+  public String open(StorageObject object, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
@@ -156,37 +157,37 @@ public class StorageRpcTestBase implements StorageRpc {
   }
 
   @Override
-  public RewriteResponse openRewrite(RewriteRequest rewriteRequest) {
+  public StorageRpcClient.RewriteResult openRewrite(ObjectRewriteRequest rewriteRequest) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public RewriteResponse continueRewrite(RewriteResponse previousResponse) {
+  public StorageRpcClient.RewriteResult continueRewrite(RewriteResult previousResponse) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public BucketAccessControl getAcl(String bucket, String entity, Map<Option, ?> options) {
+  public BucketAccessControl getAcl(String bucket, String entity, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public boolean deleteAcl(String bucket, String entity, Map<Option, ?> options) {
+  public boolean deleteAcl(String bucket, String entity, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public BucketAccessControl createAcl(BucketAccessControl acl, Map<Option, ?> options) {
+  public BucketAccessControl createAcl(BucketAccessControl acl, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public BucketAccessControl patchAcl(BucketAccessControl acl, Map<Option, ?> options) {
+  public BucketAccessControl patchAcl(BucketAccessControl acl, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public List<BucketAccessControl> listAcls(String bucket, Map<Option, ?> options) {
+  public List<BucketAccessControl> listAcls(String bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
@@ -241,43 +242,43 @@ public class StorageRpcTestBase implements StorageRpc {
   }
 
   @Override
-  public HmacKey createHmacKey(String serviceAccountEmail, Map<Option, ?> options) {
+  public HmacKey createHmacKey(String serviceAccountEmail, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Tuple<String, Iterable<HmacKeyMetadata>> listHmacKeys(Map<Option, ?> options) {
+  public Tuple<String, Iterable<HmacKeyMetadata>> listHmacKeys(Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options) {
+  public HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public HmacKeyMetadata getHmacKey(String accessId, Map<Option, ?> options) {
+  public HmacKeyMetadata getHmacKey(String accessId, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public void deleteHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options) {
+  public void deleteHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Policy getIamPolicy(String bucket, Map<Option, ?> options) {
+  public Policy getIamPolicy(String bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
-  public Policy setIamPolicy(String bucket, Policy policy, Map<Option, ?> options) {
+  public Policy setIamPolicy(String bucket, Policy policy, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public TestIamPermissionsResponse testIamPermissions(
-      String bucket, List<String> permissions, Map<Option, ?> options) {
+      String bucket, List<String> permissions, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
@@ -297,7 +298,7 @@ public class StorageRpcTestBase implements StorageRpc {
   }
 
   @Override
-  public Bucket lockRetentionPolicy(Bucket bucket, Map<Option, ?> options) {
+  public Bucket lockRetentionPolicy(Bucket bucket, Map<StorageOption, ?> options) {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 

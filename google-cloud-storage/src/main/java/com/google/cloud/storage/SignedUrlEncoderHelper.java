@@ -20,27 +20,27 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /** Helper for encoding URI segments appropriately when creating a Signed URL. */
-class SignedUrlEncodingHelper {
+class SignedUrlEncoderHelper {
 
-  static String Rfc3986UriEncode(final String segment, final boolean encodeForwardSlash) {
-    String encodedSegment;
+  static String rfc3986UriEncode(final String pathPart, final boolean encodeSlash) {
+    String encodedPart;
     try {
-      encodedSegment = URLEncoder.encode(segment, "UTF-8");
-    } catch (UnsupportedEncodingException exception) {
-      throw new RuntimeException(exception);
+      encodedPart = URLEncoder.encode(pathPart, "UTF-8");
+    } catch (UnsupportedEncodingException encodingError) {
+      throw new RuntimeException(encodingError);
     }
     // URLEncoder.encode() does mostly what we want, with the exception of a few characters that
     // we fix in a second phase:
-    encodedSegment =
-        encodedSegment
+    encodedPart =
+        encodedPart
             .replace("*", "%2A") // Asterisks should be encoded.
             .replace("+", "%20") // Spaces should be encoded as %20 instead of a plus sign.
             .replace("%7E", "~"); // Tildes should not be encoded.
     // Forward slashes should NOT be encoded in the segment of the URI that represents the
     // object's name, but should be encoded for all other segments.
-    if (!encodeForwardSlash) {
-      encodedSegment = encodedSegment.replace("%2F", "/");
+    if (!encodeSlash) {
+      encodedPart = encodedPart.replace("%2F", "/");
     }
-    return encodedSegment;
+    return encodedPart;
   }
 }

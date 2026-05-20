@@ -57,9 +57,9 @@ public class PolicyHelperTest {
             .setEtag(ETAG)
             .setVersion(1);
 
-    Policy actualLibPolicy = PolicyHelper.convertFromApiPolicy(apiPolicy);
+    Policy actualLibPolicy = ApiPolicyConverter.convertApiPolicyToPolicy(apiPolicy);
     com.google.api.services.storage.model.Policy actualApiPolicy =
-        PolicyHelper.convertToApiPolicy(libPolicy);
+        ApiPolicyConverter.convertPolicyToApiPolicy(libPolicy);
 
     assertEquals(libPolicy, actualLibPolicy);
     assertTrue(new ApiPolicyMatcher(apiPolicy).matches(actualApiPolicy));
@@ -70,6 +70,6 @@ public class PolicyHelperTest {
     List<Bindings> bindings = null;
     com.google.api.services.storage.model.Policy apiPolicy =
         new com.google.api.services.storage.model.Policy().setBindings(bindings).setEtag(ETAG);
-    PolicyHelper.convertFromApiPolicy(apiPolicy);
+    ApiPolicyConverter.convertApiPolicyToPolicy(apiPolicy);
   }
 }
