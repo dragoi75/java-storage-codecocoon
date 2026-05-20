@@ -24,27 +24,27 @@ import com.google.cloud.BaseWriteChannel;
 import com.google.cloud.RestorableState;
 import com.google.cloud.RetryHelper;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 /** Write channel implementation to upload Google Cloud Storage blobs. */
-class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
+class BlobWriteChannel extends BaseWriteChannel<StorageSettings, BlobAttributes> {
 
-  BlobWriteChannel(StorageOptions options, BlobInfo blob, Map<StorageRpc.Option, ?> optionsMap) {
+  BlobWriteChannel(StorageSettings options, BlobAttributes blob, Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
     this(options, blob, open(options, blob, optionsMap));
   }
 
-  BlobWriteChannel(StorageOptions options, URL signedURL) {
+  BlobWriteChannel(StorageSettings options, URL signedURL) {
     this(options, open(signedURL, options));
   }
 
-  BlobWriteChannel(StorageOptions options, BlobInfo blobInfo, String uploadId) {
+  BlobWriteChannel(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
     super(options, blobInfo, uploadId);
   }
 
-  BlobWriteChannel(StorageOptions options, String uploadId) {
+  BlobWriteChannel(StorageSettings options, String uploadId) {
     super(options, null, uploadId);
   }
 
@@ -74,7 +74,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
           StorageImpl.EXCEPTION_HANDLER,
           getOptions().getClock());
     } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageOperationException.translateAndRethrow(e);
     }
   }
 
@@ -83,33 +83,33 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   }
 
   private static String open(
-      final StorageOptions options,
-      final BlobInfo blob,
-      final Map<StorageRpc.Option, ?> optionsMap) {
+      final StorageSettings options,
+      final BlobAttributes blob,
+      final Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
     try {
       return runWithRetries(
           new Callable<String>() {
             @Override
             public String call() {
-              return options.getStorageRpcV1().open(blob.toPb(), optionsMap);
+              return options.getStorageRpcV1().open(blob.toProto(), optionsMap);
             }
           },
           options.getRetrySettings(),
           StorageImpl.EXCEPTION_HANDLER,
           options.getClock());
     } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageOperationException.translateAndRethrow(e);
     }
   }
 
-  private static String open(final URL signedURL, final StorageOptions options) {
+  private static String open(final URL signedURL, final StorageSettings options) {
     try {
       return runWithRetries(
           new Callable<String>() {
             @Override
             public String call() {
               if (!isValidSignedURL(signedURL.getQuery())) {
-                throw new StorageException(2, "invalid signedURL");
+                throw new StorageOperationException(2, "invalid signedURL");
               }
               return options.getStorageRpcV1().open(signedURL.toString());
             }
@@ -118,7 +118,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
           StorageImpl.EXCEPTION_HANDLER,
           options.getClock());
     } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageOperationException.translateAndRethrow(e);
     }
   }
 
@@ -142,7 +142,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     return isValid;
   }
 
-  static class StateImpl extends BaseWriteChannel.BaseState<StorageOptions, BlobInfo> {
+  static class StateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobAttributes> {
 
     private static final long serialVersionUID = -9028324143780151286L;
 
@@ -150,9 +150,9 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
       super(builder);
     }
 
-    static class Builder extends BaseWriteChannel.BaseState.Builder<StorageOptions, BlobInfo> {
+    static class Builder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobAttributes> {
 
-      private Builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
+      private Builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
         super(options, blobInfo, uploadId);
       }
 
@@ -162,7 +162,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
       }
     }
 
-    static Builder builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
+    static Builder builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
       return new Builder(options, blobInfo, uploadId);
     }
 

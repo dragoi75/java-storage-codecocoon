@@ -23,7 +23,7 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.RestorableState;
 import com.google.cloud.RetryHelper;
 import com.google.cloud.Tuple;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import com.google.common.base.MoreObjects;
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,28 +38,28 @@ class BlobReadChannel implements ReadChannel {
 
   private static final int DEFAULT_CHUNK_SIZE = 2 * 1024 * 1024;
 
-  private final StorageOptions serviceOptions;
-  private final BlobId blob;
-  private final Map<StorageRpc.Option, ?> requestOptions;
+  private final StorageSettings serviceOptions;
+  private final BlobIdentifier blob;
+  private final Map<CloudStorageRpcClient.StorageOption, ?> requestOptions;
   private String lastEtag;
   private long position;
   private boolean isOpen;
   private boolean endOfStream;
   private int chunkSize = DEFAULT_CHUNK_SIZE;
 
-  private final StorageRpc storageRpc;
+  private final CloudStorageRpcClient storageRpc;
   private final StorageObject storageObject;
   private int bufferPos;
   private byte[] buffer;
 
   BlobReadChannel(
-      StorageOptions serviceOptions, BlobId blob, Map<StorageRpc.Option, ?> requestOptions) {
+          StorageSettings serviceOptions, BlobIdentifier blob, Map<CloudStorageRpcClient.StorageOption, ?> requestOptions) {
     this.serviceOptions = serviceOptions;
     this.blob = blob;
     this.requestOptions = requestOptions;
     isOpen = true;
     storageRpc = serviceOptions.getStorageRpcV1();
-    storageObject = blob.toPb();
+    storageObject = blob.toStorageObject();
   }
 
   @Override
@@ -163,9 +163,9 @@ class BlobReadChannel implements ReadChannel {
 
     private static final long serialVersionUID = 3889420316004453706L;
 
-    private final StorageOptions serviceOptions;
-    private final BlobId blob;
-    private final Map<StorageRpc.Option, ?> requestOptions;
+    private final StorageSettings serviceOptions;
+    private final BlobIdentifier blob;
+    private final Map<CloudStorageRpcClient.StorageOption, ?> requestOptions;
     private final String lastEtag;
     private final long position;
     private final boolean isOpen;
@@ -184,16 +184,16 @@ class BlobReadChannel implements ReadChannel {
     }
 
     static class Builder {
-      private final StorageOptions serviceOptions;
-      private final BlobId blob;
-      private final Map<StorageRpc.Option, ?> requestOptions;
+      private final StorageSettings serviceOptions;
+      private final BlobIdentifier blob;
+      private final Map<CloudStorageRpcClient.StorageOption, ?> requestOptions;
       private String lastEtag;
       private long position;
       private boolean isOpen;
       private boolean endOfStream;
       private int chunkSize;
 
-      private Builder(StorageOptions options, BlobId blob, Map<StorageRpc.Option, ?> reqOptions) {
+      private Builder(StorageSettings options, BlobIdentifier blob, Map<CloudStorageRpcClient.StorageOption, ?> reqOptions) {
         this.serviceOptions = options;
         this.blob = blob;
         this.requestOptions = reqOptions;
@@ -230,7 +230,7 @@ class BlobReadChannel implements ReadChannel {
     }
 
     static Builder builder(
-        StorageOptions options, BlobId blob, Map<StorageRpc.Option, ?> reqOptions) {
+            StorageSettings options, BlobIdentifier blob, Map<CloudStorageRpcClient.StorageOption, ?> reqOptions) {
       return new Builder(options, blob, reqOptions);
     }
 

@@ -38,13 +38,13 @@ public class SignatureInfoTest {
   @Test(expected = IllegalArgumentException.class)
   public void requireResource() {
 
-    new SignatureInfo.Builder(HttpMethod.GET, 0L, null).build();
+    new SignatureInfo.Builder(HttpRequestMethod.GET, 0L, null).build();
   }
 
   @Test
   public void constructUnsignedPayload() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    Builder builder = new SignatureInfo.Builder(HttpRequestMethod.PUT, 0L, URI.create(RESOURCE));
 
     String unsignedPayload = builder.build().constructUnsignedPayload();
 
@@ -54,7 +54,7 @@ public class SignatureInfoTest {
   @Test
   public void constructUnsignedPayloadWithExtensionHeaders() {
 
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 0L, URI.create(RESOURCE));
+    Builder builder = new SignatureInfo.Builder(HttpRequestMethod.PUT, 0L, URI.create(RESOURCE));
 
     Map<String, String> extensionHeaders = new HashMap<>();
     extensionHeaders.put("x-goog-acl", "public-read");
@@ -71,9 +71,9 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4UnsignedPayload() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    Builder builder = new SignatureInfo.Builder(HttpRequestMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(StorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 
@@ -86,9 +86,9 @@ public class SignatureInfoTest {
 
   @Test
   public void constructV4QueryString() {
-    Builder builder = new SignatureInfo.Builder(HttpMethod.PUT, 10L, URI.create(RESOURCE));
+    Builder builder = new SignatureInfo.Builder(HttpRequestMethod.PUT, 10L, URI.create(RESOURCE));
 
-    builder.setSignatureVersion(Storage.SignUrlOption.SignatureVersion.V4);
+    builder.setSignatureVersion(StorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
     builder.setAccountEmail("me@google.com");
     builder.setTimestamp(1000000000000L);
 

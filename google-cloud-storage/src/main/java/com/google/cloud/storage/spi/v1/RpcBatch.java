@@ -38,7 +38,7 @@ public interface RpcBatch {
    * {@code options}.
    */
   void addDelete(
-      StorageObject storageObject, Callback<Void> callback, Map<StorageRpc.Option, ?> options);
+      StorageObject storageObject, Callback<Void> callback, Map<CloudStorageRpcClient.StorageOption, ?> options);
 
   /**
    * Adds a call to "patch storage object" to the batch, with the provided {@code callback} and
@@ -47,7 +47,7 @@ public interface RpcBatch {
   void addPatch(
       StorageObject storageObject,
       Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      Map<CloudStorageRpcClient.StorageOption, ?> options);
 
   /**
    * Adds a call to "get storage object" to the batch, with the provided {@code callback} and {@code
@@ -56,7 +56,7 @@ public interface RpcBatch {
   void addGet(
       StorageObject storageObject,
       Callback<StorageObject> callback,
-      Map<StorageRpc.Option, ?> options);
+      Map<CloudStorageRpcClient.StorageOption, ?> options);
 
   /** Submits a batch of requests for processing using a single RPC request to Cloud Storage. */
   void submit();

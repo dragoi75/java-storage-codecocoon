@@ -33,7 +33,7 @@ import com.google.api.services.storage.model.Bucket.Versioning;
 import com.google.api.services.storage.model.Bucket.Website;
 import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.cloud.storage.Acl.Entity;
+import com.google.cloud.storage.AclEntry.TypedEntity;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.MoreObjects;
@@ -61,44 +61,44 @@ public class BucketInfo implements Serializable {
       new Function<com.google.api.services.storage.model.Bucket, BucketInfo>() {
         @Override
         public BucketInfo apply(com.google.api.services.storage.model.Bucket pb) {
-          return BucketInfo.fromPb(pb);
+          return BucketInfo.fromProto(pb);
         }
       };
-  static final Function<BucketInfo, com.google.api.services.storage.model.Bucket> TO_PB_FUNCTION =
+  static final Function<BucketInfo, com.google.api.services.storage.model.Bucket> INFO_TO_PROTO_FUNCTION =
       new Function<BucketInfo, com.google.api.services.storage.model.Bucket>() {
         @Override
         public com.google.api.services.storage.model.Bucket apply(BucketInfo bucketInfo) {
-          return bucketInfo.toPb();
+          return bucketInfo.toProto();
         }
       };
   private static final long serialVersionUID = -4712013629621638459L;
-  private final String generatedId;
-  private final String name;
-  private final Acl.Entity owner;
-  private final String selfLink;
-  private final Boolean requesterPays;
-  private final Boolean versioningEnabled;
-  private final String indexPage;
-  private final String notFoundPage;
-  private final List<DeleteRule> deleteRules;
-  private final List<LifecycleRule> lifecycleRules;
-  private final String etag;
-  private final Long createTime;
-  private final Long metageneration;
-  private final List<Cors> cors;
-  private final List<Acl> acl;
-  private final List<Acl> defaultAcl;
-  private final String location;
-  private final StorageClass storageClass;
-  private final Map<String, String> labels;
-  private final String defaultKmsKeyName;
-  private final Boolean defaultEventBasedHold;
-  private final Long retentionEffectiveTime;
-  private final Boolean retentionPolicyIsLocked;
-  private final Long retentionPeriod;
-  private final IamConfiguration iamConfiguration;
-  private final String locationType;
-  private final Logging logging;
+  private final String generatedIdentifier;
+  private final String bucketName;
+  private final TypedEntity ownerEntity;
+  private final String selfUrl;
+  private final Boolean billingEnabled;
+  private final Boolean versioningActive;
+  private final String indexDocument;
+  private final String notFoundDocument;
+  private final List<DeletionRule> deletionRules;
+  private final List<LifecyclePolicy> lifecyclePolicies;
+  private final String entityTag;
+  private final Long creationTime;
+  private final Long generationNumber;
+  private final List<CorsConfiguration> corsConfigs;
+  private final List<AclEntry> aclEntries;
+  private final List<AclEntry> defaultAccessList;
+  private final String region;
+  private final StorageClassType storageTier;
+  private final Map<String, String> tags;
+  private final String kmsDefaultKey;
+  private final Boolean eventBasedHoldDefault;
+  private final Long retentionEffectiveTimestamp;
+  private final Boolean retentionPolicyLocked;
+  private final Long retentionDuration;
+  private final BucketIamConfiguration iamConfig;
+  private final String locationClass;
+  private final LoggingConfig loggingConfig;
 
   /**
    * The Bucket's IAM Configuration.
@@ -106,106 +106,106 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/uniform-bucket-level-access">uniform
    *     bucket-level access</a>
    */
-  public static class IamConfiguration implements Serializable {
+  public static class BucketIamConfiguration implements Serializable {
     private static final long serialVersionUID = -8671736104909424616L;
 
-    private Boolean isUniformBucketLevelAccessEnabled;
-    private Long uniformBucketLevelAccessLockedTime;
+    private Boolean uniformAccessEnabled;
+    private Long uniformAccessLockedTime;
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) {
+    public boolean equals(Object obj) {
+      if (this == obj) return true;
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
-      IamConfiguration other = (IamConfiguration) o;
-      return Objects.equals(toPb(), other.toPb());
+      BucketIamConfiguration otherConfig = (BucketIamConfiguration) obj;
+      return Objects.equals(toProto(), otherConfig.toProto());
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(isUniformBucketLevelAccessEnabled, uniformBucketLevelAccessLockedTime);
+      return Objects.hash(uniformAccessEnabled, uniformAccessLockedTime);
     }
 
-    private IamConfiguration(Builder builder) {
-      this.isUniformBucketLevelAccessEnabled = builder.isUniformBucketLevelAccessEnabled;
-      this.uniformBucketLevelAccessLockedTime = builder.uniformBucketLevelAccessLockedTime;
+    private BucketIamConfiguration(UniformBucketLevelAccessBuilder accessBuilder) {
+      this.uniformAccessEnabled = accessBuilder.uniformAccessEnabled;
+      this.uniformAccessLockedTime = accessBuilder.uniformAccessLockedTime;
     }
 
-    public static Builder newBuilder() {
-      return new Builder();
+    public static UniformBucketLevelAccessBuilder newIamBuilder() {
+      return new UniformBucketLevelAccessBuilder();
     }
 
-    public Builder toBuilder() {
-      Builder builder = new Builder();
-      builder.isUniformBucketLevelAccessEnabled = isUniformBucketLevelAccessEnabled;
-      builder.uniformBucketLevelAccessLockedTime = uniformBucketLevelAccessLockedTime;
-      return builder;
+    public UniformBucketLevelAccessBuilder toBuilderCopy() {
+      UniformBucketLevelAccessBuilder accessBuilder = new UniformBucketLevelAccessBuilder();
+      accessBuilder.uniformAccessEnabled = uniformAccessEnabled;
+      accessBuilder.uniformAccessLockedTime = uniformAccessLockedTime;
+      return accessBuilder;
     }
 
     /** Deprecated in favor of isUniformBucketLevelAccessEnabled(). */
     @Deprecated
     public Boolean isBucketPolicyOnlyEnabled() {
-      return isUniformBucketLevelAccessEnabled;
+      return uniformAccessEnabled;
     }
 
     /** Deprecated in favor of uniformBucketLevelAccessLockedTime(). */
     @Deprecated
     public Long getBucketPolicyOnlyLockedTime() {
-      return uniformBucketLevelAccessLockedTime;
+      return uniformAccessLockedTime;
     }
 
     public Boolean isUniformBucketLevelAccessEnabled() {
-      return isUniformBucketLevelAccessEnabled;
+      return uniformAccessEnabled;
     }
 
     public Long getUniformBucketLevelAccessLockedTime() {
-      return uniformBucketLevelAccessLockedTime;
+      return uniformAccessLockedTime;
     }
 
-    Bucket.IamConfiguration toPb() {
-      Bucket.IamConfiguration iamConfiguration = new Bucket.IamConfiguration();
+    Bucket.IamConfiguration toProto() {
+      Bucket.IamConfiguration iamConfig = new Bucket.IamConfiguration();
 
-      Bucket.IamConfiguration.UniformBucketLevelAccess uniformBucketLevelAccess =
+      Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccessConfig =
           new Bucket.IamConfiguration.UniformBucketLevelAccess();
-      uniformBucketLevelAccess.setEnabled(isUniformBucketLevelAccessEnabled);
-      uniformBucketLevelAccess.setLockedTime(
-          uniformBucketLevelAccessLockedTime == null
+      uniformAccessConfig.setEnabled(uniformAccessEnabled);
+      uniformAccessConfig.setLockedTime(
+          uniformAccessLockedTime == null
               ? null
-              : new DateTime(uniformBucketLevelAccessLockedTime));
+              : new DateTime(uniformAccessLockedTime));
 
-      iamConfiguration.setUniformBucketLevelAccess(uniformBucketLevelAccess);
+      iamConfig.setUniformBucketLevelAccess(uniformAccessConfig);
 
-      return iamConfiguration;
+      return iamConfig;
     }
 
-    static IamConfiguration fromPb(Bucket.IamConfiguration iamConfiguration) {
-      Bucket.IamConfiguration.UniformBucketLevelAccess uniformBucketLevelAccess =
-          iamConfiguration.getUniformBucketLevelAccess();
-      DateTime lockedTime = uniformBucketLevelAccess.getLockedTime();
+    static BucketIamConfiguration fromProto(Bucket.IamConfiguration iamConfig) {
+      Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccessConfig =
+          iamConfig.getUniformBucketLevelAccess();
+      DateTime lockTimestamp = uniformAccessConfig.getLockedTime();
 
-      return newBuilder()
-          .setIsUniformBucketLevelAccessEnabled(uniformBucketLevelAccess.getEnabled())
-          .setUniformBucketLevelAccessLockedTime(lockedTime == null ? null : lockedTime.getValue())
-          .build();
+      return newIamBuilder()
+          .setIsUniformBucketLevelAccessEnabled(uniformAccessConfig.getEnabled())
+          .setUniformBucketLevelAccessLockedTime(lockTimestamp == null ? null : lockTimestamp.getValue())
+          .buildConfiguration();
     }
 
     /** Builder for {@code IamConfiguration} */
-    public static class Builder {
-      private Boolean isUniformBucketLevelAccessEnabled;
-      private Long uniformBucketLevelAccessLockedTime;
+    public static class UniformBucketLevelAccessBuilder {
+      private Boolean uniformAccessEnabled;
+      private Long uniformAccessLockedTime;
 
       /** Deprecated in favor of setIsUniformBucketLevelAccessEnabled(). */
       @Deprecated
-      public Builder setIsBucketPolicyOnlyEnabled(Boolean isBucketPolicyOnlyEnabled) {
-        this.isUniformBucketLevelAccessEnabled = isBucketPolicyOnlyEnabled;
+      public BucketInfo.BucketIamConfiguration.UniformBucketLevelAccessBuilder setIsBucketPolicyOnlyEnabled(Boolean bucketPolicyEnabled) {
+        this.uniformAccessEnabled = bucketPolicyEnabled;
         return this;
       }
 
       /** Deprecated in favor of setUniformBucketLevelAccessLockedTime(). */
       @Deprecated
-      Builder setBucketPolicyOnlyLockedTime(Long bucketPolicyOnlyLockedTime) {
-        this.uniformBucketLevelAccessLockedTime = bucketPolicyOnlyLockedTime;
+      BucketInfo.BucketIamConfiguration.UniformBucketLevelAccessBuilder setBucketPolicyOnlyLockedTime(Long policyOnlyLockMillis) {
+        this.uniformAccessLockedTime = policyOnlyLockMillis;
         return this;
       }
 
@@ -217,9 +217,9 @@ public class BucketInfo implements Serializable {
        * will become immutable and calls to change it will fail. If this is enabled, calls to access
        * legacy ACL information will fail.
        */
-      public Builder setIsUniformBucketLevelAccessEnabled(
-          Boolean isUniformBucketLevelAccessEnabled) {
-        this.isUniformBucketLevelAccessEnabled = isUniformBucketLevelAccessEnabled;
+      public UniformBucketLevelAccessBuilder setIsUniformBucketLevelAccessEnabled(
+          Boolean uniformAccessEnabled) {
+        this.uniformAccessEnabled = uniformAccessEnabled;
         return this;
       }
 
@@ -229,14 +229,14 @@ public class BucketInfo implements Serializable {
        * this field should never be set by a user--it's automatically set by the backend when {@code
        * enabled} is set to true.
        */
-      Builder setUniformBucketLevelAccessLockedTime(Long uniformBucketLevelAccessLockedTime) {
-        this.uniformBucketLevelAccessLockedTime = uniformBucketLevelAccessLockedTime;
+      UniformBucketLevelAccessBuilder setUniformBucketLevelAccessLockedTime(Long uniformAccessLockedTime) {
+        this.uniformAccessLockedTime = uniformAccessLockedTime;
         return this;
       }
 
       /** Builds an {@code IamConfiguration} object */
-      public IamConfiguration build() {
-        return new IamConfiguration(this);
+      public BucketIamConfiguration buildConfiguration() {
+        return new BucketIamConfiguration(this);
       }
     }
   }
@@ -245,89 +245,89 @@ public class BucketInfo implements Serializable {
    * The bucket's logging configuration, which defines the destination bucket and optional name
    * prefix for the current bucket's logs.
    */
-  public static class Logging implements Serializable {
+  public static class LoggingConfig implements Serializable {
 
     private static final long serialVersionUID = -708892101216778492L;
-    private String logBucket;
-    private String logObjectPrefix;
+    private String loggingBucket;
+    private String objectLogPrefix;
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) {
+    public boolean equals(Object obj) {
+      if (this == obj) return true;
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
-      Logging other = (Logging) o;
-      return Objects.equals(toPb(), other.toPb());
+      LoggingConfig otherConfig = (LoggingConfig) obj;
+      return Objects.equals(toProto(), otherConfig.toProto());
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(logBucket, logObjectPrefix);
+      return Objects.hash(loggingBucket, objectLogPrefix);
     }
 
-    public static Builder newBuilder() {
-      return new Builder();
+    public static LogConfigBuilder newLogConfigBuilder() {
+      return new LogConfigBuilder();
     }
 
-    public Builder toBuilder() {
-      Builder builder = new Builder();
-      builder.logBucket = logBucket;
-      builder.logObjectPrefix = logObjectPrefix;
-      return builder;
+    public LogConfigBuilder toBuilder() {
+      LogConfigBuilder accessBuilder = new LogConfigBuilder();
+      accessBuilder.loggingBucket = loggingBucket;
+      accessBuilder.objectLogPrefix = objectLogPrefix;
+      return accessBuilder;
     }
 
     public String getLogBucket() {
-      return logBucket;
+      return loggingBucket;
     }
 
     public String getLogObjectPrefix() {
-      return logObjectPrefix;
+      return objectLogPrefix;
     }
 
-    Bucket.Logging toPb() {
-      Bucket.Logging logging;
-      if (logBucket != null || logObjectPrefix != null) {
-        logging = new Bucket.Logging();
-        logging.setLogBucket(logBucket);
-        logging.setLogObjectPrefix(logObjectPrefix);
+    Bucket.Logging toProto() {
+      Bucket.Logging loggingConfig;
+      if (loggingBucket != null || objectLogPrefix != null) {
+        loggingConfig = new Bucket.Logging();
+        loggingConfig.setLogBucket(loggingBucket);
+        loggingConfig.setLogObjectPrefix(objectLogPrefix);
       } else {
-        logging = Data.nullOf(Bucket.Logging.class);
+        loggingConfig = Data.nullOf(Bucket.Logging.class);
       }
-      return logging;
+      return loggingConfig;
     }
 
-    static Logging fromPb(Bucket.Logging logging) {
-      return newBuilder()
-          .setLogBucket(logging.getLogBucket())
-          .setLogObjectPrefix(logging.getLogObjectPrefix())
-          .build();
+    static LoggingConfig fromProto(Bucket.Logging loggingConfig) {
+      return newLogConfigBuilder()
+          .setLogBucket(loggingConfig.getLogBucket())
+          .setLogObjectPrefix(loggingConfig.getLogObjectPrefix())
+          .buildConfig();
     }
 
-    private Logging(Builder builder) {
-      this.logBucket = builder.logBucket;
-      this.logObjectPrefix = builder.logObjectPrefix;
+    private LoggingConfig(LogConfigBuilder accessBuilder) {
+      this.loggingBucket = accessBuilder.loggingBucket;
+      this.objectLogPrefix = accessBuilder.objectLogPrefix;
     }
 
-    public static class Builder {
-      private String logBucket;
-      private String logObjectPrefix;
+    public static class LogConfigBuilder {
+      private String loggingBucket;
+      private String objectLogPrefix;
 
       /** The destination bucket where the current bucket's logs should be placed. */
-      public Builder setLogBucket(String logBucket) {
-        this.logBucket = logBucket;
+      public LogConfigBuilder setLogBucket(String loggingBucket) {
+        this.loggingBucket = loggingBucket;
         return this;
       }
 
       /** A prefix for log object names. */
-      public Builder setLogObjectPrefix(String logObjectPrefix) {
-        this.logObjectPrefix = logObjectPrefix;
+      public LogConfigBuilder setLogObjectPrefix(String objectLogPrefix) {
+        this.objectLogPrefix = objectLogPrefix;
         return this;
       }
 
       /** Builds an {@code Logging} object */
-      public Logging build() {
-        return new Logging(this);
+      public LoggingConfig buildConfig() {
+        return new LoggingConfig(this);
       }
     }
   }
@@ -339,131 +339,131 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle#actions">Object Lifecycle
    *     Management</a>
    */
-  public static class LifecycleRule implements Serializable {
+  public static class LifecyclePolicy implements Serializable {
 
     private static final long serialVersionUID = -5739807320148748613L;
-    private final LifecycleAction lifecycleAction;
-    private final LifecycleCondition lifecycleCondition;
+    private final LifecycleOperation lifecycleOperation;
+    private final LifecycleRuleCondition ruleCondition;
 
-    public LifecycleRule(LifecycleAction action, LifecycleCondition condition) {
-      if (condition.getIsLive() == null
-          && condition.getAge() == null
-          && condition.getCreatedBefore() == null
-          && condition.getMatchesStorageClass() == null
-          && condition.getNumberOfNewerVersions() == null) {
+    public LifecyclePolicy(LifecycleOperation operation, LifecycleRuleCondition ruleConditionParam) {
+      if (ruleConditionParam.getIsLive() == null
+          && ruleConditionParam.getAge() == null
+          && ruleConditionParam.getCreatedBefore() == null
+          && ruleConditionParam.getMatchesStorageClass() == null
+          && ruleConditionParam.getNumberOfNewerVersions() == null) {
         throw new IllegalArgumentException(
             "You must specify at least one condition to use object lifecycle "
                 + "management. Please see https://cloud.google.com/storage/docs/lifecycle for details.");
       }
 
-      this.lifecycleAction = action;
-      this.lifecycleCondition = condition;
+      this.lifecycleOperation = operation;
+      this.ruleCondition = ruleConditionParam;
     }
 
-    public LifecycleAction getAction() {
-      return lifecycleAction;
+    public LifecycleOperation getAction() {
+      return lifecycleOperation;
     }
 
-    public LifecycleCondition getCondition() {
-      return lifecycleCondition;
+    public LifecycleRuleCondition getCondition() {
+      return ruleCondition;
     }
 
     @Override
     public String toString() {
       return MoreObjects.toStringHelper(this)
-          .add("lifecycleAction", lifecycleAction)
-          .add("lifecycleCondition", lifecycleCondition)
+          .add("lifecycleAction", lifecycleOperation)
+          .add("lifecycleCondition", ruleCondition)
           .toString();
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(lifecycleAction, lifecycleCondition);
+      return Objects.hash(lifecycleOperation, ruleCondition);
     }
 
     @Override
-    public boolean equals(Object obj) {
-      if (this == obj) {
+    public boolean equals(Object otherObj) {
+      if (this == otherObj) {
         return true;
       }
-      if (obj == null || getClass() != obj.getClass()) {
+      if (otherObj == null || getClass() != otherObj.getClass()) {
         return false;
       }
-      final LifecycleRule other = (LifecycleRule) obj;
-      return Objects.equals(toPb(), other.toPb());
+      final LifecyclePolicy otherConfig = (LifecyclePolicy) otherObj;
+      return Objects.equals(toProto(), otherConfig.toProto());
     }
 
-    Rule toPb() {
-      Rule rule = new Rule();
+    Rule toProto() {
+      Rule protoRule = new Rule();
 
-      Rule.Action action = new Rule.Action().setType(lifecycleAction.getActionType());
-      if (lifecycleAction.getActionType().equals(SetStorageClassLifecycleAction.TYPE)) {
-        action.setStorageClass(
-            ((SetStorageClassLifecycleAction) lifecycleAction).getStorageClass().toString());
+      Rule.Action operation = new Rule.Action().setType(lifecycleOperation.getActionType());
+      if (lifecycleOperation.getActionType().equals(SetStorageClassLifecycleOperation.TYPE)) {
+        operation.setStorageClass(
+            ((SetStorageClassLifecycleOperation) lifecycleOperation).getStorageClass().toString());
       }
 
-      rule.setAction(action);
+      protoRule.setAction(operation);
 
-      Rule.Condition condition =
+      Rule.Condition ruleConditionParam =
           new Rule.Condition()
-              .setAge(lifecycleCondition.getAge())
+              .setAge(ruleCondition.getAge())
               .setCreatedBefore(
-                  lifecycleCondition.getCreatedBefore() == null
+                  ruleCondition.getCreatedBefore() == null
                       ? null
-                      : new DateTime(true, lifecycleCondition.getCreatedBefore().getValue(), 0))
-              .setIsLive(lifecycleCondition.getIsLive())
-              .setNumNewerVersions(lifecycleCondition.getNumberOfNewerVersions())
+                      : new DateTime(true, ruleCondition.getCreatedBefore().getValue(), 0))
+              .setIsLive(ruleCondition.getIsLive())
+              .setNumNewerVersions(ruleCondition.getNumberOfNewerVersions())
               .setMatchesStorageClass(
-                  lifecycleCondition.getMatchesStorageClass() == null
+                  ruleCondition.getMatchesStorageClass() == null
                       ? null
                       : transform(
-                          lifecycleCondition.getMatchesStorageClass(),
+                          ruleCondition.getMatchesStorageClass(),
                           Functions.toStringFunction()));
 
-      rule.setCondition(condition);
+      protoRule.setCondition(ruleConditionParam);
 
-      return rule;
+      return protoRule;
     }
 
-    static LifecycleRule fromPb(Rule rule) {
-      LifecycleAction lifecycleAction;
+    static LifecyclePolicy fromProto(Rule protoRule) {
+      LifecycleOperation lifecycleOperation;
 
-      Rule.Action action = rule.getAction();
+      Rule.Action operation = protoRule.getAction();
 
-      switch (action.getType()) {
-        case DeleteLifecycleAction.TYPE:
-          lifecycleAction = LifecycleAction.newDeleteAction();
+      switch (operation.getType()) {
+        case RemoveLifecycleAction.TYPE:
+          lifecycleOperation = LifecycleOperation.createDeleteAction();
           break;
-        case SetStorageClassLifecycleAction.TYPE:
-          lifecycleAction =
-              LifecycleAction.newSetStorageClassAction(
-                  StorageClass.valueOf(action.getStorageClass()));
+        case SetStorageClassLifecycleOperation.TYPE:
+          lifecycleOperation =
+              LifecycleOperation.createSetStorageClassAction(
+                  StorageClassType.fromValue(operation.getStorageClass()));
           break;
         default:
           throw new UnsupportedOperationException(
-              "The specified lifecycle action " + action.getType() + " is not currently supported");
+              "The specified lifecycle action " + operation.getType() + " is not currently supported");
       }
 
-      Rule.Condition condition = rule.getCondition();
+      Rule.Condition ruleConditionParam = protoRule.getCondition();
 
-      LifecycleCondition.Builder conditionBuilder =
-          LifecycleCondition.newBuilder()
-              .setAge(condition.getAge())
-              .setCreatedBefore(condition.getCreatedBefore())
-              .setIsLive(condition.getIsLive())
-              .setNumberOfNewerVersions(condition.getNumNewerVersions())
+      LifecycleRuleCondition.LifecycleRuleBuilder ruleBuilder =
+          LifecycleRuleCondition.newLifecycleRuleBuilder()
+              .setAge(ruleConditionParam.getAge())
+              .setCreatedBefore(ruleConditionParam.getCreatedBefore())
+              .setIsLive(ruleConditionParam.getIsLive())
+              .setNumberOfNewerVersions(ruleConditionParam.getNumNewerVersions())
               .setMatchesStorageClass(
-                  condition.getMatchesStorageClass() == null
+                  ruleConditionParam.getMatchesStorageClass() == null
                       ? null
                       : transform(
-                          condition.getMatchesStorageClass(),
-                          new Function<String, StorageClass>() {
-                            public StorageClass apply(String storageClass) {
-                              return StorageClass.valueOf(storageClass);
+                          ruleConditionParam.getMatchesStorageClass(),
+                          new Function<String, StorageClassType>() {
+                            public StorageClassType apply(String storageClass) {
+                              return StorageClassType.fromValue(storageClass);
                             }
                           }));
 
-      return new LifecycleRule(lifecycleAction, conditionBuilder.build());
+      return new LifecyclePolicy(lifecycleOperation, ruleBuilder.buildCondition());
     }
 
     /**
@@ -472,75 +472,75 @@ public class BucketInfo implements Serializable {
      * @see <a href="https://cloud.google.com/storage/docs/lifecycle#conditions">Object Lifecycle
      *     Management</a>
      */
-    public static class LifecycleCondition implements Serializable {
+    public static class LifecycleRuleCondition implements Serializable {
       private static final long serialVersionUID = -6482314338394768785L;
-      private final Integer age;
-      private final DateTime createdBefore;
-      private final Integer numberOfNewerVersions;
-      private final Boolean isLive;
-      private final List<StorageClass> matchesStorageClass;
+      private final Integer daysOld;
+      private final DateTime priorToDate;
+      private final Integer newerVersionCount;
+      private final Boolean active;
+      private final List<StorageClassType> storageClassFilters;
 
-      private LifecycleCondition(Builder builder) {
-        this.age = builder.age;
-        this.createdBefore = builder.createdBefore;
-        this.numberOfNewerVersions = builder.numberOfNewerVersions;
-        this.isLive = builder.isLive;
-        this.matchesStorageClass = builder.matchesStorageClass;
+      private LifecycleRuleCondition(LifecycleRuleBuilder accessBuilder) {
+        this.daysOld = accessBuilder.daysOld;
+        this.priorToDate = accessBuilder.priorToDate;
+        this.newerVersionCount = accessBuilder.newerVersionCount;
+        this.active = accessBuilder.active;
+        this.storageClassFilters = accessBuilder.storageClassFilters;
       }
 
-      public Builder toBuilder() {
-        return newBuilder()
-            .setAge(this.age)
-            .setCreatedBefore(this.createdBefore)
-            .setNumberOfNewerVersions(this.numberOfNewerVersions)
-            .setIsLive(this.isLive)
-            .setMatchesStorageClass(this.matchesStorageClass);
+      public LifecycleRuleBuilder toBuilder() {
+        return newLifecycleRuleBuilder()
+            .setAge(this.daysOld)
+            .setCreatedBefore(this.priorToDate)
+            .setNumberOfNewerVersions(this.newerVersionCount)
+            .setIsLive(this.active)
+            .setMatchesStorageClass(this.storageClassFilters);
       }
 
-      public static Builder newBuilder() {
-        return new Builder();
+      public static LifecycleRuleBuilder newLifecycleRuleBuilder() {
+        return new LifecycleRuleBuilder();
       }
 
       @Override
       public String toString() {
         return MoreObjects.toStringHelper(this)
-            .add("age", age)
-            .add("createBefore", createdBefore)
-            .add("numberofNewerVersions", numberOfNewerVersions)
-            .add("isLive", isLive)
-            .add("matchesStorageClass", matchesStorageClass)
+            .add("age", daysOld)
+            .add("createBefore", priorToDate)
+            .add("numberofNewerVersions", newerVersionCount)
+            .add("isLive", active)
+            .add("matchesStorageClass", storageClassFilters)
             .toString();
       }
 
       public Integer getAge() {
-        return age;
+        return daysOld;
       }
 
       public DateTime getCreatedBefore() {
-        return createdBefore;
+        return priorToDate;
       }
 
       public Integer getNumberOfNewerVersions() {
-        return numberOfNewerVersions;
+        return newerVersionCount;
       }
 
       public Boolean getIsLive() {
-        return isLive;
+        return active;
       }
 
-      public List<StorageClass> getMatchesStorageClass() {
-        return matchesStorageClass;
+      public List<StorageClassType> getMatchesStorageClass() {
+        return storageClassFilters;
       }
 
       /** Builder for {@code LifecycleCondition}. */
-      public static class Builder {
-        private Integer age;
-        private DateTime createdBefore;
-        private Integer numberOfNewerVersions;
-        private Boolean isLive;
-        private List<StorageClass> matchesStorageClass;
+      public static class LifecycleRuleBuilder {
+        private Integer daysOld;
+        private DateTime priorToDate;
+        private Integer newerVersionCount;
+        private Boolean active;
+        private List<StorageClassType> storageClassFilters;
 
-        private Builder() {}
+        private LifecycleRuleBuilder() {}
 
         /**
          * Sets the age in days. This condition is satisfied when a Blob reaches the specified age
@@ -549,8 +549,8 @@ public class BucketInfo implements Serializable {
          * condition is considered to be satisfied is calculated by adding the specified value to
          * the object creation time.
          */
-        public Builder setAge(Integer age) {
-          this.age = age;
+        public LifecycleRuleBuilder setAge(Integer daysOld) {
+          this.daysOld = daysOld;
           return this;
         }
 
@@ -560,8 +560,8 @@ public class BucketInfo implements Serializable {
          * condition is satisfied when an object is created before midnight of the specified date in
          * UTC. *
          */
-        public Builder setCreatedBefore(DateTime createdBefore) {
-          this.createdBefore = createdBefore;
+        public LifecycleRuleBuilder setCreatedBefore(DateTime priorToDate) {
+          this.priorToDate = priorToDate;
           return this;
         }
 
@@ -569,8 +569,8 @@ public class BucketInfo implements Serializable {
          * Sets the number of newer versions a Blob should have for an Action to be executed.
          * Relevant only when versioning is enabled on a bucket. *
          */
-        public Builder setNumberOfNewerVersions(Integer numberOfNewerVersions) {
-          this.numberOfNewerVersions = numberOfNewerVersions;
+        public LifecycleRuleBuilder setNumberOfNewerVersions(Integer newerVersionCount) {
+          this.newerVersionCount = newerVersionCount;
           return this;
         }
 
@@ -579,8 +579,8 @@ public class BucketInfo implements Serializable {
          * only live Blobs; if the value is false, it matches only archived objects. For the
          * purposes of this condition, Blobs in non-versioned buckets are considered live.
          */
-        public Builder setIsLive(Boolean live) {
-          this.isLive = live;
+        public LifecycleRuleBuilder setIsLive(Boolean activeFlag) {
+          this.active = activeFlag;
           return this;
         }
 
@@ -588,14 +588,14 @@ public class BucketInfo implements Serializable {
          * Sets a list of Storage Classes for a objects that satisfy the condition to execute the
          * Action. *
          */
-        public Builder setMatchesStorageClass(List<StorageClass> matchesStorageClass) {
-          this.matchesStorageClass = matchesStorageClass;
+        public LifecycleRuleBuilder setMatchesStorageClass(List<StorageClassType> storageClassFilters) {
+          this.storageClassFilters = storageClassFilters;
           return this;
         }
 
         /** Builds a {@code LifecycleCondition} object. * */
-        public LifecycleCondition build() {
-          return new LifecycleCondition(this);
+        public LifecycleRuleCondition buildCondition() {
+          return new LifecycleRuleCondition(this);
         }
       }
     }
@@ -604,7 +604,7 @@ public class BucketInfo implements Serializable {
      * Base class for the Action to take when a Lifecycle Condition is met. Specific Actions are
      * expressed as subclasses of this class, accessed by static factory methods.
      */
-    public abstract static class LifecycleAction implements Serializable {
+    public abstract static class LifecycleOperation implements Serializable {
       private static final long serialVersionUID = 5801228724709173284L;
 
       public abstract String getActionType();
@@ -618,27 +618,27 @@ public class BucketInfo implements Serializable {
        * Creates a new {@code DeleteLifecycleAction}. Blobs that meet the Condition associated with
        * this action will be deleted.
        */
-      public static DeleteLifecycleAction newDeleteAction() {
-        return new DeleteLifecycleAction();
+      public static RemoveLifecycleAction createDeleteAction() {
+        return new RemoveLifecycleAction();
       }
 
       /**
        * Creates a new {@code SetStorageClassLifecycleAction}. A Blob's storage class that meets the
        * action's conditions will be changed to the specified storage class.
        *
-       * @param storageClass The new storage class to use when conditions are met for this action.
+       * @param storageTier The new storage class to use when conditions are met for this action.
        */
-      public static SetStorageClassLifecycleAction newSetStorageClassAction(
-          StorageClass storageClass) {
-        return new SetStorageClassLifecycleAction(storageClass);
+      public static SetStorageClassLifecycleOperation createSetStorageClassAction(
+          StorageClassType storageTier) {
+        return new SetStorageClassLifecycleOperation(storageTier);
       }
     }
 
-    public static class DeleteLifecycleAction extends LifecycleAction {
+    public static class RemoveLifecycleAction extends LifecycleOperation {
       public static final String TYPE = "Delete";
       private static final long serialVersionUID = -2050986302222644873L;
 
-      private DeleteLifecycleAction() {}
+      private RemoveLifecycleAction() {}
 
       @Override
       public String getActionType() {
@@ -646,14 +646,14 @@ public class BucketInfo implements Serializable {
       }
     }
 
-    public static class SetStorageClassLifecycleAction extends LifecycleAction {
+    public static class SetStorageClassLifecycleOperation extends LifecycleOperation {
       public static final String TYPE = "SetStorageClass";
       private static final long serialVersionUID = -62615467186000899L;
 
-      private final StorageClass storageClass;
+      private final StorageClassType storageTier;
 
-      private SetStorageClassLifecycleAction(StorageClass storageClass) {
-        this.storageClass = storageClass;
+      private SetStorageClassLifecycleOperation(StorageClassType storageTier) {
+        this.storageTier = storageTier;
       }
 
       @Override
@@ -665,12 +665,12 @@ public class BucketInfo implements Serializable {
       public String toString() {
         return MoreObjects.toStringHelper(this)
             .add("actionType", getActionType())
-            .add("storageClass", storageClass.name())
+            .add("storageClass", storageTier.name())
             .toString();
       }
 
-      public StorageClass getStorageClass() {
-        return storageClass;
+      public StorageClassType getStorageClass() {
+        return storageTier;
       }
     }
   }
@@ -684,13 +684,13 @@ public class BucketInfo implements Serializable {
    *     LifecycleCondition} which is equivalent to a subclass of DeleteRule instead.
    */
   @Deprecated
-  public abstract static class DeleteRule implements Serializable {
+  public abstract static class DeletionRule implements Serializable {
 
     private static final long serialVersionUID = 3137971668395933033L;
-    private static final String SUPPORTED_ACTION = "Delete";
-    private final Type type;
+    private static final String ALLOWED_ACTION = "Delete";
+    private final CriterionType criterionKind;
 
-    public enum Type {
+    public enum CriterionType {
       AGE,
       CREATE_BEFORE,
       NUM_NEWER_VERSIONS,
@@ -698,63 +698,63 @@ public class BucketInfo implements Serializable {
       UNKNOWN
     }
 
-    DeleteRule(Type type) {
-      this.type = type;
+    DeletionRule(CriterionType criterionKind) {
+      this.criterionKind = criterionKind;
     }
 
-    public Type getType() {
-      return type;
+    public CriterionType getType() {
+      return criterionKind;
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(type);
+      return Objects.hash(criterionKind);
     }
 
     @Override
-    public boolean equals(Object obj) {
-      if (this == obj) {
+    public boolean equals(Object otherObj) {
+      if (this == otherObj) {
         return true;
       }
-      if (obj == null || getClass() != obj.getClass()) {
+      if (otherObj == null || getClass() != otherObj.getClass()) {
         return false;
       }
-      final DeleteRule other = (DeleteRule) obj;
-      return Objects.equals(toPb(), other.toPb());
+      final DeletionRule otherConfig = (DeletionRule) otherObj;
+      return Objects.equals(toProto(), otherConfig.toProto());
     }
 
-    Rule toPb() {
-      Rule rule = new Rule();
-      rule.setAction(new Rule.Action().setType(SUPPORTED_ACTION));
-      Rule.Condition condition = new Rule.Condition();
-      populateCondition(condition);
-      rule.setCondition(condition);
-      return rule;
+    Rule toProto() {
+      Rule protoRule = new Rule();
+      protoRule.setAction(new Rule.Action().setType(ALLOWED_ACTION));
+      Rule.Condition ruleConditionParam = new Rule.Condition();
+      fillCondition(ruleConditionParam);
+      protoRule.setCondition(ruleConditionParam);
+      return protoRule;
     }
 
-    abstract void populateCondition(Rule.Condition condition);
+    abstract void fillCondition(Rule.Condition condition);
 
-    static DeleteRule fromPb(Rule rule) {
-      if (rule.getAction() != null && SUPPORTED_ACTION.endsWith(rule.getAction().getType())) {
-        Rule.Condition condition = rule.getCondition();
-        Integer age = condition.getAge();
-        if (age != null) {
-          return new AgeDeleteRule(age);
+    static DeletionRule fromProto(Rule protoRule) {
+      if (protoRule.getAction() != null && ALLOWED_ACTION.endsWith(protoRule.getAction().getType())) {
+        Rule.Condition ruleConditionParam = protoRule.getCondition();
+        Integer daysOld = ruleConditionParam.getAge();
+        if (daysOld != null) {
+          return new AgeBasedDeletionRule(daysOld);
         }
-        DateTime dateTime = condition.getCreatedBefore();
-        if (dateTime != null) {
-          return new CreatedBeforeDeleteRule(dateTime.getValue());
+        DateTime timestamp = ruleConditionParam.getCreatedBefore();
+        if (timestamp != null) {
+          return new CreationBeforeDeletionRule(timestamp.getValue());
         }
-        Integer numNewerVersions = condition.getNumNewerVersions();
-        if (numNewerVersions != null) {
-          return new NumNewerVersionsDeleteRule(numNewerVersions);
+        Integer newerVersionCount = ruleConditionParam.getNumNewerVersions();
+        if (newerVersionCount != null) {
+          return new NewerVersionsCountDeleteRule(newerVersionCount);
         }
-        Boolean isLive = condition.getIsLive();
-        if (isLive != null) {
-          return new IsLiveDeleteRule(isLive);
+        Boolean active = ruleConditionParam.getIsLive();
+        if (active != null) {
+          return new LiveDeleteRule(active);
         }
       }
-      return new RawDeleteRule(rule);
+      return new RawDeletionRule(protoRule);
     }
   }
 
@@ -769,62 +769,62 @@ public class BucketInfo implements Serializable {
    *     LifecycleCondition.newBuilder().setAge(1).build()))}
    */
   @Deprecated
-  public static class AgeDeleteRule extends DeleteRule {
+  public static class AgeBasedDeletionRule extends DeletionRule {
 
     private static final long serialVersionUID = 5697166940712116380L;
-    private final int daysToLive;
+    private final int ttlDays;
 
     /**
      * Creates an {@code AgeDeleteRule} object.
      *
-     * @param daysToLive blobs' Time To Live expressed in days. The time when the age condition is
+     * @param ttlDays blobs' Time To Live expressed in days. The time when the age condition is
      *     considered to be satisfied is computed by adding {@code daysToLive} days to the midnight
      *     following blob's creation time in UTC.
      */
-    public AgeDeleteRule(int daysToLive) {
-      super(Type.AGE);
-      this.daysToLive = daysToLive;
+    public AgeBasedDeletionRule(int ttlDays) {
+      super(CriterionType.AGE);
+      this.ttlDays = ttlDays;
     }
 
     public int getDaysToLive() {
-      return daysToLive;
+      return ttlDays;
     }
 
     @Override
-    void populateCondition(Rule.Condition condition) {
-      condition.setAge(daysToLive);
+    void fillCondition(Rule.Condition ruleConditionParam) {
+      ruleConditionParam.setAge(ttlDays);
     }
   }
 
-  static class RawDeleteRule extends DeleteRule {
+  static class RawDeletionRule extends DeletionRule {
 
     private static final long serialVersionUID = -7166938278642301933L;
 
-    private transient Rule rule;
+    private transient Rule protoRule;
 
-    RawDeleteRule(Rule rule) {
-      super(Type.UNKNOWN);
-      this.rule = rule;
+    RawDeletionRule(Rule protoRule) {
+      super(CriterionType.UNKNOWN);
+      this.protoRule = protoRule;
     }
 
     @Override
-    void populateCondition(Rule.Condition condition) {
+    void fillCondition(Rule.Condition condition) {
       throw new UnsupportedOperationException();
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
-      out.defaultWriteObject();
-      out.writeUTF(rule.toString());
+    private void writeObject(ObjectOutputStream objectStream) throws IOException {
+      objectStream.defaultWriteObject();
+      objectStream.writeUTF(protoRule.toString());
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-      in.defaultReadObject();
-      rule = new JacksonFactory().fromString(in.readUTF(), Rule.class);
+    private void readObject(ObjectInputStream objectReader) throws IOException, ClassNotFoundException {
+      objectReader.defaultReadObject();
+      protoRule = new JacksonFactory().fromString(objectReader.readUTF(), Rule.class);
     }
 
     @Override
-    Rule toPb() {
-      return rule;
+    Rule toProto() {
+      return protoRule;
     }
   }
 
@@ -836,29 +836,29 @@ public class BucketInfo implements Serializable {
    *     condition {@code LifecycleCondition.Builder.setCreatedBefore} instead.
    */
   @Deprecated
-  public static class CreatedBeforeDeleteRule extends DeleteRule {
+  public static class CreationBeforeDeletionRule extends DeletionRule {
 
     private static final long serialVersionUID = 881692650279195867L;
-    private final long timeMillis;
+    private final long creationMillis;
 
     /**
      * Creates an {@code CreatedBeforeDeleteRule} object.
      *
-     * @param timeMillis a date in UTC. Blobs that have been created before midnight of the provided
+     * @param creationMillis a date in UTC. Blobs that have been created before midnight of the provided
      *     date meet the delete condition
      */
-    public CreatedBeforeDeleteRule(long timeMillis) {
-      super(Type.CREATE_BEFORE);
-      this.timeMillis = timeMillis;
+    public CreationBeforeDeletionRule(long creationMillis) {
+      super(CriterionType.CREATE_BEFORE);
+      this.creationMillis = creationMillis;
     }
 
     public long getTimeMillis() {
-      return timeMillis;
+      return creationMillis;
     }
 
     @Override
-    void populateCondition(Rule.Condition condition) {
-      condition.setCreatedBefore(new DateTime(true, timeMillis, 0));
+    void fillCondition(Rule.Condition ruleConditionParam) {
+      ruleConditionParam.setCreatedBefore(new DateTime(true, creationMillis, 0));
     }
   }
 
@@ -871,29 +871,29 @@ public class BucketInfo implements Serializable {
    *     {@code LifecycleCondition.Builder.setNumberOfNewerVersions} instead.
    */
   @Deprecated
-  public static class NumNewerVersionsDeleteRule extends DeleteRule {
+  public static class NewerVersionsCountDeleteRule extends DeletionRule {
 
     private static final long serialVersionUID = -1955554976528303894L;
-    private final int numNewerVersions;
+    private final int newerVersionCount;
 
     /**
      * Creates an {@code NumNewerVersionsDeleteRule} object.
      *
-     * @param numNewerVersions the number of newer versions. A blob's version meets the delete
+     * @param newerVersionCount the number of newer versions. A blob's version meets the delete
      *     condition when {@code numNewerVersions} newer versions are available.
      */
-    public NumNewerVersionsDeleteRule(int numNewerVersions) {
-      super(Type.NUM_NEWER_VERSIONS);
-      this.numNewerVersions = numNewerVersions;
+    public NewerVersionsCountDeleteRule(int newerVersionCount) {
+      super(CriterionType.NUM_NEWER_VERSIONS);
+      this.newerVersionCount = newerVersionCount;
     }
 
     public int getNumNewerVersions() {
-      return numNewerVersions;
+      return newerVersionCount;
     }
 
     @Override
-    void populateCondition(Rule.Condition condition) {
-      condition.setNumNewerVersions(numNewerVersions);
+    void fillCondition(Rule.Condition ruleConditionParam) {
+      ruleConditionParam.setNumNewerVersions(newerVersionCount);
     }
   }
 
@@ -905,29 +905,29 @@ public class BucketInfo implements Serializable {
    *     {@code LifecycleCondition.Builder.setIsLive} instead.
    */
   @Deprecated
-  public static class IsLiveDeleteRule extends DeleteRule {
+  public static class LiveDeleteRule extends DeletionRule {
 
     private static final long serialVersionUID = -3502994563121313364L;
-    private final boolean isLive;
+    private final boolean active;
 
     /**
      * Creates an {@code IsLiveDeleteRule} object.
      *
-     * @param isLive if set to {@code true} live blobs meet the delete condition. If set to {@code
+     * @param active if set to {@code true} live blobs meet the delete condition. If set to {@code
      *     false} delete condition is met by archived blobs.
      */
-    public IsLiveDeleteRule(boolean isLive) {
-      super(Type.IS_LIVE);
-      this.isLive = isLive;
+    public LiveDeleteRule(boolean active) {
+      super(CriterionType.IS_LIVE);
+      this.active = active;
     }
 
     public boolean isLive() {
-      return isLive;
+      return active;
     }
 
     @Override
-    void populateCondition(Rule.Condition condition) {
-      condition.setIsLive(isLive);
+    void fillCondition(Rule.Condition ruleConditionParam) {
+      ruleConditionParam.setIsLive(active);
     }
   }
 
@@ -940,7 +940,7 @@ public class BucketInfo implements Serializable {
 
     abstract Builder setGeneratedId(String generatedId);
 
-    abstract Builder setOwner(Acl.Entity owner);
+    abstract Builder setOwner(TypedEntity owner);
 
     abstract Builder setSelfLink(String selfLink);
 
@@ -973,7 +973,7 @@ public class BucketInfo implements Serializable {
      *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).build())));}
      */
     @Deprecated
-    public abstract Builder setDeleteRules(Iterable<? extends DeleteRule> rules);
+    public abstract Builder setDeleteRules(Iterable<? extends DeletionRule> rules);
 
     /**
      * Sets the bucket's lifecycle configuration as a number of lifecycle rules, consisting of an
@@ -982,7 +982,7 @@ public class BucketInfo implements Serializable {
      * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle
      *     Management</a>
      */
-    public abstract Builder setLifecycleRules(Iterable<? extends LifecycleRule> rules);
+    public abstract Builder setLifecycleRules(Iterable<? extends LifecyclePolicy> rules);
 
     /** Deletes the lifecycle rules of this bucket. */
     public abstract Builder deleteLifecycleRules();
@@ -992,7 +992,7 @@ public class BucketInfo implements Serializable {
      * determines the SLA and the cost of storage. A list of supported values is available <a
      * href="https://cloud.google.com/storage/docs/storage-classes">here</a>.
      */
-    public abstract Builder setStorageClass(StorageClass storageClass);
+    public abstract Builder setStorageClass(StorageClassType storageClass);
 
     /**
      * Sets the bucket's location. Data for blobs in the bucket resides in physical storage within
@@ -1015,7 +1015,7 @@ public class BucketInfo implements Serializable {
      * @see <a href="https://cloud.google.com/storage/docs/cross-origin">Cross-Origin Resource
      *     Sharing (CORS)</a>
      */
-    public abstract Builder setCors(Iterable<Cors> cors);
+    public abstract Builder setCors(Iterable<CorsConfiguration> cors);
 
     /**
      * Sets the bucket's access control configuration.
@@ -1024,7 +1024,7 @@ public class BucketInfo implements Serializable {
      *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
      *     About Access Control Lists</a>
      */
-    public abstract Builder setAcl(Iterable<Acl> acl);
+    public abstract Builder setAcl(Iterable<AclEntry> acl);
 
     /**
      * Sets the default access control configuration to apply to bucket's blobs when no other
@@ -1034,7 +1034,7 @@ public class BucketInfo implements Serializable {
      *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
      *     About Access Control Lists</a>
      */
-    public abstract Builder setDefaultAcl(Iterable<Acl> acl);
+    public abstract Builder setDefaultAcl(Iterable<AclEntry> acl);
 
     /** Sets the label of this bucket. */
     public abstract Builder setLabels(Map<String, String> labels);
@@ -1066,138 +1066,138 @@ public class BucketInfo implements Serializable {
      *     Only</a>
      */
     @BetaApi
-    public abstract Builder setIamConfiguration(IamConfiguration iamConfiguration);
+    public abstract Builder setIamConfiguration(BucketIamConfiguration iamConfiguration);
 
-    public abstract Builder setLogging(Logging logging);
+    public abstract Builder setLogging(LoggingConfig logging);
 
     /** Creates a {@code BucketInfo} object. */
-    public abstract BucketInfo build();
+    public abstract BucketInfo buildInstance();
   }
 
-  static final class BuilderImpl extends Builder {
+  static final class BucketBuilderImpl extends Builder {
 
-    private String generatedId;
-    private String name;
-    private Acl.Entity owner;
-    private String selfLink;
-    private Boolean requesterPays;
-    private Boolean versioningEnabled;
-    private String indexPage;
-    private String notFoundPage;
-    private List<DeleteRule> deleteRules;
-    private List<LifecycleRule> lifecycleRules;
-    private StorageClass storageClass;
-    private String location;
-    private String etag;
-    private Long createTime;
-    private Long metageneration;
-    private List<Cors> cors;
-    private List<Acl> acl;
-    private List<Acl> defaultAcl;
-    private Map<String, String> labels;
-    private String defaultKmsKeyName;
-    private Boolean defaultEventBasedHold;
-    private Long retentionEffectiveTime;
-    private Boolean retentionPolicyIsLocked;
-    private Long retentionPeriod;
-    private IamConfiguration iamConfiguration;
-    private String locationType;
-    private Logging logging;
+    private String generatedIdentifier;
+    private String bucketName;
+    private TypedEntity ownerEntity;
+    private String selfUrl;
+    private Boolean billingEnabled;
+    private Boolean versioningActive;
+    private String indexDocument;
+    private String notFoundDocument;
+    private List<DeletionRule> deletionRules;
+    private List<LifecyclePolicy> lifecyclePolicies;
+    private StorageClassType storageTier;
+    private String region;
+    private String entityTag;
+    private Long creationTime;
+    private Long generationNumber;
+    private List<CorsConfiguration> corsConfigs;
+    private List<AclEntry> aclEntries;
+    private List<AclEntry> defaultAccessList;
+    private Map<String, String> tags;
+    private String kmsDefaultKey;
+    private Boolean eventBasedHoldDefault;
+    private Long retentionEffectiveTimestamp;
+    private Boolean retentionPolicyLocked;
+    private Long retentionDuration;
+    private BucketIamConfiguration iamConfig;
+    private String locationClass;
+    private LoggingConfig loggingConfig;
 
-    BuilderImpl(String name) {
-      this.name = name;
+    BucketBuilderImpl(String bucketName) {
+      this.bucketName = bucketName;
     }
 
-    BuilderImpl(BucketInfo bucketInfo) {
-      generatedId = bucketInfo.generatedId;
-      name = bucketInfo.name;
-      etag = bucketInfo.etag;
-      createTime = bucketInfo.createTime;
-      metageneration = bucketInfo.metageneration;
-      location = bucketInfo.location;
-      storageClass = bucketInfo.storageClass;
-      cors = bucketInfo.cors;
-      acl = bucketInfo.acl;
-      defaultAcl = bucketInfo.defaultAcl;
-      owner = bucketInfo.owner;
-      selfLink = bucketInfo.selfLink;
-      versioningEnabled = bucketInfo.versioningEnabled;
-      indexPage = bucketInfo.indexPage;
-      notFoundPage = bucketInfo.notFoundPage;
-      deleteRules = bucketInfo.deleteRules;
-      lifecycleRules = bucketInfo.lifecycleRules;
-      labels = bucketInfo.labels;
-      requesterPays = bucketInfo.requesterPays;
-      defaultKmsKeyName = bucketInfo.defaultKmsKeyName;
-      defaultEventBasedHold = bucketInfo.defaultEventBasedHold;
-      retentionEffectiveTime = bucketInfo.retentionEffectiveTime;
-      retentionPolicyIsLocked = bucketInfo.retentionPolicyIsLocked;
-      retentionPeriod = bucketInfo.retentionPeriod;
-      iamConfiguration = bucketInfo.iamConfiguration;
-      locationType = bucketInfo.locationType;
-      logging = bucketInfo.logging;
+    BucketBuilderImpl(BucketInfo info) {
+      generatedIdentifier = info.generatedIdentifier;
+      bucketName = info.bucketName;
+      entityTag = info.entityTag;
+      creationTime = info.creationTime;
+      generationNumber = info.generationNumber;
+      region = info.region;
+      storageTier = info.storageTier;
+      corsConfigs = info.corsConfigs;
+      aclEntries = info.aclEntries;
+      defaultAccessList = info.defaultAccessList;
+      ownerEntity = info.ownerEntity;
+      selfUrl = info.selfUrl;
+      versioningActive = info.versioningActive;
+      indexDocument = info.indexDocument;
+      notFoundDocument = info.notFoundDocument;
+      deletionRules = info.deletionRules;
+      lifecyclePolicies = info.lifecyclePolicies;
+      tags = info.tags;
+      billingEnabled = info.billingEnabled;
+      kmsDefaultKey = info.kmsDefaultKey;
+      eventBasedHoldDefault = info.eventBasedHoldDefault;
+      retentionEffectiveTimestamp = info.retentionEffectiveTimestamp;
+      retentionPolicyLocked = info.retentionPolicyLocked;
+      retentionDuration = info.retentionDuration;
+      iamConfig = info.iamConfig;
+      locationClass = info.locationClass;
+      loggingConfig = info.loggingConfig;
     }
 
     @Override
-    public Builder setName(String name) {
-      this.name = checkNotNull(name);
+    public Builder setName(String bucketName) {
+      this.bucketName = checkNotNull(bucketName);
       return this;
     }
 
     @Override
-    Builder setGeneratedId(String generatedId) {
-      this.generatedId = generatedId;
+    Builder setGeneratedId(String generatedIdentifier) {
+      this.generatedIdentifier = generatedIdentifier;
       return this;
     }
 
     @Override
-    Builder setOwner(Acl.Entity owner) {
-      this.owner = owner;
+    Builder setOwner(TypedEntity ownerEntity) {
+      this.ownerEntity = ownerEntity;
       return this;
     }
 
     @Override
-    Builder setSelfLink(String selfLink) {
-      this.selfLink = selfLink;
+    Builder setSelfLink(String selfUrl) {
+      this.selfUrl = selfUrl;
       return this;
     }
 
     @Override
-    public Builder setVersioningEnabled(Boolean enable) {
-      this.versioningEnabled = firstNonNull(enable, Data.<Boolean>nullOf(Boolean.class));
+    public Builder setVersioningEnabled(Boolean versioningFlag) {
+      this.versioningActive = firstNonNull(versioningFlag, Data.<Boolean>nullOf(Boolean.class));
       return this;
     }
 
     @Override
-    public Builder setRequesterPays(Boolean enable) {
-      this.requesterPays = firstNonNull(enable, Data.<Boolean>nullOf(Boolean.class));
+    public Builder setRequesterPays(Boolean versioningFlag) {
+      this.billingEnabled = firstNonNull(versioningFlag, Data.<Boolean>nullOf(Boolean.class));
       return this;
     }
 
     @Override
-    public Builder setIndexPage(String indexPage) {
-      this.indexPage = indexPage;
+    public Builder setIndexPage(String indexDocument) {
+      this.indexDocument = indexDocument;
       return this;
     }
 
     @Override
-    public Builder setNotFoundPage(String notFoundPage) {
-      this.notFoundPage = notFoundPage;
+    public Builder setNotFoundPage(String notFoundDocument) {
+      this.notFoundDocument = notFoundDocument;
       return this;
     }
 
     /** @deprecated Use {@code setLifecycleRules} method instead. * */
     @Override
     @Deprecated
-    public Builder setDeleteRules(Iterable<? extends DeleteRule> rules) {
-      this.deleteRules = rules != null ? ImmutableList.copyOf(rules) : null;
+    public Builder setDeleteRules(Iterable<? extends DeletionRule> deletionPolicies) {
+      this.deletionRules = deletionPolicies != null ? ImmutableList.copyOf(deletionPolicies) : null;
       return this;
     }
 
     @Override
-    public Builder setLifecycleRules(Iterable<? extends LifecycleRule> rules) {
-      this.lifecycleRules =
-          rules != null ? ImmutableList.copyOf(rules) : ImmutableList.<LifecycleRule>of();
+    public Builder setLifecycleRules(Iterable<? extends LifecyclePolicy> deletionPolicies) {
+      this.lifecyclePolicies =
+          deletionPolicies != null ? ImmutableList.copyOf(deletionPolicies) : ImmutableList.<LifecyclePolicy>of();
       return this;
     }
 
@@ -1209,59 +1209,59 @@ public class BucketInfo implements Serializable {
     }
 
     @Override
-    public Builder setStorageClass(StorageClass storageClass) {
-      this.storageClass = storageClass;
+    public Builder setStorageClass(StorageClassType storageTier) {
+      this.storageTier = storageTier;
       return this;
     }
 
     @Override
-    public Builder setLocation(String location) {
-      this.location = location;
+    public Builder setLocation(String region) {
+      this.region = region;
       return this;
     }
 
     @Override
-    Builder setEtag(String etag) {
-      this.etag = etag;
+    Builder setEtag(String entityTag) {
+      this.entityTag = entityTag;
       return this;
     }
 
     @Override
-    Builder setCreateTime(Long createTime) {
-      this.createTime = createTime;
+    Builder setCreateTime(Long creationTime) {
+      this.creationTime = creationTime;
       return this;
     }
 
     @Override
-    Builder setMetageneration(Long metageneration) {
-      this.metageneration = metageneration;
+    Builder setMetageneration(Long generationNumber) {
+      this.generationNumber = generationNumber;
       return this;
     }
 
     @Override
-    public Builder setCors(Iterable<Cors> cors) {
-      this.cors = cors != null ? ImmutableList.copyOf(cors) : null;
+    public Builder setCors(Iterable<CorsConfiguration> corsConfigs) {
+      this.corsConfigs = corsConfigs != null ? ImmutableList.copyOf(corsConfigs) : null;
       return this;
     }
 
     @Override
-    public Builder setAcl(Iterable<Acl> acl) {
-      this.acl = acl != null ? ImmutableList.copyOf(acl) : null;
+    public Builder setAcl(Iterable<AclEntry> aclEntries) {
+      this.aclEntries = aclEntries != null ? ImmutableList.copyOf(aclEntries) : null;
       return this;
     }
 
     @Override
-    public Builder setDefaultAcl(Iterable<Acl> acl) {
-      this.defaultAcl = acl != null ? ImmutableList.copyOf(acl) : null;
+    public Builder setDefaultAcl(Iterable<AclEntry> aclEntries) {
+      this.defaultAccessList = aclEntries != null ? ImmutableList.copyOf(aclEntries) : null;
       return this;
     }
 
     @Override
-    public Builder setLabels(Map<String, String> labels) {
-      if (labels != null) {
-        this.labels =
+    public Builder setLabels(Map<String, String> tags) {
+      if (tags != null) {
+        this.tags =
             Maps.transformValues(
-                labels,
+                    tags,
                 new Function<String, String>() {
                   @Override
                   public String apply(String input) {
@@ -1274,112 +1274,112 @@ public class BucketInfo implements Serializable {
     }
 
     @Override
-    public Builder setDefaultKmsKeyName(String defaultKmsKeyName) {
-      this.defaultKmsKeyName =
-          defaultKmsKeyName != null ? defaultKmsKeyName : Data.<String>nullOf(String.class);
+    public Builder setDefaultKmsKeyName(String kmsDefaultKey) {
+      this.kmsDefaultKey =
+          kmsDefaultKey != null ? kmsDefaultKey : Data.<String>nullOf(String.class);
       return this;
     }
 
     @Override
-    public Builder setDefaultEventBasedHold(Boolean defaultEventBasedHold) {
-      this.defaultEventBasedHold =
-          firstNonNull(defaultEventBasedHold, Data.<Boolean>nullOf(Boolean.class));
+    public Builder setDefaultEventBasedHold(Boolean eventBasedHoldDefault) {
+      this.eventBasedHoldDefault =
+          firstNonNull(eventBasedHoldDefault, Data.<Boolean>nullOf(Boolean.class));
       return this;
     }
 
     @Override
-    Builder setRetentionEffectiveTime(Long retentionEffectiveTime) {
-      this.retentionEffectiveTime =
-          firstNonNull(retentionEffectiveTime, Data.<Long>nullOf(Long.class));
+    Builder setRetentionEffectiveTime(Long retentionEffectiveTimestamp) {
+      this.retentionEffectiveTimestamp =
+          firstNonNull(retentionEffectiveTimestamp, Data.<Long>nullOf(Long.class));
       return this;
     }
 
     @Override
-    Builder setRetentionPolicyIsLocked(Boolean retentionPolicyIsLocked) {
-      this.retentionPolicyIsLocked =
-          firstNonNull(retentionPolicyIsLocked, Data.<Boolean>nullOf(Boolean.class));
+    Builder setRetentionPolicyIsLocked(Boolean retentionPolicyLocked) {
+      this.retentionPolicyLocked =
+          firstNonNull(retentionPolicyLocked, Data.<Boolean>nullOf(Boolean.class));
       return this;
     }
 
     @Override
-    public Builder setRetentionPeriod(Long retentionPeriod) {
-      this.retentionPeriod = firstNonNull(retentionPeriod, Data.<Long>nullOf(Long.class));
+    public Builder setRetentionPeriod(Long retentionDuration) {
+      this.retentionDuration = firstNonNull(retentionDuration, Data.<Long>nullOf(Long.class));
       return this;
     }
 
     @Override
-    public Builder setIamConfiguration(IamConfiguration iamConfiguration) {
-      this.iamConfiguration = iamConfiguration;
+    public Builder setIamConfiguration(BucketIamConfiguration iamConfig) {
+      this.iamConfig = iamConfig;
       return this;
     }
 
     @Override
-    public Builder setLogging(Logging logging) {
-      this.logging = logging != null ? logging : BucketInfo.Logging.newBuilder().build();
+    public Builder setLogging(LoggingConfig loggingConfig) {
+      this.loggingConfig = loggingConfig != null ? loggingConfig : LoggingConfig.newLogConfigBuilder().buildConfig();
       return this;
     }
 
     @Override
-    Builder setLocationType(String locationType) {
-      this.locationType = locationType;
+    Builder setLocationType(String locationClass) {
+      this.locationClass = locationClass;
       return this;
     }
 
     @Override
-    public BucketInfo build() {
-      checkNotNull(name);
+    public BucketInfo buildInstance() {
+      checkNotNull(bucketName);
       return new BucketInfo(this);
     }
   }
 
-  BucketInfo(BuilderImpl builder) {
-    generatedId = builder.generatedId;
-    name = builder.name;
-    etag = builder.etag;
-    createTime = builder.createTime;
-    metageneration = builder.metageneration;
-    location = builder.location;
-    storageClass = builder.storageClass;
-    cors = builder.cors;
-    acl = builder.acl;
-    defaultAcl = builder.defaultAcl;
-    owner = builder.owner;
-    selfLink = builder.selfLink;
-    versioningEnabled = builder.versioningEnabled;
-    indexPage = builder.indexPage;
-    notFoundPage = builder.notFoundPage;
-    deleteRules = builder.deleteRules;
-    lifecycleRules = builder.lifecycleRules;
-    labels = builder.labels;
-    requesterPays = builder.requesterPays;
-    defaultKmsKeyName = builder.defaultKmsKeyName;
-    defaultEventBasedHold = builder.defaultEventBasedHold;
-    retentionEffectiveTime = builder.retentionEffectiveTime;
-    retentionPolicyIsLocked = builder.retentionPolicyIsLocked;
-    retentionPeriod = builder.retentionPeriod;
-    iamConfiguration = builder.iamConfiguration;
-    locationType = builder.locationType;
-    logging = builder.logging;
+  BucketInfo(BucketBuilderImpl accessBuilder) {
+    generatedIdentifier = accessBuilder.generatedIdentifier;
+    bucketName = accessBuilder.bucketName;
+    entityTag = accessBuilder.entityTag;
+    creationTime = accessBuilder.creationTime;
+    generationNumber = accessBuilder.generationNumber;
+    region = accessBuilder.region;
+    storageTier = accessBuilder.storageTier;
+    corsConfigs = accessBuilder.corsConfigs;
+    aclEntries = accessBuilder.aclEntries;
+    defaultAccessList = accessBuilder.defaultAccessList;
+    ownerEntity = accessBuilder.ownerEntity;
+    selfUrl = accessBuilder.selfUrl;
+    versioningActive = accessBuilder.versioningActive;
+    indexDocument = accessBuilder.indexDocument;
+    notFoundDocument = accessBuilder.notFoundDocument;
+    deletionRules = accessBuilder.deletionRules;
+    lifecyclePolicies = accessBuilder.lifecyclePolicies;
+    tags = accessBuilder.tags;
+    billingEnabled = accessBuilder.billingEnabled;
+    kmsDefaultKey = accessBuilder.kmsDefaultKey;
+    eventBasedHoldDefault = accessBuilder.eventBasedHoldDefault;
+    retentionEffectiveTimestamp = accessBuilder.retentionEffectiveTimestamp;
+    retentionPolicyLocked = accessBuilder.retentionPolicyLocked;
+    retentionDuration = accessBuilder.retentionDuration;
+    iamConfig = accessBuilder.iamConfig;
+    locationClass = accessBuilder.locationClass;
+    loggingConfig = accessBuilder.loggingConfig;
   }
 
   /** Returns the service-generated id for the bucket. */
   public String getGeneratedId() {
-    return generatedId;
+    return generatedIdentifier;
   }
 
   /** Returns the bucket's name. */
   public String getName() {
-    return name;
+    return bucketName;
   }
 
   /** Returns the bucket's owner. This is always the project team's owner group. */
-  public Entity getOwner() {
-    return owner;
+  public TypedEntity getOwner() {
+    return ownerEntity;
   }
 
   /** Returns the URI of this bucket as a string. */
   public String getSelfLink() {
-    return selfLink;
+    return selfUrl;
   }
 
   /**
@@ -1387,44 +1387,44 @@ public class BucketInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and versions for the bucket is enabled.
+   * StorageClient.BucketAttribute#VERSIONING} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)} and versions for the bucket is enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but versions for the bucket is not enabled.
+   * StorageClient.BucketAttribute#VERSIONING} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)}, but versions for the bucket is not enabled.
    * This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#VERSIONING} is not selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is unknown.
+   * StorageClient.BucketAttribute#VERSIONING} is not selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)}, and the state for this field is unknown.
    *
    * <p>Case 3: {@code false} versions is explicitly set to false client side for a follow-up
-   * request for example {@link Storage#update(BucketInfo, Storage.BucketTargetOption...)} in which
+   * request for example {@link StorageClient#update(BucketInfo, StorageClient.BucketTargetOptions...)} in which
    * case the value of versions will remain {@code false} for for the given instance.
    */
-  public Boolean versioningEnabled() {
-    return Data.isNull(versioningEnabled) ? null : versioningEnabled;
+  public Boolean isVersioningEnabled() {
+    return Data.isNull(versioningActive) ? null : versioningActive;
   }
 
   /**
    * Returns a {@code Boolean} with either {@code true}, {@code false}, and in a specific case
    * {@code null}.
    *
-   * <p>Case 1: {@code true} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * is selected in a {@link Storage#get(String, Storage.BucketGetOption...)} and requester pays for
+   * <p>Case 1: {@code true} the field {@link StorageClient.BucketAttribute#BILLING}
+   * is selected in a {@link StorageClient#get(String, StorageClient.BucketGetOptions...)} and requester pays for
    * the bucket is enabled.
    *
-   * <p>Case 2: {@code false} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * in a {@link Storage#get(String, Storage.BucketGetOption...)} is selected and requester pays for
+   * <p>Case 2: {@code false} the field {@link StorageClient.BucketAttribute#BILLING}
+   * in a {@link StorageClient#get(String, StorageClient.BucketGetOptions...)} is selected and requester pays for
    * the bucket is disable.
    *
-   * <p>Case 3: {@code null} the field {@link com.google.cloud.storage.Storage.BucketField#BILLING}
-   * in a {@link Storage#get(String, Storage.BucketGetOption...)} is not selected, the value is
+   * <p>Case 3: {@code null} the field {@link StorageClient.BucketAttribute#BILLING}
+   * in a {@link StorageClient#get(String, StorageClient.BucketGetOptions...)} is not selected, the value is
    * unknown.
    */
-  public Boolean requesterPays() {
-    return Data.isNull(requesterPays) ? null : requesterPays;
+  public Boolean isRequesterPays() {
+    return Data.isNull(billingEnabled) ? null : billingEnabled;
   }
 
   /**
@@ -1432,12 +1432,12 @@ public class BucketInfo implements Serializable {
    * blobs are treated as potential directories.
    */
   public String getIndexPage() {
-    return indexPage;
+    return indexDocument;
   }
 
   /** Returns the custom object to return when a requested resource is not found. */
   public String getNotFoundPage() {
-    return notFoundPage;
+    return notFoundDocument;
   }
 
   /**
@@ -1446,12 +1446,12 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Lifecycle Management</a>
    */
   @Deprecated
-  public List<? extends DeleteRule> getDeleteRules() {
-    return deleteRules;
+  public List<? extends DeletionRule> getDeleteRules() {
+    return deletionRules;
   }
 
-  public List<? extends LifecycleRule> getLifecycleRules() {
-    return lifecycleRules != null ? lifecycleRules : ImmutableList.<LifecycleRule>of();
+  public List<? extends LifecyclePolicy> getLifecycleRules() {
+    return lifecyclePolicies != null ? lifecyclePolicies : ImmutableList.<LifecyclePolicy>of();
   }
 
   /**
@@ -1460,17 +1460,17 @@ public class BucketInfo implements Serializable {
    * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
    */
   public String getEtag() {
-    return etag;
+    return entityTag;
   }
 
   /** Returns the time at which the bucket was created. */
   public Long getCreateTime() {
-    return createTime;
+    return creationTime;
   }
 
   /** Returns the metadata generation of this bucket. */
   public Long getMetageneration() {
-    return metageneration;
+    return generationNumber;
   }
 
   /**
@@ -1480,7 +1480,7 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket Locations</a>
    */
   public String getLocation() {
-    return location;
+    return region;
   }
 
   /**
@@ -1489,7 +1489,7 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket LocationType</a>
    */
   public String getLocationType() {
-    return locationType;
+    return locationClass;
   }
 
   /**
@@ -1498,8 +1498,8 @@ public class BucketInfo implements Serializable {
    *
    * @see <a href="https://cloud.google.com/storage/docs/storage-classes">Storage Classes</a>
    */
-  public StorageClass getStorageClass() {
-    return storageClass;
+  public StorageClassType getStorageClass() {
+    return storageTier;
   }
 
   /**
@@ -1508,8 +1508,8 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/cross-origin">Cross-Origin Resource Sharing
    *     (CORS)</a>
    */
-  public List<Cors> getCors() {
-    return cors;
+  public List<CorsConfiguration> getCors() {
+    return corsConfigs;
   }
 
   /**
@@ -1518,8 +1518,8 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
    *     About Access Control Lists</a>
    */
-  public List<Acl> getAcl() {
-    return acl;
+  public List<AclEntry> getAcl() {
+    return aclEntries;
   }
 
   /**
@@ -1528,18 +1528,18 @@ public class BucketInfo implements Serializable {
    * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
    *     About Access Control Lists</a>
    */
-  public List<Acl> getDefaultAcl() {
-    return defaultAcl;
+  public List<AclEntry> getDefaultAcl() {
+    return defaultAccessList;
   }
 
   /** Returns the labels for this bucket. */
   public Map<String, String> getLabels() {
-    return labels;
+    return tags;
   }
 
   /** Returns the default Cloud KMS key to be applied to newly inserted objects in this bucket. */
   public String getDefaultKmsKeyName() {
-    return defaultKmsKeyName;
+    return kmsDefaultKey;
   }
 
   /**
@@ -1547,28 +1547,28 @@ public class BucketInfo implements Serializable {
    * false}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and default event-based hold for the bucket is
+   * StorageClient.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)} and default event-based hold for the bucket is
    * enabled.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but default event-based hold for the bucket
+   * StorageClient.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)}, but default event-based hold for the bucket
    * is not enabled. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#DEFAULT_EVENT_BASED_HOLD} is not selected in a
-   * {@link Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is
+   * StorageClient.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is not selected in a
+   * {@link StorageClient#get(String, StorageClient.BucketGetOptions...)}, and the state for this field is
    * unknown.
    *
    * <p>Case 3: {@code false} default event-based hold is explicitly set to false using in a {@link
    * Builder#setDefaultEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-   * Storage#update(BucketInfo, Storage.BucketTargetOption...)} in which case the value of default
+   * StorageClient#update(BucketInfo, StorageClient.BucketTargetOptions...)} in which case the value of default
    * event-based hold will remain {@code false} for the given instance.
    */
   @BetaApi
   public Boolean getDefaultEventBasedHold() {
-    return Data.isNull(defaultEventBasedHold) ? null : defaultEventBasedHold;
+    return Data.isNull(eventBasedHoldDefault) ? null : eventBasedHoldDefault;
   }
 
   /**
@@ -1577,329 +1577,329 @@ public class BucketInfo implements Serializable {
    */
   @BetaApi
   public Long getRetentionEffectiveTime() {
-    return retentionEffectiveTime;
+    return retentionEffectiveTimestamp;
   }
 
   /**
    * Returns a {@code Boolean} with either {@code true} or {@code null}.
    *
    * <p>Case 1: {@code true} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)} and retention policy for the bucket is locked.
+   * StorageClient.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)} and retention policy for the bucket is locked.
    *
    * <p>Case 2.1: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, but retention policy for the bucket is not
+   * StorageClient.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)}, but retention policy for the bucket is not
    * locked. This case can be considered implicitly {@code false}.
    *
    * <p>Case 2.2: {@code null} the field {@link
-   * com.google.cloud.storage.Storage.BucketField#RETENTION_POLICY} is not selected in a {@link
-   * Storage#get(String, Storage.BucketGetOption...)}, and the state for this field is unknown.
+   * StorageClient.BucketAttribute#RETENTION_POLICY} is not selected in a {@link
+   * StorageClient#get(String, StorageClient.BucketGetOptions...)}, and the state for this field is unknown.
    */
   @BetaApi
-  public Boolean retentionPolicyIsLocked() {
-    return Data.isNull(retentionPolicyIsLocked) ? null : retentionPolicyIsLocked;
+  public Boolean isRetentionPolicyLocked() {
+    return Data.isNull(retentionPolicyLocked) ? null : retentionPolicyLocked;
   }
 
   /** Returns the retention policy retention period. */
   @BetaApi
   public Long getRetentionPeriod() {
-    return retentionPeriod;
+    return retentionDuration;
   }
 
   /** Returns the IAM configuration */
   @BetaApi
-  public IamConfiguration getIamConfiguration() {
-    return iamConfiguration;
+  public BucketIamConfiguration getIamConfiguration() {
+    return iamConfig;
   }
 
   /** Returns the Logging */
-  public Logging getLogging() {
-    return logging;
+  public LoggingConfig getLogging() {
+    return loggingConfig;
   }
 
   /** Returns a builder for the current bucket. */
-  public Builder toBuilder() {
-    return new BuilderImpl(this);
+  public Builder toBuilderCopy() {
+    return new BucketBuilderImpl(this);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return Objects.hash(bucketName);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj == this
-        || obj != null
-            && obj.getClass().equals(BucketInfo.class)
-            && Objects.equals(toPb(), ((BucketInfo) obj).toPb());
+  public boolean equals(Object otherObj) {
+    return otherObj == this
+        || otherObj != null
+            && otherObj.getClass().equals(BucketInfo.class)
+            && Objects.equals(toProto(), ((BucketInfo) otherObj).toProto());
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("name", name).toString();
+    return MoreObjects.toStringHelper(this).add("name", bucketName).toString();
   }
 
-  com.google.api.services.storage.model.Bucket toPb() {
-    com.google.api.services.storage.model.Bucket bucketPb =
+  com.google.api.services.storage.model.Bucket toProto() {
+    com.google.api.services.storage.model.Bucket bucketProto =
         new com.google.api.services.storage.model.Bucket();
-    bucketPb.setId(generatedId);
-    bucketPb.setName(name);
-    bucketPb.setEtag(etag);
-    if (createTime != null) {
-      bucketPb.setTimeCreated(new DateTime(createTime));
+    bucketProto.setId(generatedIdentifier);
+    bucketProto.setName(bucketName);
+    bucketProto.setEtag(entityTag);
+    if (creationTime != null) {
+      bucketProto.setTimeCreated(new DateTime(creationTime));
     }
-    if (metageneration != null) {
-      bucketPb.setMetageneration(metageneration);
+    if (generationNumber != null) {
+      bucketProto.setMetageneration(generationNumber);
     }
-    if (location != null) {
-      bucketPb.setLocation(location);
+    if (region != null) {
+      bucketProto.setLocation(region);
     }
-    if (locationType != null) {
-      bucketPb.setLocationType(locationType);
+    if (locationClass != null) {
+      bucketProto.setLocationType(locationClass);
     }
-    if (storageClass != null) {
-      bucketPb.setStorageClass(storageClass.toString());
+    if (storageTier != null) {
+      bucketProto.setStorageClass(storageTier.toString());
     }
-    if (cors != null) {
-      bucketPb.setCors(transform(cors, Cors.TO_PB_FUNCTION));
+    if (corsConfigs != null) {
+      bucketProto.setCors(transform(corsConfigs, CorsConfiguration.TO_PROTO_FUNCTION));
     }
-    if (acl != null) {
-      bucketPb.setAcl(
+    if (aclEntries != null) {
+      bucketProto.setAcl(
           transform(
-              acl,
-              new Function<Acl, BucketAccessControl>() {
+                  aclEntries,
+              new Function<AclEntry, BucketAccessControl>() {
                 @Override
-                public BucketAccessControl apply(Acl acl) {
-                  return acl.toBucketPb();
+                public BucketAccessControl apply(AclEntry acl) {
+                  return acl.toBucketProto();
                 }
               }));
     }
-    if (defaultAcl != null) {
-      bucketPb.setDefaultObjectAcl(
+    if (defaultAccessList != null) {
+      bucketProto.setDefaultObjectAcl(
           transform(
-              defaultAcl,
-              new Function<Acl, ObjectAccessControl>() {
+                  defaultAccessList,
+              new Function<AclEntry, ObjectAccessControl>() {
                 @Override
-                public ObjectAccessControl apply(Acl acl) {
-                  return acl.toObjectPb();
+                public ObjectAccessControl apply(AclEntry acl) {
+                  return acl.toObjectProto();
                 }
               }));
     }
-    if (owner != null) {
-      bucketPb.setOwner(new Owner().setEntity(owner.toPb()));
+    if (ownerEntity != null) {
+      bucketProto.setOwner(new Owner().setEntity(ownerEntity.toProtoString()));
     }
-    bucketPb.setSelfLink(selfLink);
-    if (versioningEnabled != null) {
-      bucketPb.setVersioning(new Versioning().setEnabled(versioningEnabled));
+    bucketProto.setSelfLink(selfUrl);
+    if (versioningActive != null) {
+      bucketProto.setVersioning(new Versioning().setEnabled(versioningActive));
     }
-    if (requesterPays != null) {
-      Bucket.Billing billing = new Bucket.Billing();
-      billing.setRequesterPays(requesterPays);
-      bucketPb.setBilling(billing);
+    if (billingEnabled != null) {
+      Bucket.Billing billingInfo = new Bucket.Billing();
+      billingInfo.setRequesterPays(billingEnabled);
+      bucketProto.setBilling(billingInfo);
     }
-    if (indexPage != null || notFoundPage != null) {
-      Website website = new Website();
-      website.setMainPageSuffix(indexPage);
-      website.setNotFoundPage(notFoundPage);
-      bucketPb.setWebsite(website);
+    if (indexDocument != null || notFoundDocument != null) {
+      Website websiteConfig = new Website();
+      websiteConfig.setMainPageSuffix(indexDocument);
+      websiteConfig.setNotFoundPage(notFoundDocument);
+      bucketProto.setWebsite(websiteConfig);
     }
-    Set<Rule> rules = new HashSet<>();
-    if (deleteRules != null) {
-      rules.addAll(
+    Set<Rule> deletionPolicies = new HashSet<>();
+    if (deletionRules != null) {
+      deletionPolicies.addAll(
           transform(
-              deleteRules,
-              new Function<DeleteRule, Rule>() {
+                  deletionRules,
+              new Function<DeletionRule, Rule>() {
                 @Override
-                public Rule apply(DeleteRule deleteRule) {
-                  return deleteRule.toPb();
+                public Rule apply(DeletionRule deleteRule) {
+                  return deleteRule.toProto();
                 }
               }));
     }
-    if (lifecycleRules != null) {
-      rules.addAll(
+    if (lifecyclePolicies != null) {
+      deletionPolicies.addAll(
           transform(
-              lifecycleRules,
-              new Function<LifecycleRule, Rule>() {
+                  lifecyclePolicies,
+              new Function<LifecyclePolicy, Rule>() {
                 @Override
-                public Rule apply(LifecycleRule lifecycleRule) {
-                  return lifecycleRule.toPb();
+                public Rule apply(LifecyclePolicy lifecycleRule) {
+                  return lifecycleRule.toProto();
                 }
               }));
     }
 
-    if (rules != null) {
-      Lifecycle lifecycle = new Lifecycle();
-      lifecycle.setRule(ImmutableList.copyOf(rules));
-      bucketPb.setLifecycle(lifecycle);
+    if (deletionPolicies != null) {
+      Lifecycle lifecycleProto = new Lifecycle();
+      lifecycleProto.setRule(ImmutableList.copyOf(deletionPolicies));
+      bucketProto.setLifecycle(lifecycleProto);
     }
 
-    if (labels != null) {
-      bucketPb.setLabels(labels);
+    if (tags != null) {
+      bucketProto.setLabels(tags);
     }
-    if (defaultKmsKeyName != null) {
-      bucketPb.setEncryption(new Encryption().setDefaultKmsKeyName(defaultKmsKeyName));
+    if (kmsDefaultKey != null) {
+      bucketProto.setEncryption(new Encryption().setDefaultKmsKeyName(kmsDefaultKey));
     }
-    if (defaultEventBasedHold != null) {
-      bucketPb.setDefaultEventBasedHold(defaultEventBasedHold);
+    if (eventBasedHoldDefault != null) {
+      bucketProto.setDefaultEventBasedHold(eventBasedHoldDefault);
     }
-    if (retentionPeriod != null) {
-      if (Data.isNull(retentionPeriod)) {
-        bucketPb.setRetentionPolicy(
+    if (retentionDuration != null) {
+      if (Data.isNull(retentionDuration)) {
+        bucketProto.setRetentionPolicy(
             Data.<Bucket.RetentionPolicy>nullOf(Bucket.RetentionPolicy.class));
       } else {
-        Bucket.RetentionPolicy retentionPolicy = new Bucket.RetentionPolicy();
-        retentionPolicy.setRetentionPeriod(retentionPeriod);
-        if (retentionEffectiveTime != null) {
-          retentionPolicy.setEffectiveTime(new DateTime(retentionEffectiveTime));
+        Bucket.RetentionPolicy retentionConfig = new Bucket.RetentionPolicy();
+        retentionConfig.setRetentionPeriod(retentionDuration);
+        if (retentionEffectiveTimestamp != null) {
+          retentionConfig.setEffectiveTime(new DateTime(retentionEffectiveTimestamp));
         }
-        if (retentionPolicyIsLocked != null) {
-          retentionPolicy.setIsLocked(retentionPolicyIsLocked);
+        if (retentionPolicyLocked != null) {
+          retentionConfig.setIsLocked(retentionPolicyLocked);
         }
-        bucketPb.setRetentionPolicy(retentionPolicy);
+        bucketProto.setRetentionPolicy(retentionConfig);
       }
     }
-    if (iamConfiguration != null) {
-      bucketPb.setIamConfiguration(iamConfiguration.toPb());
+    if (iamConfig != null) {
+      bucketProto.setIamConfiguration(iamConfig.toProto());
     }
-    if (logging != null) {
-      bucketPb.setLogging(logging.toPb());
+    if (loggingConfig != null) {
+      bucketProto.setLogging(loggingConfig.toProto());
     }
-    return bucketPb;
+    return bucketProto;
   }
 
   /** Creates a {@code BucketInfo} object for the provided bucket name. */
-  public static BucketInfo of(String name) {
-    return newBuilder(name).build();
+  public static BucketInfo ofName(String bucketName) {
+    return newBucketBuilder(bucketName).buildInstance();
   }
 
   /** Returns a {@code BucketInfo} builder where the bucket's name is set to the provided name. */
-  public static Builder newBuilder(String name) {
-    return new BuilderImpl(name);
+  public static Builder newBucketBuilder(String bucketName) {
+    return new BucketBuilderImpl(bucketName);
   }
 
-  static BucketInfo fromPb(com.google.api.services.storage.model.Bucket bucketPb) {
-    Builder builder = new BuilderImpl(bucketPb.getName());
-    if (bucketPb.getId() != null) {
-      builder.setGeneratedId(bucketPb.getId());
+  static BucketInfo fromProto(com.google.api.services.storage.model.Bucket bucketProto) {
+    Builder accessBuilder = new BucketBuilderImpl(bucketProto.getName());
+    if (bucketProto.getId() != null) {
+      accessBuilder.setGeneratedId(bucketProto.getId());
     }
 
-    if (bucketPb.getEtag() != null) {
-      builder.setEtag(bucketPb.getEtag());
+    if (bucketProto.getEtag() != null) {
+      accessBuilder.setEtag(bucketProto.getEtag());
     }
-    if (bucketPb.getMetageneration() != null) {
-      builder.setMetageneration(bucketPb.getMetageneration());
+    if (bucketProto.getMetageneration() != null) {
+      accessBuilder.setMetageneration(bucketProto.getMetageneration());
     }
-    if (bucketPb.getSelfLink() != null) {
-      builder.setSelfLink(bucketPb.getSelfLink());
+    if (bucketProto.getSelfLink() != null) {
+      accessBuilder.setSelfLink(bucketProto.getSelfLink());
     }
-    if (bucketPb.getTimeCreated() != null) {
-      builder.setCreateTime(bucketPb.getTimeCreated().getValue());
+    if (bucketProto.getTimeCreated() != null) {
+      accessBuilder.setCreateTime(bucketProto.getTimeCreated().getValue());
     }
-    if (bucketPb.getLocation() != null) {
-      builder.setLocation(bucketPb.getLocation());
+    if (bucketProto.getLocation() != null) {
+      accessBuilder.setLocation(bucketProto.getLocation());
     }
-    if (bucketPb.getStorageClass() != null) {
-      builder.setStorageClass(StorageClass.valueOf(bucketPb.getStorageClass()));
+    if (bucketProto.getStorageClass() != null) {
+      accessBuilder.setStorageClass(StorageClassType.fromValue(bucketProto.getStorageClass()));
     }
-    if (bucketPb.getCors() != null) {
-      builder.setCors(transform(bucketPb.getCors(), Cors.FROM_PB_FUNCTION));
+    if (bucketProto.getCors() != null) {
+      accessBuilder.setCors(transform(bucketProto.getCors(), CorsConfiguration.FROM_PROTO_FUNCTION));
     }
-    if (bucketPb.getAcl() != null) {
-      builder.setAcl(
+    if (bucketProto.getAcl() != null) {
+      accessBuilder.setAcl(
           transform(
-              bucketPb.getAcl(),
-              new Function<BucketAccessControl, Acl>() {
+              bucketProto.getAcl(),
+              new Function<BucketAccessControl, AclEntry>() {
                 @Override
-                public Acl apply(BucketAccessControl bucketAccessControl) {
-                  return Acl.fromPb(bucketAccessControl);
+                public AclEntry apply(BucketAccessControl bucketAccessControl) {
+                  return AclEntry.fromProto(bucketAccessControl);
                 }
               }));
     }
-    if (bucketPb.getDefaultObjectAcl() != null) {
-      builder.setDefaultAcl(
+    if (bucketProto.getDefaultObjectAcl() != null) {
+      accessBuilder.setDefaultAcl(
           transform(
-              bucketPb.getDefaultObjectAcl(),
-              new Function<ObjectAccessControl, Acl>() {
+              bucketProto.getDefaultObjectAcl(),
+              new Function<ObjectAccessControl, AclEntry>() {
                 @Override
-                public Acl apply(ObjectAccessControl objectAccessControl) {
-                  return Acl.fromPb(objectAccessControl);
+                public AclEntry apply(ObjectAccessControl objectAccessControl) {
+                  return AclEntry.fromProto(objectAccessControl);
                 }
               }));
     }
-    if (bucketPb.getOwner() != null) {
-      builder.setOwner(Entity.fromPb(bucketPb.getOwner().getEntity()));
+    if (bucketProto.getOwner() != null) {
+      accessBuilder.setOwner(TypedEntity.fromProto(bucketProto.getOwner().getEntity()));
     }
-    if (bucketPb.getVersioning() != null) {
-      builder.setVersioningEnabled(bucketPb.getVersioning().getEnabled());
+    if (bucketProto.getVersioning() != null) {
+      accessBuilder.setVersioningEnabled(bucketProto.getVersioning().getEnabled());
     }
-    Website website = bucketPb.getWebsite();
-    if (website != null) {
-      builder.setIndexPage(website.getMainPageSuffix());
-      builder.setNotFoundPage(website.getNotFoundPage());
+    Website websiteConfig = bucketProto.getWebsite();
+    if (websiteConfig != null) {
+      accessBuilder.setIndexPage(websiteConfig.getMainPageSuffix());
+      accessBuilder.setNotFoundPage(websiteConfig.getNotFoundPage());
     }
-    if (bucketPb.getLifecycle() != null && bucketPb.getLifecycle().getRule() != null) {
-      builder.setLifecycleRules(
+    if (bucketProto.getLifecycle() != null && bucketProto.getLifecycle().getRule() != null) {
+      accessBuilder.setLifecycleRules(
           transform(
-              bucketPb.getLifecycle().getRule(),
-              new Function<Rule, LifecycleRule>() {
+              bucketProto.getLifecycle().getRule(),
+              new Function<Rule, LifecyclePolicy>() {
                 @Override
-                public LifecycleRule apply(Rule rule) {
-                  return LifecycleRule.fromPb(rule);
+                public BucketInfo.LifecyclePolicy apply(Rule rule) {
+                  return LifecyclePolicy.fromProto(rule);
                 }
               }));
-      builder.setDeleteRules(
+      accessBuilder.setDeleteRules(
           transform(
-              bucketPb.getLifecycle().getRule(),
-              new Function<Rule, DeleteRule>() {
+              bucketProto.getLifecycle().getRule(),
+              new Function<Rule, DeletionRule>() {
                 @Override
-                public DeleteRule apply(Rule rule) {
-                  return DeleteRule.fromPb(rule);
+                public BucketInfo.DeletionRule apply(Rule rule) {
+                  return DeletionRule.fromProto(rule);
                 }
               }));
     }
-    if (bucketPb.getLabels() != null) {
-      builder.setLabels(bucketPb.getLabels());
+    if (bucketProto.getLabels() != null) {
+      accessBuilder.setLabels(bucketProto.getLabels());
     }
-    Bucket.Billing billing = bucketPb.getBilling();
-    if (billing != null) {
-      builder.setRequesterPays(billing.getRequesterPays());
+    Bucket.Billing billingInfo = bucketProto.getBilling();
+    if (billingInfo != null) {
+      accessBuilder.setRequesterPays(billingInfo.getRequesterPays());
     }
-    Encryption encryption = bucketPb.getEncryption();
-    if (encryption != null
-        && encryption.getDefaultKmsKeyName() != null
-        && !encryption.getDefaultKmsKeyName().isEmpty()) {
-      builder.setDefaultKmsKeyName(encryption.getDefaultKmsKeyName());
+    Encryption cryptoSettings = bucketProto.getEncryption();
+    if (cryptoSettings != null
+        && cryptoSettings.getDefaultKmsKeyName() != null
+        && !cryptoSettings.getDefaultKmsKeyName().isEmpty()) {
+      accessBuilder.setDefaultKmsKeyName(cryptoSettings.getDefaultKmsKeyName());
     }
-    if (bucketPb.getDefaultEventBasedHold() != null) {
-      builder.setDefaultEventBasedHold(bucketPb.getDefaultEventBasedHold());
+    if (bucketProto.getDefaultEventBasedHold() != null) {
+      accessBuilder.setDefaultEventBasedHold(bucketProto.getDefaultEventBasedHold());
     }
-    Bucket.RetentionPolicy retentionPolicy = bucketPb.getRetentionPolicy();
-    if (retentionPolicy != null) {
-      if (retentionPolicy.getEffectiveTime() != null) {
-        builder.setRetentionEffectiveTime(retentionPolicy.getEffectiveTime().getValue());
+    Bucket.RetentionPolicy retentionConfig = bucketProto.getRetentionPolicy();
+    if (retentionConfig != null) {
+      if (retentionConfig.getEffectiveTime() != null) {
+        accessBuilder.setRetentionEffectiveTime(retentionConfig.getEffectiveTime().getValue());
       }
-      if (retentionPolicy.getIsLocked() != null) {
-        builder.setRetentionPolicyIsLocked(retentionPolicy.getIsLocked());
+      if (retentionConfig.getIsLocked() != null) {
+        accessBuilder.setRetentionPolicyIsLocked(retentionConfig.getIsLocked());
       }
-      if (retentionPolicy.getRetentionPeriod() != null) {
-        builder.setRetentionPeriod(retentionPolicy.getRetentionPeriod());
+      if (retentionConfig.getRetentionPeriod() != null) {
+        accessBuilder.setRetentionPeriod(retentionConfig.getRetentionPeriod());
       }
     }
-    Bucket.IamConfiguration iamConfiguration = bucketPb.getIamConfiguration();
+    Bucket.IamConfiguration iamConfig = bucketProto.getIamConfiguration();
 
-    if (bucketPb.getLocationType() != null) {
-      builder.setLocationType(bucketPb.getLocationType());
+    if (bucketProto.getLocationType() != null) {
+      accessBuilder.setLocationType(bucketProto.getLocationType());
     }
 
-    if (iamConfiguration != null) {
-      builder.setIamConfiguration(IamConfiguration.fromPb(iamConfiguration));
+    if (iamConfig != null) {
+      accessBuilder.setIamConfiguration(BucketIamConfiguration.fromProto(iamConfig));
     }
-    Bucket.Logging logging = bucketPb.getLogging();
-    if (logging != null) {
-      builder.setLogging(Logging.fromPb(logging));
+    Bucket.Logging loggingConfig = bucketProto.getLogging();
+    if (loggingConfig != null) {
+      accessBuilder.setLogging(LoggingConfig.fromProto(loggingConfig));
     }
-    return builder.build();
+    return accessBuilder.buildInstance();
   }
 }

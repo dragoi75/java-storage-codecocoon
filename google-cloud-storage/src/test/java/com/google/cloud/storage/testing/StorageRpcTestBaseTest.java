@@ -30,8 +30,9 @@ import com.google.api.services.storage.model.ServiceAccount;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.api.services.storage.model.TestIamPermissionsResponse;
 import com.google.cloud.Tuple;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import com.google.cloud.storage.spi.v1.RpcBatch;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -46,8 +47,8 @@ public class StorageRpcTestBaseTest {
 
   private Callable rpc;
 
-  private static final StorageRpc STORAGE_RPC = new StorageRpcTestBase();
-  private static final Map<StorageRpc.Option, Object> OPTIONS = new HashMap<>();
+  private static final CloudStorageRpcClient STORAGE_RPC = new StorageRpcTestBase();
+  private static final Map<CloudStorageRpcClient.StorageOption, Object> OPTIONS = new HashMap<>();
   private static final Bucket BUCKET = new Bucket().setName("fake-bucket");
   private static final byte[] BYTES = {0, 1, 2, 3, 4, 5, 6, 7};
   private static final StorageObject OBJECT =
@@ -271,9 +272,9 @@ public class StorageRpcTestBaseTest {
   @Test
   public void testOpenRewrite() {
     rpc =
-        new Callable<StorageRpc.RewriteResponse>() {
+        new Callable<CloudStorageRpcClient.RewriteOperationResponse>() {
           @Override
-          public StorageRpc.RewriteResponse call() {
+          public CloudStorageRpcClient.RewriteOperationResponse call() {
             return STORAGE_RPC.openRewrite(null);
           }
         };
@@ -282,9 +283,9 @@ public class StorageRpcTestBaseTest {
   @Test
   public void testContinueRewrite() {
     rpc =
-        new Callable<StorageRpc.RewriteResponse>() {
+        new Callable<CloudStorageRpcClient.RewriteOperationResponse>() {
           @Override
-          public StorageRpc.RewriteResponse call() {
+          public CloudStorageRpcClient.RewriteOperationResponse call() {
             return STORAGE_RPC.continueRewrite(null);
           }
         };

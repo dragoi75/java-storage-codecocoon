@@ -20,20 +20,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class OptionTest {
 
-  private static final StorageRpc.Option RPC_OPTION = StorageRpc.Option.DELIMITER;
-  private static final StorageRpc.Option ANOTHER_RPC_OPTION = StorageRpc.Option.FIELDS;
+  private static final CloudStorageRpcClient.StorageOption RPC_OPTION = CloudStorageRpcClient.StorageOption.DELIMITER;
+  private static final CloudStorageRpcClient.StorageOption ANOTHER_RPC_OPTION = CloudStorageRpcClient.StorageOption.FIELDS;
   private static final String VALUE = "some value";
   private static final String OTHER_VALUE = "another value";
-  private static final Option OPTION = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_EQUALS = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_NOT_EQUALS1 = new Option(RPC_OPTION, OTHER_VALUE) {};
-  private static final Option OPTION_NOT_EQUALS2 = new Option(ANOTHER_RPC_OPTION, VALUE) {};
+  private static final RpcOptionEntry OPTION = new RpcOptionEntry(RPC_OPTION, VALUE) {};
+  private static final RpcOptionEntry OPTION_EQUALS = new RpcOptionEntry(RPC_OPTION, VALUE) {};
+  private static final RpcOptionEntry OPTION_NOT_EQUALS1 = new RpcOptionEntry(RPC_OPTION, OTHER_VALUE) {};
+  private static final RpcOptionEntry OPTION_NOT_EQUALS2 = new RpcOptionEntry(ANOTHER_RPC_OPTION, VALUE) {};
 
   @Test
   public void testEquals() {
@@ -51,11 +51,11 @@ public class OptionTest {
   public void testConstructor() {
     assertEquals(RPC_OPTION, OPTION.getRpcOption());
     assertEquals(VALUE, OPTION.getValue());
-    Option option = new Option(RPC_OPTION, null) {};
+    RpcOptionEntry option = new RpcOptionEntry(RPC_OPTION, null) {};
     assertEquals(RPC_OPTION, option.getRpcOption());
     assertNull(option.getValue());
     try {
-      new Option(null, VALUE) {};
+      new RpcOptionEntry(null, VALUE) {};
       Assert.fail();
     } catch (NullPointerException expected) {
     }

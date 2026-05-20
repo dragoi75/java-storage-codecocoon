@@ -31,7 +31,7 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.RestorableState;
 import com.google.cloud.Tuple;
 import com.google.cloud.storage.spi.StorageRpcFactory;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -47,25 +47,25 @@ public class BlobReadChannelTest {
 
   private static final String BUCKET_NAME = "b";
   private static final String BLOB_NAME = "n";
-  private static final BlobId BLOB_ID = BlobId.of(BUCKET_NAME, BLOB_NAME, -1L);
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final BlobIdentifier BLOB_ID = BlobIdentifier.create(BUCKET_NAME, BLOB_NAME, -1L);
+  private static final Map<CloudStorageRpcClient.StorageOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
   private static final int DEFAULT_CHUNK_SIZE = 2 * 1024 * 1024;
   private static final int CUSTOM_CHUNK_SIZE = 2 * 1024 * 1024;
   private static final Random RANDOM = new Random();
 
-  private StorageOptions options;
+  private StorageSettings options;
   private StorageRpcFactory rpcFactoryMock;
-  private StorageRpc storageRpcMock;
+  private CloudStorageRpcClient storageRpcMock;
   private BlobReadChannel reader;
 
   @Before
   public void setUp() {
     rpcFactoryMock = createMock(StorageRpcFactory.class);
-    storageRpcMock = createMock(StorageRpc.class);
-    expect(rpcFactoryMock.create(anyObject(StorageOptions.class))).andReturn(storageRpcMock);
+    storageRpcMock = createMock(CloudStorageRpcClient.class);
+    expect(rpcFactoryMock.create(anyObject(StorageSettings.class))).andReturn(storageRpcMock);
     replay(rpcFactoryMock);
     options =
-        StorageOptions.newBuilder()
+        StorageSettings.newStorageBuilder()
             .setProjectId("projectId")
             .setServiceRpcFactory(rpcFactoryMock)
             .build();
@@ -89,7 +89,7 @@ public class BlobReadChannelTest {
     byte[] result = randomByteArray(DEFAULT_CHUNK_SIZE);
     ByteBuffer firstReadBuffer = ByteBuffer.allocate(42);
     ByteBuffer secondReadBuffer = ByteBuffer.allocate(42);
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
     reader.read(firstReadBuffer);
@@ -111,11 +111,11 @@ public class BlobReadChannelTest {
     byte[] secondResult = randomByteArray(DEFAULT_CHUNK_SIZE);
     ByteBuffer firstReadBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
     ByteBuffer secondReadBuffer = ByteBuffer.allocate(42);
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", firstResult));
     expect(
             storageRpcMock.read(
-                BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, CUSTOM_CHUNK_SIZE))
+                BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, CUSTOM_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", secondResult));
     replay(storageRpcMock);
     reader.read(firstReadBuffer);
@@ -130,7 +130,7 @@ public class BlobReadChannelTest {
     reader = new BlobReadChannel(options, BLOB_ID, EMPTY_RPC_OPTIONS);
     byte[] result = {};
     ByteBuffer readBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
     assertEquals(-1, reader.read(readBuffer));
@@ -142,7 +142,7 @@ public class BlobReadChannelTest {
     reader.seek(42);
     byte[] result = randomByteArray(DEFAULT_CHUNK_SIZE);
     ByteBuffer readBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 42, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 42, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
     reader.read(readBuffer);
@@ -174,17 +174,17 @@ public class BlobReadChannelTest {
 
   @Test
   public void testReadGenerationChanged() throws IOException {
-    BlobId blobId = BlobId.of(BUCKET_NAME, BLOB_NAME);
+    BlobIdentifier blobId = BlobIdentifier.create(BUCKET_NAME, BLOB_NAME);
     reader = new BlobReadChannel(options, blobId, EMPTY_RPC_OPTIONS);
     byte[] firstResult = randomByteArray(DEFAULT_CHUNK_SIZE);
     byte[] secondResult = randomByteArray(DEFAULT_CHUNK_SIZE);
     ByteBuffer firstReadBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
     ByteBuffer secondReadBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
-    expect(storageRpcMock.read(blobId.toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(blobId.toStorageObject(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag1", firstResult));
     expect(
             storageRpcMock.read(
-                blobId.toPb(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_SIZE))
+                blobId.toStorageObject(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag2", secondResult));
     replay(storageRpcMock);
     reader.read(firstReadBuffer);
@@ -204,9 +204,9 @@ public class BlobReadChannelTest {
     byte[] secondResult = randomByteArray(DEFAULT_CHUNK_SIZE);
     ByteBuffer firstReadBuffer = ByteBuffer.allocate(42);
     ByteBuffer secondReadBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", firstResult));
-    expect(storageRpcMock.read(BLOB_ID.toPb(), EMPTY_RPC_OPTIONS, 42, DEFAULT_CHUNK_SIZE))
+    expect(storageRpcMock.read(BLOB_ID.toStorageObject(), EMPTY_RPC_OPTIONS, 42, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", secondResult));
     replay(storageRpcMock);
     reader = new BlobReadChannel(options, BLOB_ID, EMPTY_RPC_OPTIONS);

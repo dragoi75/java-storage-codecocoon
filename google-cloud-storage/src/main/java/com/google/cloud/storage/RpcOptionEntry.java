@@ -18,51 +18,51 @@ package com.google.cloud.storage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpcClient;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;
 
 /** Base class for Storage operation option. */
-public abstract class Option implements Serializable {
+public abstract class RpcOptionEntry implements Serializable {
 
   private static final long serialVersionUID = -73199088766477208L;
 
-  private final StorageRpc.Option rpcOption;
-  private final Object value;
+  private final CloudStorageRpcClient.StorageOption callOption;
+  private final Object payload;
 
-  Option(StorageRpc.Option rpcOption, Object value) {
-    this.rpcOption = checkNotNull(rpcOption);
-    this.value = value;
+  RpcOptionEntry(CloudStorageRpcClient.StorageOption callOption, Object payload) {
+    this.callOption = checkNotNull(callOption);
+    this.payload = payload;
   }
 
-  StorageRpc.Option getRpcOption() {
-    return rpcOption;
+  CloudStorageRpcClient.StorageOption getRpcOption() {
+    return callOption;
   }
 
   Object getValue() {
-    return value;
+    return payload;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof Option)) {
+  public boolean equals(Object otherEntry) {
+    if (!(otherEntry instanceof RpcOptionEntry)) {
       return false;
     }
-    Option other = (Option) obj;
-    return Objects.equals(rpcOption, other.rpcOption) && Objects.equals(value, other.value);
+    RpcOptionEntry thatEntry = (RpcOptionEntry) otherEntry;
+    return Objects.equals(callOption, thatEntry.callOption) && Objects.equals(payload, thatEntry.payload);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rpcOption, value);
+    return Objects.hash(callOption, payload);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", rpcOption.value())
-        .add("value", value)
+        .add("name", callOption.getValue())
+        .add("value", payload)
         .toString();
   }
 }
