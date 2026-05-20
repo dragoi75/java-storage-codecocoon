@@ -16,9 +16,8 @@
 
 package com.google.cloud.storage;
 
-import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.BucketInfo.BuilderImpl;
+import com.google.cloud.storage.BucketMetadata.BucketBuilderImpl;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -33,17 +32,17 @@ public final class PackagePrivateMethodWorkarounds {
 
   private PackagePrivateMethodWorkarounds() {}
 
-  public static Bucket bucketCopyWithStorage(Bucket b, Storage s) {
-    BucketInfo.BuilderImpl builder = (BuilderImpl) BucketInfo.fromPb(b.toPb()).toBuilder();
-    return new Bucket(s, builder);
+  public static StorageBucket bucketCopyWithStorage(StorageBucket b, Storage s) {
+    BucketMetadata.BucketBuilderImpl builder = (BucketBuilderImpl) BucketMetadata.fromProto(b.toProto()).asBuilder();
+    return new StorageBucket(s, builder);
   }
 
-  public static Blob blobCopyWithStorage(Blob b, Storage s) {
-    BlobInfo.BuilderImpl builder = (BlobInfo.BuilderImpl) BlobInfo.fromPb(b.toPb()).toBuilder();
-    return new Blob(s, builder);
+  public static StorageObject blobCopyWithStorage(StorageObject b, Storage s) {
+    BlobMetadata.BlobInfoBuilderImpl builder = (BlobMetadata.BlobInfoBuilderImpl) BlobMetadata.fromProto(b.toProto()).toInfoBuilder();
+    return new StorageObject(s, builder);
   }
 
-  public static Function<WriteChannel, Optional<StorageObject>> maybeGetStorageObjectFunction() {
+  public static Function<WriteChannel, Optional<com.google.api.services.storage.model.StorageObject>> maybeGetStorageObjectFunction() {
     return (w) -> {
       if (w instanceof BlobWriteChannel) {
         BlobWriteChannel blobWriteChannel = (BlobWriteChannel) w;

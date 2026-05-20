@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /** Write channel implementation to upload Google Cloud Storage blobs. */
-class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
+class BlobWriteChannel extends BaseWriteChannel<StorageClientOptions, BlobMetadata> {
 
   private final ResultRetryAlgorithm<?> algorithmForWrite;
   // Detect if flushBuffer() is being retried or not.
@@ -44,8 +44,8 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   private StorageObject storageObject;
 
   BlobWriteChannel(
-      StorageOptions storageOptions,
-      BlobInfo blobInfo,
+      StorageClientOptions storageOptions,
+      BlobMetadata blobInfo,
       String uploadId,
       ResultRetryAlgorithm<?> algorithmForWrite) {
     super(storageOptions, blobInfo, uploadId);
@@ -71,7 +71,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     return getOptions().getStorageRpcV1().getCurrentUploadOffset(getUploadId());
   }
 
-  private static StorageException unrecoverableState(
+  private static StorageServiceException unrecoverableState(
       String uploadId,
       int chunkOffset,
       int chunkLength,
@@ -88,7 +88,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
         "Unable to recover in upload.\nThis may be a symptom of multiple clients uploading to the same upload session.");
   }
 
-  private static StorageException errorResolvingMetadataLastChunk(
+  private static StorageServiceException errorResolvingMetadataLastChunk(
       String uploadId,
       int chunkOffset,
       int chunkLength,
@@ -105,7 +105,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
         "Unable to load object metadata to determine if last chunk was successfully written");
   }
 
-  private static StorageException unrecoverableState(
+  private static StorageServiceException unrecoverableState(
       String uploadId,
       int chunkOffset,
       int chunkLength,
@@ -122,7 +122,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     sb.append("localOffset: ").append(localPosition).append('\n');
     sb.append("remoteOffset: ").append(remotePosition).append('\n');
     sb.append("lastChunk: ").append(last).append("\n\n");
-    return new StorageException(0, sb.toString());
+    return new StorageServiceException(0, sb.toString());
   }
 
   // Retriable interruption occurred.
@@ -272,7 +272,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
           algorithmForWrite,
           getOptions().getClock());
     } catch (RetryHelper.RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageServiceException.translateAndRethrow(e);
     }
   }
 
@@ -286,17 +286,17 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
   }
 
   static final class Builder {
-    private StorageOptions storageOptions;
-    private BlobInfo blobInfo;
+    private StorageClientOptions storageOptions;
+    private BlobMetadata blobInfo;
     private Supplier<@NonNull String> uploadIdSupplier;
     private ResultRetryAlgorithm<?> algorithmForWrite;
 
-    public Builder setStorageOptions(StorageOptions storageOptions) {
+    public Builder setStorageOptions(StorageClientOptions storageOptions) {
       this.storageOptions = storageOptions;
       return this;
     }
 
-    public Builder setBlobInfo(BlobInfo blobInfo) {
+    public Builder setBlobInfo(BlobMetadata blobInfo) {
       this.blobInfo = blobInfo;
       return this;
     }
@@ -321,7 +321,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
     }
   }
 
-  static class StateImpl extends BaseWriteChannel.BaseState<StorageOptions, BlobInfo> {
+  static class StateImpl extends BaseWriteChannel.BaseState<StorageClientOptions, BlobMetadata> {
 
     private static final long serialVersionUID = -9028324143780151286L;
 
@@ -332,10 +332,10 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
       this.algorithmForWrite = builder.algorithmForWrite;
     }
 
-    static class Builder extends BaseWriteChannel.BaseState.Builder<StorageOptions, BlobInfo> {
+    static class Builder extends BaseWriteChannel.BaseState.Builder<StorageClientOptions, BlobMetadata> {
       private ResultRetryAlgorithm<?> algorithmForWrite;
 
-      private Builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
+      private Builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
         super(options, blobInfo, uploadId);
       }
 
@@ -350,7 +350,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
       }
     }
 
-    static Builder builder(StorageOptions options, BlobInfo blobInfo, String uploadId) {
+    static Builder builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
       return new Builder(options, blobInfo, uploadId);
     }
 
@@ -367,7 +367,7 @@ class BlobWriteChannel extends BaseWriteChannel<StorageOptions, BlobInfo> {
         channel.restore(this);
         return channel;
       } catch (Exception e) {
-        throw StorageException.coalesce(e);
+        throw StorageServiceException.coalesceException(e);
       }
     }
   }

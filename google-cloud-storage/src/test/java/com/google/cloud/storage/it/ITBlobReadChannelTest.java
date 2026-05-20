@@ -21,11 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.BucketInfo;
+import com.google.cloud.storage.BlobMetadata;
+import com.google.cloud.storage.BucketMetadata;
 import com.google.cloud.storage.DataGeneration;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.StorageClientOptions;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.io.ByteStreams;
 import java.io.File;
@@ -60,10 +60,10 @@ public final class ITBlobReadChannelTest {
 
   @Before
   public void setUp() throws Exception {
-    storage = StorageOptions.newBuilder().build().getService();
+    storage = StorageClientOptions.newStorageClientBuilder().build().getService();
 
     bucketName = RemoteStorageHelper.generateBucketName();
-    storage.create(BucketInfo.of(bucketName));
+    storage.create(BucketMetadata.ofName(bucketName));
     blobName = String.format("%s/src", testName.getMethodName());
   }
 
@@ -111,9 +111,9 @@ public final class ITBlobReadChannelTest {
 
   @Test
   public void testLimit_downloadToFile() throws IOException {
-    BlobId blobId = BlobId.of(bucketName, blobName);
+    BlobId blobId = BlobId.from(bucketName, blobName);
     ByteBuffer content = dataGeneration.randByteBuffer(108);
-    try (WriteChannel writer = storage.writer(BlobInfo.newBuilder(blobId).build())) {
+    try (WriteChannel writer = storage.writer(BlobMetadata.newBuilder(blobId).buildObject())) {
       writer.write(content);
     }
 
@@ -143,7 +143,7 @@ public final class ITBlobReadChannelTest {
 
   private void doLimitTest(int srcContentSize, int rangeBegin, int rangeEnd, int chunkSize)
       throws IOException {
-    BlobInfo src = BlobInfo.newBuilder(bucketName, blobName).build();
+    BlobMetadata src = BlobMetadata.newBuilder(bucketName, blobName).buildObject();
     ByteBuffer content = dataGeneration.randByteBuffer(srcContentSize);
     ByteBuffer dup = content.duplicate();
     dup.position(rangeBegin);

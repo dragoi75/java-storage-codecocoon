@@ -24,7 +24,7 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.conformance.storage.v1.SigningV4Test;
 import com.google.cloud.conformance.storage.v1.TestFile;
 import com.google.cloud.conformance.storage.v1.UrlStyle;
-import com.google.cloud.storage.Storage.SignUrlOption;
+import com.google.cloud.storage.Storage.UrlSigningOption;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.base.Charsets;
 import com.google.protobuf.Timestamp;
@@ -101,19 +101,19 @@ public class V4SigningTest {
             .build()
             .getService();
 
-    BlobInfo blob = BlobInfo.newBuilder(testData.getBucket(), testData.getObject()).build();
+    BlobMetadata blob = BlobMetadata.newBuilder(testData.getBucket(), testData.getObject()).buildObject();
 
-    SignUrlOption style = SignUrlOption.withPathStyle();
+    Storage.UrlSigningOption style = Storage.UrlSigningOption.enablePathStyle();
 
     if (testData.getUrlStyle().equals(UrlStyle.VIRTUAL_HOSTED_STYLE)) {
-      style = SignUrlOption.withVirtualHostedStyle();
+      style = UrlSigningOption.enableVirtualHostedStyle();
     } else if (testData.getUrlStyle().equals(UrlStyle.PATH_STYLE)) {
-      style = SignUrlOption.withPathStyle();
+      style = Storage.UrlSigningOption.enablePathStyle();
     } else if (testData.getUrlStyle().equals(UrlStyle.BUCKET_BOUND_HOSTNAME)) {
       style =
-          SignUrlOption.withBucketBoundHostname(
+          Storage.UrlSigningOption.withBucketBoundHostname(
               testData.getBucketBoundHostname(),
-              Storage.UriScheme.valueOf(testData.getScheme().toUpperCase()));
+              Storage.UriSchemeType.valueOf(testData.getScheme().toUpperCase()));
     }
 
     final String signedUrl =
@@ -122,10 +122,10 @@ public class V4SigningTest {
                 blob,
                 testData.getExpiration(),
                 TimeUnit.SECONDS,
-                SignUrlOption.httpMethod(HttpMethod.valueOf(testData.getMethod())),
-                SignUrlOption.withExtHeaders(testData.getHeadersMap()),
-                SignUrlOption.withV4Signature(),
-                SignUrlOption.withQueryParams(testData.getQueryParametersMap()),
+                Storage.UrlSigningOption.withHttpMethod(HttpRequestMethod.fromValue(testData.getMethod())),
+                Storage.UrlSigningOption.includeExtHeaders(testData.getHeadersMap()),
+                Storage.UrlSigningOption.useV4Signature(),
+                Storage.UrlSigningOption.setQueryParams(testData.getQueryParametersMap()),
                 style)
             .toString();
     assertEquals(testData.getExpectedUrl(), signedUrl);

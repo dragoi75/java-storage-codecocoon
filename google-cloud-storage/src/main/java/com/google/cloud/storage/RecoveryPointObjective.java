@@ -26,45 +26,45 @@ import com.google.cloud.StringEnumValue;
  * @see <a
  *     href="https://cloud.google.com/storage/docs/turbo-replication">https://cloud.google.com/storage/docs/turbo-replication</a>
  */
-public final class Rpo extends StringEnumValue {
+public final class RecoveryPointObjective extends StringEnumValue {
 
   private static final long serialVersionUID = -3954216195295821508L;
 
-  private Rpo(String constant) {
-    super(constant);
+  private RecoveryPointObjective(String value) {
+    super(value);
   }
 
-  private static final ApiFunction<String, Rpo> CONSTRUCTOR = Rpo::new;
+  private static final ApiFunction<String, RecoveryPointObjective> FROM_STRING_FACTORY = RecoveryPointObjective::new;
 
-  private static final StringEnumType<Rpo> type = new StringEnumType<>(Rpo.class, CONSTRUCTOR);
+  private static final StringEnumType<RecoveryPointObjective> RECOVERY_POINT_ENUM = new StringEnumType<>(RecoveryPointObjective.class, FROM_STRING_FACTORY);
 
   /**
    * Default recovery point objective. With this setting, there is no guarantee on the amount of
    * time it takes for data to replicate between regions.
    */
-  public static final Rpo DEFAULT = type.createAndRegister("DEFAULT");
+  public static final RecoveryPointObjective DEFAULT = RECOVERY_POINT_ENUM.createAndRegister("DEFAULT");
 
   /**
    * Turbo recovery point objective. With this setting, data in a dual-region bucket will replicate
    * between regions within 15 minutes.
    */
-  public static final Rpo ASYNC_TURBO = type.createAndRegister("ASYNC_TURBO");
+  public static final RecoveryPointObjective ASYNC_TURBO = RECOVERY_POINT_ENUM.createAndRegister("ASYNC_TURBO");
 
   /**
    * Get the Rpo for the given String constant, and throw an exception if the constant is not
    * recognized.
    */
-  public static Rpo valueOfStrict(String constant) {
-    return type.valueOfStrict(constant);
+  public static RecoveryPointObjective valueOfStrict(String value) {
+    return RECOVERY_POINT_ENUM.valueOfStrict(value);
   }
 
   /** Get the Rpo for the given String constant, and allow unrecognized values. */
-  public static Rpo valueOf(String constant) {
-    return type.valueOf(constant);
+  public static RecoveryPointObjective fromValue(String value) {
+    return RECOVERY_POINT_ENUM.valueOf(value);
   }
 
   /** Return the known values for Rpo. */
-  public static Rpo[] values() {
-    return type.values();
+  public static RecoveryPointObjective[] values() {
+    return RECOVERY_POINT_ENUM.values();
   }
 }

@@ -22,26 +22,26 @@ import org.junit.Test;
 
 public class BlobIdTest {
 
-  private static final BlobId BLOB = BlobId.of("b", "n");
+  private static final BlobId BLOB = BlobId.from("b", "n");
 
   @Test
   public void testOf() {
-    BlobId blobId = BlobId.of("b", "n");
+    BlobId blobId = BlobId.from("b", "n");
     assertEquals("b", blobId.getBucket());
     assertEquals("n", blobId.getName());
   }
 
   @Test
   public void testToFromGsUtilUri() {
-    BlobId blobId = BlobId.fromGsUtilUri("gs://bucket/path/to/blob");
+    BlobId blobId = BlobId.fromGsUri("gs://bucket/path/to/blob");
     assertEquals("bucket", blobId.getBucket());
     assertEquals("path/to/blob", blobId.getName());
-    assertEquals("gs://bucket/path/to/blob", blobId.toGsUtilUri());
+    assertEquals("gs://bucket/path/to/blob", blobId.toGsUri());
   }
 
   @Test
   public void testEquals() {
-    compareBlobIds(BLOB, BlobId.of("b", "n"));
+    compareBlobIds(BLOB, BlobId.from("b", "n"));
   }
 
   private void compareBlobIds(BlobId expected, BlobId value) {
@@ -53,6 +53,6 @@ public class BlobIdTest {
 
   @Test
   public void testToPbAndFromPb() {
-    compareBlobIds(BLOB, BlobId.fromPb(BLOB.toPb()));
+    compareBlobIds(BLOB, BlobId.fromProto(BLOB.toProto()));
   }
 }

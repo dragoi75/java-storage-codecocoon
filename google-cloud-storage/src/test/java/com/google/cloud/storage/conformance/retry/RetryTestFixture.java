@@ -22,7 +22,7 @@ import com.google.api.gax.retrying.RetrySettings;
 import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.cloud.NoCredentials;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.StorageClientOptions;
 import com.google.cloud.storage.conformance.retry.TestBench.RetryTestResource;
 import com.google.common.collect.ImmutableMap;
 import java.util.logging.Logger;
@@ -119,13 +119,13 @@ final class RetryTestFixture implements TestRule {
   }
 
   private Storage newStorage(boolean forTest) {
-    StorageOptions.Builder builder =
-        StorageOptions.newBuilder()
+    StorageClientOptions.StorageClientBuilder builder =
+        StorageClientOptions.newStorageClientBuilder()
             .setHost(testBench.getBaseUri())
             .setCredentials(NoCredentials.getInstance())
             .setProjectId(testRetryConformance.getProjectId());
     RetrySettings.Builder retrySettingsBuilder =
-        StorageOptions.getDefaultRetrySettings().toBuilder();
+        StorageClientOptions.getDefaultRetrySettings().toBuilder();
     if (forTest) {
       builder
           .setHeaderProvider(

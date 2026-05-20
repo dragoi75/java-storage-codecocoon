@@ -20,7 +20,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.fail;
 
-import com.google.cloud.storage.StorageException;
+import com.google.cloud.storage.StorageServiceException;
 import com.google.cloud.storage.conformance.retry.CtxFunctions.ResourceSetup;
 import com.google.cloud.storage.conformance.retry.CtxFunctions.ResourceTeardown;
 import com.google.cloud.storage.conformance.retry.Functions.CtxFunction;
@@ -89,7 +89,7 @@ final class RpcMethodMapping {
         try {
           test.apply(ctx, c);
           fail("expected failure, but succeeded");
-        } catch (StorageException e) {
+        } catch (StorageServiceException e) {
           // We expect an exception to be thrown by mapping and test retry conformance config
           // Verify that the exception we received is actually what we expect.
           boolean matchExpectedCode = false;

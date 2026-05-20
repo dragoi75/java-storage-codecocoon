@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.cloud.BaseService;
 import com.google.cloud.ExceptionHandler;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import java.net.URL;
 import java.util.function.Supplier;
 import org.junit.Assert;
@@ -41,20 +41,20 @@ public final class ResumableMediaTest {
   public void startUploadForSignedUrl_expectStorageException_whenUrlInvalid() throws Exception {
     try {
       ResumableMedia.startUploadForSignedUrl(
-              StorageOptions.newBuilder().build(),
+              StorageClientOptions.newStorageClientBuilder().build(),
               new URL(SIGNED_URL_INVALID),
               createResultExceptionHandler)
           .get();
       Assert.fail();
-    } catch (StorageException ex) {
+    } catch (StorageServiceException ex) {
       assertNotNull(ex.getMessage());
     }
   }
 
   @Test
   public void startUploadForSignedUrl_whenUrlValid() throws Exception {
-    StorageRpc rpc = mock(StorageRpc.class);
-    StorageOptions options = StorageOptions.newBuilder().setServiceRpcFactory(opts -> rpc).build();
+    StorageRpcClient rpc = mock(StorageRpcClient.class);
+    StorageClientOptions options = StorageClientOptions.newStorageClientBuilder().setServiceRpcFactory(opts -> rpc).build();
 
     URL url = new URL(SIGNED_URL_VALID);
     when(rpc.open(url.toString())).thenReturn("upload-id");

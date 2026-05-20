@@ -19,15 +19,15 @@ package com.google.cloud.storage;
 import static com.google.cloud.RetryHelper.runWithRetries;
 import static com.google.cloud.storage.PolicyHelper.convertToApiPolicy;
 import static com.google.cloud.storage.SignedUrlEncodingHelper.Rfc3986UriEncode;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.DELIMITER;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_GENERATION_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_GENERATION_NOT_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_METAGENERATION_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_METAGENERATION_NOT_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_SOURCE_GENERATION_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_SOURCE_GENERATION_NOT_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_SOURCE_METAGENERATION_MATCH;
-import static com.google.cloud.storage.spi.v1.StorageRpc.Option.IF_SOURCE_METAGENERATION_NOT_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.DELIMITER;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_GENERATION_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_GENERATION_NOT_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_METAGENERATION_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_METAGENERATION_NOT_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_SOURCE_GENERATION_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_SOURCE_GENERATION_NOT_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_SOURCE_METAGENERATION_MATCH;
+import static com.google.cloud.storage.spi.v1.StorageRpcClient.StorageOption.IF_SOURCE_METAGENERATION_NOT_MATCH;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -38,7 +38,6 @@ import com.google.api.gax.paging.Page;
 import com.google.api.gax.retrying.ResultRetryAlgorithm;
 import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.api.services.storage.model.StorageObject;
 import com.google.auth.ServiceAccountSigner;
 import com.google.cloud.BaseService;
 import com.google.cloud.BatchResult;
@@ -49,15 +48,12 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.RetryHelper.RetryHelperException;
 import com.google.cloud.Tuple;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.Acl.Entity;
-import com.google.cloud.storage.Blob.BlobSourceOption;
-import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
-import com.google.cloud.storage.PostPolicyV4.ConditionV4Type;
-import com.google.cloud.storage.PostPolicyV4.PostConditionsV4;
-import com.google.cloud.storage.PostPolicyV4.PostFieldsV4;
-import com.google.cloud.storage.PostPolicyV4.PostPolicyV4Document;
-import com.google.cloud.storage.spi.v1.StorageRpc;
-import com.google.cloud.storage.spi.v1.StorageRpc.RewriteRequest;
+import com.google.cloud.storage.AccessControlEntry.AbstractEntity;
+import com.google.cloud.storage.HmacSecretKey.HmacKeyDetails;
+import com.google.cloud.storage.S3PostPolicyV4.ConditionTypeV4;
+import com.google.cloud.storage.S3PostPolicyV4.PostConditionsV4Model;
+import com.google.cloud.storage.S3PostPolicyV4.PostPolicyV4Payload;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -98,7 +94,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-final class StorageImpl extends BaseService<StorageOptions> implements Storage {
+final class StorageImpl extends BaseService<StorageClientOptions> implements Storage {
 
   private static final byte[] EMPTY_BYTE_ARRAY = {};
   private static final String EMPTY_BYTE_ARRAY_MD5 = "1B2M2Y8AsgTpgAmY7PhCfg==";
@@ -113,56 +109,56 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   private static final int MIN_BUFFER_SIZE = 256 * 1024;
 
   private final RetryAlgorithmManager retryAlgorithmManager;
-  private final StorageRpc storageRpc;
+  private final StorageRpcClient storageRpc;
 
-  StorageImpl(StorageOptions options) {
+  StorageImpl(StorageClientOptions options) {
     super(options);
     this.retryAlgorithmManager = options.getRetryAlgorithmManager();
     this.storageRpc = options.getStorageRpcV1();
   }
 
   @Override
-  public Bucket create(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
+  public StorageBucket create(BucketMetadata bucketInfo, BucketTargetOptions... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsCreate(bucketPb, optionsMap);
     return run(
-        algorithm, () -> storageRpc.create(bucketPb, optionsMap), (b) -> Bucket.fromPb(this, b));
+        algorithm, () -> storageRpc.create(bucketPb, optionsMap), (b) -> StorageBucket.fromProto(this, b));
   }
 
   @Override
-  public Blob create(BlobInfo blobInfo, BlobTargetOption... options) {
-    BlobInfo updatedInfo =
+  public StorageObject create(BlobMetadata blobInfo, BlobUploadOption... options) {
+    BlobMetadata updatedInfo =
         blobInfo
-            .toBuilder()
+            .toInfoBuilder()
             .setMd5(EMPTY_BYTE_ARRAY_MD5)
             .setCrc32c(EMPTY_BYTE_ARRAY_CRC32C)
-            .build();
+            .buildObject();
     return internalCreate(updatedInfo, EMPTY_BYTE_ARRAY, 0, 0, options);
   }
 
   @Override
-  public Blob create(BlobInfo blobInfo, byte[] content, BlobTargetOption... options) {
+  public StorageObject create(BlobMetadata blobInfo, byte[] content, BlobUploadOption... options) {
     content = firstNonNull(content, EMPTY_BYTE_ARRAY);
-    BlobInfo updatedInfo =
+    BlobMetadata updatedInfo =
         blobInfo
-            .toBuilder()
+            .toInfoBuilder()
             .setMd5(BaseEncoding.base64().encode(Hashing.md5().hashBytes(content).asBytes()))
             .setCrc32c(
                 BaseEncoding.base64()
                     .encode(Ints.toByteArray(Hashing.crc32c().hashBytes(content).asInt())))
-            .build();
+            .buildObject();
     return internalCreate(updatedInfo, content, 0, content.length, options);
   }
 
   @Override
-  public Blob create(
-      BlobInfo blobInfo, byte[] content, int offset, int length, BlobTargetOption... options) {
+  public StorageObject create(
+          BlobMetadata blobInfo, byte[] content, int offset, int length, BlobUploadOption... options) {
     content = firstNonNull(content, EMPTY_BYTE_ARRAY);
-    BlobInfo updatedInfo =
+    BlobMetadata updatedInfo =
         blobInfo
-            .toBuilder()
+            .toInfoBuilder()
             .setMd5(
                 BaseEncoding.base64()
                     .encode(Hashing.md5().hashBytes(content, offset, length).asBytes()))
@@ -171,31 +167,31 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
                     .encode(
                         Ints.toByteArray(
                             Hashing.crc32c().hashBytes(content, offset, length).asInt())))
-            .build();
+            .buildObject();
     return internalCreate(updatedInfo, content, offset, length, options);
   }
 
   @Override
   @Deprecated
-  public Blob create(BlobInfo blobInfo, InputStream content, BlobWriteOption... options) {
-    Tuple<BlobInfo, BlobTargetOption[]> targetOptions = BlobTargetOption.convert(blobInfo, options);
-    StorageObject blobPb = targetOptions.x().toPb();
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(targetOptions.x(), targetOptions.y());
+  public StorageObject create(BlobMetadata blobInfo, InputStream content, BlobWriteOptions... options) {
+    Tuple<BlobMetadata, BlobUploadOption[]> targetOptions = BlobUploadOption.toBlobUploadOptions(blobInfo, options);
+    com.google.api.services.storage.model.StorageObject blobPb = targetOptions.x().toProto();
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(targetOptions.x(), targetOptions.y());
     InputStream inputStreamParam =
         firstNonNull(content, new ByteArrayInputStream(EMPTY_BYTE_ARRAY));
     // retries are not safe when the input is an InputStream, so we can't retry.
-    return Blob.fromPb(this, storageRpc.create(blobPb, inputStreamParam, optionsMap));
+    return StorageObject.fromProto(this, storageRpc.create(blobPb, inputStreamParam, optionsMap));
   }
 
-  private Blob internalCreate(
-      BlobInfo info,
+  private StorageObject internalCreate(
+      BlobMetadata info,
       final byte[] content,
       final int offset,
       final int length,
-      BlobTargetOption... options) {
+      BlobUploadOption... options) {
     Preconditions.checkNotNull(content);
-    final StorageObject blobPb = info.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(info, options);
+    final com.google.api.services.storage.model.StorageObject blobPb = info.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(info, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectsCreate(blobPb, optionsMap);
     return run(
@@ -203,20 +199,20 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () ->
             storageRpc.create(
                 blobPb, new ByteArrayInputStream(content, offset, length), optionsMap),
-        (x) -> Blob.fromPb(this, x));
+        (x) -> StorageObject.fromProto(this, x));
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, Path path, BlobWriteOption... options)
+  public StorageObject createFrom(BlobMetadata blobInfo, Path path, BlobWriteOptions... options)
       throws IOException {
     return createFrom(blobInfo, path, DEFAULT_BUFFER_SIZE, options);
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, Path path, int bufferSize, BlobWriteOption... options)
+  public StorageObject createFrom(BlobMetadata blobInfo, Path path, int bufferSize, BlobWriteOptions... options)
       throws IOException {
     if (Files.isDirectory(path)) {
-      throw new StorageException(0, path + " is a directory");
+      throw new StorageServiceException(0, path + " is a directory");
     }
     try (InputStream input = Files.newInputStream(path)) {
       return createFrom(blobInfo, input, bufferSize, options);
@@ -224,14 +220,14 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Blob createFrom(BlobInfo blobInfo, InputStream content, BlobWriteOption... options)
+  public StorageObject createFrom(BlobMetadata blobInfo, InputStream content, BlobWriteOptions... options)
       throws IOException {
     return createFrom(blobInfo, content, DEFAULT_BUFFER_SIZE, options);
   }
 
   @Override
-  public Blob createFrom(
-      BlobInfo blobInfo, InputStream content, int bufferSize, BlobWriteOption... options)
+  public StorageObject createFrom(
+          BlobMetadata blobInfo, InputStream content, int bufferSize, BlobWriteOptions... options)
       throws IOException {
 
     BlobWriteChannel blobWriteChannel;
@@ -239,8 +235,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
       blobWriteChannel = (BlobWriteChannel) writer;
       uploadHelper(Channels.newChannel(content), writer, bufferSize);
     }
-    StorageObject objectProto = blobWriteChannel.getStorageObject();
-    return Blob.fromPb(this, objectProto);
+    com.google.api.services.storage.model.StorageObject objectProto = blobWriteChannel.getStorageObject();
+    return StorageObject.fromProto(this, objectProto);
   }
 
   /*
@@ -261,112 +257,112 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket get(String bucket, BucketGetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public StorageBucket get(String bucket, GetBucketOption... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketMetadata.ofName(bucket).toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsGet(bucketPb, optionsMap);
     return run(
-        algorithm, () -> storageRpc.get(bucketPb, optionsMap), (b) -> Bucket.fromPb(this, b));
+        algorithm, () -> storageRpc.get(bucketPb, optionsMap), (b) -> StorageBucket.fromProto(this, b));
   }
 
   @Override
-  public Blob get(String bucket, String blob, BlobGetOption... options) {
-    return get(BlobId.of(bucket, blob), options);
+  public StorageObject get(String bucket, String blob, BlobGetOptions... options) {
+    return get(BlobId.from(bucket, blob), options);
   }
 
   @Override
-  public Blob get(BlobId blob, BlobGetOption... options) {
-    final StorageObject storedObject = blob.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(blob, options);
+  public StorageObject get(BlobId blob, BlobGetOptions... options) {
+    final com.google.api.services.storage.model.StorageObject storedObject = blob.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blob, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectsGet(storedObject, optionsMap);
     return run(
-        algorithm, () -> storageRpc.get(storedObject, optionsMap), (x) -> Blob.fromPb(this, x));
+        algorithm, () -> storageRpc.get(storedObject, optionsMap), (x) -> StorageObject.fromProto(this, x));
   }
 
   @Override
-  public Blob get(BlobId blob) {
-    return get(blob, new BlobGetOption[0]);
+  public StorageObject get(BlobId blob) {
+    return get(blob, new BlobGetOptions[0]);
   }
 
-  private static class BucketPageFetcher implements NextPageFetcher<Bucket> {
+  private static class BucketPageFetcher implements NextPageFetcher<StorageBucket> {
 
     private static final long serialVersionUID = 5850406828803613729L;
-    private final Map<StorageRpc.Option, ?> requestOptions;
-    private final StorageOptions serviceOptions;
+    private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
+    private final StorageClientOptions serviceOptions;
 
     BucketPageFetcher(
-        StorageOptions serviceOptions, String cursor, Map<StorageRpc.Option, ?> optionMap) {
+            StorageClientOptions serviceOptions, String cursor, Map<StorageRpcClient.StorageOption, ?> optionMap) {
       this.requestOptions =
-          PageImpl.nextRequestOptions(StorageRpc.Option.PAGE_TOKEN, cursor, optionMap);
+          PageImpl.nextRequestOptions(StorageRpcClient.StorageOption.PAGE_TOKEN, cursor, optionMap);
       this.serviceOptions = serviceOptions;
     }
 
     @Override
-    public Page<Bucket> getNextPage() {
+    public Page<StorageBucket> getNextPage() {
       return listBuckets(serviceOptions, requestOptions);
     }
   }
 
-  private static class BlobPageFetcher implements NextPageFetcher<Blob> {
+  private static class BlobPageFetcher implements NextPageFetcher<StorageObject> {
 
     private static final long serialVersionUID = 81807334445874098L;
-    private final Map<StorageRpc.Option, ?> requestOptions;
-    private final StorageOptions serviceOptions;
+    private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
+    private final StorageClientOptions serviceOptions;
     private final String bucket;
 
     BlobPageFetcher(
         String bucket,
-        StorageOptions serviceOptions,
+        StorageClientOptions serviceOptions,
         String cursor,
-        Map<StorageRpc.Option, ?> optionMap) {
+        Map<StorageRpcClient.StorageOption, ?> optionMap) {
       this.requestOptions =
-          PageImpl.nextRequestOptions(StorageRpc.Option.PAGE_TOKEN, cursor, optionMap);
+          PageImpl.nextRequestOptions(StorageRpcClient.StorageOption.PAGE_TOKEN, cursor, optionMap);
       this.serviceOptions = serviceOptions;
       this.bucket = bucket;
     }
 
     @Override
-    public Page<Blob> getNextPage() {
+    public Page<StorageObject> getNextPage() {
       return listBlobs(bucket, serviceOptions, requestOptions);
     }
   }
 
-  private static class HmacKeyMetadataPageFetcher implements NextPageFetcher<HmacKeyMetadata> {
+  private static class HmacKeyMetadataPageFetcher implements NextPageFetcher<HmacKeyDetails> {
 
     private static final long serialVersionUID = 308012320541700881L;
-    private final StorageOptions serviceOptions;
+    private final StorageClientOptions serviceOptions;
     private final RetryAlgorithmManager retryAlgorithmManager;
-    private final Map<StorageRpc.Option, ?> options;
+    private final Map<StorageRpcClient.StorageOption, ?> options;
 
     HmacKeyMetadataPageFetcher(
-        StorageOptions serviceOptions,
+        StorageClientOptions serviceOptions,
         RetryAlgorithmManager retryAlgorithmManager,
-        Map<StorageRpc.Option, ?> options) {
+        Map<StorageRpcClient.StorageOption, ?> options) {
       this.serviceOptions = serviceOptions;
       this.retryAlgorithmManager = retryAlgorithmManager;
       this.options = options;
     }
 
     @Override
-    public Page<HmacKeyMetadata> getNextPage() {
+    public Page<HmacSecretKey.HmacKeyDetails> getNextPage() {
       return listHmacKeys(serviceOptions, retryAlgorithmManager, options);
     }
   }
 
   @Override
-  public Page<Bucket> list(BucketListOption... options) {
+  public Page<StorageBucket> list(BucketListOptions... options) {
     return listBuckets(getOptions(), optionMap(options));
   }
 
   @Override
-  public Page<Blob> list(final String bucket, BlobListOption... options) {
+  public Page<StorageObject> list(final String bucket, BlobListOptions... options) {
     return listBlobs(bucket, getOptions(), optionMap(options));
   }
 
-  private static Page<Bucket> listBuckets(
-      final StorageOptions serviceOptions, final Map<StorageRpc.Option, ?> optionsMap) {
+  private static Page<StorageBucket> listBuckets(
+          final StorageClientOptions serviceOptions, final Map<StorageRpcClient.StorageOption, ?> optionsMap) {
     ResultRetryAlgorithm<?> algorithm =
         serviceOptions.getRetryAlgorithmManager().getForBucketsList(optionsMap);
     return Retrying.run(
@@ -375,20 +371,20 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () -> serviceOptions.getStorageRpcV1().list(optionsMap),
         (result) -> {
           String cursor = result.x();
-          Iterable<Bucket> buckets =
+          Iterable<StorageBucket> buckets =
               result.y() == null
                   ? ImmutableList.of()
                   : Iterables.transform(
-                      result.y(), bucketPb -> Bucket.fromPb(serviceOptions.getService(), bucketPb));
+                      result.y(), bucketPb -> StorageBucket.fromProto(serviceOptions.getService(), bucketPb));
           return new PageImpl<>(
               new BucketPageFetcher(serviceOptions, cursor, optionsMap), cursor, buckets);
         });
   }
 
-  private static Page<Blob> listBlobs(
+  private static Page<StorageObject> listBlobs(
       final String bucket,
-      final StorageOptions serviceOptions,
-      final Map<StorageRpc.Option, ?> optionsMap) {
+      final StorageClientOptions serviceOptions,
+      final Map<StorageRpcClient.StorageOption, ?> optionsMap) {
     ResultRetryAlgorithm<?> algorithm =
         serviceOptions.getRetryAlgorithmManager().getForObjectsList(bucket, optionsMap);
     return Retrying.run(
@@ -397,60 +393,60 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () -> serviceOptions.getStorageRpcV1().list(bucket, optionsMap),
         (result) -> {
           String cursor = result.x();
-          Iterable<Blob> blobs =
+          Iterable<StorageObject> blobs =
               result.y() == null
                   ? ImmutableList.of()
                   : Iterables.transform(
                       result.y(),
-                      storageObject -> Blob.fromPb(serviceOptions.getService(), storageObject));
+                      storageObject -> StorageObject.fromProto(serviceOptions.getService(), storageObject));
           return new PageImpl<>(
               new BlobPageFetcher(bucket, serviceOptions, cursor, optionsMap), cursor, blobs);
         });
   }
 
   @Override
-  public Bucket update(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
+  public StorageBucket update(BucketMetadata bucketInfo, BucketTargetOptions... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsUpdate(bucketPb, optionsMap);
     return run(
-        algorithm, () -> storageRpc.patch(bucketPb, optionsMap), (x) -> Bucket.fromPb(this, x));
+        algorithm, () -> storageRpc.patch(bucketPb, optionsMap), (x) -> StorageBucket.fromProto(this, x));
   }
 
   @Override
-  public Blob update(BlobInfo blobInfo, BlobTargetOption... options) {
-    final StorageObject storageObject = blobInfo.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(blobInfo, options);
+  public StorageObject update(BlobMetadata blobInfo, BlobUploadOption... options) {
+    final com.google.api.services.storage.model.StorageObject storageObject = blobInfo.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blobInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectsUpdate(storageObject, optionsMap);
     return run(
-        algorithm, () -> storageRpc.patch(storageObject, optionsMap), (x) -> Blob.fromPb(this, x));
+        algorithm, () -> storageRpc.patch(storageObject, optionsMap), (x) -> StorageObject.fromProto(this, x));
   }
 
   @Override
-  public Blob update(BlobInfo blobInfo) {
-    return update(blobInfo, new BlobTargetOption[0]);
+  public StorageObject update(BlobMetadata blobInfo) {
+    return update(blobInfo, new BlobUploadOption[0]);
   }
 
   @Override
-  public boolean delete(String bucket, BucketSourceOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = BucketInfo.of(bucket).toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public boolean delete(String bucket, BucketSourceOptions... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = BucketMetadata.ofName(bucket).toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsDelete(bucketPb, optionsMap);
     return run(algorithm, () -> storageRpc.delete(bucketPb, optionsMap), Function.identity());
   }
 
   @Override
-  public boolean delete(String bucket, String blob, BlobSourceOption... options) {
-    return delete(BlobId.of(bucket, blob), options);
+  public boolean delete(String bucket, String blob, BlobSourceOptions... options) {
+    return delete(BlobId.from(bucket, blob), options);
   }
 
   @Override
-  public boolean delete(BlobId blob, BlobSourceOption... options) {
-    final StorageObject storageObject = blob.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(blob, options);
+  public boolean delete(BlobId blob, BlobSourceOptions... options) {
+    final com.google.api.services.storage.model.StorageObject storageObject = blob.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blob, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectsDelete(storageObject, optionsMap);
     return run(algorithm, () -> storageRpc.delete(storageObject, optionsMap), Function.identity());
@@ -458,25 +454,25 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public boolean delete(BlobId blob) {
-    return delete(blob, new BlobSourceOption[0]);
+    return delete(blob, new BlobSourceOptions[0]);
   }
 
   @Override
-  public Blob compose(final ComposeRequest composeRequest) {
-    final List<StorageObject> sources =
+  public StorageObject compose(final ComposeBlobsRequest composeRequest) {
+    final List<com.google.api.services.storage.model.StorageObject> sources =
         Lists.newArrayListWithCapacity(composeRequest.getSourceBlobs().size());
-    for (ComposeRequest.SourceBlob sourceBlob : composeRequest.getSourceBlobs()) {
+    for (ComposeBlobsRequest.SourceBlobInfo sourceBlob : composeRequest.getSourceBlobs()) {
       sources.add(
-          BlobInfo.newBuilder(
-                  BlobId.of(
+          BlobMetadata.newBuilder(
+                  BlobId.from(
                       composeRequest.getTarget().getBucket(),
                       sourceBlob.getName(),
                       sourceBlob.getGeneration()))
-              .build()
-              .toPb());
+              .buildObject()
+              .toProto());
     }
-    final StorageObject target = composeRequest.getTarget().toPb();
-    final Map<StorageRpc.Option, ?> targetOptions =
+    final com.google.api.services.storage.model.StorageObject target = composeRequest.getTarget().toProto();
+    final Map<StorageRpcClient.StorageOption, ?> targetOptions =
         optionMap(
             composeRequest.getTarget().getGeneration(),
             composeRequest.getTarget().getMetageneration(),
@@ -486,26 +482,26 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return run(
         algorithm,
         () -> storageRpc.compose(sources, target, targetOptions),
-        (x) -> Blob.fromPb(this, x));
+        (x) -> StorageObject.fromProto(this, x));
   }
 
   @Override
-  public CopyWriter copy(final CopyRequest copyRequest) {
-    final StorageObject source = copyRequest.getSource().toPb();
-    final Map<StorageRpc.Option, ?> sourceOptions =
+  public ObjectCopyWriter copy(final ChunkedCopyRequest copyRequest) {
+    final com.google.api.services.storage.model.StorageObject source = copyRequest.getSource().toProto();
+    final Map<StorageRpcClient.StorageOption, ?> sourceOptions =
         optionMap(
             copyRequest.getSource().getGeneration(), null, copyRequest.getSourceOptions(), true);
-    final StorageObject targetObject = copyRequest.getTarget().toPb();
-    final Map<StorageRpc.Option, ?> targetOptions =
+    final com.google.api.services.storage.model.StorageObject targetObject = copyRequest.getTarget().toProto();
+    final Map<StorageRpcClient.StorageOption, ?> targetOptions =
         optionMap(
             copyRequest.getTarget().getGeneration(),
             copyRequest.getTarget().getMetageneration(),
             copyRequest.getTargetOptions());
-    RewriteRequest rewriteRequest =
-        new RewriteRequest(
+    StorageRpcClient.RewriteOperationRequest rewriteRequest =
+        new StorageRpcClient.RewriteOperationRequest(
             source,
             sourceOptions,
-            copyRequest.overrideInfo(),
+            copyRequest.getOverrideInfo(),
             targetObject,
             targetOptions,
             copyRequest.getMegabytesCopiedPerChunk());
@@ -513,54 +509,54 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return run(
         algorithm,
         () -> storageRpc.openRewrite(rewriteRequest),
-        (r) -> new CopyWriter(getOptions(), r));
+        (r) -> new ObjectCopyWriter(getOptions(), r));
   }
 
   @Override
-  public byte[] readAllBytes(String bucket, String blob, BlobSourceOption... options) {
-    return readAllBytes(BlobId.of(bucket, blob), options);
+  public byte[] readAllBytes(String bucket, String blob, BlobSourceOptions... options) {
+    return readAllBytes(BlobId.from(bucket, blob), options);
   }
 
   @Override
-  public byte[] readAllBytes(BlobId blob, BlobSourceOption... options) {
-    final StorageObject storageObject = blob.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(blob, options);
+  public byte[] readAllBytes(BlobId blob, BlobSourceOptions... options) {
+    final com.google.api.services.storage.model.StorageObject storageObject = blob.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blob, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectsGet(storageObject, optionsMap);
     return run(algorithm, () -> storageRpc.load(storageObject, optionsMap), Function.identity());
   }
 
   @Override
-  public StorageBatch batch() {
-    return new StorageBatch(this.getOptions());
+  public StorageOperationBatch batch() {
+    return new StorageOperationBatch(this.getOptions());
   }
 
   @Override
-  public ReadChannel reader(String bucket, String blob, BlobSourceOption... options) {
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
-    return new BlobReadChannel(getOptions(), BlobId.of(bucket, blob), optionsMap);
+  public ReadChannel reader(String bucket, String blob, BlobSourceOptions... options) {
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
+    return new BlobReadChannel(getOptions(), BlobId.from(bucket, blob), optionsMap);
   }
 
   @Override
-  public ReadChannel reader(BlobId blob, BlobSourceOption... options) {
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(blob, options);
+  public ReadChannel reader(BlobId blob, BlobSourceOptions... options) {
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blob, options);
     return new BlobReadChannel(getOptions(), blob, optionsMap);
   }
 
   @Override
-  public void downloadTo(BlobId blob, Path path, BlobSourceOption... options) {
+  public void downloadTo(BlobId blob, Path path, BlobSourceOptions... options) {
     try (OutputStream outputStream = Files.newOutputStream(path)) {
       downloadTo(blob, outputStream, options);
     } catch (IOException e) {
-      throw new StorageException(e);
+      throw new StorageServiceException(e);
     }
   }
 
   @Override
-  public void downloadTo(BlobId blob, OutputStream outputStream, BlobSourceOption... options) {
+  public void downloadTo(BlobId blob, OutputStream outputStream, BlobSourceOptions... options) {
     final CountingOutputStream countingOutputStream = new CountingOutputStream(outputStream);
-    final StorageObject pb = blob.toPb();
-    final Map<StorageRpc.Option, ?> requestOptions = optionMap(blob, options);
+    final com.google.api.services.storage.model.StorageObject pb = blob.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> requestOptions = optionMap(blob, options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForObjectsGet(pb, requestOptions);
     Retrying.run(
         getOptions(),
@@ -574,8 +570,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public BlobWriteChannel writer(BlobInfo blobInfo, BlobWriteOption... options) {
-    Tuple<BlobInfo, BlobTargetOption[]> targetOptions = BlobTargetOption.convert(blobInfo, options);
+  public BlobWriteChannel writer(BlobMetadata blobInfo, BlobWriteOptions... options) {
+    Tuple<BlobMetadata, BlobUploadOption[]> targetOptions = BlobUploadOption.toBlobUploadOptions(blobInfo, options);
     return writer(targetOptions.x(), targetOptions.y());
   }
 
@@ -595,8 +591,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         .build();
   }
 
-  private BlobWriteChannel writer(BlobInfo blobInfo, BlobTargetOption... options) {
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(blobInfo, options);
+  private BlobWriteChannel writer(BlobMetadata blobInfo, BlobUploadOption... options) {
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(blobInfo, options);
     return BlobWriteChannel.newBuilder()
         .setStorageOptions(getOptions())
         .setUploadIdSupplier(
@@ -610,19 +606,19 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public URL signUrl(BlobInfo blobInfo, long duration, TimeUnit unit, SignUrlOption... options) {
-    EnumMap<SignUrlOption.Option, Object> optionMap = Maps.newEnumMap(SignUrlOption.Option.class);
-    for (SignUrlOption option : options) {
+  public URL signUrl(BlobMetadata blobInfo, long duration, TimeUnit unit, UrlSigningOption... options) {
+    EnumMap<UrlSigningOption.RequestOption, Object> optionMap = Maps.newEnumMap(UrlSigningOption.RequestOption.class);
+    for (UrlSigningOption option : options) {
       optionMap.put(option.getOption(), option.getValue());
     }
 
     boolean isV2 =
-        getPreferredSignatureVersion(optionMap).equals(SignUrlOption.SignatureVersion.V2);
+        getPreferredSignatureVersion(optionMap).equals(UrlSigningOption.SigningVersion.V2);
     boolean isV4 =
-        getPreferredSignatureVersion(optionMap).equals(SignUrlOption.SignatureVersion.V4);
+        getPreferredSignatureVersion(optionMap).equals(UrlSigningOption.SigningVersion.V4);
 
     ServiceAccountSigner credentials =
-        (ServiceAccountSigner) optionMap.get(SignUrlOption.Option.SERVICE_ACCOUNT_CRED);
+        (ServiceAccountSigner) optionMap.get(UrlSigningOption.RequestOption.SERVICE_ACCOUNT_CRED);
     if (credentials == null) {
       checkState(
           this.getOptions().getCredentials() instanceof ServiceAccountSigner,
@@ -638,9 +634,9 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
                 TimeUnit.MILLISECONDS);
 
     checkArgument(
-        !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
-            && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
-            && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
+        !(optionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)
+            && optionMap.containsKey(UrlSigningOption.RequestOption.PATH_STYLE)
+            && optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)),
         "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
@@ -657,8 +653,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
             ? STORAGE_XML_URI_SCHEME + "://" + getBaseStorageHostName(optionMap)
             : STORAGE_XML_URI_SCHEME + "://" + bucketName + "." + getBaseStorageHostName(optionMap);
 
-    if (optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)) {
-      storageXmlHostName = (String) optionMap.get(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME);
+    if (optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)) {
+      storageXmlHostName = (String) optionMap.get(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME);
     }
 
     String stPath =
@@ -713,23 +709,23 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
+  public S3PostPolicyV4 generateSignedPostPolicyV4(
+      BlobMetadata blobInfo,
       long duration,
       TimeUnit unit,
-      PostFieldsV4 fields,
-      PostConditionsV4 conditions,
-      PostPolicyV4Option... options) {
-    EnumMap<SignUrlOption.Option, Object> optionMap = Maps.newEnumMap(SignUrlOption.Option.class);
+      S3PostPolicyV4.PostFieldsMapV4 fields,
+      PostConditionsV4Model conditions,
+      PostPolicyV4Parameter... options) {
+    EnumMap<UrlSigningOption.RequestOption, Object> optionMap = Maps.newEnumMap(UrlSigningOption.RequestOption.class);
     // Convert to a map of SignUrlOptions so we can re-use some utility methods
-    for (PostPolicyV4Option option : options) {
-      optionMap.put(SignUrlOption.Option.valueOf(option.getOption().name()), option.getValue());
+    for (PostPolicyV4Parameter option : options) {
+      optionMap.put(UrlSigningOption.RequestOption.valueOf(option.getOption().name()), option.getValue());
     }
 
-    optionMap.put(SignUrlOption.Option.SIGNATURE_VERSION, SignUrlOption.SignatureVersion.V4);
+    optionMap.put(UrlSigningOption.RequestOption.SIGNATURE_VERSION, UrlSigningOption.SigningVersion.V4);
 
     ServiceAccountSigner credentials =
-        (ServiceAccountSigner) optionMap.get(SignUrlOption.Option.SERVICE_ACCOUNT_CRED);
+        (ServiceAccountSigner) optionMap.get(UrlSigningOption.RequestOption.SERVICE_ACCOUNT_CRED);
     if (credentials == null) {
       checkState(
           this.getOptions().getCredentials() instanceof ServiceAccountSigner,
@@ -738,9 +734,9 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     }
 
     checkArgument(
-        !(optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
-            && optionMap.containsKey(SignUrlOption.Option.PATH_STYLE)
-            && optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)),
+        !(optionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)
+            && optionMap.containsKey(UrlSigningOption.RequestOption.PATH_STYLE)
+            && optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)),
         "Only one of VIRTUAL_HOSTED_STYLE, PATH_STYLE, or BUCKET_BOUND_HOST_NAME SignUrlOptions can be"
             + " specified.");
 
@@ -756,8 +752,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
       url = STORAGE_XML_URI_SCHEME + "://" + bucketName + "." + STORAGE_XML_URI_HOST_NAME + "/";
     }
 
-    if (optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)) {
-      url = optionMap.get(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME) + "/";
+    if (optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)) {
+      url = optionMap.get(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME) + "/";
     }
 
     SimpleDateFormat googDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
@@ -777,33 +773,33 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
     Map<String, String> policyFields = new HashMap<>();
 
-    PostConditionsV4.Builder conditionsBuilder = conditions.toBuilder();
+    S3PostPolicyV4.PostConditionsV4Model.PostPolicyBuilder conditionsBuilder = conditions.toPolicyBuilder();
 
     for (Map.Entry<String, String> entry : fields.getFieldsMap().entrySet()) {
       // Every field needs a corresponding policy condition, so add them if they're missing
-      conditionsBuilder.addCustomCondition(
-          ConditionV4Type.MATCHES, entry.getKey(), entry.getValue());
+      conditionsBuilder.addCustom(
+          S3PostPolicyV4.ConditionTypeV4.MATCHES, entry.getKey(), entry.getValue());
 
       policyFields.put(entry.getKey(), entry.getValue());
     }
 
-    PostConditionsV4 v4Conditions =
+    PostConditionsV4Model v4Conditions =
         conditionsBuilder
-            .addBucketCondition(ConditionV4Type.MATCHES, blobInfo.getBucket())
-            .addKeyCondition(ConditionV4Type.MATCHES, blobInfo.getName())
-            .addCustomCondition(ConditionV4Type.MATCHES, "x-goog-date", date)
-            .addCustomCondition(ConditionV4Type.MATCHES, "x-goog-credential", signingCredential)
-            .addCustomCondition(ConditionV4Type.MATCHES, "x-goog-algorithm", "GOOG4-RSA-SHA256")
-            .build();
-    PostPolicyV4Document document =
-        PostPolicyV4Document.of(
+            .addBucket(S3PostPolicyV4.ConditionTypeV4.MATCHES, blobInfo.getBucket())
+            .addKey(S3PostPolicyV4.ConditionTypeV4.MATCHES, blobInfo.getName())
+            .addCustom(S3PostPolicyV4.ConditionTypeV4.MATCHES, "x-goog-date", date)
+            .addCustom(ConditionTypeV4.MATCHES, "x-goog-credential", signingCredential)
+            .addCustom(S3PostPolicyV4.ConditionTypeV4.MATCHES, "x-goog-algorithm", "GOOG4-RSA-SHA256")
+            .buildModel();
+    PostPolicyV4Payload document =
+        S3PostPolicyV4.PostPolicyV4Payload.create(
             expirationFormat.format(timestamp + unit.toMillis(duration)), v4Conditions);
-    String policy = BaseEncoding.base64().encode(document.toJson().getBytes());
+    String policy = BaseEncoding.base64().encode(document.toJsonString().getBytes());
     String signature =
         BaseEncoding.base16().encode(credentials.sign(policy.getBytes())).toLowerCase();
 
-    for (PostPolicyV4.ConditionV4 condition : v4Conditions.getConditions()) {
-      if (condition.type == ConditionV4Type.MATCHES) {
+    for (S3PostPolicyV4.BinaryConditionV4 condition : v4Conditions.getConditions()) {
+      if (condition.type == ConditionTypeV4.MATCHES) {
         policyFields.put(condition.operand1, condition.operand2);
       }
     }
@@ -816,39 +812,39 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
     policyFields.remove("bucket");
 
-    return PostPolicyV4.of(url, policyFields);
+    return S3PostPolicyV4.create(url, policyFields);
   }
 
-  public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
+  public S3PostPolicyV4 generateSignedPostPolicyV4(
+      BlobMetadata blobInfo,
       long duration,
       TimeUnit unit,
-      PostFieldsV4 fields,
-      PostPolicyV4Option... options) {
+      S3PostPolicyV4.PostFieldsMapV4 fields,
+      PostPolicyV4Parameter... options) {
     return generateSignedPostPolicyV4(
-        blobInfo, duration, unit, fields, PostConditionsV4.newBuilder().build(), options);
+        blobInfo, duration, unit, fields, PostConditionsV4Model.newPolicyBuilder().buildModel(), options);
   }
 
-  public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo,
+  public S3PostPolicyV4 generateSignedPostPolicyV4(
+      BlobMetadata blobInfo,
       long duration,
       TimeUnit unit,
-      PostConditionsV4 conditions,
-      PostPolicyV4Option... options) {
+      PostConditionsV4Model conditions,
+      PostPolicyV4Parameter... options) {
     return generateSignedPostPolicyV4(
-        blobInfo, duration, unit, PostFieldsV4.newBuilder().build(), conditions, options);
+        blobInfo, duration, unit, S3PostPolicyV4.PostFieldsMapV4.newObjectMetadataBuilder().buildMap(), conditions, options);
   }
 
-  public PostPolicyV4 generateSignedPostPolicyV4(
-      BlobInfo blobInfo, long duration, TimeUnit unit, PostPolicyV4Option... options) {
+  public S3PostPolicyV4 generateSignedPostPolicyV4(
+          BlobMetadata blobInfo, long duration, TimeUnit unit, PostPolicyV4Parameter... options) {
     return generateSignedPostPolicyV4(
-        blobInfo, duration, unit, PostFieldsV4.newBuilder().build(), options);
+        blobInfo, duration, unit, S3PostPolicyV4.PostFieldsMapV4.newObjectMetadataBuilder().buildMap(), options);
   }
 
   private String constructResourceUriPath(
       String slashlessBucketName,
       String escapedBlobName,
-      EnumMap<SignUrlOption.Option, Object> optionMap) {
+      EnumMap<UrlSigningOption.RequestOption, Object> optionMap) {
     if (Strings.isNullOrEmpty(slashlessBucketName)) {
       if (Strings.isNullOrEmpty(escapedBlobName)) {
         return PATH_DELIMITER;
@@ -863,10 +859,10 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     pathBuilder.append(PATH_DELIMITER).append(slashlessBucketName);
     if (Strings.isNullOrEmpty(escapedBlobName)) {
       boolean isV2 =
-          getPreferredSignatureVersion(optionMap).equals(SignUrlOption.SignatureVersion.V2);
+          getPreferredSignatureVersion(optionMap).equals(UrlSigningOption.SigningVersion.V2);
       // If using virtual-hosted style URLs with V2 signing, the path string for a bucket resource
       // must end with a forward slash.
-      if (optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE) && isV2) {
+      if (optionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE) && isV2) {
         pathBuilder.append(PATH_DELIMITER);
       }
       return pathBuilder.toString();
@@ -876,24 +872,24 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return pathBuilder.toString();
   }
 
-  private SignUrlOption.SignatureVersion getPreferredSignatureVersion(
-      EnumMap<SignUrlOption.Option, Object> optionMap) {
+  private UrlSigningOption.SigningVersion getPreferredSignatureVersion(
+      EnumMap<UrlSigningOption.RequestOption, Object> optionMap) {
     // Check for an explicitly specified version in the map.
-    for (SignUrlOption.SignatureVersion version : SignUrlOption.SignatureVersion.values()) {
-      if (version.equals(optionMap.get(SignUrlOption.Option.SIGNATURE_VERSION))) {
+    for (UrlSigningOption.SigningVersion version : UrlSigningOption.SigningVersion.values()) {
+      if (version.equals(optionMap.get(UrlSigningOption.RequestOption.SIGNATURE_VERSION))) {
         return version;
       }
     }
     // TODO(#6362): V2 is the default, and thus can be specified either explicitly or implicitly
     // Change this to V4 once we make it the default.
-    return SignUrlOption.SignatureVersion.V2;
+    return UrlSigningOption.SigningVersion.V2;
   }
 
-  private boolean shouldUsePathStyleForSignedUrl(EnumMap<SignUrlOption.Option, Object> optionMap) {
+  private boolean shouldUsePathStyleForSignedUrl(EnumMap<UrlSigningOption.RequestOption, Object> optionMap) {
     // TODO(#6362): If we decide to change the default style used to generate URLs, switch this
     // logic to return false unless PATH_STYLE was explicitly specified.
-    if (optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)
-        || optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)) {
+    if (optionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)
+        || optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)) {
       return false;
     }
     return true;
@@ -910,32 +906,32 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
    * @return signature info
    */
   private SignatureInfo buildSignatureInfo(
-      Map<SignUrlOption.Option, Object> optionMap,
-      BlobInfo blobInfo,
+      Map<UrlSigningOption.RequestOption, Object> optionMap,
+      BlobMetadata blobInfo,
       long expiration,
       URI path,
       String accountEmail) {
 
-    HttpMethod httpVerb =
-        optionMap.containsKey(SignUrlOption.Option.HTTP_METHOD)
-            ? (HttpMethod) optionMap.get(SignUrlOption.Option.HTTP_METHOD)
-            : HttpMethod.GET;
+    HttpRequestMethod httpVerb =
+        optionMap.containsKey(UrlSigningOption.RequestOption.HTTP_METHOD)
+            ? (HttpRequestMethod) optionMap.get(UrlSigningOption.RequestOption.HTTP_METHOD)
+            : HttpRequestMethod.GET;
 
     SignatureInfo.Builder signatureInfoBuilder =
         new SignatureInfo.Builder(httpVerb, expiration, path);
 
-    if (firstNonNull((Boolean) optionMap.get(SignUrlOption.Option.MD5), false)) {
+    if (firstNonNull((Boolean) optionMap.get(UrlSigningOption.RequestOption.MD5), false)) {
       checkArgument(blobInfo.getMd5() != null, "Blob is missing a value for md5");
       signatureInfoBuilder.setContentMd5(blobInfo.getMd5());
     }
 
-    if (firstNonNull((Boolean) optionMap.get(SignUrlOption.Option.CONTENT_TYPE), false)) {
+    if (firstNonNull((Boolean) optionMap.get(UrlSigningOption.RequestOption.CONTENT_TYPE), false)) {
       checkArgument(blobInfo.getContentType() != null, "Blob is missing a value for content-type");
       signatureInfoBuilder.setContentType(blobInfo.getContentType());
     }
 
     signatureInfoBuilder.setSignatureVersion(
-        (SignUrlOption.SignatureVersion) optionMap.get(SignUrlOption.Option.SIGNATURE_VERSION));
+        (UrlSigningOption.SigningVersion) optionMap.get(UrlSigningOption.RequestOption.SIGNATURE_VERSION));
 
     signatureInfoBuilder.setAccountEmail(accountEmail);
 
@@ -944,29 +940,29 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     ImmutableMap.Builder<String, String> extHeadersBuilder = new ImmutableMap.Builder<>();
 
     boolean isV4 =
-        SignUrlOption.SignatureVersion.V4.equals(
-            optionMap.get(SignUrlOption.Option.SIGNATURE_VERSION));
+        UrlSigningOption.SigningVersion.V4.equals(
+            optionMap.get(UrlSigningOption.RequestOption.SIGNATURE_VERSION));
     if (isV4) { // We don't sign the host header for V2 signed URLs; only do this for V4.
       // Add the host here first, allowing it to be overridden in the EXT_HEADERS option below.
-      if (optionMap.containsKey(SignUrlOption.Option.VIRTUAL_HOSTED_STYLE)) {
+      if (optionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)) {
         extHeadersBuilder.put(
             "host",
             slashlessBucketNameFromBlobInfo(blobInfo) + "." + getBaseStorageHostName(optionMap));
-      } else if (optionMap.containsKey(SignUrlOption.Option.HOST_NAME)
-          || optionMap.containsKey(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME)) {
+      } else if (optionMap.containsKey(UrlSigningOption.RequestOption.HOST_NAME)
+          || optionMap.containsKey(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME)) {
         extHeadersBuilder.put("host", getBaseStorageHostName(optionMap));
       }
     }
 
-    if (optionMap.containsKey(SignUrlOption.Option.EXT_HEADERS)) {
+    if (optionMap.containsKey(UrlSigningOption.RequestOption.EXT_HEADERS)) {
       extHeadersBuilder.putAll(
-          (Map<String, String>) optionMap.get(SignUrlOption.Option.EXT_HEADERS));
+          (Map<String, String>) optionMap.get(UrlSigningOption.RequestOption.EXT_HEADERS));
     }
 
     ImmutableMap.Builder<String, String> queryParamsBuilder = new ImmutableMap.Builder<>();
-    if (optionMap.containsKey(SignUrlOption.Option.QUERY_PARAMS)) {
+    if (optionMap.containsKey(UrlSigningOption.RequestOption.QUERY_PARAMS)) {
       queryParamsBuilder.putAll(
-          (Map<String, String>) optionMap.get(SignUrlOption.Option.QUERY_PARAMS));
+          (Map<String, String>) optionMap.get(UrlSigningOption.RequestOption.QUERY_PARAMS));
     }
 
     return signatureInfoBuilder
@@ -975,17 +971,17 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         .build();
   }
 
-  private String slashlessBucketNameFromBlobInfo(BlobInfo blobInfo) {
+  private String slashlessBucketNameFromBlobInfo(BlobMetadata blobInfo) {
     // The bucket name itself should never contain a forward slash. However, parts already existed
     // in the code to check for this, so we remove the forward slashes to be safe here.
     return CharMatcher.anyOf(PATH_DELIMITER).trimFrom(blobInfo.getBucket());
   }
 
   /** Returns the hostname used to send requests to Cloud Storage, e.g. "storage.googleapis.com". */
-  private String getBaseStorageHostName(Map<SignUrlOption.Option, Object> optionMap) {
-    String specifiedBaseHostName = (String) optionMap.get(SignUrlOption.Option.HOST_NAME);
+  private String getBaseStorageHostName(Map<UrlSigningOption.RequestOption, Object> optionMap) {
+    String specifiedBaseHostName = (String) optionMap.get(UrlSigningOption.RequestOption.HOST_NAME);
     String bucketBoundHostName =
-        (String) optionMap.get(SignUrlOption.Option.BUCKET_BOUND_HOST_NAME);
+        (String) optionMap.get(UrlSigningOption.RequestOption.BUCKET_BOUND_HOST_NAME);
     if (!Strings.isNullOrEmpty(specifiedBaseHostName)) {
       return specifiedBaseHostName.replaceFirst("http(s)?://", "");
     }
@@ -996,60 +992,60 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public List<Blob> get(BlobId... blobIds) {
+  public List<StorageObject> get(BlobId... blobIds) {
     return get(Arrays.asList(blobIds));
   }
 
   @Override
-  public List<Blob> get(Iterable<BlobId> blobIds) {
-    StorageBatch batch = batch();
-    final List<Blob> results = Lists.newArrayList();
+  public List<StorageObject> get(Iterable<BlobId> blobIds) {
+    StorageOperationBatch batch = batch();
+    final List<StorageObject> results = Lists.newArrayList();
     for (BlobId blob : blobIds) {
       batch
           .get(blob)
           .notify(
-              new BatchResult.Callback<Blob, StorageException>() {
+              new BatchResult.Callback<StorageObject, StorageServiceException>() {
                 @Override
-                public void success(Blob result) {
+                public void success(StorageObject result) {
                   results.add(result);
                 }
 
                 @Override
-                public void error(StorageException exception) {
+                public void error(StorageServiceException exception) {
                   results.add(null);
                 }
               });
     }
-    batch.submit();
+    batch.submitBatch();
     return Collections.unmodifiableList(results);
   }
 
   @Override
-  public List<Blob> update(BlobInfo... blobInfos) {
+  public List<StorageObject> update(BlobMetadata... blobInfos) {
     return update(Arrays.asList(blobInfos));
   }
 
   @Override
-  public List<Blob> update(Iterable<BlobInfo> blobInfos) {
-    StorageBatch batch = batch();
-    final List<Blob> results = Lists.newArrayList();
-    for (BlobInfo blobInfo : blobInfos) {
+  public List<StorageObject> update(Iterable<BlobMetadata> blobInfos) {
+    StorageOperationBatch batch = batch();
+    final List<StorageObject> results = Lists.newArrayList();
+    for (BlobMetadata blobInfo : blobInfos) {
       batch
-          .update(blobInfo)
+          .modify(blobInfo)
           .notify(
-              new BatchResult.Callback<Blob, StorageException>() {
+              new BatchResult.Callback<StorageObject, StorageServiceException>() {
                 @Override
-                public void success(Blob result) {
+                public void success(StorageObject result) {
                   results.add(result);
                 }
 
                 @Override
-                public void error(StorageException exception) {
+                public void error(StorageServiceException exception) {
                   results.add(null);
                 }
               });
     }
-    batch.submit();
+    batch.submitBatch();
     return Collections.unmodifiableList(results);
   }
 
@@ -1060,86 +1056,86 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public List<Boolean> delete(Iterable<BlobId> blobIds) {
-    StorageBatch batch = batch();
+    StorageOperationBatch batch = batch();
     final List<Boolean> results = Lists.newArrayList();
     for (BlobId blob : blobIds) {
       batch
-          .delete(blob)
+          .remove(blob)
           .notify(
-              new BatchResult.Callback<Boolean, StorageException>() {
+              new BatchResult.Callback<Boolean, StorageServiceException>() {
                 @Override
                 public void success(Boolean result) {
                   results.add(result);
                 }
 
                 @Override
-                public void error(StorageException exception) {
+                public void error(StorageServiceException exception) {
                   results.add(Boolean.FALSE);
                 }
               });
     }
-    batch.submit();
+    batch.submitBatch();
     return Collections.unmodifiableList(results);
   }
 
   @Override
-  public Acl getAcl(final String bucket, final Entity entity, BucketSourceOption... options) {
-    String pb = entity.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public AccessControlEntry getAcl(final String bucket, final AbstractEntity entity, BucketSourceOptions... options) {
+    String pb = entity.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForBucketAclGet(pb, optionsMap);
-    return run(algorithm, () -> storageRpc.getAcl(bucket, pb, optionsMap), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.getAcl(bucket, pb, optionsMap), AccessControlEntry::fromPb);
   }
 
   @Override
-  public Acl getAcl(final String bucket, final Entity entity) {
-    return getAcl(bucket, entity, new BucketSourceOption[0]);
+  public AccessControlEntry getAcl(final String bucket, final AbstractEntity entity) {
+    return getAcl(bucket, entity, new BucketSourceOptions[0]);
   }
 
   @Override
   public boolean deleteAcl(
-      final String bucket, final Entity entity, BucketSourceOption... options) {
-    final String pb = entity.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+          final String bucket, final AbstractEntity entity, BucketSourceOptions... options) {
+    final String pb = entity.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForBucketAclDelete(pb, optionsMap);
     return run(algorithm, () -> storageRpc.deleteAcl(bucket, pb, optionsMap), Function.identity());
   }
 
   @Override
-  public boolean deleteAcl(final String bucket, final Entity entity) {
-    return deleteAcl(bucket, entity, new BucketSourceOption[0]);
+  public boolean deleteAcl(final String bucket, final AbstractEntity entity) {
+    return deleteAcl(bucket, entity, new BucketSourceOptions[0]);
   }
 
   @Override
-  public Acl createAcl(String bucket, Acl acl, BucketSourceOption... options) {
-    final BucketAccessControl aclPb = acl.toBucketPb().setBucket(bucket);
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public AccessControlEntry createAcl(String bucket, AccessControlEntry acl, BucketSourceOptions... options) {
+    final BucketAccessControl aclPb = acl.toBucketProto().setBucket(bucket);
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketAclCreate(aclPb, optionsMap);
-    return run(algorithm, () -> storageRpc.createAcl(aclPb, optionsMap), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.createAcl(aclPb, optionsMap), AccessControlEntry::fromPb);
   }
 
   @Override
-  public Acl createAcl(String bucket, Acl acl) {
-    return createAcl(bucket, acl, new BucketSourceOption[0]);
+  public AccessControlEntry createAcl(String bucket, AccessControlEntry acl) {
+    return createAcl(bucket, acl, new BucketSourceOptions[0]);
   }
 
   @Override
-  public Acl updateAcl(String bucket, Acl acl, BucketSourceOption... options) {
-    final BucketAccessControl aclPb = acl.toBucketPb().setBucket(bucket);
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public AccessControlEntry updateAcl(String bucket, AccessControlEntry acl, BucketSourceOptions... options) {
+    final BucketAccessControl aclPb = acl.toBucketProto().setBucket(bucket);
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketAclUpdate(aclPb, optionsMap);
-    return run(algorithm, () -> storageRpc.patchAcl(aclPb, optionsMap), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.patchAcl(aclPb, optionsMap), AccessControlEntry::fromPb);
   }
 
   @Override
-  public Acl updateAcl(String bucket, Acl acl) {
-    return updateAcl(bucket, acl, new BucketSourceOption[0]);
+  public AccessControlEntry updateAcl(String bucket, AccessControlEntry acl) {
+    return updateAcl(bucket, acl, new BucketSourceOptions[0]);
   }
 
   @Override
-  public List<Acl> listAcls(final String bucket, BucketSourceOption... options) {
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public List<AccessControlEntry> listAcls(final String bucket, BucketSourceOptions... options) {
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketAclList(bucket, optionsMap);
     return run(
@@ -1147,72 +1143,72 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () -> storageRpc.listAcls(bucket, optionsMap),
         (answer) ->
             answer.stream()
-                .map(Acl.FROM_BUCKET_PB_FUNCTION)
+                .map(AccessControlEntry.FROM_BUCKET_PROTO_FUNCTION)
                 .collect(ImmutableList.toImmutableList()));
   }
 
   @Override
-  public List<Acl> listAcls(final String bucket) {
-    return listAcls(bucket, new BucketSourceOption[0]);
+  public List<AccessControlEntry> listAcls(final String bucket) {
+    return listAcls(bucket, new BucketSourceOptions[0]);
   }
 
   @Override
-  public Acl getDefaultAcl(final String bucket, final Entity entity) {
-    String pb = entity.toPb();
+  public AccessControlEntry getDefaultAcl(final String bucket, final AbstractEntity entity) {
+    String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclGet(pb);
-    return run(algorithm, () -> storageRpc.getDefaultAcl(bucket, pb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.getDefaultAcl(bucket, pb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public boolean deleteDefaultAcl(final String bucket, final Entity entity) {
-    String pb = entity.toPb();
+  public boolean deleteDefaultAcl(final String bucket, final AbstractEntity entity) {
+    String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclDelete(pb);
     return run(algorithm, () -> storageRpc.deleteDefaultAcl(bucket, pb), Function.identity());
   }
 
   @Override
-  public Acl createDefaultAcl(String bucket, Acl acl) {
-    final ObjectAccessControl aclPb = acl.toObjectPb().setBucket(bucket);
+  public AccessControlEntry createDefaultAcl(String bucket, AccessControlEntry acl) {
+    final ObjectAccessControl aclPb = acl.toObjectProto().setBucket(bucket);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclCreate(aclPb);
-    return run(algorithm, () -> storageRpc.createDefaultAcl(aclPb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.createDefaultAcl(aclPb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public Acl updateDefaultAcl(String bucket, Acl acl) {
-    final ObjectAccessControl aclPb = acl.toObjectPb().setBucket(bucket);
+  public AccessControlEntry updateDefaultAcl(String bucket, AccessControlEntry acl) {
+    final ObjectAccessControl aclPb = acl.toObjectProto().setBucket(bucket);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclUpdate(aclPb);
-    return run(algorithm, () -> storageRpc.patchDefaultAcl(aclPb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.patchDefaultAcl(aclPb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public List<Acl> listDefaultAcls(final String bucket) {
+  public List<AccessControlEntry> listDefaultAcls(final String bucket) {
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclList(bucket);
     return run(
         algorithm,
         () -> storageRpc.listDefaultAcls(bucket),
         (answer) ->
             answer.stream()
-                .map(Acl.FROM_OBJECT_PB_FUNCTION)
+                .map(AccessControlEntry.FROM_OBJECT_PROTO_FUNCTION)
                 .collect(ImmutableList.toImmutableList()));
   }
 
   @Override
-  public Acl getAcl(final BlobId blob, final Entity entity) {
+  public AccessControlEntry getAcl(final BlobId blob, final AbstractEntity entity) {
     String bucket = blob.getBucket();
     String name = blob.getName();
     Long generation = blob.getGeneration();
-    String pb = entity.toPb();
+    String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectAclGet(bucket, name, generation, pb);
-    return run(algorithm, () -> storageRpc.getAcl(bucket, name, generation, pb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.getAcl(bucket, name, generation, pb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public boolean deleteAcl(final BlobId blob, final Entity entity) {
+  public boolean deleteAcl(final BlobId blob, final AbstractEntity entity) {
     String bucket = blob.getBucket();
     String name = blob.getName();
     Long generation = blob.getGeneration();
-    String pb = entity.toPb();
+    String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectAclDelete(bucket, name, generation, pb);
     return run(
@@ -1220,29 +1216,29 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Acl createAcl(final BlobId blob, final Acl acl) {
+  public AccessControlEntry createAcl(final BlobId blob, final AccessControlEntry acl) {
     final ObjectAccessControl aclPb =
-        acl.toObjectPb()
+        acl.toObjectProto()
             .setBucket(blob.getBucket())
             .setObject(blob.getName())
             .setGeneration(blob.getGeneration());
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForObjectAclCreate(aclPb);
-    return run(algorithm, () -> storageRpc.createAcl(aclPb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.createAcl(aclPb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public Acl updateAcl(BlobId blob, Acl acl) {
+  public AccessControlEntry updateAcl(BlobId blob, AccessControlEntry acl) {
     final ObjectAccessControl aclPb =
-        acl.toObjectPb()
+        acl.toObjectProto()
             .setBucket(blob.getBucket())
             .setObject(blob.getName())
             .setGeneration(blob.getGeneration());
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForObjectAclUpdate(aclPb);
-    return run(algorithm, () -> storageRpc.patchAcl(aclPb), Acl::fromPb);
+    return run(algorithm, () -> storageRpc.patchAcl(aclPb), AccessControlEntry::fromPb);
   }
 
   @Override
-  public List<Acl> listAcls(final BlobId blob) {
+  public List<AccessControlEntry> listAcls(final BlobId blob) {
     String bucket = blob.getBucket();
     String name = blob.getName();
     Long generation = blob.getGeneration();
@@ -1253,60 +1249,60 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () -> storageRpc.listAcls(bucket, name, generation),
         (answer) ->
             answer.stream()
-                .map(Acl.FROM_OBJECT_PB_FUNCTION)
+                .map(AccessControlEntry.FROM_OBJECT_PROTO_FUNCTION)
                 .collect(ImmutableList.toImmutableList()));
   }
 
-  public HmacKey createHmacKey(
-      final ServiceAccount serviceAccount, final CreateHmacKeyOption... options) {
+  public HmacSecretKey createHmacKey(
+          final ServiceAccountInfo serviceAccount, final HmacKeyCreationOption... options) {
     String pb = serviceAccount.getEmail();
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForHmacKeyCreate(pb, optionsMap);
-    return run(algorithm, () -> storageRpc.createHmacKey(pb, optionsMap), HmacKey::fromPb);
+    return run(algorithm, () -> storageRpc.createHmacKey(pb, optionsMap), HmacSecretKey::fromProto);
   }
 
   @Override
-  public Page<HmacKeyMetadata> listHmacKeys(ListHmacKeysOption... options) {
+  public Page<HmacKeyDetails> listHmacKeys(ListHmacKeysOptions... options) {
     return listHmacKeys(getOptions(), retryAlgorithmManager, optionMap(options));
   }
 
   @Override
-  public HmacKeyMetadata getHmacKey(final String accessId, final GetHmacKeyOption... options) {
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public HmacSecretKey.HmacKeyDetails getHmacKey(final String accessId, final RetrieveHmacKeyOption... options) {
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForHmacKeyGet(accessId, optionsMap);
     return run(
         algorithm,
         () -> storageRpc.getHmacKey(accessId, optionMap(options)),
-        HmacKeyMetadata::fromPb);
+        HmacSecretKey.HmacKeyDetails::fromProto);
   }
 
-  private HmacKeyMetadata updateHmacKey(
-      final HmacKeyMetadata hmacKeyMetadata, final UpdateHmacKeyOption... options) {
-    com.google.api.services.storage.model.HmacKeyMetadata pb = hmacKeyMetadata.toPb();
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  private HmacSecretKey.HmacKeyDetails updateHmacKey(
+          final HmacSecretKey.HmacKeyDetails hmacKeyMetadata, final HmacKeyUpdateOption... options) {
+    com.google.api.services.storage.model.HmacKeyMetadata pb = hmacKeyMetadata.toProto();
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForHmacKeyUpdate(pb, optionsMap);
-    return run(algorithm, () -> storageRpc.updateHmacKey(pb, optionsMap), HmacKeyMetadata::fromPb);
+    return run(algorithm, () -> storageRpc.updateHmacKey(pb, optionsMap), HmacKeyDetails::fromProto);
   }
 
   @Override
-  public HmacKeyMetadata updateHmacKeyState(
-      final HmacKeyMetadata hmacKeyMetadata,
-      final HmacKey.HmacKeyState state,
-      final UpdateHmacKeyOption... options) {
-    HmacKeyMetadata updatedMetadata =
-        HmacKeyMetadata.newBuilder(hmacKeyMetadata.getServiceAccount())
+  public HmacSecretKey.HmacKeyDetails updateHmacKeyState(
+      final HmacSecretKey.HmacKeyDetails hmacKeyMetadata,
+      final HmacSecretKey.HmacKeyStatus state,
+      final HmacKeyUpdateOption... options) {
+    HmacSecretKey.HmacKeyDetails updatedMetadata =
+        HmacKeyDetails.newServiceAccountBuilder(hmacKeyMetadata.getServiceAccount())
             .setProjectId(hmacKeyMetadata.getProjectId())
             .setAccessId(hmacKeyMetadata.getAccessId())
             .setState(state)
-            .build();
+            .buildHmacKeyDetails();
     return updateHmacKey(updatedMetadata, options);
   }
 
   @Override
-  public void deleteHmacKey(final HmacKeyMetadata metadata, final DeleteHmacKeyOption... options) {
-    com.google.api.services.storage.model.HmacKeyMetadata pb = metadata.toPb();
-    Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public void deleteHmacKey(final HmacKeyDetails metadata, final DeleteHmacKeyRequestOption... options) {
+    com.google.api.services.storage.model.HmacKeyMetadata pb = metadata.toProto();
+    Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForHmacKeyDelete(pb, optionsMap);
     run(
         algorithm,
@@ -1318,10 +1314,10 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         Function.identity());
   }
 
-  private static Page<HmacKeyMetadata> listHmacKeys(
-      final StorageOptions serviceOptions,
+  private static Page<HmacKeyDetails> listHmacKeys(
+      final StorageClientOptions serviceOptions,
       final RetryAlgorithmManager retryAlgorithmManager,
-      final Map<StorageRpc.Option, ?> options) {
+      final Map<StorageRpcClient.StorageOption, ?> options) {
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForHmacKeyList(options);
     return Retrying.run(
         serviceOptions,
@@ -1329,10 +1325,10 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
         () -> serviceOptions.getStorageRpcV1().listHmacKeys(options),
         (result) -> {
           String cursor = result.x();
-          final Iterable<HmacKeyMetadata> metadata =
+          final Iterable<HmacKeyDetails> metadata =
               result.y() == null
                   ? ImmutableList.of()
-                  : Iterables.transform(result.y(), HmacKeyMetadata::fromPb);
+                  : Iterables.transform(result.y(), HmacKeyDetails::fromProto);
           return new PageImpl<>(
               new HmacKeyMetadataPageFetcher(serviceOptions, retryAlgorithmManager, options),
               cursor,
@@ -1341,8 +1337,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Policy getIamPolicy(final String bucket, BucketSourceOption... options) {
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+  public Policy getIamPolicy(final String bucket, BucketSourceOptions... options) {
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsGetIamPolicy(bucket, optionsMap);
     return run(
@@ -1353,9 +1349,9 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public Policy setIamPolicy(
-      final String bucket, final Policy policy, BucketSourceOption... options) {
+      final String bucket, final Policy policy, BucketSourceOptions... options) {
     com.google.api.services.storage.model.Policy pb = convertToApiPolicy(policy);
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsSetIamPolicy(bucket, pb, optionsMap);
     return run(
@@ -1366,8 +1362,8 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
 
   @Override
   public List<Boolean> testIamPermissions(
-      final String bucket, final List<String> permissions, BucketSourceOption... options) {
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(options);
+      final String bucket, final List<String> permissions, BucketSourceOptions... options) {
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsTestIamPermissions(bucket, permissions, optionsMap);
     return run(
@@ -1385,21 +1381,21 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Bucket lockRetentionPolicy(BucketInfo bucketInfo, BucketTargetOption... options) {
-    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toPb();
-    final Map<StorageRpc.Option, ?> optionsMap = optionMap(bucketInfo, options);
+  public StorageBucket lockRetentionPolicy(BucketMetadata bucketInfo, BucketTargetOptions... options) {
+    final com.google.api.services.storage.model.Bucket bucketPb = bucketInfo.toProto();
+    final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(bucketInfo, options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketsLockRetentionPolicy(bucketPb, optionsMap);
     return run(
         algorithm,
         () -> storageRpc.lockRetentionPolicy(bucketPb, optionsMap),
-        (x) -> Bucket.fromPb(this, x));
+        (x) -> StorageBucket.fromProto(this, x));
   }
 
   @Override
-  public ServiceAccount getServiceAccount(final String projectId) {
+  public ServiceAccountInfo getServiceAccount(final String projectId) {
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForServiceAccountGet(projectId);
-    return run(algorithm, () -> storageRpc.getServiceAccount(projectId), ServiceAccount::fromPb);
+    return run(algorithm, () -> storageRpc.getServiceAccount(projectId), ServiceAccountInfo::fromProto);
   }
 
   private <T, U> U run(ResultRetryAlgorithm<?> algorithm, Callable<T> c, Function<T, U> f) {
@@ -1407,12 +1403,12 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
   }
 
   @Override
-  public Notification createNotification(
-      final String bucket, final NotificationInfo notificationInfo) {
+  public StorageNotification createNotification(
+      final String bucket, final NotificationMetadata notificationInfo) {
     final com.google.api.services.storage.model.Notification notificationPb =
-        notificationInfo.toPb();
+        notificationInfo.toProto();
     try {
-      return Notification.fromPb(
+      return StorageNotification.fromProto(
           this,
           runWithRetries(
               new Callable<com.google.api.services.storage.model.Notification>() {
@@ -1425,12 +1421,12 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
               EXCEPTION_HANDLER,
               getOptions().getClock()));
     } catch (RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageServiceException.translateAndRethrow(e);
     }
   }
 
   @Override
-  public Notification getNotification(final String bucket, final String notificationId) {
+  public StorageNotification getNotification(final String bucket, final String notificationId) {
     try {
       com.google.api.services.storage.model.Notification answer =
           runWithRetries(
@@ -1443,14 +1439,14 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
               getOptions().getRetrySettings(),
               EXCEPTION_HANDLER,
               getOptions().getClock());
-      return answer == null ? null : Notification.fromPb(this, answer);
+      return answer == null ? null : StorageNotification.fromProto(this, answer);
     } catch (RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageServiceException.translateAndRethrow(e);
     }
   }
 
   @Override
-  public List<Notification> listNotifications(final String bucket) {
+  public List<StorageNotification> listNotifications(final String bucket) {
     try {
       List<com.google.api.services.storage.model.Notification> answer =
           runWithRetries(
@@ -1464,19 +1460,19 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
               EXCEPTION_HANDLER,
               getOptions().getClock());
       return answer == null
-          ? ImmutableList.<Notification>of()
+          ? ImmutableList.<StorageNotification>of()
           : Lists.transform(
               answer,
               new com.google.common.base.Function<
-                  com.google.api.services.storage.model.Notification, Notification>() {
+                  com.google.api.services.storage.model.Notification, StorageNotification>() {
                 @Override
-                public Notification apply(
+                public StorageNotification apply(
                     com.google.api.services.storage.model.Notification notificationPb) {
-                  return Notification.fromPb(getOptions().getService(), notificationPb);
+                  return StorageNotification.fromProto(getOptions().getService(), notificationPb);
                 }
               });
     } catch (RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageServiceException.translateAndRethrow(e);
     }
   }
 
@@ -1494,43 +1490,43 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
           EXCEPTION_HANDLER,
           getOptions().getClock());
     } catch (RetryHelperException e) {
-      throw StorageException.translateAndThrow(e);
+      throw StorageServiceException.translateAndRethrow(e);
     }
   }
 
   private static <T> void addToOptionMap(
-      StorageRpc.Option option, T defaultValue, Map<StorageRpc.Option, Object> map) {
+          StorageRpcClient.StorageOption option, T defaultValue, Map<StorageRpcClient.StorageOption, Object> map) {
     addToOptionMap(option, option, defaultValue, map);
   }
 
   private static <T> void addToOptionMap(
-      StorageRpc.Option getOption,
-      StorageRpc.Option putOption,
+      StorageRpcClient.StorageOption getOption,
+      StorageRpcClient.StorageOption putOption,
       T defaultValue,
-      Map<StorageRpc.Option, Object> map) {
+      Map<StorageRpcClient.StorageOption, Object> map) {
     if (map.containsKey(getOption)) {
       @SuppressWarnings("unchecked")
       T value = (T) map.remove(getOption);
       checkArgument(
           value != null || defaultValue != null,
-          "Option " + getOption.value() + " is missing a value");
+          "Option " + getOption.getValue() + " is missing a value");
       value = firstNonNull(value, defaultValue);
       map.put(putOption, value);
     }
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(
-      Long generation, Long metaGeneration, Iterable<? extends Option> options) {
+  private static Map<StorageRpcClient.StorageOption, ?> optionMap(
+      Long generation, Long metaGeneration, Iterable<? extends AbstractOption> options) {
     return optionMap(generation, metaGeneration, options, false);
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(
+  private static Map<StorageRpcClient.StorageOption, ?> optionMap(
       Long generation,
       Long metaGeneration,
-      Iterable<? extends Option> options,
+      Iterable<? extends AbstractOption> options,
       boolean useAsSource) {
-    Map<StorageRpc.Option, Object> temp = Maps.newEnumMap(StorageRpc.Option.class);
-    for (Option option : options) {
+    Map<StorageRpcClient.StorageOption, Object> temp = Maps.newEnumMap(StorageRpcClient.StorageOption.class);
+    for (AbstractOption option : options) {
       Object prev = temp.put(option.getRpcOption(), option.getValue());
       checkArgument(prev == null, "Duplicate option %s", option);
     }
@@ -1555,24 +1551,24 @@ final class StorageImpl extends BaseService<StorageOptions> implements Storage {
     return ImmutableMap.copyOf(temp);
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(Option... options) {
+  private static Map<StorageRpcClient.StorageOption, ?> optionMap(AbstractOption... options) {
     return optionMap(null, null, Arrays.asList(options));
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(
-      Long generation, Long metaGeneration, Option... options) {
+  private static Map<StorageRpcClient.StorageOption, ?> optionMap(
+      Long generation, Long metaGeneration, AbstractOption... options) {
     return optionMap(generation, metaGeneration, Arrays.asList(options));
   }
 
-  private static Map<StorageRpc.Option, ?> optionMap(BucketInfo bucketInfo, Option... options) {
+  private static Map<StorageRpcClient.StorageOption, ?> optionMap(BucketMetadata bucketInfo, AbstractOption... options) {
     return optionMap(null, bucketInfo.getMetageneration(), options);
   }
 
-  static Map<StorageRpc.Option, ?> optionMap(BlobInfo blobInfo, Option... options) {
+  static Map<StorageRpcClient.StorageOption, ?> optionMap(BlobMetadata blobInfo, AbstractOption... options) {
     return optionMap(blobInfo.getGeneration(), blobInfo.getMetageneration(), options);
   }
 
-  static Map<StorageRpc.Option, ?> optionMap(BlobId blobId, Option... options) {
+  static Map<StorageRpcClient.StorageOption, ?> optionMap(BlobId blobId, AbstractOption... options) {
     return optionMap(blobId.getGeneration(), null, options);
   }
 }

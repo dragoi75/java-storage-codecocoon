@@ -26,7 +26,7 @@ import com.google.cloud.Tuple;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.http.HttpTransportOptions;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.StorageClientOptions;
 import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.net.URL;
@@ -64,7 +64,7 @@ public class HttpRpcContextTest {
     TransportOptions transportOptions =
         HttpTransportOptions.newBuilder().setHttpTransportFactory(() -> transport).build();
     Storage service =
-        StorageOptions.getDefaultInstance()
+        StorageClientOptions.getDefaultInstance()
             .toBuilder()
             .setTransportOptions(transportOptions)
             .build()
@@ -105,7 +105,7 @@ public class HttpRpcContextTest {
     TransportOptions transportOptions =
         HttpTransportOptions.newBuilder().setHttpTransportFactory(() -> transport).build();
     Storage service =
-        StorageOptions.getDefaultInstance()
+        StorageClientOptions.getDefaultInstance()
             .toBuilder()
             .setTransportOptions(transportOptions)
             .build()

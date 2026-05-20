@@ -23,23 +23,22 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.api.client.json.JsonParser;
 import com.google.api.gax.rpc.FixedHeaderProvider;
-import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.NoCredentials;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.conformance.storage.v1.InstructionList;
 import com.google.cloud.conformance.storage.v1.Method;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobMetadata;
+import com.google.cloud.storage.BucketMetadata;
+import com.google.cloud.storage.StorageClientOptions;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.DataGeneration;
 import com.google.cloud.storage.PackagePrivateMethodWorkarounds;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobWriteOption;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.Storage.BlobWriteOptions;
 import com.google.cloud.storage.conformance.retry.TestBench;
 import com.google.cloud.storage.conformance.retry.TestBench.RetryTestResource;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.Reflection;
 import java.io.ByteArrayOutputStream;
@@ -104,8 +103,8 @@ public final class ITBlobWriteChannelTest {
   private void doJsonUnexpectedEOFTest(int contentSize, int cappedByteCount) throws IOException {
     String blobPath = String.format("%s/%s/blob", testName.getMethodName(), NOW_STRING);
 
-    BucketInfo bucketInfo = BucketInfo.of(dataGeneration.getBucketName());
-    BlobInfo blobInfoGen0 = BlobInfo.newBuilder(bucketInfo, blobPath, 0L).build();
+    BucketMetadata bucketInfo = BucketMetadata.ofName(dataGeneration.getBucketName());
+    BlobMetadata blobInfoGen0 = BlobMetadata.newBuilder(bucketInfo, blobPath, 0L).buildObject();
 
     RetryTestResource retryTestResource =
         RetryTestResource.newRetryTestResource(
@@ -116,15 +115,15 @@ public final class ITBlobWriteChannelTest {
                 .build());
     RetryTestResource retryTest = testBench.createRetryTest(retryTestResource);
 
-    StorageOptions baseOptions =
-        StorageOptions.newBuilder()
+    StorageClientOptions baseOptions =
+        StorageClientOptions.newStorageClientBuilder()
             .setCredentials(NoCredentials.getInstance())
             .setHost(testBench.getBaseUri())
             .setProjectId("project-id")
             .build();
-    StorageRpc noHeader = (StorageRpc) baseOptions.getRpc();
-    StorageRpc yesHeader =
-        (StorageRpc)
+    StorageRpcClient noHeader = (StorageRpcClient) baseOptions.getRpc();
+    StorageRpcClient yesHeader =
+        (StorageRpcClient)
             baseOptions
                 .toBuilder()
                 .setHeaderProvider(
@@ -132,13 +131,13 @@ public final class ITBlobWriteChannelTest {
                 .build()
                 .getRpc();
     //noinspection UnstableApiUsage
-    StorageOptions storageOptions =
+    StorageClientOptions storageOptions =
         baseOptions
             .toBuilder()
             .setServiceRpcFactory(
                 options ->
                     Reflection.newProxy(
-                        StorageRpc.class,
+                        StorageRpcClient.class,
                         (proxy, method, args) -> {
                           try {
                             if ("writeWithResponse".equals(method.getName())) {
@@ -169,23 +168,23 @@ public final class ITBlobWriteChannelTest {
     // create a duplicate to preserve the initial offset and limit for assertion later
     ByteBuffer expected = content.duplicate();
 
-    WriteChannel w = testStorage.writer(blobInfoGen0, BlobWriteOption.generationMatch());
+    WriteChannel w = testStorage.writer(blobInfoGen0, BlobWriteOptions.withGenerationMatch());
     w.write(content);
     w.close();
 
     RetryTestResource postRunState = testBench.getRetryTest(retryTest);
     assertTrue(postRunState.completed);
 
-    Optional<StorageObject> optionalStorageObject =
+    Optional<com.google.api.services.storage.model.StorageObject> optionalStorageObject =
         PackagePrivateMethodWorkarounds.maybeGetStorageObjectFunction().apply(w);
 
     assertTrue(optionalStorageObject.isPresent());
-    StorageObject storageObject = optionalStorageObject.get();
+    com.google.api.services.storage.model.StorageObject storageObject = optionalStorageObject.get();
     assertThat(storageObject.getName()).isEqualTo(blobInfoGen0.getName());
 
     // construct a new blob id, without a generation, so we get the latest when we perform a get
-    BlobId blobIdGen1 = BlobId.of(storageObject.getBucket(), storageObject.getName());
-    Blob blobGen2 = testStorage.get(blobIdGen1);
+    BlobId blobIdGen1 = BlobId.from(storageObject.getBucket(), storageObject.getName());
+    StorageObject blobGen2 = testStorage.get(blobIdGen1);
     assertEquals(contentSize, (long) blobGen2.getSize());
     assertNotEquals(blobInfoGen0.getGeneration(), blobGen2.getGeneration());
     ByteArrayOutputStream actualData = new ByteArrayOutputStream();

@@ -29,6 +29,8 @@ import com.google.cloud.conformance.storage.v1.Method;
 import com.google.cloud.conformance.storage.v1.RetryTest;
 import com.google.cloud.conformance.storage.v1.RetryTests;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageBucket;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.conformance.retry.Functions.CtxFunction;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -166,8 +168,8 @@ public class ITRetryConformanceTest {
   }
 
   /**
-   * When a "higher level object" ({@link com.google.cloud.storage.Bucket}, {@link
-   * com.google.cloud.storage.Blob}, etc.) is created as part of setup it keeps a reference to the
+   * When a "higher level object" ({@link StorageBucket}, {@link
+   * StorageObject}, etc.) is created as part of setup it keeps a reference to the
    * instance of {@link Storage} used to create it. When we run our tests we need the instance of
    * {@link Storage} to be the instance with the headers to signal the retry test.
    *

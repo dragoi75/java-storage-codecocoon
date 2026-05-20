@@ -20,17 +20,17 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.Policy;
-import com.google.cloud.storage.Acl;
-import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.AccessControlEntry;
+import com.google.cloud.storage.BlobMetadata;
+import com.google.cloud.storage.BucketMetadata;
+import com.google.cloud.storage.HmacSecretKey;
+import com.google.cloud.storage.ObjectCopyWriter;
+import com.google.cloud.storage.ServiceAccountInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageBucket;
+import com.google.cloud.storage.StorageObject;
 import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.BucketInfo;
-import com.google.cloud.storage.CopyWriter;
-import com.google.cloud.storage.HmacKey;
-import com.google.cloud.storage.HmacKey.HmacKeyMetadata;
-import com.google.cloud.storage.ServiceAccount;
-import com.google.cloud.storage.Storage.ComposeRequest;
+import com.google.cloud.storage.Storage.ComposeBlobsRequest;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import java.util.HashMap;
@@ -57,25 +57,25 @@ import java.util.stream.StreamSupport;
 final class State {
 
   private static final State EMPTY = new State();
-  private static final Key<Acl> KEY_ACL = new Key<>("acl");
-  private static final Key<Blob> KEY_BLOB = new Key<>("blob");
+  private static final Key<AccessControlEntry> KEY_ACL = new Key<>("acl");
+  private static final Key<StorageObject> KEY_BLOB = new Key<>("blob");
   private static final Key<BlobId> KEY_BLOB_ID = new Key<>("blobId");
   private static final Key<BlobId> KEY_COPY_DEST = new Key<>("copyDest");
-  private static final Key<BlobInfo> KEY_BLOB_INFO = new Key<>("blobInfo");
+  private static final Key<BlobMetadata> KEY_BLOB_INFO = new Key<>("blobInfo");
   private static final Key<Boolean> KEY_BOOL = new Key<>("bool");
-  private static final Key<Bucket> KEY_BUCKET = new Key<>("bucket");
-  private static final Key<BucketInfo> KEY_BUCKET_INFO = new Key<>("bucketInfo");
-  private static final Key<CopyWriter> KEY_COPY = new Key<>("copy");
-  private static final Key<HmacKey> KEY_HMAC_KEY = new Key<>("hmacKey");
-  private static final Key<HmacKeyMetadata> KEY_HMAC_KEY_METADATA = new Key<>("hmacKeyMetadata");
+  private static final Key<StorageBucket> KEY_BUCKET = new Key<>("bucket");
+  private static final Key<BucketMetadata> KEY_BUCKET_INFO = new Key<>("bucketInfo");
+  private static final Key<ObjectCopyWriter> KEY_COPY = new Key<>("copy");
+  private static final Key<HmacSecretKey> KEY_HMAC_KEY = new Key<>("hmacKey");
+  private static final Key<HmacSecretKey.HmacKeyDetails> KEY_HMAC_KEY_METADATA = new Key<>("hmacKeyMetadata");
   private static final Key<Policy> KEY_POLICY = new Key<>("policy");
-  private static final Key<ServiceAccount> KEY_SERVICE_ACCOUNT = new Key<>("serviceAccount");
+  private static final Key<ServiceAccountInfo> KEY_SERVICE_ACCOUNT = new Key<>("serviceAccount");
   private static final Key<List<?>> KEY_LIST_OBJECTS = new Key<>("list<object>");
   private static final Key<List<Boolean>> KEY_TEST_IAM_PERMISSIONS_RESULTS =
       new Key<>("testIamPermissionsResults");
-  private static final Key<List<Acl>> KEY_ACLS = new Key<>("acls");
+  private static final Key<List<AccessControlEntry>> KEY_ACLS = new Key<>("acls");
   private static final Key<byte[]> KEY_BYTES = new Key<>("bytes");
-  private static final Key<ComposeRequest> KEY_COMPOSE_REQUEST = new Key<>("composeRequest");
+  private static final Key<ComposeBlobsRequest> KEY_COMPOSE_REQUEST = new Key<>("composeRequest");
 
   private final ImmutableMap<Key<?>, Object> data;
 
@@ -95,11 +95,11 @@ final class State {
     return hasValue(KEY_ACL);
   }
 
-  public Acl getAcl() {
+  public AccessControlEntry getAcl() {
     return getValue(KEY_ACL);
   }
 
-  public State with(Acl acl) {
+  public State with(AccessControlEntry acl) {
     return newStateWith(KEY_ACL, acl);
   }
 
@@ -107,11 +107,11 @@ final class State {
     return hasValue(KEY_BLOB);
   }
 
-  public Blob getBlob() {
+  public StorageObject getBlob() {
     return getValue(KEY_BLOB);
   }
 
-  public State with(Blob blob) {
+  public State with(StorageObject blob) {
     return newStateWith(KEY_BLOB, blob);
   }
 
@@ -143,11 +143,11 @@ final class State {
     return hasValue(KEY_BLOB_INFO);
   }
 
-  public BlobInfo getBlobInfo() {
+  public BlobMetadata getBlobInfo() {
     return getValue(KEY_BLOB_INFO);
   }
 
-  public State with(BlobInfo blobInfo) {
+  public State with(BlobMetadata blobInfo) {
     return newStateWith(KEY_BLOB_INFO, blobInfo);
   }
 
@@ -167,11 +167,11 @@ final class State {
     return hasValue(KEY_BUCKET);
   }
 
-  public Bucket getBucket() {
+  public StorageBucket getBucket() {
     return getValue(KEY_BUCKET);
   }
 
-  public State with(Bucket bucket) {
+  public State with(StorageBucket bucket) {
     return newStateWith(KEY_BUCKET, bucket);
   }
 
@@ -179,11 +179,11 @@ final class State {
     return hasValue(KEY_BUCKET_INFO);
   }
 
-  public BucketInfo getBucketInfo() {
+  public BucketMetadata getBucketInfo() {
     return getValue(KEY_BUCKET_INFO);
   }
 
-  public State with(BucketInfo bucketInfo) {
+  public State with(BucketMetadata bucketInfo) {
     return newStateWith(KEY_BUCKET_INFO, bucketInfo);
   }
 
@@ -191,11 +191,11 @@ final class State {
     return hasValue(KEY_COPY);
   }
 
-  public CopyWriter getCopy() {
+  public ObjectCopyWriter getCopy() {
     return getValue(KEY_COPY);
   }
 
-  public State with(CopyWriter copy) {
+  public State with(ObjectCopyWriter copy) {
     return newStateWith(KEY_COPY, copy);
   }
 
@@ -203,11 +203,11 @@ final class State {
     return hasValue(KEY_HMAC_KEY);
   }
 
-  public HmacKey getHmacKey() {
+  public HmacSecretKey getHmacKey() {
     return getValue(KEY_HMAC_KEY);
   }
 
-  public State withHmacKey(HmacKey hmacKey) {
+  public State withHmacKey(HmacSecretKey hmacKey) {
     return newStateWith(KEY_HMAC_KEY, hmacKey);
   }
 
@@ -215,11 +215,11 @@ final class State {
     return hasValue(KEY_HMAC_KEY_METADATA);
   }
 
-  public HmacKeyMetadata getHmacKeyMetadata() {
+  public HmacSecretKey.HmacKeyDetails getHmacKeyMetadata() {
     return getValue(KEY_HMAC_KEY_METADATA);
   }
 
-  public State with(HmacKeyMetadata hmacKeyMetadata) {
+  public State with(HmacSecretKey.HmacKeyDetails hmacKeyMetadata) {
     return newStateWith(KEY_HMAC_KEY_METADATA, hmacKeyMetadata);
   }
 
@@ -239,11 +239,11 @@ final class State {
     return hasValue(KEY_SERVICE_ACCOUNT);
   }
 
-  public ServiceAccount getServiceAccount() {
+  public ServiceAccountInfo getServiceAccount() {
     return getValue(KEY_SERVICE_ACCOUNT);
   }
 
-  public State with(ServiceAccount serviceAccount) {
+  public State with(ServiceAccountInfo serviceAccount) {
     return newStateWith(KEY_SERVICE_ACCOUNT, serviceAccount);
   }
 
@@ -275,11 +275,11 @@ final class State {
     return hasValue(KEY_ACLS);
   }
 
-  public List<Acl> getAcls() {
+  public List<AccessControlEntry> getAcls() {
     return getValue(KEY_ACLS);
   }
 
-  public State withAcls(List<Acl> acls) {
+  public State withAcls(List<AccessControlEntry> acls) {
     return newStateWith(KEY_ACLS, acls);
   }
 
@@ -289,11 +289,11 @@ final class State {
     return newStateWith(KEY_LIST_OBJECTS, collect);
   }
 
-  public State with(ComposeRequest composeRequest) {
+  public State with(ComposeBlobsRequest composeRequest) {
     return newStateWith(KEY_COMPOSE_REQUEST, composeRequest);
   }
 
-  public ComposeRequest getComposeRequest() {
+  public Storage.ComposeBlobsRequest getComposeRequest() {
     return getValue(KEY_COMPOSE_REQUEST);
   }
 

@@ -20,24 +20,21 @@ import static org.junit.Assert.assertEquals;
 
 import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.cloud.storage.Acl.Domain;
-import com.google.cloud.storage.Acl.Entity;
-import com.google.cloud.storage.Acl.Entity.Type;
-import com.google.cloud.storage.Acl.Group;
-import com.google.cloud.storage.Acl.Project;
-import com.google.cloud.storage.Acl.Project.ProjectRole;
-import com.google.cloud.storage.Acl.RawEntity;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
+import com.google.cloud.storage.AccessControlEntry.AbstractEntity;
+import com.google.cloud.storage.AccessControlEntry.AbstractEntity.EntityType;
+import com.google.cloud.storage.AccessControlEntry.EmailGroup;
+import com.google.cloud.storage.AccessControlEntry.ProjectInfo.ProjectMemberRole;
+import com.google.cloud.storage.AccessControlEntry.RawDataEntity;
+import com.google.cloud.storage.AccessControlEntry.UserIdentity;
 import org.junit.Test;
 
 public class AclTest {
 
-  private static final Role ROLE = Role.OWNER;
-  private static final Entity ENTITY = User.ofAllAuthenticatedUsers();
+  private static final AccessControlEntry.RoleType ROLE = AccessControlEntry.RoleType.OWNER;
+  private static final AbstractEntity ENTITY = AccessControlEntry.UserIdentity.allAuthenticatedUsers();
   private static final String ETAG = "etag";
   private static final String ID = "id";
-  private static final Acl ACL = Acl.newBuilder(ENTITY, ROLE).setEtag(ETAG).setId(ID).build();
+  private static final AccessControlEntry ACL = AccessControlEntry.builder(ENTITY, ROLE).setEtag(ETAG).setId(ID).buildInstance();
 
   @Test
   public void testBuilder() {
@@ -49,80 +46,80 @@ public class AclTest {
 
   @Test
   public void testToBuilder() {
-    assertEquals(ACL, ACL.toBuilder().build());
-    Acl acl =
-        ACL.toBuilder()
+    assertEquals(ACL, ACL.asBuilder().buildInstance());
+    AccessControlEntry acl =
+        ACL.asBuilder()
             .setEtag("otherEtag")
             .setId("otherId")
-            .setRole(Role.READER)
-            .setEntity(User.ofAllUsers())
-            .build();
-    assertEquals(Role.READER, acl.getRole());
-    assertEquals(User.ofAllUsers(), acl.getEntity());
+            .setRole(AccessControlEntry.RoleType.READER)
+            .setEntity(UserIdentity.allUsers())
+            .buildInstance();
+    assertEquals(AccessControlEntry.RoleType.READER, acl.getRole());
+    assertEquals(AccessControlEntry.UserIdentity.allUsers(), acl.getEntity());
     assertEquals("otherEtag", acl.getEtag());
     assertEquals("otherId", acl.getId());
   }
 
   @Test
   public void testToAndFromPb() {
-    assertEquals(ACL, Acl.fromPb(ACL.toBucketPb()));
-    assertEquals(ACL, Acl.fromPb(ACL.toObjectPb()));
+    assertEquals(ACL, AccessControlEntry.fromProto(ACL.toBucketProto()));
+    assertEquals(ACL, AccessControlEntry.fromProto(ACL.toObjectProto()));
   }
 
   @Test
   public void testDomainEntity() {
-    Domain acl = new Domain("d1");
+    AccessControlEntry.DomainValue acl = new AccessControlEntry.DomainValue("d1");
     assertEquals("d1", acl.getDomain());
-    assertEquals(Type.DOMAIN, acl.getType());
-    String pb = acl.toPb();
-    assertEquals(acl, Entity.fromPb(pb));
+    assertEquals(AbstractEntity.EntityType.DOMAIN, acl.getType());
+    String pb = acl.toProto();
+    assertEquals(acl, AbstractEntity.fromProto(pb));
   }
 
   @Test
   public void testGroupEntity() {
-    Group acl = new Group("g1");
+    EmailGroup acl = new AccessControlEntry.EmailGroup("g1");
     assertEquals("g1", acl.getEmail());
-    assertEquals(Type.GROUP, acl.getType());
-    String pb = acl.toPb();
-    assertEquals(acl, Entity.fromPb(pb));
+    assertEquals(EntityType.GROUP, acl.getType());
+    String pb = acl.toProto();
+    assertEquals(acl, AbstractEntity.fromProto(pb));
   }
 
   @Test
   public void testUserEntity() {
-    User acl = new User("u1");
+    AccessControlEntry.UserIdentity acl = new AccessControlEntry.UserIdentity("u1");
     assertEquals("u1", acl.getEmail());
-    assertEquals(Type.USER, acl.getType());
-    String pb = acl.toPb();
-    assertEquals(acl, Entity.fromPb(pb));
+    assertEquals(AbstractEntity.EntityType.USER, acl.getType());
+    String pb = acl.toProto();
+    assertEquals(acl, AbstractEntity.fromProto(pb));
   }
 
   @Test
   public void testProjectEntity() {
-    Project acl = new Project(ProjectRole.VIEWERS, "p1");
-    assertEquals(ProjectRole.VIEWERS, acl.getProjectRole());
+    AccessControlEntry.ProjectInfo acl = new AccessControlEntry.ProjectInfo(ProjectMemberRole.VIEWERS, "p1");
+    assertEquals(ProjectMemberRole.VIEWERS, acl.getProjectRole());
     assertEquals("p1", acl.getProjectId());
-    assertEquals(Type.PROJECT, acl.getType());
-    String pb = acl.toPb();
-    assertEquals(acl, Entity.fromPb(pb));
+    assertEquals(AbstractEntity.EntityType.PROJECT, acl.getType());
+    String pb = acl.toProto();
+    assertEquals(acl, AbstractEntity.fromProto(pb));
   }
 
   @Test
   public void testRawEntity() {
-    Entity acl = new RawEntity("bla");
+    AbstractEntity acl = new RawDataEntity("bla");
     assertEquals("bla", acl.getValue());
-    assertEquals(Type.UNKNOWN, acl.getType());
-    String pb = acl.toPb();
-    assertEquals(acl, Entity.fromPb(pb));
+    assertEquals(EntityType.UNKNOWN, acl.getType());
+    String pb = acl.toProto();
+    assertEquals(acl, AbstractEntity.fromProto(pb));
   }
 
   @Test
   public void testOf() {
-    Acl acl = Acl.of(User.ofAllUsers(), Role.READER);
-    assertEquals(User.ofAllUsers(), acl.getEntity());
-    assertEquals(Role.READER, acl.getRole());
-    ObjectAccessControl objectPb = acl.toObjectPb();
-    assertEquals(acl, Acl.fromPb(objectPb));
-    BucketAccessControl bucketPb = acl.toBucketPb();
-    assertEquals(acl, Acl.fromPb(bucketPb));
+    AccessControlEntry acl = AccessControlEntry.create(UserIdentity.allUsers(), AccessControlEntry.RoleType.READER);
+    assertEquals(AccessControlEntry.UserIdentity.allUsers(), acl.getEntity());
+    assertEquals(AccessControlEntry.RoleType.READER, acl.getRole());
+    ObjectAccessControl objectPb = acl.toObjectProto();
+    assertEquals(acl, AccessControlEntry.fromProto(objectPb));
+    BucketAccessControl bucketPb = acl.toBucketProto();
+    assertEquals(acl, AccessControlEntry.fromProto(bucketPb));
   }
 }

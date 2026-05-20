@@ -56,14 +56,14 @@ public class SignatureInfo {
           "x-goog-expires",
           "x-goog-signedheaders");
 
-  private final HttpMethod httpVerb;
+  private final HttpRequestMethod httpVerb;
   private final String contentMd5;
   private final String contentType;
   private final long expiration;
   private final Map<String, String> canonicalizedExtensionHeaders;
   private final Map<String, String> queryParams;
   private final URI canonicalizedResource;
-  private final Storage.SignUrlOption.SignatureVersion signatureVersion;
+  private final Storage.UrlSigningOption.SigningVersion signatureVersion;
   private final String accountEmail;
   private final long timestamp;
 
@@ -83,7 +83,7 @@ public class SignatureInfo {
     ImmutableMap.Builder<String, String> headerBuilder =
         new ImmutableMap.Builder<String, String>().putAll(builder.canonicalizedExtensionHeaders);
     // The "host" header only needs to be present and signed if using V4.
-    if (Storage.SignUrlOption.SignatureVersion.V4.equals(signatureVersion)
+    if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)
         && (!builder.canonicalizedExtensionHeaders.containsKey("host"))) {
       headerBuilder.put("host", "storage.googleapis.com");
     }
@@ -111,7 +111,7 @@ public class SignatureInfo {
    */
   public String constructUnsignedPayload() {
     // TODO reverse order when V4 becomes default
-    if (Storage.SignUrlOption.SignatureVersion.V4.equals(signatureVersion)) {
+    if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
       return constructV4UnsignedPayload();
     }
     return constructV2UnsignedPayload();
@@ -134,7 +134,7 @@ public class SignatureInfo {
 
     if (canonicalizedExtensionHeaders.size() > 0) {
       payload.append(
-          new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V2)
+          new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V2)
               .serialize(canonicalizedExtensionHeaders));
     }
 
@@ -158,7 +158,7 @@ public class SignatureInfo {
     StringBuilder canonicalRequest = new StringBuilder();
 
     CanonicalExtensionHeadersSerializer serializer =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V4);
+        new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V4);
 
     canonicalRequest.append(httpVerb.name()).append(COMPONENT_SEPARATOR);
     canonicalRequest.append(canonicalizedResource).append(COMPONENT_SEPARATOR);
@@ -245,7 +245,7 @@ public class SignatureInfo {
     sortedParamMap.put("X-Goog-Date", Rfc3986UriEncode(exactDate, true));
     sortedParamMap.put("X-Goog-Expires", Rfc3986UriEncode(Long.toString(expiration), true));
     StringBuilder signedHeadersBuilder =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V4)
+        new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V4)
             .serializeHeaderNames(canonicalizedExtensionHeaders);
     sortedParamMap.put(
         "X-Goog-SignedHeaders", Rfc3986UriEncode(signedHeadersBuilder.toString(), true));
@@ -254,7 +254,7 @@ public class SignatureInfo {
     return queryStringFromParamMap(sortedParamMap);
   }
 
-  public HttpMethod getHttpVerb() {
+  public HttpRequestMethod getHttpVerb() {
     return httpVerb;
   }
 
@@ -282,7 +282,7 @@ public class SignatureInfo {
     return canonicalizedResource;
   }
 
-  public Storage.SignUrlOption.SignatureVersion getSignatureVersion() {
+  public Storage.UrlSigningOption.SigningVersion getSignatureVersion() {
     return signatureVersion;
   }
 
@@ -296,14 +296,14 @@ public class SignatureInfo {
 
   public static final class Builder {
 
-    private final HttpMethod httpVerb;
+    private final HttpRequestMethod httpVerb;
     private String contentMd5;
     private String contentType;
     private final long expiration;
     private Map<String, String> canonicalizedExtensionHeaders;
     private Map<String, String> queryParams;
     private final URI canonicalizedResource;
-    private Storage.SignUrlOption.SignatureVersion signatureVersion;
+    private Storage.UrlSigningOption.SigningVersion signatureVersion;
     private String accountEmail;
     private long timestamp;
 
@@ -315,7 +315,7 @@ public class SignatureInfo {
      * @param canonicalizedResource the resource URI
      * @throws IllegalArgumentException if required field is not provided.
      */
-    public Builder(HttpMethod httpVerb, long expiration, URI canonicalizedResource) {
+    public Builder(HttpRequestMethod httpVerb, long expiration, URI canonicalizedResource) {
       this.httpVerb = httpVerb;
       this.expiration = expiration;
       this.canonicalizedResource = canonicalizedResource;
@@ -359,7 +359,7 @@ public class SignatureInfo {
       return this;
     }
 
-    public Builder setSignatureVersion(Storage.SignUrlOption.SignatureVersion signatureVersion) {
+    public Builder setSignatureVersion(Storage.UrlSigningOption.SigningVersion signatureVersion) {
       this.signatureVersion = signatureVersion;
 
       return this;
@@ -383,7 +383,7 @@ public class SignatureInfo {
       checkArgument(canonicalizedResource != null, "Required canonicalized resource");
       checkArgument(expiration >= 0, "Expiration must be greater than or equal to zero");
 
-      if (Storage.SignUrlOption.SignatureVersion.V4.equals(signatureVersion)) {
+      if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
         checkArgument(accountEmail != null, "Account email required to use V4 signing");
         checkArgument(timestamp > 0, "Timestamp required to use V4 signing");
         checkArgument(

@@ -36,7 +36,7 @@ public class StorageOptionsTest {
   @Test
   public void testInvalidTransport() {
     try {
-      StorageOptions.newBuilder()
+      StorageClientOptions.newStorageClientBuilder()
           .setTransportOptions(EasyMock.<TransportOptions>createMock(TransportOptions.class));
       Assert.fail();
     } catch (IllegalArgumentException ex) {
@@ -46,51 +46,51 @@ public class StorageOptionsTest {
 
   @Test
   public void testConfigureHostShouldBeKeptOnToBuilder() {
-    StorageOptions opts1 = StorageOptions.newBuilder().setHost("custom-host").build();
-    StorageOptions opts2 = opts1.toBuilder().build();
+    StorageClientOptions opts1 = StorageClientOptions.newStorageClientBuilder().setHost("custom-host").build();
+    StorageClientOptions opts2 = opts1.toBuilder().build();
 
     assertThat(opts2.getHost()).isEqualTo("custom-host");
   }
 
   @Test
   public void testToBuilderShouldSpecifyDefaultIfNotOtherwiseSet() {
-    StorageOptions opts1 = StorageOptions.newBuilder().build();
-    StorageOptions opts2 = opts1.toBuilder().build();
+    StorageClientOptions opts1 = StorageClientOptions.newStorageClientBuilder().build();
+    StorageClientOptions opts2 = opts1.toBuilder().build();
 
     assertThat(opts2.getHost()).isEqualTo("https://storage.googleapis.com");
   }
 
   @Test
   public void testNewBuilderSpecifiesCorrectHost() {
-    StorageOptions opts1 = StorageOptions.newBuilder().build();
+    StorageClientOptions opts1 = StorageClientOptions.newStorageClientBuilder().build();
 
     assertThat(opts1.getHost()).isEqualTo("https://storage.googleapis.com");
   }
 
   @Test
   public void testDefaultInstanceSpecifiesCorrectHost() {
-    StorageOptions opts1 = StorageOptions.getDefaultInstance();
+    StorageClientOptions opts1 = StorageClientOptions.getDefaultInstance();
 
     assertThat(opts1.getHost()).isEqualTo("https://storage.googleapis.com");
   }
 
   @Test
   public void testDefaultInvocationId() {
-    StorageOptions opts1 = StorageOptions.getDefaultInstance();
+    StorageClientOptions opts1 = StorageClientOptions.getDefaultInstance();
 
     assertTrue(opts1.isIncludeInvocationId());
   }
 
   @Test
   public void testDisableInvocationId() {
-    StorageOptions opts1 = StorageOptions.newBuilder().setIncludeInvocationId(false).build();
+    StorageClientOptions opts1 = StorageClientOptions.newStorageClientBuilder().setIncludeInvocationId(false).build();
 
     assertFalse(opts1.isIncludeInvocationId());
   }
 
   /**
-   * Disabled until {@link StorageOptions#isIncludeInvocationId()} and {@link
-   * StorageOptions.Builder#setIncludeInvocationId(boolean)} are public.
+   * Disabled until {@link StorageClientOptions#isIncludeInvocationId()} and {@link
+   * StorageClientOptions.StorageClientBuilder#setIncludeInvocationId(boolean)} are public.
    */
   @Test
   @Ignore
@@ -108,7 +108,7 @@ public class StorageOptionsTest {
     TransportOptions transportOptions =
         HttpTransportOptions.newBuilder().setHttpTransportFactory(() -> transport).build();
     Storage service =
-        StorageOptions.getDefaultInstance()
+        StorageClientOptions.getDefaultInstance()
             .toBuilder()
             .setTransportOptions(transportOptions)
             .setIncludeInvocationId(false)

@@ -84,7 +84,7 @@ public interface StorageRetryStrategy extends Serializable {
    *   </tr>
    * </table>
    *
-   * @see StorageOptions.Builder#setStorageRetryStrategy(StorageRetryStrategy)
+   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
    * @see #getUniformStorageRetryStrategy()
    */
   static StorageRetryStrategy getDefaultStorageRetryStrategy() {
@@ -99,7 +99,7 @@ public interface StorageRetryStrategy extends Serializable {
    * calls. Care should be taken to ensure calls which would not normally be considered idempotent
    * are made idempotent by some other means in your program.
    *
-   * @see StorageOptions.Builder#setStorageRetryStrategy(StorageRetryStrategy)
+   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
    * @see #getDefaultStorageRetryStrategy()
    */
   static StorageRetryStrategy getUniformStorageRetryStrategy() {
@@ -113,7 +113,7 @@ public interface StorageRetryStrategy extends Serializable {
    *
    * @deprecated please migrate to using {@link #getDefaultStorageRetryStrategy()} which is capable
    *     of providing handlers which are appropriate for idempotent and non-idempotent calls.
-   * @see StorageOptions.Builder#setStorageRetryStrategy(StorageRetryStrategy)
+   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
    * @see #getDefaultStorageRetryStrategy()
    */
   @Deprecated

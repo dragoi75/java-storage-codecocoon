@@ -104,13 +104,13 @@ public class V4PostPolicyTest {
             .build()
             .getService();
 
-    BlobInfo blob =
-        BlobInfo.newBuilder(
+    BlobMetadata blob =
+        BlobMetadata.newBuilder(
                 testData.getPolicyInput().getBucket(), testData.getPolicyInput().getObject())
-            .build();
+            .buildObject();
 
     PolicyInput policyInput = testData.getPolicyInput();
-    PostPolicyV4.PostConditionsV4.Builder builder = PostPolicyV4.PostConditionsV4.newBuilder();
+    S3PostPolicyV4.PostConditionsV4Model.PostPolicyBuilder builder = S3PostPolicyV4.PostConditionsV4Model.newPolicyBuilder();
 
     Map<String, String> fields = policyInput.getFieldsMap();
 
@@ -118,39 +118,39 @@ public class V4PostPolicyTest {
 
     if (conditions != null) {
       if (!conditions.getStartsWithList().isEmpty()) {
-        builder.addCustomCondition(
-            PostPolicyV4.ConditionV4Type.STARTS_WITH,
+        builder.addCustom(
+            S3PostPolicyV4.ConditionTypeV4.STARTS_WITH,
             conditions.getStartsWith(0).replace("$", ""),
             conditions.getStartsWith(1));
       }
       if (!conditions.getContentLengthRangeList().isEmpty()) {
-        builder.addContentLengthRangeCondition(
+        builder.addContentLengthRange(
             conditions.getContentLengthRange(0), conditions.getContentLengthRange(1));
       }
     }
 
-    PostPolicyV4.PostFieldsV4 v4Fields = PostPolicyV4.PostFieldsV4.of(fields);
+    S3PostPolicyV4.PostFieldsMapV4 v4Fields = S3PostPolicyV4.PostFieldsMapV4.create(fields);
 
-    Storage.PostPolicyV4Option style = Storage.PostPolicyV4Option.withPathStyle();
+    Storage.PostPolicyV4Parameter style = Storage.PostPolicyV4Parameter.enablePathStyle();
 
     if (policyInput.getUrlStyle().equals(UrlStyle.VIRTUAL_HOSTED_STYLE)) {
-      style = Storage.PostPolicyV4Option.withVirtualHostedStyle();
+      style = Storage.PostPolicyV4Parameter.enableVirtualHostedStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.PATH_STYLE)) {
-      style = Storage.PostPolicyV4Option.withPathStyle();
+      style = Storage.PostPolicyV4Parameter.enablePathStyle();
     } else if (policyInput.getUrlStyle().equals(UrlStyle.BUCKET_BOUND_HOSTNAME)) {
       style =
-          Storage.PostPolicyV4Option.withBucketBoundHostname(
+          Storage.PostPolicyV4Parameter.withBucketBoundHostname(
               policyInput.getBucketBoundHostname(),
-              Storage.UriScheme.valueOf(policyInput.getScheme().toUpperCase()));
+              Storage.UriSchemeType.valueOf(policyInput.getScheme().toUpperCase()));
     }
 
-    PostPolicyV4 policy =
+    S3PostPolicyV4 policy =
         storage.generateSignedPostPolicyV4(
             blob,
             testData.getPolicyInput().getExpiration(),
             TimeUnit.SECONDS,
             v4Fields,
-            builder.build(),
+            builder.buildModel(),
             style);
 
     String expectedPolicy = testData.getPolicyOutput().getExpectedDecodedPolicy();

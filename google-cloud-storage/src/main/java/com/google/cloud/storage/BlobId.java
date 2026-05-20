@@ -32,34 +32,34 @@ import java.util.regex.Pattern;
 public final class BlobId implements Serializable {
 
   private static final long serialVersionUID = -6156002883225601925L;
-  private final String bucket;
-  private final String name;
-  private final Long generation;
+  private final String containerName;
+  private final String objectKey;
+  private final Long version;
 
-  private BlobId(String bucket, String name, Long generation) {
-    this.bucket = bucket;
-    this.name = name;
-    this.generation = generation;
+  private BlobId(String containerName, String objectKey, Long version) {
+    this.containerName = containerName;
+    this.objectKey = objectKey;
+    this.version = version;
   }
 
   /** Returns the name of the bucket containing the blob. */
   public String getBucket() {
-    return bucket;
+    return containerName;
   }
 
   /** Returns the name of the blob. */
   public String getName() {
-    return name;
+    return objectKey;
   }
 
   /** Returns blob's data generation. Used for versioning. */
   public Long getGeneration() {
-    return generation;
+    return version;
   }
 
   /** Returns this blob's Storage url which can be used with gsutil */
-  public String toGsUtilUri() {
-    return "gs://" + bucket + "/" + name;
+  public String toGsUri() {
+    return "gs://" + containerName + "/" + objectKey;
   }
 
   @Override
@@ -73,72 +73,72 @@ public final class BlobId implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bucket, name, generation);
+    return Objects.hash(containerName, objectKey, version);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
+  public boolean equals(Object candidate) {
+    if (candidate == this) {
       return true;
     }
-    if (obj == null || !obj.getClass().equals(BlobId.class)) {
+    if (candidate == null || !candidate.getClass().equals(BlobId.class)) {
       return false;
     }
-    BlobId other = (BlobId) obj;
-    return Objects.equals(bucket, other.bucket)
-        && Objects.equals(name, other.name)
-        && Objects.equals(generation, other.generation);
+    BlobId rhsBlobId = (BlobId) candidate;
+    return Objects.equals(containerName, rhsBlobId.containerName)
+        && Objects.equals(objectKey, rhsBlobId.objectKey)
+        && Objects.equals(version, rhsBlobId.version);
   }
 
-  StorageObject toPb() {
-    StorageObject storageObject = new StorageObject();
-    storageObject.setBucket(bucket);
-    storageObject.setName(name);
-    storageObject.setGeneration(generation);
-    return storageObject;
+  StorageObject toProto() {
+    StorageObject protoObject = new StorageObject();
+    protoObject.setBucket(containerName);
+    protoObject.setName(objectKey);
+    protoObject.setGeneration(version);
+    return protoObject;
   }
 
   /**
    * Creates a blob identifier. Generation is set to {@code null}.
    *
-   * @param bucket the name of the bucket that contains the blob
-   * @param name the name of the blob
+   * @param containerName the name of the bucket that contains the blob
+   * @param objectKey the name of the blob
    */
-  public static BlobId of(String bucket, String name) {
-    return new BlobId(checkNotNull(bucket), checkNotNull(name), null);
+  public static BlobId from(String containerName, String objectKey) {
+    return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), null);
   }
 
   /**
    * Creates a {@code BlobId} object.
    *
-   * @param bucket name of the containing bucket
-   * @param name blob's name
-   * @param generation blob's data generation, used for versioning. If {@code null} the identifier
+   * @param containerName name of the containing bucket
+   * @param objectKey blob's name
+   * @param version blob's data generation, used for versioning. If {@code null} the identifier
    *     refers to the latest blob's generation
    */
-  public static BlobId of(String bucket, String name, Long generation) {
-    return new BlobId(checkNotNull(bucket), checkNotNull(name), generation);
+  public static BlobId from(String containerName, String objectKey, Long version) {
+    return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), version);
   }
 
   /**
    * Creates a {@code BlobId} object.
    *
-   * @param gsUtilUri the Storage url to create the blob from
+   * @param gsUri the Storage url to create the blob from
    */
-  public static BlobId fromGsUtilUri(String gsUtilUri) {
-    if (!Pattern.matches("gs://.*/.*", gsUtilUri)) {
+  public static BlobId fromGsUri(String gsUri) {
+    if (!Pattern.matches("gs://.*/.*", gsUri)) {
       throw new IllegalArgumentException(
-          gsUtilUri + " is not a valid gsutil URI (i.e. \"gs://bucket/blob\")");
+          gsUri + " is not a valid gsutil URI (i.e. \"gs://bucket/blob\")");
     }
-    int blobNameStartIndex = gsUtilUri.indexOf('/', 5);
-    String bucketName = gsUtilUri.substring(5, blobNameStartIndex);
-    String blobName = gsUtilUri.substring(blobNameStartIndex + 1);
+    int nameStartIndex = gsUri.indexOf('/', 5);
+    String containerName = gsUri.substring(5, nameStartIndex);
+    String objectKey = gsUri.substring(nameStartIndex + 1);
 
-    return BlobId.of(bucketName, blobName);
+    return BlobId.from(containerName, objectKey);
   }
 
-  static BlobId fromPb(StorageObject storageObject) {
-    return BlobId.of(
-        storageObject.getBucket(), storageObject.getName(), storageObject.getGeneration());
+  static BlobId fromProto(StorageObject protoObject) {
+    return BlobId.from(
+        protoObject.getBucket(), protoObject.getName(), protoObject.getGeneration());
   }
 }

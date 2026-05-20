@@ -19,8 +19,7 @@ package com.google.cloud.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import com.google.cloud.storage.NotificationInfo.EventType;
-import com.google.cloud.storage.NotificationInfo.PayloadFormat;
+import com.google.cloud.storage.NotificationMetadata.PayloadFormatType;
 import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
 import java.util.Map;
@@ -32,39 +31,39 @@ public class NotificationInfoTest {
   private static final String OBJECT_NAME_PREFIX = "index.html";
   private static final String TOPIC = "projects/myProject/topics/topic1";
   private static final Map<String, String> CUSTOM_ATTRIBUTES = ImmutableMap.of("label1", "value1");
-  private static final PayloadFormat PAYLOAD_FORMAT = PayloadFormat.JSON_API_V1.JSON_API_V1;
-  private static final EventType[] EVENT_TYPES = {
-    EventType.OBJECT_FINALIZE, EventType.OBJECT_METADATA_UPDATE
+  private static final PayloadFormatType PAYLOAD_FORMAT = PayloadFormatType.JSON_API_V1.JSON_API_V1;
+  private static final NotificationMetadata.ObjectEventType[] EVENT_TYPES = {
+    NotificationMetadata.ObjectEventType.OBJECT_FINALIZE, NotificationMetadata.ObjectEventType.OBJECT_METADATA_UPDATE
   };
-  private static final NotificationInfo NOTIFICATION_INFO =
-      NotificationInfo.newBuilder(TOPIC)
+  private static final NotificationMetadata NOTIFICATION_INFO =
+      NotificationMetadata.newNotificationBuilder(TOPIC)
           .setEtag(ETAG)
           .setCustomAttributes(CUSTOM_ATTRIBUTES)
           .setSelfLink(SELF_LINK)
           .setEventTypes(EVENT_TYPES)
           .setObjectNamePrefix(OBJECT_NAME_PREFIX)
           .setPayloadFormat(PAYLOAD_FORMAT)
-          .build();
+          .create();
 
   @Test
   public void testToBuilder() {
-    compareBucketsNotification(NOTIFICATION_INFO, NOTIFICATION_INFO.toBuilder().build());
-    NotificationInfo notificationInfo = NOTIFICATION_INFO.toBuilder().setTopic(TOPIC).build();
+    compareBucketsNotification(NOTIFICATION_INFO, NOTIFICATION_INFO.toNotificationBuilder().create());
+    NotificationMetadata notificationInfo = NOTIFICATION_INFO.toNotificationBuilder().setTopic(TOPIC).create();
     assertEquals(TOPIC, notificationInfo.getTopic());
-    notificationInfo = notificationInfo.toBuilder().setTopic(TOPIC).build();
+    notificationInfo = notificationInfo.toNotificationBuilder().setTopic(TOPIC).create();
     compareBucketsNotification(NOTIFICATION_INFO, notificationInfo);
   }
 
   @Test
   public void testToBuilderIncomplete() {
-    NotificationInfo incompleteNotificationInfo = Notification.newBuilder(TOPIC).build();
+    NotificationMetadata incompleteNotificationInfo = StorageNotification.newNotificationBuilder(TOPIC).create();
     compareBucketsNotification(
-        incompleteNotificationInfo, incompleteNotificationInfo.toBuilder().build());
+        incompleteNotificationInfo, incompleteNotificationInfo.toNotificationBuilder().create());
   }
 
   @Test
   public void testOf() {
-    NotificationInfo notificationInfo = NotificationInfo.of(TOPIC);
+    NotificationMetadata notificationInfo = NotificationMetadata.fromTopic(TOPIC);
     assertEquals(TOPIC, notificationInfo.getTopic());
     assertNull(notificationInfo.getNotificationId());
     assertNull(notificationInfo.getCustomAttributes());
@@ -90,13 +89,13 @@ public class NotificationInfoTest {
   @Test
   public void testToPbAndFromPb() {
     compareBucketsNotification(
-        NOTIFICATION_INFO, NotificationInfo.fromPb(NOTIFICATION_INFO.toPb()));
-    NotificationInfo notificationInfo =
-        NotificationInfo.of(TOPIC).toBuilder().setPayloadFormat(PayloadFormat.NONE).build();
-    compareBucketsNotification(notificationInfo, Notification.fromPb(notificationInfo.toPb()));
+        NOTIFICATION_INFO, NotificationMetadata.fromProto(NOTIFICATION_INFO.toProto()));
+    NotificationMetadata notificationInfo =
+        NotificationMetadata.fromTopic(TOPIC).toNotificationBuilder().setPayloadFormat(PayloadFormatType.NONE).create();
+    compareBucketsNotification(notificationInfo, StorageNotification.fromProto(notificationInfo.toProto()));
   }
 
-  private void compareBucketsNotification(NotificationInfo expected, NotificationInfo actual) {
+  private void compareBucketsNotification(NotificationMetadata expected, NotificationMetadata actual) {
     assertEquals(expected, actual);
     assertEquals(expected.getNotificationId(), actual.getNotificationId());
     assertEquals(expected.getCustomAttributes(), actual.getCustomAttributes());

@@ -31,7 +31,7 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
   private static final long serialVersionUID = -6145057244885961913L;
 
   private static final Interceptor INTERCEPTOR_IDEMPOTENT =
-      new InterceptorImpl(true, StorageException.RETRYABLE_ERRORS);
+      new InterceptorImpl(true, StorageServiceException.RETRYABLE_ERROR_SET);
   private static final Interceptor INTERCEPTOR_NON_IDEMPOTENT =
       new InterceptorImpl(false, ImmutableSet.of());
 
