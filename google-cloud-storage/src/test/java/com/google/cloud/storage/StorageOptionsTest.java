@@ -26,7 +26,7 @@ public class StorageOptionsTest {
   @Test
   public void testInvalidTransport() {
     try {
-      StorageOptions.newBuilder()
+      StorageSettings.newClientBuilder()
           .setTransportOptions(EasyMock.<TransportOptions>createMock(TransportOptions.class));
       Assert.fail();
     } catch (IllegalArgumentException ex) {

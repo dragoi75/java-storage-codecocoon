@@ -20,20 +20,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpc;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class OptionTest {
 
-  private static final StorageRpc.Option RPC_OPTION = StorageRpc.Option.DELIMITER;
-  private static final StorageRpc.Option ANOTHER_RPC_OPTION = StorageRpc.Option.FIELDS;
+  private static final CloudStorageRpc.StorageOption RPC_OPTION = CloudStorageRpc.StorageOption.DELIMITER;
+  private static final CloudStorageRpc.StorageOption ANOTHER_RPC_OPTION = CloudStorageRpc.StorageOption.FIELDS;
   private static final String VALUE = "some value";
   private static final String OTHER_VALUE = "another value";
-  private static final Option OPTION = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_EQUALS = new Option(RPC_OPTION, VALUE) {};
-  private static final Option OPTION_NOT_EQUALS1 = new Option(RPC_OPTION, OTHER_VALUE) {};
-  private static final Option OPTION_NOT_EQUALS2 = new Option(ANOTHER_RPC_OPTION, VALUE) {};
+  private static final RpcOptionWrapper OPTION = new RpcOptionWrapper(RPC_OPTION, VALUE) {};
+  private static final RpcOptionWrapper OPTION_EQUALS = new RpcOptionWrapper(RPC_OPTION, VALUE) {};
+  private static final RpcOptionWrapper OPTION_NOT_EQUALS1 = new RpcOptionWrapper(RPC_OPTION, OTHER_VALUE) {};
+  private static final RpcOptionWrapper OPTION_NOT_EQUALS2 = new RpcOptionWrapper(ANOTHER_RPC_OPTION, VALUE) {};
 
   @Test
   public void testEquals() {
@@ -51,11 +51,11 @@ public class OptionTest {
   public void testConstructor() {
     assertEquals(RPC_OPTION, OPTION.getRpcOption());
     assertEquals(VALUE, OPTION.getValue());
-    Option option = new Option(RPC_OPTION, null) {};
+    RpcOptionWrapper option = new RpcOptionWrapper(RPC_OPTION, null) {};
     assertEquals(RPC_OPTION, option.getRpcOption());
     assertNull(option.getValue());
     try {
-      new Option(null, VALUE) {};
+      new RpcOptionWrapper(null, VALUE) {};
       Assert.fail();
     } catch (NullPointerException expected) {
     }

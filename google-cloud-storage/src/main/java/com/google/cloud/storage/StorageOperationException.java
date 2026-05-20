@@ -32,12 +32,12 @@ import java.util.Set;
  *     Storage error codes</a>
  */
 @InternalApi
-public final class StorageException extends BaseHttpServiceException {
-  private static final String INTERNAL_ERROR = "internalError";
-  private static final String CONNECTION_CLOSED_PREMATURELY = "connectionClosedPrematurely";
+public final class StorageOperationException extends BaseHttpServiceException {
+  private static final String SERVER_ERROR = "internalError";
+  private static final String CONNECTION_TERMINATED_EARLY = "connectionClosedPrematurely";
 
   // see: https://cloud.google.com/storage/docs/resumable-uploads-xml#practices
-  private static final Set<Error> RETRYABLE_ERRORS =
+  private static final Set<Error> TRANSIENT_ERRORS =
       ImmutableSet.of(
           new Error(504, null),
           new Error(503, null),
@@ -45,40 +45,40 @@ public final class StorageException extends BaseHttpServiceException {
           new Error(500, null),
           new Error(429, null),
           new Error(408, null),
-          new Error(null, INTERNAL_ERROR),
-          new Error(null, CONNECTION_CLOSED_PREMATURELY));
+          new Error(null, SERVER_ERROR),
+          new Error(null, CONNECTION_TERMINATED_EARLY));
 
   private static final long serialVersionUID = -4168430271327813063L;
 
-  public StorageException(int code, String message) {
-    this(code, message, null);
+  public StorageOperationException(int status, String description) {
+    this(status, description, null);
   }
 
-  public StorageException(int code, String message, Throwable cause) {
-    super(code, message, null, true, RETRYABLE_ERRORS, cause);
+  public StorageOperationException(int status, String description, Throwable underlyingThrowable) {
+    super(status, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
   }
 
-  public StorageException(int code, String message, String reason, Throwable cause) {
-    super(code, message, reason, true, RETRYABLE_ERRORS, cause);
+  public StorageOperationException(int status, String description, String explanation, Throwable underlyingThrowable) {
+    super(status, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
   }
 
-  public StorageException(IOException exception) {
-    super(exception, true, RETRYABLE_ERRORS);
+  public StorageOperationException(IOException ioError) {
+    super(ioError, true, TRANSIENT_ERRORS);
   }
 
-  public StorageException(GoogleJsonError error) {
-    super(error, true, RETRYABLE_ERRORS);
+  public StorageOperationException(GoogleJsonError jsonPayload) {
+    super(jsonPayload, true, TRANSIENT_ERRORS);
   }
 
   /**
    * Translate RetryHelperException to the StorageException that caused the error. This method will
    * always throw an exception.
    *
-   * @throws StorageException when {@code ex} was caused by a {@code StorageException}
+   * @throws StorageOperationException when {@code ex} was caused by a {@code StorageException}
    */
-  public static StorageException translateAndThrow(RetryHelperException ex) {
-    BaseServiceException.translate(ex);
-    throw new StorageException(UNKNOWN_CODE, ex.getMessage(), ex.getCause());
+  public static StorageOperationException translateAndRethrow(RetryHelperException retryFailure) {
+    BaseServiceException.translate(retryFailure);
+    throw new StorageOperationException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
   }
 
   /**
@@ -88,13 +88,13 @@ public final class StorageException extends BaseHttpServiceException {
    *
    * @returns {@code StorageException}
    */
-  public static StorageException translate(IOException exception) {
-    if (exception.getMessage().contains("Connection closed prematurely")) {
-      return new StorageException(
-          0, exception.getMessage(), CONNECTION_CLOSED_PREMATURELY, exception);
+  public static StorageOperationException translateException(IOException ioError) {
+    if (ioError.getMessage().contains("Connection closed prematurely")) {
+      return new StorageOperationException(
+          0, ioError.getMessage(), CONNECTION_TERMINATED_EARLY, ioError);
     } else {
       // default
-      return new StorageException(exception);
+      return new StorageOperationException(ioError);
     }
   }
 }

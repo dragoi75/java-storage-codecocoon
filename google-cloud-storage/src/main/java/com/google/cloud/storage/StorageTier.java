@@ -23,80 +23,80 @@ import com.google.cloud.StringEnumValue;
  * Enums for the storage classes. See https://cloud.google.com/storage/docs/storage-classes for
  * details.
  */
-public final class StorageClass extends StringEnumValue {
+public final class StorageTier extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageClass(String constant) {
-    super(constant);
+  private StorageTier(String value) {
+    super(value);
   }
 
-  private static final ApiFunction<String, StorageClass> CONSTRUCTOR =
-      new ApiFunction<String, StorageClass>() {
+  private static final ApiFunction<String, StorageTier> STORAGE_TIER_FACTORY =
+      new ApiFunction<String, StorageTier>() {
         @Override
-        public StorageClass apply(String constant) {
-          return new StorageClass(constant);
+        public StorageTier apply(String constant) {
+          return new StorageTier(constant);
         }
       };
 
-  private static final StringEnumType<StorageClass> type =
-      new StringEnumType(StorageClass.class, CONSTRUCTOR);
+  private static final StringEnumType<StorageTier> STORAGE_TIER_KIND =
+      new StringEnumType(StorageTier.class, STORAGE_TIER_FACTORY);
 
   /**
    * Standard storage class. See: https://cloud.google.com/storage/docs/storage-classes for details
    */
-  public static final StorageClass STANDARD = type.createAndRegister("STANDARD");
+  public static final StorageTier STANDARD = STORAGE_TIER_KIND.createAndRegister("STANDARD");
 
   /**
    * Nearline storage class. See: https://cloud.google.com/storage/docs/storage-classes for details
    */
-  public static final StorageClass NEARLINE = type.createAndRegister("NEARLINE");
+  public static final StorageTier NEARLINE = STORAGE_TIER_KIND.createAndRegister("NEARLINE");
 
   /**
    * Coldline storage class. See: https://cloud.google.com/storage/docs/storage-classes for details
    */
-  public static final StorageClass COLDLINE = type.createAndRegister("COLDLINE");
+  public static final StorageTier COLDLINE = STORAGE_TIER_KIND.createAndRegister("COLDLINE");
 
   /**
    * Archive storage class. See: https://cloud.google.com/storage/docs/storage-classes for details
    */
-  public static final StorageClass ARCHIVE = type.createAndRegister("ARCHIVE");
+  public static final StorageTier ARCHIVE = STORAGE_TIER_KIND.createAndRegister("ARCHIVE");
 
   /**
    * Regional storage class. This is supported as a legacy storage class and will be deprecated in
    * the future. See: https://cloud.google.com/storage/docs/storage-classes for details
    */
-  public static final StorageClass REGIONAL = type.createAndRegister("REGIONAL");
+  public static final StorageTier REGIONAL = STORAGE_TIER_KIND.createAndRegister("REGIONAL");
 
   /**
    * Multi-regional storage class. This is supported as a legacy storage class and will be
    * deprecated in the future. See: https://cloud.google.com/storage/docs/storage-classes for
    * details
    */
-  public static final StorageClass MULTI_REGIONAL = type.createAndRegister("MULTI_REGIONAL");
+  public static final StorageTier MULTI_REGIONAL = STORAGE_TIER_KIND.createAndRegister("MULTI_REGIONAL");
 
   /**
    * Durable Reduced Availability storage class. This is supported as a legacy storage class and
    * will be deprecated in the future. See: https://cloud.google.com/storage/docs/storage-classes
    * for details
    */
-  public static final StorageClass DURABLE_REDUCED_AVAILABILITY =
-      type.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
+  public static final StorageTier DURABLE_REDUCED_AVAILABILITY =
+      STORAGE_TIER_KIND.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
   /**
    * Get the StorageClass for the given String constant, and throw an exception if the constant is
    * not recognized.
    */
-  public static StorageClass valueOfStrict(String constant) {
-    return type.valueOfStrict(constant);
+  public static StorageTier valueOfStrict(String value) {
+    return STORAGE_TIER_KIND.valueOfStrict(value);
   }
 
   /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageClass valueOf(String constant) {
-    return type.valueOf(constant);
+  public static StorageTier fromValue(String value) {
+    return STORAGE_TIER_KIND.valueOf(value);
   }
 
   /** Return the known values for StorageClass. */
-  public static StorageClass[] values() {
-    return type.values();
+  public static StorageTier[] values() {
+    return STORAGE_TIER_KIND.values();
   }
 }

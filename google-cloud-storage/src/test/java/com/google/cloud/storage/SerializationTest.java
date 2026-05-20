@@ -21,8 +21,7 @@ import com.google.cloud.NoCredentials;
 import com.google.cloud.PageImpl;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.Restorable;
-import com.google.cloud.storage.Acl.Project.ProjectRole;
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpc;
 import com.google.common.collect.ImmutableMap;
 import java.io.Serializable;
 import java.util.Collections;
@@ -30,46 +29,46 @@ import java.util.Map;
 
 public class SerializationTest extends BaseSerializationTest {
 
-  private static final Storage STORAGE =
-      StorageOptions.newBuilder().setProjectId("p").build().getService();
-  private static final Acl.Domain ACL_DOMAIN = new Acl.Domain("domain");
-  private static final Acl.Group ACL_GROUP = new Acl.Group("group");
-  private static final Acl.Project ACL_PROJECT_ = new Acl.Project(ProjectRole.VIEWERS, "pid");
-  private static final Acl.User ACL_USER = new Acl.User("user");
-  private static final Acl.RawEntity ACL_RAW = new Acl.RawEntity("raw");
-  private static final Acl ACL = Acl.of(ACL_DOMAIN, Acl.Role.OWNER);
-  private static final BlobInfo BLOB_INFO = BlobInfo.newBuilder("b", "n").build();
-  private static final BucketInfo BUCKET_INFO = BucketInfo.of("b");
-  private static final Blob BLOB = new Blob(STORAGE, new BlobInfo.BuilderImpl(BLOB_INFO));
-  private static final Bucket BUCKET = new Bucket(STORAGE, new BucketInfo.BuilderImpl(BUCKET_INFO));
+  private static final StorageClient STORAGE =
+      StorageSettings.newClientBuilder().setProjectId("p").build().getService();
+  private static final AccessControlEntry.DomainValue ACL_DOMAIN = new AccessControlEntry.DomainValue("domain");
+  private static final AccessControlEntry.MailingGroup ACL_GROUP = new AccessControlEntry.MailingGroup("group");
+  private static final AccessControlEntry.ProjectEntity ACL_PROJECT_ = new AccessControlEntry.ProjectEntity(AccessControlEntry.ProjectEntity.ProjectMemberRole.VIEWERS, "pid");
+  private static final AccessControlEntry.UserPrincipal ACL_USER = new AccessControlEntry.UserPrincipal("user");
+  private static final AccessControlEntry.RawEntityWrapper ACL_RAW = new AccessControlEntry.RawEntityWrapper("raw");
+  private static final AccessControlEntry ACL = AccessControlEntry.create(ACL_DOMAIN, AccessControlEntry.AccessRole.OWNER);
+  private static final BlobMetadata BLOB_INFO = BlobMetadata.newBuilder("b", "n").buildStorageObject();
+  private static final BucketMetadata BUCKET_INFO = BucketMetadata.ofName("b");
+  private static final StorageBlob BLOB = new StorageBlob(STORAGE, new BlobMetadata.BlobInfoBuilderImpl(BLOB_INFO));
+  private static final StorageBucket BUCKET = new StorageBucket(STORAGE, new BucketMetadata.BucketBuilderImpl(BUCKET_INFO));
   private static final Cors.Origin ORIGIN = Cors.Origin.any();
   private static final Cors CORS =
       Cors.newBuilder().setMaxAgeSeconds(1).setOrigins(Collections.singleton(ORIGIN)).build();
-  private static final PageImpl<Blob> PAGE_RESULT =
+  private static final PageImpl<StorageBlob> PAGE_RESULT =
       new PageImpl<>(null, "c", Collections.singletonList(BLOB));
-  private static final StorageException STORAGE_EXCEPTION = new StorageException(42, "message");
-  private static final Storage.BlobListOption BLOB_LIST_OPTIONS =
-      Storage.BlobListOption.pageSize(100);
-  private static final Storage.BlobSourceOption BLOB_SOURCE_OPTIONS =
-      Storage.BlobSourceOption.generationMatch(1);
-  private static final Storage.BlobTargetOption BLOB_TARGET_OPTIONS =
-      Storage.BlobTargetOption.generationMatch();
-  private static final Storage.BucketListOption BUCKET_LIST_OPTIONS =
-      Storage.BucketListOption.prefix("bla");
-  private static final Storage.BucketSourceOption BUCKET_SOURCE_OPTIONS =
-      Storage.BucketSourceOption.metagenerationMatch(1);
-  private static final Storage.BucketTargetOption BUCKET_TARGET_OPTIONS =
-      Storage.BucketTargetOption.metagenerationNotMatch();
-  private static final Map<StorageRpc.Option, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
+  private static final StorageOperationException STORAGE_EXCEPTION = new StorageOperationException(42, "message");
+  private static final StorageClient.BlobListOptions BLOB_LIST_OPTIONS =
+      StorageClient.BlobListOptions.maxResults(100);
+  private static final StorageClient.BlobSourceOptions BLOB_SOURCE_OPTIONS =
+      StorageClient.BlobSourceOptions.ifGenerationMatch(1);
+  private static final StorageClient.BlobUploadOption BLOB_TARGET_OPTIONS =
+      StorageClient.BlobUploadOption.ifGenerationMatch();
+  private static final StorageClient.BucketListOptions BUCKET_LIST_OPTIONS =
+      StorageClient.BucketListOptions.namePrefix("bla");
+  private static final StorageClient.BucketSourceOptions BUCKET_SOURCE_OPTIONS =
+      StorageClient.BucketSourceOptions.withMetagenerationMatch(1);
+  private static final StorageClient.BucketTargetRequestOption BUCKET_TARGET_OPTIONS =
+      StorageClient.BucketTargetRequestOption.ifMetagenerationNotMatch();
+  private static final Map<CloudStorageRpc.StorageOption, ?> EMPTY_RPC_OPTIONS = ImmutableMap.of();
 
   @Override
   protected Serializable[] serializableObjects() {
-    StorageOptions options =
-        StorageOptions.newBuilder()
+    StorageSettings options =
+        StorageSettings.newClientBuilder()
             .setProjectId("p1")
             .setCredentials(NoCredentials.getInstance())
             .build();
-    StorageOptions otherOptions = options.toBuilder().setProjectId("p2").build();
+    StorageSettings otherOptions = options.toBuilder().setProjectId("p2").build();
     return new Serializable[] {
       ACL_DOMAIN,
       ACL_GROUP,
@@ -98,13 +97,13 @@ public class SerializationTest extends BaseSerializationTest {
 
   @Override
   protected Restorable<?>[] restorableObjects() {
-    StorageOptions options = StorageOptions.newBuilder().setProjectId("p2").build();
-    ReadChannel reader = new BlobReadChannel(options, BlobId.of("b", "n"), EMPTY_RPC_OPTIONS);
+    StorageSettings options = StorageSettings.newClientBuilder().setProjectId("p2").build();
+    ReadChannel reader = new BlobReadStream(options, BlobIdentifier.create("b", "n"), EMPTY_RPC_OPTIONS);
     // avoid closing when you don't want partial writes to GCS upon failure
     @SuppressWarnings("resource")
-    BlobWriteChannel writer =
-        new BlobWriteChannel(
-            options, BlobInfo.newBuilder(BlobId.of("b", "n")).build(), "upload-id");
+    BlobUploadChannel writer =
+        new BlobUploadChannel(
+            options, BlobMetadata.newBuilder(BlobIdentifier.create("b", "n")).buildStorageObject(), "upload-id");
     return new Restorable<?>[] {reader, writer};
   }
 }

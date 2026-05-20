@@ -28,32 +28,32 @@ import java.util.Objects;
  * bucket, the blob's name and possibly the blob's generation. If {@link #getGeneration()} is {@code
  * null} the identifier refers to the latest blob's generation.
  */
-public final class BlobId implements Serializable {
+public final class BlobIdentifier implements Serializable {
 
   private static final long serialVersionUID = -6156002883225601925L;
-  private final String bucket;
-  private final String name;
-  private final Long generation;
+  private final String container;
+  private final String objectKey;
+  private final Long version;
 
-  private BlobId(String bucket, String name, Long generation) {
-    this.bucket = bucket;
-    this.name = name;
-    this.generation = generation;
+  private BlobIdentifier(String container, String objectKey, Long version) {
+    this.container = container;
+    this.objectKey = objectKey;
+    this.version = version;
   }
 
   /** Returns the name of the bucket containing the blob. */
   public String getBucket() {
-    return bucket;
+    return container;
   }
 
   /** Returns the name of the blob. */
   public String getName() {
-    return name;
+    return objectKey;
   }
 
   /** Returns blob's data generation. Used for versioning. */
   public Long getGeneration() {
-    return generation;
+    return version;
   }
 
   @Override
@@ -67,55 +67,55 @@ public final class BlobId implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bucket, name, generation);
+    return Objects.hash(container, objectKey, version);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
+  public boolean equals(Object candidateObject) {
+    if (candidateObject == this) {
       return true;
     }
-    if (obj == null || !obj.getClass().equals(BlobId.class)) {
+    if (candidateObject == null || !candidateObject.getClass().equals(BlobIdentifier.class)) {
       return false;
     }
-    BlobId other = (BlobId) obj;
-    return Objects.equals(bucket, other.bucket)
-        && Objects.equals(name, other.name)
-        && Objects.equals(generation, other.generation);
+    BlobIdentifier thatIdentifier = (BlobIdentifier) candidateObject;
+    return Objects.equals(container, thatIdentifier.container)
+        && Objects.equals(objectKey, thatIdentifier.objectKey)
+        && Objects.equals(version, thatIdentifier.version);
   }
 
-  StorageObject toPb() {
-    StorageObject storageObject = new StorageObject();
-    storageObject.setBucket(bucket);
-    storageObject.setName(name);
-    storageObject.setGeneration(generation);
-    return storageObject;
+  StorageObject toProto() {
+    StorageObject proto = new StorageObject();
+    proto.setBucket(container);
+    proto.setName(objectKey);
+    proto.setGeneration(version);
+    return proto;
   }
 
   /**
    * Creates a blob identifier. Generation is set to {@code null}.
    *
-   * @param bucket the name of the bucket that contains the blob
-   * @param name the name of the blob
+   * @param container the name of the bucket that contains the blob
+   * @param objectKey the name of the blob
    */
-  public static BlobId of(String bucket, String name) {
-    return new BlobId(checkNotNull(bucket), checkNotNull(name), null);
+  public static BlobIdentifier create(String container, String objectKey) {
+    return new BlobIdentifier(checkNotNull(container), checkNotNull(objectKey), null);
   }
 
   /**
    * Creates a {@code BlobId} object.
    *
-   * @param bucket name of the containing bucket
-   * @param name blob's name
-   * @param generation blob's data generation, used for versioning. If {@code null} the identifier
+   * @param container name of the containing bucket
+   * @param objectKey blob's name
+   * @param version blob's data generation, used for versioning. If {@code null} the identifier
    *     refers to the latest blob's generation
    */
-  public static BlobId of(String bucket, String name, Long generation) {
-    return new BlobId(checkNotNull(bucket), checkNotNull(name), generation);
+  public static BlobIdentifier create(String container, String objectKey, Long version) {
+    return new BlobIdentifier(checkNotNull(container), checkNotNull(objectKey), version);
   }
 
-  static BlobId fromPb(StorageObject storageObject) {
-    return BlobId.of(
-        storageObject.getBucket(), storageObject.getName(), storageObject.getGeneration());
+  static BlobIdentifier fromProto(StorageObject proto) {
+    return BlobIdentifier.create(
+        proto.getBucket(), proto.getName(), proto.getGeneration());
   }
 }

@@ -16,18 +16,17 @@
 
 package com.google.cloud.storage;
 
-import static com.google.cloud.storage.Acl.Project.ProjectRole.VIEWERS;
-import static com.google.cloud.storage.Acl.Role.READER;
-import static com.google.cloud.storage.Acl.Role.WRITER;
+import static com.google.cloud.storage.AccessControlEntry.ProjectEntity.ProjectMemberRole.VIEWERS;
+import static com.google.cloud.storage.AccessControlEntry.AccessRole.READER;
+import static com.google.cloud.storage.AccessControlEntry.AccessRole.WRITER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.api.services.storage.model.StorageObject;
-import com.google.cloud.storage.Acl.Project;
-import com.google.cloud.storage.Acl.User;
-import com.google.cloud.storage.BlobInfo.CustomerEncryption;
+import com.google.cloud.storage.AccessControlEntry.UserPrincipal;
+import com.google.cloud.storage.BlobMetadata.CustomerEncryptionInfo;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.math.BigInteger;
@@ -37,10 +36,10 @@ import org.junit.Test;
 
 public class BlobInfoTest {
 
-  private static final List<Acl> ACL =
+  private static final List<AccessControlEntry> ACL =
       ImmutableList.of(
-          Acl.of(User.ofAllAuthenticatedUsers(), READER),
-          Acl.of(new Project(VIEWERS, "p1"), WRITER));
+          AccessControlEntry.create(AccessControlEntry.UserPrincipal.allAuthenticatedUsers(), READER),
+          AccessControlEntry.create(new AccessControlEntry.ProjectEntity(VIEWERS, "p1"), WRITER));
   private static final Integer COMPONENT_COUNT = 2;
   private static final String CONTENT_TYPE = "text/html";
   private static final String CACHE_CONTROL = "cache";
@@ -58,24 +57,24 @@ public class BlobInfoTest {
   private static final String MEDIA_LINK = "http://media/b/n";
   private static final Map<String, String> METADATA = ImmutableMap.of("n1", "v1", "n2", "v2");
   private static final Long META_GENERATION = 10L;
-  private static final User OWNER = new User("user@gmail.com");
+  private static final UserPrincipal OWNER = new UserPrincipal("user@gmail.com");
   private static final String SELF_LINK = "http://storage/b/n";
   private static final Long SIZE = 1024L;
   private static final Long UPDATE_TIME = DELETE_TIME - 1L;
   private static final Long CREATE_TIME = UPDATE_TIME - 1L;
   private static final String ENCRYPTION_ALGORITHM = "AES256";
   private static final String KEY_SHA256 = "keySha";
-  private static final CustomerEncryption CUSTOMER_ENCRYPTION =
-      new CustomerEncryption(ENCRYPTION_ALGORITHM, KEY_SHA256);
+  private static final BlobMetadata.CustomerEncryptionInfo CUSTOMER_ENCRYPTION =
+      new CustomerEncryptionInfo(ENCRYPTION_ALGORITHM, KEY_SHA256);
   private static final String KMS_KEY_NAME =
       "projects/p/locations/kr-loc/keyRings/kr/cryptoKeys/key";
-  private static final StorageClass STORAGE_CLASS = StorageClass.COLDLINE;
+  private static final StorageTier STORAGE_CLASS = StorageTier.COLDLINE;
   private static final Boolean EVENT_BASED_HOLD = true;
   private static final Boolean TEMPORARY_HOLD = true;
   private static final Long RETENTION_EXPIRATION_TIME = 10L;
 
-  private static final BlobInfo BLOB_INFO =
-      BlobInfo.newBuilder("b", "n", GENERATION)
+  private static final BlobMetadata BLOB_INFO =
+      BlobMetadata.newBuilder("b", "n", GENERATION)
           .setAcl(ACL)
           .setComponentCount(COMPONENT_COUNT)
           .setContentType(CONTENT_TYPE)
@@ -102,9 +101,9 @@ public class BlobInfoTest {
           .setEventBasedHold(EVENT_BASED_HOLD)
           .setTemporaryHold(TEMPORARY_HOLD)
           .setRetentionExpirationTime(RETENTION_EXPIRATION_TIME)
-          .build();
-  private static final BlobInfo DIRECTORY_INFO =
-      BlobInfo.newBuilder("b", "n/").setSize(0L).setIsDirectory(true).build();
+          .buildStorageObject();
+  private static final BlobMetadata DIRECTORY_INFO =
+      BlobMetadata.newBuilder("b", "n/").setSize(0L).setIsDirectory(true).buildStorageObject();
 
   @Test
   public void testCustomerEncryption() {
@@ -114,35 +113,35 @@ public class BlobInfoTest {
 
   @Test
   public void testToBuilder() {
-    compareBlobs(BLOB_INFO, BLOB_INFO.toBuilder().build());
-    BlobInfo blobInfo =
-        BLOB_INFO.toBuilder().setBlobId(BlobId.of("b2", "n2")).setSize(200L).build();
+    compareBlobs(BLOB_INFO, BLOB_INFO.toBlobInfoBuilder().buildStorageObject());
+    BlobMetadata blobInfo =
+        BLOB_INFO.toBlobInfoBuilder().setBlobId(BlobIdentifier.create("b2", "n2")).setSize(200L).buildStorageObject();
     assertEquals("n2", blobInfo.getName());
     assertEquals("b2", blobInfo.getBucket());
     assertEquals(Long.valueOf(200), blobInfo.getSize());
     blobInfo =
-        blobInfo.toBuilder().setBlobId(BlobId.of("b", "n", GENERATION)).setSize(SIZE).build();
+        blobInfo.toBlobInfoBuilder().setBlobId(BlobIdentifier.create("b", "n", GENERATION)).setSize(SIZE).buildStorageObject();
     compareBlobs(BLOB_INFO, blobInfo);
   }
 
   @Test
   public void testToBuilderSetMd5FromHexString() {
-    BlobInfo blobInfo =
-        BlobInfo.newBuilder(BlobId.of("b2", "n2")).setMd5FromHexString(MD5_HEX_STRING).build();
+    BlobMetadata blobInfo =
+        BlobMetadata.newBuilder(BlobIdentifier.create("b2", "n2")).setMd5FromHexString(MD5_HEX_STRING).buildStorageObject();
     assertEquals(MD5, blobInfo.getMd5());
   }
 
   @Test
   public void testToBuilderSetCrc32cFromHexString() {
-    BlobInfo blobInfo =
-        BlobInfo.newBuilder(BlobId.of("b2", "n2")).setCrc32cFromHexString(CRC32_HEX_STRING).build();
+    BlobMetadata blobInfo =
+        BlobMetadata.newBuilder(BlobIdentifier.create("b2", "n2")).setCrc32cFromHexString(CRC32_HEX_STRING).buildStorageObject();
     assertEquals(CRC32, blobInfo.getCrc32c());
   }
 
   @Test
   public void testToBuilderIncomplete() {
-    BlobInfo incompleteBlobInfo = BlobInfo.newBuilder(BlobId.of("b2", "n2")).build();
-    compareBlobs(incompleteBlobInfo, incompleteBlobInfo.toBuilder().build());
+    BlobMetadata incompleteBlobInfo = BlobMetadata.newBuilder(BlobIdentifier.create("b2", "n2")).buildStorageObject();
+    compareBlobs(incompleteBlobInfo, incompleteBlobInfo.toBlobInfoBuilder().buildStorageObject());
   }
 
   @Test
@@ -208,7 +207,7 @@ public class BlobInfoTest {
     assertTrue(DIRECTORY_INFO.isDirectory());
   }
 
-  private void compareBlobs(BlobInfo expected, BlobInfo value) {
+  private void compareBlobs(BlobMetadata expected, BlobMetadata value) {
     assertEquals(expected, value);
     assertEquals(expected.getBucket(), value.getBucket());
     assertEquals(expected.getName(), value.getName());
@@ -243,7 +242,7 @@ public class BlobInfoTest {
     assertEquals(expected.getRetentionExpirationTime(), value.getRetentionExpirationTime());
   }
 
-  private void compareCustomerEncryptions(CustomerEncryption expected, CustomerEncryption value) {
+  private void compareCustomerEncryptions(BlobMetadata.CustomerEncryptionInfo expected, BlobMetadata.CustomerEncryptionInfo value) {
     assertEquals(expected, value);
     assertEquals(expected.getEncryptionAlgorithm(), value.getEncryptionAlgorithm());
     assertEquals(expected.getKeySha256(), value.getKeySha256());
@@ -253,17 +252,17 @@ public class BlobInfoTest {
   @Test
   public void testToPbAndFromPb() {
     compareCustomerEncryptions(
-        CUSTOMER_ENCRYPTION, CustomerEncryption.fromPb(CUSTOMER_ENCRYPTION.toPb()));
-    compareBlobs(BLOB_INFO, BlobInfo.fromPb(BLOB_INFO.toPb()));
-    BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of("b", "n")).build();
-    compareBlobs(blobInfo, BlobInfo.fromPb(blobInfo.toPb()));
+        CUSTOMER_ENCRYPTION, BlobMetadata.CustomerEncryptionInfo.fromProto(CUSTOMER_ENCRYPTION.toProto()));
+    compareBlobs(BLOB_INFO, BlobMetadata.fromPb(BLOB_INFO.toProto()));
+    BlobMetadata blobInfo = BlobMetadata.newBuilder(BlobIdentifier.create("b", "n")).buildStorageObject();
+    compareBlobs(blobInfo, BlobMetadata.fromPb(blobInfo.toProto()));
     StorageObject object =
         new StorageObject()
             .setName("n/")
             .setBucket("b")
             .setSize(BigInteger.ZERO)
             .set("isDirectory", true);
-    blobInfo = BlobInfo.fromPb(object);
+    blobInfo = BlobMetadata.fromPb(object);
     assertEquals("b", blobInfo.getBucket());
     assertEquals("n/", blobInfo.getName());
     assertNull(blobInfo.getAcl());
@@ -300,6 +299,6 @@ public class BlobInfoTest {
 
   @Test
   public void testBlobId() {
-    assertEquals(BlobId.of("b", "n", GENERATION), BLOB_INFO.getBlobId());
+    assertEquals(BlobIdentifier.create("b", "n", GENERATION), BLOB_INFO.getBlobId());
   }
 }

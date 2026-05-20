@@ -18,51 +18,51 @@ package com.google.cloud.storage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.spi.v1.CloudStorageRpc;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;
 
 /** Base class for Storage operation option. */
-public abstract class Option implements Serializable {
+public abstract class RpcOptionWrapper implements Serializable {
 
   private static final long serialVersionUID = -73199088766477208L;
 
-  private final StorageRpc.Option rpcOption;
-  private final Object value;
+  private final CloudStorageRpc.StorageOption storageOption;
+  private final Object data;
 
-  Option(StorageRpc.Option rpcOption, Object value) {
-    this.rpcOption = checkNotNull(rpcOption);
-    this.value = value;
+  RpcOptionWrapper(CloudStorageRpc.StorageOption storageOption, Object data) {
+    this.storageOption = checkNotNull(storageOption);
+    this.data = data;
   }
 
-  StorageRpc.Option getRpcOption() {
-    return rpcOption;
+  CloudStorageRpc.StorageOption getRpcOption() {
+    return storageOption;
   }
 
   Object getValue() {
-    return value;
+    return data;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof Option)) {
+  public boolean equals(Object otherObject) {
+    if (!(otherObject instanceof RpcOptionWrapper)) {
       return false;
     }
-    Option other = (Option) obj;
-    return Objects.equals(rpcOption, other.rpcOption) && Objects.equals(value, other.value);
+    RpcOptionWrapper thatWrapper = (RpcOptionWrapper) otherObject;
+    return Objects.equals(storageOption, thatWrapper.storageOption) && Objects.equals(data, thatWrapper.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rpcOption, value);
+    return Objects.hash(storageOption, data);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
-        .add("name", rpcOption.value())
-        .add("value", value)
+        .add("name", storageOption.getValue())
+        .add("value", data)
         .toString();
   }
 }

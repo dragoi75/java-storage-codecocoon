@@ -57,7 +57,7 @@ public final class Cors implements Serializable {
       };
 
   private final Integer maxAgeSeconds;
-  private final ImmutableList<HttpMethod> methods;
+  private final ImmutableList<HttpRequestMethod> methods;
   private final ImmutableList<Origin> origins;
   private final ImmutableList<String> responseHeaders;
 
@@ -123,7 +123,7 @@ public final class Cors implements Serializable {
   public static final class Builder {
 
     private Integer maxAgeSeconds;
-    private ImmutableList<HttpMethod> methods;
+    private ImmutableList<HttpRequestMethod> methods;
     private ImmutableList<Origin> origins;
     private ImmutableList<String> responseHeaders;
 
@@ -139,7 +139,7 @@ public final class Cors implements Serializable {
     }
 
     /** Sets the HTTP methods supported by this CORS configuration. */
-    public Builder setMethods(Iterable<HttpMethod> methods) {
+    public Builder setMethods(Iterable<HttpRequestMethod> methods) {
       this.methods = methods != null ? ImmutableList.copyOf(methods) : null;
       return this;
     }
@@ -178,7 +178,7 @@ public final class Cors implements Serializable {
   }
 
   /** Returns the HTTP methods supported by this CORS configuration. */
-  public List<HttpMethod> getMethods() {
+  public List<HttpRequestMethod> getMethods() {
     return methods;
   }
 
@@ -242,10 +242,10 @@ public final class Cors implements Serializable {
       builder.setMethods(
           transform(
               cors.getMethod(),
-              new Function<String, HttpMethod>() {
+              new Function<String, HttpRequestMethod>() {
                 @Override
-                public HttpMethod apply(String name) {
-                  return HttpMethod.valueOf(name.toUpperCase());
+                public HttpRequestMethod apply(String name) {
+                  return HttpRequestMethod.fromValue(name.toUpperCase());
                 }
               }));
     }
