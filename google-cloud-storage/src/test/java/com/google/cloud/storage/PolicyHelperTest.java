@@ -55,9 +55,9 @@ public class PolicyHelperTest {
                         .setRole("roles/storage.objectAdmin")))
             .setEtag(ETAG);
 
-    Policy actualLibPolicy = PolicyHelper.convertFromApiPolicy(apiPolicy);
+    Policy actualLibPolicy = PolicyConverter.fromApiPolicy(apiPolicy);
     com.google.api.services.storage.model.Policy actualApiPolicy =
-        PolicyHelper.convertToApiPolicy(libPolicy);
+        PolicyConverter.toApiPolicy(libPolicy);
 
     assertEquals(libPolicy, actualLibPolicy);
     assertTrue(new ApiPolicyMatcher(apiPolicy).matches(actualApiPolicy));
@@ -68,6 +68,6 @@ public class PolicyHelperTest {
     List<Bindings> bindings = null;
     com.google.api.services.storage.model.Policy apiPolicy =
         new com.google.api.services.storage.model.Policy().setBindings(bindings).setEtag(ETAG);
-    PolicyHelper.convertFromApiPolicy(apiPolicy);
+    PolicyConverter.fromApiPolicy(apiPolicy);
   }
 }

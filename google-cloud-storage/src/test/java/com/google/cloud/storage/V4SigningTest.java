@@ -26,7 +26,7 @@ import com.google.api.core.ApiClock;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.conformance.storage.v1.SigningV4Test;
 import com.google.cloud.conformance.storage.v1.TestFile;
-import com.google.cloud.storage.Storage.SignUrlOption;
+import com.google.cloud.storage.StorageService.UrlSigningOption;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.base.Charsets;
 import com.google.protobuf.Timestamp;
@@ -99,7 +99,7 @@ public class V4SigningTest {
         testName.getMethodName(),
         is(not("test[Headers should be trimmed]")));
 
-    Storage storage =
+    StorageService storage =
         RemoteStorageHelper.create()
             .getOptions()
             .toBuilder()
@@ -108,7 +108,7 @@ public class V4SigningTest {
             .build()
             .getService();
 
-    BlobInfo blob = BlobInfo.newBuilder(testData.getBucket(), testData.getObject()).build();
+    BlobMetadata blob = BlobMetadata.newBuilder(testData.getBucket(), testData.getObject()).buildObject();
 
     final String signedUrl =
         storage
@@ -116,9 +116,9 @@ public class V4SigningTest {
                 blob,
                 testData.getExpiration(),
                 TimeUnit.SECONDS,
-                SignUrlOption.httpMethod(HttpMethod.valueOf(testData.getMethod())),
-                SignUrlOption.withExtHeaders(testData.getHeadersMap()),
-                SignUrlOption.withV4Signature())
+                UrlSigningOption.requestMethod(HttpRequestMethod.fromValue(testData.getMethod())),
+                UrlSigningOption.includeExtHeaders(testData.getHeadersMap()),
+                UrlSigningOption.useV4Signature())
             .toString();
     assertEquals(testData.getExpectedUrl(), signedUrl);
   }

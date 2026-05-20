@@ -18,7 +18,6 @@ package com.google.cloud.storage;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.cloud.storage.Cors.Origin;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import org.junit.Test;
@@ -27,23 +26,23 @@ public class CorsTest {
 
   @Test
   public void testOrigin() {
-    assertEquals("bla", Origin.of("bla").getValue());
-    assertEquals("http://host:8080", Origin.of("http", "host", 8080).toString());
-    assertEquals(Origin.of("*"), Origin.any());
+    assertEquals("bla", CorsConfiguration.ResourceOrigin.from("bla").getValue());
+    assertEquals("http://host:8080", CorsConfiguration.ResourceOrigin.from("http", "host", 8080).toString());
+    assertEquals(CorsConfiguration.ResourceOrigin.from("*"), CorsConfiguration.ResourceOrigin.anyOrigin());
   }
 
   @Test
   public void corsTest() {
-    List<Origin> origins = ImmutableList.of(Origin.any(), Origin.of("o"));
+    List<CorsConfiguration.ResourceOrigin> origins = ImmutableList.of(CorsConfiguration.ResourceOrigin.anyOrigin(), CorsConfiguration.ResourceOrigin.from("o"));
     List<String> headers = ImmutableList.of("h1", "h2");
-    List<HttpMethod> methods = ImmutableList.of(HttpMethod.GET);
-    Cors cors =
-        Cors.newBuilder()
+    List<HttpRequestMethod> methods = ImmutableList.of(HttpRequestMethod.GET);
+    CorsConfiguration cors =
+        CorsConfiguration.createBuilder()
             .setMaxAgeSeconds(100)
             .setOrigins(origins)
             .setResponseHeaders(headers)
             .setMethods(methods)
-            .build();
+            .create();
 
     assertEquals(Integer.valueOf(100), cors.getMaxAgeSeconds());
     assertEquals(origins, cors.getOrigins());

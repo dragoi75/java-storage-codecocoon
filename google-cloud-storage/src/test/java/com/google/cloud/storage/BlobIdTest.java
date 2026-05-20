@@ -22,21 +22,21 @@ import org.junit.Test;
 
 public class BlobIdTest {
 
-  private static final BlobId BLOB = BlobId.of("b", "n");
+  private static final BlobIdentifier BLOB = BlobIdentifier.create("b", "n");
 
   @Test
   public void testOf() {
-    BlobId blobId = BlobId.of("b", "n");
+    BlobIdentifier blobId = BlobIdentifier.create("b", "n");
     assertEquals("b", blobId.getBucket());
     assertEquals("n", blobId.getName());
   }
 
   @Test
   public void testEquals() {
-    compareBlobIds(BLOB, BlobId.of("b", "n"));
+    compareBlobIds(BLOB, BlobIdentifier.create("b", "n"));
   }
 
-  private void compareBlobIds(BlobId expected, BlobId value) {
+  private void compareBlobIds(BlobIdentifier expected, BlobIdentifier value) {
     assertEquals(expected, value);
     assertEquals(expected.getBucket(), value.getBucket());
     assertEquals(expected.getName(), value.getName());
@@ -45,6 +45,6 @@ public class BlobIdTest {
 
   @Test
   public void testToPbAndFromPb() {
-    compareBlobIds(BLOB, BlobId.fromPb(BLOB.toPb()));
+    compareBlobIds(BLOB, BlobIdentifier.fromStorageObject(BLOB.toStorageObject()));
   }
 }

@@ -32,10 +32,10 @@ import java.util.Set;
  *     Storage error codes</a>
  */
 @InternalApi
-public final class StorageException extends BaseHttpServiceException {
+public final class StorageOperationException extends BaseHttpServiceException {
 
   // see: https://cloud.google.com/storage/docs/resumable-uploads-xml#practices
-  private static final Set<Error> RETRYABLE_ERRORS =
+  private static final Set<Error> TRANSIENT_FAILURES =
       ImmutableSet.of(
           new Error(504, null),
           new Error(503, null),
@@ -47,30 +47,30 @@ public final class StorageException extends BaseHttpServiceException {
 
   private static final long serialVersionUID = -4168430271327813063L;
 
-  public StorageException(int code, String message) {
-    this(code, message, null);
+  public StorageOperationException(int status, String description) {
+    this(status, description, null);
   }
 
-  public StorageException(int code, String message, Throwable cause) {
-    super(code, message, null, true, RETRYABLE_ERRORS, cause);
+  public StorageOperationException(int status, String description, Throwable reason) {
+    super(status, description, null, true, TRANSIENT_FAILURES, reason);
   }
 
-  public StorageException(IOException exception) {
-    super(exception, true, RETRYABLE_ERRORS);
+  public StorageOperationException(IOException ioError) {
+    super(ioError, true, TRANSIENT_FAILURES);
   }
 
-  public StorageException(GoogleJsonError error) {
-    super(error, true, RETRYABLE_ERRORS);
+  public StorageOperationException(GoogleJsonError jsonFault) {
+    super(jsonFault, true, TRANSIENT_FAILURES);
   }
 
   /**
    * Translate RetryHelperException to the StorageException that caused the error. This method will
    * always throw an exception.
    *
-   * @throws StorageException when {@code ex} was caused by a {@code StorageException}
+   * @throws StorageOperationException when {@code ex} was caused by a {@code StorageException}
    */
-  public static StorageException translateAndThrow(RetryHelperException ex) {
-    BaseServiceException.translate(ex);
-    throw new StorageException(UNKNOWN_CODE, ex.getMessage(), ex.getCause());
+  public static StorageOperationException translateAndRethrow(RetryHelperException retryFailure) {
+    BaseServiceException.translate(retryFailure);
+    throw new StorageOperationException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
   }
 }

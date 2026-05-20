@@ -19,7 +19,7 @@ package com.google.cloud.storage.spi.v1;
 import com.google.common.collect.ImmutableSet;
 import io.opencensus.trace.Tracing;
 
-/** Helper class for instrumenting {@link HttpStorageRpc} with Open Census APIs. */
+/** Helper class for instrumenting {@link HttpStorageServiceRpc} with Open Census APIs. */
 class HttpStorageRpcSpans {
   // OpenCensus span name prefix, 'Sent' for client and 'RECV' for server.
   static final String SPAN_NAME_CLIENT_PREFIX = "Sent";
@@ -94,7 +94,7 @@ class HttpStorageRpcSpans {
       getTraceSpanName("lockRetentionPolicy(String,Long)");
   static final String SPAN_NAME_GET_SERVICE_ACCOUNT = getTraceSpanName("getServiceAccount(String)");
   static final String SPAN_NAME_BATCH_SUBMIT =
-      getTraceSpanName(RpcBatch.class.getName() + ".submit()");
+      getTraceSpanName(RpcRequestBatch.class.getName() + ".submit()");
 
   static final ImmutableSet<String> ALL_SPAN_NAMES =
       ImmutableSet.of(
@@ -143,7 +143,7 @@ class HttpStorageRpcSpans {
 
   static String getTraceSpanName(String methodDescriptor) {
     return String.format(
-        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageRpc.class.getName(), methodDescriptor);
+        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageServiceRpc.class.getName(), methodDescriptor);
   }
 
   static void registerAllSpanNamesForCollection() {

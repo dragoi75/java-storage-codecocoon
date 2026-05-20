@@ -26,21 +26,21 @@ import org.junit.Test;
 
 public class CanonicalExtensionHeadersSerializerTest {
 
-  private CanonicalExtensionHeadersSerializer v2Serializer;
-  private CanonicalExtensionHeadersSerializer v4Serializer;
+  private CanonicalExtensionHeadersFormatter v2Serializer;
+  private CanonicalExtensionHeadersFormatter v4Serializer;
 
   @Before
   public void setUp() {
     v2Serializer =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V2);
+        new CanonicalExtensionHeadersFormatter(StorageService.UrlSigningOption.SigningVersion.V2);
     v4Serializer =
-        new CanonicalExtensionHeadersSerializer(Storage.SignUrlOption.SignatureVersion.V4);
+        new CanonicalExtensionHeadersFormatter(StorageService.UrlSigningOption.SigningVersion.V4);
   }
 
   @Test
   public void givenNoHeadersWhenSerializeThenProduceNothing() {
 
-    StringBuilder sb = v2Serializer.serialize(Collections.<String, String>emptyMap());
+    StringBuilder sb = v2Serializer.serializeExtensionHeaders(Collections.<String, String>emptyMap());
 
     assertEquals(sb.toString(), "");
   }
@@ -48,7 +48,7 @@ public class CanonicalExtensionHeadersSerializerTest {
   @Test
   public void givenNullHeadersWhenSerializeThenProduceNothing() {
 
-    StringBuilder sb = v2Serializer.serialize(null);
+    StringBuilder sb = v2Serializer.serializeExtensionHeaders(null);
 
     assertEquals(sb.toString(), "");
   }
@@ -60,7 +60,7 @@ public class CanonicalExtensionHeadersSerializerTest {
     encryptionHeaders.put("x-goog-encryption-key", "");
     encryptionHeaders.put("x-goog-encryption-key-sha256", "");
 
-    StringBuilder sb = v2Serializer.serialize(encryptionHeaders);
+    StringBuilder sb = v2Serializer.serializeExtensionHeaders(encryptionHeaders);
 
     assertEquals(sb.toString(), "");
   }
@@ -74,7 +74,7 @@ public class CanonicalExtensionHeadersSerializerTest {
     encryptionHeaders.put("x-goog-encryption-key-sha256", "");
     encryptionHeaders.put("X-goog-meta-OWNER", "   myself    and   others   \n");
 
-    StringBuilder sb = v2Serializer.serialize(encryptionHeaders);
+    StringBuilder sb = v2Serializer.serializeExtensionHeaders(encryptionHeaders);
 
     assertEquals(sb.toString(), "x-goog-acl:public-read\nx-goog-meta-owner:myself and others\n");
   }
@@ -87,7 +87,7 @@ public class CanonicalExtensionHeadersSerializerTest {
     encryptionHeaders.put("x-goog-encryption-key-sha256", "sha");
     encryptionHeaders.put("X-goog-meta-OWNER", "   myself    and   others   \n");
 
-    StringBuilder sb = v4Serializer.serialize(encryptionHeaders);
+    StringBuilder sb = v4Serializer.serializeExtensionHeaders(encryptionHeaders);
 
     assertEquals(
         "x-goog-acl:public-read\nx-goog-encryption-key:key\nx-goog-encryption-key-sha256:sha"
