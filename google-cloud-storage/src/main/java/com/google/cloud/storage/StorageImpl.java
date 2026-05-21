@@ -1083,7 +1083,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
     String pb = entity.toProto();
     final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForBucketAclGet(pb, optionsMap);
-    return run(algorithm, () -> storageRpc.getAcl(bucket, pb, optionsMap), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.getAcl(bucket, pb, optionsMap), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1111,7 +1111,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
     final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketAclCreate(aclPb, optionsMap);
-    return run(algorithm, () -> storageRpc.createAcl(aclPb, optionsMap), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.createAcl(aclPb, optionsMap), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1125,7 +1125,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
     final Map<StorageRpcClient.StorageOption, ?> optionsMap = optionMap(options);
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForBucketAclUpdate(aclPb, optionsMap);
-    return run(algorithm, () -> storageRpc.patchAcl(aclPb, optionsMap), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.patchAcl(aclPb, optionsMap), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1156,7 +1156,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
   public AccessControlEntry getDefaultAcl(final String bucket, final AbstractEntity entity) {
     String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclGet(pb);
-    return run(algorithm, () -> storageRpc.getDefaultAcl(bucket, pb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.getDefaultAcl(bucket, pb), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1170,14 +1170,14 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
   public AccessControlEntry createDefaultAcl(String bucket, AccessControlEntry acl) {
     final ObjectAccessControl aclPb = acl.toObjectProto().setBucket(bucket);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclCreate(aclPb);
-    return run(algorithm, () -> storageRpc.createDefaultAcl(aclPb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.createDefaultAcl(aclPb), AccessControlEntry::fromProto);
   }
 
   @Override
   public AccessControlEntry updateDefaultAcl(String bucket, AccessControlEntry acl) {
     final ObjectAccessControl aclPb = acl.toObjectProto().setBucket(bucket);
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForDefaultObjectAclUpdate(aclPb);
-    return run(algorithm, () -> storageRpc.patchDefaultAcl(aclPb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.patchDefaultAcl(aclPb), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1200,7 +1200,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
     String pb = entity.toProto();
     ResultRetryAlgorithm<?> algorithm =
         retryAlgorithmManager.getForObjectAclGet(bucket, name, generation, pb);
-    return run(algorithm, () -> storageRpc.getAcl(bucket, name, generation, pb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.getAcl(bucket, name, generation, pb), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1223,7 +1223,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
             .setObject(blob.getName())
             .setGeneration(blob.getGeneration());
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForObjectAclCreate(aclPb);
-    return run(algorithm, () -> storageRpc.createAcl(aclPb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.createAcl(aclPb), AccessControlEntry::fromProto);
   }
 
   @Override
@@ -1234,7 +1234,7 @@ final class StorageImpl extends BaseService<StorageClientOptions> implements Sto
             .setObject(blob.getName())
             .setGeneration(blob.getGeneration());
     ResultRetryAlgorithm<?> algorithm = retryAlgorithmManager.getForObjectAclUpdate(aclPb);
-    return run(algorithm, () -> storageRpc.patchAcl(aclPb), AccessControlEntry::fromPb);
+    return run(algorithm, () -> storageRpc.patchAcl(aclPb), AccessControlEntry::fromProto);
   }
 
   @Override

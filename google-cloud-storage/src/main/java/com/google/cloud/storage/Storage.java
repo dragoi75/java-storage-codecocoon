@@ -1488,7 +1488,7 @@ public interface Storage extends Service<StorageClientOptions> {
 
       /** Add source blobs for compose operation. */
       public SourceTargetBuilder addSources(String... items) {
-        return addSource(Arrays.asList(items));
+        return addSources(Arrays.asList(items));
       }
 
       /** Add a source with a specific generation to match. */

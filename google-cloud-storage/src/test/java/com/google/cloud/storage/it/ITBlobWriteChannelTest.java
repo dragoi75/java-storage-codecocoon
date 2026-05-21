@@ -188,7 +188,7 @@ public final class ITBlobWriteChannelTest {
     assertEquals(contentSize, (long) blobGen2.getSize());
     assertNotEquals(blobInfoGen0.getGeneration(), blobGen2.getGeneration());
     ByteArrayOutputStream actualData = new ByteArrayOutputStream();
-    blobGen2.downloadTo(actualData);
+    blobGen2.downloadToPath(actualData);
     ByteBuffer actual = ByteBuffer.wrap(actualData.toByteArray());
     assertEquals(expected, actual);
   }

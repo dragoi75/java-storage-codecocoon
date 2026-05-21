@@ -3408,7 +3408,7 @@ public class ITStorageTest {
       // Making object public via ACL should fail.
       try {
         // Create a public object
-        bucket.create(
+        bucket.createBlob(
             "pap-test-object",
             "".getBytes(),
             StorageBucket.BlobTargetOptions.withPredefinedAcl(Storage.PredefinedAccessControlList.PUBLIC_READ));
@@ -3432,7 +3432,7 @@ public class ITStorageTest {
       // Now, making object public or making bucket public should succeed.
       try {
         // Create a public object
-        bucket.create(
+        bucket.createBlob(
             "pap-test-object",
             "".getBytes(),
             StorageBucket.BlobTargetOptions.withPredefinedAcl(Storage.PredefinedAccessControlList.PUBLIC_READ));
@@ -4071,7 +4071,7 @@ public class ITStorageTest {
     assertEquals(contentSize, (long) blobGen2.getSize());
     assertNotEquals(blobInfo.getGeneration(), blobGen2.getGeneration());
     ByteArrayOutputStream actualData = new ByteArrayOutputStream();
-    blobGen2.downloadTo(actualData);
+    blobGen2.downloadToPath(actualData);
     assertEquals(contentGen2Expected, ByteBuffer.wrap(actualData.toByteArray()));
   }
 

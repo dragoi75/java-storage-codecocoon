@@ -89,8 +89,8 @@ final class CtxFunctions {
                       Storage.ComposeBlobsRequest.newSourceTargetBuilder()
                           // source bucket is resolved from the target, as compose must be within
                           // the same bucket
-                          .addSource(blob.getName(), blob.getGeneration())
-                          .addSource(blob.getName(), blob.getGeneration())
+                          .addSources(blob.getName(), blob.getGeneration())
+                          .addSources(blob.getName(), blob.getGeneration())
                           .setTarget(target);
                   if (c.isPreconditionsProvided()) {
                     builder = builder.setTargetOptions(Storage.BlobUploadOption.withGenerationMatch());

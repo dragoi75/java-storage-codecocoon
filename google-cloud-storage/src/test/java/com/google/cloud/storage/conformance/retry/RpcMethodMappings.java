@@ -1248,7 +1248,7 @@ final class RpcMethodMappings {
                         ctx.peek(
                             state -> {
                               ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                              state.getBlob().downloadTo(baos);
+                              state.getBlob().downloadToPath(baos);
                               byte[] downloadedBytes = baos.toByteArray();
                               assertThat(downloadedBytes).isEqualTo(c.getHelloWorldUtf8Bytes());
                             }))
@@ -1262,7 +1262,7 @@ final class RpcMethodMappings {
                               ByteArrayOutputStream baos = new ByteArrayOutputStream();
                               state
                                   .getBlob()
-                                  .downloadTo(baos, StorageObject.BlobReadOption.ifGenerationMatch());
+                                  .downloadToPath(baos, StorageObject.BlobReadOption.ifGenerationMatch());
                               byte[] downloadedBytes = baos.toByteArray();
                               assertThat(downloadedBytes).isEqualTo(c.getHelloWorldUtf8Bytes());
                             }))
@@ -1548,7 +1548,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBucket()
-                                        .create(
+                                        .createBlob(
                                             c.getObjectName(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes())))))
                 .build());
@@ -1562,7 +1562,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBucket()
-                                        .create(
+                                        .createBlob(
                                             c.getObjectName(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes()),
                                             "text/plain);charset=utf-8"))))
@@ -1695,7 +1695,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBucket()
-                                        .create(
+                                        .createBlob(
                                             c.getObjectName(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes()),
                                             StorageBucket.BlobWriteOptions.ifDoesNotExist()))))
@@ -1710,7 +1710,7 @@ final class RpcMethodMappings {
                                 state.with(
                                     state
                                         .getBucket()
-                                        .create(
+                                        .createBlob(
                                             c.getObjectName(),
                                             new ByteArrayInputStream(c.getHelloWorldUtf8Bytes()),
                                             "text/plain);charset=utf-8",
