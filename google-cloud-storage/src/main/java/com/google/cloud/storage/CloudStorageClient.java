@@ -1463,7 +1463,7 @@ public interface CloudStorageClient extends Service<StorageClientOptions> {
 
       /** Add source blobs for compose operation. */
       public SourceTargetBuilder addSources(String... entries) {
-        return addSource(Arrays.asList(entries));
+        return addSources(Arrays.asList(entries));
       }
 
       /** Add a source with a specific generation to match. */

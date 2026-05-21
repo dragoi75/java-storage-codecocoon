@@ -590,7 +590,7 @@ final class StorageServiceImpl extends BaseService<StorageClientOptions> impleme
     }
     final com.google.api.services.storage.model.StorageObject destinationObject = composeReq.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetParams =
-        optionMap(
+        buildOptionMap(
             composeReq.getTarget().getGeneration(),
             composeReq.getTarget().getMetageneration(),
             composeReq.getTargetOptions());
@@ -616,11 +616,11 @@ final class StorageServiceImpl extends BaseService<StorageClientOptions> impleme
   public BlobRewriteWriter copy(final CopyOperationRequest copyReq) {
     final com.google.api.services.storage.model.StorageObject originObject = copyReq.getSource().toProto();
     final Map<StorageRpcClient.StorageOption, ?> originOptionMap =
-        optionMap(
+        buildOptionMap(
             copyReq.getSource().getGeneration(), null, copyReq.getSourceOptions(), true);
     final com.google.api.services.storage.model.StorageObject destinationObject = copyReq.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetParams =
-        optionMap(
+        buildOptionMap(
             copyReq.getTarget().getGeneration(),
             copyReq.getTarget().getMetageneration(),
             copyReq.getTargetOptions());
@@ -1826,12 +1826,12 @@ final class StorageServiceImpl extends BaseService<StorageClientOptions> impleme
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(AbstractOption... clientConfig) {
-    return optionMap(null, null, Arrays.asList(clientConfig));
+    return buildOptionMap(null, null, Arrays.asList(clientConfig));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(
           Long genId, Long metaGen, AbstractOption... clientConfig) {
-    return optionMap(genId, metaGen, Arrays.asList(clientConfig));
+    return buildOptionMap(genId, metaGen, Arrays.asList(clientConfig));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BucketInfo bucketMetadata, AbstractOption... clientConfig) {

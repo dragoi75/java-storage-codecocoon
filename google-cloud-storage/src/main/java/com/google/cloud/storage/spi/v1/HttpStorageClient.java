@@ -787,7 +787,7 @@ public class HttpStorageClient implements StorageRpcClient {
           return Long.parseLong(headerValueBuilder.substring(headerValueBuilder.indexOf("-") + 1)) + 1;
         } else {
           // Something else occurred like a 5xx so translate and throw.
-          throw translate(ioException);
+          throw toStorageServiceException(ioException);
         }
       } finally {
         if (result != null) {

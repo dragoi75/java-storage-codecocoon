@@ -340,7 +340,7 @@ public final class S3PostPolicyV4 {
       }
 
       public PolicyBuilder addExpires(long expiry) {
-        return addExpiresCondition(dateFormatter.format(expiry));
+        return addExpires(dateFormatter.format(expiry));
       }
 
       public PolicyBuilder addExpires(String expiry) {
