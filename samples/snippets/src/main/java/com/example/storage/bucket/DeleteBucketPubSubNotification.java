@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.storage.bucket;
 
 // [START storage_delete_bucket_notification]
@@ -22,20 +21,18 @@ import com.google.cloud.storage.StorageOptions;
 
 public class DeleteBucketPubSubNotification {
 
-  public static void deleteBucketPubSubNotification(String bucketName, String notificationId) {
-    // The ID to give your GCS bucket
-    // String bucketName = "your-unique-bucket-name";
-
-    // The NotificationId for the notification you would like to delete
-    // String notificationId = "your-unique-notification-id"
-
-    Storage storage = StorageOptions.newBuilder().build().getService();
-    boolean success = storage.deleteNotification(bucketName, notificationId);
-    if (success) {
-      System.out.println("Successfully deleted notification");
-    } else {
-      System.out.println("Failed to find notification");
+    public static void deleteBucketPubSubNotification(String bucketName, String notificationId) {
+        // The ID to give your GCS bucket
+        // String bucketName = "your-unique-bucket-name";
+        // The NotificationId for the notification you would like to delete
+        // String notificationId = "your-unique-notification-id"
+        Storage storage = StorageOptions.newBuilder().build().getService();
+        boolean success = storage.deleteNotification(bucketName, notificationId);
+        if (!success) {
+            System.out.println("Failed to find notification");
+        } else {
+            System.out.println("Successfully deleted notification");
+        }
     }
-  }
 }
 // [END storage_delete_bucket_notification]

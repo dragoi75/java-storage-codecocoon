@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.storage.v2;
 
 import com.google.api.pathtemplate.PathTemplate;
@@ -29,233 +28,220 @@ import javax.annotation.Generated;
 // AUTO-GENERATED DOCUMENTATION AND CLASS.
 @Generated("by gapic-generator-java")
 public class CryptoKeyName implements ResourceName {
-  private static final PathTemplate PROJECT_LOCATION_KEY_RING_CRYPTO_KEY =
-      PathTemplate.createWithoutUrlEncoding(
-          "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}");
-  private volatile Map<String, String> fieldValuesMap;
-  private final String project;
-  private final String location;
-  private final String keyRing;
-  private final String cryptoKey;
 
-  @Deprecated
-  protected CryptoKeyName() {
-    project = null;
-    location = null;
-    keyRing = null;
-    cryptoKey = null;
-  }
+    private static final PathTemplate PROJECT_LOCATION_KEY_RING_CRYPTO_KEY = PathTemplate.createWithoutUrlEncoding("projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}");
 
-  private CryptoKeyName(Builder builder) {
-    project = Preconditions.checkNotNull(builder.getProject());
-    location = Preconditions.checkNotNull(builder.getLocation());
-    keyRing = Preconditions.checkNotNull(builder.getKeyRing());
-    cryptoKey = Preconditions.checkNotNull(builder.getCryptoKey());
-  }
+    private volatile Map<String, String> fieldValuesMap;
 
-  public String getProject() {
-    return project;
-  }
+    private final String project;
 
-  public String getLocation() {
-    return location;
-  }
+    private final String location;
 
-  public String getKeyRing() {
-    return keyRing;
-  }
+    private final String keyRing;
 
-  public String getCryptoKey() {
-    return cryptoKey;
-  }
+    private final String cryptoKey;
 
-  public static Builder newBuilder() {
-    return new Builder();
-  }
-
-  public Builder toBuilder() {
-    return new Builder(this);
-  }
-
-  public static CryptoKeyName of(
-      String project, String location, String keyRing, String cryptoKey) {
-    return newBuilder()
-        .setProject(project)
-        .setLocation(location)
-        .setKeyRing(keyRing)
-        .setCryptoKey(cryptoKey)
-        .build();
-  }
-
-  public static String format(String project, String location, String keyRing, String cryptoKey) {
-    return newBuilder()
-        .setProject(project)
-        .setLocation(location)
-        .setKeyRing(keyRing)
-        .setCryptoKey(cryptoKey)
-        .build()
-        .toString();
-  }
-
-  public static CryptoKeyName parse(String formattedString) {
-    if (formattedString.isEmpty()) {
-      return null;
+    @Deprecated
+    protected CryptoKeyName() {
+        project = null;
+        location = null;
+        keyRing = null;
+        cryptoKey = null;
     }
-    Map<String, String> matchMap =
-        PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.validatedMatch(
-            formattedString, "CryptoKeyName.parse: formattedString not in valid format");
-    return of(
-        matchMap.get("project"),
-        matchMap.get("location"),
-        matchMap.get("key_ring"),
-        matchMap.get("crypto_key"));
-  }
 
-  public static List<CryptoKeyName> parseList(List<String> formattedStrings) {
-    List<CryptoKeyName> list = new ArrayList<>(formattedStrings.size());
-    for (String formattedString : formattedStrings) {
-      list.add(parse(formattedString));
+    private CryptoKeyName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+        location = Preconditions.checkNotNull(builder.getLocation());
+        keyRing = Preconditions.checkNotNull(builder.getKeyRing());
+        cryptoKey = Preconditions.checkNotNull(builder.getCryptoKey());
     }
-    return list;
-  }
-
-  public static List<String> toStringList(List<CryptoKeyName> values) {
-    List<String> list = new ArrayList<>(values.size());
-    for (CryptoKeyName value : values) {
-      if (value == null) {
-        list.add("");
-      } else {
-        list.add(value.toString());
-      }
-    }
-    return list;
-  }
-
-  public static boolean isParsableFrom(String formattedString) {
-    return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.matches(formattedString);
-  }
-
-  @Override
-  public Map<String, String> getFieldValuesMap() {
-    if (fieldValuesMap == null) {
-      synchronized (this) {
-        if (fieldValuesMap == null) {
-          ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
-          if (project != null) {
-            fieldMapBuilder.put("project", project);
-          }
-          if (location != null) {
-            fieldMapBuilder.put("location", location);
-          }
-          if (keyRing != null) {
-            fieldMapBuilder.put("key_ring", keyRing);
-          }
-          if (cryptoKey != null) {
-            fieldMapBuilder.put("crypto_key", cryptoKey);
-          }
-          fieldValuesMap = fieldMapBuilder.build();
-        }
-      }
-    }
-    return fieldValuesMap;
-  }
-
-  public String getFieldValue(String fieldName) {
-    return getFieldValuesMap().get(fieldName);
-  }
-
-  @Override
-  public String toString() {
-    return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.instantiate(
-        "project", project, "location", location, "key_ring", keyRing, "crypto_key", cryptoKey);
-  }
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (o != null || getClass() == o.getClass()) {
-      CryptoKeyName that = ((CryptoKeyName) o);
-      return Objects.equals(this.project, that.project)
-          && Objects.equals(this.location, that.location)
-          && Objects.equals(this.keyRing, that.keyRing)
-          && Objects.equals(this.cryptoKey, that.cryptoKey);
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    int h = 1;
-    h *= 1000003;
-    h ^= Objects.hashCode(project);
-    h *= 1000003;
-    h ^= Objects.hashCode(location);
-    h *= 1000003;
-    h ^= Objects.hashCode(keyRing);
-    h *= 1000003;
-    h ^= Objects.hashCode(cryptoKey);
-    return h;
-  }
-
-  /**
-   * Builder for
-   * projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
-   */
-  public static class Builder {
-    private String project;
-    private String location;
-    private String keyRing;
-    private String cryptoKey;
-
-    protected Builder() {}
 
     public String getProject() {
-      return project;
+        return project;
     }
 
     public String getLocation() {
-      return location;
+        return location;
     }
 
     public String getKeyRing() {
-      return keyRing;
+        return keyRing;
     }
 
     public String getCryptoKey() {
-      return cryptoKey;
+        return cryptoKey;
     }
 
-    public Builder setProject(String project) {
-      this.project = project;
-      return this;
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
-    public Builder setLocation(String location) {
-      this.location = location;
-      return this;
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 
-    public Builder setKeyRing(String keyRing) {
-      this.keyRing = keyRing;
-      return this;
+    public static CryptoKeyName of(String project, String location, String keyRing, String cryptoKey) {
+        return newBuilder().setProject(project).setLocation(location).setKeyRing(keyRing).setCryptoKey(cryptoKey).build();
     }
 
-    public Builder setCryptoKey(String cryptoKey) {
-      this.cryptoKey = cryptoKey;
-      return this;
+    public static String format(String project, String location, String keyRing, String cryptoKey) {
+        return newBuilder().setProject(project).setLocation(location).setKeyRing(keyRing).setCryptoKey(cryptoKey).build().toString();
     }
 
-    private Builder(CryptoKeyName cryptoKeyName) {
-      this.project = cryptoKeyName.project;
-      this.location = cryptoKeyName.location;
-      this.keyRing = cryptoKeyName.keyRing;
-      this.cryptoKey = cryptoKeyName.cryptoKey;
+    public static CryptoKeyName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
+        }
+        Map<String, String> matchMap = PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.validatedMatch(formattedString, "CryptoKeyName.parse: formattedString not in valid format");
+        return of(matchMap.get("project"), matchMap.get("location"), matchMap.get("key_ring"), matchMap.get("crypto_key"));
     }
 
-    public CryptoKeyName build() {
-      return new CryptoKeyName(this);
+    public static List<CryptoKeyName> parseList(List<String> formattedStrings) {
+        List<CryptoKeyName> list = new ArrayList<>(formattedStrings.size());
+        for (String formattedString : formattedStrings) {
+            list.add(parse(formattedString));
+        }
+        return list;
     }
-  }
+
+    public static List<String> toStringList(List<CryptoKeyName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (CryptoKeyName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.matches(formattedString);
+    }
+
+    @Override
+    public Map<String, String> getFieldValuesMap() {
+        if (null == fieldValuesMap) {
+            synchronized (this) {
+                if (null == fieldValuesMap) {
+                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
+                    if (null != project) {
+                        fieldMapBuilder.put("project", project);
+                    }
+                    if (null != location) {
+                        fieldMapBuilder.put("location", location);
+                    }
+                    if (null != keyRing) {
+                        fieldMapBuilder.put("key_ring", keyRing);
+                    }
+                    if (null != cryptoKey) {
+                        fieldMapBuilder.put("crypto_key", cryptoKey);
+                    }
+                    fieldValuesMap = fieldMapBuilder.build();
+                }
+            }
+        }
+        return fieldValuesMap;
+    }
+
+    public String getFieldValue(String fieldName) {
+        return getFieldValuesMap().get(fieldName);
+    }
+
+    @Override
+    public String toString() {
+        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.instantiate("project", project, "location", location, "key_ring", keyRing, "crypto_key", cryptoKey);
+    }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null != o || o.getClass() == getClass()) {
+            CryptoKeyName that = ((CryptoKeyName) o);
+            return Objects.equals(this.project, that.project) && Objects.equals(this.location, that.location) && Objects.equals(this.keyRing, that.keyRing) && Objects.equals(this.cryptoKey, that.cryptoKey);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        h *= 1000003;
+        h ^= Objects.hashCode(location);
+        h *= 1000003;
+        h ^= Objects.hashCode(keyRing);
+        h *= 1000003;
+        h ^= Objects.hashCode(cryptoKey);
+        return h;
+    }
+
+    /**
+     * Builder for
+     * projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
+     */
+    public static class Builder {
+
+        private String project;
+
+        private String location;
+
+        private String keyRing;
+
+        private String cryptoKey;
+
+        protected Builder() {
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public String getKeyRing() {
+            return keyRing;
+        }
+
+        public String getCryptoKey() {
+            return cryptoKey;
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder setKeyRing(String keyRing) {
+            this.keyRing = keyRing;
+            return this;
+        }
+
+        public Builder setCryptoKey(String cryptoKey) {
+            this.cryptoKey = cryptoKey;
+            return this;
+        }
+
+        private Builder(CryptoKeyName cryptoKeyName) {
+            this.project = cryptoKeyName.project;
+            this.location = cryptoKeyName.location;
+            this.keyRing = cryptoKeyName.keyRing;
+            this.cryptoKey = cryptoKeyName.cryptoKey;
+        }
+
+        public CryptoKeyName build() {
+            return new CryptoKeyName(this);
+        }
+    }
 }

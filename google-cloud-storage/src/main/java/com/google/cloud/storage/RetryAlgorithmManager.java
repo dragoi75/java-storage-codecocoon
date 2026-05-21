@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import com.google.api.gax.retrying.ResultRetryAlgorithm;
@@ -25,223 +24,179 @@ import com.google.api.services.storage.model.Policy;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.storage.spi.v1.StorageRpcClient;
 import com.google.cloud.storage.spi.v1.StorageRpcClient.RewriteOperationRequest;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 final class RetryAlgorithmManager implements Serializable {
 
-  private static final long serialVersionUID = -8615379702537758604L;
-  private final StorageRetryStrategy retryStrategy;
+    private static final long serialVersionUID = -8615379702537758604L;
 
-  RetryAlgorithmManager(StorageRetryStrategy retryStrategy) {
-    this.retryStrategy = retryStrategy;
-  }
+    private final StorageRetryStrategy retryStrategy;
 
-  public ResultRetryAlgorithm<?> getForBucketAclCreate(
-      BucketAccessControl pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketAclDelete(
-      String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketAclGet(
-      String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketAclUpdate(
-      BucketAccessControl pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketAclList(
-      String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsCreate(
-      Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsDelete(
-      Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsGet(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsUpdate(
-      Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    // TODO: Include etag when it is supported by the library
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_METAGENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsList(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsLockRetentionPolicy(
-      Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    // Always idempotent because IfMetagenerationMatch is required
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsGetIamPolicy(
-      String bucket, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsSetIamPolicy(
-      String bucket, Policy pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return pb.getEtag() != null
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForBucketsTestIamPermissions(
-      String bucket, List<String> permissions, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForDefaultObjectAclCreate(ObjectAccessControl pb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForDefaultObjectAclDelete(String pb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForDefaultObjectAclGet(String pb) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForDefaultObjectAclUpdate(ObjectAccessControl pb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForDefaultObjectAclList(String pb) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForHmacKeyCreate(
-      String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForHmacKeyDelete(
-      HmacKeyMetadata pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForHmacKeyGet(
-      String accessId, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForHmacKeyUpdate(
-      HmacKeyMetadata pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    // TODO: Include etag when it is supported by the library
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForHmacKeyList(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectAclCreate(ObjectAccessControl aclPb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectAclDelete(
-      String bucket, String name, Long generation, String pb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectAclList(String bucket, String name, Long generation) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectAclGet(
-      String bucket, String name, Long generation, String pb) {
-    return retryStrategy.getIdempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectAclUpdate(ObjectAccessControl aclPb) {
-    return retryStrategy.getNonidempotentHandler();
-  }
-
-  public ResultRetryAlgorithm<?> getForObjectsCreate(
-      StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    if (pb.getGeneration() != null && pb.getGeneration() == 0) {
-      return retryStrategy.getIdempotentHandler();
+    RetryAlgorithmManager(StorageRetryStrategy retryStrategy) {
+        this.retryStrategy = retryStrategy;
     }
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
 
-  public ResultRetryAlgorithm<?> getForObjectsDelete(
-      StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketAclCreate(BucketAccessControl pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getNonidempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForObjectsGet(
-      StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketAclDelete(String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getNonidempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForObjectsUpdate(
-      StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_METAGENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketAclGet(String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForObjectsList(
-      String bucket, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return retryStrategy.getIdempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketAclUpdate(BucketAccessControl pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getNonidempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForObjectsRewrite(RewriteOperationRequest pb) {
-    return pb.targetOptions.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketAclList(String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForObjectsCompose(
-      List<StorageObject> sources, StorageObject target, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketsCreate(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForResumableUploadSessionCreate(
-      Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketsDelete(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForResumableUploadSessionWrite(
-      Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-    return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH)
-        ? retryStrategy.getIdempotentHandler()
-        : retryStrategy.getNonidempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketsGet(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
 
-  public ResultRetryAlgorithm<?> getForServiceAccountGet(String pb) {
-    return retryStrategy.getIdempotentHandler();
-  }
+    public ResultRetryAlgorithm<?> getForBucketsUpdate(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        // TODO: Include etag when it is supported by the library
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_METAGENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForBucketsList(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForBucketsLockRetentionPolicy(Bucket pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        // Always idempotent because IfMetagenerationMatch is required
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForBucketsGetIamPolicy(String bucket, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForBucketsSetIamPolicy(String bucket, Policy pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return null != pb.getEtag() ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForBucketsTestIamPermissions(String bucket, List<String> permissions, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForDefaultObjectAclCreate(ObjectAccessControl pb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForDefaultObjectAclDelete(String pb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForDefaultObjectAclGet(String pb) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForDefaultObjectAclUpdate(ObjectAccessControl pb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForDefaultObjectAclList(String pb) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForHmacKeyCreate(String pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForHmacKeyDelete(HmacKeyMetadata pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForHmacKeyGet(String accessId, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForHmacKeyUpdate(HmacKeyMetadata pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        // TODO: Include etag when it is supported by the library
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForHmacKeyList(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectAclCreate(ObjectAccessControl aclPb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectAclDelete(String bucket, String name, Long generation, String pb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectAclList(String bucket, String name, Long generation) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectAclGet(String bucket, String name, Long generation, String pb) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectAclUpdate(ObjectAccessControl aclPb) {
+        return retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsCreate(StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        if (null != pb.getGeneration() && 0 == pb.getGeneration()) {
+            return retryStrategy.getIdempotentHandler();
+        }
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsDelete(StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsGet(StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsUpdate(StorageObject pb, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_METAGENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsList(String bucket, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return retryStrategy.getIdempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsRewrite(RewriteOperationRequest pb) {
+        return pb.targetOptions.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForObjectsCompose(List<StorageObject> sources, StorageObject target, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForResumableUploadSessionCreate(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForResumableUploadSessionWrite(Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        return optionsMap.containsKey(StorageRpcClient.StorageOption.IF_GENERATION_MATCH) ? retryStrategy.getIdempotentHandler() : retryStrategy.getNonidempotentHandler();
+    }
+
+    public ResultRetryAlgorithm<?> getForServiceAccountGet(String pb) {
+        return retryStrategy.getIdempotentHandler();
+    }
 }

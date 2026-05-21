@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage.spi.v1;
 
 import com.google.api.core.InternalApi;
@@ -24,49 +23,50 @@ import javax.annotation.Nullable;
 @InternalApi
 public final class HttpRpcContext {
 
-  private static final Object GET_INSTANCE_LOCK = new Object();
+    private static final Object GET_INSTANCE_LOCK = new Object();
 
-  private static volatile HttpRpcContext instance;
+    private static volatile HttpRpcContext instance;
 
-  private final ThreadLocal<UUID> invocationId;
-  private final Supplier<UUID> supplier;
+    private final ThreadLocal<UUID> invocationId;
 
-  HttpRpcContext(Supplier<UUID> randomUUID) {
-    this.invocationId = new InheritableThreadLocal<>();
-    this.supplier = randomUUID;
-  }
+    private final Supplier<UUID> supplier;
 
-  @InternalApi
-  @Nullable
-  public UUID getInvocationId() {
-    return invocationId.get();
-  }
-
-  @InternalApi
-  public UUID newInvocationId() {
-    invocationId.set(supplier.get());
-    return getInvocationId();
-  }
-
-  @InternalApi
-  public void clearInvocationId() {
-    invocationId.remove();
-  }
-
-  @InternalApi
-  public static HttpRpcContext init() {
-    return new HttpRpcContext(UUID::randomUUID);
-  }
-
-  @InternalApi
-  public static HttpRpcContext getInstance() {
-    if (instance == null) {
-      synchronized (GET_INSTANCE_LOCK) {
-        if (instance == null) {
-          instance = init();
-        }
-      }
+    HttpRpcContext(Supplier<UUID> randomUUID) {
+        this.invocationId = new InheritableThreadLocal<>();
+        this.supplier = randomUUID;
     }
-    return instance;
-  }
+
+    @InternalApi
+    @Nullable
+    public UUID getInvocationId() {
+        return invocationId.get();
+    }
+
+    @InternalApi
+    public UUID newInvocationId() {
+        invocationId.set(supplier.get());
+        return getInvocationId();
+    }
+
+    @InternalApi
+    public void clearInvocationId() {
+        invocationId.remove();
+    }
+
+    @InternalApi
+    public static HttpRpcContext init() {
+        return new HttpRpcContext(UUID::randomUUID);
+    }
+
+    @InternalApi
+    public static HttpRpcContext getInstance() {
+        if (null == instance) {
+            synchronized (GET_INSTANCE_LOCK) {
+                if (null == instance) {
+                    instance = init();
+                }
+            }
+        }
+        return instance;
+    }
 }

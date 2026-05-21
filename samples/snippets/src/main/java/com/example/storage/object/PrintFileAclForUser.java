@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.storage.object;
 
 // [START storage_print_file_acl_for_user]
-
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Blob;
@@ -27,26 +25,22 @@ import com.google.cloud.storage.StorageOptions;
 
 public class PrintFileAclForUser {
 
-  public static void printFileAclForUser(String bucketName, String blobName, String userEmail) {
-
-    // The ID to give your GCS bucket
-    // String bucketName = "your-unique-bucket-name";
-
-    // The name of the blob/file that you wish to view Acls of
-    // String blobName = "your-blob-name";
-
-    // The email of the user whose acl is being retrieved.
-    // String userEmail = "someuser@domain.com"
-
-    Storage storage = StorageOptions.newBuilder().build().getService();
-    Blob blob = storage.get(BlobId.of(bucketName, blobName));
-    Acl blobAcl = blob.getAcl(new User(userEmail));
-    if (blobAcl != null) {
-      String userRole = blobAcl.getRole().name();
-      System.out.println("User " + userEmail + " has role " + userRole);
-    } else {
-      System.out.println("User " + userEmail + " not found");
+    public static void printFileAclForUser(String bucketName, String blobName, String userEmail) {
+        // The ID to give your GCS bucket
+        // String bucketName = "your-unique-bucket-name";
+        // The name of the blob/file that you wish to view Acls of
+        // String blobName = "your-blob-name";
+        // The email of the user whose acl is being retrieved.
+        // String userEmail = "someuser@domain.com"
+        Storage storage = StorageOptions.newBuilder().build().getService();
+        Blob blob = storage.get(BlobId.of(bucketName, blobName));
+        Acl blobAcl = blob.getAcl(new User(userEmail));
+        if (null == blobAcl) {
+            System.out.println("User " + userEmail + " not found");
+        } else {
+            String userRole = blobAcl.getRole().name();
+            System.out.println("User " + userEmail + " has role " + userRole);
+        }
     }
-  }
 }
 // [END storage_print_file_acl_for_user]

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.storage.v2;
 
 import com.google.api.pathtemplate.PathTemplate;
@@ -29,163 +28,169 @@ import javax.annotation.Generated;
 // AUTO-GENERATED DOCUMENTATION AND CLASS.
 @Generated("by gapic-generator-java")
 public class BucketName implements ResourceName {
-  private static final PathTemplate PROJECT_BUCKET =
-      PathTemplate.createWithoutUrlEncoding("projects/{project}/buckets/{bucket}");
-  private volatile Map<String, String> fieldValuesMap;
-  private final String project;
-  private final String bucket;
 
-  @Deprecated
-  protected BucketName() {
-    project = null;
-    bucket = null;
-  }
+    private static final PathTemplate PROJECT_BUCKET = PathTemplate.createWithoutUrlEncoding("projects/{project}/buckets/{bucket}");
 
-  private BucketName(Builder builder) {
-    project = Preconditions.checkNotNull(builder.getProject());
-    bucket = Preconditions.checkNotNull(builder.getBucket());
-  }
+    private volatile Map<String, String> fieldValuesMap;
 
-  public String getProject() {
-    return project;
-  }
+    private final String project;
 
-  public String getBucket() {
-    return bucket;
-  }
+    private final String bucket;
 
-  public static Builder newBuilder() {
-    return new Builder();
-  }
-
-  public Builder toBuilder() {
-    return new Builder(this);
-  }
-
-  public static BucketName of(String project, String bucket) {
-    return newBuilder().setProject(project).setBucket(bucket).build();
-  }
-
-  public static String format(String project, String bucket) {
-    return newBuilder().setProject(project).setBucket(bucket).build().toString();
-  }
-
-  public static BucketName parse(String formattedString) {
-    if (formattedString.isEmpty()) {
-      return null;
+    @Deprecated
+    protected BucketName() {
+        project = null;
+        bucket = null;
     }
-    Map<String, String> matchMap =
-        PROJECT_BUCKET.validatedMatch(
-            formattedString, "BucketName.parse: formattedString not in valid format");
-    return of(matchMap.get("project"), matchMap.get("bucket"));
-  }
 
-  public static List<BucketName> parseList(List<String> formattedStrings) {
-    List<BucketName> list = new ArrayList<>(formattedStrings.size());
-    for (String formattedString : formattedStrings) {
-      list.add(parse(formattedString));
+    private BucketName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+        bucket = Preconditions.checkNotNull(builder.getBucket());
     }
-    return list;
-  }
-
-  public static List<String> toStringList(List<BucketName> values) {
-    List<String> list = new ArrayList<>(values.size());
-    for (BucketName value : values) {
-      if (value == null) {
-        list.add("");
-      } else {
-        list.add(value.toString());
-      }
-    }
-    return list;
-  }
-
-  public static boolean isParsableFrom(String formattedString) {
-    return PROJECT_BUCKET.matches(formattedString);
-  }
-
-  @Override
-  public Map<String, String> getFieldValuesMap() {
-    if (fieldValuesMap == null) {
-      synchronized (this) {
-        if (fieldValuesMap == null) {
-          ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
-          if (project != null) {
-            fieldMapBuilder.put("project", project);
-          }
-          if (bucket != null) {
-            fieldMapBuilder.put("bucket", bucket);
-          }
-          fieldValuesMap = fieldMapBuilder.build();
-        }
-      }
-    }
-    return fieldValuesMap;
-  }
-
-  public String getFieldValue(String fieldName) {
-    return getFieldValuesMap().get(fieldName);
-  }
-
-  @Override
-  public String toString() {
-    return PROJECT_BUCKET.instantiate("project", project, "bucket", bucket);
-  }
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (o != null || getClass() == o.getClass()) {
-      BucketName that = ((BucketName) o);
-      return Objects.equals(this.project, that.project) && Objects.equals(this.bucket, that.bucket);
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    int h = 1;
-    h *= 1000003;
-    h ^= Objects.hashCode(project);
-    h *= 1000003;
-    h ^= Objects.hashCode(bucket);
-    return h;
-  }
-
-  /** Builder for projects/{project}/buckets/{bucket}. */
-  public static class Builder {
-    private String project;
-    private String bucket;
-
-    protected Builder() {}
 
     public String getProject() {
-      return project;
+        return project;
     }
 
     public String getBucket() {
-      return bucket;
+        return bucket;
     }
 
-    public Builder setProject(String project) {
-      this.project = project;
-      return this;
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
-    public Builder setBucket(String bucket) {
-      this.bucket = bucket;
-      return this;
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 
-    private Builder(BucketName bucketName) {
-      this.project = bucketName.project;
-      this.bucket = bucketName.bucket;
+    public static BucketName of(String project, String bucket) {
+        return newBuilder().setProject(project).setBucket(bucket).build();
     }
 
-    public BucketName build() {
-      return new BucketName(this);
+    public static String format(String project, String bucket) {
+        return newBuilder().setProject(project).setBucket(bucket).build().toString();
     }
-  }
+
+    public static BucketName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
+        }
+        Map<String, String> matchMap = PROJECT_BUCKET.validatedMatch(formattedString, "BucketName.parse: formattedString not in valid format");
+        return of(matchMap.get("project"), matchMap.get("bucket"));
+    }
+
+    public static List<BucketName> parseList(List<String> formattedStrings) {
+        List<BucketName> list = new ArrayList<>(formattedStrings.size());
+        for (String formattedString : formattedStrings) {
+            list.add(parse(formattedString));
+        }
+        return list;
+    }
+
+    public static List<String> toStringList(List<BucketName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (BucketName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT_BUCKET.matches(formattedString);
+    }
+
+    @Override
+    public Map<String, String> getFieldValuesMap() {
+        if (null == fieldValuesMap) {
+            synchronized (this) {
+                if (null == fieldValuesMap) {
+                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
+                    if (null != project) {
+                        fieldMapBuilder.put("project", project);
+                    }
+                    if (null != bucket) {
+                        fieldMapBuilder.put("bucket", bucket);
+                    }
+                    fieldValuesMap = fieldMapBuilder.build();
+                }
+            }
+        }
+        return fieldValuesMap;
+    }
+
+    public String getFieldValue(String fieldName) {
+        return getFieldValuesMap().get(fieldName);
+    }
+
+    @Override
+    public String toString() {
+        return PROJECT_BUCKET.instantiate("project", project, "bucket", bucket);
+    }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null != o || o.getClass() == getClass()) {
+            BucketName that = ((BucketName) o);
+            return Objects.equals(this.project, that.project) && Objects.equals(this.bucket, that.bucket);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        h *= 1000003;
+        h ^= Objects.hashCode(bucket);
+        return h;
+    }
+
+    /**
+     * Builder for projects/{project}/buckets/{bucket}.
+     */
+    public static class Builder {
+
+        private String project;
+
+        private String bucket;
+
+        protected Builder() {
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        public String getBucket() {
+            return bucket;
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public Builder setBucket(String bucket) {
+            this.bucket = bucket;
+            return this;
+        }
+
+        private Builder(BucketName bucketName) {
+            this.project = bucketName.project;
+            this.bucket = bucketName.bucket;
+        }
+
+        public BucketName build() {
+            return new BucketName(this);
+        }
+    }
 }

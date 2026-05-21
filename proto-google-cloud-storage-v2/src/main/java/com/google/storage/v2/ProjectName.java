@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.storage.v2;
 
 import com.google.api.pathtemplate.PathTemplate;
@@ -29,140 +28,144 @@ import javax.annotation.Generated;
 // AUTO-GENERATED DOCUMENTATION AND CLASS.
 @Generated("by gapic-generator-java")
 public class ProjectName implements ResourceName {
-  private static final PathTemplate PROJECT =
-      PathTemplate.createWithoutUrlEncoding("projects/{project}");
-  private volatile Map<String, String> fieldValuesMap;
-  private final String project;
 
-  @Deprecated
-  protected ProjectName() {
-    project = null;
-  }
+    private static final PathTemplate PROJECT = PathTemplate.createWithoutUrlEncoding("projects/{project}");
 
-  private ProjectName(Builder builder) {
-    project = Preconditions.checkNotNull(builder.getProject());
-  }
+    private volatile Map<String, String> fieldValuesMap;
 
-  public String getProject() {
-    return project;
-  }
+    private final String project;
 
-  public static Builder newBuilder() {
-    return new Builder();
-  }
-
-  public Builder toBuilder() {
-    return new Builder(this);
-  }
-
-  public static ProjectName of(String project) {
-    return newBuilder().setProject(project).build();
-  }
-
-  public static String format(String project) {
-    return newBuilder().setProject(project).build().toString();
-  }
-
-  public static ProjectName parse(String formattedString) {
-    if (formattedString.isEmpty()) {
-      return null;
+    @Deprecated
+    protected ProjectName() {
+        project = null;
     }
-    Map<String, String> matchMap =
-        PROJECT.validatedMatch(
-            formattedString, "ProjectName.parse: formattedString not in valid format");
-    return of(matchMap.get("project"));
-  }
 
-  public static List<ProjectName> parseList(List<String> formattedStrings) {
-    List<ProjectName> list = new ArrayList<>(formattedStrings.size());
-    for (String formattedString : formattedStrings) {
-      list.add(parse(formattedString));
+    private ProjectName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
     }
-    return list;
-  }
-
-  public static List<String> toStringList(List<ProjectName> values) {
-    List<String> list = new ArrayList<>(values.size());
-    for (ProjectName value : values) {
-      if (value == null) {
-        list.add("");
-      } else {
-        list.add(value.toString());
-      }
-    }
-    return list;
-  }
-
-  public static boolean isParsableFrom(String formattedString) {
-    return PROJECT.matches(formattedString);
-  }
-
-  @Override
-  public Map<String, String> getFieldValuesMap() {
-    if (fieldValuesMap == null) {
-      synchronized (this) {
-        if (fieldValuesMap == null) {
-          ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
-          if (project != null) {
-            fieldMapBuilder.put("project", project);
-          }
-          fieldValuesMap = fieldMapBuilder.build();
-        }
-      }
-    }
-    return fieldValuesMap;
-  }
-
-  public String getFieldValue(String fieldName) {
-    return getFieldValuesMap().get(fieldName);
-  }
-
-  @Override
-  public String toString() {
-    return PROJECT.instantiate("project", project);
-  }
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (o != null || getClass() == o.getClass()) {
-      ProjectName that = ((ProjectName) o);
-      return Objects.equals(this.project, that.project);
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    int h = 1;
-    h *= 1000003;
-    h ^= Objects.hashCode(project);
-    return h;
-  }
-
-  /** Builder for projects/{project}. */
-  public static class Builder {
-    private String project;
-
-    protected Builder() {}
 
     public String getProject() {
-      return project;
+        return project;
     }
 
-    public Builder setProject(String project) {
-      this.project = project;
-      return this;
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
-    private Builder(ProjectName projectName) {
-      this.project = projectName.project;
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 
-    public ProjectName build() {
-      return new ProjectName(this);
+    public static ProjectName of(String project) {
+        return newBuilder().setProject(project).build();
     }
-  }
+
+    public static String format(String project) {
+        return newBuilder().setProject(project).build().toString();
+    }
+
+    public static ProjectName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
+        }
+        Map<String, String> matchMap = PROJECT.validatedMatch(formattedString, "ProjectName.parse: formattedString not in valid format");
+        return of(matchMap.get("project"));
+    }
+
+    public static List<ProjectName> parseList(List<String> formattedStrings) {
+        List<ProjectName> list = new ArrayList<>(formattedStrings.size());
+        for (String formattedString : formattedStrings) {
+            list.add(parse(formattedString));
+        }
+        return list;
+    }
+
+    public static List<String> toStringList(List<ProjectName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (ProjectName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT.matches(formattedString);
+    }
+
+    @Override
+    public Map<String, String> getFieldValuesMap() {
+        if (null == fieldValuesMap) {
+            synchronized (this) {
+                if (null == fieldValuesMap) {
+                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
+                    if (null != project) {
+                        fieldMapBuilder.put("project", project);
+                    }
+                    fieldValuesMap = fieldMapBuilder.build();
+                }
+            }
+        }
+        return fieldValuesMap;
+    }
+
+    public String getFieldValue(String fieldName) {
+        return getFieldValuesMap().get(fieldName);
+    }
+
+    @Override
+    public String toString() {
+        return PROJECT.instantiate("project", project);
+    }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null != o || o.getClass() == getClass()) {
+            ProjectName that = ((ProjectName) o);
+            return Objects.equals(this.project, that.project);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        return h;
+    }
+
+    /**
+     * Builder for projects/{project}.
+     */
+    public static class Builder {
+
+        private String project;
+
+        protected Builder() {
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        private Builder(ProjectName projectName) {
+            this.project = projectName.project;
+        }
+
+        public ProjectName build() {
+            return new ProjectName(this);
+        }
+    }
 }

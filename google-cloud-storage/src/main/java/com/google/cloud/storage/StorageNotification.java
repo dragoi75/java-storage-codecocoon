@@ -16,7 +16,6 @@
 package com.google.cloud.storage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,113 +26,117 @@ import java.util.Objects;
  */
 public class StorageNotification extends NotificationMetadata {
 
-  private final StorageClientOptions clientConfig;
-  private transient Storage client;
+    private final StorageClientOptions clientConfig;
 
-  /** Builder for {@code Notification}. */
-  public static class NotificationInfoBuilder extends NotificationBuilder {
-    private final Storage client;
-    private final NotificationBuilderImpl builder;
+    private transient Storage client;
 
-    NotificationInfoBuilder(StorageNotification notif) {
-      this.client = notif.client;
-      this.builder = new NotificationBuilderImpl(notif);
+    /**
+     * Builder for {@code Notification}.
+     */
+    public static class NotificationInfoBuilder extends NotificationBuilder {
+
+        private final Storage client;
+
+        private final NotificationBuilderImpl builder;
+
+        NotificationInfoBuilder(StorageNotification notif) {
+            this.client = notif.client;
+            this.builder = new NotificationBuilderImpl(notif);
+        }
+
+        @Override
+        StorageNotification.NotificationInfoBuilder setNotificationId(String id) {
+            builder.setNotificationId(id);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setSelfLink(String resourceUri) {
+            builder.setSelfLink(resourceUri);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setTopic(String subject) {
+            builder.setTopic(subject);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setPayloadFormat(PayloadFormatType formatType) {
+            builder.setPayloadFormat(formatType);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setObjectNamePrefix(String namePrefix) {
+            builder.setObjectNamePrefix(namePrefix);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setEventTypes(ObjectEventType... events) {
+            builder.setEventTypes(events);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setEtag(String entityTag) {
+            builder.setEtag(entityTag);
+            return this;
+        }
+
+        @Override
+        public StorageNotification.NotificationInfoBuilder setCustomAttributes(Map<String, String> attributes) {
+            builder.setCustomAttributes(attributes);
+            return this;
+        }
+
+        @Override
+        public StorageNotification create() {
+            return new StorageNotification(client, builder);
+        }
+    }
+
+    StorageNotification(Storage client, NotificationBuilderImpl builder) {
+        super(builder);
+        this.client = checkNotNull(client);
+        this.clientConfig = client.getOptions();
+    }
+
+    /**
+     * Returns the notification's {@code Storage} object used to issue requests.
+     */
+    public Storage getStorage() {
+        return client;
     }
 
     @Override
-    StorageNotification.NotificationInfoBuilder setNotificationId(String id) {
-      builder.setNotificationId(id);
-      return this;
+    public StorageNotification.NotificationInfoBuilder toNotificationBuilder() {
+        return new NotificationInfoBuilder(this);
     }
 
     @Override
-    public StorageNotification.NotificationInfoBuilder setSelfLink(String resourceUri) {
-      builder.setSelfLink(resourceUri);
-      return this;
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (null == obj || obj.getClass() != getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        StorageNotification notif = (StorageNotification) obj;
+        return Objects.equals(toProto(), notif.toProto()) && Objects.equals(clientConfig, notif.clientConfig);
     }
 
     @Override
-    public StorageNotification.NotificationInfoBuilder setTopic(String subject) {
-      builder.setTopic(subject);
-      return this;
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), clientConfig, client);
     }
 
-    @Override
-    public StorageNotification.NotificationInfoBuilder setPayloadFormat(PayloadFormatType formatType) {
-      builder.setPayloadFormat(formatType);
-      return this;
+    static StorageNotification fromProto(Storage client, com.google.api.services.storage.model.Notification protoMsg) {
+        return new StorageNotification(client, new NotificationBuilderImpl(NotificationMetadata.fromProto(protoMsg)));
     }
-
-    @Override
-    public StorageNotification.NotificationInfoBuilder setObjectNamePrefix(String namePrefix) {
-      builder.setObjectNamePrefix(namePrefix);
-      return this;
-    }
-
-    @Override
-    public StorageNotification.NotificationInfoBuilder setEventTypes(ObjectEventType... events) {
-      builder.setEventTypes(events);
-      return this;
-    }
-
-    @Override
-    public StorageNotification.NotificationInfoBuilder setEtag(String entityTag) {
-      builder.setEtag(entityTag);
-      return this;
-    }
-
-    @Override
-    public StorageNotification.NotificationInfoBuilder setCustomAttributes(Map<String, String> attributes) {
-      builder.setCustomAttributes(attributes);
-      return this;
-    }
-
-    @Override
-    public StorageNotification create() {
-      return new StorageNotification(client, builder);
-    }
-  }
-
-  StorageNotification(Storage client, NotificationBuilderImpl builder) {
-    super(builder);
-    this.client = checkNotNull(client);
-    this.clientConfig = client.getOptions();
-  }
-
-  /** Returns the notification's {@code Storage} object used to issue requests. */
-  public Storage getStorage() {
-    return client;
-  }
-
-  @Override
-  public StorageNotification.NotificationInfoBuilder toNotificationBuilder() {
-    return new NotificationInfoBuilder(this);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-      return false;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    StorageNotification notif = (StorageNotification) obj;
-    return Objects.equals(toProto(), notif.toProto())
-        && Objects.equals(clientConfig, notif.clientConfig);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(super.hashCode(), clientConfig, client);
-  }
-
-  static StorageNotification fromProto(
-          Storage client, com.google.api.services.storage.model.Notification protoMsg) {
-    return new StorageNotification(
-            client, new NotificationBuilderImpl(NotificationMetadata.fromProto(protoMsg)));
-  }
 }
