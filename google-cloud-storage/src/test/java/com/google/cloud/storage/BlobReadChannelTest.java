@@ -92,8 +92,8 @@ public class BlobReadChannelTest {
     expect(storageRpcMock.read(BLOB_ID.toProto(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
-    reader.readIntoBuffer(firstReadBuffer);
-    reader.readIntoBuffer(secondReadBuffer);
+    reader.read(firstReadBuffer);
+    reader.read(secondReadBuffer);
     assertArrayEquals(Arrays.copyOf(result, firstReadBuffer.capacity()), firstReadBuffer.array());
     assertArrayEquals(
         Arrays.copyOfRange(
@@ -118,8 +118,8 @@ public class BlobReadChannelTest {
                 BLOB_ID.toProto(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, CUSTOM_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", secondResult));
     replay(storageRpcMock);
-    reader.readIntoBuffer(firstReadBuffer);
-    reader.readIntoBuffer(secondReadBuffer);
+    reader.read(firstReadBuffer);
+    reader.read(secondReadBuffer);
     assertArrayEquals(firstResult, firstReadBuffer.array());
     assertArrayEquals(
         Arrays.copyOf(secondResult, secondReadBuffer.capacity()), secondReadBuffer.array());
@@ -133,7 +133,7 @@ public class BlobReadChannelTest {
     expect(storageRpcMock.read(BLOB_ID.toProto(), EMPTY_RPC_OPTIONS, 0, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
-    assertEquals(-1, reader.readIntoBuffer(readBuffer));
+    assertEquals(-1, reader.read(readBuffer));
   }
 
   @Test
@@ -145,7 +145,7 @@ public class BlobReadChannelTest {
     expect(storageRpcMock.read(BLOB_ID.toProto(), EMPTY_RPC_OPTIONS, 42, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag", result));
     replay(storageRpcMock);
-    reader.readIntoBuffer(readBuffer);
+    reader.read(readBuffer);
     assertArrayEquals(result, readBuffer.array());
   }
 
@@ -165,7 +165,7 @@ public class BlobReadChannelTest {
     reader.close();
     try {
       ByteBuffer readBuffer = ByteBuffer.allocate(DEFAULT_CHUNK_SIZE);
-      reader.readIntoBuffer(readBuffer);
+      reader.read(readBuffer);
       fail("Expected BlobReadChannel read to throw ClosedChannelException");
     } catch (ClosedChannelException ex) {
       // expected
@@ -187,9 +187,9 @@ public class BlobReadChannelTest {
                 blobId.toProto(), EMPTY_RPC_OPTIONS, DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_SIZE))
         .andReturn(Tuple.of("etag2", secondResult));
     replay(storageRpcMock);
-    reader.readIntoBuffer(firstReadBuffer);
+    reader.read(firstReadBuffer);
     try {
-      reader.readIntoBuffer(secondReadBuffer);
+      reader.read(secondReadBuffer);
       fail("Expected ReadChannel read to throw StorageException");
     } catch (IOException ex) {
       StringBuilder messageBuilder = new StringBuilder();
@@ -210,7 +210,7 @@ public class BlobReadChannelTest {
         .andReturn(Tuple.of("etag", secondResult));
     replay(storageRpcMock);
     reader = new BlobInputStream(options, BLOB_ID, EMPTY_RPC_OPTIONS);
-    reader.readIntoBuffer(firstReadBuffer);
+    reader.read(firstReadBuffer);
     RestorableState<ReadChannel> readerState = reader.capture();
     ReadChannel restoredReader = readerState.restore();
     restoredReader.read(secondReadBuffer);

@@ -111,7 +111,7 @@ class BlobInputStream implements ReadChannel {
   }
 
   @Override
-  public int readIntoBuffer(ByteBuffer dstBuffer) throws IOException {
+  public int read(ByteBuffer dstBuffer) throws IOException {
     ensureOpen();
     if (dataBuffer == null) {
       if (streamEnded) {

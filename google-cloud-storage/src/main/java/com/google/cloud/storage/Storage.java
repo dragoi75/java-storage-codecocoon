@@ -1416,7 +1416,7 @@ public interface Storage extends Service<StorageSettings> {
 
       /** Add source blobs for compose operation. */
       public SourceTargetBuilder addSources(String... blobNames) {
-        return addSource(Arrays.asList(blobNames));
+        return addSources(Arrays.asList(blobNames));
       }
 
       /** Add a source with a specific generation to match. */

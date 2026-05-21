@@ -519,7 +519,7 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
     }
     final com.google.api.services.storage.model.StorageObject destinationObject = composeOperation.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> blobTargetOptions =
-        optionMap(
+        createOptionMap(
             composeOperation.getTarget().getGeneration(),
             composeOperation.getTarget().getMetageneration(),
             composeOperation.getTargetOptions());
@@ -545,11 +545,11 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
   public ChunkedCopyWriter copy(final CopyOperationRequest copyOperation) {
     final com.google.api.services.storage.model.StorageObject originObject = copyOperation.getSource().toProto();
     final Map<StorageRpcClient.StorageOption, ?> originOptions =
-        optionMap(
+        createOptionMap(
             copyOperation.getSource().getGeneration(), null, copyOperation.getSourceOptions(), true);
     final com.google.api.services.storage.model.StorageObject destinationObject = copyOperation.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> blobTargetOptions =
-        optionMap(
+        createOptionMap(
             copyOperation.getTarget().getGeneration(),
             copyOperation.getTarget().getMetageneration(),
             copyOperation.getTargetOptions());
@@ -1755,12 +1755,12 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> createOptionMap(AbstractOption... settings) {
-    return optionMap(null, null, Arrays.asList(settings));
+    return createOptionMap(null, null, Arrays.asList(settings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> createOptionMap(
           Long expectedGeneration, Long expectedMetaGeneration, AbstractOption... settings) {
-    return optionMap(expectedGeneration, expectedMetaGeneration, Arrays.asList(settings));
+    return createOptionMap(expectedGeneration, expectedMetaGeneration, Arrays.asList(settings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> createOptionMap(BucketMetadata bucketMeta, AbstractOption... settings) {
