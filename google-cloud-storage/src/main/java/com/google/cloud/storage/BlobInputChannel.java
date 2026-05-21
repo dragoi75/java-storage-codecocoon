@@ -111,7 +111,7 @@ class BlobInputChannel implements ReadChannel {
   }
 
   @Override
-  public int readInto(ByteBuffer destBuffer) throws IOException {
+  public int read(ByteBuffer destBuffer) throws IOException {
     ensureOpen();
     if (dataBuffer == null) {
       if (eofReached) {

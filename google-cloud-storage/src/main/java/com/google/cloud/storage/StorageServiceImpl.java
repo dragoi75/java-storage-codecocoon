@@ -513,7 +513,7 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
     }
     final StorageObject destinationObject = composeOperation.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             composeOperation.getTarget().getGeneration(),
             composeOperation.getTarget().getMetageneration(),
             composeOperation.getTargetOptions());
@@ -539,11 +539,11 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
   public ResumableCopyWriter copy(final CopyOperationRequest copyOperation) {
     final StorageObject originObject = copyOperation.getSource().toProto();
     final Map<StorageRpcClient.StorageOption, ?> originOptions =
-        optionMap(
+        buildOptionMap(
             copyOperation.getSource().getGeneration(), null, copyOperation.getSourceOptions(), true);
     final StorageObject destinationObject = copyOperation.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             copyOperation.getTarget().getGeneration(),
             copyOperation.getTarget().getMetageneration(),
             copyOperation.getTargetOptions());
@@ -1616,12 +1616,12 @@ final class StorageServiceImpl extends BaseService<StorageSettings> implements S
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(AbstractOption... settings) {
-    return optionMap(null, null, Arrays.asList(settings));
+    return buildOptionMap(null, null, Arrays.asList(settings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(
           Long gen, Long metaGen, AbstractOption... settings) {
-    return optionMap(gen, metaGen, Arrays.asList(settings));
+    return buildOptionMap(gen, metaGen, Arrays.asList(settings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BucketMetadata bucketMetadata, AbstractOption... settings) {
