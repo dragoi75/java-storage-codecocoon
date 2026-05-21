@@ -13,155 +13,137 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import static com.google.cloud.RetryHelper.runWithRetries;
 import static java.util.concurrent.Executors.callable;
-
 import com.google.cloud.BaseWriteChannel;
 import com.google.cloud.RestorableState;
 import com.google.cloud.RetryHelper;
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.spi.v1.StorageRpcClient;
-
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-/** Write channel implementation to upload Google Cloud Storage blobs. */
+/**
+ * Write channel implementation to upload Google Cloud Storage blobs.
+ */
 class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> {
 
-  BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> settingsMap) {
-    this(storageSettings, metadata, openChannel(storageSettings, metadata, settingsMap));
-  }
-
-  BlobUploadChannel(StorageSettings storageSettings, URL signedUri) {
-    this(storageSettings, openChannel(signedUri, storageSettings));
-  }
-
-  BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
-    super(storageSettings, metadataInfo, uploadToken);
-  }
-
-  BlobUploadChannel(StorageSettings storageSettings, String uploadToken) {
-    super(storageSettings, null, uploadToken);
-  }
-
-  @Override
-  protected void flushBuffer(final int size, final boolean isFinal) {
-    try {
-      runWithRetries(
-          callable(
-              new Runnable() {
-                @Override
-                public void run() {
-                  getOptions()
-                      .getStorageRpcV1()
-                      .write(getUploadId(), getBuffer(), 0, getPosition(), size, isFinal);
-                }
-              }),
-          getOptions().getRetrySettings(),
-          DefaultStorageImpl.EXCEPTION_HANDLER,
-          getOptions().getClock());
-    } catch (RetryHelper.RetryHelperException retryException) {
-      throw StorageOperationException.translateAndRethrow(retryException);
-    }
-  }
-
-  protected ResumableUploadState.ChunkedUploadBuilder stateBuilder() {
-    return ResumableUploadState.newBuilder(getOptions(), getEntity(), getUploadId());
-  }
-
-  private static String openChannel(
-      final StorageSettings storageSettings,
-      final BlobMetadata metadata,
-      final Map<StorageRpcClient.StorageOption, ?> settingsMap) {
-    try {
-      return runWithRetries(
-          new Callable<String>() {
-            @Override
-            public String call() {
-              return storageSettings.getStorageRpcV1().open(metadata.toProto(), settingsMap);
-            }
-          },
-          storageSettings.getRetrySettings(),
-          DefaultStorageImpl.EXCEPTION_HANDLER,
-          storageSettings.getClock());
-    } catch (RetryHelper.RetryHelperException retryException) {
-      throw StorageOperationException.translateAndRethrow(retryException);
-    }
-  }
-
-  private static String openChannel(final URL signedUri, final StorageSettings storageSettings) {
-    try {
-      return runWithRetries(
-          new Callable<String>() {
-            @Override
-            public String call() {
-              if (!isValidSignedURL(signedUri.getQuery())) {
-                throw new StorageOperationException(2, "invalid signedURL");
-              }
-              return storageSettings.getStorageRpcV1().open(signedUri.toString());
-            }
-          },
-          storageSettings.getRetrySettings(),
-          DefaultStorageImpl.EXCEPTION_HANDLER,
-          storageSettings.getClock());
-    } catch (RetryHelper.RetryHelperException retryException) {
-      throw StorageOperationException.translateAndRethrow(retryException);
-    }
-  }
-
-  private static boolean isValidSignedURL(String signedQuery) {
-    boolean validFlag = true;
-    if (signedQuery.startsWith("X-Goog-Algorithm=")) {
-      if (!signedQuery.contains("&X-Goog-Credential=")
-          || !signedQuery.contains("&X-Goog-Date=")
-          || !signedQuery.contains("&X-Goog-Expires=")
-          || !signedQuery.contains("&X-Goog-SignedHeaders=")
-          || !signedQuery.contains("&X-Goog-Signature=")) {
-        validFlag = false;
-      }
-    } else if (signedQuery.startsWith("GoogleAccessId=")) {
-      if (!signedQuery.contains("&Expires=") || !signedQuery.contains("&Signature=")) {
-        validFlag = false;
-      }
-    } else {
-      validFlag = false;
-    }
-    return validFlag;
-  }
-
-  static class ResumableUploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
-
-    private static final long serialVersionUID = -9028324143780151286L;
-
-    ResumableUploadState(ChunkedUploadBuilder chunkedUploadConfig) {
-      super(chunkedUploadConfig);
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> settingsMap) {
+        this(storageSettings, metadata, openChannel(storageSettings, metadata, settingsMap));
     }
 
-    static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
+    BlobUploadChannel(StorageSettings storageSettings, URL signedUri) {
+        this(storageSettings, openChannel(signedUri, storageSettings));
+    }
 
-      private ChunkedUploadBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
         super(storageSettings, metadataInfo, uploadToken);
-      }
-
-      @Override
-      public RestorableState<WriteChannel> build() {
-        return new ResumableUploadState(this);
-      }
     }
 
-    static ChunkedUploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
-      return new ChunkedUploadBuilder(storageSettings, metadataInfo, uploadToken);
+    BlobUploadChannel(StorageSettings storageSettings, String uploadToken) {
+        super(storageSettings, null, uploadToken);
     }
 
     @Override
-    public WriteChannel restore() {
-      BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
-      uploadStream.restore(this);
-      return uploadStream;
+    protected void flushBuffer(final int size, final boolean isFinal) {
+        try {
+            runWithRetries(callable(new Runnable() {
+
+                @Override
+                public void run() {
+                    getOptions().getStorageRpcV1().write(getUploadId(), getBuffer(), 0, getPosition(), size, isFinal);
+                }
+            }), getOptions().getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
     }
-  }
+
+    protected ResumableUploadState.ChunkedUploadBuilder stateBuilder() {
+        return ResumableUploadState.newBuilder(getOptions(), getEntity(), getUploadId());
+    }
+
+    private static String openChannel(final StorageSettings storageSettings, final BlobMetadata metadata, final Map<StorageRpcClient.StorageOption, ?> settingsMap) {
+        try {
+            return runWithRetries(new Callable<String>() {
+
+                @Override
+                public String call() {
+                    return storageSettings.getStorageRpcV1().open(metadata.toProto(), settingsMap);
+                }
+            }, storageSettings.getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, storageSettings.getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    private static String openChannel(final URL signedUri, final StorageSettings storageSettings) {
+        try {
+            return runWithRetries(new Callable<String>() {
+
+                @Override
+                public String call() {
+                    if (!isValidSignedURL(signedUri.getQuery())) {
+                        throw new StorageOperationException(2, "invalid signedURL");
+                    }
+                    return storageSettings.getStorageRpcV1().open(signedUri.toString());
+                }
+            }, storageSettings.getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, storageSettings.getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    private static boolean isValidSignedURL(String signedQuery) {
+        boolean validFlag = true;
+        if (!signedQuery.startsWith("X-Goog-Algorithm=")) {
+            if (!signedQuery.startsWith("GoogleAccessId=")) {
+                validFlag = false;
+            } else {
+                if (!signedQuery.contains("&Expires=") || !signedQuery.contains("&Signature=")) {
+                    validFlag = false;
+                }
+            }
+        } else {
+            if (!signedQuery.contains("&X-Goog-Credential=") || !signedQuery.contains("&X-Goog-Date=") || !signedQuery.contains("&X-Goog-Expires=") || !signedQuery.contains("&X-Goog-SignedHeaders=") || !signedQuery.contains("&X-Goog-Signature=")) {
+                validFlag = false;
+            }
+        }
+        return validFlag;
+    }
+
+    static class ResumableUploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
+
+        private static final long serialVersionUID = -9028324143780151286L;
+
+        ResumableUploadState(ChunkedUploadBuilder chunkedUploadConfig) {
+            super(chunkedUploadConfig);
+        }
+
+        static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
+
+            private ChunkedUploadBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+                super(storageSettings, metadataInfo, uploadToken);
+            }
+
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new ResumableUploadState(this);
+            }
+        }
+
+        static ChunkedUploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+            return new ChunkedUploadBuilder(storageSettings, metadataInfo, uploadToken);
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
+            uploadStream.restore(this);
+            return uploadStream;
+        }
+    }
 }
