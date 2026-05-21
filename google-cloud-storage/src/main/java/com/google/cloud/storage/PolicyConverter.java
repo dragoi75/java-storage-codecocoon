@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import com.google.api.services.storage.model.Expr;
@@ -31,53 +30,50 @@ import java.util.List;
  */
 class PolicyConverter {
 
-  static Policy buildPolicyFromApi(com.google.api.services.storage.model.Policy externalPolicy) {
-    Policy.Builder policyAssembler = Policy.newBuilder();
-    List<Bindings> bindingEntries = externalPolicy.getBindings();
-    if (null != bindingEntries && !bindingEntries.isEmpty()) {
-      ImmutableList.Builder<Binding> baseBindingBuilder = ImmutableList.builder();
-      for (Bindings bindEntry : bindingEntries) {
-        Binding.Builder bindConstructor = Binding.newBuilder();
-        bindConstructor.setRole(bindEntry.getRole());
-        bindConstructor.setMembers(bindEntry.getMembers());
-        if (bindEntry.getCondition() != null) {
-          Condition.Builder conditionAssembler = Condition.newBuilder();
-          conditionAssembler.setTitle(bindEntry.getCondition().getTitle());
-          conditionAssembler.setDescription(bindEntry.getCondition().getDescription());
-          conditionAssembler.setExpression(bindEntry.getCondition().getExpression());
-          bindConstructor.setCondition(conditionAssembler.build());
+    static Policy buildPolicyFromApi(com.google.api.services.storage.model.Policy externalPolicy) {
+        Policy.Builder policyAssembler = Policy.newBuilder();
+        List<Bindings> bindingEntries = externalPolicy.getBindings();
+        if (bindingEntries == null || bindingEntries.isEmpty()) {
+            throw new IllegalStateException("Missing required bindings.");
+        } else {
+            ImmutableList.Builder<Binding> baseBindingBuilder = ImmutableList.builder();
+            for (Bindings bindEntry : bindingEntries) {
+                Binding.Builder bindConstructor = Binding.newBuilder();
+                bindConstructor.setRole(bindEntry.getRole());
+                bindConstructor.setMembers(bindEntry.getMembers());
+                if (null != bindEntry.getCondition()) {
+                    Condition.Builder conditionAssembler = Condition.newBuilder();
+                    conditionAssembler.setTitle(bindEntry.getCondition().getTitle());
+                    conditionAssembler.setDescription(bindEntry.getCondition().getDescription());
+                    conditionAssembler.setExpression(bindEntry.getCondition().getExpression());
+                    bindConstructor.setCondition(conditionAssembler.build());
+                }
+                baseBindingBuilder.add(bindConstructor.build());
+            }
+            policyAssembler.setBindings(baseBindingBuilder.build());
         }
-        baseBindingBuilder.add(bindConstructor.build());
-      }
-      policyAssembler.setBindings(baseBindingBuilder.build());
-    } else {
-      throw new IllegalStateException("Missing required bindings.");
+        return policyAssembler.setEtag(externalPolicy.getEtag()).setVersion(externalPolicy.getVersion()).build();
     }
-    return policyAssembler.setEtag(externalPolicy.getEtag()).setVersion(externalPolicy.getVersion()).build();
-  }
 
-  static com.google.api.services.storage.model.Policy buildApiPolicy(Policy ruleSet) {
-    List<Bindings> bindingEntries = new ArrayList<>(ruleSet.getBindingsList().size());
-    for (Binding bindEntry : ruleSet.getBindingsList()) {
-      Bindings externalBinding = new Bindings();
-      externalBinding.setRole(bindEntry.getRole());
-      externalBinding.setMembers(new ArrayList<>(bindEntry.getMembers()));
-      if (bindEntry.getCondition() != null) {
-        Expr expression = new Expr();
-        expression.setTitle(bindEntry.getCondition().getTitle());
-        expression.setDescription(bindEntry.getCondition().getDescription());
-        expression.setExpression(bindEntry.getCondition().getExpression());
-        externalBinding.setCondition(expression);
-      }
-      bindingEntries.add(externalBinding);
+    static com.google.api.services.storage.model.Policy buildApiPolicy(Policy ruleSet) {
+        List<Bindings> bindingEntries = new ArrayList<>(ruleSet.getBindingsList().size());
+        for (Binding bindEntry : ruleSet.getBindingsList()) {
+            Bindings externalBinding = new Bindings();
+            externalBinding.setRole(bindEntry.getRole());
+            externalBinding.setMembers(new ArrayList<>(bindEntry.getMembers()));
+            if (null != bindEntry.getCondition()) {
+                Expr expression = new Expr();
+                expression.setTitle(bindEntry.getCondition().getTitle());
+                expression.setDescription(bindEntry.getCondition().getDescription());
+                expression.setExpression(bindEntry.getCondition().getExpression());
+                externalBinding.setCondition(expression);
+            }
+            bindingEntries.add(externalBinding);
+        }
+        return new com.google.api.services.storage.model.Policy().setBindings(bindingEntries).setEtag(ruleSet.getEtag()).setVersion(ruleSet.getVersion());
     }
-    return new com.google.api.services.storage.model.Policy()
-        .setBindings(bindingEntries)
-        .setEtag(ruleSet.getEtag())
-        .setVersion(ruleSet.getVersion());
-  }
 
-  private PolicyConverter() {
-    // Intentionally left blank.
-  }
+    private PolicyConverter() {
+        // Intentionally left blank.
+    }
 }
