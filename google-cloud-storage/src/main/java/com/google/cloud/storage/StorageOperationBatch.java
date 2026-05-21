@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.cloud.storage.StorageService.BlobGetOptions;
@@ -53,154 +51,156 @@ import java.util.Map;
  */
 public class StorageOperationBatch {
 
-  private final RpcBatchBuilder rpcBuilder;
-  private final StorageRpcClient rpcClient;
-  private final StorageSettings settings;
+    private final RpcBatchBuilder rpcBuilder;
 
-  StorageOperationBatch(StorageSettings settings) {
-    this.settings = settings;
-    this.rpcClient = settings.getStorageRpcV1();
-    this.rpcBuilder = rpcClient.createBatch();
-  }
+    private final StorageRpcClient rpcClient;
 
-  @VisibleForTesting
-  Object getBatch() {
-    return rpcBuilder;
-  }
+    private final StorageSettings settings;
 
-  @VisibleForTesting
-  StorageRpcClient getStorageRpc() {
-    return rpcClient;
-  }
+    StorageOperationBatch(StorageSettings settings) {
+        this.settings = settings;
+        this.rpcClient = settings.getStorageRpcV1();
+        this.rpcBuilder = rpcClient.createBatch();
+    }
 
-  @VisibleForTesting
-  StorageSettings getOptions() {
-    return settings;
-  }
+    @VisibleForTesting
+    Object getBatch() {
+        return rpcBuilder;
+    }
 
-  /**
-   * Adds a request representing the "delete blob" operation to this batch. Calling {@link
-   * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
-   * {@code false} if the blob was not found, or throws a {@link StorageServiceException} if the operation
-   * failed.
-   */
-  public StorageBatchResult<Boolean> deleteBlob(
-          String containerName, String objectName, StorageService.BlobReadOption... settings) {
-    return deleteBlob(BlobIdentifier.create(containerName, objectName), settings);
-  }
+    @VisibleForTesting
+    StorageRpcClient getStorageRpc() {
+        return rpcClient;
+    }
 
-  /**
-   * Adds a request representing the "delete blob" operation to this batch. Calling {@link
-   * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
-   * {@code false} if the blob was not found, or throws a {@link StorageServiceException} if the operation
-   * failed.
-   */
-  public StorageBatchResult<Boolean> deleteBlob(BlobIdentifier objectName, StorageService.BlobReadOption... settings) {
-    StorageBatchResult<Boolean> deleteOutcome = new StorageBatchResult<>();
-    RpcBatchBuilder.ResultCallback<Void> resultHandler = buildDeleteCallback(deleteOutcome);
-    Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(objectName, settings);
-    rpcBuilder.addDeletion(objectName.toProto(), resultHandler, storageSettingsMap);
-    return deleteOutcome;
-  }
+    @VisibleForTesting
+    StorageSettings getOptions() {
+        return settings;
+    }
 
-  /**
-   * Adds a request representing the "update blob" operation to this batch. The {@code options} can
-   * be used in the same way as for {@link StorageService#update(BlobMetadata, BlobUploadOption...)}. Calling
-   * {@link StorageBatchResult#get()} on the return value yields the updated {@link CloudStorageObject} if
-   * successful, or throws a {@link StorageServiceException} if the operation failed.
-   */
-  public StorageBatchResult<CloudStorageObject> updateBlob(BlobMetadata metadata, BlobUploadOption... settings) {
-    StorageBatchResult<CloudStorageObject> deleteOutcome = new StorageBatchResult<>();
-    RpcBatchBuilder.ResultCallback<StorageObject> resultHandler = buildUpdateCallback(this.settings, deleteOutcome);
-    Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(metadata, settings);
-    rpcBuilder.addUpdate(metadata.toProto(), resultHandler, storageSettingsMap);
-    return deleteOutcome;
-  }
+    /**
+     * Adds a request representing the "delete blob" operation to this batch. Calling {@link
+     * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
+     * {@code false} if the blob was not found, or throws a {@link StorageServiceException} if the operation
+     * failed.
+     */
+    public StorageBatchResult<Boolean> deleteBlob(String containerName, String objectName, StorageService.BlobReadOption... settings) {
+        return deleteBlob(BlobIdentifier.create(containerName, objectName), settings);
+    }
 
-  /**
-   * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
-   * used in the same way as for {@link StorageService#get(BlobIdentifier, StorageService.BlobGetOptions...)}. Calling {@link
-   * StorageBatchResult#get()} on the return value yields the requested {@link CloudStorageObject} if successful,
-   * {@code null} if no such blob exists, or throws a {@link StorageServiceException} if the operation
-   * failed.
-   */
-  public StorageBatchResult<CloudStorageObject> get(String containerName, String objectName, BlobGetOptions... settings) {
-    return get(BlobIdentifier.create(containerName, objectName), settings);
-  }
+    /**
+     * Adds a request representing the "delete blob" operation to this batch. Calling {@link
+     * StorageBatchResult#get()} on the return value yields {@code true} upon successful deletion,
+     * {@code false} if the blob was not found, or throws a {@link StorageServiceException} if the operation
+     * failed.
+     */
+    public StorageBatchResult<Boolean> deleteBlob(BlobIdentifier objectName, StorageService.BlobReadOption... settings) {
+        StorageBatchResult<Boolean> deleteOutcome = new StorageBatchResult<>();
+        RpcBatchBuilder.ResultCallback<Void> resultHandler = buildDeleteCallback(deleteOutcome);
+        Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(objectName, settings);
+        rpcBuilder.addDeletion(objectName.toProto(), resultHandler, storageSettingsMap);
+        return deleteOutcome;
+    }
 
-  /**
-   * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
-   * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobGetOptions...)}. Calling {@link
-   * StorageBatchResult#get()} on the return value yields the requested {@link CloudStorageObject} if successful,
-   * {@code null} if no such blob exists, or throws a {@link StorageServiceException} if the operation
-   * failed.
-   */
-  public StorageBatchResult<CloudStorageObject> get(BlobIdentifier objectName, StorageService.BlobGetOptions... settings) {
-    StorageBatchResult<CloudStorageObject> deleteOutcome = new StorageBatchResult<>();
-    RpcBatchBuilder.ResultCallback<StorageObject> resultHandler = buildGetCallback(this.settings, deleteOutcome);
-    Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(objectName, settings);
-    rpcBuilder.addFetch(objectName.toProto(), resultHandler, storageSettingsMap);
-    return deleteOutcome;
-  }
+    /**
+     * Adds a request representing the "update blob" operation to this batch. The {@code options} can
+     * be used in the same way as for {@link StorageService#update(BlobMetadata, BlobUploadOption...)}. Calling
+     * {@link StorageBatchResult#get()} on the return value yields the updated {@link CloudStorageObject} if
+     * successful, or throws a {@link StorageServiceException} if the operation failed.
+     */
+    public StorageBatchResult<CloudStorageObject> updateBlob(BlobMetadata metadata, BlobUploadOption... settings) {
+        StorageBatchResult<CloudStorageObject> deleteOutcome = new StorageBatchResult<>();
+        RpcBatchBuilder.ResultCallback<StorageObject> resultHandler = buildUpdateCallback(this.settings, deleteOutcome);
+        Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(metadata, settings);
+        rpcBuilder.addUpdate(metadata.toProto(), resultHandler, storageSettingsMap);
+        return deleteOutcome;
+    }
 
-  /** Submits this batch for processing using a single RPC request. */
-  public void submitBatch() {
-    rpcBuilder.execute();
-  }
+    /**
+     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
+     * used in the same way as for {@link StorageService#get(BlobIdentifier, StorageService.BlobGetOptions...)}. Calling {@link
+     * StorageBatchResult#get()} on the return value yields the requested {@link CloudStorageObject} if successful,
+     * {@code null} if no such blob exists, or throws a {@link StorageServiceException} if the operation
+     * failed.
+     */
+    public StorageBatchResult<CloudStorageObject> get(String containerName, String objectName, BlobGetOptions... settings) {
+        return get(BlobIdentifier.create(containerName, objectName), settings);
+    }
 
-  private RpcBatchBuilder.ResultCallback<Void> buildDeleteCallback(final StorageBatchResult<Boolean> deleteOutcome) {
-    return new RpcBatchBuilder.ResultCallback<Void>() {
-      @Override
-      public void handleSuccess(Void response) {
-        deleteOutcome.success(true);
-      }
+    /**
+     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
+     * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobGetOptions...)}. Calling {@link
+     * StorageBatchResult#get()} on the return value yields the requested {@link CloudStorageObject} if successful,
+     * {@code null} if no such blob exists, or throws a {@link StorageServiceException} if the operation
+     * failed.
+     */
+    public StorageBatchResult<CloudStorageObject> get(BlobIdentifier objectName, StorageService.BlobGetOptions... settings) {
+        StorageBatchResult<CloudStorageObject> deleteOutcome = new StorageBatchResult<>();
+        RpcBatchBuilder.ResultCallback<StorageObject> resultHandler = buildGetCallback(this.settings, deleteOutcome);
+        Map<StorageRpcClient.StorageOption, ?> storageSettingsMap = StorageServiceImpl.buildOptionMap(objectName, settings);
+        rpcBuilder.addFetch(objectName.toProto(), resultHandler, storageSettingsMap);
+        return deleteOutcome;
+    }
 
-      @Override
-      public void handleFailure(GoogleJsonError googleJsonError) {
-        StorageServiceException serviceException = new StorageServiceException(googleJsonError);
-        if (serviceException.getCode() == HTTP_NOT_FOUND) {
-          deleteOutcome.success(false);
-        } else {
-          deleteOutcome.error(serviceException);
-        }
-      }
-    };
-  }
+    /**
+     * Submits this batch for processing using a single RPC request.
+     */
+    public void submitBatch() {
+        rpcBuilder.execute();
+    }
 
-  private RpcBatchBuilder.ResultCallback<StorageObject> buildGetCallback(
-          final StorageSettings serviceSettings, final StorageBatchResult<CloudStorageObject> deleteOutcome) {
-    return new RpcBatchBuilder.ResultCallback<StorageObject>() {
-      @Override
-      public void handleSuccess(StorageObject response) {
-        deleteOutcome.success(
-            response == null ? null : CloudStorageObject.fromProto(serviceSettings.getService(), response));
-      }
+    private RpcBatchBuilder.ResultCallback<Void> buildDeleteCallback(final StorageBatchResult<Boolean> deleteOutcome) {
+        return new RpcBatchBuilder.ResultCallback<Void>() {
 
-      @Override
-      public void handleFailure(GoogleJsonError googleJsonError) {
-        StorageServiceException serviceException = new StorageServiceException(googleJsonError);
-        if (serviceException.getCode() == HTTP_NOT_FOUND) {
-          deleteOutcome.success(null);
-        } else {
-          deleteOutcome.error(serviceException);
-        }
-      }
-    };
-  }
+            @Override
+            public void handleSuccess(Void response) {
+                deleteOutcome.success(true);
+            }
 
-  private RpcBatchBuilder.ResultCallback<StorageObject> buildUpdateCallback(
-          final StorageSettings serviceSettings, final StorageBatchResult<CloudStorageObject> deleteOutcome) {
-    return new RpcBatchBuilder.ResultCallback<StorageObject>() {
-      @Override
-      public void handleSuccess(StorageObject response) {
-        deleteOutcome.success(
-            response == null ? null : CloudStorageObject.fromProto(serviceSettings.getService(), response));
-      }
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                StorageServiceException serviceException = new StorageServiceException(googleJsonError);
+                if (HTTP_NOT_FOUND != serviceException.getCode()) {
+                    deleteOutcome.error(serviceException);
+                } else {
+                    deleteOutcome.success(false);
+                }
+            }
+        };
+    }
 
-      @Override
-      public void handleFailure(GoogleJsonError googleJsonError) {
-        deleteOutcome.error(new StorageServiceException(googleJsonError));
-      }
-    };
-  }
+    private RpcBatchBuilder.ResultCallback<StorageObject> buildGetCallback(final StorageSettings serviceSettings, final StorageBatchResult<CloudStorageObject> deleteOutcome) {
+        return new RpcBatchBuilder.ResultCallback<StorageObject>() {
+
+            @Override
+            public void handleSuccess(StorageObject response) {
+                deleteOutcome.success(null == response ? null : CloudStorageObject.fromProto(serviceSettings.getService(), response));
+            }
+
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                StorageServiceException serviceException = new StorageServiceException(googleJsonError);
+                if (HTTP_NOT_FOUND != serviceException.getCode()) {
+                    deleteOutcome.error(serviceException);
+                } else {
+                    deleteOutcome.success(null);
+                }
+            }
+        };
+    }
+
+    private RpcBatchBuilder.ResultCallback<StorageObject> buildUpdateCallback(final StorageSettings serviceSettings, final StorageBatchResult<CloudStorageObject> deleteOutcome) {
+        return new RpcBatchBuilder.ResultCallback<StorageObject>() {
+
+            @Override
+            public void handleSuccess(StorageObject response) {
+                deleteOutcome.success(null == response ? null : CloudStorageObject.fromProto(serviceSettings.getService(), response));
+            }
+
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                deleteOutcome.error(new StorageServiceException(googleJsonError));
+            }
+        };
+    }
 }
