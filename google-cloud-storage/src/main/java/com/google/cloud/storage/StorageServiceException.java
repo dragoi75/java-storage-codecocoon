@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import com.google.api.client.googleapis.json.GoogleJsonError;
@@ -33,68 +32,60 @@ import java.util.Set;
  */
 @InternalApi
 public final class StorageServiceException extends BaseHttpServiceException {
-  private static final String SYSTEM_FAILURE = "internalError";
-  private static final String CONNECTION_TERMINATED_EARLY = "connectionClosedPrematurely";
 
-  // see: https://cloud.google.com/storage/docs/resumable-uploads-xml#practices
-  private static final Set<Error> TRANSIENT_ERRORS =
-      ImmutableSet.of(
-          new Error(504, null),
-          new Error(503, null),
-          new Error(502, null),
-          new Error(500, null),
-          new Error(429, null),
-          new Error(408, null),
-          new Error(null, SYSTEM_FAILURE),
-          new Error(null, CONNECTION_TERMINATED_EARLY));
+    private static final String SYSTEM_FAILURE = "internalError";
 
-  private static final long serialVersionUID = -4168430271327813063L;
+    private static final String CONNECTION_TERMINATED_EARLY = "connectionClosedPrematurely";
 
-  public StorageServiceException(int statusCode, String description) {
-    this(statusCode, description, null);
-  }
+    // see: https://cloud.google.com/storage/docs/resumable-uploads-xml#practices
+    private static final Set<Error> TRANSIENT_ERRORS = ImmutableSet.of(new Error(504, null), new Error(503, null), new Error(502, null), new Error(500, null), new Error(429, null), new Error(408, null), new Error(null, SYSTEM_FAILURE), new Error(null, CONNECTION_TERMINATED_EARLY));
 
-  public StorageServiceException(int statusCode, String description, Throwable underlyingThrowable) {
-    super(statusCode, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
-  }
+    private static final long serialVersionUID = -4168430271327813063L;
 
-  public StorageServiceException(int statusCode, String description, String explanation, Throwable underlyingThrowable) {
-    super(statusCode, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
-  }
-
-  public StorageServiceException(IOException ioFailure) {
-    super(ioFailure, true, TRANSIENT_ERRORS);
-  }
-
-  public StorageServiceException(GoogleJsonError apiFault) {
-    super(apiFault, true, TRANSIENT_ERRORS);
-  }
-
-  /**
-   * Translate RetryHelperException to the StorageException that caused the error. This method will
-   * always throw an exception.
-   *
-   * @throws StorageServiceException when {@code ex} was caused by a {@code StorageException}
-   */
-  public static StorageServiceException translateAndRethrow(RetryHelperException retryFailure) {
-    BaseServiceException.translate(retryFailure);
-    throw new StorageServiceException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
-  }
-
-  /**
-   * Translate IOException to a StorageException representing the cause of the error. This method
-   * defaults to idempotent always being {@code true}. Additionally, this method translates
-   * transient issues Connection Closed Prematurely as a retryable error.
-   *
-   * @returns {@code StorageException}
-   */
-  public static StorageServiceException translateException(IOException ioFailure) {
-    if (ioFailure.getMessage().contains("Connection closed prematurely")) {
-      return new StorageServiceException(
-          0, ioFailure.getMessage(), CONNECTION_TERMINATED_EARLY, ioFailure);
-    } else {
-      // default
-      return new StorageServiceException(ioFailure);
+    public StorageServiceException(int statusCode, String description) {
+        this(statusCode, description, null);
     }
-  }
+
+    public StorageServiceException(int statusCode, String description, Throwable underlyingThrowable) {
+        super(statusCode, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
+    public StorageServiceException(int statusCode, String description, String explanation, Throwable underlyingThrowable) {
+        super(statusCode, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
+    public StorageServiceException(IOException ioFailure) {
+        super(ioFailure, true, TRANSIENT_ERRORS);
+    }
+
+    public StorageServiceException(GoogleJsonError apiFault) {
+        super(apiFault, true, TRANSIENT_ERRORS);
+    }
+
+    /**
+     * Translate RetryHelperException to the StorageException that caused the error. This method will
+     * always throw an exception.
+     *
+     * @throws StorageServiceException when {@code ex} was caused by a {@code StorageException}
+     */
+    public static StorageServiceException translateAndRethrow(RetryHelperException retryFailure) {
+        BaseServiceException.translate(retryFailure);
+        throw new StorageServiceException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
+    }
+
+    /**
+     * Translate IOException to a StorageException representing the cause of the error. This method
+     * defaults to idempotent always being {@code true}. Additionally, this method translates
+     * transient issues Connection Closed Prematurely as a retryable error.
+     *
+     * @returns {@code StorageException}
+     */
+    public static StorageServiceException translateException(IOException ioFailure) {
+        if (!ioFailure.getMessage().contains("Connection closed prematurely")) {
+            // default
+            return new StorageServiceException(ioFailure);
+        } else {
+            return new StorageServiceException(0, ioFailure.getMessage(), CONNECTION_TERMINATED_EARLY, ioFailure);
+        }
+    }
 }
