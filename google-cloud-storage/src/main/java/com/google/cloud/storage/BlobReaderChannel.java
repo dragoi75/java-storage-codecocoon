@@ -111,7 +111,7 @@ class BlobReaderChannel implements ReadChannel {
   }
 
   @Override
-  public int readBytes(ByteBuffer byteStore) throws IOException {
+  public int read(ByteBuffer byteStore) throws IOException {
     ensureOpen();
     if (this.byteStore == null) {
       if (streamEnded) {

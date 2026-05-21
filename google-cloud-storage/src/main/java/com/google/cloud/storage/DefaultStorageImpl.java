@@ -511,7 +511,7 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
     final com.google.api.services.storage.model.StorageObject destinationObject = mergeRequest.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             mergeRequest.getTarget().getGeneration(),
             mergeRequest.getTarget().getMetageneration(),
             mergeRequest.getTargetOptions());
@@ -537,11 +537,11 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
   public BlobCopyWriter copy(final CopyOperationRequest transferRequest) {
     final com.google.api.services.storage.model.StorageObject originObject = transferRequest.getSource().toStorageObject();
     final Map<StorageRpcClient.StorageOption, ?> originOptions =
-        optionMap(
+        buildOptionMap(
             transferRequest.getSource().getGeneration(), null, transferRequest.getSourceOptions(), true);
     final com.google.api.services.storage.model.StorageObject destinationObject = transferRequest.getTarget().toProto();
     final Map<StorageRpcClient.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             transferRequest.getTarget().getGeneration(),
             transferRequest.getTarget().getMetageneration(),
             transferRequest.getTargetOptions());
@@ -1601,12 +1601,12 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(AbstractOption... storageSettings) {
-    return optionMap(null, null, Arrays.asList(storageSettings));
+    return buildOptionMap(null, null, Arrays.asList(storageSettings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(
           Long genId, Long metaGen, AbstractOption... storageSettings) {
-    return optionMap(genId, metaGen, Arrays.asList(storageSettings));
+    return buildOptionMap(genId, metaGen, Arrays.asList(storageSettings));
   }
 
   private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BucketMetadata bucketMetadata, AbstractOption... storageSettings) {
