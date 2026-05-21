@@ -637,7 +637,7 @@ public class BlobTest {
             });
     replay(mockStorageRpc);
     File file = File.createTempFile("blob", ".tmp");
-    blob.downloadTo(file.toPath());
+    blob.downloadToPath(file.toPath());
     byte actual[] = Files.readAllBytes(file.toPath());
     assertArrayEquals(expected, actual);
   }
@@ -676,7 +676,7 @@ public class BlobTest {
             });
     replay(mockStorageRpc);
     File file = File.createTempFile("blob", ".tmp");
-    blob.downloadTo(file.toPath());
+    blob.downloadToPath(file.toPath());
     byte actual[] = Files.readAllBytes(file.toPath());
     assertArrayEquals(expected, actual);
   }
@@ -695,7 +695,7 @@ public class BlobTest {
     replay(mockStorageRpc);
     File file = File.createTempFile("blob", ".tmp");
     try {
-      blob.downloadTo(file.toPath());
+      blob.downloadToPath(file.toPath());
       fail();
     } catch (StorageServiceException e) {
       assertSame(exception, e.getCause());

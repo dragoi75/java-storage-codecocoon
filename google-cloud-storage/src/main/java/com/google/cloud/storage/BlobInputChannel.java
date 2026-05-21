@@ -111,7 +111,7 @@ class BlobInputChannel implements ReadChannel {
   }
 
   @Override
-  public int readBytes(ByteBuffer nioBuffer) throws IOException {
+  public int read(ByteBuffer nioBuffer) throws IOException {
     ensureOpen();
     if (byteArray == null) {
       if (eofReached) {

@@ -340,7 +340,7 @@ public final class FormPostPolicyV4 {
       }
 
       public ConditionsBuilder addExpires(long expiration) {
-        return addExpiresCondition(dateFormatter.format(expiration));
+        return addExpires(dateFormatter.format(expiration));
       }
 
       public ConditionsBuilder addExpires(String expiration) {

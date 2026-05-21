@@ -591,7 +591,7 @@ final class DefaultStorage extends BaseService<StorageClientOptions> implements 
     }
     final StorageObject destinationObject = composeOperation.getTarget().toProto();
     final Map<StorageServiceRpc.StorageOption, ?> blobTargetPair =
-        optionMap(
+        buildOptionMap(
             composeOperation.getTarget().getGeneration(),
             composeOperation.getTarget().getMetageneration(),
             composeOperation.getTargetOptions());
@@ -617,11 +617,11 @@ final class DefaultStorage extends BaseService<StorageClientOptions> implements 
   public BlobCopyWriter copy(final CopyOperationRequest copyOperation) {
     final StorageObject originObject = copyOperation.getSource().toProto();
     final Map<StorageServiceRpc.StorageOption, ?> originOptionMap =
-        optionMap(
+        buildOptionMap(
             copyOperation.getSource().getGeneration(), null, copyOperation.getSourceOptions(), true);
     final StorageObject destinationObject = copyOperation.getTarget().toProto();
     final Map<StorageServiceRpc.StorageOption, ?> blobTargetPair =
-        optionMap(
+        buildOptionMap(
             copyOperation.getTarget().getGeneration(),
             copyOperation.getTarget().getMetageneration(),
             copyOperation.getTargetOptions());
@@ -1827,12 +1827,12 @@ final class DefaultStorage extends BaseService<StorageClientOptions> implements 
   }
 
   private static Map<StorageServiceRpc.StorageOption, ?> buildOptionMap(OptionDescriptor... clientParams) {
-    return optionMap(null, null, Arrays.asList(clientParams));
+    return buildOptionMap(null, null, Arrays.asList(clientParams));
   }
 
   private static Map<StorageServiceRpc.StorageOption, ?> buildOptionMap(
           Long genNumber, Long metaGen, OptionDescriptor... clientParams) {
-    return optionMap(genNumber, metaGen, Arrays.asList(clientParams));
+    return buildOptionMap(genNumber, metaGen, Arrays.asList(clientParams));
   }
 
   private static Map<StorageServiceRpc.StorageOption, ?> buildOptionMap(BucketInfo bucketMetadata, OptionDescriptor... clientParams) {
