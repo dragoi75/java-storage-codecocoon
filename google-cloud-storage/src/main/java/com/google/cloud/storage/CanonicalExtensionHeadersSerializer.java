@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import java.util.ArrayList;
@@ -31,94 +30,71 @@ import java.util.Map;
  */
 public class CanonicalExtensionHeadersSerializer {
 
-  private static final char HEADER_SEPARATOR = ':';
-  private static final char HEADER_NAME_SEPARATOR = ';';
+    private static final char HEADER_SEPARATOR = ':';
 
-  private final StorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion;
+    private static final char HEADER_NAME_SEPARATOR = ';';
 
-  public CanonicalExtensionHeadersSerializer(
-      StorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion) {
-    this.signatureVersion = signatureVersion;
-  }
+    private final StorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion;
 
-  public CanonicalExtensionHeadersSerializer() {
-    // TODO switch this when V4 becomes default
-    this.signatureVersion = StorageClient.UrlSigningOption.SignatureSchemeVersion.V2;
-  }
-
-  public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
-
-    StringBuilder serializedHeaders = new StringBuilder();
-
-    if (canonicalizedExtensionHeaders == null || canonicalizedExtensionHeaders.isEmpty()) {
-      return serializedHeaders;
+    public CanonicalExtensionHeadersSerializer(StorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion) {
+        this.signatureVersion = signatureVersion;
     }
 
-    Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
-
-    // Sort all custom headers by header name using a lexicographical sort by code point value.
-    List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
-    Collections.sort(sortedHeaderNames);
-
-    for (String headerName : sortedHeaderNames) {
-      serializedHeaders
-          .append(headerName)
-          .append(HEADER_SEPARATOR)
-          .append(
-              lowercaseHeaders
-                  .get(headerName)
-                  // Remove any whitespace around the colon that appears after the header name.
-                  .trim()
-                  // Replace any sequence of whitespace with a single space.
-                  .replaceAll("\\s+", " "))
-          // Append a newline (U+000A) to each custom header.
-          .append(SignatureInfo.COMPONENT_SEPARATOR);
+    public CanonicalExtensionHeadersSerializer() {
+        // TODO switch this when V4 becomes default
+        this.signatureVersion = StorageClient.UrlSigningOption.SignatureSchemeVersion.V2;
     }
 
-    // Concatenate all custom headers
-    return serializedHeaders;
-  }
-
-  public StringBuilder serializeHeaderNames(Map<String, String> canonicalizedExtensionHeaders) {
-    StringBuilder serializedHeaders = new StringBuilder();
-
-    if (canonicalizedExtensionHeaders == null || canonicalizedExtensionHeaders.isEmpty()) {
-      return serializedHeaders;
-    }
-    Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
-
-    List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
-    Collections.sort(sortedHeaderNames);
-
-    for (String headerName : sortedHeaderNames) {
-      serializedHeaders.append(headerName).append(HEADER_NAME_SEPARATOR);
-    }
-
-    serializedHeaders.setLength(serializedHeaders.length() - 1); // remove trailing semicolon
-
-    return serializedHeaders;
-  }
-
-  private Map<String, String> getLowercaseHeaders(
-      Map<String, String> canonicalizedExtensionHeaders) {
-    // Make all custom header names lowercase.
-    Map<String, String> lowercaseHeaders = new HashMap<>();
-    for (String headerName : new ArrayList<>(canonicalizedExtensionHeaders.keySet())) {
-
-      String lowercaseHeaderName = headerName.toLowerCase();
-
-      // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
-      // headers. (CSEK headers are allowed for V4)
-      if (StorageClient.UrlSigningOption.SignatureSchemeVersion.V2.equals(signatureVersion)
-          && ("x-goog-encryption-key".equals(lowercaseHeaderName)
-              || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
-
-        continue;
-      }
-
-      lowercaseHeaders.put(lowercaseHeaderName, canonicalizedExtensionHeaders.get(headerName));
+    public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
+        StringBuilder serializedHeaders = new StringBuilder();
+        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
+            return serializedHeaders;
+        }
+        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
+        // Sort all custom headers by header name using a lexicographical sort by code point value.
+        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
+        Collections.sort(sortedHeaderNames);
+        for (String headerName : sortedHeaderNames) {
+            // Remove any whitespace around the colon that appears after the header name.
+            // Remove any whitespace around the colon that appears after the header name.
+            // Replace any sequence of whitespace with a single space.
+            // Append a newline (U+000A) to each custom header.
+            serializedHeaders.append(headerName).append(HEADER_SEPARATOR).// Append a newline (U+000A) to each custom header.
+            append(// Append a newline (U+000A) to each custom header.
+            lowercaseHeaders.get(headerName).trim().replaceAll("\\s+", " ")).append(SignatureInfo.COMPONENT_SEPARATOR);
+        }
+        // Concatenate all custom headers
+        return serializedHeaders;
     }
 
-    return lowercaseHeaders;
-  }
+    public StringBuilder serializeHeaderNames(Map<String, String> canonicalizedExtensionHeaders) {
+        StringBuilder serializedHeaders = new StringBuilder();
+        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
+            return serializedHeaders;
+        }
+        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
+        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
+        Collections.sort(sortedHeaderNames);
+        for (String headerName : sortedHeaderNames) {
+            serializedHeaders.append(headerName).append(HEADER_NAME_SEPARATOR);
+        }
+        // remove trailing semicolon
+        serializedHeaders.setLength(serializedHeaders.length() - 1);
+        return serializedHeaders;
+    }
+
+    private Map<String, String> getLowercaseHeaders(Map<String, String> canonicalizedExtensionHeaders) {
+        // Make all custom header names lowercase.
+        Map<String, String> lowercaseHeaders = new HashMap<>();
+        for (String headerName : new ArrayList<>(canonicalizedExtensionHeaders.keySet())) {
+            String lowercaseHeaderName = headerName.toLowerCase();
+            // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
+            // headers. (CSEK headers are allowed for V4)
+            if (StorageClient.UrlSigningOption.SignatureSchemeVersion.V2.equals(signatureVersion) && ("x-goog-encryption-key".equals(lowercaseHeaderName) || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
+                continue;
+            }
+            lowercaseHeaders.put(lowercaseHeaderName, canonicalizedExtensionHeaders.get(headerName));
+        }
+        return lowercaseHeaders;
+    }
 }

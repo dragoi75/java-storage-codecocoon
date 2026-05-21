@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.cloud.storage;
 
 import com.google.common.base.Function;
@@ -29,66 +28,66 @@ import java.util.Objects;
  */
 public final class ServiceAccountInfo implements Serializable {
 
-  static final Function<com.google.api.services.storage.model.ServiceAccount, ServiceAccountInfo>
-      FROM_PB_FUNCTION =
-          new Function<com.google.api.services.storage.model.ServiceAccount, ServiceAccountInfo>() {
-            @Override
-            public ServiceAccountInfo apply(com.google.api.services.storage.model.ServiceAccount pb) {
-              return ServiceAccountInfo.fromProto(pb);
-            }
-          };
-  static final Function<ServiceAccountInfo, com.google.api.services.storage.model.ServiceAccount>
-      TO_PB_FUNCTION =
-          new Function<ServiceAccountInfo, com.google.api.services.storage.model.ServiceAccount>() {
-            @Override
-            public com.google.api.services.storage.model.ServiceAccount apply(
-                ServiceAccountInfo metadata) {
-              return metadata.toProto();
-            }
-          };
+    static final Function<com.google.api.services.storage.model.ServiceAccount, ServiceAccountInfo> FROM_PB_FUNCTION = new Function<com.google.api.services.storage.model.ServiceAccount, ServiceAccountInfo>() {
 
-  private static final long serialVersionUID = 4199610694227857331L;
+        @Override
+        public ServiceAccountInfo apply(com.google.api.services.storage.model.ServiceAccount pb) {
+            return ServiceAccountInfo.fromProto(pb);
+        }
+    };
 
-  private final String emailAddress;
+    static final Function<ServiceAccountInfo, com.google.api.services.storage.model.ServiceAccount> TO_PB_FUNCTION = new Function<ServiceAccountInfo, com.google.api.services.storage.model.ServiceAccount>() {
 
-  private ServiceAccountInfo(String emailAddress) {
-    this.emailAddress = emailAddress;
-  }
+        @Override
+        public com.google.api.services.storage.model.ServiceAccount apply(ServiceAccountInfo metadata) {
+            return metadata.toProto();
+        }
+    };
 
-  /** Returns the email address of the service account. */
-  public String getEmail() {
-    return emailAddress;
-  }
+    private static final long serialVersionUID = 4199610694227857331L;
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("email", emailAddress).toString();
-  }
+    private final String emailAddress;
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(emailAddress);
-  }
+    private ServiceAccountInfo(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 
-  @Override
-  public boolean equals(Object other) {
-    return other == this
-        || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
-  }
+    /**
+     * Returns the email address of the service account.
+     */
+    public String getEmail() {
+        return emailAddress;
+    }
 
-  com.google.api.services.storage.model.ServiceAccount toProto() {
-    com.google.api.services.storage.model.ServiceAccount serviceAccountProto =
-        new com.google.api.services.storage.model.ServiceAccount();
-    serviceAccountProto.setEmailAddress(emailAddress);
-    return serviceAccountProto;
-  }
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("email", emailAddress).toString();
+    }
 
-  /** Returns a {@code ServiceAccount} object for the provided email. */
-  public static ServiceAccountInfo create(String emailAddress) {
-    return new ServiceAccountInfo(emailAddress);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(emailAddress);
+    }
 
-  static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
-    return new ServiceAccountInfo(accountProto.getEmailAddress());
-  }
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
+    }
+
+    com.google.api.services.storage.model.ServiceAccount toProto() {
+        com.google.api.services.storage.model.ServiceAccount serviceAccountProto = new com.google.api.services.storage.model.ServiceAccount();
+        serviceAccountProto.setEmailAddress(emailAddress);
+        return serviceAccountProto;
+    }
+
+    /**
+     * Returns a {@code ServiceAccount} object for the provided email.
+     */
+    public static ServiceAccountInfo create(String emailAddress) {
+        return new ServiceAccountInfo(emailAddress);
+    }
+
+    static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
+        return new ServiceAccountInfo(accountProto.getEmailAddress());
+    }
 }
