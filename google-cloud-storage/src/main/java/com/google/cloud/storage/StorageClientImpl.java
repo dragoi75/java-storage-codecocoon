@@ -513,7 +513,7 @@ final class StorageClientImpl extends BaseService<StorageSettings> implements St
     }
     final StorageObject destinationObject = mergeBlobsSpec.getTarget().toProto();
     final Map<CloudStorageRpc.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             mergeBlobsSpec.getTarget().getGeneration(),
             mergeBlobsSpec.getTarget().getMetageneration(),
             mergeBlobsSpec.getTargetOptions());
@@ -539,11 +539,11 @@ final class StorageClientImpl extends BaseService<StorageSettings> implements St
   public BlobCopyWriter copy(final CopyOperationRequest copyOperationSpec) {
     final StorageObject originObject = copyOperationSpec.getSource().toProto();
     final Map<CloudStorageRpc.StorageOption, ?> originOptions =
-        optionMap(
+        buildOptionMap(
             copyOperationSpec.getSource().getGeneration(), null, copyOperationSpec.getSourceOptions(), true);
     final StorageObject destinationObj = copyOperationSpec.getTarget().toProto();
     final Map<CloudStorageRpc.StorageOption, ?> targetPair =
-        optionMap(
+        buildOptionMap(
             copyOperationSpec.getTarget().getGeneration(),
             copyOperationSpec.getTarget().getMetageneration(),
             copyOperationSpec.getTargetOptions());
@@ -1616,12 +1616,12 @@ final class StorageClientImpl extends BaseService<StorageSettings> implements St
   }
 
   private static Map<CloudStorageRpc.StorageOption, ?> buildOptionMap(RpcOptionWrapper... settings) {
-    return optionMap(null, null, Arrays.asList(settings));
+    return buildOptionMap(null, null, Arrays.asList(settings));
   }
 
   private static Map<CloudStorageRpc.StorageOption, ?> buildOptionMap(
           Long genId, Long metaGen, RpcOptionWrapper... settings) {
-    return optionMap(genId, metaGen, Arrays.asList(settings));
+    return buildOptionMap(genId, metaGen, Arrays.asList(settings));
   }
 
   private static Map<CloudStorageRpc.StorageOption, ?> buildOptionMap(BucketMetadata bucketMetadata, RpcOptionWrapper... settings) {

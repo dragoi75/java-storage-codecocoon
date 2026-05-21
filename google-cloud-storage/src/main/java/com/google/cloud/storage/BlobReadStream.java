@@ -111,7 +111,7 @@ class BlobReadStream implements ReadChannel {
   }
 
   @Override
-  public int readChunk(ByteBuffer destination) throws IOException {
+  public int read(ByteBuffer destination) throws IOException {
     ensureOpen();
     if (bytesArray == null) {
       if (streamEnded) {
