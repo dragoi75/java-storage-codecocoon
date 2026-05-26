@@ -62,56 +62,139 @@ class BlobReaderChannel implements ReadChannel {
 
     private byte[] byteStore;
 
-    BlobReaderChannel(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestParams) {
-        this.storageSettings = storageSettings;
-        this.objectIdentifier = objectIdentifier;
-        this.requestParams = requestParams;
-        openFlag = true;
-        rpcClient = storageSettings.getStorageRpcV1();
-        storageEntity = objectIdentifier.toStorageObject();
-    }
+    static class StateSnapshotImpl implements RestorableState<ReadChannel>, Serializable {
 
-    @Override
-    public RestorableState<ReadChannel> capture() {
-        StateSnapshotImpl.BlobStreamBuilder streamCreator = StateSnapshotImpl.newBuilder(storageSettings, objectIdentifier, requestParams).setPosition(offset).setIsOpen(openFlag).setEndOfStream(streamEnded).setChunkSize(blockSize);
-        if (null != byteStore) {
-            streamCreator.setPosition(offset + byteIndex);
-            streamCreator.setEndOfStream(false);
+        private static final long serialVersionUID = 3889420316004453706L;
+
+        private final StorageSettings storageSettings;
+
+        private final BlobIdentifier objectIdentifier;
+
+        private final Map<StorageRpcClient.StorageOption, ?> requestParams;
+
+        private final String previousEtag;
+
+        private final long offset;
+
+        private final boolean openFlag;
+
+        private final boolean streamEnded;
+
+        private final int blockSize;
+
+        static class BlobStreamBuilder {
+
+            private final StorageSettings storageSettings;
+
+            private final BlobIdentifier objectIdentifier;
+
+            private final Map<StorageRpcClient.StorageOption, ?> requestParams;
+
+            private String previousEtag;
+
+            private long offset;
+
+            private boolean openFlag;
+
+            private boolean streamEnded;
+
+            private int blockSize;
+
+            BlobStreamBuilder setChunkSize(int blockSize) {
+                this.blockSize = blockSize;
+                return this;
+            }
+
+            BlobStreamBuilder setEndOfStream(boolean streamEnded) {
+                this.streamEnded = streamEnded;
+                return this;
+            }
+
+            RestorableState<ReadChannel> buildSnapshot() {
+                return new StateSnapshotImpl(this);
+            }
+
+            BlobStreamBuilder setPosition(long offset) {
+                this.offset = offset;
+                return this;
+            }
+
+            BlobStreamBuilder setIsOpen(boolean openFlag) {
+                this.openFlag = openFlag;
+                return this;
+            }
+
+            BlobStreamBuilder setLastEtag(String previousEtag) {
+                this.previousEtag = previousEtag;
+                return this;
+            }
+
+            private BlobStreamBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestParams) {
+                this.storageSettings = storageSettings;
+                this.objectIdentifier = objectIdentifier;
+                this.requestParams = requestParams;
+            }
+
         }
-        return streamCreator.buildSnapshot();
-    }
 
-    @Override
-    public boolean isOpen() {
-        return openFlag;
-    }
-
-    @Override
-    public void close() {
-        if (openFlag) {
-            byteStore = null;
-            openFlag = false;
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("blob", objectIdentifier).add("position", offset).add("isOpen", openFlag).add("endOfStream", streamEnded).toString();
         }
-    }
 
-    private void ensureOpen() throws ClosedChannelException {
-        if (!openFlag) {
-            throw new ClosedChannelException();
+        @Override
+        public boolean equals(Object otherObject) {
+            if (null == otherObject) {
+                return false;
+            }
+            if (!(otherObject instanceof StateSnapshotImpl)) {
+                return false;
+            }
+            final StateSnapshotImpl thatSnapshot = (StateSnapshotImpl) otherObject;
+            return Objects.equals(this.storageSettings, thatSnapshot.storageSettings) && Objects.equals(this.objectIdentifier, thatSnapshot.objectIdentifier) && Objects.equals(this.requestParams, thatSnapshot.requestParams) && Objects.equals(this.previousEtag, thatSnapshot.previousEtag) && thatSnapshot.offset == this.offset && thatSnapshot.openFlag == this.openFlag && thatSnapshot.streamEnded == this.streamEnded && thatSnapshot.blockSize == this.blockSize;
         }
-    }
 
-    @Override
-    public void seek(long offset) throws IOException {
-        ensureOpen();
-        this.offset = offset;
-        byteStore = null;
-        byteIndex = 0;
-        streamEnded = false;
+        StateSnapshotImpl(BlobStreamBuilder streamCreator) {
+            this.storageSettings = streamCreator.storageSettings;
+            this.objectIdentifier = streamCreator.objectIdentifier;
+            this.requestParams = streamCreator.requestParams;
+            this.previousEtag = streamCreator.previousEtag;
+            this.offset = streamCreator.offset;
+            this.openFlag = streamCreator.openFlag;
+            this.streamEnded = streamCreator.streamEnded;
+            this.blockSize = streamCreator.blockSize;
+        }
+
+        @Override
+        public ReadChannel restore() {
+            BlobReaderChannel reader = new BlobReaderChannel(storageSettings, objectIdentifier, requestParams);
+            reader.previousEtag = previousEtag;
+            reader.offset = offset;
+            reader.openFlag = openFlag;
+            reader.streamEnded = streamEnded;
+            reader.blockSize = blockSize;
+            return reader;
+        }
+
+        static BlobStreamBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
+            return new BlobStreamBuilder(storageSettings, objectIdentifier, requestOptions);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(storageSettings, objectIdentifier, requestParams, previousEtag, offset, openFlag, streamEnded, blockSize);
+        }
+
     }
 
     @Override
     public void setChunkSize(int blockSize) {
         this.blockSize = 0 >= blockSize ? DEFAULT_BLOCK_SIZE : blockSize;
+    }
+
+    @Override
+    public boolean isOpen() {
+        return openFlag;
     }
 
     @Override
@@ -159,126 +242,46 @@ class BlobReaderChannel implements ReadChannel {
         return writeCount;
     }
 
-    static class StateSnapshotImpl implements RestorableState<ReadChannel>, Serializable {
-
-        private static final long serialVersionUID = 3889420316004453706L;
-
-        private final StorageSettings storageSettings;
-
-        private final BlobIdentifier objectIdentifier;
-
-        private final Map<StorageRpcClient.StorageOption, ?> requestParams;
-
-        private final String previousEtag;
-
-        private final long offset;
-
-        private final boolean openFlag;
-
-        private final boolean streamEnded;
-
-        private final int blockSize;
-
-        StateSnapshotImpl(BlobStreamBuilder streamCreator) {
-            this.storageSettings = streamCreator.storageSettings;
-            this.objectIdentifier = streamCreator.objectIdentifier;
-            this.requestParams = streamCreator.requestParams;
-            this.previousEtag = streamCreator.previousEtag;
-            this.offset = streamCreator.offset;
-            this.openFlag = streamCreator.openFlag;
-            this.streamEnded = streamCreator.streamEnded;
-            this.blockSize = streamCreator.blockSize;
-        }
-
-        static class BlobStreamBuilder {
-
-            private final StorageSettings storageSettings;
-
-            private final BlobIdentifier objectIdentifier;
-
-            private final Map<StorageRpcClient.StorageOption, ?> requestParams;
-
-            private String previousEtag;
-
-            private long offset;
-
-            private boolean openFlag;
-
-            private boolean streamEnded;
-
-            private int blockSize;
-
-            private BlobStreamBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestParams) {
-                this.storageSettings = storageSettings;
-                this.objectIdentifier = objectIdentifier;
-                this.requestParams = requestParams;
-            }
-
-            BlobStreamBuilder setLastEtag(String previousEtag) {
-                this.previousEtag = previousEtag;
-                return this;
-            }
-
-            BlobStreamBuilder setPosition(long offset) {
-                this.offset = offset;
-                return this;
-            }
-
-            BlobStreamBuilder setIsOpen(boolean openFlag) {
-                this.openFlag = openFlag;
-                return this;
-            }
-
-            BlobStreamBuilder setEndOfStream(boolean streamEnded) {
-                this.streamEnded = streamEnded;
-                return this;
-            }
-
-            BlobStreamBuilder setChunkSize(int blockSize) {
-                this.blockSize = blockSize;
-                return this;
-            }
-
-            RestorableState<ReadChannel> buildSnapshot() {
-                return new StateSnapshotImpl(this);
-            }
-        }
-
-        static BlobStreamBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
-            return new BlobStreamBuilder(storageSettings, objectIdentifier, requestOptions);
-        }
-
-        @Override
-        public ReadChannel restore() {
-            BlobReaderChannel reader = new BlobReaderChannel(storageSettings, objectIdentifier, requestParams);
-            reader.previousEtag = previousEtag;
-            reader.offset = offset;
-            reader.openFlag = openFlag;
-            reader.streamEnded = streamEnded;
-            reader.blockSize = blockSize;
-            return reader;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(storageSettings, objectIdentifier, requestParams, previousEtag, offset, openFlag, streamEnded, blockSize);
-        }
-
-        @Override
-        public boolean equals(Object otherObject) {
-            if (null == otherObject) {
-                return false;
-            }
-            if (!(otherObject instanceof StateSnapshotImpl)) {
-                return false;
-            }
-            final StateSnapshotImpl thatSnapshot = (StateSnapshotImpl) otherObject;
-            return Objects.equals(this.storageSettings, thatSnapshot.storageSettings) && Objects.equals(this.objectIdentifier, thatSnapshot.objectIdentifier) && Objects.equals(this.requestParams, thatSnapshot.requestParams) && Objects.equals(this.previousEtag, thatSnapshot.previousEtag) && thatSnapshot.offset == this.offset && thatSnapshot.openFlag == this.openFlag && thatSnapshot.streamEnded == this.streamEnded && thatSnapshot.blockSize == this.blockSize;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("blob", objectIdentifier).add("position", offset).add("isOpen", openFlag).add("endOfStream", streamEnded).toString();
+    private void ensureOpen() throws ClosedChannelException {
+        if (!openFlag) {
+            throw new ClosedChannelException();
         }
     }
+
+    @Override
+    public void seek(long offset) throws IOException {
+        ensureOpen();
+        this.offset = offset;
+        byteStore = null;
+        byteIndex = 0;
+        streamEnded = false;
+    }
+
+    @Override
+    public void close() {
+        if (openFlag) {
+            byteStore = null;
+            openFlag = false;
+        }
+    }
+
+    BlobReaderChannel(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<StorageRpcClient.StorageOption, ?> requestParams) {
+        this.storageSettings = storageSettings;
+        this.objectIdentifier = objectIdentifier;
+        this.requestParams = requestParams;
+        openFlag = true;
+        rpcClient = storageSettings.getStorageRpcV1();
+        storageEntity = objectIdentifier.toStorageObject();
+    }
+
+    @Override
+    public RestorableState<ReadChannel> capture() {
+        StateSnapshotImpl.BlobStreamBuilder streamCreator = StateSnapshotImpl.newBuilder(storageSettings, objectIdentifier, requestParams).setPosition(offset).setIsOpen(openFlag).setEndOfStream(streamEnded).setChunkSize(blockSize);
+        if (null != byteStore) {
+            streamCreator.setPosition(offset + byteIndex);
+            streamCreator.setEndOfStream(false);
+        }
+        return streamCreator.buildSnapshot();
+    }
+
 }

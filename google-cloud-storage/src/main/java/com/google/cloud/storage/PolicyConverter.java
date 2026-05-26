@@ -30,6 +30,10 @@ import java.util.Set;
  */
 class PolicyConverter {
 
+    private PolicyConverter() {
+        // Intentionally left blank.
+    }
+
     static Policy fromApiPolicy(com.google.api.services.storage.model.Policy externalPolicy) {
         Policy.Builder policyAssembler = Policy.newBuilder();
         List<Bindings> roleAssociations = externalPolicy.getBindings();
@@ -57,7 +61,4 @@ class PolicyConverter {
         return new com.google.api.services.storage.model.Policy().setBindings(roleAssociations).setEtag(accessRules.getEtag());
     }
 
-    private PolicyConverter() {
-        // Intentionally left blank.
-    }
 }

@@ -31,35 +31,59 @@ import java.util.concurrent.Callable;
  */
 class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> {
 
-    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> settingsMap) {
-        this(storageSettings, metadata, openChannel(storageSettings, metadata, settingsMap));
+    static class ResumableUploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
+
+        private static final long serialVersionUID = -9028324143780151286L;
+
+        static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
+
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new ResumableUploadState(this);
+            }
+
+            private ChunkedUploadBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+                super(storageSettings, metadataInfo, uploadToken);
+            }
+
+        }
+
+        static ChunkedUploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+            return new ChunkedUploadBuilder(storageSettings, metadataInfo, uploadToken);
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
+            uploadStream.restore(this);
+            return uploadStream;
+        }
+
+        ResumableUploadState(ChunkedUploadBuilder chunkedUploadConfig) {
+            super(chunkedUploadConfig);
+        }
+
+    }
+
+    private static String openChannel(final URL signedUri, final StorageSettings storageSettings) {
+        try {
+            return runWithRetries(new Callable<String>() {
+
+                @Override
+                public String call() {
+                    if (!isValidSignedURL(signedUri.getQuery())) {
+                        throw new StorageOperationException(2, "invalid signedURL");
+                    }
+                    return storageSettings.getStorageRpcV1().open(signedUri.toString());
+                }
+            }, storageSettings.getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, storageSettings.getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
     }
 
     BlobUploadChannel(StorageSettings storageSettings, URL signedUri) {
         this(storageSettings, openChannel(signedUri, storageSettings));
-    }
-
-    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
-        super(storageSettings, metadataInfo, uploadToken);
-    }
-
-    BlobUploadChannel(StorageSettings storageSettings, String uploadToken) {
-        super(storageSettings, null, uploadToken);
-    }
-
-    @Override
-    protected void flushBuffer(final int size, final boolean isFinal) {
-        try {
-            runWithRetries(callable(new Runnable() {
-
-                @Override
-                public void run() {
-                    getOptions().getStorageRpcV1().write(getUploadId(), getBuffer(), 0, getPosition(), size, isFinal);
-                }
-            }), getOptions().getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelper.RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
     }
 
     protected ResumableUploadState.ChunkedUploadBuilder stateBuilder() {
@@ -73,23 +97,6 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> 
                 @Override
                 public String call() {
                     return storageSettings.getStorageRpcV1().open(metadata.toProto(), settingsMap);
-                }
-            }, storageSettings.getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, storageSettings.getClock());
-        } catch (RetryHelper.RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    private static String openChannel(final URL signedUri, final StorageSettings storageSettings) {
-        try {
-            return runWithRetries(new Callable<String>() {
-
-                @Override
-                public String call() {
-                    if (!isValidSignedURL(signedUri.getQuery())) {
-                        throw new StorageOperationException(2, "invalid signedURL");
-                    }
-                    return storageSettings.getStorageRpcV1().open(signedUri.toString());
                 }
             }, storageSettings.getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, storageSettings.getClock());
         } catch (RetryHelper.RetryHelperException retryException) {
@@ -115,35 +122,31 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> 
         return validFlag;
     }
 
-    static class ResumableUploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
+        super(storageSettings, metadataInfo, uploadToken);
+    }
 
-        private static final long serialVersionUID = -9028324143780151286L;
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> settingsMap) {
+        this(storageSettings, metadata, openChannel(storageSettings, metadata, settingsMap));
+    }
 
-        ResumableUploadState(ChunkedUploadBuilder chunkedUploadConfig) {
-            super(chunkedUploadConfig);
-        }
+    BlobUploadChannel(StorageSettings storageSettings, String uploadToken) {
+        super(storageSettings, null, uploadToken);
+    }
 
-        static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
+    @Override
+    protected void flushBuffer(final int size, final boolean isFinal) {
+        try {
+            runWithRetries(callable(new Runnable() {
 
-            private ChunkedUploadBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
-                super(storageSettings, metadataInfo, uploadToken);
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new ResumableUploadState(this);
-            }
-        }
-
-        static ChunkedUploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadataInfo, String uploadToken) {
-            return new ChunkedUploadBuilder(storageSettings, metadataInfo, uploadToken);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
-            uploadStream.restore(this);
-            return uploadStream;
+                @Override
+                public void run() {
+                    getOptions().getStorageRpcV1().write(getUploadId(), getBuffer(), 0, getPosition(), size, isFinal);
+                }
+            }), getOptions().getRetrySettings(), DefaultStorageImpl.EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
         }
     }
+
 }

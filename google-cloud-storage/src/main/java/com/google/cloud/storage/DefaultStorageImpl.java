@@ -104,123 +104,6 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
 
     private final StorageRpcClient rpcClient;
 
-    DefaultStorageImpl(StorageSettings storageSettings) {
-        super(storageSettings);
-        rpcClient = storageSettings.getStorageRpcV1();
-    }
-
-    @Override
-    public StorageBucket create(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
-        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
-        try {
-            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
-
-                @Override
-                public com.google.api.services.storage.model.Bucket call() {
-                    return rpcClient.create(bucketProto, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public StorageObject create(BlobMetadata blobMetadata, BlobUploadOption... storageSettings) {
-        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(EMPTY_BYTES_MD5).setCrc32c(EMPTY_BYTES_CRC32C).buildObject();
-        return createInternal(updatedMetadata, ZERO_LENGTH_BYTE_ARRAY, storageSettings);
-    }
-
-    @Override
-    public StorageObject create(BlobMetadata blobMetadata, byte[] inputData, BlobUploadOption... storageSettings) {
-        inputData = firstNonNull(inputData, ZERO_LENGTH_BYTE_ARRAY);
-        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(BaseEncoding.base64().encode(Hashing.md5().hashBytes(inputData).asBytes())).setCrc32c(BaseEncoding.base64().encode(Ints.toByteArray(Hashing.crc32c().hashBytes(inputData).asInt()))).buildObject();
-        return createInternal(updatedMetadata, inputData, storageSettings);
-    }
-
-    @Override
-    public StorageObject create(BlobMetadata blobMetadata, byte[] inputData, int startIndex, int count, BlobUploadOption... storageSettings) {
-        inputData = firstNonNull(inputData, ZERO_LENGTH_BYTE_ARRAY);
-        byte[] chunkBytes = Arrays.copyOfRange(inputData, startIndex, startIndex + count);
-        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(BaseEncoding.base64().encode(Hashing.md5().hashBytes(chunkBytes).asBytes())).setCrc32c(BaseEncoding.base64().encode(Ints.toByteArray(Hashing.crc32c().hashBytes(chunkBytes).asInt()))).buildObject();
-        return createInternal(updatedMetadata, chunkBytes, storageSettings);
-    }
-
-    @Override
-    @Deprecated
-    public StorageObject create(BlobMetadata blobMetadata, InputStream inputData, BlobWriteSetting... storageSettings) {
-        Tuple<BlobMetadata, BlobUploadOption[]> targetPair = BlobUploadOption.toTargetOptions(blobMetadata, storageSettings);
-        com.google.api.services.storage.model.StorageObject blobProto = targetPair.x().toProto();
-        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(targetPair.x(), targetPair.y());
-        InputStream inStream = firstNonNull(inputData, new ByteArrayInputStream(ZERO_LENGTH_BYTE_ARRAY));
-        // retries are not safe when the input is an InputStream, so we can't retry.
-        return StorageObject.fromProto(this, rpcClient.create(blobProto, inStream, optionMap));
-    }
-
-    private StorageObject createInternal(BlobMetadata blobMetadata, final byte[] inputData, BlobUploadOption... storageSettings) {
-        Preconditions.checkNotNull(inputData);
-        final com.google.api.services.storage.model.StorageObject blobProto = blobMetadata.toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(blobMetadata, storageSettings);
-        try {
-            return StorageObject.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
-
-                @Override
-                public com.google.api.services.storage.model.StorageObject call() {
-                    return rpcClient.create(blobProto, new ByteArrayInputStream(inputData), optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public StorageBucket get(String containerName, GetBucketOption... storageSettings) {
-        final com.google.api.services.storage.model.Bucket bucketProto = BucketMetadata.ofName(containerName).toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-        try {
-            com.google.api.services.storage.model.Bucket resultBucket = runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
-
-                @Override
-                public com.google.api.services.storage.model.Bucket call() {
-                    return rpcClient.get(bucketProto, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == resultBucket ? null : StorageBucket.fromProto(this, resultBucket);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public StorageObject get(String containerName, String objectIdentifier, BlobFetchOption... storageSettings) {
-        return get(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
-    }
-
-    @Override
-    public StorageObject get(BlobIdentifier objectIdentifier, BlobFetchOption... storageSettings) {
-        final com.google.api.services.storage.model.StorageObject storedEntity = objectIdentifier.toStorageObject();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
-        try {
-            com.google.api.services.storage.model.StorageObject objectEntity = runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
-
-                @Override
-                public com.google.api.services.storage.model.StorageObject call() {
-                    return rpcClient.get(storedEntity, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == objectEntity ? null : StorageObject.fromProto(this, objectEntity);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public StorageObject get(BlobIdentifier objectIdentifier) {
-        return get(objectIdentifier, new BlobFetchOption[0]);
-    }
-
     private static class BucketPageIterator implements NextPageFetcher<StorageBucket> {
 
         private static final long serialVersionUID = 5850406828803613729L;
@@ -229,15 +112,16 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
 
         private final StorageSettings serviceSettings;
 
+        @Override
+        public Page<StorageBucket> getNextPage() {
+            return listAllBuckets(serviceSettings, requestOptionMap);
+        }
+
         BucketPageIterator(StorageSettings serviceSettings, String pageCursor, Map<StorageRpcClient.StorageOption, ?> storageOptionMap) {
             this.requestOptionMap = PageImpl.nextRequestOptions(StorageRpcClient.StorageOption.PAGE_TOKEN, pageCursor, storageOptionMap);
             this.serviceSettings = serviceSettings;
         }
 
-        @Override
-        public Page<StorageBucket> getNextPage() {
-            return listAllBuckets(serviceSettings, requestOptionMap);
-        }
     }
 
     private static class BlobPageIterator implements NextPageFetcher<StorageObject> {
@@ -250,16 +134,17 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
 
         private final String containerName;
 
+        @Override
+        public Page<StorageObject> getNextPage() {
+            return listAllBlobs(containerName, serviceSettings, requestOptionMap);
+        }
+
         BlobPageIterator(String containerName, StorageSettings serviceSettings, String pageCursor, Map<StorageRpcClient.StorageOption, ?> storageOptionMap) {
             this.requestOptionMap = PageImpl.nextRequestOptions(StorageRpcClient.StorageOption.PAGE_TOKEN, pageCursor, storageOptionMap);
             this.serviceSettings = serviceSettings;
             this.containerName = containerName;
         }
 
-        @Override
-        public Page<StorageObject> getNextPage() {
-            return listAllBlobs(containerName, serviceSettings, requestOptionMap);
-        }
     }
 
     private static class HmacKeyMetadataPageRetriever implements NextPageFetcher<HmacSecretKey.HmacKeyInfo> {
@@ -270,25 +155,88 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
 
         private final Map<StorageRpcClient.StorageOption, ?> storageSettings;
 
+        @Override
+        public Page<HmacKeyInfo> getNextPage() {
+            return listAllHmacKeys(serviceSettings, storageSettings);
+        }
+
         HmacKeyMetadataPageRetriever(StorageSettings serviceSettings, Map<StorageRpcClient.StorageOption, ?> storageSettings) {
             this.serviceSettings = serviceSettings;
             this.storageSettings = storageSettings;
         }
 
-        @Override
-        public Page<HmacKeyInfo> getNextPage() {
-            return listAllHmacKeys(serviceSettings, storageSettings);
+    }
+
+    public HmacSecretKey createHmacKey(final ServiceAccountInfo accountInfo, final HmacKeyCreationOption... storageSettings) {
+        try {
+            return HmacSecretKey.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKey>() {
+
+                @Override
+                public com.google.api.services.storage.model.HmacKey call() {
+                    return rpcClient.createHmacKey(accountInfo.getEmail(), buildOptionMap(storageSettings));
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
         }
     }
 
     @Override
-    public Page<StorageBucket> list(BucketListOptions... storageSettings) {
-        return listAllBuckets(getOptions(), buildOptionMap(storageSettings));
+    public List<AccessControlEntry> listAcls(final String containerName, BucketFilterOption... storageSettings) {
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            List<BucketAccessControl> resultBucket = runWithRetries(new Callable<List<BucketAccessControl>>() {
+
+                @Override
+                public List<BucketAccessControl> call() {
+                    return rpcClient.listAcls(containerName, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return Lists.transform(resultBucket, AccessControlEntry.BUCKET_PB_TO_ACCESS_CONTROL_ENTRY);
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
     }
 
     @Override
-    public Page<StorageObject> list(final String containerName, BlobListOptions... storageSettings) {
-        return listAllBlobs(containerName, getOptions(), buildOptionMap(storageSettings));
+    public StorageObject compose(final ComposeObjectRequest mergeRequest) {
+        final List<com.google.api.services.storage.model.StorageObject> inputObjects = Lists.newArrayListWithCapacity(mergeRequest.getSourceBlobs().size());
+        for (ComposeObjectRequest.SourceBlobMetadata originBlob : mergeRequest.getSourceBlobs()) {
+            inputObjects.add(BlobMetadata.newBuilder(BlobIdentifier.create(mergeRequest.getTarget().getBucket(), originBlob.getName(), originBlob.getGeneration())).buildObject().toProto());
+        }
+        final com.google.api.services.storage.model.StorageObject destinationObject = mergeRequest.getTarget().toProto();
+        final Map<StorageRpcClient.StorageOption, ?> targetPair = buildOptionMap(mergeRequest.getTarget().getGeneration(), mergeRequest.getTarget().getMetageneration(), mergeRequest.getTargetOptions());
+        try {
+            return StorageObject.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
+
+                @Override
+                public com.google.api.services.storage.model.StorageObject call() {
+                    return rpcClient.compose(inputObjects, destinationObject, targetPair);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    private static <T> void addOptionToMap(StorageRpcClient.StorageOption requestedOption, StorageRpcClient.StorageOption targetOption, T fallbackValue, Map<StorageRpcClient.StorageOption, Object> optionsStore) {
+        if (optionsStore.containsKey(requestedOption)) {
+            @SuppressWarnings("unchecked")
+            T resolvedValue = (T) optionsStore.remove(requestedOption);
+            checkArgument(null != resolvedValue || null != fallbackValue, "Option " + requestedOption.getValue() + " is missing a value");
+            resolvedValue = firstNonNull(resolvedValue, fallbackValue);
+            optionsStore.put(targetOption, resolvedValue);
+        }
+    }
+
+    @Override
+    public Page<HmacKeyInfo> listHmacKeys(ListHmacKeysOptions... storageSettings) {
+        return listAllHmacKeys(getOptions(), buildOptionMap(storageSettings));
+    }
+
+    @Override
+    public BlobUploadChannel writer(URL signedUri) {
+        return new BlobUploadChannel(getOptions(), signedUri);
     }
 
     private static Page<StorageBucket> listAllBuckets(final StorageSettings serviceSettings, final Map<StorageRpcClient.StorageOption, ?> optionMap) {
@@ -309,6 +257,22 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
                 }
             });
             return new PageImpl<>(new BucketPageIterator(serviceSettings, pageCursor, optionMap), pageCursor, bucketList);
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public AccessControlEntry getDefaultAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
+        try {
+            ObjectAccessControl resultBucket = runWithRetries(new Callable<ObjectAccessControl>() {
+
+                @Override
+                public ObjectAccessControl call() {
+                    return rpcClient.getDefaultAcl(containerName, aclEntity.toProto());
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
@@ -338,15 +302,14 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public StorageBucket update(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
-        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
+    public AccessControlEntry updateAcl(BlobIdentifier objectIdentifier, AccessControlEntry accessControlEntry) {
+        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(objectIdentifier.getBucket()).setObject(objectIdentifier.getName()).setGeneration(objectIdentifier.getGeneration());
         try {
-            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
 
                 @Override
-                public com.google.api.services.storage.model.Bucket call() {
-                    return rpcClient.patch(bucketProto, optionMap);
+                public ObjectAccessControl call() {
+                    return rpcClient.patchAcl(accessControlProto);
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
         } catch (RetryHelperException retryException) {
@@ -372,68 +335,35 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public StorageObject update(BlobMetadata blobMetadata) {
-        return update(blobMetadata, new BlobUploadOption[0]);
-    }
-
-    @Override
-    public boolean delete(String containerName, BucketFilterOption... storageSettings) {
-        final com.google.api.services.storage.model.Bucket bucketProto = BucketMetadata.ofName(containerName).toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+    public List<AccessControlEntry> listDefaultAcls(final String containerName) {
         try {
-            return runWithRetries(new Callable<Boolean>() {
+            List<ObjectAccessControl> resultBucket = runWithRetries(new Callable<List<ObjectAccessControl>>() {
 
                 @Override
-                public Boolean call() {
-                    return rpcClient.delete(bucketProto, optionMap);
+                public List<ObjectAccessControl> call() {
+                    return rpcClient.listDefaultAcls(containerName);
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return Lists.transform(resultBucket, AccessControlEntry.OBJECT_PB_TO_ACCESS_CONTROL_ENTRY);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
     }
 
     @Override
-    public boolean delete(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
-        return delete(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
+    public List<AccessControlEntry> listAcls(final String containerName) {
+        return listAcls(containerName, new BucketFilterOption[0]);
     }
 
     @Override
-    public boolean delete(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
-        final com.google.api.services.storage.model.StorageObject objectEntity = objectIdentifier.toStorageObject();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
+    public AccessControlEntry createAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry accessControlEntry) {
+        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(objectIdentifier.getBucket()).setObject(objectIdentifier.getName()).setGeneration(objectIdentifier.getGeneration());
         try {
-            return runWithRetries(new Callable<Boolean>() {
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
 
                 @Override
-                public Boolean call() {
-                    return rpcClient.delete(objectEntity, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public boolean delete(BlobIdentifier objectIdentifier) {
-        return delete(objectIdentifier, new BlobSourceOptions[0]);
-    }
-
-    @Override
-    public StorageObject compose(final ComposeObjectRequest mergeRequest) {
-        final List<com.google.api.services.storage.model.StorageObject> inputObjects = Lists.newArrayListWithCapacity(mergeRequest.getSourceBlobs().size());
-        for (ComposeObjectRequest.SourceBlobMetadata originBlob : mergeRequest.getSourceBlobs()) {
-            inputObjects.add(BlobMetadata.newBuilder(BlobIdentifier.create(mergeRequest.getTarget().getBucket(), originBlob.getName(), originBlob.getGeneration())).buildObject().toProto());
-        }
-        final com.google.api.services.storage.model.StorageObject destinationObject = mergeRequest.getTarget().toProto();
-        final Map<StorageRpcClient.StorageOption, ?> targetPair = buildOptionMap(mergeRequest.getTarget().getGeneration(), mergeRequest.getTarget().getMetageneration(), mergeRequest.getTargetOptions());
-        try {
-            return StorageObject.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
-
-                @Override
-                public com.google.api.services.storage.model.StorageObject call() {
-                    return rpcClient.compose(inputObjects, destinationObject, targetPair);
+                public ObjectAccessControl call() {
+                    return rpcClient.createAcl(accessControlProto);
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
         } catch (RetryHelperException retryException) {
@@ -442,78 +372,33 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public BlobCopyWriter copy(final CopyOperationRequest transferRequest) {
-        final com.google.api.services.storage.model.StorageObject originObject = transferRequest.getSource().toStorageObject();
-        final Map<StorageRpcClient.StorageOption, ?> originOptions = buildOptionMap(transferRequest.getSource().getGeneration(), null, transferRequest.getSourceOptions(), true);
-        final com.google.api.services.storage.model.StorageObject destinationObject = transferRequest.getTarget().toProto();
-        final Map<StorageRpcClient.StorageOption, ?> targetPair = buildOptionMap(transferRequest.getTarget().getGeneration(), transferRequest.getTarget().getMetageneration(), transferRequest.getTargetOptions());
+    public StorageObject create(BlobMetadata blobMetadata, byte[] inputData, BlobUploadOption... storageSettings) {
+        inputData = firstNonNull(inputData, ZERO_LENGTH_BYTE_ARRAY);
+        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(BaseEncoding.base64().encode(Hashing.md5().hashBytes(inputData).asBytes())).setCrc32c(BaseEncoding.base64().encode(Ints.toByteArray(Hashing.crc32c().hashBytes(inputData).asInt()))).buildObject();
+        return createInternal(updatedMetadata, inputData, storageSettings);
+    }
+
+    private static Page<HmacKeyInfo> listAllHmacKeys(final StorageSettings serviceSettings, final Map<StorageRpcClient.StorageOption, ?> storageSettings) {
         try {
-            RewriteOperationResult rewriteOutcome = runWithRetries(new Callable<RewriteOperationResult>() {
+            Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>> bucketTuple = runWithRetries(new Callable<Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>>>() {
 
                 @Override
-                public StorageRpcClient.RewriteOperationResult call() {
-                    return rpcClient.openRewrite(new StorageRpcClient.ObjectRewriteRequest(originObject, originOptions, transferRequest.getOverrideInfo(), destinationObject, targetPair, transferRequest.getMegabytesCopiedPerChunk()));
+                public Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>> call() {
+                    return serviceSettings.getStorageRpcV1().listHmacKeys(storageSettings);
                 }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return new BlobCopyWriter(getOptions(), rewriteOutcome);
+            }, serviceSettings.getRetrySettings(), EXCEPTION_HANDLER, serviceSettings.getClock());
+            String pageCursor = bucketTuple.x();
+            final Iterable<HmacKeyInfo> keyInfo = null == bucketTuple.y() ? ImmutableList.<HmacKeyInfo>of() : Iterables.transform(bucketTuple.y(), new Function<com.google.api.services.storage.model.HmacKeyMetadata, HmacKeyInfo>() {
+
+                @Override
+                public HmacSecretKey.HmacKeyInfo apply(com.google.api.services.storage.model.HmacKeyMetadata metadataPb) {
+                    return HmacKeyInfo.fromProto(metadataPb);
+                }
+            });
+            return new PageImpl<>(new HmacKeyMetadataPageRetriever(serviceSettings, storageSettings), pageCursor, keyInfo);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
-    }
-
-    @Override
-    public byte[] readAllBytes(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
-        return readAllBytes(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
-    }
-
-    @Override
-    public byte[] readAllBytes(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
-        final com.google.api.services.storage.model.StorageObject objectEntity = objectIdentifier.toStorageObject();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
-        try {
-            return runWithRetries(new Callable<byte[]>() {
-
-                @Override
-                public byte[] call() {
-                    return rpcClient.load(objectEntity, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public StorageBatchOperation batch() {
-        return new StorageBatchOperation(this.getOptions());
-    }
-
-    @Override
-    public ReadChannel reader(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
-        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-        return new BlobReaderChannel(getOptions(), BlobIdentifier.create(containerName, objectIdentifier), optionMap);
-    }
-
-    @Override
-    public ReadChannel reader(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
-        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
-        return new BlobReaderChannel(getOptions(), objectIdentifier, optionMap);
-    }
-
-    @Override
-    public BlobUploadChannel writer(BlobMetadata blobMetadata, BlobWriteSetting... storageSettings) {
-        Tuple<BlobMetadata, BlobUploadOption[]> targetPair = BlobUploadOption.toTargetOptions(blobMetadata, storageSettings);
-        return createWriter(targetPair.x(), targetPair.y());
-    }
-
-    @Override
-    public BlobUploadChannel writer(URL signedUri) {
-        return new BlobUploadChannel(getOptions(), signedUri);
-    }
-
-    private BlobUploadChannel createWriter(BlobMetadata blobMetadata, BlobUploadOption... storageSettings) {
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(blobMetadata, storageSettings);
-        return new BlobUploadChannel(getOptions(), blobMetadata, optionMap);
     }
 
     @Override
@@ -576,6 +461,56 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
         }
     }
 
+    /**
+     * Returns the hostname used to send requests to Cloud Storage, e.g. "storage.googleapis.com".
+     */
+    private String getBaseStorageHostName(Map<UrlSigningOption.RequestOption, Object> storageOptionMap) {
+        String explicitBaseHost = (String) storageOptionMap.get(UrlSigningOption.RequestOption.HOST_NAME);
+        if (!Strings.isNullOrEmpty(explicitBaseHost)) {
+            return explicitBaseHost.replaceFirst("http(s)?://", "");
+        }
+        return STORAGE_XML_HOST;
+    }
+
+    private BlobUploadChannel createWriter(BlobMetadata blobMetadata, BlobUploadOption... storageSettings) {
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(blobMetadata, storageSettings);
+        return new BlobUploadChannel(getOptions(), blobMetadata, optionMap);
+    }
+
+    private boolean usePathStyleForSignedUrl(EnumMap<UrlSigningOption.RequestOption, Object> storageOptionMap) {
+        // TODO(#6362): If we decide to change the default style used to generate URLs, switch this
+        // logic to return false unless PATH_STYLE was explicitly specified.
+        if (storageOptionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)) {
+            return false;
+        }
+        return true;
+    }
+
+    static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BlobIdentifier blobIdentifier, AbstractOption... storageSettings) {
+        return buildOptionMap(blobIdentifier.getGeneration(), null, storageSettings);
+    }
+
+    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(AbstractOption... storageSettings) {
+        return buildOptionMap(null, null, Arrays.asList(storageSettings));
+    }
+
+    private StorageObject createInternal(BlobMetadata blobMetadata, final byte[] inputData, BlobUploadOption... storageSettings) {
+        Preconditions.checkNotNull(inputData);
+        final com.google.api.services.storage.model.StorageObject blobProto = blobMetadata.toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(blobMetadata, storageSettings);
+        try {
+            return StorageObject.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
+
+                @Override
+                public com.google.api.services.storage.model.StorageObject call() {
+                    return rpcClient.create(blobProto, new ByteArrayInputStream(inputData), optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
     private String buildResourceUriPath(String bucketSegment, String encodedObjectName, EnumMap<UrlSigningOption.RequestOption, Object> storageOptionMap) {
         if (Strings.isNullOrEmpty(bucketSegment)) {
             if (Strings.isNullOrEmpty(encodedObjectName)) {
@@ -604,6 +539,376 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
         return uriBuilder.toString();
     }
 
+    @Override
+    public StorageObject update(BlobMetadata blobMetadata) {
+        return update(blobMetadata, new BlobUploadOption[0]);
+    }
+
+    @Override
+    public boolean deleteDefaultAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
+        try {
+            return runWithRetries(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() {
+                    return rpcClient.deleteDefaultAcl(containerName, aclEntity.toProto());
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public boolean deleteAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry.AbstractEntity aclEntity) {
+        try {
+            return runWithRetries(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() {
+                    return rpcClient.deleteAcl(objectIdentifier.getBucket(), objectIdentifier.getName(), objectIdentifier.getGeneration(), aclEntity.toProto());
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public StorageBucket update(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
+        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
+        try {
+            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
+
+                @Override
+                public com.google.api.services.storage.model.Bucket call() {
+                    return rpcClient.patch(bucketProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public AccessControlEntry getAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry.AbstractEntity aclEntity) {
+        try {
+            ObjectAccessControl resultBucket = runWithRetries(new Callable<ObjectAccessControl>() {
+
+                @Override
+                public ObjectAccessControl call() {
+                    return rpcClient.getAcl(objectIdentifier.getBucket(), objectIdentifier.getName(), objectIdentifier.getGeneration(), aclEntity.toProto());
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    DefaultStorageImpl(StorageSettings storageSettings) {
+        super(storageSettings);
+        rpcClient = storageSettings.getStorageRpcV1();
+    }
+
+    @Override
+    public boolean deleteAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
+        return deleteAcl(containerName, aclEntity, new BucketFilterOption[0]);
+    }
+
+    @Override
+    public List<Boolean> testIamPermissions(final String containerName, final List<String> requestedPerms, BucketFilterOption... storageSettings) {
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            TestIamPermissionsResponse iamResult = runWithRetries(new Callable<TestIamPermissionsResponse>() {
+
+                @Override
+                public TestIamPermissionsResponse call() {
+                    return rpcClient.testIamPermissions(containerName, requestedPerms, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            final Set<String> grantedPerms = null != iamResult.getPermissions() ? ImmutableSet.copyOf(iamResult.getPermissions()) : ImmutableSet.<String>of();
+            return Lists.transform(requestedPerms, new Function<String, Boolean>() {
+
+                @Override
+                public Boolean apply(String permission) {
+                    return grantedPerms.contains(permission);
+                }
+            });
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public AccessControlEntry getAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
+        return getAcl(containerName, aclEntity, new BucketFilterOption[0]);
+    }
+
+    @Override
+    public StorageBucket lockRetentionPolicy(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
+        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
+        try {
+            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
+
+                @Override
+                public com.google.api.services.storage.model.Bucket call() {
+                    return rpcClient.lockRetentionPolicy(bucketProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public Page<StorageObject> list(final String containerName, BlobListOptions... storageSettings) {
+        return listAllBlobs(containerName, getOptions(), buildOptionMap(storageSettings));
+    }
+
+    @Override
+    public StorageObject create(BlobMetadata blobMetadata, byte[] inputData, int startIndex, int count, BlobUploadOption... storageSettings) {
+        inputData = firstNonNull(inputData, ZERO_LENGTH_BYTE_ARRAY);
+        byte[] chunkBytes = Arrays.copyOfRange(inputData, startIndex, startIndex + count);
+        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(BaseEncoding.base64().encode(Hashing.md5().hashBytes(chunkBytes).asBytes())).setCrc32c(BaseEncoding.base64().encode(Ints.toByteArray(Hashing.crc32c().hashBytes(chunkBytes).asInt()))).buildObject();
+        return createInternal(updatedMetadata, chunkBytes, storageSettings);
+    }
+
+    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BucketMetadata bucketMetadata, AbstractOption... storageSettings) {
+        return buildOptionMap(null, bucketMetadata.getMetageneration(), storageSettings);
+    }
+
+    @Override
+    public AccessControlEntry updateDefaultAcl(String containerName, AccessControlEntry accessControlEntry) {
+        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(containerName);
+        try {
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
+
+                @Override
+                public ObjectAccessControl call() {
+                    return rpcClient.patchDefaultAcl(accessControlProto);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public AccessControlEntry updateAcl(String containerName, AccessControlEntry accessControlEntry) {
+        return updateAcl(containerName, accessControlEntry, new BucketFilterOption[0]);
+    }
+
+    @Override
+    public ReadChannel reader(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
+        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+        return new BlobReaderChannel(getOptions(), BlobIdentifier.create(containerName, objectIdentifier), optionMap);
+    }
+
+    @Override
+    @Deprecated
+    public StorageObject create(BlobMetadata blobMetadata, InputStream inputData, BlobWriteSetting... storageSettings) {
+        Tuple<BlobMetadata, BlobUploadOption[]> targetPair = BlobUploadOption.toTargetOptions(blobMetadata, storageSettings);
+        com.google.api.services.storage.model.StorageObject blobProto = targetPair.x().toProto();
+        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(targetPair.x(), targetPair.y());
+        InputStream inStream = firstNonNull(inputData, new ByteArrayInputStream(ZERO_LENGTH_BYTE_ARRAY));
+        // retries are not safe when the input is an InputStream, so we can't retry.
+        return StorageObject.fromProto(this, rpcClient.create(blobProto, inStream, optionMap));
+    }
+
+    private String getBucketNameWithoutSlashes(BlobMetadata blobMetadata) {
+        // The bucket name itself should never contain a forward slash. However, parts already existed
+        // in the code to check for this, so we remove the forward slashes to be safe here.
+        return CharMatcher.anyOf(PATH_SEPARATOR).trimFrom(blobMetadata.getBucket());
+    }
+
+    @Override
+    public void deleteHmacKey(final HmacKeyInfo keyInfo, final HmacKeyDeleteOption... storageSettings) {
+        try {
+            runWithRetries(new Callable<Void>() {
+
+                @Override
+                public Void call() {
+                    rpcClient.deleteHmacKey(keyInfo.toProto(), buildOptionMap(storageSettings));
+                    return null;
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public boolean delete(String containerName, BucketFilterOption... storageSettings) {
+        final com.google.api.services.storage.model.Bucket bucketProto = BucketMetadata.ofName(containerName).toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+        try {
+            return runWithRetries(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() {
+                    return rpcClient.delete(bucketProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public boolean deleteAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity, BucketFilterOption... storageSettings) {
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            return runWithRetries(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() {
+                    return rpcClient.deleteAcl(containerName, aclEntity.toProto(), optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public AccessControlEntry updateAcl(String containerName, AccessControlEntry accessControlEntry, BucketFilterOption... storageSettings) {
+        final BucketAccessControl accessControlProto = accessControlEntry.toBucketProto().setBucket(containerName);
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<BucketAccessControl>() {
+
+                @Override
+                public BucketAccessControl call() {
+                    return rpcClient.patchAcl(accessControlProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public StorageBatchOperation batch() {
+        return new StorageBatchOperation(this.getOptions());
+    }
+
+    @Override
+    public AccessControlEntry createAcl(String containerName, AccessControlEntry accessControlEntry, BucketFilterOption... storageSettings) {
+        final BucketAccessControl accessControlProto = accessControlEntry.toBucketProto().setBucket(containerName);
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<BucketAccessControl>() {
+
+                @Override
+                public BucketAccessControl call() {
+                    return rpcClient.createAcl(accessControlProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BlobMetadata blobMetadata, AbstractOption... storageSettings) {
+        return buildOptionMap(blobMetadata.getGeneration(), blobMetadata.getMetageneration(), storageSettings);
+    }
+
+    @Override
+    public StorageObject get(String containerName, String objectIdentifier, BlobFetchOption... storageSettings) {
+        return get(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
+    }
+
+    private static <T> void addOptionToMap(StorageRpcClient.StorageOption urlSigningMode, T fallbackValue, Map<StorageRpcClient.StorageOption, Object> optionsStore) {
+        addOptionToMap(urlSigningMode, urlSigningMode, fallbackValue, optionsStore);
+    }
+
+    @Override
+    public byte[] readAllBytes(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
+        return readAllBytes(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
+    }
+
+    private HmacKeyInfo updateHmacKeyMetadata(final HmacKeyInfo keyInfo, final HmacKeyUpdateOption... storageSettings) {
+        try {
+            return HmacKeyInfo.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKeyMetadata>() {
+
+                @Override
+                public com.google.api.services.storage.model.HmacKeyMetadata call() {
+                    return rpcClient.updateHmacKey(keyInfo.toProto(), buildOptionMap(storageSettings));
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public ServiceAccountInfo getServiceAccount(final String projectName) {
+        try {
+            com.google.api.services.storage.model.ServiceAccount resultBucket = runWithRetries(new Callable<com.google.api.services.storage.model.ServiceAccount>() {
+
+                @Override
+                public com.google.api.services.storage.model.ServiceAccount call() {
+                    return rpcClient.getServiceAccount(projectName);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return null == resultBucket ? null : ServiceAccountInfo.fromProto(resultBucket);
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, Iterable<? extends AbstractOption> storageSettings, boolean treatAsSource) {
+        Map<StorageRpcClient.StorageOption, Object> transientMap = Maps.newEnumMap(StorageRpcClient.StorageOption.class);
+        for (AbstractOption urlSigningMode : storageSettings) {
+            Object previousValue = transientMap.put(urlSigningMode.getRpcOption(), urlSigningMode.getValue());
+            checkArgument(null == previousValue, "Duplicate option %s", urlSigningMode);
+        }
+        Boolean resolvedValue = (Boolean) transientMap.remove(DELIMITER);
+        if (Boolean.TRUE.equals(resolvedValue)) {
+            transientMap.put(DELIMITER, PATH_SEPARATOR);
+        }
+        if (!treatAsSource) {
+            addOptionToMap(IF_GENERATION_MATCH, genId, transientMap);
+            addOptionToMap(IF_GENERATION_NOT_MATCH, genId, transientMap);
+            addOptionToMap(IF_METAGENERATION_MATCH, metaGen, transientMap);
+            addOptionToMap(IF_METAGENERATION_NOT_MATCH, metaGen, transientMap);
+        } else {
+            addOptionToMap(IF_GENERATION_MATCH, IF_SOURCE_GENERATION_MATCH, genId, transientMap);
+            addOptionToMap(IF_GENERATION_NOT_MATCH, IF_SOURCE_GENERATION_NOT_MATCH, genId, transientMap);
+            addOptionToMap(IF_METAGENERATION_MATCH, IF_SOURCE_METAGENERATION_MATCH, metaGen, transientMap);
+            addOptionToMap(IF_METAGENERATION_NOT_MATCH, IF_SOURCE_METAGENERATION_NOT_MATCH, metaGen, transientMap);
+        }
+        return ImmutableMap.copyOf(transientMap);
+    }
+
+    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, Iterable<? extends AbstractOption> storageSettings) {
+        return buildOptionMap(genId, metaGen, storageSettings, false);
+    }
+
+    @Override
+    public StorageObject get(BlobIdentifier objectIdentifier) {
+        return get(objectIdentifier, new BlobFetchOption[0]);
+    }
+
+    @Override
+    public AccessControlEntry createDefaultAcl(String containerName, AccessControlEntry accessControlEntry) {
+        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(containerName);
+        try {
+            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
+
+                @Override
+                public ObjectAccessControl call() {
+                    return rpcClient.createDefaultAcl(accessControlProto);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
     private UrlSigningOption.SigningVersion getPreferredSignatureVersion(EnumMap<UrlSigningOption.RequestOption, Object> storageOptionMap) {
         // Check for an explicitly specified version in the map.
         for (UrlSigningOption.SigningVersion signingScheme : UrlSigningOption.SigningVersion.values()) {
@@ -616,13 +921,25 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
         return UrlSigningOption.SigningVersion.V2;
     }
 
-    private boolean usePathStyleForSignedUrl(EnumMap<UrlSigningOption.RequestOption, Object> storageOptionMap) {
-        // TODO(#6362): If we decide to change the default style used to generate URLs, switch this
-        // logic to return false unless PATH_STYLE was explicitly specified.
-        if (storageOptionMap.containsKey(UrlSigningOption.RequestOption.VIRTUAL_HOSTED_STYLE)) {
-            return false;
+    @Override
+    public boolean delete(BlobIdentifier objectIdentifier) {
+        return delete(objectIdentifier, new BlobSourceOptions[0]);
+    }
+
+    @Override
+    public Policy getIamPolicy(final String containerName, BucketFilterOption... storageSettings) {
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            return fromApiPolicy(runWithRetries(new Callable<com.google.api.services.storage.model.Policy>() {
+
+                @Override
+                public com.google.api.services.storage.model.Policy call() {
+                    return rpcClient.getIamPolicy(containerName, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
         }
-        return true;
     }
 
     /**
@@ -672,21 +989,86 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
         return signatureBuilder.setCanonicalizedExtensionHeaders((Map<String, String>) extraHeadersBuilder.build()).setCanonicalizedQueryParams((Map<String, String>) paramsBuilder.build()).buildSigningInfo();
     }
 
-    private String getBucketNameWithoutSlashes(BlobMetadata blobMetadata) {
-        // The bucket name itself should never contain a forward slash. However, parts already existed
-        // in the code to check for this, so we remove the forward slashes to be safe here.
-        return CharMatcher.anyOf(PATH_SEPARATOR).trimFrom(blobMetadata.getBucket());
+    @Override
+    public List<Boolean> delete(BlobIdentifier... identifiers) {
+        return delete(Arrays.asList(identifiers));
     }
 
-    /**
-     * Returns the hostname used to send requests to Cloud Storage, e.g. "storage.googleapis.com".
-     */
-    private String getBaseStorageHostName(Map<UrlSigningOption.RequestOption, Object> storageOptionMap) {
-        String explicitBaseHost = (String) storageOptionMap.get(UrlSigningOption.RequestOption.HOST_NAME);
-        if (!Strings.isNullOrEmpty(explicitBaseHost)) {
-            return explicitBaseHost.replaceFirst("http(s)?://", "");
+    @Override
+    public boolean delete(String containerName, String objectIdentifier, BlobSourceOptions... storageSettings) {
+        return delete(BlobIdentifier.create(containerName, objectIdentifier), storageSettings);
+    }
+
+    @Override
+    public byte[] readAllBytes(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
+        final com.google.api.services.storage.model.StorageObject objectEntity = objectIdentifier.toStorageObject();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
+        try {
+            return runWithRetries(new Callable<byte[]>() {
+
+                @Override
+                public byte[] call() {
+                    return rpcClient.load(objectEntity, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
         }
-        return STORAGE_XML_HOST;
+    }
+
+    @Override
+    public ReadChannel reader(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
+        Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
+        return new BlobReaderChannel(getOptions(), objectIdentifier, optionMap);
+    }
+
+    @Override
+    public boolean delete(BlobIdentifier objectIdentifier, BlobSourceOptions... storageSettings) {
+        final com.google.api.services.storage.model.StorageObject objectEntity = objectIdentifier.toStorageObject();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
+        try {
+            return runWithRetries(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() {
+                    return rpcClient.delete(objectEntity, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public HmacSecretKey.HmacKeyInfo getHmacKey(final String keyId, final HmacKeyRetrievalOption... storageSettings) {
+        try {
+            return HmacKeyInfo.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKeyMetadata>() {
+
+                @Override
+                public com.google.api.services.storage.model.HmacKeyMetadata call() {
+                    return rpcClient.getHmacKey(keyId, buildOptionMap(storageSettings));
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
+    }
+
+    @Override
+    public StorageBucket create(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
+        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
+        try {
+            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
+
+                @Override
+                public com.google.api.services.storage.model.Bucket call() {
+                    return rpcClient.create(bucketProto, optionMap);
+                }
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
+        }
     }
 
     @Override
@@ -695,30 +1077,30 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public List<StorageObject> get(Iterable<BlobIdentifier> identifiers) {
-        StorageBatchOperation batchOp = batch();
-        final List<StorageObject> storageResults = Lists.newArrayList();
-        for (BlobIdentifier objectIdentifier : identifiers) {
-            batchOp.get(objectIdentifier).notify(new BatchResult.Callback<StorageObject, StorageOperationException>() {
+    public AccessControlEntry getAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity, BucketFilterOption... storageSettings) {
+        try {
+            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
+            BucketAccessControl resultBucket = runWithRetries(new Callable<BucketAccessControl>() {
 
                 @Override
-                public void success(StorageObject result) {
-                    storageResults.add(result);
+                public BucketAccessControl call() {
+                    return rpcClient.getAcl(containerName, aclEntity.toProto(), optionMap);
                 }
-
-                @Override
-                public void error(StorageOperationException exception) {
-                    storageResults.add(null);
-                }
-            });
+            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
+            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
+        } catch (RetryHelperException retryException) {
+            throw StorageOperationException.translateAndRethrow(retryException);
         }
-        batchOp.submitBatch();
-        return Collections.unmodifiableList(storageResults);
+    }
+
+    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, AbstractOption... storageSettings) {
+        return buildOptionMap(genId, metaGen, Arrays.asList(storageSettings));
     }
 
     @Override
-    public List<StorageObject> update(BlobMetadata... metadataArray) {
-        return update(Arrays.asList(metadataArray));
+    public StorageObject create(BlobMetadata blobMetadata, BlobUploadOption... storageSettings) {
+        BlobMetadata updatedMetadata = blobMetadata.asBuilder().setMd5(EMPTY_BYTES_MD5).setCrc32c(EMPTY_BYTES_CRC32C).buildObject();
+        return createInternal(updatedMetadata, ZERO_LENGTH_BYTE_ARRAY, storageSettings);
     }
 
     @Override
@@ -744,11 +1126,6 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public List<Boolean> delete(BlobIdentifier... identifiers) {
-        return delete(Arrays.asList(identifiers));
-    }
-
-    @Override
     public List<Boolean> delete(Iterable<BlobIdentifier> identifiers) {
         StorageBatchOperation batchOp = batch();
         final List<Boolean> storageResults = Lists.newArrayList();
@@ -771,63 +1148,49 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public AccessControlEntry getAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity, BucketFilterOption... storageSettings) {
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            BucketAccessControl resultBucket = runWithRetries(new Callable<BucketAccessControl>() {
+    public List<StorageObject> get(Iterable<BlobIdentifier> identifiers) {
+        StorageBatchOperation batchOp = batch();
+        final List<StorageObject> storageResults = Lists.newArrayList();
+        for (BlobIdentifier objectIdentifier : identifiers) {
+            batchOp.get(objectIdentifier).notify(new BatchResult.Callback<StorageObject, StorageOperationException>() {
 
                 @Override
-                public BucketAccessControl call() {
-                    return rpcClient.getAcl(containerName, aclEntity.toProto(), optionMap);
+                public void success(StorageObject result) {
+                    storageResults.add(result);
+                }
+
+                @Override
+                public void error(StorageOperationException exception) {
+                    storageResults.add(null);
+                }
+            });
+        }
+        batchOp.submitBatch();
+        return Collections.unmodifiableList(storageResults);
+    }
+
+    @Override
+    public StorageObject get(BlobIdentifier objectIdentifier, BlobFetchOption... storageSettings) {
+        final com.google.api.services.storage.model.StorageObject storedEntity = objectIdentifier.toStorageObject();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(objectIdentifier, storageSettings);
+        try {
+            com.google.api.services.storage.model.StorageObject objectEntity = runWithRetries(new Callable<com.google.api.services.storage.model.StorageObject>() {
+
+                @Override
+                public com.google.api.services.storage.model.StorageObject call() {
+                    return rpcClient.get(storedEntity, optionMap);
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
+            return null == objectEntity ? null : StorageObject.fromProto(this, objectEntity);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
     }
 
     @Override
-    public AccessControlEntry getAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
-        return getAcl(containerName, aclEntity, new BucketFilterOption[0]);
-    }
-
-    @Override
-    public boolean deleteAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity, BucketFilterOption... storageSettings) {
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            return runWithRetries(new Callable<Boolean>() {
-
-                @Override
-                public Boolean call() {
-                    return rpcClient.deleteAcl(containerName, aclEntity.toProto(), optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public boolean deleteAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
-        return deleteAcl(containerName, aclEntity, new BucketFilterOption[0]);
-    }
-
-    @Override
-    public AccessControlEntry createAcl(String containerName, AccessControlEntry accessControlEntry, BucketFilterOption... storageSettings) {
-        final BucketAccessControl accessControlProto = accessControlEntry.toBucketProto().setBucket(containerName);
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<BucketAccessControl>() {
-
-                @Override
-                public BucketAccessControl call() {
-                    return rpcClient.createAcl(accessControlProto, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
+    public BlobUploadChannel writer(BlobMetadata blobMetadata, BlobWriteSetting... storageSettings) {
+        Tuple<BlobMetadata, BlobUploadOption[]> targetPair = BlobUploadOption.toTargetOptions(blobMetadata, storageSettings);
+        return createWriter(targetPair.x(), targetPair.y());
     }
 
     @Override
@@ -836,186 +1199,20 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public AccessControlEntry updateAcl(String containerName, AccessControlEntry accessControlEntry, BucketFilterOption... storageSettings) {
-        final BucketAccessControl accessControlProto = accessControlEntry.toBucketProto().setBucket(containerName);
+    public BlobCopyWriter copy(final CopyOperationRequest transferRequest) {
+        final com.google.api.services.storage.model.StorageObject originObject = transferRequest.getSource().toStorageObject();
+        final Map<StorageRpcClient.StorageOption, ?> originOptions = buildOptionMap(transferRequest.getSource().getGeneration(), null, transferRequest.getSourceOptions(), true);
+        final com.google.api.services.storage.model.StorageObject destinationObject = transferRequest.getTarget().toProto();
+        final Map<StorageRpcClient.StorageOption, ?> targetPair = buildOptionMap(transferRequest.getTarget().getGeneration(), transferRequest.getTarget().getMetageneration(), transferRequest.getTargetOptions());
         try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<BucketAccessControl>() {
+            RewriteOperationResult rewriteOutcome = runWithRetries(new Callable<RewriteOperationResult>() {
 
                 @Override
-                public BucketAccessControl call() {
-                    return rpcClient.patchAcl(accessControlProto, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry updateAcl(String containerName, AccessControlEntry accessControlEntry) {
-        return updateAcl(containerName, accessControlEntry, new BucketFilterOption[0]);
-    }
-
-    @Override
-    public List<AccessControlEntry> listAcls(final String containerName, BucketFilterOption... storageSettings) {
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            List<BucketAccessControl> resultBucket = runWithRetries(new Callable<List<BucketAccessControl>>() {
-
-                @Override
-                public List<BucketAccessControl> call() {
-                    return rpcClient.listAcls(containerName, optionMap);
+                public StorageRpcClient.RewriteOperationResult call() {
+                    return rpcClient.openRewrite(new StorageRpcClient.ObjectRewriteRequest(originObject, originOptions, transferRequest.getOverrideInfo(), destinationObject, targetPair, transferRequest.getMegabytesCopiedPerChunk()));
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return Lists.transform(resultBucket, AccessControlEntry.BUCKET_PB_TO_ACCESS_CONTROL_ENTRY);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public List<AccessControlEntry> listAcls(final String containerName) {
-        return listAcls(containerName, new BucketFilterOption[0]);
-    }
-
-    @Override
-    public AccessControlEntry getDefaultAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
-        try {
-            ObjectAccessControl resultBucket = runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.getDefaultAcl(containerName, aclEntity.toProto());
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public boolean deleteDefaultAcl(final String containerName, final AccessControlEntry.AbstractEntity aclEntity) {
-        try {
-            return runWithRetries(new Callable<Boolean>() {
-
-                @Override
-                public Boolean call() {
-                    return rpcClient.deleteDefaultAcl(containerName, aclEntity.toProto());
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry createDefaultAcl(String containerName, AccessControlEntry accessControlEntry) {
-        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(containerName);
-        try {
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.createDefaultAcl(accessControlProto);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry updateDefaultAcl(String containerName, AccessControlEntry accessControlEntry) {
-        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(containerName);
-        try {
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.patchDefaultAcl(accessControlProto);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public List<AccessControlEntry> listDefaultAcls(final String containerName) {
-        try {
-            List<ObjectAccessControl> resultBucket = runWithRetries(new Callable<List<ObjectAccessControl>>() {
-
-                @Override
-                public List<ObjectAccessControl> call() {
-                    return rpcClient.listDefaultAcls(containerName);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return Lists.transform(resultBucket, AccessControlEntry.OBJECT_PB_TO_ACCESS_CONTROL_ENTRY);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry getAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry.AbstractEntity aclEntity) {
-        try {
-            ObjectAccessControl resultBucket = runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.getAcl(objectIdentifier.getBucket(), objectIdentifier.getName(), objectIdentifier.getGeneration(), aclEntity.toProto());
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == resultBucket ? null : AccessControlEntry.fromProto(resultBucket);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public boolean deleteAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry.AbstractEntity aclEntity) {
-        try {
-            return runWithRetries(new Callable<Boolean>() {
-
-                @Override
-                public Boolean call() {
-                    return rpcClient.deleteAcl(objectIdentifier.getBucket(), objectIdentifier.getName(), objectIdentifier.getGeneration(), aclEntity.toProto());
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry createAcl(final BlobIdentifier objectIdentifier, final AccessControlEntry accessControlEntry) {
-        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(objectIdentifier.getBucket()).setObject(objectIdentifier.getName()).setGeneration(objectIdentifier.getGeneration());
-        try {
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.createAcl(accessControlProto);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public AccessControlEntry updateAcl(BlobIdentifier objectIdentifier, AccessControlEntry accessControlEntry) {
-        final ObjectAccessControl accessControlProto = accessControlEntry.toObjectProto().setBucket(objectIdentifier.getBucket()).setObject(objectIdentifier.getName()).setGeneration(objectIdentifier.getGeneration());
-        try {
-            return AccessControlEntry.fromProto(runWithRetries(new Callable<ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl call() {
-                    return rpcClient.patchAcl(accessControlProto);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
+            return new BlobCopyWriter(getOptions(), rewriteOutcome);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
@@ -1037,113 +1234,9 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
         }
     }
 
-    public HmacSecretKey createHmacKey(final ServiceAccountInfo accountInfo, final HmacKeyCreationOption... storageSettings) {
-        try {
-            return HmacSecretKey.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKey>() {
-
-                @Override
-                public com.google.api.services.storage.model.HmacKey call() {
-                    return rpcClient.createHmacKey(accountInfo.getEmail(), buildOptionMap(storageSettings));
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
     @Override
-    public Page<HmacSecretKey.HmacKeyInfo> listHmacKeys(ListHmacKeysOptions... storageSettings) {
-        return listAllHmacKeys(getOptions(), buildOptionMap(storageSettings));
-    }
-
-    @Override
-    public HmacSecretKey.HmacKeyInfo getHmacKey(final String keyId, final HmacKeyRetrievalOption... storageSettings) {
-        try {
-            return HmacKeyInfo.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKeyMetadata>() {
-
-                @Override
-                public com.google.api.services.storage.model.HmacKeyMetadata call() {
-                    return rpcClient.getHmacKey(keyId, buildOptionMap(storageSettings));
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    private HmacKeyInfo updateHmacKeyMetadata(final HmacKeyInfo keyInfo, final HmacKeyUpdateOption... storageSettings) {
-        try {
-            return HmacKeyInfo.fromProto(runWithRetries(new Callable<com.google.api.services.storage.model.HmacKeyMetadata>() {
-
-                @Override
-                public com.google.api.services.storage.model.HmacKeyMetadata call() {
-                    return rpcClient.updateHmacKey(keyInfo.toProto(), buildOptionMap(storageSettings));
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public HmacSecretKey.HmacKeyInfo updateHmacKeyState(final HmacKeyInfo keyInfo, final HmacSecretKey.HmacKeyStatus keyStatus, final HmacKeyUpdateOption... storageSettings) {
-        HmacKeyInfo updatedInfo = HmacSecretKey.HmacKeyInfo.createBuilder(keyInfo.getServiceAccount()).setProjectId(keyInfo.getProjectId()).setAccessId(keyInfo.getAccessId()).setState(keyStatus).buildInfo();
-        return updateHmacKeyMetadata(updatedInfo, storageSettings);
-    }
-
-    @Override
-    public void deleteHmacKey(final HmacKeyInfo keyInfo, final HmacKeyDeleteOption... storageSettings) {
-        try {
-            runWithRetries(new Callable<Void>() {
-
-                @Override
-                public Void call() {
-                    rpcClient.deleteHmacKey(keyInfo.toProto(), buildOptionMap(storageSettings));
-                    return null;
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    private static Page<HmacKeyInfo> listAllHmacKeys(final StorageSettings serviceSettings, final Map<StorageRpcClient.StorageOption, ?> storageSettings) {
-        try {
-            Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>> bucketTuple = runWithRetries(new Callable<Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>>>() {
-
-                @Override
-                public Tuple<String, Iterable<com.google.api.services.storage.model.HmacKeyMetadata>> call() {
-                    return serviceSettings.getStorageRpcV1().listHmacKeys(storageSettings);
-                }
-            }, serviceSettings.getRetrySettings(), EXCEPTION_HANDLER, serviceSettings.getClock());
-            String pageCursor = bucketTuple.x();
-            final Iterable<HmacSecretKey.HmacKeyInfo> keyInfo = null == bucketTuple.y() ? ImmutableList.<HmacSecretKey.HmacKeyInfo>of() : Iterables.transform(bucketTuple.y(), new Function<com.google.api.services.storage.model.HmacKeyMetadata, HmacKeyInfo>() {
-
-                @Override
-                public HmacSecretKey.HmacKeyInfo apply(com.google.api.services.storage.model.HmacKeyMetadata metadataPb) {
-                    return HmacKeyInfo.fromProto(metadataPb);
-                }
-            });
-            return new PageImpl<>(new HmacKeyMetadataPageRetriever(serviceSettings, storageSettings), pageCursor, keyInfo);
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public Policy getIamPolicy(final String containerName, BucketFilterOption... storageSettings) {
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            return fromApiPolicy(runWithRetries(new Callable<com.google.api.services.storage.model.Policy>() {
-
-                @Override
-                public com.google.api.services.storage.model.Policy call() {
-                    return rpcClient.getIamPolicy(containerName, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
+    public Page<StorageBucket> list(BucketListOptions... storageSettings) {
+        return listAllBuckets(getOptions(), buildOptionMap(storageSettings));
     }
 
     @Override
@@ -1163,121 +1256,32 @@ final class DefaultStorageImpl extends BaseService<StorageSettings> implements S
     }
 
     @Override
-    public List<Boolean> testIamPermissions(final String containerName, final List<String> requestedPerms, BucketFilterOption... storageSettings) {
-        try {
-            final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
-            TestIamPermissionsResponse iamResult = runWithRetries(new Callable<TestIamPermissionsResponse>() {
-
-                @Override
-                public TestIamPermissionsResponse call() {
-                    return rpcClient.testIamPermissions(containerName, requestedPerms, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            final Set<String> grantedPerms = null != iamResult.getPermissions() ? ImmutableSet.copyOf(iamResult.getPermissions()) : ImmutableSet.<String>of();
-            return Lists.transform(requestedPerms, new Function<String, Boolean>() {
-
-                @Override
-                public Boolean apply(String permission) {
-                    return grantedPerms.contains(permission);
-                }
-            });
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
+    public List<StorageObject> update(BlobMetadata... metadataArray) {
+        return update(Arrays.asList(metadataArray));
     }
 
     @Override
-    public StorageBucket lockRetentionPolicy(BucketMetadata bucketMetadata, BucketTargetOptions... storageSettings) {
-        final com.google.api.services.storage.model.Bucket bucketProto = bucketMetadata.toProto();
-        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(bucketMetadata, storageSettings);
+    public HmacSecretKey.HmacKeyInfo updateHmacKeyState(final HmacKeyInfo keyInfo, final HmacSecretKey.HmacKeyStatus keyStatus, final HmacKeyUpdateOption... storageSettings) {
+        HmacKeyInfo updatedInfo = HmacKeyInfo.createBuilder(keyInfo.getServiceAccount()).setProjectId(keyInfo.getProjectId()).setAccessId(keyInfo.getAccessId()).setState(keyStatus).buildInfo();
+        return updateHmacKeyMetadata(updatedInfo, storageSettings);
+    }
+
+    @Override
+    public StorageBucket get(String containerName, GetBucketOption... storageSettings) {
+        final com.google.api.services.storage.model.Bucket bucketProto = BucketMetadata.ofName(containerName).toProto();
+        final Map<StorageRpcClient.StorageOption, ?> optionMap = buildOptionMap(storageSettings);
         try {
-            return StorageBucket.fromProto(this, runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
+            com.google.api.services.storage.model.Bucket resultBucket = runWithRetries(new Callable<com.google.api.services.storage.model.Bucket>() {
 
                 @Override
                 public com.google.api.services.storage.model.Bucket call() {
-                    return rpcClient.lockRetentionPolicy(bucketProto, optionMap);
-                }
-            }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock()));
-        } catch (RetryHelperException retryException) {
-            throw StorageOperationException.translateAndRethrow(retryException);
-        }
-    }
-
-    @Override
-    public ServiceAccountInfo getServiceAccount(final String projectName) {
-        try {
-            com.google.api.services.storage.model.ServiceAccount resultBucket = runWithRetries(new Callable<com.google.api.services.storage.model.ServiceAccount>() {
-
-                @Override
-                public com.google.api.services.storage.model.ServiceAccount call() {
-                    return rpcClient.getServiceAccount(projectName);
+                    return rpcClient.get(bucketProto, optionMap);
                 }
             }, getOptions().getRetrySettings(), EXCEPTION_HANDLER, getOptions().getClock());
-            return null == resultBucket ? null : ServiceAccountInfo.fromProto(resultBucket);
+            return null == resultBucket ? null : StorageBucket.fromProto(this, resultBucket);
         } catch (RetryHelperException retryException) {
             throw StorageOperationException.translateAndRethrow(retryException);
         }
     }
 
-    private static <T> void addOptionToMap(StorageRpcClient.StorageOption urlSigningMode, T fallbackValue, Map<StorageRpcClient.StorageOption, Object> optionsStore) {
-        addOptionToMap(urlSigningMode, urlSigningMode, fallbackValue, optionsStore);
-    }
-
-    private static <T> void addOptionToMap(StorageRpcClient.StorageOption requestedOption, StorageRpcClient.StorageOption targetOption, T fallbackValue, Map<StorageRpcClient.StorageOption, Object> optionsStore) {
-        if (optionsStore.containsKey(requestedOption)) {
-            @SuppressWarnings("unchecked")
-            T resolvedValue = (T) optionsStore.remove(requestedOption);
-            checkArgument(null != resolvedValue || null != fallbackValue, "Option " + requestedOption.getValue() + " is missing a value");
-            resolvedValue = firstNonNull(resolvedValue, fallbackValue);
-            optionsStore.put(targetOption, resolvedValue);
-        }
-    }
-
-    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, Iterable<? extends AbstractOption> storageSettings) {
-        return buildOptionMap(genId, metaGen, storageSettings, false);
-    }
-
-    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, Iterable<? extends AbstractOption> storageSettings, boolean treatAsSource) {
-        Map<StorageRpcClient.StorageOption, Object> transientMap = Maps.newEnumMap(StorageRpcClient.StorageOption.class);
-        for (AbstractOption urlSigningMode : storageSettings) {
-            Object previousValue = transientMap.put(urlSigningMode.getRpcOption(), urlSigningMode.getValue());
-            checkArgument(null == previousValue, "Duplicate option %s", urlSigningMode);
-        }
-        Boolean resolvedValue = (Boolean) transientMap.remove(DELIMITER);
-        if (Boolean.TRUE.equals(resolvedValue)) {
-            transientMap.put(DELIMITER, PATH_SEPARATOR);
-        }
-        if (!treatAsSource) {
-            addOptionToMap(IF_GENERATION_MATCH, genId, transientMap);
-            addOptionToMap(IF_GENERATION_NOT_MATCH, genId, transientMap);
-            addOptionToMap(IF_METAGENERATION_MATCH, metaGen, transientMap);
-            addOptionToMap(IF_METAGENERATION_NOT_MATCH, metaGen, transientMap);
-        } else {
-            addOptionToMap(IF_GENERATION_MATCH, IF_SOURCE_GENERATION_MATCH, genId, transientMap);
-            addOptionToMap(IF_GENERATION_NOT_MATCH, IF_SOURCE_GENERATION_NOT_MATCH, genId, transientMap);
-            addOptionToMap(IF_METAGENERATION_MATCH, IF_SOURCE_METAGENERATION_MATCH, metaGen, transientMap);
-            addOptionToMap(IF_METAGENERATION_NOT_MATCH, IF_SOURCE_METAGENERATION_NOT_MATCH, metaGen, transientMap);
-        }
-        return ImmutableMap.copyOf(transientMap);
-    }
-
-    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(AbstractOption... storageSettings) {
-        return buildOptionMap(null, null, Arrays.asList(storageSettings));
-    }
-
-    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(Long genId, Long metaGen, AbstractOption... storageSettings) {
-        return buildOptionMap(genId, metaGen, Arrays.asList(storageSettings));
-    }
-
-    private static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BucketMetadata bucketMetadata, AbstractOption... storageSettings) {
-        return buildOptionMap(null, bucketMetadata.getMetageneration(), storageSettings);
-    }
-
-    static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BlobMetadata blobMetadata, AbstractOption... storageSettings) {
-        return buildOptionMap(blobMetadata.getGeneration(), blobMetadata.getMetageneration(), storageSettings);
-    }
-
-    static Map<StorageRpcClient.StorageOption, ?> buildOptionMap(BlobIdentifier blobIdentifier, AbstractOption... storageSettings) {
-        return buildOptionMap(blobIdentifier.getGeneration(), null, storageSettings);
-    }
 }

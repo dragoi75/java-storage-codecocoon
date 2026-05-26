@@ -47,30 +47,31 @@ public final class StorageOperationException extends BaseHttpServiceException {
 
   private static final long serialVersionUID = -4168430271327813063L;
 
-  public StorageOperationException(int status, String description) {
-    this(status, description, null);
-  }
+    public StorageOperationException(IOException ioError) {
+      super(ioError, true, TRANSIENT_FAILURES);
+    }
 
-  public StorageOperationException(int status, String description, Throwable reason) {
-    super(status, description, null, true, TRANSIENT_FAILURES, reason);
-  }
+    /**
+     * Translate RetryHelperException to the StorageException that caused the error. This method will
+     * always throw an exception.
+     *
+     * @throws StorageOperationException when {@code ex} was caused by a {@code StorageException}
+     */
+    public static StorageOperationException translateAndRethrow(RetryHelperException retryFailure) {
+      BaseServiceException.translate(retryFailure);
+      throw new StorageOperationException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
+    }
 
-  public StorageOperationException(IOException ioError) {
-    super(ioError, true, TRANSIENT_FAILURES);
-  }
+    public StorageOperationException(int status, String description, Throwable reason) {
+      super(status, description, null, true, TRANSIENT_FAILURES, reason);
+    }
 
-  public StorageOperationException(GoogleJsonError jsonFault) {
-    super(jsonFault, true, TRANSIENT_FAILURES);
-  }
+    public StorageOperationException(int status, String description) {
+      this(status, description, null);
+    }
 
-  /**
-   * Translate RetryHelperException to the StorageException that caused the error. This method will
-   * always throw an exception.
-   *
-   * @throws StorageOperationException when {@code ex} was caused by a {@code StorageException}
-   */
-  public static StorageOperationException translateAndRethrow(RetryHelperException retryFailure) {
-    BaseServiceException.translate(retryFailure);
-    throw new StorageOperationException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
-  }
+    public StorageOperationException(GoogleJsonError jsonFault) {
+      super(jsonFault, true, TRANSIENT_FAILURES);
+    }
+
 }

@@ -30,15 +30,6 @@ public class HmacSecretKey implements Serializable {
 
     private final HmacKeyInfo keyDetails;
 
-    private HmacSecretKey(SecretMetadataBuilder metadataCreator) {
-        this.hmacCredential = metadataCreator.hmacCredential;
-        this.keyDetails = metadataCreator.keyDetails;
-    }
-
-    public static SecretMetadataBuilder createBuilder(String hmacCredential) {
-        return new SecretMetadataBuilder(hmacCredential);
-    }
-
     /**
      * Builder for {@code HmacKey} objects. *
      */
@@ -48,13 +39,11 @@ public class HmacSecretKey implements Serializable {
 
         private HmacKeyInfo keyDetails;
 
-        private SecretMetadataBuilder(String hmacCredential) {
-            this.hmacCredential = hmacCredential;
-        }
-
-        public SecretMetadataBuilder setSecretKey(String hmacCredential) {
-            this.hmacCredential = hmacCredential;
-            return this;
+        /**
+         * Creates an {@code HmacKey} object from this builder. *
+         */
+        public HmacSecretKey buildMetadata() {
+            return new HmacSecretKey(this);
         }
 
         public SecretMetadataBuilder setMetadata(HmacKeyInfo keyDetails) {
@@ -62,56 +51,15 @@ public class HmacSecretKey implements Serializable {
             return this;
         }
 
-        /**
-         * Creates an {@code HmacKey} object from this builder. *
-         */
-        public HmacSecretKey buildMetadata() {
-            return new HmacSecretKey(this);
+        public SecretMetadataBuilder setSecretKey(String hmacCredential) {
+            this.hmacCredential = hmacCredential;
+            return this;
         }
-    }
 
-    /**
-     * Returns the secret key associated with this HMAC key. *
-     */
-    public String getSecretKey() {
-        return hmacCredential;
-    }
-
-    /**
-     * Returns the metadata associated with this HMAC key. *
-     */
-    public HmacKeyInfo getMetadata() {
-        return keyDetails;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(hmacCredential, keyDetails);
-    }
-
-    @Override
-    public boolean equals(Object otherObject) {
-        if (otherObject == this) {
-            return true;
+        private SecretMetadataBuilder(String hmacCredential) {
+            this.hmacCredential = hmacCredential;
         }
-        if (null == otherObject || otherObject.getClass() != getClass()) {
-            return false;
-        }
-        final HmacKeyInfo other = (HmacKeyInfo) otherObject;
-        return Objects.equals(this.hmacCredential, hmacCredential) && Objects.equals(this.keyDetails, keyDetails);
-    }
 
-    com.google.api.services.storage.model.HmacKey toPb() {
-        com.google.api.services.storage.model.HmacKey protoKey = new com.google.api.services.storage.model.HmacKey();
-        protoKey.setSecret(this.hmacCredential);
-        if (null != keyDetails) {
-            protoKey.setMetadata(keyDetails.toProto());
-        }
-        return protoKey;
-    }
-
-    static HmacSecretKey fromProto(com.google.api.services.storage.model.HmacKey protoKey) {
-        return HmacSecretKey.createBuilder(protoKey.getSecret()).setMetadata(HmacKeyInfo.fromProto(protoKey.getMetadata())).buildMetadata();
     }
 
     public enum HmacKeyStatus {
@@ -149,121 +97,6 @@ public class HmacSecretKey implements Serializable {
 
         private final Long lastUpdated;
 
-        private HmacKeyInfo(ServiceAccountBuilder metadataCreator) {
-            this.accessIdentifier = metadataCreator.accessIdentifier;
-            this.entityTag = metadataCreator.entityTag;
-            this.identifier = metadataCreator.identifier;
-            this.projectIdentifier = metadataCreator.projectIdentifier;
-            this.serviceAcctInfo = metadataCreator.serviceAcctInfo;
-            this.status = metadataCreator.status;
-            this.creationTime = metadataCreator.creationTime;
-            this.lastUpdated = metadataCreator.lastUpdated;
-        }
-
-        public static ServiceAccountBuilder createBuilder(ServiceAccountInfo serviceAcctInfo) {
-            return new ServiceAccountBuilder(serviceAcctInfo);
-        }
-
-        public ServiceAccountBuilder toBuilder() {
-            return new ServiceAccountBuilder(this);
-        }
-
-        public static HmacKeyInfo of(ServiceAccountInfo serviceAcctInfo, String accessIdentifier, String projectIdentifier) {
-            return createBuilder(serviceAcctInfo).setAccessId(accessIdentifier).setProjectId(projectIdentifier).buildInfo();
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(accessIdentifier, projectIdentifier);
-        }
-
-        @Override
-        public boolean equals(Object otherObject) {
-            if (otherObject == this) {
-                return true;
-            }
-            if (null == otherObject || otherObject.getClass() != getClass()) {
-                return false;
-            }
-            final HmacKeyInfo comparedInfo = (HmacKeyInfo) otherObject;
-            return Objects.equals(this.accessIdentifier, comparedInfo.accessIdentifier) && Objects.equals(this.entityTag, comparedInfo.entityTag) && Objects.equals(this.identifier, comparedInfo.identifier) && Objects.equals(this.projectIdentifier, comparedInfo.projectIdentifier) && Objects.equals(this.serviceAcctInfo, comparedInfo.serviceAcctInfo) && Objects.equals(this.status, comparedInfo.status) && Objects.equals(this.creationTime, comparedInfo.creationTime) && Objects.equals(this.lastUpdated, comparedInfo.lastUpdated);
-        }
-
-        public com.google.api.services.storage.model.HmacKeyMetadata toProto() {
-            com.google.api.services.storage.model.HmacKeyMetadata keyDetails = new com.google.api.services.storage.model.HmacKeyMetadata();
-            keyDetails.setAccessId(this.accessIdentifier);
-            keyDetails.setEtag(this.entityTag);
-            keyDetails.setId(this.identifier);
-            keyDetails.setProjectId(this.projectIdentifier);
-            keyDetails.setServiceAccountEmail(null == this.serviceAcctInfo ? null : this.serviceAcctInfo.getEmail());
-            keyDetails.setState(null == this.status ? null : this.status.toString());
-            keyDetails.setTimeCreated(null == this.creationTime ? null : new DateTime(this.creationTime));
-            keyDetails.setUpdated(null == this.lastUpdated ? null : new DateTime(this.lastUpdated));
-            return keyDetails;
-        }
-
-        static HmacKeyInfo fromProto(com.google.api.services.storage.model.HmacKeyMetadata keyDetails) {
-            return createBuilder(ServiceAccountInfo.ofEmail(keyDetails.getServiceAccountEmail())).setAccessId(keyDetails.getAccessId()).setCreateTime(keyDetails.getTimeCreated().getValue()).setEtag(keyDetails.getEtag()).setId(keyDetails.getId()).setProjectId(keyDetails.getProjectId()).setState(HmacKeyStatus.valueOf(keyDetails.getState())).setUpdateTime(keyDetails.getUpdated().getValue()).buildInfo();
-        }
-
-        /**
-         * Returns the access id for this HMAC key. This is the id needed to get or delete the key. *
-         */
-        public String getAccessId() {
-            return accessIdentifier;
-        }
-
-        /**
-         * Returns HTTP 1.1 Entity tag for this HMAC key.
-         *
-         * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
-         */
-        public String getEtag() {
-            return entityTag;
-        }
-
-        /**
-         * Returns the resource name of this HMAC key. *
-         */
-        public String getId() {
-            return identifier;
-        }
-
-        /**
-         * Returns the project id associated with this HMAC key. *
-         */
-        public String getProjectId() {
-            return projectIdentifier;
-        }
-
-        /**
-         * Returns the service account associated with this HMAC key. *
-         */
-        public ServiceAccountInfo getServiceAccount() {
-            return serviceAcctInfo;
-        }
-
-        /**
-         * Returns the current state of this HMAC key. *
-         */
-        public HmacKeyStatus getState() {
-            return status;
-        }
-
-        /**
-         * Returns the creation time of this HMAC key. *
-         */
-        public Long getCreateTime() {
-            return creationTime;
-        }
-
-        /**
-         * Returns the last updated time of this HMAC key. *
-         */
-        public Long getUpdateTime() {
-            return lastUpdated;
-        }
-
         /**
          * Builder for {@code HmacKeyMetadata} objects. *
          */
@@ -285,8 +118,9 @@ public class HmacSecretKey implements Serializable {
 
             private Long lastUpdated;
 
-            private ServiceAccountBuilder(ServiceAccountInfo serviceAcctInfo) {
-                this.serviceAcctInfo = serviceAcctInfo;
+            public ServiceAccountBuilder setProjectId(String projectIdentifier) {
+                this.projectIdentifier = projectIdentifier;
+                return this;
             }
 
             private ServiceAccountBuilder(HmacKeyInfo keyDetails) {
@@ -300,23 +134,8 @@ public class HmacSecretKey implements Serializable {
                 this.lastUpdated = keyDetails.lastUpdated;
             }
 
-            public ServiceAccountBuilder setAccessId(String accessIdentifier) {
-                this.accessIdentifier = accessIdentifier;
-                return this;
-            }
-
-            public ServiceAccountBuilder setEtag(String entityTag) {
-                this.entityTag = entityTag;
-                return this;
-            }
-
             public ServiceAccountBuilder setId(String identifier) {
                 this.identifier = identifier;
-                return this;
-            }
-
-            public ServiceAccountBuilder setServiceAccount(ServiceAccountInfo serviceAcctInfo) {
-                this.serviceAcctInfo = serviceAcctInfo;
                 return this;
             }
 
@@ -330,8 +149,27 @@ public class HmacSecretKey implements Serializable {
                 return this;
             }
 
-            public ServiceAccountBuilder setProjectId(String projectIdentifier) {
-                this.projectIdentifier = projectIdentifier;
+            private ServiceAccountBuilder(ServiceAccountInfo serviceAcctInfo) {
+                this.serviceAcctInfo = serviceAcctInfo;
+            }
+
+            public ServiceAccountBuilder setUpdateTime(long lastUpdated) {
+                this.lastUpdated = lastUpdated;
+                return this;
+            }
+
+            public ServiceAccountBuilder setAccessId(String accessIdentifier) {
+                this.accessIdentifier = accessIdentifier;
+                return this;
+            }
+
+            public ServiceAccountBuilder setServiceAccount(ServiceAccountInfo serviceAcctInfo) {
+                this.serviceAcctInfo = serviceAcctInfo;
+                return this;
+            }
+
+            public ServiceAccountBuilder setEtag(String entityTag) {
+                this.entityTag = entityTag;
                 return this;
             }
 
@@ -342,10 +180,176 @@ public class HmacSecretKey implements Serializable {
                 return new HmacKeyInfo(this);
             }
 
-            public ServiceAccountBuilder setUpdateTime(long lastUpdated) {
-                this.lastUpdated = lastUpdated;
-                return this;
-            }
         }
+
+        /**
+         * Returns the creation time of this HMAC key. *
+         */
+        public Long getCreateTime() {
+            return creationTime;
+        }
+
+        @Override
+        public boolean equals(Object otherObject) {
+            if (otherObject == this) {
+                return true;
+            }
+            if (null == otherObject || otherObject.getClass() != getClass()) {
+                return false;
+            }
+            final HmacKeyInfo comparedInfo = (HmacKeyInfo) otherObject;
+            return Objects.equals(this.accessIdentifier, comparedInfo.accessIdentifier) && Objects.equals(this.entityTag, comparedInfo.entityTag) && Objects.equals(this.identifier, comparedInfo.identifier) && Objects.equals(this.projectIdentifier, comparedInfo.projectIdentifier) && Objects.equals(this.serviceAcctInfo, comparedInfo.serviceAcctInfo) && Objects.equals(this.status, comparedInfo.status) && Objects.equals(this.creationTime, comparedInfo.creationTime) && Objects.equals(this.lastUpdated, comparedInfo.lastUpdated);
+        }
+
+        /**
+         * Returns the service account associated with this HMAC key. *
+         */
+        public ServiceAccountInfo getServiceAccount() {
+            return serviceAcctInfo;
+        }
+
+        /**
+         * Returns the access id for this HMAC key. This is the id needed to get or delete the key. *
+         */
+        public String getAccessId() {
+            return accessIdentifier;
+        }
+
+        /**
+         * Returns the current state of this HMAC key. *
+         */
+        public HmacKeyStatus getState() {
+            return status;
+        }
+
+        /**
+         * Returns the project id associated with this HMAC key. *
+         */
+        public String getProjectId() {
+            return projectIdentifier;
+        }
+
+        public com.google.api.services.storage.model.HmacKeyMetadata toProto() {
+            com.google.api.services.storage.model.HmacKeyMetadata keyDetails = new com.google.api.services.storage.model.HmacKeyMetadata();
+            keyDetails.setAccessId(this.accessIdentifier);
+            keyDetails.setEtag(this.entityTag);
+            keyDetails.setId(this.identifier);
+            keyDetails.setProjectId(this.projectIdentifier);
+            keyDetails.setServiceAccountEmail(null == this.serviceAcctInfo ? null : this.serviceAcctInfo.getEmail());
+            keyDetails.setState(null == this.status ? null : this.status.toString());
+            keyDetails.setTimeCreated(null == this.creationTime ? null : new DateTime(this.creationTime));
+            keyDetails.setUpdated(null == this.lastUpdated ? null : new DateTime(this.lastUpdated));
+            return keyDetails;
+        }
+
+        /**
+         * Returns HTTP 1.1 Entity tag for this HMAC key.
+         *
+         * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
+         */
+        public String getEtag() {
+            return entityTag;
+        }
+
+        public static ServiceAccountBuilder createBuilder(ServiceAccountInfo serviceAcctInfo) {
+            return new ServiceAccountBuilder(serviceAcctInfo);
+        }
+
+        static HmacKeyInfo fromProto(com.google.api.services.storage.model.HmacKeyMetadata keyDetails) {
+            return createBuilder(ServiceAccountInfo.ofEmail(keyDetails.getServiceAccountEmail())).setAccessId(keyDetails.getAccessId()).setCreateTime(keyDetails.getTimeCreated().getValue()).setEtag(keyDetails.getEtag()).setId(keyDetails.getId()).setProjectId(keyDetails.getProjectId()).setState(HmacKeyStatus.valueOf(keyDetails.getState())).setUpdateTime(keyDetails.getUpdated().getValue()).buildInfo();
+        }
+
+        /**
+         * Returns the last updated time of this HMAC key. *
+         */
+        public Long getUpdateTime() {
+            return lastUpdated;
+        }
+
+        public ServiceAccountBuilder toBuilder() {
+            return new ServiceAccountBuilder(this);
+        }
+
+        /**
+         * Returns the resource name of this HMAC key. *
+         */
+        public String getId() {
+            return identifier;
+        }
+
+        public static HmacKeyInfo of(ServiceAccountInfo serviceAcctInfo, String accessIdentifier, String projectIdentifier) {
+            return createBuilder(serviceAcctInfo).setAccessId(accessIdentifier).setProjectId(projectIdentifier).buildInfo();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(accessIdentifier, projectIdentifier);
+        }
+
+        private HmacKeyInfo(ServiceAccountBuilder metadataCreator) {
+            this.accessIdentifier = metadataCreator.accessIdentifier;
+            this.entityTag = metadataCreator.entityTag;
+            this.identifier = metadataCreator.identifier;
+            this.projectIdentifier = metadataCreator.projectIdentifier;
+            this.serviceAcctInfo = metadataCreator.serviceAcctInfo;
+            this.status = metadataCreator.status;
+            this.creationTime = metadataCreator.creationTime;
+            this.lastUpdated = metadataCreator.lastUpdated;
+        }
+
     }
+
+    static HmacSecretKey fromProto(com.google.api.services.storage.model.HmacKey protoKey) {
+        return HmacSecretKey.createBuilder(protoKey.getSecret()).setMetadata(HmacKeyInfo.fromProto(protoKey.getMetadata())).buildMetadata();
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == this) {
+            return true;
+        }
+        if (null == otherObject || otherObject.getClass() != getClass()) {
+            return false;
+        }
+        final HmacKeyInfo other = (HmacKeyInfo) otherObject;
+        return Objects.equals(this.hmacCredential, hmacCredential) && Objects.equals(this.keyDetails, keyDetails);
+    }
+
+    com.google.api.services.storage.model.HmacKey toPb() {
+        com.google.api.services.storage.model.HmacKey protoKey = new com.google.api.services.storage.model.HmacKey();
+        protoKey.setSecret(this.hmacCredential);
+        if (null != keyDetails) {
+            protoKey.setMetadata(keyDetails.toProto());
+        }
+        return protoKey;
+    }
+
+    /**
+     * Returns the secret key associated with this HMAC key. *
+     */
+    public String getSecretKey() {
+        return hmacCredential;
+    }
+
+    /**
+     * Returns the metadata associated with this HMAC key. *
+     */
+    public HmacKeyInfo getMetadata() {
+        return keyDetails;
+    }
+
+    private HmacSecretKey(SecretMetadataBuilder metadataCreator) {
+        this.hmacCredential = metadataCreator.hmacCredential;
+        this.keyDetails = metadataCreator.keyDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hmacCredential, keyDetails);
+    }
+
+    public static SecretMetadataBuilder createBuilder(String hmacCredential) {
+        return new SecretMetadataBuilder(hmacCredential);
+    }
+
 }

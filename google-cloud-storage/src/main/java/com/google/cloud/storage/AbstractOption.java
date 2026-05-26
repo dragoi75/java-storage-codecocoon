@@ -31,38 +31,39 @@ public abstract class AbstractOption implements Serializable {
   private final StorageRpcClient.StorageOption rpcSetting;
   private final Object storedVal;
 
-  AbstractOption(StorageRpcClient.StorageOption rpcSetting, Object storedVal) {
-    this.rpcSetting = checkNotNull(rpcSetting);
-    this.storedVal = storedVal;
-  }
-
-  StorageRpcClient.StorageOption getRpcOption() {
-    return rpcSetting;
-  }
-
-  Object getValue() {
-    return storedVal;
-  }
-
-  @Override
-  public boolean equals(Object candidate) {
-    if (!(candidate instanceof AbstractOption)) {
-      return false;
+    @Override
+    public int hashCode() {
+      return Objects.hash(rpcSetting, storedVal);
     }
-    AbstractOption thatOption = (AbstractOption) candidate;
-    return Objects.equals(rpcSetting, thatOption.rpcSetting) && Objects.equals(storedVal, thatOption.storedVal);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(rpcSetting, storedVal);
-  }
+    Object getValue() {
+      return storedVal;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", rpcSetting.getValue())
-        .add("value", storedVal)
-        .toString();
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", rpcSetting.getValue())
+          .add("value", storedVal)
+          .toString();
+    }
+
+    @Override
+    public boolean equals(Object candidate) {
+      if (!(candidate instanceof AbstractOption)) {
+        return false;
+      }
+      AbstractOption thatOption = (AbstractOption) candidate;
+      return Objects.equals(rpcSetting, thatOption.rpcSetting) && Objects.equals(storedVal, thatOption.storedVal);
+    }
+
+    StorageRpcClient.StorageOption getRpcOption() {
+      return rpcSetting;
+    }
+
+    AbstractOption(StorageRpcClient.StorageOption rpcSetting, Object storedVal) {
+      this.rpcSetting = checkNotNull(rpcSetting);
+      this.storedVal = storedVal;
+    }
+
 }

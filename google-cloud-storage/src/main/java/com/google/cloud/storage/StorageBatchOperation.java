@@ -56,25 +56,50 @@ public class StorageBatchOperation {
 
     private final StorageSettings settings;
 
-    StorageBatchOperation(StorageSettings settings) {
-        this.settings = settings;
-        this.storageClient = settings.getStorageRpcV1();
-        this.requestGroup = storageClient.createBatch();
+    private RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> createUpdateResultCallback(final StorageSettings serviceSettings, final StorageBatchOutcome<StorageObject> outcome) {
+        return new RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>() {
+
+            @Override
+            public void handleSuccess(com.google.api.services.storage.model.StorageObject response) {
+                outcome.success(null == response ? null : StorageObject.fromProto(serviceSettings.getService(), response));
+            }
+
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                outcome.error(new StorageOperationException(googleJsonError));
+            }
+        };
     }
 
-    @VisibleForTesting
-    Object getBatch() {
-        return requestGroup;
+    /**
+     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
+     * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobFetchOption...)}. Calling {@link
+     * StorageBatchOutcome#get()} on the return value yields the requested {@link StorageObject} if successful,
+     * {@code null} if no such blob exists, or throws a {@link StorageOperationException} if the operation
+     * failed.
+     */
+    public StorageBatchOutcome<StorageObject> get(String containerName, String objectName, BlobFetchOption... settings) {
+        return get(BlobIdentifier.create(containerName, objectName), settings);
     }
 
-    @VisibleForTesting
-    StorageRpcClient getStorageRpc() {
-        return storageClient;
-    }
+    private RpcRequestBatch.ResultCallback<Void> createDeleteResultCallback(final StorageBatchOutcome<Boolean> outcome) {
+        return new RpcRequestBatch.ResultCallback<Void>() {
 
-    @VisibleForTesting
-    StorageSettings getOptions() {
-        return settings;
+            @Override
+            public void handleSuccess(Void response) {
+                outcome.success(true);
+            }
+
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                StorageOperationException serviceException = new StorageOperationException(googleJsonError);
+                if (HTTP_NOT_FOUND != serviceException.getCode()) {
+                    outcome.error(serviceException);
+                } else {
+                    outcome.success(false);
+                }
+            }
+        };
     }
 
     /**
@@ -85,6 +110,46 @@ public class StorageBatchOperation {
      */
     public StorageBatchOutcome<Boolean> deleteBlob(String containerName, String objectName, StorageService.BlobSourceOptions... settings) {
         return deleteBlob(BlobIdentifier.create(containerName, objectName), settings);
+    }
+
+    private RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> createGetResultCallback(final StorageSettings serviceSettings, final StorageBatchOutcome<StorageObject> outcome) {
+        return new RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>() {
+
+            @Override
+            public void handleSuccess(com.google.api.services.storage.model.StorageObject response) {
+                outcome.success(null == response ? null : StorageObject.fromProto(serviceSettings.getService(), response));
+            }
+
+            @Override
+            public void handleFailure(GoogleJsonError googleJsonError) {
+                StorageOperationException serviceException = new StorageOperationException(googleJsonError);
+                if (HTTP_NOT_FOUND != serviceException.getCode()) {
+                    outcome.error(serviceException);
+                } else {
+                    outcome.success(null);
+                }
+            }
+        };
+    }
+
+    /**
+     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
+     * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobFetchOption...)}. Calling {@link
+     * StorageBatchOutcome#get()} on the return value yields the requested {@link StorageObject} if successful,
+     * {@code null} if no such blob exists, or throws a {@link StorageOperationException} if the operation
+     * failed.
+     */
+    public StorageBatchOutcome<StorageObject> get(BlobIdentifier objectName, BlobFetchOption... settings) {
+        StorageBatchOutcome<StorageObject> outcome = new StorageBatchOutcome<>();
+        RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> completionHandler = createGetResultCallback(this.settings, outcome);
+        Map<StorageRpcClient.StorageOption, ?> settingMap = DefaultStorageImpl.buildOptionMap(objectName, settings);
+        requestGroup.addGetRequest(objectName.toStorageObject(), completionHandler, settingMap);
+        return outcome;
+    }
+
+    @VisibleForTesting
+    StorageSettings getOptions() {
+        return settings;
     }
 
     /**
@@ -115,30 +180,20 @@ public class StorageBatchOperation {
         return outcome;
     }
 
-    /**
-     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
-     * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobFetchOption...)}. Calling {@link
-     * StorageBatchOutcome#get()} on the return value yields the requested {@link StorageObject} if successful,
-     * {@code null} if no such blob exists, or throws a {@link StorageOperationException} if the operation
-     * failed.
-     */
-    public StorageBatchOutcome<StorageObject> get(String containerName, String objectName, StorageService.BlobFetchOption... settings) {
-        return get(BlobIdentifier.create(containerName, objectName), settings);
+    @VisibleForTesting
+    Object getBatch() {
+        return requestGroup;
     }
 
-    /**
-     * Adds a request representing the "get blob" operation to this batch. The {@code options} can be
-     * used in the same way as for {@link StorageService#get(BlobIdentifier, BlobFetchOption...)}. Calling {@link
-     * StorageBatchOutcome#get()} on the return value yields the requested {@link StorageObject} if successful,
-     * {@code null} if no such blob exists, or throws a {@link StorageOperationException} if the operation
-     * failed.
-     */
-    public StorageBatchOutcome<StorageObject> get(BlobIdentifier objectName, BlobFetchOption... settings) {
-        StorageBatchOutcome<StorageObject> outcome = new StorageBatchOutcome<>();
-        RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> completionHandler = createGetResultCallback(this.settings, outcome);
-        Map<StorageRpcClient.StorageOption, ?> settingMap = DefaultStorageImpl.buildOptionMap(objectName, settings);
-        requestGroup.addGetRequest(objectName.toStorageObject(), completionHandler, settingMap);
-        return outcome;
+    @VisibleForTesting
+    StorageRpcClient getStorageRpc() {
+        return storageClient;
+    }
+
+    StorageBatchOperation(StorageSettings settings) {
+        this.settings = settings;
+        this.storageClient = settings.getStorageRpcV1();
+        this.requestGroup = storageClient.createBatch();
     }
 
     /**
@@ -148,58 +203,4 @@ public class StorageBatchOperation {
         requestGroup.submitBatch();
     }
 
-    private RpcRequestBatch.ResultCallback<Void> createDeleteResultCallback(final StorageBatchOutcome<Boolean> outcome) {
-        return new RpcRequestBatch.ResultCallback<Void>() {
-
-            @Override
-            public void handleSuccess(Void response) {
-                outcome.success(true);
-            }
-
-            @Override
-            public void handleFailure(GoogleJsonError googleJsonError) {
-                StorageOperationException serviceException = new StorageOperationException(googleJsonError);
-                if (HTTP_NOT_FOUND != serviceException.getCode()) {
-                    outcome.error(serviceException);
-                } else {
-                    outcome.success(false);
-                }
-            }
-        };
-    }
-
-    private RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> createGetResultCallback(final StorageSettings serviceSettings, final StorageBatchOutcome<StorageObject> outcome) {
-        return new RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>() {
-
-            @Override
-            public void handleSuccess(com.google.api.services.storage.model.StorageObject response) {
-                outcome.success(null == response ? null : StorageObject.fromProto(serviceSettings.getService(), response));
-            }
-
-            @Override
-            public void handleFailure(GoogleJsonError googleJsonError) {
-                StorageOperationException serviceException = new StorageOperationException(googleJsonError);
-                if (HTTP_NOT_FOUND != serviceException.getCode()) {
-                    outcome.error(serviceException);
-                } else {
-                    outcome.success(null);
-                }
-            }
-        };
-    }
-
-    private RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject> createUpdateResultCallback(final StorageSettings serviceSettings, final StorageBatchOutcome<StorageObject> outcome) {
-        return new RpcRequestBatch.ResultCallback<com.google.api.services.storage.model.StorageObject>() {
-
-            @Override
-            public void handleSuccess(com.google.api.services.storage.model.StorageObject response) {
-                outcome.success(null == response ? null : StorageObject.fromProto(serviceSettings.getService(), response));
-            }
-
-            @Override
-            public void handleFailure(GoogleJsonError googleJsonError) {
-                outcome.error(new StorageOperationException(googleJsonError));
-            }
-        };
-    }
 }
