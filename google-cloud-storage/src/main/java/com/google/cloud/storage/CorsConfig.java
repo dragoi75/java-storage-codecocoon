@@ -75,15 +75,32 @@ public final class CorsConfig implements Serializable {
 
         private static final OriginValue WILDCARD = new OriginValue(WILDCARD_URI);
 
+        public String getValue() {
+            return originText;
+        }
+
+        @Override
+        public String toString() {
+            return getValue();
+        }
+
         private OriginValue(String originText) {
             this.originText = checkNotNull(originText);
         }
 
+        @Override
+        public int hashCode() {
+            return originText.hashCode();
+        }
+
         /**
-         * Returns an {@code Origin} object for all possible origins.
+         * Creates an {@code Origin} object for the provided value.
          */
-        public static OriginValue anyOrigin() {
-            return WILDCARD;
+        public static OriginValue from(String originText) {
+            if (WILDCARD_URI.equals(originText)) {
+                return anyOrigin();
+            }
+            return new OriginValue(originText);
         }
 
         /**
@@ -98,18 +115,10 @@ public final class CorsConfig implements Serializable {
         }
 
         /**
-         * Creates an {@code Origin} object for the provided value.
+         * Returns an {@code Origin} object for all possible origins.
          */
-        public static OriginValue from(String originText) {
-            if (WILDCARD_URI.equals(originText)) {
-                return anyOrigin();
-            }
-            return new OriginValue(originText);
-        }
-
-        @Override
-        public int hashCode() {
-            return originText.hashCode();
+        public static OriginValue anyOrigin() {
+            return WILDCARD;
         }
 
         @Override
@@ -120,14 +129,6 @@ public final class CorsConfig implements Serializable {
             return originText.equals(((OriginValue) candidate).originText);
         }
 
-        @Override
-        public String toString() {
-            return getValue();
-        }
-
-        public String getValue() {
-            return originText;
-        }
     }
 
     /**
@@ -143,7 +144,19 @@ public final class CorsConfig implements Serializable {
 
         private ImmutableList<String> headerNames;
 
-        private CorsPolicyBuilder() {
+        /**
+         * Creates a CORS configuration.
+         */
+        public CorsConfig buildConfig() {
+            return new CorsConfig(this);
+        }
+
+        /**
+         * Sets the response headers supported by this CORS configuration.
+         */
+        public CorsPolicyBuilder setResponseHeaders(Iterable<String> headerIterable) {
+            this.headerNames = null != headerIterable ? ImmutableList.copyOf(headerIterable) : null;
+            return this;
         }
 
         /**
@@ -156,14 +169,6 @@ public final class CorsConfig implements Serializable {
         }
 
         /**
-         * Sets the HTTP methods supported by this CORS configuration.
-         */
-        public CorsPolicyBuilder setMethods(Iterable<HttpRequestMethod> httpVerbs) {
-            this.httpVerbs = null != httpVerbs ? ImmutableList.copyOf(httpVerbs) : null;
-            return this;
-        }
-
-        /**
          * Sets the origins for this CORS configuration.
          */
         public CorsPolicyBuilder setOrigins(Iterable<OriginValue> originValues) {
@@ -171,35 +176,17 @@ public final class CorsConfig implements Serializable {
             return this;
         }
 
+        private CorsPolicyBuilder() {
+        }
+
         /**
-         * Sets the response headers supported by this CORS configuration.
+         * Sets the HTTP methods supported by this CORS configuration.
          */
-        public CorsPolicyBuilder setResponseHeaders(Iterable<String> headerIterable) {
-            this.headerNames = null != headerIterable ? ImmutableList.copyOf(headerIterable) : null;
+        public CorsPolicyBuilder setMethods(Iterable<HttpRequestMethod> httpVerbs) {
+            this.httpVerbs = null != httpVerbs ? ImmutableList.copyOf(httpVerbs) : null;
             return this;
         }
 
-        /**
-         * Creates a CORS configuration.
-         */
-        public CorsConfig buildConfig() {
-            return new CorsConfig(this);
-        }
-    }
-
-    private CorsConfig(CorsPolicyBuilder policyBuilder) {
-        this.maxAge = policyBuilder.maxAge;
-        this.httpVerbs = policyBuilder.httpVerbs;
-        this.originValues = policyBuilder.originValues;
-        this.headerNames = policyBuilder.headerNames;
-    }
-
-    /**
-     * Returns the max time in seconds in which a client can issue requests before sending a new
-     * preflight request.
-     */
-    public Integer getMaxAgeSeconds() {
-        return maxAge;
     }
 
     /**
@@ -207,61 +194,6 @@ public final class CorsConfig implements Serializable {
      */
     public List<HttpRequestMethod> getMethods() {
         return httpVerbs;
-    }
-
-    /**
-     * Returns the origins in this CORS configuration.
-     */
-    public List<OriginValue> getOrigins() {
-        return originValues;
-    }
-
-    /**
-     * Returns the response headers supported by this CORS configuration.
-     */
-    public List<String> getResponseHeaders() {
-        return headerNames;
-    }
-
-    /**
-     * Returns a builder for this CORS configuration.
-     */
-    public CorsPolicyBuilder toBuilder() {
-        return builder().setMaxAgeSeconds(maxAge).setMethods(httpVerbs).setOrigins(originValues).setResponseHeaders(headerNames);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxAge, httpVerbs, originValues, headerNames);
-    }
-
-    @Override
-    public boolean equals(Object candidate) {
-        if (!(candidate instanceof CorsConfig)) {
-            return false;
-        }
-        CorsConfig otherConfig = (CorsConfig) candidate;
-        return Objects.equals(maxAge, otherConfig.maxAge) && Objects.equals(httpVerbs, otherConfig.httpVerbs) && Objects.equals(originValues, otherConfig.originValues) && Objects.equals(headerNames, otherConfig.headerNames);
-    }
-
-    /**
-     * Returns a CORS configuration builder.
-     */
-    public static CorsPolicyBuilder builder() {
-        return new CorsPolicyBuilder();
-    }
-
-    Bucket.Cors toProto() {
-        Bucket.Cors corsProto = new Bucket.Cors();
-        corsProto.setMaxAgeSeconds(maxAge);
-        corsProto.setResponseHeader(headerNames);
-        if (null != httpVerbs) {
-            corsProto.setMethod(newArrayList(transform(httpVerbs, Functions.toStringFunction())));
-        }
-        if (null != originValues) {
-            corsProto.setOrigin(newArrayList(transform(originValues, Functions.toStringFunction())));
-        }
-        return corsProto;
     }
 
     static CorsConfig fromProto(Bucket.Cors policyConfig) {
@@ -287,4 +219,75 @@ public final class CorsConfig implements Serializable {
         policyBuilder.setResponseHeaders(policyConfig.getResponseHeader());
         return policyBuilder.buildConfig();
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxAge, httpVerbs, originValues, headerNames);
+    }
+
+    /**
+     * Returns a CORS configuration builder.
+     */
+    public static CorsPolicyBuilder builder() {
+        return new CorsPolicyBuilder();
+    }
+
+    Bucket.Cors toProto() {
+        Bucket.Cors corsProto = new Bucket.Cors();
+        corsProto.setMaxAgeSeconds(maxAge);
+        corsProto.setResponseHeader(headerNames);
+        if (null != httpVerbs) {
+            corsProto.setMethod(newArrayList(transform(httpVerbs, Functions.toStringFunction())));
+        }
+        if (null != originValues) {
+            corsProto.setOrigin(newArrayList(transform(originValues, Functions.toStringFunction())));
+        }
+        return corsProto;
+    }
+
+    /**
+     * Returns the response headers supported by this CORS configuration.
+     */
+    public List<String> getResponseHeaders() {
+        return headerNames;
+    }
+
+    @Override
+    public boolean equals(Object candidate) {
+        if (!(candidate instanceof CorsConfig)) {
+            return false;
+        }
+        CorsConfig otherConfig = (CorsConfig) candidate;
+        return Objects.equals(maxAge, otherConfig.maxAge) && Objects.equals(httpVerbs, otherConfig.httpVerbs) && Objects.equals(originValues, otherConfig.originValues) && Objects.equals(headerNames, otherConfig.headerNames);
+    }
+
+    private CorsConfig(CorsPolicyBuilder policyBuilder) {
+        this.maxAge = policyBuilder.maxAge;
+        this.httpVerbs = policyBuilder.httpVerbs;
+        this.originValues = policyBuilder.originValues;
+        this.headerNames = policyBuilder.headerNames;
+    }
+
+    /**
+     * Returns a builder for this CORS configuration.
+     */
+    public CorsPolicyBuilder toBuilder() {
+        return builder().setMaxAgeSeconds(maxAge).setMethods(httpVerbs).setOrigins(originValues).setResponseHeaders(headerNames);
+    }
+
+    /**
+     * Returns the max time in seconds in which a client can issue requests before sending a new
+     * preflight request.
+     */
+    public Integer getMaxAgeSeconds() {
+        return maxAge;
+    }
+
+    /**
+     * Returns the origins in this CORS configuration.
+     */
+    public List<OriginValue> getOrigins() {
+        return originValues;
+    }
+
 }

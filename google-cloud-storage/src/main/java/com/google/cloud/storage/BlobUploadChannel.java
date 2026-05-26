@@ -31,20 +31,52 @@ import java.util.concurrent.Callable;
  */
 class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobInfo> {
 
-    BlobUploadChannel(StorageSettings storageSettings, BlobInfo objectInfo, Map<StorageRpcClient.StorageOption, ?> settingsByKey) {
-        this(storageSettings, objectInfo, openChannel(storageSettings, objectInfo, settingsByKey));
+    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobInfo> {
+
+        private static final long serialVersionUID = -9028324143780151286L;
+
+        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobInfo> {
+
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new UploadStateImpl(this);
+            }
+
+            private UploadBuilder(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
+                super(storageSettings, objectMetadata, transferId);
+            }
+
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
+            uploadStream.restore(this);
+            return uploadStream;
+        }
+
+        UploadStateImpl(UploadBuilder uploaderFactory) {
+            super(uploaderFactory);
+        }
+
+        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
+            return new UploadBuilder(storageSettings, objectMetadata, transferId);
+        }
+
     }
 
-    BlobUploadChannel(StorageSettings storageSettings, URL accessLink) {
-        this(storageSettings, openChannel(accessLink, storageSettings));
-    }
+    private static String openChannel(final StorageSettings storageSettings, final BlobInfo objectInfo, final Map<StorageRpcClient.StorageOption, ?> settingsByKey) {
+        try {
+            return runWithRetries(new Callable<String>() {
 
-    BlobUploadChannel(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
-        super(storageSettings, objectMetadata, transferId);
-    }
-
-    BlobUploadChannel(StorageSettings storageSettings, String transferId) {
-        super(storageSettings, null, transferId);
+                @Override
+                public String call() {
+                    return storageSettings.getStorageRpcV1().open(objectInfo.toProto(), settingsByKey);
+                }
+            }, storageSettings.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, storageSettings.getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageServiceException.translateAndRethrow(retryException);
+        }
     }
 
     @Override
@@ -66,18 +98,30 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobInfo> {
         return UploadStateImpl.newBuilder(getOptions(), getEntity(), getUploadId());
     }
 
-    private static String openChannel(final StorageSettings storageSettings, final BlobInfo objectInfo, final Map<StorageRpcClient.StorageOption, ?> settingsByKey) {
-        try {
-            return runWithRetries(new Callable<String>() {
-
-                @Override
-                public String call() {
-                    return storageSettings.getStorageRpcV1().open(objectInfo.toProto(), settingsByKey);
+    private static boolean isValidSignedURL(String queryString) {
+        boolean validMatch = true;
+        if (!queryString.startsWith("X-Goog-Algorithm=")) {
+            if (!queryString.startsWith("GoogleAccessId=")) {
+                validMatch = false;
+            } else {
+                if (!queryString.contains("&Expires=") || !queryString.contains("&Signature=")) {
+                    validMatch = false;
                 }
-            }, storageSettings.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, storageSettings.getClock());
-        } catch (RetryHelper.RetryHelperException retryException) {
-            throw StorageServiceException.translateAndRethrow(retryException);
+            }
+        } else {
+            if (!queryString.contains("&X-Goog-Credential=") || !queryString.contains("&X-Goog-Date=") || !queryString.contains("&X-Goog-Expires=") || !queryString.contains("&X-Goog-SignedHeaders=") || !queryString.contains("&X-Goog-Signature=")) {
+                validMatch = false;
+            }
         }
+        return validMatch;
+    }
+
+    BlobUploadChannel(StorageSettings storageSettings, String transferId) {
+        super(storageSettings, null, transferId);
+    }
+
+    BlobUploadChannel(StorageSettings storageSettings, URL accessLink) {
+        this(storageSettings, openChannel(accessLink, storageSettings));
     }
 
     private static String openChannel(final URL accessLink, final StorageSettings storageSettings) {
@@ -97,53 +141,12 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobInfo> {
         }
     }
 
-    private static boolean isValidSignedURL(String queryString) {
-        boolean validMatch = true;
-        if (!queryString.startsWith("X-Goog-Algorithm=")) {
-            if (!queryString.startsWith("GoogleAccessId=")) {
-                validMatch = false;
-            } else {
-                if (!queryString.contains("&Expires=") || !queryString.contains("&Signature=")) {
-                    validMatch = false;
-                }
-            }
-        } else {
-            if (!queryString.contains("&X-Goog-Credential=") || !queryString.contains("&X-Goog-Date=") || !queryString.contains("&X-Goog-Expires=") || !queryString.contains("&X-Goog-SignedHeaders=") || !queryString.contains("&X-Goog-Signature=")) {
-                validMatch = false;
-            }
-        }
-        return validMatch;
+    BlobUploadChannel(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
+        super(storageSettings, objectMetadata, transferId);
     }
 
-    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobInfo> {
-
-        private static final long serialVersionUID = -9028324143780151286L;
-
-        UploadStateImpl(UploadBuilder uploaderFactory) {
-            super(uploaderFactory);
-        }
-
-        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobInfo> {
-
-            private UploadBuilder(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
-                super(storageSettings, objectMetadata, transferId);
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new UploadStateImpl(this);
-            }
-        }
-
-        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobInfo objectMetadata, String transferId) {
-            return new UploadBuilder(storageSettings, objectMetadata, transferId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
-            uploadStream.restore(this);
-            return uploadStream;
-        }
+    BlobUploadChannel(StorageSettings storageSettings, BlobInfo objectInfo, Map<StorageRpcClient.StorageOption, ?> settingsByKey) {
+        this(storageSettings, objectInfo, openChannel(storageSettings, objectInfo, settingsByKey));
     }
+
 }

@@ -31,38 +31,39 @@ public abstract class AbstractOption implements Serializable {
   private final StorageRpcClient.StorageOption remoteCallOption;
   private final Object payload;
 
-  AbstractOption(StorageRpcClient.StorageOption remoteCallOption, Object payload) {
-    this.remoteCallOption = checkNotNull(remoteCallOption);
-    this.payload = payload;
-  }
-
-  StorageRpcClient.StorageOption getRpcOption() {
-    return remoteCallOption;
-  }
-
-  Object getValue() {
-    return payload;
-  }
-
-  @Override
-  public boolean equals(Object candidate) {
-    if (!(candidate instanceof AbstractOption)) {
-      return false;
+    @Override
+    public int hashCode() {
+      return Objects.hash(remoteCallOption, payload);
     }
-    AbstractOption thatOption = (AbstractOption) candidate;
-    return Objects.equals(remoteCallOption, thatOption.remoteCallOption) && Objects.equals(payload, thatOption.payload);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(remoteCallOption, payload);
-  }
+    @Override
+    public boolean equals(Object candidate) {
+      if (!(candidate instanceof AbstractOption)) {
+        return false;
+      }
+      AbstractOption thatOption = (AbstractOption) candidate;
+      return Objects.equals(remoteCallOption, thatOption.remoteCallOption) && Objects.equals(payload, thatOption.payload);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", remoteCallOption.getValue())
-        .add("value", payload)
-        .toString();
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", remoteCallOption.getValue())
+          .add("value", payload)
+          .toString();
+    }
+
+    StorageRpcClient.StorageOption getRpcOption() {
+      return remoteCallOption;
+    }
+
+    AbstractOption(StorageRpcClient.StorageOption remoteCallOption, Object payload) {
+      this.remoteCallOption = checkNotNull(remoteCallOption);
+      this.payload = payload;
+    }
+
+    Object getValue() {
+      return payload;
+    }
+
 }

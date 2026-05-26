@@ -35,23 +35,6 @@ public final class PostPolicyV4 {
 
     private Map<String, String> attributes;
 
-    private PostPolicyV4(String endpointAddress, Map<String, String> attributes) {
-        this.endpointAddress = endpointAddress;
-        this.attributes = attributes;
-    }
-
-    public static PostPolicyV4 create(String endpointAddress, Map<String, String> attributes) {
-        return new PostPolicyV4(endpointAddress, attributes);
-    }
-
-    public String getUrl() {
-        return endpointAddress;
-    }
-
-    public Map<String, String> getFields() {
-        return attributes;
-    }
-
     /**
      * Class representing which fields to specify in a V4 POST request.
      *
@@ -62,41 +45,47 @@ public final class PostPolicyV4 {
 
         private Map<String, String> entriesMap;
 
-        private PostFieldsV4(Builder creator) {
-            this.entriesMap = creator.entriesMap;
-        }
-
-        private PostFieldsV4(Map<String, String> attributes) {
-            this.entriesMap = attributes;
-        }
-
-        public static PostFieldsV4 create(Map<String, String> attributes) {
-            return new PostFieldsV4(attributes);
-        }
-
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        public Map<String, String> getFieldsMap() {
-            return entriesMap;
-        }
-
         public static class Builder {
 
             private Map<String, String> entriesMap;
 
-            private Builder() {
-                entriesMap = new HashMap<>();
+            public Builder setSuccessActionStatus(int successStatusCode) {
+                entriesMap.put("success_action_status", "" + successStatusCode);
+                return this;
+            }
+
+            public Builder setSuccessActionRedirect(String redirectLocation) {
+                entriesMap.put("success_action_redirect", redirectLocation);
+                return this;
+            }
+
+            public Builder setContentEncoding(String encodingScheme) {
+                entriesMap.put("content-encoding", encodingScheme);
+                return this;
+            }
+
+            public Builder setContentType(String mimeType) {
+                entriesMap.put("content-type", mimeType);
+                return this;
+            }
+
+            public Builder setContentLength(int lengthBytes) {
+                entriesMap.put("content-length", "" + lengthBytes);
+                return this;
+            }
+
+            public Builder Expires(String expiryTimestamp) {
+                entriesMap.put("expires", expiryTimestamp);
+                return this;
+            }
+
+            public Builder AddCustomMetadataField(String metadataKey, String metadataContent) {
+                entriesMap.put("x-goog-meta-" + metadataKey, metadataContent);
+                return this;
             }
 
             public PostFieldsV4 buildInstance() {
                 return new PostFieldsV4(this);
-            }
-
-            public Builder setAcl(String accessControl) {
-                entriesMap.put("acl", accessControl);
-                return this;
             }
 
             public Builder setCacheControl(String cachingPolicy) {
@@ -109,41 +98,37 @@ public final class PostPolicyV4 {
                 return this;
             }
 
-            public Builder setContentEncoding(String encodingScheme) {
-                entriesMap.put("content-encoding", encodingScheme);
+            private Builder() {
+                entriesMap = new HashMap<>();
+            }
+
+            public Builder setAcl(String accessControl) {
+                entriesMap.put("acl", accessControl);
                 return this;
             }
 
-            public Builder setContentLength(int lengthBytes) {
-                entriesMap.put("content-length", "" + lengthBytes);
-                return this;
-            }
-
-            public Builder setContentType(String mimeType) {
-                entriesMap.put("content-type", mimeType);
-                return this;
-            }
-
-            public Builder Expires(String expiryTimestamp) {
-                entriesMap.put("expires", expiryTimestamp);
-                return this;
-            }
-
-            public Builder setSuccessActionRedirect(String redirectLocation) {
-                entriesMap.put("success_action_redirect", redirectLocation);
-                return this;
-            }
-
-            public Builder setSuccessActionStatus(int successStatusCode) {
-                entriesMap.put("success_action_status", "" + successStatusCode);
-                return this;
-            }
-
-            public Builder AddCustomMetadataField(String metadataKey, String metadataContent) {
-                entriesMap.put("x-goog-meta-" + metadataKey, metadataContent);
-                return this;
-            }
         }
+
+        public Map<String, String> getFieldsMap() {
+            return entriesMap;
+        }
+
+        public static PostFieldsV4 create(Map<String, String> attributes) {
+            return new PostFieldsV4(attributes);
+        }
+
+        private PostFieldsV4(Builder creator) {
+            this.entriesMap = creator.entriesMap;
+        }
+
+        private PostFieldsV4(Map<String, String> attributes) {
+            this.entriesMap = attributes;
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
     }
 
     /**
@@ -158,64 +143,12 @@ public final class PostPolicyV4 {
 
         private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-        public PostConditionsV4(Builder creator) {
-            this.constraints = creator.constraints;
-        }
-
-        public Builder asBuilder() {
-            return new Builder(constraints);
-        }
-
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        public Set<ConditionV4> getConditions() {
-            return constraints;
-        }
-
         public static class Builder {
 
             Set<ConditionV4> constraints;
 
-            private Builder() {
-                this.constraints = new LinkedHashSet<>();
-            }
-
-            private Builder(Set<ConditionV4> constraints) {
-                this.constraints = constraints;
-            }
-
-            public static Builder newBuilder() {
-                return new Builder();
-            }
-
-            public PostConditionsV4 buildInstance() {
-                return new PostConditionsV4(this);
-            }
-
-            public Builder addAclCondition(ConditionV4Type conditionCategory, String accessControl) {
-                constraints.add(new ConditionV4(conditionCategory, "acl", accessControl));
-                return this;
-            }
-
-            public Builder withBucketCondition(ConditionV4Type conditionCategory, String containerName) {
-                constraints.add(new ConditionV4(conditionCategory, "bucket", containerName));
-                return this;
-            }
-
-            public Builder addCacheControlCondition(ConditionV4Type conditionCategory, String cachingPolicy) {
-                constraints.add(new ConditionV4(conditionCategory, "cache-control", cachingPolicy));
-                return this;
-            }
-
-            public Builder addContentDispositionCondition(ConditionV4Type conditionCategory, String dispositionHeader) {
-                constraints.add(new ConditionV4(conditionCategory, "content-disposition", dispositionHeader));
-                return this;
-            }
-
-            public Builder addContentEncodingCondition(ConditionV4Type conditionCategory, String encodingScheme) {
-                constraints.add(new ConditionV4(conditionCategory, "content-encoding", encodingScheme));
+            public Builder addContentLengthRange(int lowerLimit, int upperLimit) {
+                constraints.add(new ConditionV4(ConditionV4Type.CONTENT_LENGTH_RANGE, "" + lowerLimit, "" + upperLimit));
                 return this;
             }
 
@@ -234,6 +167,16 @@ public final class PostPolicyV4 {
                 return this;
             }
 
+            public Builder addContentEncodingCondition(ConditionV4Type conditionCategory, String encodingScheme) {
+                constraints.add(new ConditionV4(conditionCategory, "content-encoding", encodingScheme));
+                return this;
+            }
+
+            public Builder addSuccessStatus(ConditionV4Type conditionCategory, int responseCode) {
+                constraints.add(new ConditionV4(conditionCategory, "success_action_status", "" + responseCode));
+                return this;
+            }
+
             public Builder addExpiresCondition(ConditionV4Type conditionCategory, String expiryTimestamp) {
                 constraints.add(new ConditionV4(conditionCategory, "expires", expiryTimestamp));
                 return this;
@@ -244,26 +187,70 @@ public final class PostPolicyV4 {
                 return this;
             }
 
+            public Builder addCacheControlCondition(ConditionV4Type conditionCategory, String cachingPolicy) {
+                constraints.add(new ConditionV4(conditionCategory, "cache-control", cachingPolicy));
+                return this;
+            }
+
             public Builder addSuccessRedirect(ConditionV4Type conditionCategory, String redirectDestinationUrl) {
                 constraints.add(new ConditionV4(conditionCategory, "success_action_redirect", redirectDestinationUrl));
                 return this;
             }
 
-            public Builder addSuccessStatus(ConditionV4Type conditionCategory, int responseCode) {
-                constraints.add(new ConditionV4(conditionCategory, "success_action_status", "" + responseCode));
-                return this;
+            public static Builder newBuilder() {
+                return new Builder();
             }
 
-            public Builder addContentLengthRange(int lowerLimit, int upperLimit) {
-                constraints.add(new ConditionV4(ConditionV4Type.CONTENT_LENGTH_RANGE, "" + lowerLimit, "" + upperLimit));
-                return this;
+            private Builder() {
+                this.constraints = new LinkedHashSet<>();
             }
 
             Builder addCondition(ConditionV4Type conditionCategory, String metadataKey, String metadataContent) {
                 constraints.add(new ConditionV4(conditionCategory, metadataKey, metadataContent));
                 return this;
             }
+
+            public Builder withBucketCondition(ConditionV4Type conditionCategory, String containerName) {
+                constraints.add(new ConditionV4(conditionCategory, "bucket", containerName));
+                return this;
+            }
+
+            public Builder addAclCondition(ConditionV4Type conditionCategory, String accessControl) {
+                constraints.add(new ConditionV4(conditionCategory, "acl", accessControl));
+                return this;
+            }
+
+            public PostConditionsV4 buildInstance() {
+                return new PostConditionsV4(this);
+            }
+
+            private Builder(Set<ConditionV4> constraints) {
+                this.constraints = constraints;
+            }
+
+            public Builder addContentDispositionCondition(ConditionV4Type conditionCategory, String dispositionHeader) {
+                constraints.add(new ConditionV4(conditionCategory, "content-disposition", dispositionHeader));
+                return this;
+            }
+
         }
+
+        public Set<ConditionV4> getConditions() {
+            return constraints;
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder asBuilder() {
+            return new Builder(constraints);
+        }
+
+        public PostConditionsV4(Builder creator) {
+            this.constraints = creator.constraints;
+        }
+
     }
 
     /**
@@ -277,15 +264,6 @@ public final class PostPolicyV4 {
         private String expiryDate;
 
         private PostConditionsV4 constraints;
-
-        private PostPolicyV4Document(String expiryDate, PostConditionsV4 constraints) {
-            this.expiryDate = expiryDate;
-            this.constraints = constraints;
-        }
-
-        public static PostPolicyV4Document create(String expiryDate, PostConditionsV4 constraints) {
-            return new PostPolicyV4Document(expiryDate, constraints);
-        }
 
         public String toJsonString() {
             JsonObject jsonObj = new JsonObject();
@@ -352,6 +330,16 @@ public final class PostPolicyV4 {
             }
             return escapedString.toString();
         }
+
+        public static PostPolicyV4Document create(String expiryDate, PostConditionsV4 constraints) {
+            return new PostPolicyV4Document(expiryDate, constraints);
+        }
+
+        private PostPolicyV4Document(String expiryDate, PostConditionsV4 constraints) {
+            this.expiryDate = expiryDate;
+            this.constraints = constraints;
+        }
+
     }
 
     public enum ConditionV4Type {
@@ -373,10 +361,9 @@ public final class PostPolicyV4 {
 
         String rightOperand;
 
-        private ConditionV4(ConditionV4Type conditionCategory, String leftOperand, String rightOperand) {
-            this.conditionCategory = conditionCategory;
-            this.leftOperand = leftOperand;
-            this.rightOperand = rightOperand;
+        @Override
+        public int hashCode() {
+            return Objects.hash(conditionCategory, leftOperand, rightOperand);
         }
 
         @Override
@@ -385,9 +372,29 @@ public final class PostPolicyV4 {
             return condElement.conditionCategory == this.conditionCategory && this.leftOperand.equals(condElement.leftOperand) && this.rightOperand.equals(condElement.rightOperand);
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(conditionCategory, leftOperand, rightOperand);
+        private ConditionV4(ConditionV4Type conditionCategory, String leftOperand, String rightOperand) {
+            this.conditionCategory = conditionCategory;
+            this.leftOperand = leftOperand;
+            this.rightOperand = rightOperand;
         }
+
     }
+
+    public String getUrl() {
+        return endpointAddress;
+    }
+
+    public Map<String, String> getFields() {
+        return attributes;
+    }
+
+    private PostPolicyV4(String endpointAddress, Map<String, String> attributes) {
+        this.endpointAddress = endpointAddress;
+        this.attributes = attributes;
+    }
+
+    public static PostPolicyV4 create(String endpointAddress, Map<String, String> attributes) {
+        return new PostPolicyV4(endpointAddress, attributes);
+    }
+
 }

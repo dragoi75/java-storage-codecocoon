@@ -140,77 +140,6 @@ public class BucketMetadata implements Serializable {
 
         private Long uniformAccessLockedTime;
 
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this)
-                return true;
-            if (null == obj || obj.getClass() != getClass()) {
-                return false;
-            }
-            BucketIamConfiguration otherConfig = (BucketIamConfiguration) obj;
-            return Objects.equals(toProto(), otherConfig.toProto());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(uniformAccessEnabled, uniformAccessLockedTime);
-        }
-
-        private BucketIamConfiguration(UniformBucketLevelAccessBuilder builderParam) {
-            this.uniformAccessEnabled = builderParam.uniformAccessEnabled;
-            this.uniformAccessLockedTime = builderParam.uniformAccessLockedTime;
-        }
-
-        public static UniformBucketLevelAccessBuilder newUniformBucketLevelAccessBuilder() {
-            return new UniformBucketLevelAccessBuilder();
-        }
-
-        public UniformBucketLevelAccessBuilder toUniformBucketLevelAccessBuilder() {
-            UniformBucketLevelAccessBuilder builderParam = new UniformBucketLevelAccessBuilder();
-            builderParam.uniformAccessEnabled = uniformAccessEnabled;
-            builderParam.uniformAccessLockedTime = uniformAccessLockedTime;
-            return builderParam;
-        }
-
-        /**
-         * Deprecated in favor of isUniformBucketLevelAccessEnabled().
-         */
-        @Deprecated
-        public Boolean isBucketPolicyOnlyEnabled() {
-            return uniformAccessEnabled;
-        }
-
-        /**
-         * Deprecated in favor of uniformBucketLevelAccessLockedTime().
-         */
-        @Deprecated
-        public Long getBucketPolicyOnlyLockedTime() {
-            return uniformAccessLockedTime;
-        }
-
-        public Boolean isUniformBucketLevelAccessEnabled() {
-            return uniformAccessEnabled;
-        }
-
-        public Long getUniformBucketLevelAccessLockedTime() {
-            return uniformAccessLockedTime;
-        }
-
-        Bucket.IamConfiguration toProto() {
-            Bucket.IamConfiguration iamConfig = new Bucket.IamConfiguration();
-            Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccess = new Bucket.IamConfiguration.UniformBucketLevelAccess();
-            uniformAccess.setEnabled(uniformAccessEnabled);
-            uniformAccess.setLockedTime(null == uniformAccessLockedTime ? null : new DateTime(uniformAccessLockedTime));
-            iamConfig.setUniformBucketLevelAccess(uniformAccess);
-            return iamConfig;
-        }
-
-        static BucketIamConfiguration fromProto(Bucket.IamConfiguration iamConfig) {
-            Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccess = iamConfig.getUniformBucketLevelAccess();
-            DateTime lockTimestamp = uniformAccess.getLockedTime();
-            return newUniformBucketLevelAccessBuilder().setIsUniformBucketLevelAccessEnabled(uniformAccess.getEnabled()).setUniformBucketLevelAccessLockedTime(null == lockTimestamp ? null : lockTimestamp.getValue()).buildInstance();
-        }
-
         /**
          * Builder for {@code IamConfiguration}
          */
@@ -219,37 +148,6 @@ public class BucketMetadata implements Serializable {
             private Boolean uniformAccessEnabled;
 
             private Long uniformAccessLockedTime;
-
-            /**
-             * Deprecated in favor of setIsUniformBucketLevelAccessEnabled().
-             */
-            @Deprecated
-            public BucketMetadata.BucketIamConfiguration.UniformBucketLevelAccessBuilder setIsBucketPolicyOnlyEnabled(Boolean isPolicyOnlyEnabled) {
-                this.uniformAccessEnabled = isPolicyOnlyEnabled;
-                return this;
-            }
-
-            /**
-             * Deprecated in favor of setUniformBucketLevelAccessLockedTime().
-             */
-            @Deprecated
-            BucketMetadata.BucketIamConfiguration.UniformBucketLevelAccessBuilder setBucketPolicyOnlyLockedTime(Long policyOnlyLockTimestamp) {
-                this.uniformAccessLockedTime = policyOnlyLockTimestamp;
-                return this;
-            }
-
-            /**
-             * Sets whether uniform bucket-level access is enabled for this bucket. When this is enabled,
-             * access to the bucket will be configured through IAM, and legacy ACL policies will not work.
-             * When this is first enabled, {@code uniformBucketLevelAccess.lockedTime} will be set by the
-             * API automatically. This field can then be disabled until the time specified, after which it
-             * will become immutable and calls to change it will fail. If this is enabled, calls to access
-             * legacy ACL information will fail.
-             */
-            public UniformBucketLevelAccessBuilder setIsUniformBucketLevelAccessEnabled(Boolean uniformAccessEnabled) {
-                this.uniformAccessEnabled = uniformAccessEnabled;
-                return this;
-            }
 
             /**
              * Sets the deadline for switching {@code uniformBucketLevelAccess.enabled} back to false.
@@ -268,7 +166,111 @@ public class BucketMetadata implements Serializable {
             public BucketIamConfiguration buildInstance() {
                 return new BucketIamConfiguration(this);
             }
+
+            /**
+             * Deprecated in favor of setIsUniformBucketLevelAccessEnabled().
+             */
+            @Deprecated
+            public BucketMetadata.BucketIamConfiguration.UniformBucketLevelAccessBuilder setIsBucketPolicyOnlyEnabled(Boolean isPolicyOnlyEnabled) {
+                this.uniformAccessEnabled = isPolicyOnlyEnabled;
+                return this;
+            }
+
+            /**
+             * Sets whether uniform bucket-level access is enabled for this bucket. When this is enabled,
+             * access to the bucket will be configured through IAM, and legacy ACL policies will not work.
+             * When this is first enabled, {@code uniformBucketLevelAccess.lockedTime} will be set by the
+             * API automatically. This field can then be disabled until the time specified, after which it
+             * will become immutable and calls to change it will fail. If this is enabled, calls to access
+             * legacy ACL information will fail.
+             */
+            public UniformBucketLevelAccessBuilder setIsUniformBucketLevelAccessEnabled(Boolean uniformAccessEnabled) {
+                this.uniformAccessEnabled = uniformAccessEnabled;
+                return this;
+            }
+
+            /**
+             * Deprecated in favor of setUniformBucketLevelAccessLockedTime().
+             */
+            @Deprecated
+            BucketMetadata.BucketIamConfiguration.UniformBucketLevelAccessBuilder setBucketPolicyOnlyLockedTime(Long policyOnlyLockTimestamp) {
+                this.uniformAccessLockedTime = policyOnlyLockTimestamp;
+                return this;
+            }
+
         }
+
+        /**
+         * Deprecated in favor of isUniformBucketLevelAccessEnabled().
+         */
+        @Deprecated
+        public Boolean isBucketPolicyOnlyEnabled() {
+            return uniformAccessEnabled;
+        }
+
+        Bucket.IamConfiguration toProto() {
+            Bucket.IamConfiguration iamConfig = new Bucket.IamConfiguration();
+            Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccess = new Bucket.IamConfiguration.UniformBucketLevelAccess();
+            uniformAccess.setEnabled(uniformAccessEnabled);
+            uniformAccess.setLockedTime(null == uniformAccessLockedTime ? null : new DateTime(uniformAccessLockedTime));
+            iamConfig.setUniformBucketLevelAccess(uniformAccess);
+            return iamConfig;
+        }
+
+        public Boolean isUniformBucketLevelAccessEnabled() {
+            return uniformAccessEnabled;
+        }
+
+        public static UniformBucketLevelAccessBuilder newUniformBucketLevelAccessBuilder() {
+            return new UniformBucketLevelAccessBuilder();
+        }
+
+        static BucketIamConfiguration fromProto(Bucket.IamConfiguration iamConfig) {
+            Bucket.IamConfiguration.UniformBucketLevelAccess uniformAccess = iamConfig.getUniformBucketLevelAccess();
+            DateTime lockTimestamp = uniformAccess.getLockedTime();
+            return newUniformBucketLevelAccessBuilder().setIsUniformBucketLevelAccessEnabled(uniformAccess.getEnabled()).setUniformBucketLevelAccessLockedTime(null == lockTimestamp ? null : lockTimestamp.getValue()).buildInstance();
+        }
+
+        public Long getUniformBucketLevelAccessLockedTime() {
+            return uniformAccessLockedTime;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(uniformAccessEnabled, uniformAccessLockedTime);
+        }
+
+        public UniformBucketLevelAccessBuilder toUniformBucketLevelAccessBuilder() {
+            UniformBucketLevelAccessBuilder builderParam = new UniformBucketLevelAccessBuilder();
+            builderParam.uniformAccessEnabled = uniformAccessEnabled;
+            builderParam.uniformAccessLockedTime = uniformAccessLockedTime;
+            return builderParam;
+        }
+
+        /**
+         * Deprecated in favor of uniformBucketLevelAccessLockedTime().
+         */
+        @Deprecated
+        public Long getBucketPolicyOnlyLockedTime() {
+            return uniformAccessLockedTime;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this)
+                return true;
+            if (null == obj || obj.getClass() != getClass()) {
+                return false;
+            }
+            BucketIamConfiguration otherConfig = (BucketIamConfiguration) obj;
+            return Objects.equals(toProto(), otherConfig.toProto());
+        }
+
+        private BucketIamConfiguration(UniformBucketLevelAccessBuilder builderParam) {
+            this.uniformAccessEnabled = builderParam.uniformAccessEnabled;
+            this.uniformAccessLockedTime = builderParam.uniformAccessLockedTime;
+        }
+
     }
 
     /**
@@ -283,62 +285,18 @@ public class BucketMetadata implements Serializable {
 
         private String logObjectKeyPrefix;
 
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this)
-                return true;
-            if (null == obj || obj.getClass() != getClass()) {
-                return false;
-            }
-            LoggingConfig otherConfig = (LoggingConfig) obj;
-            return Objects.equals(toProto(), otherConfig.toProto());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(loggingBucket, logObjectKeyPrefix);
-        }
-
-        public static LogConfigBuilder newLogConfigBuilder() {
-            return new LogConfigBuilder();
-        }
-
-        public LogConfigBuilder toBuilder() {
-            LogConfigBuilder builderParam = new LogConfigBuilder();
-            builderParam.loggingBucket = loggingBucket;
-            builderParam.logObjectKeyPrefix = logObjectKeyPrefix;
-            return builderParam;
-        }
-
-        public String getLogBucket() {
-            return loggingBucket;
-        }
-
-        public String getLogObjectPrefix() {
-            return logObjectKeyPrefix;
-        }
-
-        Bucket.Logging toProto() {
-            Bucket.Logging logConfig = new Bucket.Logging();
-            logConfig.setLogBucket(loggingBucket);
-            logConfig.setLogObjectPrefix(logObjectKeyPrefix);
-            return logConfig;
-        }
-
-        static LoggingConfig fromProto(Bucket.Logging logConfig) {
-            return newLogConfigBuilder().setLogBucket(logConfig.getLogBucket()).setLogObjectPrefix(logConfig.getLogObjectPrefix()).buildConfig();
-        }
-
-        private LoggingConfig(LogConfigBuilder builderParam) {
-            this.loggingBucket = builderParam.loggingBucket;
-            this.logObjectKeyPrefix = builderParam.logObjectKeyPrefix;
-        }
-
         public static class LogConfigBuilder {
 
             private String loggingBucket;
 
             private String logObjectKeyPrefix;
+
+            /**
+             * Builds an {@code Logging} object
+             */
+            public LoggingConfig buildConfig() {
+                return new LoggingConfig(this);
+            }
 
             /**
              * The destination bucket where the current bucket's logs should be placed.
@@ -356,13 +314,59 @@ public class BucketMetadata implements Serializable {
                 return this;
             }
 
-            /**
-             * Builds an {@code Logging} object
-             */
-            public LoggingConfig buildConfig() {
-                return new LoggingConfig(this);
-            }
         }
+
+        public String getLogObjectPrefix() {
+            return logObjectKeyPrefix;
+        }
+
+        public String getLogBucket() {
+            return loggingBucket;
+        }
+
+        static LoggingConfig fromProto(Bucket.Logging logConfig) {
+            return newLogConfigBuilder().setLogBucket(logConfig.getLogBucket()).setLogObjectPrefix(logConfig.getLogObjectPrefix()).buildConfig();
+        }
+
+        Bucket.Logging toProto() {
+            Bucket.Logging logConfig = new Bucket.Logging();
+            logConfig.setLogBucket(loggingBucket);
+            logConfig.setLogObjectPrefix(logObjectKeyPrefix);
+            return logConfig;
+        }
+
+        public static LogConfigBuilder newLogConfigBuilder() {
+            return new LogConfigBuilder();
+        }
+
+        private LoggingConfig(LogConfigBuilder builderParam) {
+            this.loggingBucket = builderParam.loggingBucket;
+            this.logObjectKeyPrefix = builderParam.logObjectKeyPrefix;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this)
+                return true;
+            if (null == obj || obj.getClass() != getClass()) {
+                return false;
+            }
+            LoggingConfig otherConfig = (LoggingConfig) obj;
+            return Objects.equals(toProto(), otherConfig.toProto());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(loggingBucket, logObjectKeyPrefix);
+        }
+
+        public LogConfigBuilder toBuilder() {
+            LogConfigBuilder builderParam = new LogConfigBuilder();
+            builderParam.loggingBucket = loggingBucket;
+            builderParam.logObjectKeyPrefix = logObjectKeyPrefix;
+            return builderParam;
+        }
+
     }
 
     /**
@@ -380,30 +384,236 @@ public class BucketMetadata implements Serializable {
 
         private final LifecycleRuleCondition ruleCondition;
 
-        public LifecycleRuleSpec(LifecycleOperation lifecycleOp, LifecycleRuleCondition lifecycleCond) {
-            if (null == lifecycleCond.getIsLive() && null == lifecycleCond.getAge() && null == lifecycleCond.getCreatedBefore() && null == lifecycleCond.getMatchesStorageClass() && null == lifecycleCond.getNumberOfNewerVersions()) {
-                throw new IllegalArgumentException("You must specify at least one condition to use object lifecycle " + "management. Please see https://cloud.google.com/storage/docs/lifecycle for details.");
+        /**
+         * Condition for a Lifecycle rule, specifies under what criteria an Action should be executed.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/lifecycle#conditions">Object Lifecycle
+         *     Management</a>
+         */
+        public static class LifecycleRuleCondition implements Serializable {
+
+            private static final long serialVersionUID = -6482314338394768785L;
+
+            private final Integer daysOld;
+
+            private final DateTime creationCutoff;
+
+            private final Integer newerVersionCount;
+
+            private final Boolean liveStatus;
+
+            private final List<StorageTier> matchingStorageTiers;
+
+            /**
+             * Builder for {@code LifecycleCondition}.
+             */
+            public static class LifecycleRuleConditionBuilder {
+
+                private Integer daysOld;
+
+                private DateTime creationCutoff;
+
+                private Integer newerVersionCount;
+
+                private Boolean liveStatus;
+
+                private List<StorageTier> matchingStorageTiers;
+
+                /**
+                 * Builds a {@code LifecycleCondition} object. *
+                 */
+                public LifecycleRuleCondition buildCondition() {
+                    return new LifecycleRuleCondition(this);
+                }
+
+                /**
+                 * Sets a list of Storage Classes for a objects that satisfy the condition to execute the
+                 * Action. *
+                 */
+                public LifecycleRuleConditionBuilder setMatchesStorageClass(List<StorageTier> matchingStorageTiers) {
+                    this.matchingStorageTiers = matchingStorageTiers;
+                    return this;
+                }
+
+                /**
+                 * Sets the number of newer versions a Blob should have for an Action to be executed.
+                 * Relevant only when versioning is enabled on a bucket. *
+                 */
+                public LifecycleRuleConditionBuilder setNumberOfNewerVersions(Integer newerVersionCount) {
+                    this.newerVersionCount = newerVersionCount;
+                    return this;
+                }
+
+                /**
+                 * Sets the age in days. This condition is satisfied when a Blob reaches the specified age
+                 * (in days). When you specify the Age condition, you are specifying a Time to Live (TTL)
+                 * for objects in a bucket with lifecycle management configured. The time when the Age
+                 * condition is considered to be satisfied is calculated by adding the specified value to
+                 * the object creation time.
+                 */
+                public LifecycleRuleConditionBuilder setAge(Integer daysOld) {
+                    this.daysOld = daysOld;
+                    return this;
+                }
+
+                /**
+                 * Sets an isLive Boolean condition. If the value is true, this lifecycle condition matches
+                 * only live Blobs; if the value is false, it matches only archived objects. For the
+                 * purposes of this condition, Blobs in non-versioned buckets are considered live.
+                 */
+                public LifecycleRuleConditionBuilder setIsLive(Boolean liveFlag) {
+                    this.liveStatus = liveFlag;
+                    return this;
+                }
+
+                private LifecycleRuleConditionBuilder() {
+                }
+
+                /**
+                 * Sets the date a Blob should be created before for an Action to be executed. Note that
+                 * only the date will be considered, if the time is specified it will be truncated. This
+                 * condition is satisfied when an object is created before midnight of the specified date in
+                 * UTC. *
+                 */
+                public LifecycleRuleConditionBuilder setCreatedBefore(DateTime creationCutoff) {
+                    this.creationCutoff = creationCutoff;
+                    return this;
+                }
+
             }
-            this.ruleAction = lifecycleOp;
-            this.ruleCondition = lifecycleCond;
+
+            public List<StorageTier> getMatchesStorageClass() {
+                return matchingStorageTiers;
+            }
+
+            public DateTime getCreatedBefore() {
+                return creationCutoff;
+            }
+
+            public Boolean getIsLive() {
+                return liveStatus;
+            }
+
+            public Integer getNumberOfNewerVersions() {
+                return newerVersionCount;
+            }
+
+            public Integer getAge() {
+                return daysOld;
+            }
+
+            @Override
+            public String toString() {
+                return MoreObjects.toStringHelper(this).add("age", daysOld).add("createBefore", creationCutoff).add("numberofNewerVersions", newerVersionCount).add("isLive", liveStatus).add("matchesStorageClass", matchingStorageTiers).toString();
+            }
+
+            public LifecycleRuleConditionBuilder toBuilder() {
+                return newConditionBuilder().setAge(this.daysOld).setCreatedBefore(this.creationCutoff).setNumberOfNewerVersions(this.newerVersionCount).setIsLive(this.liveStatus).setMatchesStorageClass(this.matchingStorageTiers);
+            }
+
+            private LifecycleRuleCondition(LifecycleRuleConditionBuilder builderParam) {
+                this.daysOld = builderParam.daysOld;
+                this.creationCutoff = builderParam.creationCutoff;
+                this.newerVersionCount = builderParam.newerVersionCount;
+                this.liveStatus = builderParam.liveStatus;
+                this.matchingStorageTiers = builderParam.matchingStorageTiers;
+            }
+
+            public static LifecycleRuleConditionBuilder newConditionBuilder() {
+                return new LifecycleRuleConditionBuilder();
+            }
+
         }
 
-        public LifecycleOperation getAction() {
-            return ruleAction;
+        /**
+         * Base class for the Action to take when a Lifecycle Condition is met. Specific Actions are
+         * expressed as subclasses of this class, accessed by static factory methods.
+         */
+        public abstract static class LifecycleOperation implements Serializable {
+
+            private static final long serialVersionUID = 5801228724709173284L;
+
+            /**
+             * Creates a new {@code DeleteLifecycleAction}. Blobs that meet the Condition associated with
+             * this action will be deleted.
+             */
+            public static RemoveLifecycleAction createDeleteAction() {
+                return new RemoveLifecycleAction();
+            }
+
+            /**
+             * Creates a new {@code SetStorageClassLifecycleAction}. A Blob's storage class that meets the
+             * action's conditions will be changed to the specified storage class.
+             *
+             * @param storageTier The new storage class to use when conditions are met for this action.
+             */
+            public static SetStorageClassLifecycleOperation createSetStorageClassAction(StorageTier storageTier) {
+                return new SetStorageClassLifecycleOperation(storageTier);
+            }
+
+            public abstract String getActionType();
+
+            @Override
+            public String toString() {
+                return MoreObjects.toStringHelper(this).add("actionType", getActionType()).toString();
+            }
+
         }
 
-        public LifecycleRuleCondition getCondition() {
-            return ruleCondition;
+        public static class RemoveLifecycleAction extends LifecycleOperation {
+
+            public static final String TYPE = "Delete";
+
+            private static final long serialVersionUID = -2050986302222644873L;
+
+            @Override
+            public String getActionType() {
+                return TYPE;
+            }
+
+            private RemoveLifecycleAction() {
+            }
+
         }
 
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("lifecycleAction", ruleAction).add("lifecycleCondition", ruleCondition).toString();
+        public static class SetStorageClassLifecycleOperation extends LifecycleOperation {
+
+            public static final String TYPE = "SetStorageClass";
+
+            private static final long serialVersionUID = -62615467186000899L;
+
+            private final StorageTier storageTier;
+
+            public StorageTier getStorageClass() {
+                return storageTier;
+            }
+
+            @Override
+            public String toString() {
+                return MoreObjects.toStringHelper(this).add("actionType", getActionType()).add("storageClass", storageTier.name()).toString();
+            }
+
+            @Override
+            public String getActionType() {
+                return TYPE;
+            }
+
+            private SetStorageClassLifecycleOperation(StorageTier storageTier) {
+                this.storageTier = storageTier;
+            }
+
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(ruleAction, ruleCondition);
+        Rule toProto() {
+            Rule protoRule = new Rule();
+            Rule.Action lifecycleOp = new Rule.Action().setType(ruleAction.getActionType());
+            if (ruleAction.getActionType().equals(SetStorageClassLifecycleOperation.TYPE)) {
+                lifecycleOp.setStorageClass(((SetStorageClassLifecycleOperation) ruleAction).getStorageClass().toString());
+            }
+            protoRule.setAction(lifecycleOp);
+            Rule.Condition lifecycleCond = new Rule.Condition().setAge(ruleCondition.getAge()).setCreatedBefore(null == ruleCondition.getCreatedBefore() ? null : new DateTime(true, ruleCondition.getCreatedBefore().getValue(), 0)).setIsLive(ruleCondition.getIsLive()).setNumNewerVersions(ruleCondition.getNumberOfNewerVersions()).setMatchesStorageClass(null == ruleCondition.getMatchesStorageClass() ? null : transform(ruleCondition.getMatchesStorageClass(), Functions.toStringFunction()));
+            protoRule.setCondition(lifecycleCond);
+            return protoRule;
         }
 
         @Override
@@ -418,16 +628,9 @@ public class BucketMetadata implements Serializable {
             return Objects.equals(toProto(), otherConfig.toProto());
         }
 
-        Rule toProto() {
-            Rule protoRule = new Rule();
-            Rule.Action lifecycleOp = new Rule.Action().setType(ruleAction.getActionType());
-            if (ruleAction.getActionType().equals(SetStorageClassLifecycleOperation.TYPE)) {
-                lifecycleOp.setStorageClass(((SetStorageClassLifecycleOperation) ruleAction).getStorageClass().toString());
-            }
-            protoRule.setAction(lifecycleOp);
-            Rule.Condition lifecycleCond = new Rule.Condition().setAge(ruleCondition.getAge()).setCreatedBefore(null == ruleCondition.getCreatedBefore() ? null : new DateTime(true, ruleCondition.getCreatedBefore().getValue(), 0)).setIsLive(ruleCondition.getIsLive()).setNumNewerVersions(ruleCondition.getNumberOfNewerVersions()).setMatchesStorageClass(null == ruleCondition.getMatchesStorageClass() ? null : transform(ruleCondition.getMatchesStorageClass(), Functions.toStringFunction()));
-            protoRule.setCondition(lifecycleCond);
-            return protoRule;
+        @Override
+        public int hashCode() {
+            return Objects.hash(ruleAction, ruleCondition);
         }
 
         static LifecycleRuleSpec fromProto(Rule protoRule) {
@@ -453,220 +656,27 @@ public class BucketMetadata implements Serializable {
             return new LifecycleRuleSpec(ruleAction, conditionCreator.buildCondition());
         }
 
-        /**
-         * Condition for a Lifecycle rule, specifies under what criteria an Action should be executed.
-         *
-         * @see <a href="https://cloud.google.com/storage/docs/lifecycle#conditions">Object Lifecycle
-         *     Management</a>
-         */
-        public static class LifecycleRuleCondition implements Serializable {
-
-            private static final long serialVersionUID = -6482314338394768785L;
-
-            private final Integer daysOld;
-
-            private final DateTime creationCutoff;
-
-            private final Integer newerVersionCount;
-
-            private final Boolean liveStatus;
-
-            private final List<StorageTier> matchingStorageTiers;
-
-            private LifecycleRuleCondition(LifecycleRuleConditionBuilder builderParam) {
-                this.daysOld = builderParam.daysOld;
-                this.creationCutoff = builderParam.creationCutoff;
-                this.newerVersionCount = builderParam.newerVersionCount;
-                this.liveStatus = builderParam.liveStatus;
-                this.matchingStorageTiers = builderParam.matchingStorageTiers;
-            }
-
-            public LifecycleRuleConditionBuilder toBuilder() {
-                return newConditionBuilder().setAge(this.daysOld).setCreatedBefore(this.creationCutoff).setNumberOfNewerVersions(this.newerVersionCount).setIsLive(this.liveStatus).setMatchesStorageClass(this.matchingStorageTiers);
-            }
-
-            public static LifecycleRuleConditionBuilder newConditionBuilder() {
-                return new LifecycleRuleConditionBuilder();
-            }
-
-            @Override
-            public String toString() {
-                return MoreObjects.toStringHelper(this).add("age", daysOld).add("createBefore", creationCutoff).add("numberofNewerVersions", newerVersionCount).add("isLive", liveStatus).add("matchesStorageClass", matchingStorageTiers).toString();
-            }
-
-            public Integer getAge() {
-                return daysOld;
-            }
-
-            public DateTime getCreatedBefore() {
-                return creationCutoff;
-            }
-
-            public Integer getNumberOfNewerVersions() {
-                return newerVersionCount;
-            }
-
-            public Boolean getIsLive() {
-                return liveStatus;
-            }
-
-            public List<StorageTier> getMatchesStorageClass() {
-                return matchingStorageTiers;
-            }
-
-            /**
-             * Builder for {@code LifecycleCondition}.
-             */
-            public static class LifecycleRuleConditionBuilder {
-
-                private Integer daysOld;
-
-                private DateTime creationCutoff;
-
-                private Integer newerVersionCount;
-
-                private Boolean liveStatus;
-
-                private List<StorageTier> matchingStorageTiers;
-
-                private LifecycleRuleConditionBuilder() {
-                }
-
-                /**
-                 * Sets the age in days. This condition is satisfied when a Blob reaches the specified age
-                 * (in days). When you specify the Age condition, you are specifying a Time to Live (TTL)
-                 * for objects in a bucket with lifecycle management configured. The time when the Age
-                 * condition is considered to be satisfied is calculated by adding the specified value to
-                 * the object creation time.
-                 */
-                public LifecycleRuleConditionBuilder setAge(Integer daysOld) {
-                    this.daysOld = daysOld;
-                    return this;
-                }
-
-                /**
-                 * Sets the date a Blob should be created before for an Action to be executed. Note that
-                 * only the date will be considered, if the time is specified it will be truncated. This
-                 * condition is satisfied when an object is created before midnight of the specified date in
-                 * UTC. *
-                 */
-                public LifecycleRuleConditionBuilder setCreatedBefore(DateTime creationCutoff) {
-                    this.creationCutoff = creationCutoff;
-                    return this;
-                }
-
-                /**
-                 * Sets the number of newer versions a Blob should have for an Action to be executed.
-                 * Relevant only when versioning is enabled on a bucket. *
-                 */
-                public LifecycleRuleConditionBuilder setNumberOfNewerVersions(Integer newerVersionCount) {
-                    this.newerVersionCount = newerVersionCount;
-                    return this;
-                }
-
-                /**
-                 * Sets an isLive Boolean condition. If the value is true, this lifecycle condition matches
-                 * only live Blobs; if the value is false, it matches only archived objects. For the
-                 * purposes of this condition, Blobs in non-versioned buckets are considered live.
-                 */
-                public LifecycleRuleConditionBuilder setIsLive(Boolean liveFlag) {
-                    this.liveStatus = liveFlag;
-                    return this;
-                }
-
-                /**
-                 * Sets a list of Storage Classes for a objects that satisfy the condition to execute the
-                 * Action. *
-                 */
-                public LifecycleRuleConditionBuilder setMatchesStorageClass(List<StorageTier> matchingStorageTiers) {
-                    this.matchingStorageTiers = matchingStorageTiers;
-                    return this;
-                }
-
-                /**
-                 * Builds a {@code LifecycleCondition} object. *
-                 */
-                public LifecycleRuleCondition buildCondition() {
-                    return new LifecycleRuleCondition(this);
-                }
-            }
+        public LifecycleRuleCondition getCondition() {
+            return ruleCondition;
         }
 
-        /**
-         * Base class for the Action to take when a Lifecycle Condition is met. Specific Actions are
-         * expressed as subclasses of this class, accessed by static factory methods.
-         */
-        public abstract static class LifecycleOperation implements Serializable {
-
-            private static final long serialVersionUID = 5801228724709173284L;
-
-            public abstract String getActionType();
-
-            @Override
-            public String toString() {
-                return MoreObjects.toStringHelper(this).add("actionType", getActionType()).toString();
+        public LifecycleRuleSpec(LifecycleOperation lifecycleOp, LifecycleRuleCondition lifecycleCond) {
+            if (null == lifecycleCond.getIsLive() && null == lifecycleCond.getAge() && null == lifecycleCond.getCreatedBefore() && null == lifecycleCond.getMatchesStorageClass() && null == lifecycleCond.getNumberOfNewerVersions()) {
+                throw new IllegalArgumentException("You must specify at least one condition to use object lifecycle " + "management. Please see https://cloud.google.com/storage/docs/lifecycle for details.");
             }
-
-            /**
-             * Creates a new {@code DeleteLifecycleAction}. Blobs that meet the Condition associated with
-             * this action will be deleted.
-             */
-            public static RemoveLifecycleAction createDeleteAction() {
-                return new RemoveLifecycleAction();
-            }
-
-            /**
-             * Creates a new {@code SetStorageClassLifecycleAction}. A Blob's storage class that meets the
-             * action's conditions will be changed to the specified storage class.
-             *
-             * @param storageTier The new storage class to use when conditions are met for this action.
-             */
-            public static SetStorageClassLifecycleOperation createSetStorageClassAction(StorageTier storageTier) {
-                return new SetStorageClassLifecycleOperation(storageTier);
-            }
+            this.ruleAction = lifecycleOp;
+            this.ruleCondition = lifecycleCond;
         }
 
-        public static class RemoveLifecycleAction extends LifecycleOperation {
-
-            public static final String TYPE = "Delete";
-
-            private static final long serialVersionUID = -2050986302222644873L;
-
-            private RemoveLifecycleAction() {
-            }
-
-            @Override
-            public String getActionType() {
-                return TYPE;
-            }
+        public LifecycleOperation getAction() {
+            return ruleAction;
         }
 
-        public static class SetStorageClassLifecycleOperation extends LifecycleOperation {
-
-            public static final String TYPE = "SetStorageClass";
-
-            private static final long serialVersionUID = -62615467186000899L;
-
-            private final StorageTier storageTier;
-
-            private SetStorageClassLifecycleOperation(StorageTier storageTier) {
-                this.storageTier = storageTier;
-            }
-
-            @Override
-            public String getActionType() {
-                return TYPE;
-            }
-
-            @Override
-            public String toString() {
-                return MoreObjects.toStringHelper(this).add("actionType", getActionType()).add("storageClass", storageTier.name()).toString();
-            }
-
-            public StorageTier getStorageClass() {
-                return storageTier;
-            }
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("lifecycleAction", ruleAction).add("lifecycleCondition", ruleCondition).toString();
         }
+
     }
 
     /**
@@ -691,38 +701,9 @@ public class BucketMetadata implements Serializable {
             AGE, CREATE_BEFORE, NUM_NEWER_VERSIONS, IS_LIVE, UNKNOWN
         }
 
-        DeletionRule(VersionFilterType versionFilter) {
-            this.versionFilter = versionFilter;
-        }
-
-        public VersionFilterType getType() {
-            return versionFilter;
-        }
-
         @Override
         public int hashCode() {
             return Objects.hash(versionFilter);
-        }
-
-        @Override
-        public boolean equals(Object otherObject) {
-            if (otherObject == this) {
-                return true;
-            }
-            if (null == otherObject || otherObject.getClass() != getClass()) {
-                return false;
-            }
-            final DeletionRule otherConfig = (DeletionRule) otherObject;
-            return Objects.equals(toProto(), otherConfig.toProto());
-        }
-
-        Rule toProto() {
-            Rule protoRule = new Rule();
-            protoRule.setAction(new Rule.Action().setType(DELETION_RULE_SUPPORTED_ACTION));
-            Rule.Condition lifecycleCond = new Rule.Condition();
-            fillCondition(lifecycleCond);
-            protoRule.setCondition(lifecycleCond);
-            return protoRule;
         }
 
         abstract void fillCondition(Rule.Condition condition);
@@ -749,6 +730,36 @@ public class BucketMetadata implements Serializable {
             }
             return new RawDeletionRule(protoRule);
         }
+
+        Rule toProto() {
+            Rule protoRule = new Rule();
+            protoRule.setAction(new Rule.Action().setType(DELETION_RULE_SUPPORTED_ACTION));
+            Rule.Condition lifecycleCond = new Rule.Condition();
+            fillCondition(lifecycleCond);
+            protoRule.setCondition(lifecycleCond);
+            return protoRule;
+        }
+
+        public VersionFilterType getType() {
+            return versionFilter;
+        }
+
+        DeletionRule(VersionFilterType versionFilter) {
+            this.versionFilter = versionFilter;
+        }
+
+        @Override
+        public boolean equals(Object otherObject) {
+            if (otherObject == this) {
+                return true;
+            }
+            if (null == otherObject || otherObject.getClass() != getClass()) {
+                return false;
+            }
+            final DeletionRule otherConfig = (DeletionRule) otherObject;
+            return Objects.equals(toProto(), otherConfig.toProto());
+        }
+
     }
 
     /**
@@ -768,6 +779,15 @@ public class BucketMetadata implements Serializable {
 
         private final int lifetimeDays;
 
+        public int getDaysToLive() {
+            return lifetimeDays;
+        }
+
+        @Override
+        void fillCondition(Rule.Condition lifecycleCond) {
+            lifecycleCond.setAge(lifetimeDays);
+        }
+
         /**
          * Creates an {@code AgeDeleteRule} object.
          *
@@ -780,14 +800,6 @@ public class BucketMetadata implements Serializable {
             this.lifetimeDays = lifetimeDays;
         }
 
-        public int getDaysToLive() {
-            return lifetimeDays;
-        }
-
-        @Override
-        void fillCondition(Rule.Condition lifecycleCond) {
-            lifecycleCond.setAge(lifetimeDays);
-        }
     }
 
     static class RawDeletionRule extends DeletionRule {
@@ -796,19 +808,14 @@ public class BucketMetadata implements Serializable {
 
         private transient Rule protoRule;
 
-        RawDeletionRule(Rule protoRule) {
-            super(VersionFilterType.UNKNOWN);
-            this.protoRule = protoRule;
-        }
-
-        @Override
-        void fillCondition(Rule.Condition condition) {
-            throw new UnsupportedOperationException();
-        }
-
         private void writeObject(ObjectOutputStream objectOutput) throws IOException {
             objectOutput.defaultWriteObject();
             objectOutput.writeUTF(protoRule.toString());
+        }
+
+        @Override
+        Rule toProto() {
+            return protoRule;
         }
 
         private void readObject(ObjectInputStream objectInput) throws IOException, ClassNotFoundException {
@@ -817,9 +824,15 @@ public class BucketMetadata implements Serializable {
         }
 
         @Override
-        Rule toProto() {
-            return protoRule;
+        void fillCondition(Rule.Condition condition) {
+            throw new UnsupportedOperationException();
         }
+
+        RawDeletionRule(Rule protoRule) {
+            super(VersionFilterType.UNKNOWN);
+            this.protoRule = protoRule;
+        }
+
     }
 
     /**
@@ -836,6 +849,15 @@ public class BucketMetadata implements Serializable {
 
         private final long creationEpochMillis;
 
+        public long getTimeMillis() {
+            return creationEpochMillis;
+        }
+
+        @Override
+        void fillCondition(Rule.Condition lifecycleCond) {
+            lifecycleCond.setCreatedBefore(new DateTime(true, creationEpochMillis, 0));
+        }
+
         /**
          * Creates an {@code CreatedBeforeDeleteRule} object.
          *
@@ -847,14 +869,6 @@ public class BucketMetadata implements Serializable {
             this.creationEpochMillis = creationEpochMillis;
         }
 
-        public long getTimeMillis() {
-            return creationEpochMillis;
-        }
-
-        @Override
-        void fillCondition(Rule.Condition lifecycleCond) {
-            lifecycleCond.setCreatedBefore(new DateTime(true, creationEpochMillis, 0));
-        }
     }
 
     /**
@@ -872,6 +886,15 @@ public class BucketMetadata implements Serializable {
 
         private final int newerVersionCount;
 
+        public int getNumNewerVersions() {
+            return newerVersionCount;
+        }
+
+        @Override
+        void fillCondition(Rule.Condition lifecycleCond) {
+            lifecycleCond.setNumNewerVersions(newerVersionCount);
+        }
+
         /**
          * Creates an {@code NumNewerVersionsDeleteRule} object.
          *
@@ -883,14 +906,6 @@ public class BucketMetadata implements Serializable {
             this.newerVersionCount = newerVersionCount;
         }
 
-        public int getNumNewerVersions() {
-            return newerVersionCount;
-        }
-
-        @Override
-        void fillCondition(Rule.Condition lifecycleCond) {
-            lifecycleCond.setNumNewerVersions(newerVersionCount);
-        }
     }
 
     /**
@@ -907,6 +922,11 @@ public class BucketMetadata implements Serializable {
 
         private final boolean liveStatus;
 
+        @Override
+        void fillCondition(Rule.Condition lifecycleCond) {
+            lifecycleCond.setIsLive(liveStatus);
+        }
+
         /**
          * Creates an {@code IsLiveDeleteRule} object.
          *
@@ -922,10 +942,6 @@ public class BucketMetadata implements Serializable {
             return liveStatus;
         }
 
-        @Override
-        void fillCondition(Rule.Condition lifecycleCond) {
-            lifecycleCond.setIsLive(liveStatus);
-        }
     }
 
     /**
@@ -933,19 +949,96 @@ public class BucketMetadata implements Serializable {
      */
     public abstract static class BucketBuilder {
 
-        BucketBuilder() {
-        }
+        @BetaApi
+        abstract BucketBuilder setRetentionPolicyIsLocked(Boolean retentionPolicyIsLocked);
 
         /**
-         * Sets the bucket's name.
+         * Sets the default event-based hold for this bucket.
          */
-        public abstract BucketBuilder setName(String name);
+        @BetaApi
+        public abstract BucketBuilder setDefaultEventBasedHold(Boolean defaultEventBasedHold);
+
+        /**
+         * Sets the bucket's access control configuration.
+         *
+         * @see <a
+         *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
+         *     About Access Control Lists</a>
+         */
+        public abstract BucketBuilder setAcl(Iterable<AclEntry> acl);
+
+        /**
+         * Creates a {@code BucketInfo} object.
+         */
+        public abstract BucketMetadata buildBucket();
+
+        @BetaApi
+        abstract BucketBuilder setRetentionEffectiveTime(Long retentionEffectiveTime);
+
+        /**
+         * Sets the default Cloud KMS key name for this bucket.
+         */
+        public abstract BucketBuilder setDefaultKmsKeyName(String defaultKmsKeyName);
+
+        /**
+         * Sets the bucket's lifecycle configuration as a number of lifecycle rules, consisting of an
+         * action and a condition.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle
+         *     Management</a>
+         */
+        public abstract BucketBuilder setLifecycleRules(Iterable<? extends LifecycleRuleSpec> rules);
+
+        /**
+         * Sets the custom object to return when a requested resource is not found.
+         */
+        public abstract BucketBuilder setNotFoundPage(String notFoundPage);
+
+        abstract BucketBuilder setOwner(BaseEntity owner);
 
         abstract BucketBuilder setGeneratedId(String generatedId);
 
-        abstract BucketBuilder setOwner(AclEntry.BaseEntity owner);
+        /**
+         * Sets the bucket's location. Data for blobs in the bucket resides in physical storage within
+         * this region. A list of supported values is available <a
+         * href="https://cloud.google.com/storage/docs/bucket-locations">here</a>.
+         */
+        public abstract BucketBuilder setLocation(String location);
 
-        abstract BucketBuilder setSelfLink(String selfLink);
+        /**
+         * Sets the IamConfiguration to specify whether IAM access should be enabled.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/bucket-policy-only">Bucket Policy
+         *     Only</a>
+         */
+        @BetaApi
+        public abstract BucketBuilder setIamConfiguration(BucketIamConfiguration iamConfiguration);
+
+        abstract BucketBuilder setMetageneration(Long metageneration);
+
+        abstract BucketBuilder setEtag(String etag);
+
+        abstract BucketBuilder setLocationType(String locationType);
+
+        /**
+         * Sets the bucket's lifecycle configuration as a number of delete rules.
+         *
+         * @deprecated Use {@code setLifecycleRules} instead, as in {@code
+         *     setLifecycleRules(Collections.singletonList( new BucketInfo.LifecycleRule(
+         *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).build())));}
+         */
+        @Deprecated
+        public abstract BucketMetadata.BucketBuilder setDeleteRules(Iterable<? extends DeletionRule> rules);
+
+        /**
+         * Sets the label of this bucket.
+         */
+        public abstract BucketBuilder setLabels(Map<String, String> labels);
+
+        public abstract BucketBuilder setLogging(LoggingConfig logging);
+
+        BucketBuilder() {
+        }
 
         /**
          * Sets whether a user accessing the bucket or an object it contains should assume the transit
@@ -960,58 +1053,6 @@ public class BucketMetadata implements Serializable {
         public abstract BucketBuilder setVersioningEnabled(Boolean enable);
 
         /**
-         * Sets the bucket's website index page. Behaves as the bucket's directory index where missing
-         * blobs are treated as potential directories.
-         */
-        public abstract BucketBuilder setIndexPage(String indexPage);
-
-        /**
-         * Sets the custom object to return when a requested resource is not found.
-         */
-        public abstract BucketBuilder setNotFoundPage(String notFoundPage);
-
-        /**
-         * Sets the bucket's lifecycle configuration as a number of delete rules.
-         *
-         * @deprecated Use {@code setLifecycleRules} instead, as in {@code
-         *     setLifecycleRules(Collections.singletonList( new BucketInfo.LifecycleRule(
-         *     LifecycleAction.newDeleteAction(), LifecycleCondition.newBuilder().setAge(5).build())));}
-         */
-        @Deprecated
-        public abstract BucketMetadata.BucketBuilder setDeleteRules(Iterable<? extends DeletionRule> rules);
-
-        /**
-         * Sets the bucket's lifecycle configuration as a number of lifecycle rules, consisting of an
-         * action and a condition.
-         *
-         * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Object Lifecycle
-         *     Management</a>
-         */
-        public abstract BucketBuilder setLifecycleRules(Iterable<? extends LifecycleRuleSpec> rules);
-
-        /**
-         * Sets the bucket's storage class. This defines how blobs in the bucket are stored and
-         * determines the SLA and the cost of storage. A list of supported values is available <a
-         * href="https://cloud.google.com/storage/docs/storage-classes">here</a>.
-         */
-        public abstract BucketBuilder setStorageClass(StorageTier storageClass);
-
-        /**
-         * Sets the bucket's location. Data for blobs in the bucket resides in physical storage within
-         * this region. A list of supported values is available <a
-         * href="https://cloud.google.com/storage/docs/bucket-locations">here</a>.
-         */
-        public abstract BucketBuilder setLocation(String location);
-
-        abstract BucketBuilder setEtag(String etag);
-
-        abstract BucketBuilder setCreateTime(Long createTime);
-
-        abstract BucketBuilder setMetageneration(Long metageneration);
-
-        abstract BucketBuilder setLocationType(String locationType);
-
-        /**
          * Sets the bucket's Cross-Origin Resource Sharing (CORS) configuration.
          *
          * @see <a href="https://cloud.google.com/storage/docs/cross-origin">Cross-Origin Resource
@@ -1020,13 +1061,24 @@ public class BucketMetadata implements Serializable {
         public abstract BucketBuilder setCors(Iterable<CorsConfig> cors);
 
         /**
-         * Sets the bucket's access control configuration.
-         *
-         * @see <a
-         *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
-         *     About Access Control Lists</a>
+         * Sets the bucket's website index page. Behaves as the bucket's directory index where missing
+         * blobs are treated as potential directories.
          */
-        public abstract BucketBuilder setAcl(Iterable<AclEntry> acl);
+        public abstract BucketBuilder setIndexPage(String indexPage);
+
+        /**
+         * Sets the bucket's name.
+         */
+        public abstract BucketBuilder setName(String name);
+
+        /**
+         * If policy is not locked this value can be cleared, increased, and decreased. If policy is
+         * locked the retention period can only be increased.
+         */
+        @BetaApi
+        public abstract BucketBuilder setRetentionPeriod(Long retentionPeriod);
+
+        abstract BucketBuilder setSelfLink(String selfLink);
 
         /**
          * Sets the default access control configuration to apply to bucket's blobs when no other
@@ -1039,49 +1091,14 @@ public class BucketMetadata implements Serializable {
         public abstract BucketBuilder setDefaultAcl(Iterable<AclEntry> acl);
 
         /**
-         * Sets the label of this bucket.
+         * Sets the bucket's storage class. This defines how blobs in the bucket are stored and
+         * determines the SLA and the cost of storage. A list of supported values is available <a
+         * href="https://cloud.google.com/storage/docs/storage-classes">here</a>.
          */
-        public abstract BucketBuilder setLabels(Map<String, String> labels);
+        public abstract BucketBuilder setStorageClass(StorageTier storageClass);
 
-        /**
-         * Sets the default Cloud KMS key name for this bucket.
-         */
-        public abstract BucketBuilder setDefaultKmsKeyName(String defaultKmsKeyName);
+        abstract BucketBuilder setCreateTime(Long createTime);
 
-        /**
-         * Sets the default event-based hold for this bucket.
-         */
-        @BetaApi
-        public abstract BucketBuilder setDefaultEventBasedHold(Boolean defaultEventBasedHold);
-
-        @BetaApi
-        abstract BucketBuilder setRetentionEffectiveTime(Long retentionEffectiveTime);
-
-        @BetaApi
-        abstract BucketBuilder setRetentionPolicyIsLocked(Boolean retentionPolicyIsLocked);
-
-        /**
-         * If policy is not locked this value can be cleared, increased, and decreased. If policy is
-         * locked the retention period can only be increased.
-         */
-        @BetaApi
-        public abstract BucketBuilder setRetentionPeriod(Long retentionPeriod);
-
-        /**
-         * Sets the IamConfiguration to specify whether IAM access should be enabled.
-         *
-         * @see <a href="https://cloud.google.com/storage/docs/bucket-policy-only">Bucket Policy
-         *     Only</a>
-         */
-        @BetaApi
-        public abstract BucketBuilder setIamConfiguration(BucketIamConfiguration iamConfiguration);
-
-        public abstract BucketBuilder setLogging(LoggingConfig logging);
-
-        /**
-         * Creates a {@code BucketInfo} object.
-         */
-        public abstract BucketMetadata buildBucket();
     }
 
     static final class BucketBuilderImpl extends BucketBuilder {
@@ -1140,8 +1157,120 @@ public class BucketMetadata implements Serializable {
 
         private LoggingConfig logConfig;
 
+        @Override
+        public BucketMetadata.BucketBuilder setStorageClass(StorageTier storageTier) {
+            this.storageTier = storageTier;
+            return this;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setRetentionEffectiveTime(Long retentionEffectiveTimestamp) {
+            this.retentionEffectiveTimestamp = firstNonNull(retentionEffectiveTimestamp, Data.<Long>nullOf(Long.class));
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setIamConfiguration(BucketIamConfiguration iamConfig) {
+            this.iamConfig = iamConfig;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setRetentionPeriod(Long retentionDuration) {
+            this.retentionDuration = firstNonNull(retentionDuration, Data.<Long>nullOf(Long.class));
+            return this;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setCreateTime(Long creationTime) {
+            this.creationTime = creationTime;
+            return this;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setLocationType(String locationClass) {
+            this.locationClass = locationClass;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setLifecycleRules(Iterable<? extends LifecycleRuleSpec> deletionPolicies) {
+            this.lifecyclePolicies = null != deletionPolicies ? ImmutableList.copyOf(deletionPolicies) : null;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setIndexPage(String indexDocument) {
+            this.indexDocument = indexDocument;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata buildBucket() {
+            checkNotNull(bucketName);
+            return new BucketMetadata(this);
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setMetageneration(Long metadataGeneration) {
+            this.metadataGeneration = metadataGeneration;
+            return this;
+        }
+
         BucketBuilderImpl(String bucketName) {
             this.bucketName = bucketName;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setEtag(String entityTag) {
+            this.entityTag = entityTag;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setCors(Iterable<CorsConfig> corsConfigs) {
+            this.corsConfigs = null != corsConfigs ? ImmutableList.copyOf(corsConfigs) : null;
+            return this;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setGeneratedId(String uniqueIdentifier) {
+            this.uniqueIdentifier = uniqueIdentifier;
+            return this;
+        }
+
+        /**
+         * @deprecated Use {@code setLifecycleRules} method instead. *
+         */
+        @Override
+        @Deprecated
+        public BucketMetadata.BucketBuilder setDeleteRules(Iterable<? extends DeletionRule> deletionPolicies) {
+            this.deletionRules = null != deletionPolicies ? ImmutableList.copyOf(deletionPolicies) : null;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setLogging(LoggingConfig logConfig) {
+            this.logConfig = logConfig;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setVersioningEnabled(Boolean versioningEnabled) {
+            this.versioningOn = firstNonNull(versioningEnabled, Data.<Boolean>nullOf(Boolean.class));
+            return this;
+        }
+
+        @Override
+        BucketMetadata.BucketBuilder setSelfLink(String selfLinkUri) {
+            this.selfLinkUri = selfLinkUri;
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setRequesterPays(Boolean versioningEnabled) {
+            this.requesterBilling = firstNonNull(versioningEnabled, Data.<Boolean>nullOf(Boolean.class));
+            return this;
         }
 
         BucketBuilderImpl(BucketMetadata metadata) {
@@ -1175,72 +1304,8 @@ public class BucketMetadata implements Serializable {
         }
 
         @Override
-        public BucketMetadata.BucketBuilder setName(String bucketName) {
-            this.bucketName = checkNotNull(bucketName);
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setGeneratedId(String uniqueIdentifier) {
-            this.uniqueIdentifier = uniqueIdentifier;
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setOwner(BaseEntity ownerEntity) {
-            this.ownerEntity = ownerEntity;
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setSelfLink(String selfLinkUri) {
-            this.selfLinkUri = selfLinkUri;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setVersioningEnabled(Boolean versioningEnabled) {
-            this.versioningOn = firstNonNull(versioningEnabled, Data.<Boolean>nullOf(Boolean.class));
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setRequesterPays(Boolean versioningEnabled) {
-            this.requesterBilling = firstNonNull(versioningEnabled, Data.<Boolean>nullOf(Boolean.class));
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setIndexPage(String indexDocument) {
-            this.indexDocument = indexDocument;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setNotFoundPage(String notFoundDocument) {
-            this.notFoundDocument = notFoundDocument;
-            return this;
-        }
-
-        /**
-         * @deprecated Use {@code setLifecycleRules} method instead. *
-         */
-        @Override
-        @Deprecated
-        public BucketMetadata.BucketBuilder setDeleteRules(Iterable<? extends DeletionRule> deletionPolicies) {
-            this.deletionRules = null != deletionPolicies ? ImmutableList.copyOf(deletionPolicies) : null;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setLifecycleRules(Iterable<? extends LifecycleRuleSpec> deletionPolicies) {
-            this.lifecyclePolicies = null != deletionPolicies ? ImmutableList.copyOf(deletionPolicies) : null;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setStorageClass(StorageTier storageTier) {
-            this.storageTier = storageTier;
+        BucketMetadata.BucketBuilder setRetentionPolicyIsLocked(Boolean retentionPolicyLocked) {
+            this.retentionPolicyLocked = firstNonNull(retentionPolicyLocked, Data.<Boolean>nullOf(Boolean.class));
             return this;
         }
 
@@ -1251,26 +1316,20 @@ public class BucketMetadata implements Serializable {
         }
 
         @Override
-        BucketMetadata.BucketBuilder setEtag(String entityTag) {
-            this.entityTag = entityTag;
+        public BucketMetadata.BucketBuilder setDefaultAcl(Iterable<AclEntry> aclEntries) {
+            this.defaultAclEntries = null != aclEntries ? ImmutableList.copyOf(aclEntries) : null;
             return this;
         }
 
         @Override
-        BucketMetadata.BucketBuilder setCreateTime(Long creationTime) {
-            this.creationTime = creationTime;
+        public BucketMetadata.BucketBuilder setName(String bucketName) {
+            this.bucketName = checkNotNull(bucketName);
             return this;
         }
 
         @Override
-        BucketMetadata.BucketBuilder setMetageneration(Long metadataGeneration) {
-            this.metadataGeneration = metadataGeneration;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setCors(Iterable<CorsConfig> corsConfigs) {
-            this.corsConfigs = null != corsConfigs ? ImmutableList.copyOf(corsConfigs) : null;
+        BucketMetadata.BucketBuilder setOwner(BaseEntity ownerEntity) {
+            this.ownerEntity = ownerEntity;
             return this;
         }
 
@@ -1281,8 +1340,14 @@ public class BucketMetadata implements Serializable {
         }
 
         @Override
-        public BucketMetadata.BucketBuilder setDefaultAcl(Iterable<AclEntry> aclEntries) {
-            this.defaultAclEntries = null != aclEntries ? ImmutableList.copyOf(aclEntries) : null;
+        public BucketMetadata.BucketBuilder setDefaultEventBasedHold(Boolean eventBasedHoldDefault) {
+            this.eventBasedHoldDefault = firstNonNull(eventBasedHoldDefault, Data.<Boolean>nullOf(Boolean.class));
+            return this;
+        }
+
+        @Override
+        public BucketMetadata.BucketBuilder setNotFoundPage(String notFoundDocument) {
+            this.notFoundDocument = notFoundDocument;
             return this;
         }
 
@@ -1307,389 +1372,10 @@ public class BucketMetadata implements Serializable {
             return this;
         }
 
-        @Override
-        public BucketMetadata.BucketBuilder setDefaultEventBasedHold(Boolean eventBasedHoldDefault) {
-            this.eventBasedHoldDefault = firstNonNull(eventBasedHoldDefault, Data.<Boolean>nullOf(Boolean.class));
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setRetentionEffectiveTime(Long retentionEffectiveTimestamp) {
-            this.retentionEffectiveTimestamp = firstNonNull(retentionEffectiveTimestamp, Data.<Long>nullOf(Long.class));
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setRetentionPolicyIsLocked(Boolean retentionPolicyLocked) {
-            this.retentionPolicyLocked = firstNonNull(retentionPolicyLocked, Data.<Boolean>nullOf(Boolean.class));
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setRetentionPeriod(Long retentionDuration) {
-            this.retentionDuration = firstNonNull(retentionDuration, Data.<Long>nullOf(Long.class));
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setIamConfiguration(BucketIamConfiguration iamConfig) {
-            this.iamConfig = iamConfig;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata.BucketBuilder setLogging(LoggingConfig logConfig) {
-            this.logConfig = logConfig;
-            return this;
-        }
-
-        @Override
-        BucketMetadata.BucketBuilder setLocationType(String locationClass) {
-            this.locationClass = locationClass;
-            return this;
-        }
-
-        @Override
-        public BucketMetadata buildBucket() {
-            checkNotNull(bucketName);
-            return new BucketMetadata(this);
-        }
     }
 
-    BucketMetadata(BucketBuilderImpl builderParam) {
-        uniqueIdentifier = builderParam.uniqueIdentifier;
-        bucketName = builderParam.bucketName;
-        entityTag = builderParam.entityTag;
-        creationTime = builderParam.creationTime;
-        metadataGeneration = builderParam.metadataGeneration;
-        region = builderParam.region;
-        storageTier = builderParam.storageTier;
-        corsConfigs = builderParam.corsConfigs;
-        aclEntries = builderParam.aclEntries;
-        defaultAclEntries = builderParam.defaultAclEntries;
-        ownerEntity = builderParam.ownerEntity;
-        selfLinkUri = builderParam.selfLinkUri;
-        versioningOn = builderParam.versioningOn;
-        indexDocument = builderParam.indexDocument;
-        notFoundDocument = builderParam.notFoundDocument;
-        deletionRules = builderParam.deletionRules;
-        lifecyclePolicies = builderParam.lifecyclePolicies;
-        labelMap = builderParam.labelMap;
-        requesterBilling = builderParam.requesterBilling;
-        kmsDefaultKey = builderParam.kmsDefaultKey;
-        eventBasedHoldDefault = builderParam.eventBasedHoldDefault;
-        retentionEffectiveTimestamp = builderParam.retentionEffectiveTimestamp;
-        retentionPolicyLocked = builderParam.retentionPolicyLocked;
-        retentionDuration = builderParam.retentionDuration;
-        iamConfig = builderParam.iamConfig;
-        locationClass = builderParam.locationClass;
-        logConfig = builderParam.logConfig;
-    }
-
-    /**
-     * Returns the service-generated id for the bucket.
-     */
-    public String getGeneratedId() {
-        return uniqueIdentifier;
-    }
-
-    /**
-     * Returns the bucket's name.
-     */
-    public String getName() {
-        return bucketName;
-    }
-
-    /**
-     * Returns the bucket's owner. This is always the project team's owner group.
-     */
-    public AclEntry.BaseEntity getOwner() {
-        return ownerEntity;
-    }
-
-    /**
-     * Returns the URI of this bucket as a string.
-     */
-    public String getSelfLink() {
-        return selfLinkUri;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
-     * false}.
-     *
-     * <p>Case 1: {@code true} the field {@link
-     * Storage.BucketAttribute#VERSIONING} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)} and versions for the bucket is enabled.
-     *
-     * <p>Case 2.1: {@code null} the field {@link
-     * Storage.BucketAttribute#VERSIONING} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)}, but versions for the bucket is not enabled.
-     * This case can be considered implicitly {@code false}.
-     *
-     * <p>Case 2.2: {@code null} the field {@link
-     * Storage.BucketAttribute#VERSIONING} is not selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is unknown.
-     *
-     * <p>Case 3: {@code false} versions is explicitly set to false client side for a follow-up
-     * request for example {@link Storage#update(BucketMetadata, Storage.BucketTargetOptions...)} in which
-     * case the value of versions will remain {@code false} for for the given instance.
-     */
-    public Boolean isVersioningEnabled() {
-        return Data.isNull(versioningOn) ? null : versioningOn;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true}, {@code false}, and in a specific case
-     * {@code null}.
-     *
-     * <p>Case 1: {@code true} the field {@link Storage.BucketAttribute#BILLING}
-     * is selected in a {@link Storage#get(String, Storage.BucketGetOptions...)} and requester pays for
-     * the bucket is enabled.
-     *
-     * <p>Case 2: {@code false} the field {@link Storage.BucketAttribute#BILLING}
-     * in a {@link Storage#get(String, Storage.BucketGetOptions...)} is selected and requester pays for
-     * the bucket is disable.
-     *
-     * <p>Case 3: {@code null} the field {@link Storage.BucketAttribute#BILLING}
-     * in a {@link Storage#get(String, Storage.BucketGetOptions...)} is not selected, the value is
-     * unknown.
-     */
-    public Boolean isRequesterPays() {
-        return Data.isNull(requesterBilling) ? null : requesterBilling;
-    }
-
-    /**
-     * Returns bucket's website index page. Behaves as the bucket's directory index where missing
-     * blobs are treated as potential directories.
-     */
-    public String getIndexPage() {
-        return indexDocument;
-    }
-
-    /**
-     * Returns the custom object to return when a requested resource is not found.
-     */
-    public String getNotFoundPage() {
-        return notFoundDocument;
-    }
-
-    /**
-     * Returns bucket's lifecycle configuration as a number of delete rules.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Lifecycle Management</a>
-     */
-    @Deprecated
-    public List<? extends DeletionRule> getDeleteRules() {
-        return deletionRules;
-    }
-
-    public List<? extends LifecycleRuleSpec> getLifecycleRules() {
-        return lifecyclePolicies;
-    }
-
-    /**
-     * Returns HTTP 1.1 Entity tag for the bucket.
-     *
-     * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
-     */
-    public String getEtag() {
-        return entityTag;
-    }
-
-    /**
-     * Returns the time at which the bucket was created.
-     */
-    public Long getCreateTime() {
-        return creationTime;
-    }
-
-    /**
-     * Returns the metadata generation of this bucket.
-     */
-    public Long getMetageneration() {
-        return metadataGeneration;
-    }
-
-    /**
-     * Returns the bucket's location. Data for blobs in the bucket resides in physical storage within
-     * this region.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket Locations</a>
-     */
-    public String getLocation() {
-        return region;
-    }
-
-    /**
-     * Returns the bucket's locationType.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket LocationType</a>
-     */
-    public String getLocationType() {
-        return locationClass;
-    }
-
-    /**
-     * Returns the bucket's storage class. This defines how blobs in the bucket are stored and
-     * determines the SLA and the cost of storage.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/storage-classes">Storage Classes</a>
-     */
-    public StorageTier getStorageClass() {
-        return storageTier;
-    }
-
-    /**
-     * Returns the bucket's Cross-Origin Resource Sharing (CORS) configuration.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/cross-origin">Cross-Origin Resource Sharing
-     *     (CORS)</a>
-     */
-    public List<CorsConfig> getCors() {
-        return corsConfigs;
-    }
-
-    /**
-     * Returns the bucket's access control configuration.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
-     *     About Access Control Lists</a>
-     */
-    public List<AclEntry> getAcl() {
-        return aclEntries;
-    }
-
-    /**
-     * Returns the default access control configuration for this bucket's blobs.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
-     *     About Access Control Lists</a>
-     */
-    public List<AclEntry> getDefaultAcl() {
-        return defaultAclEntries;
-    }
-
-    /**
-     * Returns the labels for this bucket.
-     */
-    public Map<String, String> getLabels() {
-        return labelMap;
-    }
-
-    /**
-     * Returns the default Cloud KMS key to be applied to newly inserted objects in this bucket.
-     */
-    public String getDefaultKmsKeyName() {
-        return kmsDefaultKey;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
-     * false}.
-     *
-     * <p>Case 1: {@code true} the field {@link
-     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)} and default event-based hold for the bucket is
-     * enabled.
-     *
-     * <p>Case 2.1: {@code null} the field {@link
-     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)}, but default event-based hold for the bucket
-     * is not enabled. This case can be considered implicitly {@code false}.
-     *
-     * <p>Case 2.2: {@code null} the field {@link
-     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is not selected in a
-     * {@link Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is
-     * unknown.
-     *
-     * <p>Case 3: {@code false} default event-based hold is explicitly set to false using in a {@link
-     * BucketBuilder#setDefaultEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-     * Storage#update(BucketMetadata, Storage.BucketTargetOptions...)} in which case the value of default
-     * event-based hold will remain {@code false} for the given instance.
-     */
-    @BetaApi
-    public Boolean getDefaultEventBasedHold() {
-        return Data.isNull(eventBasedHoldDefault) ? null : eventBasedHoldDefault;
-    }
-
-    /**
-     * Returns the retention effective time a policy took effect if a retention policy is defined as a
-     * {@code Long}.
-     */
-    @BetaApi
-    public Long getRetentionEffectiveTime() {
-        return retentionEffectiveTimestamp;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true} or {@code null}.
-     *
-     * <p>Case 1: {@code true} the field {@link
-     * Storage.BucketAttribute#RETENTION_POLICY} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)} and retention policy for the bucket is locked.
-     *
-     * <p>Case 2.1: {@code null} the field {@link
-     * Storage.BucketAttribute#RETENTION_POLICY} is selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)}, but retention policy for the bucket is not
-     * locked. This case can be considered implicitly {@code false}.
-     *
-     * <p>Case 2.2: {@code null} the field {@link
-     * Storage.BucketAttribute#RETENTION_POLICY} is not selected in a {@link
-     * Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is unknown.
-     */
-    @BetaApi
-    public Boolean isRetentionPolicyLocked() {
-        return Data.isNull(retentionPolicyLocked) ? null : retentionPolicyLocked;
-    }
-
-    /**
-     * Returns the retention policy retention period.
-     */
-    @BetaApi
-    public Long getRetentionPeriod() {
-        return retentionDuration;
-    }
-
-    /**
-     * Returns the IAM configuration
-     */
-    @BetaApi
-    public BucketIamConfiguration getIamConfiguration() {
-        return iamConfig;
-    }
-
-    /**
-     * Returns the Logging
-     */
-    public LoggingConfig getLogging() {
-        return logConfig;
-    }
-
-    /**
-     * Returns a builder for the current bucket.
-     */
-    public BucketBuilder asBuilder() {
-        return new BucketBuilderImpl(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bucketName);
-    }
-
-    @Override
-    public boolean equals(Object otherObject) {
-        return this == otherObject || null != otherObject && otherObject.getClass().equals(BucketMetadata.class) && Objects.equals(toProto(), ((BucketMetadata) otherObject).toProto());
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("name", bucketName).toString();
-    }
-
-    com.google.api.services.storage.model.Bucket toProto() {
-        com.google.api.services.storage.model.Bucket bucketProto = new com.google.api.services.storage.model.Bucket();
+    Bucket toProto() {
+        Bucket bucketProto = new Bucket();
         bucketProto.setId(uniqueIdentifier);
         bucketProto.setName(bucketName);
         bucketProto.setEtag(entityTag);
@@ -1805,10 +1491,122 @@ public class BucketMetadata implements Serializable {
     }
 
     /**
+     * Returns the IAM configuration
+     */
+    @BetaApi
+    public BucketIamConfiguration getIamConfiguration() {
+        return iamConfig;
+    }
+
+    /**
      * Creates a {@code BucketInfo} object for the provided bucket name.
      */
     public static BucketMetadata ofName(String bucketName) {
         return newBucketBuilder(bucketName).buildBucket();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("name", bucketName).toString();
+    }
+
+    /**
+     * Returns the bucket's location. Data for blobs in the bucket resides in physical storage within
+     * this region.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket Locations</a>
+     */
+    public String getLocation() {
+        return region;
+    }
+
+    /**
+     * Returns the default Cloud KMS key to be applied to newly inserted objects in this bucket.
+     */
+    public String getDefaultKmsKeyName() {
+        return kmsDefaultKey;
+    }
+
+    /**
+     * Returns the URI of this bucket as a string.
+     */
+    public String getSelfLink() {
+        return selfLinkUri;
+    }
+
+    /**
+     * Returns the bucket's locationType.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/bucket-locations">Bucket LocationType</a>
+     */
+    public String getLocationType() {
+        return locationClass;
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        return this == otherObject || null != otherObject && otherObject.getClass().equals(BucketMetadata.class) && Objects.equals(toProto(), ((BucketMetadata) otherObject).toProto());
+    }
+
+    public List<? extends LifecycleRuleSpec> getLifecycleRules() {
+        return lifecyclePolicies;
+    }
+
+    /**
+     * Returns the bucket's name.
+     */
+    public String getName() {
+        return bucketName;
+    }
+
+    /**
+     * Returns the bucket's access control configuration.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
+     *     About Access Control Lists</a>
+     */
+    public List<AclEntry> getAcl() {
+        return aclEntries;
+    }
+
+    /**
+     * Returns the retention policy retention period.
+     */
+    @BetaApi
+    public Long getRetentionPeriod() {
+        return retentionDuration;
+    }
+
+    /**
+     * Returns the bucket's owner. This is always the project team's owner group.
+     */
+    public BaseEntity getOwner() {
+        return ownerEntity;
+    }
+
+    /**
+     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
+     * false}.
+     *
+     * <p>Case 1: {@code true} the field {@link
+     * Storage.BucketAttribute#VERSIONING} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)} and versions for the bucket is enabled.
+     *
+     * <p>Case 2.1: {@code null} the field {@link
+     * Storage.BucketAttribute#VERSIONING} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)}, but versions for the bucket is not enabled.
+     * This case can be considered implicitly {@code false}.
+     *
+     * <p>Case 2.2: {@code null} the field {@link
+     * Storage.BucketAttribute#VERSIONING} is not selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is unknown.
+     *
+     * <p>Case 3: {@code false} versions is explicitly set to false client side for a follow-up
+     * request for example {@link Storage#update(BucketMetadata, Storage.BucketTargetOptions...)} in which
+     * case the value of versions will remain {@code false} for for the given instance.
+     */
+    public Boolean isVersioningEnabled() {
+        return Data.isNull(versioningOn) ? null : versioningOn;
     }
 
     /**
@@ -1818,7 +1616,130 @@ public class BucketMetadata implements Serializable {
         return new BucketBuilderImpl(bucketName);
     }
 
-    static BucketMetadata fromProto(com.google.api.services.storage.model.Bucket bucketProto) {
+    /**
+     * Returns a {@code Boolean} with either {@code true} or {@code null}.
+     *
+     * <p>Case 1: {@code true} the field {@link
+     * Storage.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)} and retention policy for the bucket is locked.
+     *
+     * <p>Case 2.1: {@code null} the field {@link
+     * Storage.BucketAttribute#RETENTION_POLICY} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)}, but retention policy for the bucket is not
+     * locked. This case can be considered implicitly {@code false}.
+     *
+     * <p>Case 2.2: {@code null} the field {@link
+     * Storage.BucketAttribute#RETENTION_POLICY} is not selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is unknown.
+     */
+    @BetaApi
+    public Boolean isRetentionPolicyLocked() {
+        return Data.isNull(retentionPolicyLocked) ? null : retentionPolicyLocked;
+    }
+
+    /**
+     * Returns the default access control configuration for this bucket's blobs.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
+     *     About Access Control Lists</a>
+     */
+    public List<AclEntry> getDefaultAcl() {
+        return defaultAclEntries;
+    }
+
+    /**
+     * Returns the labels for this bucket.
+     */
+    public Map<String, String> getLabels() {
+        return labelMap;
+    }
+
+    /**
+     * Returns a {@code Boolean} with either {@code true}, {@code false}, and in a specific case
+     * {@code null}.
+     *
+     * <p>Case 1: {@code true} the field {@link Storage.BucketAttribute#BILLING}
+     * is selected in a {@link Storage#get(String, Storage.BucketGetOptions...)} and requester pays for
+     * the bucket is enabled.
+     *
+     * <p>Case 2: {@code false} the field {@link Storage.BucketAttribute#BILLING}
+     * in a {@link Storage#get(String, Storage.BucketGetOptions...)} is selected and requester pays for
+     * the bucket is disable.
+     *
+     * <p>Case 3: {@code null} the field {@link Storage.BucketAttribute#BILLING}
+     * in a {@link Storage#get(String, Storage.BucketGetOptions...)} is not selected, the value is
+     * unknown.
+     */
+    public Boolean isRequesterPays() {
+        return Data.isNull(requesterBilling) ? null : requesterBilling;
+    }
+
+    /**
+     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
+     * false}.
+     *
+     * <p>Case 1: {@code true} the field {@link
+     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)} and default event-based hold for the bucket is
+     * enabled.
+     *
+     * <p>Case 2.1: {@code null} the field {@link
+     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is selected in a {@link
+     * Storage#get(String, Storage.BucketGetOptions...)}, but default event-based hold for the bucket
+     * is not enabled. This case can be considered implicitly {@code false}.
+     *
+     * <p>Case 2.2: {@code null} the field {@link
+     * Storage.BucketAttribute#DEFAULT_EVENT_BASED_HOLD} is not selected in a
+     * {@link Storage#get(String, Storage.BucketGetOptions...)}, and the state for this field is
+     * unknown.
+     *
+     * <p>Case 3: {@code false} default event-based hold is explicitly set to false using in a {@link
+     * BucketBuilder#setDefaultEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
+     * Storage#update(BucketMetadata, Storage.BucketTargetOptions...)} in which case the value of default
+     * event-based hold will remain {@code false} for the given instance.
+     */
+    @BetaApi
+    public Boolean getDefaultEventBasedHold() {
+        return Data.isNull(eventBasedHoldDefault) ? null : eventBasedHoldDefault;
+    }
+
+    /**
+     * Returns bucket's website index page. Behaves as the bucket's directory index where missing
+     * blobs are treated as potential directories.
+     */
+    public String getIndexPage() {
+        return indexDocument;
+    }
+
+    /**
+     * Returns the Logging
+     */
+    public LoggingConfig getLogging() {
+        return logConfig;
+    }
+
+    /**
+     * Returns the metadata generation of this bucket.
+     */
+    public Long getMetageneration() {
+        return metadataGeneration;
+    }
+
+    /**
+     * Returns a builder for the current bucket.
+     */
+    public BucketBuilder asBuilder() {
+        return new BucketBuilderImpl(this);
+    }
+
+    /**
+     * Returns the service-generated id for the bucket.
+     */
+    public String getGeneratedId() {
+        return uniqueIdentifier;
+    }
+
+    static BucketMetadata fromProto(Bucket bucketProto) {
         BucketBuilder builderParam = new BucketBuilderImpl(bucketProto.getName());
         if (null != bucketProto.getId()) {
             builderParam.setGeneratedId(bucketProto.getId());
@@ -1928,4 +1849,102 @@ public class BucketMetadata implements Serializable {
         }
         return builderParam.buildBucket();
     }
+
+    /**
+     * Returns the custom object to return when a requested resource is not found.
+     */
+    public String getNotFoundPage() {
+        return notFoundDocument;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bucketName);
+    }
+
+    /**
+     * Returns the retention effective time a policy took effect if a retention policy is defined as a
+     * {@code Long}.
+     */
+    @BetaApi
+    public Long getRetentionEffectiveTime() {
+        return retentionEffectiveTimestamp;
+    }
+
+    /**
+     * Returns bucket's lifecycle configuration as a number of delete rules.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/lifecycle">Lifecycle Management</a>
+     */
+    @Deprecated
+    public List<? extends DeletionRule> getDeleteRules() {
+        return deletionRules;
+    }
+
+    /**
+     * Returns the bucket's Cross-Origin Resource Sharing (CORS) configuration.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/cross-origin">Cross-Origin Resource Sharing
+     *     (CORS)</a>
+     */
+    public List<CorsConfig> getCors() {
+        return corsConfigs;
+    }
+
+    /**
+     * Returns the time at which the bucket was created.
+     */
+    public Long getCreateTime() {
+        return creationTime;
+    }
+
+    /**
+     * Returns the bucket's storage class. This defines how blobs in the bucket are stored and
+     * determines the SLA and the cost of storage.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/storage-classes">Storage Classes</a>
+     */
+    public StorageTier getStorageClass() {
+        return storageTier;
+    }
+
+    /**
+     * Returns HTTP 1.1 Entity tag for the bucket.
+     *
+     * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
+     */
+    public String getEtag() {
+        return entityTag;
+    }
+
+    BucketMetadata(BucketBuilderImpl builderParam) {
+        uniqueIdentifier = builderParam.uniqueIdentifier;
+        bucketName = builderParam.bucketName;
+        entityTag = builderParam.entityTag;
+        creationTime = builderParam.creationTime;
+        metadataGeneration = builderParam.metadataGeneration;
+        region = builderParam.region;
+        storageTier = builderParam.storageTier;
+        corsConfigs = builderParam.corsConfigs;
+        aclEntries = builderParam.aclEntries;
+        defaultAclEntries = builderParam.defaultAclEntries;
+        ownerEntity = builderParam.ownerEntity;
+        selfLinkUri = builderParam.selfLinkUri;
+        versioningOn = builderParam.versioningOn;
+        indexDocument = builderParam.indexDocument;
+        notFoundDocument = builderParam.notFoundDocument;
+        deletionRules = builderParam.deletionRules;
+        lifecyclePolicies = builderParam.lifecyclePolicies;
+        labelMap = builderParam.labelMap;
+        requesterBilling = builderParam.requesterBilling;
+        kmsDefaultKey = builderParam.kmsDefaultKey;
+        eventBasedHoldDefault = builderParam.eventBasedHoldDefault;
+        retentionEffectiveTimestamp = builderParam.retentionEffectiveTimestamp;
+        retentionPolicyLocked = builderParam.retentionPolicyLocked;
+        retentionDuration = builderParam.retentionDuration;
+        iamConfig = builderParam.iamConfig;
+        locationClass = builderParam.locationClass;
+        logConfig = builderParam.logConfig;
+    }
+
 }

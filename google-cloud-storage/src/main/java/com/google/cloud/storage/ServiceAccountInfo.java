@@ -48,15 +48,30 @@ public final class ServiceAccountInfo implements Serializable {
 
     private final String address;
 
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
+    }
+
     private ServiceAccountInfo(String address) {
         this.address = address;
     }
 
+    com.google.api.services.storage.model.ServiceAccount toProto() {
+        com.google.api.services.storage.model.ServiceAccount serviceAccountProto = new com.google.api.services.storage.model.ServiceAccount();
+        serviceAccountProto.setEmailAddress(address);
+        return serviceAccountProto;
+    }
+
+    static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
+        return new ServiceAccountInfo(accountProto.getEmailAddress());
+    }
+
     /**
-     * Returns the email address of the service account.
+     * Returns a {@code ServiceAccount} object for the provided email.
      */
-    public String getEmail() {
-        return address;
+    public static ServiceAccountInfo ofEmail(String address) {
+        return new ServiceAccountInfo(address);
     }
 
     @Override
@@ -69,25 +84,11 @@ public final class ServiceAccountInfo implements Serializable {
         return Objects.hash(address);
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
-    }
-
-    com.google.api.services.storage.model.ServiceAccount toProto() {
-        com.google.api.services.storage.model.ServiceAccount serviceAccountProto = new com.google.api.services.storage.model.ServiceAccount();
-        serviceAccountProto.setEmailAddress(address);
-        return serviceAccountProto;
-    }
-
     /**
-     * Returns a {@code ServiceAccount} object for the provided email.
+     * Returns the email address of the service account.
      */
-    public static ServiceAccountInfo ofEmail(String address) {
-        return new ServiceAccountInfo(address);
+    public String getEmail() {
+        return address;
     }
 
-    static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
-        return new ServiceAccountInfo(accountProto.getEmailAddress());
-    }
 }

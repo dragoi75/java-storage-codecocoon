@@ -42,35 +42,12 @@ public final class StorageServiceException extends BaseHttpServiceException {
 
     private static final long serialVersionUID = -4168430271327813063L;
 
-    public StorageServiceException(int statusCode, String description) {
-        this(statusCode, description, null);
-    }
-
-    public StorageServiceException(int statusCode, String description, Throwable underlyingThrowable) {
-        super(statusCode, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
-    }
-
-    public StorageServiceException(int statusCode, String description, String explanation, Throwable underlyingThrowable) {
-        super(statusCode, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
-    }
-
     public StorageServiceException(IOException ioFailure) {
         super(ioFailure, true, TRANSIENT_ERRORS);
     }
 
     public StorageServiceException(GoogleJsonError apiFault) {
         super(apiFault, true, TRANSIENT_ERRORS);
-    }
-
-    /**
-     * Translate RetryHelperException to the StorageException that caused the error. This method will
-     * always throw an exception.
-     *
-     * @throws StorageServiceException when {@code ex} was caused by a {@code StorageException}
-     */
-    public static StorageServiceException translateAndRethrow(RetryHelperException retryFailure) {
-        BaseServiceException.translate(retryFailure);
-        throw new StorageServiceException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
     }
 
     /**
@@ -88,4 +65,28 @@ public final class StorageServiceException extends BaseHttpServiceException {
             return new StorageServiceException(0, ioFailure.getMessage(), CONNECTION_TERMINATED_EARLY, ioFailure);
         }
     }
+
+    public StorageServiceException(int statusCode, String description, String explanation, Throwable underlyingThrowable) {
+        super(statusCode, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
+    public StorageServiceException(int statusCode, String description) {
+        this(statusCode, description, null);
+    }
+
+    public StorageServiceException(int statusCode, String description, Throwable underlyingThrowable) {
+        super(statusCode, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
+    /**
+     * Translate RetryHelperException to the StorageException that caused the error. This method will
+     * always throw an exception.
+     *
+     * @throws StorageServiceException when {@code ex} was caused by a {@code StorageException}
+     */
+    public static StorageServiceException translateAndRethrow(RetryHelperException retryFailure) {
+        BaseServiceException.translate(retryFailure);
+        throw new StorageServiceException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
+    }
+
 }
