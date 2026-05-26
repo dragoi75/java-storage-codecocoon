@@ -31,38 +31,39 @@ public abstract class AbstractOption implements Serializable {
   private final StorageRpcClient.StorageOption storageOption;
   private final Object storedObject;
 
-  AbstractOption(StorageRpcClient.StorageOption storageOption, Object storedObject) {
-    this.storageOption = checkNotNull(storageOption);
-    this.storedObject = storedObject;
-  }
-
-  StorageRpcClient.StorageOption getRpcOption() {
-    return storageOption;
-  }
-
-  Object getValue() {
-    return storedObject;
-  }
-
-  @Override
-  public boolean equals(Object candidate) {
-    if (!(candidate instanceof AbstractOption)) {
-      return false;
+    @Override
+    public int hashCode() {
+      return Objects.hash(storageOption, storedObject);
     }
-    AbstractOption thatOption = (AbstractOption) candidate;
-    return Objects.equals(storageOption, thatOption.storageOption) && Objects.equals(storedObject, thatOption.storedObject);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(storageOption, storedObject);
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", storageOption.getValue())
+          .add("value", storedObject)
+          .toString();
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", storageOption.getValue())
-        .add("value", storedObject)
-        .toString();
-  }
+    @Override
+    public boolean equals(Object candidate) {
+      if (!(candidate instanceof AbstractOption)) {
+        return false;
+      }
+      AbstractOption thatOption = (AbstractOption) candidate;
+      return Objects.equals(storageOption, thatOption.storageOption) && Objects.equals(storedObject, thatOption.storedObject);
+    }
+
+    AbstractOption(StorageRpcClient.StorageOption storageOption, Object storedObject) {
+      this.storageOption = checkNotNull(storageOption);
+      this.storedObject = storedObject;
+    }
+
+    Object getValue() {
+      return storedObject;
+    }
+
+    StorageRpcClient.StorageOption getRpcOption() {
+      return storageOption;
+    }
+
 }

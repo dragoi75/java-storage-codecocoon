@@ -58,96 +58,99 @@ public class StorageClientOptions extends ServiceOptions<CloudStorageClient, Sto
 
   public static class ServiceClientBuilder extends ServiceOptions.Builder<CloudStorageClient, StorageClientOptions, ServiceClientBuilder> {
 
-    private ServiceClientBuilder() {}
-
-    private ServiceClientBuilder(StorageClientOptions clientConfig) {
-      super(clientConfig);
-    }
-
-    @Override
-    public StorageClientOptions.ServiceClientBuilder setTransportOptions(TransportOptions transportConfig) {
-      if (!(transportConfig instanceof HttpTransportOptions)) {
-        throw new IllegalArgumentException(
-            "Only http transport is allowed for " + API_ABBREV + ".");
+      @Override
+      public StorageClientOptions.ServiceClientBuilder setTransportOptions(TransportOptions transportConfig) {
+        if (!(transportConfig instanceof HttpTransportOptions)) {
+          throw new IllegalArgumentException(
+              "Only http transport is allowed for " + API_ABBREV + ".");
+        }
+        return super.setTransportOptions(transportConfig);
       }
-      return super.setTransportOptions(transportConfig);
+
+      @Override
+      public StorageClientOptions build() {
+        return new StorageClientOptions(this);
+      }
+
+      private ServiceClientBuilder() {}
+
+      private ServiceClientBuilder(StorageClientOptions clientConfig) {
+        super(clientConfig);
+      }
+
+  }
+
+    private static class StorageDefaultsProvider implements ServiceDefaults<CloudStorageClient, StorageClientOptions> {
+
+        @Override
+        public TransportOptions getDefaultTransportOptions() {
+          return getDefaultHttpTransportOptions();
+        }
+
+        @Override
+        public StorageProvider getDefaultServiceFactory() {
+          return StandardStorageFactory.STORAGE_PROVIDER_SINGLETON;
+        }
+
+        @Override
+        public StorageRpcProvider getDefaultRpcFactory() {
+          return DefaultStorageRpcProvider.STORAGE_PROVIDER_SINGLETON;
+        }
+
+    }
+
+    /** Returns a unauthenticated {@code StorageOptions} instance. */
+    public static StorageClientOptions getUnauthenticatedInstance() {
+      return newServiceClientBuilder().setCredentials(NoCredentials.getInstance()).build();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public StorageClientOptions.ServiceClientBuilder toBuilder() {
+      return new ServiceClientBuilder(this).setHost(FALLBACK_HOST);
     }
 
     @Override
-    public StorageClientOptions build() {
-      return new StorageClientOptions(this);
-    }
-  }
-
-  private StorageClientOptions(ServiceClientBuilder clientCreator) {
-    super(StorageProvider.class, StorageRpcProvider.class, clientCreator, new StorageDefaultsProvider());
-  }
-
-  private static class StorageDefaultsProvider implements ServiceDefaults<CloudStorageClient, StorageClientOptions> {
-
-    @Override
-    public StorageProvider getDefaultServiceFactory() {
-      return StandardStorageFactory.STORAGE_PROVIDER_SINGLETON;
+    public boolean equals(Object other) {
+      return other instanceof StorageClientOptions && baseEquals((StorageClientOptions) other);
     }
 
     @Override
-    public StorageRpcProvider getDefaultRpcFactory() {
-      return DefaultStorageRpcProvider.STORAGE_PROVIDER_SINGLETON;
+    protected Set<String> getScopes() {
+      return SCOPE_VALUES;
+    }
+
+    public static ServiceClientBuilder newServiceClientBuilder() {
+      return new ServiceClientBuilder().setHost(FALLBACK_HOST);
     }
 
     @Override
-    public TransportOptions getDefaultTransportOptions() {
-      return getDefaultHttpTransportOptions();
+    public int hashCode() {
+      return baseHashCode();
     }
-  }
 
-  public static HttpTransportOptions getDefaultHttpTransportOptions() {
-    return HttpTransportOptions.newBuilder().build();
-  }
+    /** Returns a default {@code StorageOptions} instance. */
+    public static StorageClientOptions getDefaultInstance() {
+      return newServiceClientBuilder().build();
+    }
 
-  // Project ID is only required for creating buckets, so we don't require it for creating the
-  // service.
-  @Override
-  protected boolean projectIdRequired() {
-    return false;
-  }
+    protected StorageRpcClient getStorageRpcV1() {
+      return (StorageRpcClient) getRpc();
+    }
 
-  @Override
-  protected Set<String> getScopes() {
-    return SCOPE_VALUES;
-  }
+    public static HttpTransportOptions getDefaultHttpTransportOptions() {
+      return HttpTransportOptions.newBuilder().build();
+    }
 
-  protected StorageRpcClient getStorageRpcV1() {
-    return (StorageRpcClient) getRpc();
-  }
+    // Project ID is only required for creating buckets, so we don't require it for creating the
+    // service.
+    @Override
+    protected boolean projectIdRequired() {
+      return false;
+    }
 
-  /** Returns a default {@code StorageOptions} instance. */
-  public static StorageClientOptions getDefaultInstance() {
-    return newServiceClientBuilder().build();
-  }
+    private StorageClientOptions(ServiceClientBuilder clientCreator) {
+      super(StorageProvider.class, StorageRpcProvider.class, clientCreator, new StorageDefaultsProvider());
+    }
 
-  /** Returns a unauthenticated {@code StorageOptions} instance. */
-  public static StorageClientOptions getUnauthenticatedInstance() {
-    return newServiceClientBuilder().setCredentials(NoCredentials.getInstance()).build();
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public StorageClientOptions.ServiceClientBuilder toBuilder() {
-    return new ServiceClientBuilder(this).setHost(FALLBACK_HOST);
-  }
-
-  @Override
-  public int hashCode() {
-    return baseHashCode();
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    return other instanceof StorageClientOptions && baseEquals((StorageClientOptions) other);
-  }
-
-  public static ServiceClientBuilder newServiceClientBuilder() {
-    return new ServiceClientBuilder().setHost(FALLBACK_HOST);
-  }
 }

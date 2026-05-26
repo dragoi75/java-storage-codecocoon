@@ -32,22 +32,6 @@ import java.util.concurrent.Callable;
  */
 class BlobUploadChannel extends BaseWriteChannel<StorageClientOptions, BlobMetadata> {
 
-    BlobUploadChannel(StorageClientOptions clientConfig, BlobMetadata objectMetadata, Map<StorageRpcClient.StorageOption, ?> settingsByOption) {
-        this(clientConfig, objectMetadata, openUploadSession(clientConfig, objectMetadata, settingsByOption));
-    }
-
-    BlobUploadChannel(StorageClientOptions clientConfig, URL presignedUri) {
-        this(clientConfig, openUploadSession(presignedUri, clientConfig));
-    }
-
-    BlobUploadChannel(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
-        super(clientConfig, objectInfo, sessionId);
-    }
-
-    BlobUploadChannel(StorageClientOptions clientConfig, String sessionId) {
-        super(clientConfig, null, sessionId);
-    }
-
     // Contains metadata of the updated object or null if upload is not completed.
     private StorageObject objectEntry;
 
@@ -58,24 +42,60 @@ class BlobUploadChannel extends BaseWriteChannel<StorageClientOptions, BlobMetad
 
     private boolean verifyingFinalChunk = false;
 
-    boolean isRetrying() {
-        return retryInProgress;
-    }
+    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageClientOptions, BlobMetadata> {
 
-    StorageObject getStorageObject() {
-        return objectEntry;
-    }
+        private static final long serialVersionUID = -9028324143780151286L;
 
-    private StorageObject sendChunk(int segmentOffset, int segmentLength, long currentOffset, boolean isFinal) {
-        return getOptions().getStorageRpcV1().writeWithResponse(getUploadId(), getBuffer(), segmentOffset, currentOffset, segmentLength, isFinal);
+        static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageClientOptions, BlobMetadata> {
+
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new UploadStateImpl(this);
+            }
+
+            private ChunkedUploadBuilder(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
+                super(clientConfig, objectInfo, sessionId);
+            }
+
+        }
+
+        static ChunkedUploadBuilder newBuilder(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
+            return new ChunkedUploadBuilder(clientConfig, objectInfo, sessionId);
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobUploadChannel blobUploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
+            blobUploadStream.restore(this);
+            return blobUploadStream;
+        }
+
+        UploadStateImpl(ChunkedUploadBuilder chunkedUploadConfig) {
+            super(chunkedUploadConfig);
+        }
+
     }
 
     private long getRemotePosition() {
         return getOptions().getStorageRpcV1().getCurrentUploadOffset(getUploadId());
     }
 
-    private StorageObject getRemoteStorageObject() {
-        return getOptions().getStorageRpcV1().get(getEntity().toProto(), null);
+    private static boolean isValidSignedURL(String queryString) {
+        boolean signatureValid = true;
+        if (!queryString.startsWith("X-Goog-Algorithm=")) {
+            if (!queryString.startsWith("GoogleAccessId=")) {
+                signatureValid = false;
+            } else {
+                if (!queryString.contains("&Expires=") || !queryString.contains("&Signature=")) {
+                    signatureValid = false;
+                }
+            }
+        } else {
+            if (!queryString.contains("&X-Goog-Credential=") || !queryString.contains("&X-Goog-Date=") || !queryString.contains("&X-Goog-Expires=") || !queryString.contains("&X-Goog-SignedHeaders=") || !queryString.contains("&X-Goog-Signature=")) {
+                signatureValid = false;
+            }
+        }
+        return signatureValid;
     }
 
     private StorageServiceException buildUnrecoverableStateException(int segmentOffset, int segmentLength, long localOffset, long remoteOffset, boolean isFinal) {
@@ -90,6 +110,31 @@ class BlobUploadChannel extends BaseWriteChannel<StorageClientOptions, BlobMetad
         messageBuilder.append("remoteOffset: ").append(remoteOffset).append('\n');
         messageBuilder.append("lastChunk: ").append(isFinal).append("\n\n");
         return new StorageServiceException(0, messageBuilder.toString());
+    }
+
+    StorageObject getStorageObject() {
+        return objectEntry;
+    }
+
+    BlobUploadChannel(StorageClientOptions clientConfig, URL presignedUri) {
+        this(clientConfig, openUploadSession(presignedUri, clientConfig));
+    }
+
+    private static String openUploadSession(final URL presignedUri, final StorageClientOptions clientConfig) {
+        try {
+            return runWithRetries(new Callable<String>() {
+
+                @Override
+                public String call() {
+                    if (!isValidSignedURL(presignedUri.getQuery())) {
+                        throw new StorageServiceException(2, "invalid signedURL");
+                    }
+                    return clientConfig.getStorageRpcV1().open(presignedUri.toString());
+                }
+            }, clientConfig.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, clientConfig.getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageServiceException.translateThenThrow(retryException);
+        }
     }
 
     // Retriable interruption occurred.
@@ -205,8 +250,24 @@ class BlobUploadChannel extends BaseWriteChannel<StorageClientOptions, BlobMetad
         }
     }
 
+    BlobUploadChannel(StorageClientOptions clientConfig, BlobMetadata objectMetadata, Map<StorageRpcClient.StorageOption, ?> settingsByOption) {
+        this(clientConfig, objectMetadata, openUploadSession(clientConfig, objectMetadata, settingsByOption));
+    }
+
     protected UploadStateImpl.ChunkedUploadBuilder stateBuilder() {
         return UploadStateImpl.newBuilder(getOptions(), getEntity(), getUploadId());
+    }
+
+    boolean isRetrying() {
+        return retryInProgress;
+    }
+
+    private StorageObject getRemoteStorageObject() {
+        return getOptions().getStorageRpcV1().get(getEntity().toProto(), null);
+    }
+
+    BlobUploadChannel(StorageClientOptions clientConfig, String sessionId) {
+        super(clientConfig, null, sessionId);
     }
 
     private static String openUploadSession(final StorageClientOptions clientConfig, final BlobMetadata objectMetadata, final Map<StorageRpcClient.StorageOption, ?> settingsByOption) {
@@ -223,70 +284,12 @@ class BlobUploadChannel extends BaseWriteChannel<StorageClientOptions, BlobMetad
         }
     }
 
-    private static String openUploadSession(final URL presignedUri, final StorageClientOptions clientConfig) {
-        try {
-            return runWithRetries(new Callable<String>() {
-
-                @Override
-                public String call() {
-                    if (!isValidSignedURL(presignedUri.getQuery())) {
-                        throw new StorageServiceException(2, "invalid signedURL");
-                    }
-                    return clientConfig.getStorageRpcV1().open(presignedUri.toString());
-                }
-            }, clientConfig.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, clientConfig.getClock());
-        } catch (RetryHelper.RetryHelperException retryException) {
-            throw StorageServiceException.translateThenThrow(retryException);
-        }
+    BlobUploadChannel(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
+        super(clientConfig, objectInfo, sessionId);
     }
 
-    private static boolean isValidSignedURL(String queryString) {
-        boolean signatureValid = true;
-        if (!queryString.startsWith("X-Goog-Algorithm=")) {
-            if (!queryString.startsWith("GoogleAccessId=")) {
-                signatureValid = false;
-            } else {
-                if (!queryString.contains("&Expires=") || !queryString.contains("&Signature=")) {
-                    signatureValid = false;
-                }
-            }
-        } else {
-            if (!queryString.contains("&X-Goog-Credential=") || !queryString.contains("&X-Goog-Date=") || !queryString.contains("&X-Goog-Expires=") || !queryString.contains("&X-Goog-SignedHeaders=") || !queryString.contains("&X-Goog-Signature=")) {
-                signatureValid = false;
-            }
-        }
-        return signatureValid;
+    private StorageObject sendChunk(int segmentOffset, int segmentLength, long currentOffset, boolean isFinal) {
+        return getOptions().getStorageRpcV1().writeWithResponse(getUploadId(), getBuffer(), segmentOffset, currentOffset, segmentLength, isFinal);
     }
 
-    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageClientOptions, BlobMetadata> {
-
-        private static final long serialVersionUID = -9028324143780151286L;
-
-        UploadStateImpl(ChunkedUploadBuilder chunkedUploadConfig) {
-            super(chunkedUploadConfig);
-        }
-
-        static class ChunkedUploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageClientOptions, BlobMetadata> {
-
-            private ChunkedUploadBuilder(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
-                super(clientConfig, objectInfo, sessionId);
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new UploadStateImpl(this);
-            }
-        }
-
-        static ChunkedUploadBuilder newBuilder(StorageClientOptions clientConfig, BlobMetadata objectInfo, String sessionId) {
-            return new ChunkedUploadBuilder(clientConfig, objectInfo, sessionId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            BlobUploadChannel blobUploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
-            blobUploadStream.restore(this);
-            return blobUploadStream;
-        }
-    }
 }

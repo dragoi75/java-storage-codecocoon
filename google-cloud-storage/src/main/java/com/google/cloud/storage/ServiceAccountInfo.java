@@ -48,36 +48,9 @@ public final class ServiceAccountInfo implements Serializable {
 
     private final String mailAddress;
 
-    private ServiceAccountInfo(String mailAddress) {
-        this.mailAddress = mailAddress;
-    }
-
-    /**
-     * Returns the email address of the service account.
-     */
-    public String getEmail() {
-        return mailAddress;
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("email", mailAddress).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(mailAddress);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
-    }
-
-    com.google.api.services.storage.model.ServiceAccount toProto() {
-        com.google.api.services.storage.model.ServiceAccount serviceAccountProto = new com.google.api.services.storage.model.ServiceAccount();
-        serviceAccountProto.setEmailAddress(mailAddress);
-        return serviceAccountProto;
     }
 
     /**
@@ -90,4 +63,32 @@ public final class ServiceAccountInfo implements Serializable {
     static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
         return new ServiceAccountInfo(accountProto.getEmailAddress());
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
+    }
+
+    private ServiceAccountInfo(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    /**
+     * Returns the email address of the service account.
+     */
+    public String getEmail() {
+        return mailAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mailAddress);
+    }
+
+    com.google.api.services.storage.model.ServiceAccount toProto() {
+        com.google.api.services.storage.model.ServiceAccount serviceAccountProto = new com.google.api.services.storage.model.ServiceAccount();
+        serviceAccountProto.setEmailAddress(mailAddress);
+        return serviceAccountProto;
+    }
+
 }

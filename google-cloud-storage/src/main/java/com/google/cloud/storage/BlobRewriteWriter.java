@@ -50,81 +50,6 @@ public class BlobRewriteWriter implements Restorable<BlobRewriteWriter> {
 
     private RewriteResult rewriteResult;
 
-    BlobRewriteWriter(StorageClientOptions clientOptions, RewriteResult rewriteResult) {
-        this.clientOptions = clientOptions;
-        this.rewriteResult = rewriteResult;
-        this.rpcClient = clientOptions.getStorageRpcV1();
-    }
-
-    /**
-     * Returns the updated information for the written blob. Calling this method when {@code isDone()}
-     * is {@code false} will block until all pending chunks are copied.
-     *
-     * <p>This method has the same effect of doing:
-     *
-     * <pre>{@code
-     * while (!copyWriter.isDone()) {
-     *    copyWriter.copyChunk();
-     * }
-     * }</pre>
-     *
-     * @throws StorageServiceException upon failure
-     */
-    public StorageObject getResult() {
-        while (!isDone()) {
-            copySegment();
-        }
-        return StorageObject.fromProto(clientOptions.getService(), rewriteResult.result);
-    }
-
-    /**
-     * Returns the size of the blob being copied.
-     */
-    public long getBlobSize() {
-        return rewriteResult.blobSize;
-    }
-
-    /**
-     * Returns {@code true} if blob copy has finished, {@code false} otherwise.
-     */
-    public boolean isDone() {
-        return rewriteResult.isDone;
-    }
-
-    /**
-     * Returns the number of bytes copied.
-     */
-    public long getTotalBytesCopied() {
-        return rewriteResult.totalBytesRewritten;
-    }
-
-    /**
-     * Copies the next chunk of the blob. An RPC is issued only if copy has not finished yet ({@link
-     * #isDone} returns {@code false}).
-     *
-     * @throws StorageServiceException upon failure
-     */
-    public void copySegment() {
-        if (!isDone()) {
-            try {
-                this.rewriteResult = runWithRetries(new Callable<RewriteResult>() {
-
-                    @Override
-                    public StorageRpcClient.RewriteResult call() {
-                        return rpcClient.continueRewrite(rewriteResult);
-                    }
-                }, clientOptions.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, clientOptions.getClock());
-            } catch (RetryHelper.RetryHelperException retryException) {
-                throw StorageServiceException.translateThenThrow(retryException);
-            }
-        }
-    }
-
-    @Override
-    public RestorableState<BlobRewriteWriter> capture() {
-        return RewriteStateImpl.newBlobRewriteBuilder(clientOptions, BlobIdentifier.fromProto(rewriteResult.rewriteRequest.source), rewriteResult.rewriteRequest.sourceOptions, rewriteResult.rewriteRequest.overrideInfo, BlobMetadata.fromProto(rewriteResult.rewriteRequest.target), rewriteResult.rewriteRequest.targetOptions).setResult(null != rewriteResult.result ? BlobMetadata.fromProto(rewriteResult.result) : null).setBlobSize(getBlobSize()).setIsDone(isDone()).setMegabytesCopiedPerChunk(rewriteResult.rewriteRequest.megabytesRewrittenPerCall).setRewriteToken(rewriteResult.rewriteToken).setTotalBytesRewritten(getTotalBytesCopied()).buildState();
-    }
-
     static class RewriteStateImpl implements RestorableState<BlobRewriteWriter>, Serializable {
 
         private static final long serialVersionUID = 1693964441435822700L;
@@ -153,21 +78,6 @@ public class BlobRewriteWriter implements Restorable<BlobRewriteWriter> {
 
         private final Long megabytesPerChunk;
 
-        RewriteStateImpl(BlobRewriteBuilder rewriteCreator) {
-            this.clientOptions = rewriteCreator.clientOptions;
-            this.originBlobId = rewriteCreator.originBlobId;
-            this.originOptions = rewriteCreator.originOptions;
-            this.overwriteFlag = rewriteCreator.overwriteFlag;
-            this.destinationMetadata = rewriteCreator.destinationMetadata;
-            this.destinationOptions = rewriteCreator.destinationOptions;
-            this.outcomeMetadata = rewriteCreator.outcomeMetadata;
-            this.totalBytes = rewriteCreator.totalBytes;
-            this.completedFlag = rewriteCreator.completedFlag;
-            this.continuationToken = rewriteCreator.continuationToken;
-            this.bytesCopiedTotal = rewriteCreator.bytesCopiedTotal;
-            this.megabytesPerChunk = rewriteCreator.megabytesPerChunk;
-        }
-
         static class BlobRewriteBuilder {
 
             private final StorageClientOptions clientOptions;
@@ -194,28 +104,8 @@ public class BlobRewriteWriter implements Restorable<BlobRewriteWriter> {
 
             private Long megabytesPerChunk;
 
-            private BlobRewriteBuilder(StorageClientOptions clientConfig, BlobIdentifier originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean overwriteFlag, BlobMetadata destinationMetadata, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
-                this.clientOptions = clientConfig;
-                this.originBlobId = originBlobId;
-                this.originOptions = originOptions;
-                this.overwriteFlag = overwriteFlag;
-                this.destinationMetadata = destinationMetadata;
-                this.destinationOptions = destinationOptions;
-            }
-
-            BlobRewriteBuilder setResult(BlobMetadata outcomeMetadata) {
-                this.outcomeMetadata = outcomeMetadata;
-                return this;
-            }
-
-            BlobRewriteBuilder setBlobSize(long totalBytes) {
-                this.totalBytes = totalBytes;
-                return this;
-            }
-
-            BlobRewriteBuilder setIsDone(boolean completedFlag) {
-                this.completedFlag = completedFlag;
-                return this;
+            RestorableState<BlobRewriteWriter> buildState() {
+                return new RewriteStateImpl(this);
             }
 
             BlobRewriteBuilder setRewriteToken(String continuationToken) {
@@ -233,25 +123,35 @@ public class BlobRewriteWriter implements Restorable<BlobRewriteWriter> {
                 return this;
             }
 
-            RestorableState<BlobRewriteWriter> buildState() {
-                return new RewriteStateImpl(this);
+            BlobRewriteBuilder setIsDone(boolean completedFlag) {
+                this.completedFlag = completedFlag;
+                return this;
             }
-        }
 
-        static BlobRewriteBuilder newBlobRewriteBuilder(StorageClientOptions clientConfig, BlobIdentifier originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean overwriteFlag, BlobMetadata destinationMetadata, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
-            return new BlobRewriteBuilder(clientConfig, originBlobId, originOptions, overwriteFlag, destinationMetadata, destinationOptions);
+            BlobRewriteBuilder setBlobSize(long totalBytes) {
+                this.totalBytes = totalBytes;
+                return this;
+            }
+
+            BlobRewriteBuilder setResult(BlobMetadata outcomeMetadata) {
+                this.outcomeMetadata = outcomeMetadata;
+                return this;
+            }
+
+            private BlobRewriteBuilder(StorageClientOptions clientConfig, BlobIdentifier originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean overwriteFlag, BlobMetadata destinationMetadata, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
+                this.clientOptions = clientConfig;
+                this.originBlobId = originBlobId;
+                this.originOptions = originOptions;
+                this.overwriteFlag = overwriteFlag;
+                this.destinationMetadata = destinationMetadata;
+                this.destinationOptions = destinationOptions;
+            }
+
         }
 
         @Override
-        public BlobRewriteWriter restore() {
-            ObjectRewriteRequest objectRequest = new ObjectRewriteRequest(originBlobId.toProto(), originOptions, overwriteFlag, destinationMetadata.toProto(), destinationOptions, megabytesPerChunk);
-            RewriteResult rewriteResult = new RewriteResult(objectRequest, null != outcomeMetadata ? outcomeMetadata.toProto() : null, totalBytes, completedFlag, continuationToken, bytesCopiedTotal);
-            return new BlobRewriteWriter(clientOptions, rewriteResult);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(clientOptions, originBlobId, originOptions, overwriteFlag, destinationMetadata, destinationOptions, outcomeMetadata, totalBytes, completedFlag, megabytesPerChunk, continuationToken, bytesCopiedTotal);
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("source", originBlobId).add("overrideInfo", overwriteFlag).add("target", destinationMetadata).add("result", outcomeMetadata).add("blobSize", totalBytes).add("isDone", completedFlag).add("rewriteToken", continuationToken).add("totalBytesCopied", bytesCopiedTotal).add("megabytesCopiedPerChunk", megabytesPerChunk).toString();
         }
 
         @Override
@@ -267,8 +167,111 @@ public class BlobRewriteWriter implements Restorable<BlobRewriteWriter> {
         }
 
         @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("source", originBlobId).add("overrideInfo", overwriteFlag).add("target", destinationMetadata).add("result", outcomeMetadata).add("blobSize", totalBytes).add("isDone", completedFlag).add("rewriteToken", continuationToken).add("totalBytesCopied", bytesCopiedTotal).add("megabytesCopiedPerChunk", megabytesPerChunk).toString();
+        public BlobRewriteWriter restore() {
+            ObjectRewriteRequest objectRequest = new ObjectRewriteRequest(originBlobId.toProto(), originOptions, overwriteFlag, destinationMetadata.toProto(), destinationOptions, megabytesPerChunk);
+            RewriteResult rewriteResult = new RewriteResult(objectRequest, null != outcomeMetadata ? outcomeMetadata.toProto() : null, totalBytes, completedFlag, continuationToken, bytesCopiedTotal);
+            return new BlobRewriteWriter(clientOptions, rewriteResult);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(clientOptions, originBlobId, originOptions, overwriteFlag, destinationMetadata, destinationOptions, outcomeMetadata, totalBytes, completedFlag, megabytesPerChunk, continuationToken, bytesCopiedTotal);
+        }
+
+        RewriteStateImpl(BlobRewriteBuilder rewriteCreator) {
+            this.clientOptions = rewriteCreator.clientOptions;
+            this.originBlobId = rewriteCreator.originBlobId;
+            this.originOptions = rewriteCreator.originOptions;
+            this.overwriteFlag = rewriteCreator.overwriteFlag;
+            this.destinationMetadata = rewriteCreator.destinationMetadata;
+            this.destinationOptions = rewriteCreator.destinationOptions;
+            this.outcomeMetadata = rewriteCreator.outcomeMetadata;
+            this.totalBytes = rewriteCreator.totalBytes;
+            this.completedFlag = rewriteCreator.completedFlag;
+            this.continuationToken = rewriteCreator.continuationToken;
+            this.bytesCopiedTotal = rewriteCreator.bytesCopiedTotal;
+            this.megabytesPerChunk = rewriteCreator.megabytesPerChunk;
+        }
+
+        static BlobRewriteBuilder newBlobRewriteBuilder(StorageClientOptions clientConfig, BlobIdentifier originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean overwriteFlag, BlobMetadata destinationMetadata, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
+            return new BlobRewriteBuilder(clientConfig, originBlobId, originOptions, overwriteFlag, destinationMetadata, destinationOptions);
+        }
+
+    }
+
+    @Override
+    public RestorableState<BlobRewriteWriter> capture() {
+        return RewriteStateImpl.newBlobRewriteBuilder(clientOptions, BlobIdentifier.fromProto(rewriteResult.rewriteRequest.source), rewriteResult.rewriteRequest.sourceOptions, rewriteResult.rewriteRequest.overrideInfo, BlobMetadata.fromProto(rewriteResult.rewriteRequest.target), rewriteResult.rewriteRequest.targetOptions).setResult(null != rewriteResult.result ? BlobMetadata.fromProto(rewriteResult.result) : null).setBlobSize(getBlobSize()).setIsDone(isDone()).setMegabytesCopiedPerChunk(rewriteResult.rewriteRequest.megabytesRewrittenPerCall).setRewriteToken(rewriteResult.rewriteToken).setTotalBytesRewritten(getTotalBytesCopied()).buildState();
+    }
+
+    /**
+     * Copies the next chunk of the blob. An RPC is issued only if copy has not finished yet ({@link
+     * #isDone} returns {@code false}).
+     *
+     * @throws StorageServiceException upon failure
+     */
+    public void copySegment() {
+        if (!isDone()) {
+            try {
+                this.rewriteResult = runWithRetries(new Callable<RewriteResult>() {
+
+                    @Override
+                    public StorageRpcClient.RewriteResult call() {
+                        return rpcClient.continueRewrite(rewriteResult);
+                    }
+                }, clientOptions.getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, clientOptions.getClock());
+            } catch (RetryHelper.RetryHelperException retryException) {
+                throw StorageServiceException.translateThenThrow(retryException);
+            }
         }
     }
+
+    /**
+     * Returns the size of the blob being copied.
+     */
+    public long getBlobSize() {
+        return rewriteResult.blobSize;
+    }
+
+    /**
+     * Returns the number of bytes copied.
+     */
+    public long getTotalBytesCopied() {
+        return rewriteResult.totalBytesRewritten;
+    }
+
+    /**
+     * Returns {@code true} if blob copy has finished, {@code false} otherwise.
+     */
+    public boolean isDone() {
+        return rewriteResult.isDone;
+    }
+
+    /**
+     * Returns the updated information for the written blob. Calling this method when {@code isDone()}
+     * is {@code false} will block until all pending chunks are copied.
+     *
+     * <p>This method has the same effect of doing:
+     *
+     * <pre>{@code
+     * while (!copyWriter.isDone()) {
+     *    copyWriter.copyChunk();
+     * }
+     * }</pre>
+     *
+     * @throws StorageServiceException upon failure
+     */
+    public StorageObject getResult() {
+        while (!isDone()) {
+            copySegment();
+        }
+        return StorageObject.fromProto(clientOptions.getService(), rewriteResult.result);
+    }
+
+    BlobRewriteWriter(StorageClientOptions clientOptions, RewriteResult rewriteResult) {
+        this.clientOptions = clientOptions;
+        this.rewriteResult = rewriteResult;
+        this.rpcClient = clientOptions.getStorageRpcV1();
+    }
+
 }

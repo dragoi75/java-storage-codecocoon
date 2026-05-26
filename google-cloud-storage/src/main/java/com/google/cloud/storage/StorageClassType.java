@@ -27,11 +27,7 @@ import com.google.cloud.StringEnumValue;
 public final class StorageClassType extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageClassType(String value) {
-    super(value);
-  }
-
-  private static final ApiFunction<String, StorageClassType> STORAGE_CLASS_CREATOR =
+    private static final ApiFunction<String, StorageClassType> STORAGE_CLASS_CREATOR =
       new ApiFunction<String, StorageClassType>() {
         @Override
         public StorageClassType apply(String constant) {
@@ -102,21 +98,26 @@ public final class StorageClassType extends StringEnumValue {
   public static final StorageClassType DURABLE_REDUCED_AVAILABILITY =
       STORAGE_CLASS_ENUM_DEF.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
-  /**
-   * Get the StorageClass for the given String constant, and throw an exception if the constant is
-   * not recognized.
-   */
-  public static StorageClassType valueOfStrict(String value) {
-    return STORAGE_CLASS_ENUM_DEF.valueOfStrict(value);
-  }
+    /**
+     * Get the StorageClass for the given String constant, and throw an exception if the constant is
+     * not recognized.
+     */
+    public static StorageClassType valueOfStrict(String value) {
+      return STORAGE_CLASS_ENUM_DEF.valueOfStrict(value);
+    }
 
-  /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageClassType fromValue(String value) {
-    return STORAGE_CLASS_ENUM_DEF.valueOf(value);
-  }
+    /** Get the StorageClass for the given String constant, and allow unrecognized values. */
+    public static StorageClassType fromValue(String value) {
+      return STORAGE_CLASS_ENUM_DEF.valueOf(value);
+    }
 
-  /** Return the known values for StorageClass. */
-  public static StorageClassType[] values() {
-    return STORAGE_CLASS_ENUM_DEF.values();
-  }
+    /** Return the known values for StorageClass. */
+    public static StorageClassType[] values() {
+      return STORAGE_CLASS_ENUM_DEF.values();
+    }
+
+    private StorageClassType(String value) {
+      super(value);
+    }
+
 }

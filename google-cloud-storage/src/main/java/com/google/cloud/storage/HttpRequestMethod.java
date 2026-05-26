@@ -24,11 +24,7 @@ import com.google.cloud.StringEnumValue;
 public final class HttpRequestMethod extends StringEnumValue {
   private static final long serialVersionUID = -1394461645628254471L;
 
-  private HttpRequestMethod(String methodName) {
-    super(methodName);
-  }
-
-  private static final ApiFunction<String, HttpRequestMethod> HTTP_METHOD_FACTORY =
+    private static final ApiFunction<String, HttpRequestMethod> HTTP_METHOD_FACTORY =
       new ApiFunction<String, HttpRequestMethod>() {
         @Override
         public HttpRequestMethod apply(String constant) {
@@ -46,21 +42,26 @@ public final class HttpRequestMethod extends StringEnumValue {
   public static final HttpRequestMethod DELETE = METHOD_ENUM.createAndRegister("DELETE");
   public static final HttpRequestMethod OPTIONS = METHOD_ENUM.createAndRegister("OPTIONS");
 
-  /**
-   * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
-   * recognized.
-   */
-  public static HttpRequestMethod valueOfStrict(String methodName) {
-    return METHOD_ENUM.valueOfStrict(methodName);
-  }
+    /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
+    public static HttpRequestMethod fromValue(String methodName) {
+      return METHOD_ENUM.valueOf(methodName);
+    }
 
-  /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
-  public static HttpRequestMethod fromValue(String methodName) {
-    return METHOD_ENUM.valueOf(methodName);
-  }
+    /** Return the known values for HttpMethod. */
+    public static HttpRequestMethod[] values() {
+      return METHOD_ENUM.values();
+    }
 
-  /** Return the known values for HttpMethod. */
-  public static HttpRequestMethod[] values() {
-    return METHOD_ENUM.values();
-  }
+    private HttpRequestMethod(String methodName) {
+      super(methodName);
+    }
+
+    /**
+     * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
+     * recognized.
+     */
+    public static HttpRequestMethod valueOfStrict(String methodName) {
+      return METHOD_ENUM.valueOfStrict(methodName);
+    }
+
 }

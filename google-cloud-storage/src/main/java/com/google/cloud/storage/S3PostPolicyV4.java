@@ -47,45 +47,6 @@ public final class S3PostPolicyV4 {
 
     private final Map<String, String> formParams;
 
-    private S3PostPolicyV4(String endpoint, Map<String, String> formParams) {
-        try {
-            if (!new URI(endpoint).isAbsolute()) {
-                throw new IllegalArgumentException(endpoint + " is not an absolute URL");
-            }
-        } catch (URISyntaxException uriSyntaxException) {
-            throw new IllegalArgumentException(uriSyntaxException);
-        }
-        PostFieldsMapV4.validate(formParams);
-        this.endpoint = endpoint;
-        this.formParams = Collections.unmodifiableMap(formParams);
-    }
-
-    /**
-     * Constructs {@code PostPolicyV4} instance of the given URL and fields map.
-     *
-     * @param endpoint URL for the HTTP POST request
-     * @param formParams HTML form fields
-     * @return constructed object
-     * @throws IllegalArgumentException if URL is malformed or fields are not valid
-     */
-    public static S3PostPolicyV4 from(String endpoint, Map<String, String> formParams) {
-        return new S3PostPolicyV4(endpoint, formParams);
-    }
-
-    /**
-     * Returns the URL for the HTTP POST request
-     */
-    public String getUrl() {
-        return endpoint;
-    }
-
-    /**
-     * Returns the HTML form fields
-     */
-    public Map<String, String> getFields() {
-        return formParams;
-    }
-
     /**
      * A helper class to define fields to be specified in a V4 POST request. Instance of this class
      * helps to construct {@code PostPolicyV4} objects. Used in: {@link
@@ -101,73 +62,14 @@ public final class S3PostPolicyV4 {
 
         private static final List<String> ALLOWED_FORM_KEYS = Arrays.asList("acl", "bucket", "cache-control", "content-disposition", "content-encoding", "content-type", "expires", "file", "key", "policy", "success_action_redirect", "success_action_status", "x-goog-algorithm", "x-goog-credential", "x-goog-date", "x-goog-signature");
 
-        private static void validate(Map<String, String> formParams) {
-            for (String fieldName : formParams.keySet()) {
-                if (!ALLOWED_FORM_KEYS.contains(fieldName.toLowerCase()) && !fieldName.startsWith(UploadFormBuilder.METADATA_PREFIX)) {
-                    throw new IllegalArgumentException("Invalid key: " + fieldName);
-                }
-            }
-        }
-
-        private PostFieldsMapV4(UploadFormBuilder formBuilder) {
-            this(formBuilder.formDataMap);
-        }
-
-        private PostFieldsMapV4(Map<String, String> formParams) {
-            validate(formParams);
-            this.formDataMap = Collections.unmodifiableMap(formParams);
-        }
-
-        /**
-         * Constructs {@code PostPolicyV4.PostFieldsV4} object of the given field map.
-         *
-         * @param formParams a map of the HTML form fields
-         * @return constructed object
-         * @throws IllegalArgumentException if an unsupported field is specified
-         */
-        public static PostFieldsMapV4 from(Map<String, String> formParams) {
-            return new PostFieldsMapV4(formParams);
-        }
-
-        public static UploadFormBuilder createBuilder() {
-            return new UploadFormBuilder();
-        }
-
-        public Map<String, String> getFieldsMap() {
-            return formDataMap;
-        }
-
         public static class UploadFormBuilder {
 
             private static final String METADATA_PREFIX = "x-goog-meta-";
 
             private final Map<String, String> formDataMap;
 
-            private UploadFormBuilder() {
-                this.formDataMap = new HashMap<>();
-            }
-
-            public PostFieldsMapV4 buildMap() {
-                return new PostFieldsMapV4(this);
-            }
-
-            public UploadFormBuilder setAcl(String accessControl) {
-                formDataMap.put("acl", accessControl);
-                return this;
-            }
-
-            public UploadFormBuilder setCacheControl(String cacheDirective) {
-                formDataMap.put("cache-control", cacheDirective);
-                return this;
-            }
-
-            public UploadFormBuilder setContentDisposition(String disposition) {
-                formDataMap.put("content-disposition", disposition);
-                return this;
-            }
-
-            public UploadFormBuilder setContentEncoding(String encoding) {
-                formDataMap.put("content-encoding", encoding);
+            public UploadFormBuilder setExpires(String expiry) {
+                formDataMap.put("expires", expiry);
                 return this;
             }
 
@@ -180,6 +82,14 @@ public final class S3PostPolicyV4 {
             @Deprecated
             public S3PostPolicyV4.PostFieldsMapV4.UploadFormBuilder setContentLength(int contentLength) {
                 return this;
+            }
+
+            /**
+             * @deprecated Use {@link #setCustomMetadataField(String, String)}.
+             */
+            @Deprecated
+            public S3PostPolicyV4.PostFieldsMapV4.UploadFormBuilder AddCustomMetadataField(String metadataName, String metadataValue) {
+                return setCustomMetadataField(metadataName, metadataValue);
             }
 
             public UploadFormBuilder setContentType(String mimeType) {
@@ -195,27 +105,9 @@ public final class S3PostPolicyV4 {
                 return setExpires(expiry);
             }
 
-            public UploadFormBuilder setExpires(String expiry) {
-                formDataMap.put("expires", expiry);
-                return this;
-            }
-
-            public UploadFormBuilder setSuccessActionRedirect(String redirectOnSuccess) {
-                formDataMap.put("success_action_redirect", redirectOnSuccess);
-                return this;
-            }
-
             public UploadFormBuilder setSuccessActionStatus(int successStatusCode) {
                 formDataMap.put("success_action_status", "" + successStatusCode);
                 return this;
-            }
-
-            /**
-             * @deprecated Use {@link #setCustomMetadataField(String, String)}.
-             */
-            @Deprecated
-            public S3PostPolicyV4.PostFieldsMapV4.UploadFormBuilder AddCustomMetadataField(String metadataName, String metadataValue) {
-                return setCustomMetadataField(metadataName, metadataValue);
             }
 
             public UploadFormBuilder setCustomMetadataField(String metadataName, String metadataValue) {
@@ -225,7 +117,78 @@ public final class S3PostPolicyV4 {
                 formDataMap.put(metadataName, metadataValue);
                 return this;
             }
+
+            private UploadFormBuilder() {
+                this.formDataMap = new HashMap<>();
+            }
+
+            public PostFieldsMapV4 buildMap() {
+                return new PostFieldsMapV4(this);
+            }
+
+            public UploadFormBuilder setAcl(String accessControl) {
+                formDataMap.put("acl", accessControl);
+                return this;
+            }
+
+            public UploadFormBuilder setSuccessActionRedirect(String redirectOnSuccess) {
+                formDataMap.put("success_action_redirect", redirectOnSuccess);
+                return this;
+            }
+
+            public UploadFormBuilder setContentEncoding(String encoding) {
+                formDataMap.put("content-encoding", encoding);
+                return this;
+            }
+
+            public UploadFormBuilder setCacheControl(String cacheDirective) {
+                formDataMap.put("cache-control", cacheDirective);
+                return this;
+            }
+
+            public UploadFormBuilder setContentDisposition(String disposition) {
+                formDataMap.put("content-disposition", disposition);
+                return this;
+            }
+
         }
+
+        public static UploadFormBuilder createBuilder() {
+            return new UploadFormBuilder();
+        }
+
+        /**
+         * Constructs {@code PostPolicyV4.PostFieldsV4} object of the given field map.
+         *
+         * @param formParams a map of the HTML form fields
+         * @return constructed object
+         * @throws IllegalArgumentException if an unsupported field is specified
+         */
+        public static PostFieldsMapV4 from(Map<String, String> formParams) {
+            return new PostFieldsMapV4(formParams);
+        }
+
+        private PostFieldsMapV4(UploadFormBuilder formBuilder) {
+            this(formBuilder.formDataMap);
+        }
+
+        public Map<String, String> getFieldsMap() {
+            return formDataMap;
+        }
+
+        private static void validate(Map<String, String> formParams) {
+            for (String fieldName : formParams.keySet()) {
+                if (!ALLOWED_FORM_KEYS.contains(fieldName.toLowerCase()) && !fieldName.startsWith(UploadFormBuilder.METADATA_PREFIX)) {
+                    throw new IllegalArgumentException("Invalid key: " + fieldName);
+                }
+            }
+        }
+
+        private PostFieldsMapV4(Map<String, String> formParams) {
+            validate(formParams);
+            this.formDataMap = Collections.unmodifiableMap(formParams);
+        }
+
     }
 
     /**
@@ -242,25 +205,79 @@ public final class S3PostPolicyV4 {
 
         private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-        public PostConditionsVersion4(PolicyBuilder formBuilder) {
-            this.conditionSet = formBuilder.conditionSet;
-        }
-
-        public PolicyBuilder asBuilder() {
-            return new PolicyBuilder(conditionSet);
-        }
-
-        public static PolicyBuilder createBuilder() {
-            return new PolicyBuilder();
-        }
-
-        public Set<ConditionalExpressionV4> getConditions() {
-            return Collections.unmodifiableSet(conditionSet);
-        }
-
         public static class PolicyBuilder {
 
             private final Set<ConditionalExpressionV4> conditionSet;
+
+            public PolicyBuilder addContentEncoding(ConditionV4Kind conditionType, String encoding) {
+                validateType(conditionType, "content-encoding");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-encoding", encoding));
+                return this;
+            }
+
+            public PolicyBuilder addExpires(long expiry) {
+                return addExpires(dateFormatter.format(expiry));
+            }
+
+            public PolicyBuilder addSuccessActionStatus(int responseCode) {
+                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.MATCHES, "success_action_status", "" + responseCode));
+                return this;
+            }
+
+            public static PolicyBuilder newBuilder() {
+                return new PolicyBuilder();
+            }
+
+            /**
+             * @deprecated Use {@link #addSuccessActionStatus(int)}
+             */
+            @Deprecated
+            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addSuccessActionStatus(ConditionV4Kind type, int responseCode) {
+                return addSuccessActionStatus(responseCode);
+            }
+
+            public PolicyBuilder addExpires(String expiry) {
+                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.MATCHES, "expires", expiry));
+                return this;
+            }
+
+            /**
+             * @deprecated Use {@link #addExpires(long)}
+             */
+            @Deprecated
+            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addExpires(ConditionV4Kind type, long expiry) {
+                return addExpires(expiry);
+            }
+
+            public PolicyBuilder addSuccessActionRedirect(ConditionV4Kind conditionType, String redirectUrl) {
+                validateType(conditionType, "success_action_redirect");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "success_action_redirect", redirectUrl));
+                return this;
+            }
+
+            private void validateType(ConditionV4Kind conditionType, String metadataName) {
+                if (ConditionV4Kind.MATCHES != conditionType && ConditionV4Kind.STARTS_WITH != conditionType) {
+                    throw new IllegalArgumentException("Field " + metadataName + " can't use " + conditionType);
+                }
+            }
+
+            public PolicyBuilder addContentDisposition(ConditionV4Kind conditionType, String disposition) {
+                validateType(conditionType, "content-disposition");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-disposition", disposition));
+                return this;
+            }
+
+            public PolicyBuilder addKey(ConditionV4Kind conditionType, String fieldName) {
+                validateType(conditionType, "key");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "key", fieldName));
+                return this;
+            }
+
+            public PolicyBuilder addCacheControl(ConditionV4Kind conditionType, String cacheDirective) {
+                validateType(conditionType, "cache-control");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "cache-control", cacheDirective));
+                return this;
+            }
 
             private PolicyBuilder() {
                 this(new LinkedHashSet<ConditionalExpressionV4>());
@@ -270,8 +287,23 @@ public final class S3PostPolicyV4 {
                 this.conditionSet = conditionSet;
             }
 
-            public static PolicyBuilder newBuilder() {
-                return new PolicyBuilder();
+            public PolicyBuilder addContentType(ConditionV4Kind conditionType, String mimeType) {
+                validateType(conditionType, "content-type");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-type", mimeType));
+                return this;
+            }
+
+            public PolicyBuilder addContentLengthRange(int minimumLength, int maximumLength) {
+                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.CONTENT_LENGTH_RANGE, "" + minimumLength, "" + maximumLength));
+                return this;
+            }
+
+            /**
+             * @deprecated Use {@link #addExpires(String)}
+             */
+            @Deprecated
+            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addExpires(ConditionV4Kind type, String expiry) {
+                return addExpires(expiry);
             }
 
             public PostConditionsVersion4 buildConditions() {
@@ -284,30 +316,6 @@ public final class S3PostPolicyV4 {
                 return this;
             }
 
-            public PolicyBuilder addBucket(ConditionV4Kind conditionType, String bucketName) {
-                validateType(conditionType, "bucket");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "bucket", bucketName));
-                return this;
-            }
-
-            public PolicyBuilder addCacheControl(ConditionV4Kind conditionType, String cacheDirective) {
-                validateType(conditionType, "cache-control");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "cache-control", cacheDirective));
-                return this;
-            }
-
-            public PolicyBuilder addContentDisposition(ConditionV4Kind conditionType, String disposition) {
-                validateType(conditionType, "content-disposition");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-disposition", disposition));
-                return this;
-            }
-
-            public PolicyBuilder addContentEncoding(ConditionV4Kind conditionType, String encoding) {
-                validateType(conditionType, "content-encoding");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-encoding", encoding));
-                return this;
-            }
-
             /**
              * @deprecated Invocation of this method has no effect. Use {@link
              *     #addContentLengthRange(int, int)} to specify a range for the content-length.
@@ -316,64 +324,9 @@ public final class S3PostPolicyV4 {
                 return this;
             }
 
-            public PolicyBuilder addContentType(ConditionV4Kind conditionType, String mimeType) {
-                validateType(conditionType, "content-type");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "content-type", mimeType));
-                return this;
-            }
-
-            /**
-             * @deprecated Use {@link #addExpires(long)}
-             */
-            @Deprecated
-            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addExpires(ConditionV4Kind type, long expiry) {
-                return addExpires(expiry);
-            }
-
-            /**
-             * @deprecated Use {@link #addExpires(String)}
-             */
-            @Deprecated
-            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addExpires(ConditionV4Kind type, String expiry) {
-                return addExpires(expiry);
-            }
-
-            public PolicyBuilder addExpires(long expiry) {
-                return addExpires(dateFormatter.format(expiry));
-            }
-
-            public PolicyBuilder addExpires(String expiry) {
-                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.MATCHES, "expires", expiry));
-                return this;
-            }
-
-            public PolicyBuilder addKey(ConditionV4Kind conditionType, String fieldName) {
-                validateType(conditionType, "key");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "key", fieldName));
-                return this;
-            }
-
-            public PolicyBuilder addSuccessActionRedirect(ConditionV4Kind conditionType, String redirectUrl) {
-                validateType(conditionType, "success_action_redirect");
-                conditionSet.add(new ConditionalExpressionV4(conditionType, "success_action_redirect", redirectUrl));
-                return this;
-            }
-
-            /**
-             * @deprecated Use {@link #addSuccessActionStatus(int)}
-             */
-            @Deprecated
-            public S3PostPolicyV4.PostConditionsVersion4.PolicyBuilder addSuccessActionStatus(ConditionV4Kind type, int responseCode) {
-                return addSuccessActionStatus(responseCode);
-            }
-
-            public PolicyBuilder addSuccessActionStatus(int responseCode) {
-                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.MATCHES, "success_action_status", "" + responseCode));
-                return this;
-            }
-
-            public PolicyBuilder addContentLengthRange(int minimumLength, int maximumLength) {
-                conditionSet.add(new ConditionalExpressionV4(ConditionV4Kind.CONTENT_LENGTH_RANGE, "" + minimumLength, "" + maximumLength));
+            public PolicyBuilder addBucket(ConditionV4Kind conditionType, String bucketName) {
+                validateType(conditionType, "bucket");
+                conditionSet.add(new ConditionalExpressionV4(conditionType, "bucket", bucketName));
                 return this;
             }
 
@@ -382,12 +335,24 @@ public final class S3PostPolicyV4 {
                 return this;
             }
 
-            private void validateType(ConditionV4Kind conditionType, String metadataName) {
-                if (ConditionV4Kind.MATCHES != conditionType && ConditionV4Kind.STARTS_WITH != conditionType) {
-                    throw new IllegalArgumentException("Field " + metadataName + " can't use " + conditionType);
-                }
-            }
         }
+
+        public static PolicyBuilder createBuilder() {
+            return new PolicyBuilder();
+        }
+
+        public Set<ConditionalExpressionV4> getConditions() {
+            return Collections.unmodifiableSet(conditionSet);
+        }
+
+        public PolicyBuilder asBuilder() {
+            return new PolicyBuilder(conditionSet);
+        }
+
+        public PostConditionsVersion4(PolicyBuilder formBuilder) {
+            this.conditionSet = formBuilder.conditionSet;
+        }
+
     }
 
     /**
@@ -401,11 +366,6 @@ public final class S3PostPolicyV4 {
         private final String expiry;
 
         private final PostConditionsVersion4 conditionSet;
-
-        private PostPolicyV4JsonDocument(String expiry, PostConditionsVersion4 conditionSet) {
-            this.expiry = expiry;
-            this.conditionSet = conditionSet;
-        }
 
         public static PostPolicyV4JsonDocument create(String expiry, PostConditionsVersion4 conditionSet) {
             return new PostPolicyV4JsonDocument(expiry, conditionSet);
@@ -476,6 +436,12 @@ public final class S3PostPolicyV4 {
             }
             return escapedBuilder.toString();
         }
+
+        private PostPolicyV4JsonDocument(String expiry, PostConditionsVersion4 conditionSet) {
+            this.expiry = expiry;
+            this.conditionSet = conditionSet;
+        }
+
     }
 
     public enum ConditionV4Kind {
@@ -484,14 +450,15 @@ public final class S3PostPolicyV4 {
 
         private final String identifier;
 
-        ConditionV4Kind(String identifier) {
-            this.identifier = identifier;
-        }
-
         @Override
         public String toString() {
             return identifier;
         }
+
+        ConditionV4Kind(String identifier) {
+            this.identifier = identifier;
+        }
+
     }
 
     /**
@@ -508,23 +475,6 @@ public final class S3PostPolicyV4 {
 
         public final String operand2;
 
-        ConditionalExpressionV4(ConditionV4Kind conditionType, String firstOperand, String secondOperand) {
-            this.type = conditionType;
-            this.operand1 = firstOperand;
-            this.operand2 = secondOperand;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            ConditionalExpressionV4 condExpr = (ConditionalExpressionV4) obj;
-            return condExpr.type == this.type && this.operand1.equals(condExpr.operand1) && this.operand2.equals(condExpr.operand2);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(type, operand1, operand2);
-        }
-
         /**
          * Examples of returned strings: {@code ["eq", "$key", "test-object"]}, {@code ["starts-with",
          * "$acl", "public"]}, {@code ["content-length-range", 246, 266]}.
@@ -534,5 +484,63 @@ public final class S3PostPolicyV4 {
             String content = ConditionV4Kind.CONTENT_LENGTH_RANGE == type ? operand1 + ", " + operand2 : "\"$" + operand1 + "\", \"" + operand2 + "\"";
             return "[\"" + type + "\", " + content + "]";
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, operand1, operand2);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            ConditionalExpressionV4 condExpr = (ConditionalExpressionV4) obj;
+            return condExpr.type == this.type && this.operand1.equals(condExpr.operand1) && this.operand2.equals(condExpr.operand2);
+        }
+
+        ConditionalExpressionV4(ConditionV4Kind conditionType, String firstOperand, String secondOperand) {
+            this.type = conditionType;
+            this.operand1 = firstOperand;
+            this.operand2 = secondOperand;
+        }
+
     }
+
+    /**
+     * Returns the URL for the HTTP POST request
+     */
+    public String getUrl() {
+        return endpoint;
+    }
+
+    /**
+     * Returns the HTML form fields
+     */
+    public Map<String, String> getFields() {
+        return formParams;
+    }
+
+    private S3PostPolicyV4(String endpoint, Map<String, String> formParams) {
+        try {
+            if (!new URI(endpoint).isAbsolute()) {
+                throw new IllegalArgumentException(endpoint + " is not an absolute URL");
+            }
+        } catch (URISyntaxException uriSyntaxException) {
+            throw new IllegalArgumentException(uriSyntaxException);
+        }
+        PostFieldsMapV4.validate(formParams);
+        this.endpoint = endpoint;
+        this.formParams = Collections.unmodifiableMap(formParams);
+    }
+
+    /**
+     * Constructs {@code PostPolicyV4} instance of the given URL and fields map.
+     *
+     * @param endpoint URL for the HTTP POST request
+     * @param formParams HTML form fields
+     * @return constructed object
+     * @throws IllegalArgumentException if URL is malformed or fields are not valid
+     */
+    public static S3PostPolicyV4 from(String endpoint, Map<String, String> formParams) {
+        return new S3PostPolicyV4(endpoint, formParams);
+    }
+
 }
