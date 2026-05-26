@@ -26,42 +26,44 @@ import com.google.cloud.storage.StorageRetryStrategy;
 import org.threeten.bp.Duration;
 
 public final class ConfigureRetries {
-  public static void main(String[] args) {
-    String bucketName = "my-bucket";
-    String blobName = "blob/to/delete";
-    deleteBlob(bucketName, blobName);
-  }
 
-  static void deleteBlob(String bucketName, String blobName) {
-    // Customize retry behavior
-    RetrySettings retrySettings =
-        StorageOptions.getDefaultRetrySettings()
-            .toBuilder()
-            // Set the max number of attempts to 10 (initial attempt plus 9 retries)
-            .setMaxAttempts(10)
-            // Set the backoff multiplier to 3.0
-            .setRetryDelayMultiplier(3.0)
-            // Set the max duration of all attempts to 5 minutes
-            .setTotalTimeout(Duration.ofMinutes(5))
-            .build();
+    static void deleteBlob(String bucketName, String blobName) {
+      // Customize retry behavior
+      RetrySettings retrySettings =
+          StorageOptions.getDefaultRetrySettings()
+              .toBuilder()
+              // Set the max number of attempts to 10 (initial attempt plus 9 retries)
+              .setMaxAttempts(10)
+              // Set the backoff multiplier to 3.0
+              .setRetryDelayMultiplier(3.0)
+              // Set the max duration of all attempts to 5 minutes
+              .setTotalTimeout(Duration.ofMinutes(5))
+              .build();
 
-    StorageOptions alwaysRetryStorageOptions =
-        StorageOptions.newBuilder()
-            // Customize retry so all requests are retried even if they are non-idempotent.
-            .setStorageRetryStrategy(StorageRetryStrategy.getUniformStorageRetryStrategy())
-            // provide the previously configured retrySettings
-            .setRetrySettings(retrySettings)
-            .build();
+      StorageOptions alwaysRetryStorageOptions =
+          StorageOptions.newBuilder()
+              // Customize retry so all requests are retried even if they are non-idempotent.
+              .setStorageRetryStrategy(StorageRetryStrategy.getUniformStorageRetryStrategy())
+              // provide the previously configured retrySettings
+              .setRetrySettings(retrySettings)
+              .build();
 
-    // Instantiate a client
-    Storage storage = alwaysRetryStorageOptions.getService();
+      // Instantiate a client
+      Storage storage = alwaysRetryStorageOptions.getService();
 
-    // Delete the blob
-    BlobId blobId = BlobId.of(bucketName, blobName);
-    boolean success = storage.delete(blobId);
+      // Delete the blob
+      BlobId blobId = BlobId.of(bucketName, blobName);
+      boolean success = storage.delete(blobId);
 
-    System.out.printf(
-        "Deletion of Blob %s completed %s.%n", blobId, success ? "successfully" : "unsuccessfully");
-  }
+      System.out.printf(
+          "Deletion of Blob %s completed %s.%n", blobId, success ? "successfully" : "unsuccessfully");
+    }
+
+    public static void main(String[] args) {
+      String bucketName = "my-bucket";
+      String blobName = "blob/to/delete";
+      deleteBlob(bucketName, blobName);
+    }
+
 }
 // [END storage_configure_retries]

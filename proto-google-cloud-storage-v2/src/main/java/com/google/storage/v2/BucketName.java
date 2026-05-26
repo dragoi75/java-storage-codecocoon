@@ -37,35 +37,49 @@ public class BucketName implements ResourceName {
 
     private final String bucket;
 
-    @Deprecated
-    protected BucketName() {
-        project = null;
-        bucket = null;
+    /**
+     * Builder for projects/{project}/buckets/{bucket}.
+     */
+    public static class Builder {
+
+        private String project;
+
+        private String bucket;
+
+        private Builder(BucketName bucketName) {
+            this.project = bucketName.project;
+            this.bucket = bucketName.bucket;
+        }
+
+        public BucketName build() {
+            return new BucketName(this);
+        }
+
+        public Builder setBucket(String bucket) {
+            this.bucket = bucket;
+            return this;
+        }
+
+        protected Builder() {
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        public String getBucket() {
+            return bucket;
+        }
+
     }
 
-    private BucketName(Builder builder) {
-        project = Preconditions.checkNotNull(builder.getProject());
-        bucket = Preconditions.checkNotNull(builder.getBucket());
-    }
-
-    public String getProject() {
-        return project;
-    }
-
-    public String getBucket() {
-        return bucket;
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
-
-    public static BucketName of(String project, String bucket) {
-        return newBuilder().setProject(project).setBucket(bucket).build();
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT_BUCKET.matches(formattedString);
     }
 
     public static String format(String project, String bucket) {
@@ -80,28 +94,18 @@ public class BucketName implements ResourceName {
         return of(matchMap.get("project"), matchMap.get("bucket"));
     }
 
-    public static List<BucketName> parseList(List<String> formattedStrings) {
-        List<BucketName> list = new ArrayList<>(formattedStrings.size());
-        for (String formattedString : formattedStrings) {
-            list.add(parse(formattedString));
-        }
-        return list;
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
-    public static List<String> toStringList(List<BucketName> values) {
-        List<String> list = new ArrayList<>(values.size());
-        for (BucketName value : values) {
-            if (null != value) {
-                list.add(value.toString());
-            } else {
-                list.add("");
-            }
-        }
-        return list;
-    }
-
-    public static boolean isParsableFrom(String formattedString) {
-        return PROJECT_BUCKET.matches(formattedString);
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        h *= 1000003;
+        h ^= Objects.hashCode(bucket);
+        return h;
     }
 
     @Override
@@ -123,15 +127,6 @@ public class BucketName implements ResourceName {
         return fieldValuesMap;
     }
 
-    public String getFieldValue(String fieldName) {
-        return getFieldValuesMap().get(fieldName);
-    }
-
-    @Override
-    public String toString() {
-        return PROJECT_BUCKET.instantiate("project", project, "bucket", bucket);
-    }
-
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -144,53 +139,60 @@ public class BucketName implements ResourceName {
         return false;
     }
 
+    public String getFieldValue(String fieldName) {
+        return getFieldValuesMap().get(fieldName);
+    }
+
     @Override
-    public int hashCode() {
-        int h = 1;
-        h *= 1000003;
-        h ^= Objects.hashCode(project);
-        h *= 1000003;
-        h ^= Objects.hashCode(bucket);
-        return h;
+    public String toString() {
+        return PROJECT_BUCKET.instantiate("project", project, "bucket", bucket);
     }
 
-    /**
-     * Builder for projects/{project}/buckets/{bucket}.
-     */
-    public static class Builder {
-
-        private String project;
-
-        private String bucket;
-
-        protected Builder() {
-        }
-
-        public String getProject() {
-            return project;
-        }
-
-        public String getBucket() {
-            return bucket;
-        }
-
-        public Builder setProject(String project) {
-            this.project = project;
-            return this;
-        }
-
-        public Builder setBucket(String bucket) {
-            this.bucket = bucket;
-            return this;
-        }
-
-        private Builder(BucketName bucketName) {
-            this.project = bucketName.project;
-            this.bucket = bucketName.bucket;
-        }
-
-        public BucketName build() {
-            return new BucketName(this);
-        }
+    public String getBucket() {
+        return bucket;
     }
+
+    @Deprecated
+    protected BucketName() {
+        project = null;
+        bucket = null;
+    }
+
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
+    private BucketName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+        bucket = Preconditions.checkNotNull(builder.getBucket());
+    }
+
+    public static List<BucketName> parseList(List<String> formattedStrings) {
+        List<BucketName> list = new ArrayList<>(formattedStrings.size());
+        for (String formattedString : formattedStrings) {
+            list.add(parse(formattedString));
+        }
+        return list;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public static List<String> toStringList(List<BucketName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (BucketName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
+    public static BucketName of(String project, String bucket) {
+        return newBuilder().setProject(project).setBucket(bucket).build();
+    }
+
 }

@@ -24,17 +24,6 @@ import java.util.function.Supplier;
 
 final class ResumableMedia {
 
-    static Supplier<String> startUploadForBlobInfo(final StorageClientOptions storageOptions, final BlobMetadata blob, final Map<StorageRpcClient.StorageOption, ?> optionsMap, ResultRetryAlgorithm<?> algorithm) {
-        return () -> Retrying.run(storageOptions, algorithm, () -> storageOptions.getStorageRpcV1().open(blob.toProto(), optionsMap), Function.identity());
-    }
-
-    static Supplier<String> startUploadForSignedUrl(final StorageClientOptions storageOptions, final URL signedURL, ResultRetryAlgorithm<?> algorithm) {
-        if (!isValidSignedURL(signedURL.getQuery())) {
-            throw new StorageServiceException(2, "invalid signedURL");
-        }
-        return () -> Retrying.run(storageOptions, algorithm, () -> storageOptions.getStorageRpcV1().open(signedURL.toString()), Function.identity());
-    }
-
     private static boolean isValidSignedURL(String signedURLQuery) {
         boolean isValid = true;
         if (!signedURLQuery.startsWith("X-Goog-Algorithm=")) {
@@ -52,4 +41,16 @@ final class ResumableMedia {
         }
         return isValid;
     }
+
+    static Supplier<String> startUploadForBlobInfo(final StorageClientOptions storageOptions, final BlobMetadata blob, final Map<StorageRpcClient.StorageOption, ?> optionsMap, ResultRetryAlgorithm<?> algorithm) {
+        return () -> Retrying.run(storageOptions, algorithm, () -> storageOptions.getStorageRpcV1().open(blob.toProto(), optionsMap), Function.identity());
+    }
+
+    static Supplier<String> startUploadForSignedUrl(final StorageClientOptions storageOptions, final URL signedURL, ResultRetryAlgorithm<?> algorithm) {
+        if (!isValidSignedURL(signedURL.getQuery())) {
+            throw new StorageServiceException(2, "invalid signedURL");
+        }
+        return () -> Retrying.run(storageOptions, algorithm, () -> storageOptions.getStorageRpcV1().open(signedURL.toString()), Function.identity());
+    }
+
 }

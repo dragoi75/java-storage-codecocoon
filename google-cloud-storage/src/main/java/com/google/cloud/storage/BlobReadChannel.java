@@ -67,58 +67,140 @@ class BlobReadChannel implements ReadChannel {
 
     private long limit;
 
-    BlobReadChannel(StorageClientOptions serviceOptions, BlobId blob, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
-        this.serviceOptions = serviceOptions;
-        this.blob = blob;
-        this.requestOptions = requestOptions;
-        this.retryAlgorithmManager = serviceOptions.getRetryAlgorithmManager();
-        isOpen = true;
-        storageRpc = serviceOptions.getStorageRpcV1();
-        storageObject = blob.toProto();
-        this.limit = Long.MAX_VALUE;
-    }
+    static class StateImpl implements RestorableState<ReadChannel>, Serializable {
 
-    @Override
-    public RestorableState<ReadChannel> capture() {
-        StateImpl.Builder builder = StateImpl.builder(serviceOptions, blob, requestOptions).setPosition(position).setIsOpen(isOpen).setEndOfStream(endOfStream).setChunkSize(chunkSize).setLimit(limit);
-        if (null != buffer) {
-            builder.setPosition(position + bufferPos);
-            builder.setEndOfStream(false);
+        private static final long serialVersionUID = 3889420316004453706L;
+
+        private final StorageClientOptions serviceOptions;
+
+        private final BlobId blob;
+
+        private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
+
+        private final String lastEtag;
+
+        private final long position;
+
+        private final boolean isOpen;
+
+        private final boolean endOfStream;
+
+        private final int chunkSize;
+
+        private final long limit;
+
+        static class Builder {
+
+            private final StorageClientOptions serviceOptions;
+
+            private final BlobId blob;
+
+            private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
+
+            private String lastEtag;
+
+            private long position;
+
+            private boolean isOpen;
+
+            private boolean endOfStream;
+
+            private int chunkSize;
+
+            private long limit;
+
+            RestorableState<ReadChannel> build() {
+                return new StateImpl(this);
+            }
+
+            Builder setChunkSize(int chunkSize) {
+                this.chunkSize = chunkSize;
+                return this;
+            }
+
+            Builder setLastEtag(String lastEtag) {
+                this.lastEtag = lastEtag;
+                return this;
+            }
+
+            Builder setEndOfStream(boolean endOfStream) {
+                this.endOfStream = endOfStream;
+                return this;
+            }
+
+            Builder setLimit(long limit) {
+                this.limit = limit;
+                return this;
+            }
+
+            private Builder(StorageClientOptions options, BlobId blob, Map<StorageRpcClient.StorageOption, ?> reqOptions) {
+                this.serviceOptions = options;
+                this.blob = blob;
+                this.requestOptions = reqOptions;
+            }
+
+            Builder setIsOpen(boolean isOpen) {
+                this.isOpen = isOpen;
+                return this;
+            }
+
+            Builder setPosition(long position) {
+                this.position = position;
+                return this;
+            }
+
         }
-        return builder.build();
-    }
 
-    @Override
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    @Override
-    public void close() {
-        if (isOpen) {
-            buffer = null;
-            isOpen = false;
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("blob", blob).add("position", position).add("isOpen", isOpen).add("endOfStream", endOfStream).add("limit", limit).toString();
         }
-    }
 
-    private void validateOpen() throws ClosedChannelException {
-        if (!isOpen) {
-            throw new ClosedChannelException();
+        @Override
+        public boolean equals(Object obj) {
+            if (null == obj) {
+                return false;
+            }
+            if (!(obj instanceof StateImpl)) {
+                return false;
+            }
+            final StateImpl other = (StateImpl) obj;
+            return Objects.equals(this.serviceOptions, other.serviceOptions) && Objects.equals(this.blob, other.blob) && Objects.equals(this.requestOptions, other.requestOptions) && Objects.equals(this.lastEtag, other.lastEtag) && other.position == this.position && other.isOpen == this.isOpen && other.endOfStream == this.endOfStream && other.chunkSize == this.chunkSize && other.limit == this.limit;
         }
-    }
 
-    @Override
-    public void seek(long position) throws IOException {
-        validateOpen();
-        this.position = position;
-        buffer = null;
-        bufferPos = 0;
-        endOfStream = false;
-    }
+        StateImpl(Builder builder) {
+            this.serviceOptions = builder.serviceOptions;
+            this.blob = builder.blob;
+            this.requestOptions = builder.requestOptions;
+            this.lastEtag = builder.lastEtag;
+            this.position = builder.position;
+            this.isOpen = builder.isOpen;
+            this.endOfStream = builder.endOfStream;
+            this.chunkSize = builder.chunkSize;
+            this.limit = builder.limit;
+        }
 
-    @Override
-    public void setChunkSize(int chunkSize) {
-        this.chunkSize = 0 >= chunkSize ? DEFAULT_CHUNK_SIZE : chunkSize;
+        @Override
+        public int hashCode() {
+            return Objects.hash(serviceOptions, blob, requestOptions, lastEtag, position, isOpen, endOfStream, chunkSize, limit);
+        }
+
+        @Override
+        public ReadChannel restore() {
+            BlobReadChannel channel = new BlobReadChannel(serviceOptions, blob, requestOptions);
+            channel.lastEtag = lastEtag;
+            channel.position = position;
+            channel.isOpen = isOpen;
+            channel.endOfStream = endOfStream;
+            channel.chunkSize = chunkSize;
+            channel.limit = limit;
+            return channel;
+        }
+
+        static Builder builder(StorageClientOptions options, BlobId blob, Map<StorageRpcClient.StorageOption, ?> reqOptions) {
+            return new Builder(options, blob, reqOptions);
+        }
+
     }
 
     @Override
@@ -165,6 +247,12 @@ class BlobReadChannel implements ReadChannel {
         return toWrite;
     }
 
+    private void validateOpen() throws ClosedChannelException {
+        if (!isOpen) {
+            throw new ClosedChannelException();
+        }
+    }
+
     @Override
     public ReadChannel limit(long limit) {
         Preconditions.checkArgument(0 <= limit, "Limit must be >= 0");
@@ -173,141 +261,56 @@ class BlobReadChannel implements ReadChannel {
     }
 
     @Override
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    @Override
+    public void setChunkSize(int chunkSize) {
+        this.chunkSize = 0 >= chunkSize ? DEFAULT_CHUNK_SIZE : chunkSize;
+    }
+
+    @Override
     public long limit() {
         return limit;
     }
 
-    static class StateImpl implements RestorableState<ReadChannel>, Serializable {
-
-        private static final long serialVersionUID = 3889420316004453706L;
-
-        private final StorageClientOptions serviceOptions;
-
-        private final BlobId blob;
-
-        private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
-
-        private final String lastEtag;
-
-        private final long position;
-
-        private final boolean isOpen;
-
-        private final boolean endOfStream;
-
-        private final int chunkSize;
-
-        private final long limit;
-
-        StateImpl(Builder builder) {
-            this.serviceOptions = builder.serviceOptions;
-            this.blob = builder.blob;
-            this.requestOptions = builder.requestOptions;
-            this.lastEtag = builder.lastEtag;
-            this.position = builder.position;
-            this.isOpen = builder.isOpen;
-            this.endOfStream = builder.endOfStream;
-            this.chunkSize = builder.chunkSize;
-            this.limit = builder.limit;
-        }
-
-        static class Builder {
-
-            private final StorageClientOptions serviceOptions;
-
-            private final BlobId blob;
-
-            private final Map<StorageRpcClient.StorageOption, ?> requestOptions;
-
-            private String lastEtag;
-
-            private long position;
-
-            private boolean isOpen;
-
-            private boolean endOfStream;
-
-            private int chunkSize;
-
-            private long limit;
-
-            private Builder(StorageClientOptions options, BlobId blob, Map<StorageRpcClient.StorageOption, ?> reqOptions) {
-                this.serviceOptions = options;
-                this.blob = blob;
-                this.requestOptions = reqOptions;
-            }
-
-            Builder setLastEtag(String lastEtag) {
-                this.lastEtag = lastEtag;
-                return this;
-            }
-
-            Builder setPosition(long position) {
-                this.position = position;
-                return this;
-            }
-
-            Builder setIsOpen(boolean isOpen) {
-                this.isOpen = isOpen;
-                return this;
-            }
-
-            Builder setEndOfStream(boolean endOfStream) {
-                this.endOfStream = endOfStream;
-                return this;
-            }
-
-            Builder setChunkSize(int chunkSize) {
-                this.chunkSize = chunkSize;
-                return this;
-            }
-
-            Builder setLimit(long limit) {
-                this.limit = limit;
-                return this;
-            }
-
-            RestorableState<ReadChannel> build() {
-                return new StateImpl(this);
-            }
-        }
-
-        static Builder builder(StorageClientOptions options, BlobId blob, Map<StorageRpcClient.StorageOption, ?> reqOptions) {
-            return new Builder(options, blob, reqOptions);
-        }
-
-        @Override
-        public ReadChannel restore() {
-            BlobReadChannel channel = new BlobReadChannel(serviceOptions, blob, requestOptions);
-            channel.lastEtag = lastEtag;
-            channel.position = position;
-            channel.isOpen = isOpen;
-            channel.endOfStream = endOfStream;
-            channel.chunkSize = chunkSize;
-            channel.limit = limit;
-            return channel;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(serviceOptions, blob, requestOptions, lastEtag, position, isOpen, endOfStream, chunkSize, limit);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (null == obj) {
-                return false;
-            }
-            if (!(obj instanceof StateImpl)) {
-                return false;
-            }
-            final StateImpl other = (StateImpl) obj;
-            return Objects.equals(this.serviceOptions, other.serviceOptions) && Objects.equals(this.blob, other.blob) && Objects.equals(this.requestOptions, other.requestOptions) && Objects.equals(this.lastEtag, other.lastEtag) && other.position == this.position && other.isOpen == this.isOpen && other.endOfStream == this.endOfStream && other.chunkSize == this.chunkSize && other.limit == this.limit;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("blob", blob).add("position", position).add("isOpen", isOpen).add("endOfStream", endOfStream).add("limit", limit).toString();
+    @Override
+    public void close() {
+        if (isOpen) {
+            buffer = null;
+            isOpen = false;
         }
     }
+
+    BlobReadChannel(StorageClientOptions serviceOptions, BlobId blob, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
+        this.serviceOptions = serviceOptions;
+        this.blob = blob;
+        this.requestOptions = requestOptions;
+        this.retryAlgorithmManager = serviceOptions.getRetryAlgorithmManager();
+        isOpen = true;
+        storageRpc = serviceOptions.getStorageRpcV1();
+        storageObject = blob.toProto();
+        this.limit = Long.MAX_VALUE;
+    }
+
+    @Override
+    public void seek(long position) throws IOException {
+        validateOpen();
+        this.position = position;
+        buffer = null;
+        bufferPos = 0;
+        endOfStream = false;
+    }
+
+    @Override
+    public RestorableState<ReadChannel> capture() {
+        StateImpl.Builder builder = StateImpl.builder(serviceOptions, blob, requestOptions).setPosition(position).setIsOpen(isOpen).setEndOfStream(endOfStream).setChunkSize(chunkSize).setLimit(limit);
+        if (null != buffer) {
+            builder.setPosition(position + bufferPos);
+            builder.setEndOfStream(false);
+        }
+        return builder.build();
+    }
+
 }

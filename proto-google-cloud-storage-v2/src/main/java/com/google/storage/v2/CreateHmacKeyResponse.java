@@ -30,13 +30,560 @@ CreateHmacKeyResponse extends com.google.protobuf.GeneratedMessageV3 implements 
 
     private static final long serialVersionUID = 0L;
 
-    // Use CreateHmacKeyResponse.newBuilder() to construct.
-    private CreateHmacKeyResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int METADATA_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.HmacKeyMetadata metadata_;
+
+    public static final int SECRET_KEY_BYTES_FIELD_NUMBER = 3;
+
+    private com.google.protobuf.ByteString secretKeyBytes_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Create hmac response.  The only time the secret for an HMAC will be returned.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.CreateHmacKeyResponse}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyResponse)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyResponse)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateHmacKeyResponseOrBuilder {
+
+        private com.google.storage.v2.HmacKeyMetadata metadata_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> metadataBuilder_;
+
+        private com.google.protobuf.ByteString secretKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateHmacKeyResponse)
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public HmacKeyMetadata.Builder getMetadataBuilder() {
+            onChanged();
+            return getMetadataFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public Builder setMetadata(HmacKeyMetadata.Builder builderForValue) {
+            if (null != metadataBuilder_) {
+                metadataBuilder_.setMessage(builderForValue.build());
+            } else {
+                metadata_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder> getMetadataFieldBuilder() {
+            if (null == metadataBuilder_) {
+                metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder>(getMetadata(), getParentForChildren(), isClean());
+                metadata_ = null;
+            }
+            return metadataBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * HMAC key secret material.
+         * In raw bytes format (not base64-encoded).
+         * </pre>
+         *
+         * <code>bytes secret_key_bytes = 3;</code>
+         *
+         * @return The secretKeyBytes.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getSecretKeyBytes() {
+            return secretKeyBytes_;
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public Builder mergeMetadata(HmacKeyMetadata value) {
+            if (null != metadataBuilder_) {
+                metadataBuilder_.mergeFrom(value);
+            } else {
+                if (null == metadata_) {
+                    metadata_ = value;
+                } else {
+                    metadata_ = HmacKeyMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != metadataBuilder_) {
+                metadata_ = null;
+                metadataBuilder_ = null;
+            } else {
+                metadata_ = null;
+            }
+            secretKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public Builder setMetadata(HmacKeyMetadata value) {
+            if (null != metadataBuilder_) {
+                metadataBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                metadata_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * HMAC key secret material.
+         * In raw bytes format (not base64-encoded).
+         * </pre>
+         *
+         * <code>bytes secret_key_bytes = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearSecretKeyBytes() {
+            secretKeyBytes_ = getDefaultInstance().getSecretKeyBytes();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public HmacKeyMetadataOrBuilder getMetadataOrBuilder() {
+            if (null == metadataBuilder_) {
+                return null == metadata_ ? HmacKeyMetadata.getDefaultInstance() : metadata_;
+            } else {
+                return metadataBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         *
+         * @return The metadata.
+         */
+        public HmacKeyMetadata getMetadata() {
+            if (null != metadataBuilder_) {
+                return metadataBuilder_.getMessage();
+            } else {
+                return null == metadata_ ? HmacKeyMetadata.getDefaultInstance() : metadata_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateHmacKeyResponse.class, Builder.class);
+        }
+
+        public Builder mergeFrom(CreateHmacKeyResponse other) {
+            if (CreateHmacKeyResponse.getDefaultInstance() == other)
+                return this;
+            if (other.hasMetadata()) {
+                mergeMetadata(other.getMetadata());
+            }
+            if (com.google.protobuf.ByteString.EMPTY != other.getSecretKeyBytes()) {
+                setSecretKeyBytes(other.getSecretKeyBytes());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof CreateHmacKeyResponse)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((CreateHmacKeyResponse) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * HMAC key secret material.
+         * In raw bytes format (not base64-encoded).
+         * </pre>
+         *
+         * <code>bytes secret_key_bytes = 3;</code>
+         *
+         * @param value The secretKeyBytes to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSecretKeyBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            secretKeyBytes_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyResponse build() {
+            CreateHmacKeyResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         *
+         * @return Whether the metadata field is set.
+         */
+        public boolean hasMetadata() {
+            return null != metadataBuilder_ || null != metadata_;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            CreateHmacKeyResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (CreateHmacKeyResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Key metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+         */
+        public Builder clearMetadata() {
+            if (null != metadataBuilder_) {
+                metadata_ = null;
+                metadataBuilder_ = null;
+            } else {
+                metadata_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyResponse getDefaultInstanceForType() {
+            return CreateHmacKeyResponse.getDefaultInstance();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        // Construct using com.google.storage.v2.CreateHmacKeyResponse.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyResponse buildPartial() {
+            CreateHmacKeyResponse result = new CreateHmacKeyResponse(this);
+            if (null != metadataBuilder_) {
+                result.metadata_ = metadataBuilder_.build();
+            } else {
+                result.metadata_ = metadata_;
+            }
+            result.secretKeyBytes_ = secretKeyBytes_;
+            onBuilt();
+            return result;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateHmacKeyResponse)
+    private static final com.google.storage.v2.CreateHmacKeyResponse DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.CreateHmacKeyResponse();
+    }
+
+    private static final com.google.protobuf.Parser<CreateHmacKeyResponse> PARSER = new com.google.protobuf.AbstractParser<CreateHmacKeyResponse>() {
+
+        @java.lang.Override
+        public CreateHmacKeyResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CreateHmacKeyResponse(input, extensionRegistry);
+        }
+    };
+
+    public static Builder newBuilder(CreateHmacKeyResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static CreateHmacKeyResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static CreateHmacKeyResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public CreateHmacKeyResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasMetadata()) {
+            hash = (37 * hash) + METADATA_FIELD_NUMBER;
+            hash = (53 * hash) + getMetadata().hashCode();
+        }
+        hash = (37 * hash) + SECRET_KEY_BYTES_FIELD_NUMBER;
+        hash = (53 * hash) + getSecretKeyBytes().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (null != metadata_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getMetadata());
+        }
+        if (!secretKeyBytes_.isEmpty()) {
+            size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, secretKeyBytes_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static com.google.protobuf.Parser<CreateHmacKeyResponse> parser() {
+        return PARSER;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CreateHmacKeyResponse> getParserForType() {
+        return PARSER;
+    }
+
+    public static CreateHmacKeyResponse getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static CreateHmacKeyResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     private CreateHmacKeyResponse() {
         secretKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateHmacKeyResponse.class, Builder.class);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    /**
+     * <pre>
+     * HMAC key secret material.
+     * In raw bytes format (not base64-encoded).
+     * </pre>
+     *
+     * <code>bytes secret_key_bytes = 3;</code>
+     *
+     * @return The secretKeyBytes.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getSecretKeyBytes() {
+        return secretKeyBytes_;
+    }
+
+    public static CreateHmacKeyResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static CreateHmacKeyResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -46,8 +593,57 @@ CreateHmacKeyResponse extends com.google.protobuf.GeneratedMessageV3 implements 
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CreateHmacKeyResponse)) {
+            return super.equals(obj);
+        }
+        CreateHmacKeyResponse other = (CreateHmacKeyResponse) obj;
+        if (other.hasMetadata() != hasMetadata())
+            return false;
+        if (hasMetadata()) {
+            if (!getMetadata().equals(other.getMetadata()))
+                return false;
+        }
+        if (!getSecretKeyBytes().equals(other.getSecretKeyBytes()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Key metadata.
+     * </pre>
+     *
+     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+     *
+     * @return The metadata.
+     */
+    @java.lang.Override
+    public HmacKeyMetadata getMetadata() {
+        return null == metadata_ ? HmacKeyMetadata.getDefaultInstance() : metadata_;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
+    }
+
+    /**
+     * <pre>
+     * Key metadata.
+     * </pre>
+     *
+     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
+     *
+     * @return Whether the metadata field is set.
+     */
+    @java.lang.Override
+    public boolean hasMetadata() {
+        return null != metadata_;
     }
 
     private CreateHmacKeyResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -66,11 +662,11 @@ CreateHmacKeyResponse extends com.google.protobuf.GeneratedMessageV3 implements 
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.HmacKeyMetadata.Builder subBuilder = null;
+                            HmacKeyMetadata.Builder subBuilder = null;
                             if (null != metadata_) {
                                 subBuilder = metadata_.toBuilder();
                             }
-                            metadata_ = input.readMessage(com.google.storage.v2.HmacKeyMetadata.parser(), extensionRegistry);
+                            metadata_ = input.readMessage(HmacKeyMetadata.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(metadata_);
                                 metadata_ = subBuilder.buildPartial();
@@ -103,89 +699,8 @@ CreateHmacKeyResponse extends com.google.protobuf.GeneratedMessageV3 implements 
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateHmacKeyResponse.class, com.google.storage.v2.CreateHmacKeyResponse.Builder.class);
-    }
-
-    public static final int METADATA_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.HmacKeyMetadata metadata_;
-
-    /**
-     * <pre>
-     * Key metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-     *
-     * @return Whether the metadata field is set.
-     */
-    @java.lang.Override
-    public boolean hasMetadata() {
-        return null != metadata_;
-    }
-
-    /**
-     * <pre>
-     * Key metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-     *
-     * @return The metadata.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadata getMetadata() {
-        return null == metadata_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : metadata_;
-    }
-
-    /**
-     * <pre>
-     * Key metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadataOrBuilder getMetadataOrBuilder() {
-        return getMetadata();
-    }
-
-    public static final int SECRET_KEY_BYTES_FIELD_NUMBER = 3;
-
-    private com.google.protobuf.ByteString secretKeyBytes_;
-
-    /**
-     * <pre>
-     * HMAC key secret material.
-     * In raw bytes format (not base64-encoded).
-     * </pre>
-     *
-     * <code>bytes secret_key_bytes = 3;</code>
-     *
-     * @return The secretKeyBytes.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getSecretKeyBytes() {
-        return secretKeyBytes_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    public static CreateHmacKeyResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
@@ -199,537 +714,25 @@ CreateHmacKeyResponse extends com.google.protobuf.GeneratedMessageV3 implements 
         unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (null != metadata_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getMetadata());
-        }
-        if (!secretKeyBytes_.isEmpty()) {
-            size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, secretKeyBytes_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.CreateHmacKeyResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.CreateHmacKeyResponse other = (com.google.storage.v2.CreateHmacKeyResponse) obj;
-        if (other.hasMetadata() != hasMetadata())
-            return false;
-        if (hasMetadata()) {
-            if (!getMetadata().equals(other.getMetadata()))
-                return false;
-        }
-        if (!getSecretKeyBytes().equals(other.getSecretKeyBytes()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasMetadata()) {
-            hash = (37 * hash) + METADATA_FIELD_NUMBER;
-            hash = (53 * hash) + getMetadata().hashCode();
-        }
-        hash = (37 * hash) + SECRET_KEY_BYTES_FIELD_NUMBER;
-        hash = (53 * hash) + getSecretKeyBytes().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+    public static CreateHmacKeyResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.CreateHmacKeyResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    // Use CreateHmacKeyResponse.newBuilder() to construct.
+    private CreateHmacKeyResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
     /**
      * <pre>
-     * Create hmac response.  The only time the secret for an HMAC will be returned.
+     * Key metadata.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.CreateHmacKeyResponse}
+     * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyResponse)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyResponse)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateHmacKeyResponseOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateHmacKeyResponse.class, com.google.storage.v2.CreateHmacKeyResponse.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.CreateHmacKeyResponse.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != metadataBuilder_) {
-                metadata_ = null;
-                metadataBuilder_ = null;
-            } else {
-                metadata_ = null;
-            }
-            secretKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyResponse_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.CreateHmacKeyResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyResponse build() {
-            com.google.storage.v2.CreateHmacKeyResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyResponse buildPartial() {
-            com.google.storage.v2.CreateHmacKeyResponse result = new com.google.storage.v2.CreateHmacKeyResponse(this);
-            if (null != metadataBuilder_) {
-                result.metadata_ = metadataBuilder_.build();
-            } else {
-                result.metadata_ = metadata_;
-            }
-            result.secretKeyBytes_ = secretKeyBytes_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.CreateHmacKeyResponse)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.CreateHmacKeyResponse) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.CreateHmacKeyResponse other) {
-            if (com.google.storage.v2.CreateHmacKeyResponse.getDefaultInstance() == other)
-                return this;
-            if (other.hasMetadata()) {
-                mergeMetadata(other.getMetadata());
-            }
-            if (com.google.protobuf.ByteString.EMPTY != other.getSecretKeyBytes()) {
-                setSecretKeyBytes(other.getSecretKeyBytes());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.CreateHmacKeyResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.CreateHmacKeyResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private com.google.storage.v2.HmacKeyMetadata metadata_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> metadataBuilder_;
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         *
-         * @return Whether the metadata field is set.
-         */
-        public boolean hasMetadata() {
-            return null != metadataBuilder_ || null != metadata_;
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         *
-         * @return The metadata.
-         */
-        public com.google.storage.v2.HmacKeyMetadata getMetadata() {
-            if (null != metadataBuilder_) {
-                return metadataBuilder_.getMessage();
-            } else {
-                return null == metadata_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : metadata_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public Builder setMetadata(com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                metadata_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public Builder setMetadata(com.google.storage.v2.HmacKeyMetadata.Builder builderForValue) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.setMessage(builderForValue.build());
-            } else {
-                metadata_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public Builder mergeMetadata(com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.mergeFrom(value);
-            } else {
-                if (null == metadata_) {
-                    metadata_ = value;
-                } else {
-                    metadata_ = com.google.storage.v2.HmacKeyMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public Builder clearMetadata() {
-            if (null != metadataBuilder_) {
-                metadata_ = null;
-                metadataBuilder_ = null;
-            } else {
-                metadata_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata.Builder getMetadataBuilder() {
-            onChanged();
-            return getMetadataFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadataOrBuilder getMetadataOrBuilder() {
-            if (null == metadataBuilder_) {
-                return null == metadata_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : metadata_;
-            } else {
-                return metadataBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Key metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.HmacKeyMetadata metadata = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> getMetadataFieldBuilder() {
-            if (null == metadataBuilder_) {
-                metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder>(getMetadata(), getParentForChildren(), isClean());
-                metadata_ = null;
-            }
-            return metadataBuilder_;
-        }
-
-        private com.google.protobuf.ByteString secretKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
-
-        /**
-         * <pre>
-         * HMAC key secret material.
-         * In raw bytes format (not base64-encoded).
-         * </pre>
-         *
-         * <code>bytes secret_key_bytes = 3;</code>
-         *
-         * @return The secretKeyBytes.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getSecretKeyBytes() {
-            return secretKeyBytes_;
-        }
-
-        /**
-         * <pre>
-         * HMAC key secret material.
-         * In raw bytes format (not base64-encoded).
-         * </pre>
-         *
-         * <code>bytes secret_key_bytes = 3;</code>
-         *
-         * @param value The secretKeyBytes to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSecretKeyBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            secretKeyBytes_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * HMAC key secret material.
-         * In raw bytes format (not base64-encoded).
-         * </pre>
-         *
-         * <code>bytes secret_key_bytes = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearSecretKeyBytes() {
-            secretKeyBytes_ = getDefaultInstance().getSecretKeyBytes();
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateHmacKeyResponse)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateHmacKeyResponse)
-    private static final com.google.storage.v2.CreateHmacKeyResponse DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.CreateHmacKeyResponse();
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<CreateHmacKeyResponse> PARSER = new com.google.protobuf.AbstractParser<CreateHmacKeyResponse>() {
-
-        @java.lang.Override
-        public CreateHmacKeyResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new CreateHmacKeyResponse(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<CreateHmacKeyResponse> parser() {
-        return PARSER;
-    }
-
     @java.lang.Override
-    public com.google.protobuf.Parser<CreateHmacKeyResponse> getParserForType() {
-        return PARSER;
+    public HmacKeyMetadataOrBuilder getMetadataOrBuilder() {
+        return getMetadata();
     }
 
-    @java.lang.Override
-    public com.google.storage.v2.CreateHmacKeyResponse getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

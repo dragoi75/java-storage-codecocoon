@@ -30,355 +30,15 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
 
     private static final long serialVersionUID = 0L;
 
-    // Use ListHmacKeysResponse.newBuilder() to construct.
-    private ListHmacKeysResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private ListHmacKeysResponse() {
-        hmacKeys_ = java.util.Collections.emptyList();
-        nextPageToken_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ListHmacKeysResponse();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private ListHmacKeysResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
-                                hmacKeys_ = new java.util.ArrayList<com.google.storage.v2.HmacKeyMetadata>();
-                                mutable_bitField0_ |= 0x00000001;
-                            }
-                            hmacKeys_.add(input.readMessage(com.google.storage.v2.HmacKeyMetadata.parser(), extensionRegistry));
-                            break;
-                        }
-                    case 18:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            nextPageToken_ = s;
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            if ((0 != (mutable_bitField0_ & 0x00000001))) {
-                hmacKeys_ = java.util.Collections.unmodifiableList(hmacKeys_);
-            }
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListHmacKeysResponse.class, com.google.storage.v2.ListHmacKeysResponse.Builder.class);
-    }
-
     public static final int HMAC_KEYS_FIELD_NUMBER = 1;
 
     private java.util.List<com.google.storage.v2.HmacKeyMetadata> hmacKeys_;
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-     */
-    @java.lang.Override
-    public java.util.List<com.google.storage.v2.HmacKeyMetadata> getHmacKeysList() {
-        return hmacKeys_;
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-     */
-    @java.lang.Override
-    public java.util.List<? extends com.google.storage.v2.HmacKeyMetadataOrBuilder> getHmacKeysOrBuilderList() {
-        return hmacKeys_;
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-     */
-    @java.lang.Override
-    public int getHmacKeysCount() {
-        return hmacKeys_.size();
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadata getHmacKeys(int index) {
-        return hmacKeys_.get(index);
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadataOrBuilder getHmacKeysOrBuilder(int index) {
-        return hmacKeys_.get(index);
-    }
 
     public static final int NEXT_PAGE_TOKEN_FIELD_NUMBER = 2;
 
     private volatile java.lang.Object nextPageToken_;
 
-    /**
-     * <pre>
-     * The continuation token, used to page through large result sets. Provide
-     * this value in a subsequent request to return the next page of results.
-     * </pre>
-     *
-     * <code>string next_page_token = 2;</code>
-     *
-     * @return The nextPageToken.
-     */
-    @java.lang.Override
-    public java.lang.String getNextPageToken() {
-        java.lang.Object ref = nextPageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            nextPageToken_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The continuation token, used to page through large result sets. Provide
-     * this value in a subsequent request to return the next page of results.
-     * </pre>
-     *
-     * <code>string next_page_token = 2;</code>
-     *
-     * @return The bytes for nextPageToken.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getNextPageTokenBytes() {
-        java.lang.Object ref = nextPageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            nextPageToken_ = b;
-            return b;
-        }
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        int i = 0;
-        while (hmacKeys_.size() > i) {
-            output.writeMessage(1, hmacKeys_.get(i));
-            i += 1;
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nextPageToken_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        int i = 0;
-        while (hmacKeys_.size() > i) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, hmacKeys_.get(i));
-            i += 1;
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nextPageToken_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ListHmacKeysResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ListHmacKeysResponse other = (com.google.storage.v2.ListHmacKeysResponse) obj;
-        if (!getHmacKeysList().equals(other.getHmacKeysList()))
-            return false;
-        if (!getNextPageToken().equals(other.getNextPageToken()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (0 < getHmacKeysCount()) {
-            hash = (37 * hash) + HMAC_KEYS_FIELD_NUMBER;
-            hash = (53 * hash) + getHmacKeysList().hashCode();
-        }
-        hash = (37 * hash) + NEXT_PAGE_TOKEN_FIELD_NUMBER;
-        hash = (53 * hash) + getNextPageToken().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ListHmacKeysResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -391,66 +51,87 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
     // @@protoc_insertion_point(builder_implements:google.storage.v2.ListHmacKeysResponse)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListHmacKeysResponseOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
-        }
+        private int bitField0_;
 
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListHmacKeysResponse.class, com.google.storage.v2.ListHmacKeysResponse.Builder.class);
-        }
+        private java.util.List<com.google.storage.v2.HmacKeyMetadata> hmacKeys_ = java.util.Collections.emptyList();
 
-        // Construct using com.google.storage.v2.ListHmacKeysResponse.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> hmacKeysBuilder_;
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
+        private java.lang.Object nextPageToken_ = "";
 
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getHmacKeysFieldBuilder();
-            }
-        }
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListHmacKeysResponse)
 
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder removeHmacKeys(int index) {
             if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.clear();
+                hmacKeysBuilder_.remove(index);
             } else {
-                hmacKeys_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
+                ensureHmacKeysIsMutable();
+                hmacKeys_.remove(index);
+                onChanged();
             }
-            nextPageToken_ = "";
             return this;
         }
 
         @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
         }
 
-        @java.lang.Override
-        public com.google.storage.v2.ListHmacKeysResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.ListHmacKeysResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListHmacKeysResponse build() {
-            com.google.storage.v2.ListHmacKeysResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder setHmacKeys(int index, HmacKeyMetadata.Builder builderForValue) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.setMessage(index, builderForValue.build());
+            } else {
+                ensureHmacKeysIsMutable();
+                hmacKeys_.set(index, builderForValue.build());
+                onChanged();
             }
-            return result;
+            return this;
         }
 
         @java.lang.Override
-        public com.google.storage.v2.ListHmacKeysResponse buildPartial() {
-            com.google.storage.v2.ListHmacKeysResponse result = new com.google.storage.v2.ListHmacKeysResponse(this);
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ListHmacKeysResponse.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public java.util.List<HmacKeyMetadata.Builder> getHmacKeysBuilderList() {
+            return getHmacKeysFieldBuilder().getBuilderList();
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public HmacKeyMetadata.Builder addHmacKeysBuilder(int index) {
+            return getHmacKeysFieldBuilder().addBuilder(index, HmacKeyMetadata.getDefaultInstance());
+        }
+
+        @java.lang.Override
+        public ListHmacKeysResponse buildPartial() {
+            ListHmacKeysResponse result = new ListHmacKeysResponse(this);
             int from_bitField0_ = bitField0_;
             if (null != hmacKeysBuilder_) {
                 result.hmacKeys_ = hmacKeysBuilder_.build();
@@ -466,14 +147,52 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
             return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder setHmacKeys(int index, HmacKeyMetadata value) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.setMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureHmacKeysIsMutable();
+                hmacKeys_.set(index, value);
+                onChanged();
+            }
+            return this;
         }
 
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearNextPageToken() {
+            nextPageToken_ = getDefaultInstance().getNextPageToken();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public HmacKeyMetadata.Builder addHmacKeysBuilder() {
+            return getHmacKeysFieldBuilder().addBuilder(HmacKeyMetadata.getDefaultInstance());
         }
 
         @java.lang.Override
@@ -482,8 +201,64 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
         }
 
         @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ListHmacKeysResponse)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ListHmacKeysResponse) other);
+            }
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getHmacKeysFieldBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder addAllHmacKeys(java.lang.Iterable<? extends HmacKeyMetadata> values) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.addAllMessages(values);
+            } else {
+                ensureHmacKeysIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, hmacKeys_);
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder clearHmacKeys() {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.clear();
+            } else {
+                hmacKeys_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+                onChanged();
+            }
+            return this;
         }
 
         @java.lang.Override
@@ -491,23 +266,205 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
             return super.setRepeatedField(field, index, value);
         }
 
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ListHmacKeysResponse)) {
-                super.mergeFrom(other);
-                return this;
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 2;</code>
+         *
+         * @return The nextPageToken.
+         */
+        public java.lang.String getNextPageToken() {
+            java.lang.Object ref = nextPageToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
             } else {
-                return mergeFrom((com.google.storage.v2.ListHmacKeysResponse) other);
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                nextPageToken_ = s;
+                return s;
             }
         }
 
-        public Builder mergeFrom(com.google.storage.v2.ListHmacKeysResponse other) {
-            if (com.google.storage.v2.ListHmacKeysResponse.getDefaultInstance() == other)
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ListHmacKeysResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ListHmacKeysResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder addHmacKeys(int index, HmacKeyMetadata.Builder builderForValue) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.addMessage(index, builderForValue.build());
+            } else {
+                ensureHmacKeysIsMutable();
+                hmacKeys_.add(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 2;</code>
+         *
+         * @return The bytes for nextPageToken.
+         */
+        public com.google.protobuf.ByteString getNextPageTokenBytes() {
+            java.lang.Object ref = nextPageToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                nextPageToken_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public ListHmacKeysResponse build() {
+            ListHmacKeysResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 2;</code>
+         *
+         * @param value The nextPageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNextPageToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            nextPageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public java.util.List<HmacKeyMetadata> getHmacKeysList() {
+            if (null != hmacKeysBuilder_) {
+                return hmacKeysBuilder_.getMessageList();
+            } else {
+                return java.util.Collections.unmodifiableList(hmacKeys_);
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public HmacKeyMetadataOrBuilder getHmacKeysOrBuilder(int index) {
+            if (null != hmacKeysBuilder_) {
+                return hmacKeysBuilder_.getMessageOrBuilder(index);
+            } else {
+                return hmacKeys_.get(index);
+            }
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public java.util.List<? extends HmacKeyMetadataOrBuilder> getHmacKeysOrBuilderList() {
+            if (null == hmacKeysBuilder_) {
+                return java.util.Collections.unmodifiableList(hmacKeys_);
+            } else {
+                return hmacKeysBuilder_.getMessageOrBuilderList();
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public HmacKeyMetadata.Builder getHmacKeysBuilder(int index) {
+            return getHmacKeysFieldBuilder().getBuilder(index);
+        }
+
+        private void ensureHmacKeysIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000001))) {
+                hmacKeys_ = new java.util.ArrayList<HmacKeyMetadata>(hmacKeys_);
+                bitField0_ |= 0x00000001;
+            }
+        }
+
+        @java.lang.Override
+        public ListHmacKeysResponse getDefaultInstanceForType() {
+            return ListHmacKeysResponse.getDefaultInstance();
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder> getHmacKeysFieldBuilder() {
+            if (null == hmacKeysBuilder_) {
+                hmacKeysBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder>(hmacKeys_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
+                hmacKeys_ = null;
+            }
+            return hmacKeysBuilder_;
+        }
+
+        public Builder mergeFrom(ListHmacKeysResponse other) {
+            if (ListHmacKeysResponse.getDefaultInstance() == other)
                 return this;
             if (null != hmacKeysBuilder_) {
                 if (!other.hmacKeys_.isEmpty()) {
@@ -542,40 +499,6 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
             return this;
         }
 
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ListHmacKeysResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ListHmacKeysResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.util.List<com.google.storage.v2.HmacKeyMetadata> hmacKeys_ = java.util.Collections.emptyList();
-
-        private void ensureHmacKeysIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000001))) {
-                hmacKeys_ = new java.util.ArrayList<com.google.storage.v2.HmacKeyMetadata>(hmacKeys_);
-                bitField0_ |= 0x00000001;
-            }
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> hmacKeysBuilder_;
-
         /**
          * <pre>
          * The list of items.
@@ -583,37 +506,7 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
          *
          * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
          */
-        public java.util.List<com.google.storage.v2.HmacKeyMetadata> getHmacKeysList() {
-            if (null != hmacKeysBuilder_) {
-                return hmacKeysBuilder_.getMessageList();
-            } else {
-                return java.util.Collections.unmodifiableList(hmacKeys_);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public int getHmacKeysCount() {
-            if (null != hmacKeysBuilder_) {
-                return hmacKeysBuilder_.getCount();
-            } else {
-                return hmacKeys_.size();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata getHmacKeys(int index) {
+        public HmacKeyMetadata getHmacKeys(int index) {
             if (null != hmacKeysBuilder_) {
                 return hmacKeysBuilder_.getMessage(index);
             } else {
@@ -621,338 +514,9 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
             }
         }
 
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder setHmacKeys(int index, com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.setMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureHmacKeysIsMutable();
-                hmacKeys_.set(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder setHmacKeys(int index, com.google.storage.v2.HmacKeyMetadata.Builder builderForValue) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.setMessage(index, builderForValue.build());
-            } else {
-                ensureHmacKeysIsMutable();
-                hmacKeys_.set(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder addHmacKeys(com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.addMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureHmacKeysIsMutable();
-                hmacKeys_.add(value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder addHmacKeys(int index, com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.addMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureHmacKeysIsMutable();
-                hmacKeys_.add(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder addHmacKeys(com.google.storage.v2.HmacKeyMetadata.Builder builderForValue) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.addMessage(builderForValue.build());
-            } else {
-                ensureHmacKeysIsMutable();
-                hmacKeys_.add(builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder addHmacKeys(int index, com.google.storage.v2.HmacKeyMetadata.Builder builderForValue) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.addMessage(index, builderForValue.build());
-            } else {
-                ensureHmacKeysIsMutable();
-                hmacKeys_.add(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder addAllHmacKeys(java.lang.Iterable<? extends com.google.storage.v2.HmacKeyMetadata> values) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.addAllMessages(values);
-            } else {
-                ensureHmacKeysIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, hmacKeys_);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder clearHmacKeys() {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.clear();
-            } else {
-                hmacKeys_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public Builder removeHmacKeys(int index) {
-            if (null != hmacKeysBuilder_) {
-                hmacKeysBuilder_.remove(index);
-            } else {
-                ensureHmacKeysIsMutable();
-                hmacKeys_.remove(index);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata.Builder getHmacKeysBuilder(int index) {
-            return getHmacKeysFieldBuilder().getBuilder(index);
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadataOrBuilder getHmacKeysOrBuilder(int index) {
-            if (null != hmacKeysBuilder_) {
-                return hmacKeysBuilder_.getMessageOrBuilder(index);
-            } else {
-                return hmacKeys_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public java.util.List<? extends com.google.storage.v2.HmacKeyMetadataOrBuilder> getHmacKeysOrBuilderList() {
-            if (null == hmacKeysBuilder_) {
-                return java.util.Collections.unmodifiableList(hmacKeys_);
-            } else {
-                return hmacKeysBuilder_.getMessageOrBuilderList();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata.Builder addHmacKeysBuilder() {
-            return getHmacKeysFieldBuilder().addBuilder(com.google.storage.v2.HmacKeyMetadata.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata.Builder addHmacKeysBuilder(int index) {
-            return getHmacKeysFieldBuilder().addBuilder(index, com.google.storage.v2.HmacKeyMetadata.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
-         */
-        public java.util.List<com.google.storage.v2.HmacKeyMetadata.Builder> getHmacKeysBuilderList() {
-            return getHmacKeysFieldBuilder().getBuilderList();
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> getHmacKeysFieldBuilder() {
-            if (null == hmacKeysBuilder_) {
-                hmacKeysBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder>(hmacKeys_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
-                hmacKeys_ = null;
-            }
-            return hmacKeysBuilder_;
-        }
-
-        private java.lang.Object nextPageToken_ = "";
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 2;</code>
-         *
-         * @return The nextPageToken.
-         */
-        public java.lang.String getNextPageToken() {
-            java.lang.Object ref = nextPageToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                nextPageToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 2;</code>
-         *
-         * @return The bytes for nextPageToken.
-         */
-        public com.google.protobuf.ByteString getNextPageTokenBytes() {
-            java.lang.Object ref = nextPageToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                nextPageToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 2;</code>
-         *
-         * @param value The nextPageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNextPageToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            nextPageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearNextPageToken() {
-            nextPageToken_ = getDefaultInstance().getNextPageToken();
-            onChanged();
-            return this;
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
         }
 
         /**
@@ -976,16 +540,114 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
             return this;
         }
 
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder addHmacKeys(int index, HmacKeyMetadata value) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.addMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureHmacKeysIsMutable();
+                hmacKeys_.add(index, value);
+                onChanged();
+            }
+            return this;
         }
 
         @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
         }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListHmacKeysResponse)
+
+        // Construct using com.google.storage.v2.ListHmacKeysResponse.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public int getHmacKeysCount() {
+            if (null != hmacKeysBuilder_) {
+                return hmacKeysBuilder_.getCount();
+            } else {
+                return hmacKeys_.size();
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.clear();
+            } else {
+                hmacKeys_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            nextPageToken_ = "";
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder addHmacKeys(HmacKeyMetadata.Builder builderForValue) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.addMessage(builderForValue.build());
+            } else {
+                ensureHmacKeysIsMutable();
+                hmacKeys_.add(builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+         */
+        public Builder addHmacKeys(HmacKeyMetadata value) {
+            if (null != hmacKeysBuilder_) {
+                hmacKeysBuilder_.addMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureHmacKeysIsMutable();
+                hmacKeys_.add(value);
+                onChanged();
+            }
+            return this;
+        }
+
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.ListHmacKeysResponse)
@@ -993,10 +655,6 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.ListHmacKeysResponse();
-    }
-
-    public static com.google.storage.v2.ListHmacKeysResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<ListHmacKeysResponse> PARSER = new com.google.protobuf.AbstractParser<ListHmacKeysResponse>() {
@@ -1007,8 +665,165 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
         }
     };
 
-    public static com.google.protobuf.Parser<ListHmacKeysResponse> parser() {
-        return PARSER;
+    public static ListHmacKeysResponse getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The continuation token, used to page through large result sets. Provide
+     * this value in a subsequent request to return the next page of results.
+     * </pre>
+     *
+     * <code>string next_page_token = 2;</code>
+     *
+     * @return The nextPageToken.
+     */
+    @java.lang.Override
+    public java.lang.String getNextPageToken() {
+        java.lang.Object ref = nextPageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            nextPageToken_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+     */
+    @java.lang.Override
+    public int getHmacKeysCount() {
+        return hmacKeys_.size();
+    }
+
+    public static ListHmacKeysResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ListHmacKeysResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ListHmacKeysResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ListHmacKeysResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder(ListHmacKeysResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public ListHmacKeysResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+     */
+    @java.lang.Override
+    public HmacKeyMetadata getHmacKeys(int index) {
+        return hmacKeys_.get(index);
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        int i = 0;
+        while (hmacKeys_.size() > i) {
+            output.writeMessage(1, hmacKeys_.get(i));
+            i += 1;
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nextPageToken_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+     */
+    @java.lang.Override
+    public HmacKeyMetadataOrBuilder getHmacKeysOrBuilder(int index) {
+        return hmacKeys_.get(index);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ListHmacKeysResponse.class, Builder.class);
+    }
+
+    public static ListHmacKeysResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends HmacKeyMetadataOrBuilder> getHmacKeysOrBuilderList() {
+        return hmacKeys_;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ListHmacKeysResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static ListHmacKeysResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    // Use ListHmacKeysResponse.newBuilder() to construct.
+    private ListHmacKeysResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ListHmacKeysResponse();
     }
 
     @java.lang.Override
@@ -1017,7 +832,195 @@ ListHmacKeysResponse extends com.google.protobuf.GeneratedMessageV3 implements L
     }
 
     @java.lang.Override
-    public com.google.storage.v2.ListHmacKeysResponse getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        int i = 0;
+        while (hmacKeys_.size() > i) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, hmacKeys_.get(i));
+            i += 1;
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nextPageToken_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
     }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.HmacKeyMetadata hmac_keys = 1;</code>
+     */
+    @java.lang.Override
+    public java.util.List<HmacKeyMetadata> getHmacKeysList() {
+        return hmacKeys_;
+    }
+
+    /**
+     * <pre>
+     * The continuation token, used to page through large result sets. Provide
+     * this value in a subsequent request to return the next page of results.
+     * </pre>
+     *
+     * <code>string next_page_token = 2;</code>
+     *
+     * @return The bytes for nextPageToken.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getNextPageTokenBytes() {
+        java.lang.Object ref = nextPageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            nextPageToken_ = b;
+            return b;
+        }
+    }
+
+    public static ListHmacKeysResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static com.google.protobuf.Parser<ListHmacKeysResponse> parser() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static ListHmacKeysResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ListHmacKeysResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ListHmacKeysResponse)) {
+            return super.equals(obj);
+        }
+        ListHmacKeysResponse other = (ListHmacKeysResponse) obj;
+        if (!getHmacKeysList().equals(other.getHmacKeysList()))
+            return false;
+        if (!getNextPageToken().equals(other.getNextPageToken()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (0 < getHmacKeysCount()) {
+            hash = (37 * hash) + HMAC_KEYS_FIELD_NUMBER;
+            hash = (53 * hash) + getHmacKeysList().hashCode();
+        }
+        hash = (37 * hash) + NEXT_PAGE_TOKEN_FIELD_NUMBER;
+        hash = (53 * hash) + getNextPageToken().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ListHmacKeysResponse_descriptor;
+    }
+
+    public static ListHmacKeysResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ListHmacKeysResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    private ListHmacKeysResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
+                                hmacKeys_ = new java.util.ArrayList<HmacKeyMetadata>();
+                                mutable_bitField0_ |= 0x00000001;
+                            }
+                            hmacKeys_.add(input.readMessage(HmacKeyMetadata.parser(), extensionRegistry));
+                            break;
+                        }
+                    case 18:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            nextPageToken_ = s;
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            if ((0 != (mutable_bitField0_ & 0x00000001))) {
+                hmacKeys_ = java.util.Collections.unmodifiableList(hmacKeys_);
+            }
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    private ListHmacKeysResponse() {
+        hmacKeys_ = java.util.Collections.emptyList();
+        nextPageToken_ = "";
+    }
+
 }

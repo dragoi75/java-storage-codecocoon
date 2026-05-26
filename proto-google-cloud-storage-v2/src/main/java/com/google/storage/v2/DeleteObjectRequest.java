@@ -31,9 +31,1297 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
 
     private static final long serialVersionUID = 0L;
 
+    private int bitField0_;
+
+    public static final int BUCKET_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object bucket_;
+
+    public static final int OBJECT_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object object_;
+
+    public static final int UPLOAD_ID_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object uploadId_;
+
+    public static final int GENERATION_FIELD_NUMBER = 4;
+
+    private long generation_;
+
+    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 5;
+
+    private long ifGenerationMatch_;
+
+    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 6;
+
+    private long ifGenerationNotMatch_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 7;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 8;
+
+    private long ifMetagenerationNotMatch_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 10;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Message for deleting an object.
+     * Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.DeleteObjectRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.DeleteObjectRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.DeleteObjectRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.DeleteObjectRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object bucket_ = "";
+
+        private java.lang.Object object_ = "";
+
+        private java.lang.Object uploadId_ = "";
+
+        private long generation_;
+
+        private long ifGenerationMatch_;
+
+        private long ifGenerationNotMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.DeleteObjectRequest)
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The resumable upload_id of the object to delete (when deleting an
+         * in-progress resumable write). This should be copied from the `upload_id`
+         * field of `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearUploadId() {
+            uploadId_ = getDefaultInstance().getUploadId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the object to delete (when not using a resumable write).
+         * </pre>
+         *
+         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearObject() {
+            object_ = getDefaultInstance().getObject();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 7;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 8;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the object to delete (when not using a resumable write).
+         * </pre>
+         *
+         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for object to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            object_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The resumable upload_id of the object to delete (when deleting an
+         * in-progress resumable write). This should be copied from the `upload_id`
+         * field of `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 3;</code>
+         *
+         * @param value The bytes for uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            uploadId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 8;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 8;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000008));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The resumable upload_id of the object to delete (when deleting an
+         * in-progress resumable write). This should be copied from the `upload_id`
+         * field of `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 3;</code>
+         *
+         * @return The bytes for uploadId.
+         */
+        public com.google.protobuf.ByteString getUploadIdBytes() {
+            java.lang.Object ref = uploadId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                uploadId_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 5;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which the object resides.
+         * </pre>
+         *
+         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for bucket.
+         */
+        public com.google.protobuf.ByteString getBucketBytes() {
+            java.lang.Object ref = bucket_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                bucket_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, permanently deletes a specific revision of this object (as
+         * opposed to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 4;</code>
+         *
+         * @return The generation.
+         */
+        @java.lang.Override
+        public long getGeneration() {
+            return generation_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * The resumable upload_id of the object to delete (when deleting an
+         * in-progress resumable write). This should be copied from the `upload_id`
+         * field of `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 3;</code>
+         *
+         * @return The uploadId.
+         */
+        public java.lang.String getUploadId() {
+            java.lang.Object ref = uploadId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                uploadId_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 7;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the object to delete (when not using a resumable write).
+         * </pre>
+         *
+         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for object.
+         */
+        public com.google.protobuf.ByteString getObjectBytes() {
+            java.lang.Object ref = object_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                object_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 5;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which the object resides.
+         * </pre>
+         *
+         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bucket.
+         */
+        public java.lang.String getBucket() {
+            java.lang.Object ref = bucket_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                bucket_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, permanently deletes a specific revision of this object (as
+         * opposed to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearGeneration() {
+            generation_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public DeleteObjectRequest getDefaultInstanceForType() {
+            return DeleteObjectRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 5;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public DeleteObjectRequest buildPartial() {
+            DeleteObjectRequest result = new DeleteObjectRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.bucket_ = bucket_;
+            result.object_ = object_;
+            result.uploadId_ = uploadId_;
+            result.generation_ = generation_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifGenerationMatch_ = ifGenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000004;
+            }
+            if ((0 != (from_bitField0_ & 0x00000008))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000008;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which the object resides.
+         * </pre>
+         *
+         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearBucket() {
+            bucket_ = getDefaultInstance().getBucket();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(DeleteObjectRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 6;</code>
+         *
+         * @param value The ifGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof DeleteObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((DeleteObjectRequest) other);
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            DeleteObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (DeleteObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            bucket_ = "";
+            object_ = "";
+            uploadId_ = "";
+            generation_ = 0L;
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        public Builder mergeFrom(DeleteObjectRequest other) {
+            if (DeleteObjectRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getBucket().isEmpty()) {
+                bucket_ = other.bucket_;
+                onChanged();
+            }
+            if (!other.getObject().isEmpty()) {
+                object_ = other.object_;
+                onChanged();
+            }
+            if (!other.getUploadId().isEmpty()) {
+                uploadId_ = other.uploadId_;
+                onChanged();
+            }
+            if (0L != other.getGeneration()) {
+                setGeneration(other.getGeneration());
+            }
+            if (other.hasIfGenerationMatch()) {
+                setIfGenerationMatch(other.getIfGenerationMatch());
+            }
+            if (other.hasIfGenerationNotMatch()) {
+                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 7;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        /**
+         * <pre>
+         * The resumable upload_id of the object to delete (when deleting an
+         * in-progress resumable write). This should be copied from the `upload_id`
+         * field of `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 3;</code>
+         *
+         * @param value The uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            uploadId_ = value;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.DeleteObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which the object resides.
+         * </pre>
+         *
+         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucket(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which the object resides.
+         * </pre>
+         *
+         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public DeleteObjectRequest build() {
+            DeleteObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 6;</code>
+         *
+         * @return The ifGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationNotMatch() {
+            return ifGenerationNotMatch_;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * If present, permanently deletes a specific revision of this object (as
+         * opposed to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 4;</code>
+         *
+         * @param value The generation to set.
+         * @return This builder for chaining.
+         */
+        public Builder setGeneration(long value) {
+            generation_ = value;
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the object to delete (when not using a resumable write).
+         * </pre>
+         *
+         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The object to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            object_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 6;</code>
+         *
+         * @return Whether the ifGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the object to delete (when not using a resumable write).
+         * </pre>
+         *
+         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The object.
+         */
+        public java.lang.String getObject() {
+            java.lang.Object ref = object_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                object_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 8;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000008;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.DeleteObjectRequest)
+    private static final com.google.storage.v2.DeleteObjectRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.DeleteObjectRequest();
+    }
+
+    private static final com.google.protobuf.Parser<DeleteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<DeleteObjectRequest>() {
+
+        @java.lang.Override
+        public DeleteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new DeleteObjectRequest(input, extensionRegistry);
+        }
+    };
+
+    public static DeleteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
+        hash = (53 * hash) + getBucket().hashCode();
+        hash = (37 * hash) + OBJECT_FIELD_NUMBER;
+        hash = (53 * hash) + getObject().hashCode();
+        hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getUploadId().hashCode();
+        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
+        if (hasIfGenerationMatch()) {
+            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+        }
+        if (hasIfGenerationNotMatch()) {
+            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
+        }
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        if (hasIfMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
+        }
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, bucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, object_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, uploadId_);
+        }
+        if (0L != generation_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, generation_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifMetagenerationNotMatch_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, getCommonObjectRequestParams());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static com.google.protobuf.Parser<DeleteObjectRequest> parser() {
+        return PARSER;
+    }
+
+    public static DeleteObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 7;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 8;</code>
+     *
+     * @return The ifMetagenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationNotMatch() {
+        return ifMetagenerationNotMatch_;
+    }
+
+    public static DeleteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, bucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, object_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, uploadId_);
+        }
+        if (0L != generation_) {
+            output.writeInt64(4, generation_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeInt64(5, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            output.writeInt64(6, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            output.writeInt64(7, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            output.writeInt64(8, ifMetagenerationNotMatch_);
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(10, getCommonObjectRequestParams());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 6;</code>
+     *
+     * @return Whether the ifGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    @java.lang.Override
+    public DeleteObjectRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static DeleteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DeleteObjectRequest> getParserForType() {
+        return PARSER;
+    }
+
     // Use DeleteObjectRequest.newBuilder() to construct.
     private DeleteObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
         super(builder);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 5;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
     }
 
     private DeleteObjectRequest() {
@@ -42,15 +1330,167 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
         uploadId_ = "";
     }
 
+    public static DeleteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. Name of the bucket in which the object resides.
+     * </pre>
+     *
+     * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bucket.
+     */
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new DeleteObjectRequest();
+    public java.lang.String getBucket() {
+        java.lang.Object ref = bucket_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            bucket_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. Name of the bucket in which the object resides.
+     * </pre>
+     *
+     * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for bucket.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getBucketBytes() {
+        java.lang.Object ref = bucket_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            bucket_ = b;
+            return b;
+        }
+    }
+
+    public static DeleteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 8;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000008));
+    }
+
+    /**
+     * <pre>
+     * Required. The name of the object to delete (when not using a resumable write).
+     * </pre>
+     *
+     * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The object.
+     */
+    @java.lang.Override
+    public java.lang.String getObject() {
+        java.lang.Object ref = object_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            object_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static Builder newBuilder(DeleteObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DeleteObjectRequest)) {
+            return super.equals(obj);
+        }
+        DeleteObjectRequest other = (DeleteObjectRequest) obj;
+        if (!getBucket().equals(other.getBucket()))
+            return false;
+        if (!getObject().equals(other.getObject()))
+            return false;
+        if (!getUploadId().equals(other.getUploadId()))
+            return false;
+        if (other.getGeneration() != getGeneration())
+            return false;
+        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
+            return false;
+        if (hasIfGenerationMatch()) {
+            if (other.getIfGenerationMatch() != getIfGenerationMatch())
+                return false;
+        }
+        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
+            return false;
+        if (hasIfGenerationNotMatch()) {
+            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
+            return false;
+        if (hasIfMetagenerationMatch()) {
+            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
+            return false;
+        if (hasIfMetagenerationNotMatch()) {
+            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
+                return false;
+        }
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(DeleteObjectRequest.class, Builder.class);
     }
 
     private DeleteObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -117,11 +1557,11 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
                         }
                     case 82:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -149,114 +1589,38 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
         }
     }
 
+    /**
+     * <pre>
+     * If present, permanently deletes a specific revision of this object (as
+     * opposed to the latest version, the default).
+     * </pre>
+     *
+     * <code>int64 generation = 4;</code>
+     *
+     * @return The generation.
+     */
+    @java.lang.Override
+    public long getGeneration() {
+        return generation_;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
     public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
+        return StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
     }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.DeleteObjectRequest.class, com.google.storage.v2.DeleteObjectRequest.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int BUCKET_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object bucket_;
-
-    /**
-     * <pre>
-     * Required. Name of the bucket in which the object resides.
-     * </pre>
-     *
-     * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bucket.
-     */
-    @java.lang.Override
-    public java.lang.String getBucket() {
-        java.lang.Object ref = bucket_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            bucket_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. Name of the bucket in which the object resides.
-     * </pre>
-     *
-     * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for bucket.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getBucketBytes() {
-        java.lang.Object ref = bucket_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            bucket_ = b;
-            return b;
-        }
-    }
-
-    public static final int OBJECT_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object object_;
-
-    /**
-     * <pre>
-     * Required. The name of the object to delete (when not using a resumable write).
-     * </pre>
-     *
-     * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The object.
-     */
-    @java.lang.Override
-    public java.lang.String getObject() {
-        java.lang.Object ref = object_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            object_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The name of the object to delete (when not using a resumable write).
-     * </pre>
-     *
-     * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for object.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getObjectBytes() {
-        java.lang.Object ref = object_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            object_ = b;
-            return b;
-        }
-    }
-
-    public static final int UPLOAD_ID_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object uploadId_;
 
     /**
      * <pre>
@@ -282,6 +1646,118 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
         }
     }
 
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static DeleteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static DeleteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new DeleteObjectRequest();
+    }
+
+    public static DeleteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static DeleteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static DeleteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 5;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 7;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    public static DeleteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 6;</code>
+     *
+     * @return The ifGenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationNotMatch() {
+        return ifGenerationNotMatch_;
+    }
+
+    public static DeleteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
     /**
      * <pre>
      * The resumable upload_id of the object to delete (when deleting an
@@ -305,1498 +1781,25 @@ DeleteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements De
         }
     }
 
-    public static final int GENERATION_FIELD_NUMBER = 4;
-
-    private long generation_;
-
     /**
      * <pre>
-     * If present, permanently deletes a specific revision of this object (as
-     * opposed to the latest version, the default).
+     * Required. The name of the object to delete (when not using a resumable write).
      * </pre>
      *
-     * <code>int64 generation = 4;</code>
+     * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
      *
-     * @return The generation.
+     * @return The bytes for object.
      */
     @java.lang.Override
-    public long getGeneration() {
-        return generation_;
+    public com.google.protobuf.ByteString getObjectBytes() {
+        java.lang.Object ref = object_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            object_ = b;
+            return b;
+        }
     }
 
-    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 5;
-
-    private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 5;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 5;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
-
-    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 6;
-
-    private long ifGenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 6;</code>
-     *
-     * @return Whether the ifGenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 6;</code>
-     *
-     * @return The ifGenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationNotMatch() {
-        return ifGenerationNotMatch_;
-    }
-
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 7;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 7;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 7;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 8;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 8;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000008));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 8;</code>
-     *
-     * @return The ifMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationNotMatch() {
-        return ifMetagenerationNotMatch_;
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 10;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, bucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, object_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, uploadId_);
-        }
-        if (0L != generation_) {
-            output.writeInt64(4, generation_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeInt64(5, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            output.writeInt64(6, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            output.writeInt64(7, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            output.writeInt64(8, ifMetagenerationNotMatch_);
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(10, getCommonObjectRequestParams());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, bucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, object_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, uploadId_);
-        }
-        if (0L != generation_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, generation_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifMetagenerationNotMatch_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, getCommonObjectRequestParams());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.DeleteObjectRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.DeleteObjectRequest other = (com.google.storage.v2.DeleteObjectRequest) obj;
-        if (!getBucket().equals(other.getBucket()))
-            return false;
-        if (!getObject().equals(other.getObject()))
-            return false;
-        if (!getUploadId().equals(other.getUploadId()))
-            return false;
-        if (other.getGeneration() != getGeneration())
-            return false;
-        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
-            return false;
-        if (hasIfGenerationMatch()) {
-            if (other.getIfGenerationMatch() != getIfGenerationMatch())
-                return false;
-        }
-        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
-            return false;
-        if (hasIfGenerationNotMatch()) {
-            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
-            return false;
-        if (hasIfMetagenerationMatch()) {
-            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
-            return false;
-        if (hasIfMetagenerationNotMatch()) {
-            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
-                return false;
-        }
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
-        hash = (53 * hash) + getBucket().hashCode();
-        hash = (37 * hash) + OBJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getObject().hashCode();
-        hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getUploadId().hashCode();
-        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
-        if (hasIfGenerationMatch()) {
-            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-        }
-        if (hasIfGenerationNotMatch()) {
-            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
-        }
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        if (hasIfMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
-        }
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.DeleteObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Message for deleting an object.
-     * Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.DeleteObjectRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.DeleteObjectRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.DeleteObjectRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.DeleteObjectRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.DeleteObjectRequest.class, com.google.storage.v2.DeleteObjectRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.DeleteObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            bucket_ = "";
-            object_ = "";
-            uploadId_ = "";
-            generation_ = 0L;
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_DeleteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.DeleteObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.DeleteObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.DeleteObjectRequest build() {
-            com.google.storage.v2.DeleteObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.DeleteObjectRequest buildPartial() {
-            com.google.storage.v2.DeleteObjectRequest result = new com.google.storage.v2.DeleteObjectRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.bucket_ = bucket_;
-            result.object_ = object_;
-            result.uploadId_ = uploadId_;
-            result.generation_ = generation_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifGenerationMatch_ = ifGenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000004;
-            }
-            if ((0 != (from_bitField0_ & 0x00000008))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000008;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.DeleteObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.DeleteObjectRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.DeleteObjectRequest other) {
-            if (com.google.storage.v2.DeleteObjectRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getBucket().isEmpty()) {
-                bucket_ = other.bucket_;
-                onChanged();
-            }
-            if (!other.getObject().isEmpty()) {
-                object_ = other.object_;
-                onChanged();
-            }
-            if (!other.getUploadId().isEmpty()) {
-                uploadId_ = other.uploadId_;
-                onChanged();
-            }
-            if (0L != other.getGeneration()) {
-                setGeneration(other.getGeneration());
-            }
-            if (other.hasIfGenerationMatch()) {
-                setIfGenerationMatch(other.getIfGenerationMatch());
-            }
-            if (other.hasIfGenerationNotMatch()) {
-                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.DeleteObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.DeleteObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object bucket_ = "";
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which the object resides.
-         * </pre>
-         *
-         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bucket.
-         */
-        public java.lang.String getBucket() {
-            java.lang.Object ref = bucket_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                bucket_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which the object resides.
-         * </pre>
-         *
-         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for bucket.
-         */
-        public com.google.protobuf.ByteString getBucketBytes() {
-            java.lang.Object ref = bucket_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                bucket_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which the object resides.
-         * </pre>
-         *
-         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucket(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which the object resides.
-         * </pre>
-         *
-         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearBucket() {
-            bucket_ = getDefaultInstance().getBucket();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which the object resides.
-         * </pre>
-         *
-         * <code>string bucket = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object object_ = "";
-
-        /**
-         * <pre>
-         * Required. The name of the object to delete (when not using a resumable write).
-         * </pre>
-         *
-         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The object.
-         */
-        public java.lang.String getObject() {
-            java.lang.Object ref = object_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                object_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the object to delete (when not using a resumable write).
-         * </pre>
-         *
-         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for object.
-         */
-        public com.google.protobuf.ByteString getObjectBytes() {
-            java.lang.Object ref = object_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                object_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the object to delete (when not using a resumable write).
-         * </pre>
-         *
-         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The object to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            object_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the object to delete (when not using a resumable write).
-         * </pre>
-         *
-         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearObject() {
-            object_ = getDefaultInstance().getObject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the object to delete (when not using a resumable write).
-         * </pre>
-         *
-         * <code>string object = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for object to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            object_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object uploadId_ = "";
-
-        /**
-         * <pre>
-         * The resumable upload_id of the object to delete (when deleting an
-         * in-progress resumable write). This should be copied from the `upload_id`
-         * field of `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 3;</code>
-         *
-         * @return The uploadId.
-         */
-        public java.lang.String getUploadId() {
-            java.lang.Object ref = uploadId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                uploadId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The resumable upload_id of the object to delete (when deleting an
-         * in-progress resumable write). This should be copied from the `upload_id`
-         * field of `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 3;</code>
-         *
-         * @return The bytes for uploadId.
-         */
-        public com.google.protobuf.ByteString getUploadIdBytes() {
-            java.lang.Object ref = uploadId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                uploadId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The resumable upload_id of the object to delete (when deleting an
-         * in-progress resumable write). This should be copied from the `upload_id`
-         * field of `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 3;</code>
-         *
-         * @param value The uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            uploadId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The resumable upload_id of the object to delete (when deleting an
-         * in-progress resumable write). This should be copied from the `upload_id`
-         * field of `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearUploadId() {
-            uploadId_ = getDefaultInstance().getUploadId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The resumable upload_id of the object to delete (when deleting an
-         * in-progress resumable write). This should be copied from the `upload_id`
-         * field of `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 3;</code>
-         *
-         * @param value The bytes for uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            uploadId_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long generation_;
-
-        /**
-         * <pre>
-         * If present, permanently deletes a specific revision of this object (as
-         * opposed to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 4;</code>
-         *
-         * @return The generation.
-         */
-        @java.lang.Override
-        public long getGeneration() {
-            return generation_;
-        }
-
-        /**
-         * <pre>
-         * If present, permanently deletes a specific revision of this object (as
-         * opposed to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 4;</code>
-         *
-         * @param value The generation to set.
-         * @return This builder for chaining.
-         */
-        public Builder setGeneration(long value) {
-            generation_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If present, permanently deletes a specific revision of this object (as
-         * opposed to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearGeneration() {
-            generation_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 5;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 5;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 5;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 6;</code>
-         *
-         * @return Whether the ifGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 6;</code>
-         *
-         * @return The ifGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationNotMatch() {
-            return ifGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 6;</code>
-         *
-         * @param value The ifGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 7;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 7;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 7;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 8;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000008));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 8;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 8;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000008;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 8;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.DeleteObjectRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.DeleteObjectRequest)
-    private static final com.google.storage.v2.DeleteObjectRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.DeleteObjectRequest();
-    }
-
-    public static com.google.storage.v2.DeleteObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<DeleteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<DeleteObjectRequest>() {
-
-        @java.lang.Override
-        public DeleteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new DeleteObjectRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<DeleteObjectRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<DeleteObjectRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.DeleteObjectRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

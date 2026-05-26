@@ -77,6 +77,125 @@ public class SignatureInfo {
 
     private final String exactDate;
 
+    public static final class Builder {
+
+        private final HttpRequestMethod httpVerb;
+
+        private String contentMd5;
+
+        private String contentType;
+
+        private final long expiration;
+
+        private Map<String, String> canonicalizedExtensionHeaders;
+
+        private Map<String, String> queryParams;
+
+        private final URI canonicalizedResource;
+
+        private Storage.UrlSigningOption.SigningVersion signatureVersion;
+
+        private String accountEmail;
+
+        private long timestamp;
+
+        public Builder setCanonicalizedExtensionHeaders(Map<String, String> canonicalizedExtensionHeaders) {
+            this.canonicalizedExtensionHeaders = canonicalizedExtensionHeaders;
+            return this;
+        }
+
+        /**
+         * Creates an {@code SignatureInfo} object from this builder.
+         */
+        public SignatureInfo build() {
+            checkArgument(null != httpVerb, "Required HTTP method");
+            checkArgument(null != canonicalizedResource, "Required canonicalized resource");
+            checkArgument(0 <= expiration, "Expiration must be greater than or equal to zero");
+            if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
+                checkArgument(null != accountEmail, "Account email required to use V4 signing");
+                checkArgument(0 < timestamp, "Timestamp required to use V4 signing");
+                checkArgument(604800 >= expiration, "Expiration can't be longer than 7 days to use V4 signing");
+            }
+            if (null == canonicalizedExtensionHeaders) {
+                canonicalizedExtensionHeaders = new HashMap<>();
+            }
+            if (null == queryParams) {
+                queryParams = new HashMap<>();
+            }
+            return new SignatureInfo(this);
+        }
+
+        public Builder setAccountEmail(String accountEmail) {
+            this.accountEmail = accountEmail;
+            return this;
+        }
+
+        public Builder setSignatureVersion(Storage.UrlSigningOption.SigningVersion signatureVersion) {
+            this.signatureVersion = signatureVersion;
+            return this;
+        }
+
+        /**
+         * Constructs builder.
+         *
+         * @param httpVerb the HTTP method
+         * @param expiration the EPOX expiration date
+         * @param canonicalizedResource the resource URI
+         * @throws IllegalArgumentException if required field is not provided.
+         */
+        public Builder(HttpRequestMethod httpVerb, long expiration, URI canonicalizedResource) {
+            this.httpVerb = httpVerb;
+            this.expiration = expiration;
+            this.canonicalizedResource = canonicalizedResource;
+        }
+
+        public Builder setTimestamp(long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder(SignatureInfo signatureInfo) {
+            this.httpVerb = signatureInfo.httpVerb;
+            this.contentMd5 = signatureInfo.contentMd5;
+            this.contentType = signatureInfo.contentType;
+            this.expiration = signatureInfo.expiration;
+            this.canonicalizedExtensionHeaders = signatureInfo.canonicalizedExtensionHeaders;
+            this.queryParams = signatureInfo.queryParams;
+            this.canonicalizedResource = signatureInfo.canonicalizedResource;
+            this.signatureVersion = signatureInfo.signatureVersion;
+            this.accountEmail = signatureInfo.accountEmail;
+            this.timestamp = signatureInfo.timestamp;
+        }
+
+        public Builder setContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        public Builder setCanonicalizedQueryParams(Map<String, String> queryParams) {
+            this.queryParams = queryParams;
+            return this;
+        }
+
+        public Builder setContentMd5(String contentMd5) {
+            this.contentMd5 = contentMd5;
+            return this;
+        }
+
+    }
+
+    public Storage.UrlSigningOption.SigningVersion getSignatureVersion() {
+        return signatureVersion;
+    }
+
+    public URI getCanonicalizedResource() {
+        return canonicalizedResource;
+    }
+
+    public Map<String, String> getCanonicalizedExtensionHeaders() {
+        return canonicalizedExtensionHeaders;
+    }
+
     private SignatureInfo(Builder builder) {
         this.httpVerb = builder.httpVerb;
         this.contentMd5 = builder.contentMd5;
@@ -103,61 +222,6 @@ public class SignatureInfo {
     }
 
     /**
-     * Constructs payload to be signed.
-     *
-     * @return payload to sign
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed URLs</a>
-     */
-    public String constructUnsignedPayload() {
-        // TODO reverse order when V4 becomes default
-        if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
-            return constructV4UnsignedPayload();
-        }
-        return constructV2UnsignedPayload();
-    }
-
-    private String constructV2UnsignedPayload() {
-        StringBuilder payload = new StringBuilder();
-        payload.append(httpVerb.name()).append(COMPONENT_SEPARATOR);
-        if (null != contentMd5) {
-            payload.append(contentMd5);
-        }
-        payload.append(COMPONENT_SEPARATOR);
-        if (null != contentType) {
-            payload.append(contentType);
-        }
-        payload.append(COMPONENT_SEPARATOR);
-        payload.append(expiration).append(COMPONENT_SEPARATOR);
-        if (0 < canonicalizedExtensionHeaders.size()) {
-            payload.append(new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V2).serialize(canonicalizedExtensionHeaders));
-        }
-        payload.append(canonicalizedResource);
-        return payload.toString();
-    }
-
-    private String constructV4UnsignedPayload() {
-        StringBuilder payload = new StringBuilder();
-        payload.append(GOOG4_RSA_SHA256).append(COMPONENT_SEPARATOR);
-        payload.append(exactDate).append(COMPONENT_SEPARATOR);
-        payload.append(yearMonthDay).append(SCOPE).append(COMPONENT_SEPARATOR);
-        payload.append(constructV4CanonicalRequestHash());
-        return payload.toString();
-    }
-
-    private String constructV4CanonicalRequestHash() {
-        StringBuilder canonicalRequest = new StringBuilder();
-        CanonicalExtensionHeadersSerializer serializer = new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V4);
-        canonicalRequest.append(httpVerb.name()).append(COMPONENT_SEPARATOR);
-        canonicalRequest.append(canonicalizedResource).append(COMPONENT_SEPARATOR);
-        canonicalRequest.append(constructV4QueryString()).append(COMPONENT_SEPARATOR);
-        canonicalRequest.append(serializer.serialize(canonicalizedExtensionHeaders)).append(COMPONENT_SEPARATOR);
-        canonicalRequest.append(serializer.serializeHeaderNames(canonicalizedExtensionHeaders)).append(COMPONENT_SEPARATOR);
-        String userProvidedHash = canonicalizedExtensionHeaders.get("X-Goog-Content-SHA256");
-        canonicalRequest.append(null == userProvidedHash ? "UNSIGNED-PAYLOAD" : userProvidedHash);
-        return Hashing.sha256().hashString(canonicalRequest.toString(), StandardCharsets.UTF_8).toString();
-    }
-
-    /**
      * Returns a TreeMap containing the user-supplied query parameters that do not have reserved keys.
      */
     private TreeMap<String, String> getNonReservedUserQueryParams() {
@@ -174,31 +238,6 @@ public class SignatureInfo {
             }
         }
         return sortedParamMap;
-    }
-
-    private String queryStringFromParamMap(Map<String, String> map) {
-        StringBuilder queryStringBuilder = new StringBuilder();
-        String sep = "";
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            queryStringBuilder.append(sep);
-            sep = "&";
-            queryStringBuilder.append(entry.getKey()).append('=').append(entry.getValue());
-        }
-        return queryStringBuilder.toString();
-    }
-
-    /**
-     * Returns a query string constructed from this object's stored query parameters, sorted in code
-     * point order. Note that these query parameters are not used when constructing the URL's
-     * signature. The returned value does not include the leading ? character, as this is not part of
-     * a query string.
-     *
-     * @return A URI query string. Returns an empty string if the user supplied no query parameters.
-     */
-    public String constructV2QueryString() {
-        TreeMap<String, String> sortedParamMap = getNonReservedUserQueryParams();
-        // The "GoogleAccessId", "Expires", and "Signature" params are not included here.
-        return queryStringFromParamMap(sortedParamMap);
     }
 
     /**
@@ -222,149 +261,112 @@ public class SignatureInfo {
         return queryStringFromParamMap(sortedParamMap);
     }
 
-    public HttpRequestMethod getHttpVerb() {
-        return httpVerb;
-    }
-
-    public String getContentMd5() {
-        return contentMd5;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
     public long getExpiration() {
         return expiration;
     }
 
-    public Map<String, String> getCanonicalizedExtensionHeaders() {
-        return canonicalizedExtensionHeaders;
-    }
-
-    public Map<String, String> getQueryParams() {
-        return queryParams;
-    }
-
-    public URI getCanonicalizedResource() {
-        return canonicalizedResource;
-    }
-
-    public Storage.UrlSigningOption.SigningVersion getSignatureVersion() {
-        return signatureVersion;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
+    public HttpRequestMethod getHttpVerb() {
+        return httpVerb;
     }
 
     public String getAccountEmail() {
         return accountEmail;
     }
 
-    public static final class Builder {
-
-        private final HttpRequestMethod httpVerb;
-
-        private String contentMd5;
-
-        private String contentType;
-
-        private final long expiration;
-
-        private Map<String, String> canonicalizedExtensionHeaders;
-
-        private Map<String, String> queryParams;
-
-        private final URI canonicalizedResource;
-
-        private Storage.UrlSigningOption.SigningVersion signatureVersion;
-
-        private String accountEmail;
-
-        private long timestamp;
-
-        /**
-         * Constructs builder.
-         *
-         * @param httpVerb the HTTP method
-         * @param expiration the EPOX expiration date
-         * @param canonicalizedResource the resource URI
-         * @throws IllegalArgumentException if required field is not provided.
-         */
-        public Builder(HttpRequestMethod httpVerb, long expiration, URI canonicalizedResource) {
-            this.httpVerb = httpVerb;
-            this.expiration = expiration;
-            this.canonicalizedResource = canonicalizedResource;
-        }
-
-        public Builder(SignatureInfo signatureInfo) {
-            this.httpVerb = signatureInfo.httpVerb;
-            this.contentMd5 = signatureInfo.contentMd5;
-            this.contentType = signatureInfo.contentType;
-            this.expiration = signatureInfo.expiration;
-            this.canonicalizedExtensionHeaders = signatureInfo.canonicalizedExtensionHeaders;
-            this.queryParams = signatureInfo.queryParams;
-            this.canonicalizedResource = signatureInfo.canonicalizedResource;
-            this.signatureVersion = signatureInfo.signatureVersion;
-            this.accountEmail = signatureInfo.accountEmail;
-            this.timestamp = signatureInfo.timestamp;
-        }
-
-        public Builder setContentMd5(String contentMd5) {
-            this.contentMd5 = contentMd5;
-            return this;
-        }
-
-        public Builder setContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        public Builder setCanonicalizedExtensionHeaders(Map<String, String> canonicalizedExtensionHeaders) {
-            this.canonicalizedExtensionHeaders = canonicalizedExtensionHeaders;
-            return this;
-        }
-
-        public Builder setCanonicalizedQueryParams(Map<String, String> queryParams) {
-            this.queryParams = queryParams;
-            return this;
-        }
-
-        public Builder setSignatureVersion(Storage.UrlSigningOption.SigningVersion signatureVersion) {
-            this.signatureVersion = signatureVersion;
-            return this;
-        }
-
-        public Builder setAccountEmail(String accountEmail) {
-            this.accountEmail = accountEmail;
-            return this;
-        }
-
-        public Builder setTimestamp(long timestamp) {
-            this.timestamp = timestamp;
-            return this;
-        }
-
-        /**
-         * Creates an {@code SignatureInfo} object from this builder.
-         */
-        public SignatureInfo build() {
-            checkArgument(null != httpVerb, "Required HTTP method");
-            checkArgument(null != canonicalizedResource, "Required canonicalized resource");
-            checkArgument(0 <= expiration, "Expiration must be greater than or equal to zero");
-            if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
-                checkArgument(null != accountEmail, "Account email required to use V4 signing");
-                checkArgument(0 < timestamp, "Timestamp required to use V4 signing");
-                checkArgument(604800 >= expiration, "Expiration can't be longer than 7 days to use V4 signing");
-            }
-            if (null == canonicalizedExtensionHeaders) {
-                canonicalizedExtensionHeaders = new HashMap<>();
-            }
-            if (null == queryParams) {
-                queryParams = new HashMap<>();
-            }
-            return new SignatureInfo(this);
-        }
+    public String getContentMd5() {
+        return contentMd5;
     }
+
+    /**
+     * Constructs payload to be signed.
+     *
+     * @return payload to sign
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed URLs</a>
+     */
+    public String constructUnsignedPayload() {
+        // TODO reverse order when V4 becomes default
+        if (Storage.UrlSigningOption.SigningVersion.V4.equals(signatureVersion)) {
+            return constructV4UnsignedPayload();
+        }
+        return constructV2UnsignedPayload();
+    }
+
+    /**
+     * Returns a query string constructed from this object's stored query parameters, sorted in code
+     * point order. Note that these query parameters are not used when constructing the URL's
+     * signature. The returned value does not include the leading ? character, as this is not part of
+     * a query string.
+     *
+     * @return A URI query string. Returns an empty string if the user supplied no query parameters.
+     */
+    public String constructV2QueryString() {
+        TreeMap<String, String> sortedParamMap = getNonReservedUserQueryParams();
+        // The "GoogleAccessId", "Expires", and "Signature" params are not included here.
+        return queryStringFromParamMap(sortedParamMap);
+    }
+
+    private String constructV2UnsignedPayload() {
+        StringBuilder payload = new StringBuilder();
+        payload.append(httpVerb.name()).append(COMPONENT_SEPARATOR);
+        if (null != contentMd5) {
+            payload.append(contentMd5);
+        }
+        payload.append(COMPONENT_SEPARATOR);
+        if (null != contentType) {
+            payload.append(contentType);
+        }
+        payload.append(COMPONENT_SEPARATOR);
+        payload.append(expiration).append(COMPONENT_SEPARATOR);
+        if (0 < canonicalizedExtensionHeaders.size()) {
+            payload.append(new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V2).serialize(canonicalizedExtensionHeaders));
+        }
+        payload.append(canonicalizedResource);
+        return payload.toString();
+    }
+
+    private String queryStringFromParamMap(Map<String, String> map) {
+        StringBuilder queryStringBuilder = new StringBuilder();
+        String sep = "";
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            queryStringBuilder.append(sep);
+            sep = "&";
+            queryStringBuilder.append(entry.getKey()).append('=').append(entry.getValue());
+        }
+        return queryStringBuilder.toString();
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public Map<String, String> getQueryParams() {
+        return queryParams;
+    }
+
+    private String constructV4CanonicalRequestHash() {
+        StringBuilder canonicalRequest = new StringBuilder();
+        CanonicalExtensionHeadersSerializer serializer = new CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion.V4);
+        canonicalRequest.append(httpVerb.name()).append(COMPONENT_SEPARATOR);
+        canonicalRequest.append(canonicalizedResource).append(COMPONENT_SEPARATOR);
+        canonicalRequest.append(constructV4QueryString()).append(COMPONENT_SEPARATOR);
+        canonicalRequest.append(serializer.serialize(canonicalizedExtensionHeaders)).append(COMPONENT_SEPARATOR);
+        canonicalRequest.append(serializer.serializeHeaderNames(canonicalizedExtensionHeaders)).append(COMPONENT_SEPARATOR);
+        String userProvidedHash = canonicalizedExtensionHeaders.get("X-Goog-Content-SHA256");
+        canonicalRequest.append(null == userProvidedHash ? "UNSIGNED-PAYLOAD" : userProvidedHash);
+        return Hashing.sha256().hashString(canonicalRequest.toString(), StandardCharsets.UTF_8).toString();
+    }
+
+    private String constructV4UnsignedPayload() {
+        StringBuilder payload = new StringBuilder();
+        payload.append(GOOG4_RSA_SHA256).append(COMPONENT_SEPARATOR);
+        payload.append(exactDate).append(COMPONENT_SEPARATOR);
+        payload.append(yearMonthDay).append(SCOPE).append(COMPONENT_SEPARATOR);
+        payload.append(constructV4CanonicalRequestHash());
+        return payload.toString();
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
 }

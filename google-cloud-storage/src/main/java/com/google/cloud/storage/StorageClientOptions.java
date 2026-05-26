@@ -67,145 +67,148 @@ public class StorageClientOptions extends ServiceOptions<Storage, StorageClientO
     private StorageRetryStrategy retryStrategy;
     private boolean includeInvocationIdentifier;
 
-    private StorageClientBuilder() {}
-
-    private StorageClientBuilder(StorageClientOptions clientConfig) {
-      super(clientConfig);
-      this.includeInvocationIdentifier = clientConfig.includeInvocationIdentifier;
-    }
-
-    @Override
-    public StorageClientOptions.StorageClientBuilder setTransportOptions(TransportOptions transportConfig) {
-      if (!(transportConfig instanceof HttpTransportOptions)) {
-        throw new IllegalArgumentException(
-            "Only http transport is allowed for " + API_SIMPLE_NAME + ".");
+      /**
+       * Override the default retry handling behavior with an alternate strategy.
+       *
+       * @param retryStrategy a non-null storageRetryStrategy to use
+       * @return the builder
+       * @see StorageRetryStrategy#getDefaultStorageRetryStrategy()
+       */
+      public StorageClientBuilder setStorageRetryStrategy(StorageRetryStrategy retryStrategy) {
+        this.retryStrategy =
+            requireNonNull(retryStrategy, "storageRetryStrategy must be non null");
+        return this;
       }
-      return super.setTransportOptions(transportConfig);
-    }
 
-    /**
-     * Override the default retry handling behavior with an alternate strategy.
-     *
-     * @param retryStrategy a non-null storageRetryStrategy to use
-     * @return the builder
-     * @see StorageRetryStrategy#getDefaultStorageRetryStrategy()
-     */
-    public StorageClientBuilder setStorageRetryStrategy(StorageRetryStrategy retryStrategy) {
-      this.retryStrategy =
-          requireNonNull(retryStrategy, "storageRetryStrategy must be non null");
-      return this;
-    }
+      /**
+       * Override default enablement of invocation id added to x-goog-api-client header.
+       *
+       * @param includeInvocationIdentifier a boolean to change enablement of invocation id
+       * @return the builder
+       */
+      StorageClientBuilder setIncludeInvocationId(boolean includeInvocationIdentifier) {
+        this.includeInvocationIdentifier = includeInvocationIdentifier;
+        return this;
+      }
 
-    /**
-     * Override default enablement of invocation id added to x-goog-api-client header.
-     *
-     * @param includeInvocationIdentifier a boolean to change enablement of invocation id
-     * @return the builder
-     */
-    StorageClientBuilder setIncludeInvocationId(boolean includeInvocationIdentifier) {
-      this.includeInvocationIdentifier = includeInvocationIdentifier;
-      return this;
-    }
+      @Override
+      public StorageClientOptions build() {
+        return new StorageClientOptions(this, new StorageDefaultsProvider());
+      }
 
-    @Override
-    public StorageClientOptions build() {
-      return new StorageClientOptions(this, new StorageDefaultsProvider());
-    }
+      @Override
+      public StorageClientOptions.StorageClientBuilder setTransportOptions(TransportOptions transportConfig) {
+        if (!(transportConfig instanceof HttpTransportOptions)) {
+          throw new IllegalArgumentException(
+              "Only http transport is allowed for " + API_SIMPLE_NAME + ".");
+        }
+        return super.setTransportOptions(transportConfig);
+      }
+
+      private StorageClientBuilder() {}
+
+      private StorageClientBuilder(StorageClientOptions clientConfig) {
+        super(clientConfig);
+        this.includeInvocationIdentifier = clientConfig.includeInvocationIdentifier;
+      }
+
   }
 
-  private StorageClientOptions(StorageClientBuilder clientFactory, StorageDefaultsProvider defaultsProvider) {
-    super(StorageFactory.class, StorageRpcFactory.class, clientFactory, defaultsProvider);
-    this.retryAlgoManager =
-        new RetryAlgorithmManager(
-            MoreObjects.firstNonNull(
-                clientFactory.retryStrategy, defaultsProvider.getStorageRetryStrategy()));
-    this.includeInvocationIdentifier = clientFactory.includeInvocationIdentifier;
-  }
+    private static class StorageDefaultsProvider implements ServiceDefaults<Storage, StorageClientOptions> {
 
-  private static class StorageDefaultsProvider implements ServiceDefaults<Storage, StorageClientOptions> {
+        @Override
+        public TransportOptions getDefaultTransportOptions() {
+          return getDefaultHttpTransportOptions();
+        }
 
-    @Override
-    public StorageFactory getDefaultServiceFactory() {
-      return StandardStorageFactory.STANDARD_STORAGE_FACTORY_SINGLETON;
+        boolean isIncludeInvocationId() {
+          return INCLUDE_INVOCATION_BY_DEFAULT;
+        }
+
+        @Override
+        public StorageFactory getDefaultServiceFactory() {
+          return StandardStorageFactory.STANDARD_STORAGE_FACTORY_SINGLETON;
+        }
+
+        @Override
+        public StorageRpcFactory getDefaultRpcFactory() {
+          return DefaultStorageRpcProvider.STANDARD_STORAGE_FACTORY_SINGLETON;
+        }
+
+        public StorageRetryStrategy getStorageRetryStrategy() {
+          return StorageRetryStrategy.getDefaultStorageRetryStrategy();
+        }
+
+    }
+
+    /** Returns a unauthenticated {@code StorageOptions} instance. */
+    public static StorageClientOptions getUnauthenticatedInstance() {
+      return newStorageClientBuilder().setCredentials(NoCredentials.getInstance()).build();
     }
 
     @Override
-    public StorageRpcFactory getDefaultRpcFactory() {
-      return DefaultStorageRpcProvider.STANDARD_STORAGE_FACTORY_SINGLETON;
+    public boolean equals(Object other) {
+      return other instanceof StorageClientOptions && baseEquals((StorageClientOptions) other);
+    }
+
+    public static StorageClientBuilder newStorageClientBuilder() {
+      return new StorageClientBuilder()
+          .setHost(DEFAULT_ENDPOINT)
+          .setIncludeInvocationId(INCLUDE_INVOCATION_BY_DEFAULT);
+    }
+
+    public static HttpTransportOptions getDefaultHttpTransportOptions() {
+      return HttpTransportOptions.newBuilder().build();
     }
 
     @Override
-    public TransportOptions getDefaultTransportOptions() {
-      return getDefaultHttpTransportOptions();
+    protected Set<String> getScopes() {
+      return AUTH_SCOPE_SET;
     }
 
-    public StorageRetryStrategy getStorageRetryStrategy() {
-      return StorageRetryStrategy.getDefaultStorageRetryStrategy();
+    @SuppressWarnings("unchecked")
+    @Override
+    public StorageClientOptions.StorageClientBuilder toBuilder() {
+      return new StorageClientBuilder(this);
     }
 
+    /** Returns if Invocation ID is enabled and transmitted through x-goog-api-client header. */
     boolean isIncludeInvocationId() {
-      return INCLUDE_INVOCATION_BY_DEFAULT;
+      return includeInvocationIdentifier;
     }
-  }
 
-  public static HttpTransportOptions getDefaultHttpTransportOptions() {
-    return HttpTransportOptions.newBuilder().build();
-  }
+    private StorageClientOptions(StorageClientBuilder clientFactory, StorageDefaultsProvider defaultsProvider) {
+      super(StorageFactory.class, StorageRpcFactory.class, clientFactory, defaultsProvider);
+      this.retryAlgoManager =
+          new RetryAlgorithmManager(
+              MoreObjects.firstNonNull(
+                  clientFactory.retryStrategy, defaultsProvider.getStorageRetryStrategy()));
+      this.includeInvocationIdentifier = clientFactory.includeInvocationIdentifier;
+    }
 
-  // Project ID is only required for creating buckets, so we don't require it for creating the
-  // service.
-  @Override
-  protected boolean projectIdRequired() {
-    return false;
-  }
+    protected StorageRpcClient getStorageRpcV1() {
+      return (StorageRpcClient) getRpc();
+    }
 
-  @Override
-  protected Set<String> getScopes() {
-    return AUTH_SCOPE_SET;
-  }
+    RetryAlgorithmManager getRetryAlgorithmManager() {
+      return retryAlgoManager;
+    }
 
-  protected StorageRpcClient getStorageRpcV1() {
-    return (StorageRpcClient) getRpc();
-  }
+    @Override
+    public int hashCode() {
+      return baseHashCode();
+    }
 
-  RetryAlgorithmManager getRetryAlgorithmManager() {
-    return retryAlgoManager;
-  }
+    // Project ID is only required for creating buckets, so we don't require it for creating the
+    // service.
+    @Override
+    protected boolean projectIdRequired() {
+      return false;
+    }
 
-  /** Returns if Invocation ID is enabled and transmitted through x-goog-api-client header. */
-  boolean isIncludeInvocationId() {
-    return includeInvocationIdentifier;
-  }
+    /** Returns a default {@code StorageOptions} instance. */
+    public static StorageClientOptions getDefaultInstance() {
+      return newStorageClientBuilder().build();
+    }
 
-  /** Returns a default {@code StorageOptions} instance. */
-  public static StorageClientOptions getDefaultInstance() {
-    return newStorageClientBuilder().build();
-  }
-
-  /** Returns a unauthenticated {@code StorageOptions} instance. */
-  public static StorageClientOptions getUnauthenticatedInstance() {
-    return newStorageClientBuilder().setCredentials(NoCredentials.getInstance()).build();
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public StorageClientOptions.StorageClientBuilder toBuilder() {
-    return new StorageClientBuilder(this);
-  }
-
-  @Override
-  public int hashCode() {
-    return baseHashCode();
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    return other instanceof StorageClientOptions && baseEquals((StorageClientOptions) other);
-  }
-
-  public static StorageClientBuilder newStorageClientBuilder() {
-    return new StorageClientBuilder()
-        .setHost(DEFAULT_ENDPOINT)
-        .setIncludeInvocationId(INCLUDE_INVOCATION_BY_DEFAULT);
-  }
 }

@@ -30,23 +30,554 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
 
     private static final long serialVersionUID = 0L;
 
-    // Use StartResumableWriteRequest.newBuilder() to construct.
-    private StartResumableWriteRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int WRITE_OBJECT_SPEC_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.WriteObjectSpec writeObjectSpec_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 3;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message StartResumableWrite.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.StartResumableWriteRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.StartResumableWriteRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.StartResumableWriteRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.StartResumableWriteRequestOrBuilder {
+
+        private com.google.storage.v2.WriteObjectSpec writeObjectSpec_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> writeObjectSpecBuilder_;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.StartResumableWriteRequest)
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public Builder mergeWriteObjectSpec(WriteObjectSpec value) {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_.mergeFrom(value);
+            } else {
+                if (null == writeObjectSpec_) {
+                    writeObjectSpec_ = value;
+                } else {
+                    writeObjectSpec_ = WriteObjectSpec.newBuilder(writeObjectSpec_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public StartResumableWriteRequest buildPartial() {
+            StartResumableWriteRequest result = new StartResumableWriteRequest(this);
+            if (null != writeObjectSpecBuilder_) {
+                result.writeObjectSpec_ = writeObjectSpecBuilder_.build();
+            } else {
+                result.writeObjectSpec_ = writeObjectSpec_;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         *
+         * @return Whether the writeObjectSpec field is set.
+         */
+        public boolean hasWriteObjectSpec() {
+            return null != writeObjectSpecBuilder_ || null != writeObjectSpec_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public WriteObjectSpec.Builder getWriteObjectSpecBuilder() {
+            onChanged();
+            return getWriteObjectSpecFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
+            if (null == writeObjectSpecBuilder_) {
+                return null == writeObjectSpec_ ? WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
+            } else {
+                return writeObjectSpecBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         *
+         * @return The writeObjectSpec.
+         */
+        public WriteObjectSpec getWriteObjectSpec() {
+            if (null != writeObjectSpecBuilder_) {
+                return writeObjectSpecBuilder_.getMessage();
+            } else {
+                return null == writeObjectSpec_ ? WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
+        }
+
+        // Construct using com.google.storage.v2.StartResumableWriteRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public Builder setWriteObjectSpec(WriteObjectSpec.Builder builderForValue) {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_.setMessage(builderForValue.build());
+            } else {
+                writeObjectSpec_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpec_ = null;
+                writeObjectSpecBuilder_ = null;
+            } else {
+                writeObjectSpec_ = null;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<WriteObjectSpec, WriteObjectSpec.Builder, WriteObjectSpecOrBuilder> getWriteObjectSpecFieldBuilder() {
+            if (null == writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<WriteObjectSpec, WriteObjectSpec.Builder, WriteObjectSpecOrBuilder>(getWriteObjectSpec(), getParentForChildren(), isClean());
+                writeObjectSpec_ = null;
+            }
+            return writeObjectSpecBuilder_;
+        }
+
+        public Builder mergeFrom(StartResumableWriteRequest other) {
+            if (StartResumableWriteRequest.getDefaultInstance() == other)
+                return this;
+            if (other.hasWriteObjectSpec()) {
+                mergeWriteObjectSpec(other.getWriteObjectSpec());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public Builder clearWriteObjectSpec() {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpec_ = null;
+                writeObjectSpecBuilder_ = null;
+            } else {
+                writeObjectSpec_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public StartResumableWriteRequest getDefaultInstanceForType() {
+            return StartResumableWriteRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * The destination bucket, object, and metadata, as well as any preconditions.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+         */
+        public Builder setWriteObjectSpec(WriteObjectSpec value) {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                writeObjectSpec_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(StartResumableWriteRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            StartResumableWriteRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (StartResumableWriteRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public StartResumableWriteRequest build() {
+            StartResumableWriteRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof StartResumableWriteRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((StartResumableWriteRequest) other);
+            }
+        }
+
     }
 
-    private StartResumableWriteRequest() {
+    // @@protoc_insertion_point(class_scope:google.storage.v2.StartResumableWriteRequest)
+    private static final com.google.storage.v2.StartResumableWriteRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.StartResumableWriteRequest();
+    }
+
+    private static final com.google.protobuf.Parser<StartResumableWriteRequest> PARSER = new com.google.protobuf.AbstractParser<StartResumableWriteRequest>() {
+
+        @java.lang.Override
+        public StartResumableWriteRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new StartResumableWriteRequest(input, extensionRegistry);
+        }
+    };
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    public static StartResumableWriteRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static StartResumableWriteRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new StartResumableWriteRequest();
+    public StartResumableWriteRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public static StartResumableWriteRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static StartResumableWriteRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static StartResumableWriteRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
 
     private StartResumableWriteRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -65,11 +596,11 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.WriteObjectSpec.Builder subBuilder = null;
+                            WriteObjectSpec.Builder subBuilder = null;
                             if (null != writeObjectSpec_) {
                                 subBuilder = writeObjectSpec_.toBuilder();
                             }
-                            writeObjectSpec_ = input.readMessage(com.google.storage.v2.WriteObjectSpec.parser(), extensionRegistry);
+                            writeObjectSpec_ = input.readMessage(WriteObjectSpec.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(writeObjectSpec_);
                                 writeObjectSpec_ = subBuilder.buildPartial();
@@ -78,11 +609,11 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
                         }
                     case 26:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -110,125 +641,38 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
-    }
-
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.StartResumableWriteRequest.class, com.google.storage.v2.StartResumableWriteRequest.Builder.class);
-    }
-
-    public static final int WRITE_OBJECT_SPEC_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.WriteObjectSpec writeObjectSpec_;
-
-    /**
-     * <pre>
-     * The destination bucket, object, and metadata, as well as any preconditions.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-     *
-     * @return Whether the writeObjectSpec field is set.
-     */
-    @java.lang.Override
-    public boolean hasWriteObjectSpec() {
-        return null != writeObjectSpec_;
-    }
-
-    /**
-     * <pre>
-     * The destination bucket, object, and metadata, as well as any preconditions.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-     *
-     * @return The writeObjectSpec.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.WriteObjectSpec getWriteObjectSpec() {
-        return null == writeObjectSpec_ ? com.google.storage.v2.WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
-    }
-
-    /**
-     * <pre>
-     * The destination bucket, object, and metadata, as well as any preconditions.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
-        return getWriteObjectSpec();
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 3;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
             return true;
-        if (0 == isInitialized)
+        }
+        if (!(obj instanceof StartResumableWriteRequest)) {
+            return super.equals(obj);
+        }
+        StartResumableWriteRequest other = (StartResumableWriteRequest) obj;
+        if (other.hasWriteObjectSpec() != hasWriteObjectSpec())
             return false;
-        memoizedIsInitialized = 1;
+        if (hasWriteObjectSpec()) {
+            if (!getWriteObjectSpec().equals(other.getWriteObjectSpec()))
+                return false;
+        }
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
         return true;
     }
 
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (null != writeObjectSpec_) {
-            output.writeMessage(1, getWriteObjectSpec());
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(3, getCommonObjectRequestParams());
-        }
-        unknownFields.writeTo(output);
+    public static StartResumableWriteRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
     }
 
     @java.lang.Override
@@ -248,30 +692,37 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
         return size;
     }
 
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.StartResumableWriteRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.StartResumableWriteRequest other = (com.google.storage.v2.StartResumableWriteRequest) obj;
-        if (other.hasWriteObjectSpec() != hasWriteObjectSpec())
-            return false;
-        if (hasWriteObjectSpec()) {
-            if (!getWriteObjectSpec().equals(other.getWriteObjectSpec()))
-                return false;
-        }
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static StartResumableWriteRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static StartResumableWriteRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static StartResumableWriteRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder(StartResumableWriteRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    private StartResumableWriteRequest() {
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
@@ -294,579 +745,66 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
         return hash;
     }
 
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.StartResumableWriteRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.StartResumableWriteRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new StartResumableWriteRequest();
     }
 
     /**
      * <pre>
-     * Request message StartResumableWrite.
+     * The destination bucket, object, and metadata, as well as any preconditions.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.StartResumableWriteRequest}
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     *
+     * @return Whether the writeObjectSpec field is set.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.StartResumableWriteRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.StartResumableWriteRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.StartResumableWriteRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.StartResumableWriteRequest.class, com.google.storage.v2.StartResumableWriteRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.StartResumableWriteRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpec_ = null;
-                writeObjectSpecBuilder_ = null;
-            } else {
-                writeObjectSpec_ = null;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.StartResumableWriteRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.StartResumableWriteRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.StartResumableWriteRequest build() {
-            com.google.storage.v2.StartResumableWriteRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.StartResumableWriteRequest buildPartial() {
-            com.google.storage.v2.StartResumableWriteRequest result = new com.google.storage.v2.StartResumableWriteRequest(this);
-            if (null != writeObjectSpecBuilder_) {
-                result.writeObjectSpec_ = writeObjectSpecBuilder_.build();
-            } else {
-                result.writeObjectSpec_ = writeObjectSpec_;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.StartResumableWriteRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.StartResumableWriteRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.StartResumableWriteRequest other) {
-            if (com.google.storage.v2.StartResumableWriteRequest.getDefaultInstance() == other)
-                return this;
-            if (other.hasWriteObjectSpec()) {
-                mergeWriteObjectSpec(other.getWriteObjectSpec());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.StartResumableWriteRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.StartResumableWriteRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private com.google.storage.v2.WriteObjectSpec writeObjectSpec_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> writeObjectSpecBuilder_;
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         *
-         * @return Whether the writeObjectSpec field is set.
-         */
-        public boolean hasWriteObjectSpec() {
-            return null != writeObjectSpecBuilder_ || null != writeObjectSpec_;
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         *
-         * @return The writeObjectSpec.
-         */
-        public com.google.storage.v2.WriteObjectSpec getWriteObjectSpec() {
-            if (null != writeObjectSpecBuilder_) {
-                return writeObjectSpecBuilder_.getMessage();
-            } else {
-                return null == writeObjectSpec_ ? com.google.storage.v2.WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public Builder setWriteObjectSpec(com.google.storage.v2.WriteObjectSpec value) {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                writeObjectSpec_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public Builder setWriteObjectSpec(com.google.storage.v2.WriteObjectSpec.Builder builderForValue) {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_.setMessage(builderForValue.build());
-            } else {
-                writeObjectSpec_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public Builder mergeWriteObjectSpec(com.google.storage.v2.WriteObjectSpec value) {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_.mergeFrom(value);
-            } else {
-                if (null == writeObjectSpec_) {
-                    writeObjectSpec_ = value;
-                } else {
-                    writeObjectSpec_ = com.google.storage.v2.WriteObjectSpec.newBuilder(writeObjectSpec_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public Builder clearWriteObjectSpec() {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpec_ = null;
-                writeObjectSpecBuilder_ = null;
-            } else {
-                writeObjectSpec_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public com.google.storage.v2.WriteObjectSpec.Builder getWriteObjectSpecBuilder() {
-            onChanged();
-            return getWriteObjectSpecFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        public com.google.storage.v2.WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
-            if (null == writeObjectSpecBuilder_) {
-                return null == writeObjectSpec_ ? com.google.storage.v2.WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
-            } else {
-                return writeObjectSpecBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The destination bucket, object, and metadata, as well as any preconditions.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> getWriteObjectSpecFieldBuilder() {
-            if (null == writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder>(getWriteObjectSpec(), getParentForChildren(), isClean());
-                writeObjectSpec_ = null;
-            }
-            return writeObjectSpecBuilder_;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.StartResumableWriteRequest)
+    @java.lang.Override
+    public boolean hasWriteObjectSpec() {
+        return null != writeObjectSpec_;
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.StartResumableWriteRequest)
-    private static final com.google.storage.v2.StartResumableWriteRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.StartResumableWriteRequest();
+    public static StartResumableWriteRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
-
-    public static com.google.storage.v2.StartResumableWriteRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<StartResumableWriteRequest> PARSER = new com.google.protobuf.AbstractParser<StartResumableWriteRequest>() {
-
-        @java.lang.Override
-        public StartResumableWriteRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new StartResumableWriteRequest(input, extensionRegistry);
-        }
-    };
 
     public static com.google.protobuf.Parser<StartResumableWriteRequest> parser() {
         return PARSER;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    public static StartResumableWriteRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    // Use StartResumableWriteRequest.newBuilder() to construct.
+    private StartResumableWriteRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
     @java.lang.Override
@@ -875,7 +813,72 @@ StartResumableWriteRequest extends com.google.protobuf.GeneratedMessageV3 implem
     }
 
     @java.lang.Override
-    public com.google.storage.v2.StartResumableWriteRequest getDefaultInstanceForType() {
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_StartResumableWriteRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(StartResumableWriteRequest.class, Builder.class);
+    }
+
+    public static StartResumableWriteRequest getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
+
+    public static StartResumableWriteRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The destination bucket, object, and metadata, as well as any preconditions.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     */
+    @java.lang.Override
+    public WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
+        return getWriteObjectSpec();
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * The destination bucket, object, and metadata, as well as any preconditions.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     *
+     * @return The writeObjectSpec.
+     */
+    @java.lang.Override
+    public WriteObjectSpec getWriteObjectSpec() {
+        return null == writeObjectSpec_ ? WriteObjectSpec.getDefaultInstance() : writeObjectSpec_;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (null != writeObjectSpec_) {
+            output.writeMessage(1, getWriteObjectSpec());
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(3, getCommonObjectRequestParams());
+        }
+        unknownFields.writeTo(output);
+    }
+
 }

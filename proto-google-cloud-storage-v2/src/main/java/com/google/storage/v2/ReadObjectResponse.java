@@ -30,511 +30,23 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
 
     private static final long serialVersionUID = 0L;
 
-    // Use ReadObjectResponse.newBuilder() to construct.
-    private ReadObjectResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private ReadObjectResponse() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ReadObjectResponse();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private ReadObjectResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            com.google.storage.v2.ChecksummedData.Builder subBuilder = null;
-                            if (null != checksummedData_) {
-                                subBuilder = checksummedData_.toBuilder();
-                            }
-                            checksummedData_ = input.readMessage(com.google.storage.v2.ChecksummedData.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(checksummedData_);
-                                checksummedData_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 18:
-                        {
-                            com.google.storage.v2.ObjectChecksums.Builder subBuilder = null;
-                            if (null != objectChecksums_) {
-                                subBuilder = objectChecksums_.toBuilder();
-                            }
-                            objectChecksums_ = input.readMessage(com.google.storage.v2.ObjectChecksums.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(objectChecksums_);
-                                objectChecksums_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 26:
-                        {
-                            com.google.storage.v2.ContentRange.Builder subBuilder = null;
-                            if (null != contentRange_) {
-                                subBuilder = contentRange_.toBuilder();
-                            }
-                            contentRange_ = input.readMessage(com.google.storage.v2.ContentRange.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(contentRange_);
-                                contentRange_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 34:
-                        {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
-                            if (null != metadata_) {
-                                subBuilder = metadata_.toBuilder();
-                            }
-                            metadata_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(metadata_);
-                                metadata_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ReadObjectResponse.class, com.google.storage.v2.ReadObjectResponse.Builder.class);
-    }
-
     public static final int CHECKSUMMED_DATA_FIELD_NUMBER = 1;
 
     private com.google.storage.v2.ChecksummedData checksummedData_;
-
-    /**
-     * <pre>
-     * A portion of the data for the object. The service **may** leave `data`
-     * empty for any given `ReadResponse`. This enables the service to inform the
-     * client that the request is still live while it is running an operation to
-     * generate more data.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-     *
-     * @return Whether the checksummedData field is set.
-     */
-    @java.lang.Override
-    public boolean hasChecksummedData() {
-        return null != checksummedData_;
-    }
-
-    /**
-     * <pre>
-     * A portion of the data for the object. The service **may** leave `data`
-     * empty for any given `ReadResponse`. This enables the service to inform the
-     * client that the request is still live while it is running an operation to
-     * generate more data.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-     *
-     * @return The checksummedData.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ChecksummedData getChecksummedData() {
-        return null == checksummedData_ ? com.google.storage.v2.ChecksummedData.getDefaultInstance() : checksummedData_;
-    }
-
-    /**
-     * <pre>
-     * A portion of the data for the object. The service **may** leave `data`
-     * empty for any given `ReadResponse`. This enables the service to inform the
-     * client that the request is still live while it is running an operation to
-     * generate more data.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
-        return getChecksummedData();
-    }
 
     public static final int OBJECT_CHECKSUMS_FIELD_NUMBER = 2;
 
     private com.google.storage.v2.ObjectChecksums objectChecksums_;
 
-    /**
-     * <pre>
-     * The checksums of the complete object. The client should compute one of
-     * these checksums over the downloaded object and compare it against the value
-     * provided here.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-     *
-     * @return Whether the objectChecksums field is set.
-     */
-    @java.lang.Override
-    public boolean hasObjectChecksums() {
-        return null != objectChecksums_;
-    }
-
-    /**
-     * <pre>
-     * The checksums of the complete object. The client should compute one of
-     * these checksums over the downloaded object and compare it against the value
-     * provided here.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-     *
-     * @return The objectChecksums.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksums getObjectChecksums() {
-        return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-    }
-
-    /**
-     * <pre>
-     * The checksums of the complete object. The client should compute one of
-     * these checksums over the downloaded object and compare it against the value
-     * provided here.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
-        return getObjectChecksums();
-    }
-
     public static final int CONTENT_RANGE_FIELD_NUMBER = 3;
 
     private com.google.storage.v2.ContentRange contentRange_;
-
-    /**
-     * <pre>
-     * If read_offset and or read_limit was specified on the
-     * ReadObjectRequest, ContentRange will be populated on the first
-     * ReadObjectResponse message of the read stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-     *
-     * @return Whether the contentRange field is set.
-     */
-    @java.lang.Override
-    public boolean hasContentRange() {
-        return null != contentRange_;
-    }
-
-    /**
-     * <pre>
-     * If read_offset and or read_limit was specified on the
-     * ReadObjectRequest, ContentRange will be populated on the first
-     * ReadObjectResponse message of the read stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-     *
-     * @return The contentRange.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ContentRange getContentRange() {
-        return null == contentRange_ ? com.google.storage.v2.ContentRange.getDefaultInstance() : contentRange_;
-    }
-
-    /**
-     * <pre>
-     * If read_offset and or read_limit was specified on the
-     * ReadObjectRequest, ContentRange will be populated on the first
-     * ReadObjectResponse message of the read stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ContentRangeOrBuilder getContentRangeOrBuilder() {
-        return getContentRange();
-    }
 
     public static final int METADATA_FIELD_NUMBER = 4;
 
     private com.google.storage.v2.Object metadata_;
 
-    /**
-     * <pre>
-     * Metadata of the object whose media is being returned.
-     * Only populated in the first response in the stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object metadata = 4;</code>
-     *
-     * @return Whether the metadata field is set.
-     */
-    @java.lang.Override
-    public boolean hasMetadata() {
-        return null != metadata_;
-    }
-
-    /**
-     * <pre>
-     * Metadata of the object whose media is being returned.
-     * Only populated in the first response in the stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object metadata = 4;</code>
-     *
-     * @return The metadata.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getMetadata() {
-        return null == metadata_ ? com.google.storage.v2.Object.getDefaultInstance() : metadata_;
-    }
-
-    /**
-     * <pre>
-     * Metadata of the object whose media is being returned.
-     * Only populated in the first response in the stream.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object metadata = 4;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getMetadataOrBuilder() {
-        return getMetadata();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (null != checksummedData_) {
-            output.writeMessage(1, getChecksummedData());
-        }
-        if (null != objectChecksums_) {
-            output.writeMessage(2, getObjectChecksums());
-        }
-        if (null != contentRange_) {
-            output.writeMessage(3, getContentRange());
-        }
-        if (null != metadata_) {
-            output.writeMessage(4, getMetadata());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (null != checksummedData_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getChecksummedData());
-        }
-        if (null != objectChecksums_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getObjectChecksums());
-        }
-        if (null != contentRange_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getContentRange());
-        }
-        if (null != metadata_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, getMetadata());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ReadObjectResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ReadObjectResponse other = (com.google.storage.v2.ReadObjectResponse) obj;
-        if (other.hasChecksummedData() != hasChecksummedData())
-            return false;
-        if (hasChecksummedData()) {
-            if (!getChecksummedData().equals(other.getChecksummedData()))
-                return false;
-        }
-        if (other.hasObjectChecksums() != hasObjectChecksums())
-            return false;
-        if (hasObjectChecksums()) {
-            if (!getObjectChecksums().equals(other.getObjectChecksums()))
-                return false;
-        }
-        if (other.hasContentRange() != hasContentRange())
-            return false;
-        if (hasContentRange()) {
-            if (!getContentRange().equals(other.getContentRange()))
-                return false;
-        }
-        if (other.hasMetadata() != hasMetadata())
-            return false;
-        if (hasMetadata()) {
-            if (!getMetadata().equals(other.getMetadata()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasChecksummedData()) {
-            hash = (37 * hash) + CHECKSUMMED_DATA_FIELD_NUMBER;
-            hash = (53 * hash) + getChecksummedData().hashCode();
-        }
-        if (hasObjectChecksums()) {
-            hash = (37 * hash) + OBJECT_CHECKSUMS_FIELD_NUMBER;
-            hash = (53 * hash) + getObjectChecksums().hashCode();
-        }
-        if (hasContentRange()) {
-            hash = (37 * hash) + CONTENT_RANGE_FIELD_NUMBER;
-            hash = (53 * hash) + getContentRange().hashCode();
-        }
-        if (hasMetadata()) {
-            hash = (37 * hash) + METADATA_FIELD_NUMBER;
-            hash = (53 * hash) + getMetadata().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ReadObjectResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -547,13 +59,564 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
     // @@protoc_insertion_point(builder_implements:google.storage.v2.ReadObjectResponse)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ReadObjectResponseOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
+        private com.google.storage.v2.ChecksummedData checksummedData_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> checksummedDataBuilder_;
+
+        private com.google.storage.v2.ObjectChecksums objectChecksums_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> objectChecksumsBuilder_;
+
+        private com.google.storage.v2.ContentRange contentRange_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ContentRange, com.google.storage.v2.ContentRange.Builder, com.google.storage.v2.ContentRangeOrBuilder> contentRangeBuilder_;
+
+        private com.google.storage.v2.Object metadata_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> metadataBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ReadObjectResponse)
+
+        /**
+         * <pre>
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+         *
+         * @return The objectChecksums.
+         */
+        public ObjectChecksums getObjectChecksums() {
+            if (null != objectChecksumsBuilder_) {
+                return objectChecksumsBuilder_.getMessage();
+            } else {
+                return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+            }
         }
 
         @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ReadObjectResponse.class, com.google.storage.v2.ReadObjectResponse.Builder.class);
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ReadObjectResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ReadObjectResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         */
+        public Builder clearContentRange() {
+            if (null != contentRangeBuilder_) {
+                contentRange_ = null;
+                contentRangeBuilder_ = null;
+            } else {
+                contentRange_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+         */
+        public ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
+            if (null == objectChecksumsBuilder_) {
+                return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+            } else {
+                return objectChecksumsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+         */
+        public Builder setObjectChecksums(ObjectChecksums.Builder builderForValue) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.setMessage(builderForValue.build());
+            } else {
+                objectChecksums_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         *
+         * @return Whether the metadata field is set.
+         */
+        public boolean hasMetadata() {
+            return null != metadataBuilder_ || null != metadata_;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         *
+         * @return Whether the contentRange field is set.
+         */
+        public boolean hasContentRange() {
+            return null != contentRangeBuilder_ || null != contentRange_;
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        public ObjectOrBuilder getMetadataOrBuilder() {
+            if (null == metadataBuilder_) {
+                return null == metadata_ ? Object.getDefaultInstance() : metadata_;
+            } else {
+                return metadataBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder> getObjectChecksumsFieldBuilder() {
+            if (null == objectChecksumsBuilder_) {
+                objectChecksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder>(getObjectChecksums(), getParentForChildren(), isClean());
+                objectChecksums_ = null;
+            }
+            return objectChecksumsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public Builder setChecksummedData(ChecksummedData.Builder builderForValue) {
+            if (null != checksummedDataBuilder_) {
+                checksummedDataBuilder_.setMessage(builderForValue.build());
+            } else {
+                checksummedData_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public ReadObjectResponse build() {
+            ReadObjectResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+         *
+         * @return Whether the objectChecksums field is set.
+         */
+        public boolean hasObjectChecksums() {
+            return null != objectChecksumsBuilder_ || null != objectChecksums_;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        public Builder mergeMetadata(Object value) {
+            if (null != metadataBuilder_) {
+                metadataBuilder_.mergeFrom(value);
+            } else {
+                if (null == metadata_) {
+                    metadata_ = value;
+                } else {
+                    metadata_ = Object.newBuilder(metadata_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public ChecksummedData.Builder getChecksummedDataBuilder() {
+            onChanged();
+            return getChecksummedDataFieldBuilder().getBuilder();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         */
+        public ContentRange.Builder getContentRangeBuilder() {
+            onChanged();
+            return getContentRangeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public Builder mergeChecksummedData(ChecksummedData value) {
+            if (null != checksummedDataBuilder_) {
+                checksummedDataBuilder_.mergeFrom(value);
+            } else {
+                if (null == checksummedData_) {
+                    checksummedData_ = value;
+                } else {
+                    checksummedData_ = ChecksummedData.newBuilder(checksummedData_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        public Object.Builder getMetadataBuilder() {
+            onChanged();
+            return getMetadataFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         *
+         * @return The metadata.
+         */
+        public Object getMetadata() {
+            if (null != metadataBuilder_) {
+                return metadataBuilder_.getMessage();
+            } else {
+                return null == metadata_ ? Object.getDefaultInstance() : metadata_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         *
+         * @return The checksummedData.
+         */
+        public ChecksummedData getChecksummedData() {
+            if (null != checksummedDataBuilder_) {
+                return checksummedDataBuilder_.getMessage();
+            } else {
+                return null == checksummedData_ ? ChecksummedData.getDefaultInstance() : checksummedData_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public Builder setChecksummedData(ChecksummedData value) {
+            if (null != checksummedDataBuilder_) {
+                checksummedDataBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                checksummedData_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         */
+        public Builder setContentRange(ContentRange.Builder builderForValue) {
+            if (null != contentRangeBuilder_) {
+                contentRangeBuilder_.setMessage(builderForValue.build());
+            } else {
+                contentRange_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         *
+         * @return The contentRange.
+         */
+        public ContentRange getContentRange() {
+            if (null != contentRangeBuilder_) {
+                return contentRangeBuilder_.getMessage();
+            } else {
+                return null == contentRange_ ? ContentRange.getDefaultInstance() : contentRange_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         *
+         * @return Whether the checksummedData field is set.
+         */
+        public boolean hasChecksummedData() {
+            return null != checksummedDataBuilder_ || null != checksummedData_;
+        }
+
+        @java.lang.Override
+        public ReadObjectResponse buildPartial() {
+            ReadObjectResponse result = new ReadObjectResponse(this);
+            if (null != checksummedDataBuilder_) {
+                result.checksummedData_ = checksummedDataBuilder_.build();
+            } else {
+                result.checksummedData_ = checksummedData_;
+            }
+            if (null != objectChecksumsBuilder_) {
+                result.objectChecksums_ = objectChecksumsBuilder_.build();
+            } else {
+                result.objectChecksums_ = objectChecksums_;
+            }
+            if (null != contentRangeBuilder_) {
+                result.contentRange_ = contentRangeBuilder_.build();
+            } else {
+                result.contentRange_ = contentRange_;
+            }
+            if (null != metadataBuilder_) {
+                result.metadata_ = metadataBuilder_.build();
+            } else {
+                result.metadata_ = metadata_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public Builder clearChecksummedData() {
+            if (null != checksummedDataBuilder_) {
+                checksummedData_ = null;
+                checksummedDataBuilder_ = null;
+            } else {
+                checksummedData_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        public Builder mergeFrom(ReadObjectResponse other) {
+            if (ReadObjectResponse.getDefaultInstance() == other)
+                return this;
+            if (other.hasChecksummedData()) {
+                mergeChecksummedData(other.getChecksummedData());
+            }
+            if (other.hasObjectChecksums()) {
+                mergeObjectChecksums(other.getObjectChecksums());
+            }
+            if (other.hasContentRange()) {
+                mergeContentRange(other.getContentRange());
+            }
+            if (other.hasMetadata()) {
+                mergeMetadata(other.getMetadata());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        public Builder setMetadata(Object.Builder builderForValue) {
+            if (null != metadataBuilder_) {
+                metadataBuilder_.setMessage(builderForValue.build());
+            } else {
+                metadata_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         */
+        public ContentRangeOrBuilder getContentRangeOrBuilder() {
+            if (null == contentRangeBuilder_) {
+                return null == contentRange_ ? ContentRange.getDefaultInstance() : contentRange_;
+            } else {
+                return contentRangeBuilder_.getMessageOrBuilder();
+            }
         }
 
         // Construct using com.google.storage.v2.ReadObjectResponse.newBuilder()
@@ -561,14 +624,103 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
             maybeForceBuilderInitialization();
         }
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ReadObjectResponse.class, Builder.class);
         }
 
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+        /**
+         * <pre>
+         * If read_offset and or read_limit was specified on the
+         * ReadObjectRequest, ContentRange will be populated on the first
+         * ReadObjectResponse message of the read stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         */
+        public Builder setContentRange(ContentRange value) {
+            if (null != contentRangeBuilder_) {
+                contentRangeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                contentRange_ = value;
+                onChanged();
             }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ReadObjectResponse)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ReadObjectResponse) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        public ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
+            if (null == checksummedDataBuilder_) {
+                return null == checksummedData_ ? ChecksummedData.getDefaultInstance() : checksummedData_;
+            } else {
+                return checksummedDataBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * A portion of the data for the object. The service **may** leave `data`
+         * empty for any given `ReadResponse`. This enables the service to inform the
+         * client that the request is still live while it is running an operation to
+         * generate more data.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ChecksummedData, ChecksummedData.Builder, ChecksummedDataOrBuilder> getChecksummedDataFieldBuilder() {
+            if (null == checksummedDataBuilder_) {
+                checksummedDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ChecksummedData, ChecksummedData.Builder, ChecksummedDataOrBuilder>(getChecksummedData(), getParentForChildren(), isClean());
+                checksummedData_ = null;
+            }
+            return checksummedDataBuilder_;
+        }
+
+        @java.lang.Override
+        public ReadObjectResponse getDefaultInstanceForType() {
+            return ReadObjectResponse.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getMetadataFieldBuilder() {
+            if (null == metadataBuilder_) {
+                metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getMetadata(), getParentForChildren(), isClean());
+                metadata_ = null;
+            }
+            return metadataBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
         }
 
         @java.lang.Override
@@ -601,409 +753,22 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
             return this;
         }
 
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.ReadObjectResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectResponse build() {
-            com.google.storage.v2.ReadObjectResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectResponse buildPartial() {
-            com.google.storage.v2.ReadObjectResponse result = new com.google.storage.v2.ReadObjectResponse(this);
-            if (null != checksummedDataBuilder_) {
-                result.checksummedData_ = checksummedDataBuilder_.build();
-            } else {
-                result.checksummedData_ = checksummedData_;
-            }
-            if (null != objectChecksumsBuilder_) {
-                result.objectChecksums_ = objectChecksumsBuilder_.build();
-            } else {
-                result.objectChecksums_ = objectChecksums_;
-            }
-            if (null != contentRangeBuilder_) {
-                result.contentRange_ = contentRangeBuilder_.build();
-            } else {
-                result.contentRange_ = contentRange_;
-            }
+        /**
+         * <pre>
+         * Metadata of the object whose media is being returned.
+         * Only populated in the first response in the stream.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object metadata = 4;</code>
+         */
+        public Builder setMetadata(Object value) {
             if (null != metadataBuilder_) {
-                result.metadata_ = metadataBuilder_.build();
-            } else {
-                result.metadata_ = metadata_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ReadObjectResponse)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ReadObjectResponse) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ReadObjectResponse other) {
-            if (com.google.storage.v2.ReadObjectResponse.getDefaultInstance() == other)
-                return this;
-            if (other.hasChecksummedData()) {
-                mergeChecksummedData(other.getChecksummedData());
-            }
-            if (other.hasObjectChecksums()) {
-                mergeObjectChecksums(other.getObjectChecksums());
-            }
-            if (other.hasContentRange()) {
-                mergeContentRange(other.getContentRange());
-            }
-            if (other.hasMetadata()) {
-                mergeMetadata(other.getMetadata());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ReadObjectResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ReadObjectResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private com.google.storage.v2.ChecksummedData checksummedData_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> checksummedDataBuilder_;
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         *
-         * @return Whether the checksummedData field is set.
-         */
-        public boolean hasChecksummedData() {
-            return null != checksummedDataBuilder_ || null != checksummedData_;
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         *
-         * @return The checksummedData.
-         */
-        public com.google.storage.v2.ChecksummedData getChecksummedData() {
-            if (null != checksummedDataBuilder_) {
-                return checksummedDataBuilder_.getMessage();
-            } else {
-                return null == checksummedData_ ? com.google.storage.v2.ChecksummedData.getDefaultInstance() : checksummedData_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public Builder setChecksummedData(com.google.storage.v2.ChecksummedData value) {
-            if (null != checksummedDataBuilder_) {
-                checksummedDataBuilder_.setMessage(value);
+                metadataBuilder_.setMessage(value);
             } else {
                 if (null == value) {
                     throw new NullPointerException();
                 }
-                checksummedData_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public Builder setChecksummedData(com.google.storage.v2.ChecksummedData.Builder builderForValue) {
-            if (null != checksummedDataBuilder_) {
-                checksummedDataBuilder_.setMessage(builderForValue.build());
-            } else {
-                checksummedData_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public Builder mergeChecksummedData(com.google.storage.v2.ChecksummedData value) {
-            if (null != checksummedDataBuilder_) {
-                checksummedDataBuilder_.mergeFrom(value);
-            } else {
-                if (null == checksummedData_) {
-                    checksummedData_ = value;
-                } else {
-                    checksummedData_ = com.google.storage.v2.ChecksummedData.newBuilder(checksummedData_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public Builder clearChecksummedData() {
-            if (null != checksummedDataBuilder_) {
-                checksummedData_ = null;
-                checksummedDataBuilder_ = null;
-            } else {
-                checksummedData_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public com.google.storage.v2.ChecksummedData.Builder getChecksummedDataBuilder() {
-            onChanged();
-            return getChecksummedDataFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        public com.google.storage.v2.ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
-            if (null == checksummedDataBuilder_) {
-                return null == checksummedData_ ? com.google.storage.v2.ChecksummedData.getDefaultInstance() : checksummedData_;
-            } else {
-                return checksummedDataBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A portion of the data for the object. The service **may** leave `data`
-         * empty for any given `ReadResponse`. This enables the service to inform the
-         * client that the request is still live while it is running an operation to
-         * generate more data.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> getChecksummedDataFieldBuilder() {
-            if (null == checksummedDataBuilder_) {
-                checksummedDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder>(getChecksummedData(), getParentForChildren(), isClean());
-                checksummedData_ = null;
-            }
-            return checksummedDataBuilder_;
-        }
-
-        private com.google.storage.v2.ObjectChecksums objectChecksums_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> objectChecksumsBuilder_;
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         *
-         * @return Whether the objectChecksums field is set.
-         */
-        public boolean hasObjectChecksums() {
-            return null != objectChecksumsBuilder_ || null != objectChecksums_;
-        }
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         *
-         * @return The objectChecksums.
-         */
-        public com.google.storage.v2.ObjectChecksums getObjectChecksums() {
-            if (null != objectChecksumsBuilder_) {
-                return objectChecksumsBuilder_.getMessage();
-            } else {
-                return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         */
-        public Builder setObjectChecksums(com.google.storage.v2.ObjectChecksums value) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                objectChecksums_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         */
-        public Builder setObjectChecksums(com.google.storage.v2.ObjectChecksums.Builder builderForValue) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.setMessage(builderForValue.build());
-            } else {
-                objectChecksums_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         */
-        public Builder mergeObjectChecksums(com.google.storage.v2.ObjectChecksums value) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.mergeFrom(value);
-            } else {
-                if (null == objectChecksums_) {
-                    objectChecksums_ = value;
-                } else {
-                    objectChecksums_ = com.google.storage.v2.ObjectChecksums.newBuilder(objectChecksums_).mergeFrom(value).buildPartial();
-                }
+                metadata_ = value;
                 onChanged();
             }
             return this;
@@ -1038,85 +803,13 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
          *
          * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
          */
-        public com.google.storage.v2.ObjectChecksums.Builder getObjectChecksumsBuilder() {
+        public ObjectChecksums.Builder getObjectChecksumsBuilder() {
             onChanged();
             return getObjectChecksumsFieldBuilder().getBuilder();
         }
 
         /**
          * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         */
-        public com.google.storage.v2.ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
-            if (null == objectChecksumsBuilder_) {
-                return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-            } else {
-                return objectChecksumsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The checksums of the complete object. The client should compute one of
-         * these checksums over the downloaded object and compare it against the value
-         * provided here.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> getObjectChecksumsFieldBuilder() {
-            if (null == objectChecksumsBuilder_) {
-                objectChecksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder>(getObjectChecksums(), getParentForChildren(), isClean());
-                objectChecksums_ = null;
-            }
-            return objectChecksumsBuilder_;
-        }
-
-        private com.google.storage.v2.ContentRange contentRange_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ContentRange, com.google.storage.v2.ContentRange.Builder, com.google.storage.v2.ContentRangeOrBuilder> contentRangeBuilder_;
-
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         *
-         * @return Whether the contentRange field is set.
-         */
-        public boolean hasContentRange() {
-            return null != contentRangeBuilder_ || null != contentRange_;
-        }
-
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         *
-         * @return The contentRange.
-         */
-        public com.google.storage.v2.ContentRange getContentRange() {
-            if (null != contentRangeBuilder_) {
-                return contentRangeBuilder_.getMessage();
-            } else {
-                return null == contentRange_ ? com.google.storage.v2.ContentRange.getDefaultInstance() : contentRange_;
-            }
-        }
-
-        /**
-         * <pre>
          * If read_offset and or read_limit was specified on the
          * ReadObjectRequest, ContentRange will be populated on the first
          * ReadObjectResponse message of the read stream.
@@ -1124,93 +817,56 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
          *
          * <code>.google.storage.v2.ContentRange content_range = 3;</code>
          */
-        public Builder setContentRange(com.google.storage.v2.ContentRange value) {
-            if (null != contentRangeBuilder_) {
-                contentRangeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                contentRange_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         */
-        public Builder setContentRange(com.google.storage.v2.ContentRange.Builder builderForValue) {
-            if (null != contentRangeBuilder_) {
-                contentRangeBuilder_.setMessage(builderForValue.build());
-            } else {
-                contentRange_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         */
-        public Builder mergeContentRange(com.google.storage.v2.ContentRange value) {
+        public Builder mergeContentRange(ContentRange value) {
             if (null != contentRangeBuilder_) {
                 contentRangeBuilder_.mergeFrom(value);
             } else {
                 if (null == contentRange_) {
                     contentRange_ = value;
                 } else {
-                    contentRange_ = com.google.storage.v2.ContentRange.newBuilder(contentRange_).mergeFrom(value).buildPartial();
+                    contentRange_ = ContentRange.newBuilder(contentRange_).mergeFrom(value).buildPartial();
                 }
                 onChanged();
             }
             return this;
         }
 
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
         /**
          * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
          * </pre>
          *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
          */
-        public Builder clearContentRange() {
-            if (null != contentRangeBuilder_) {
-                contentRange_ = null;
-                contentRangeBuilder_ = null;
+        public Builder mergeObjectChecksums(ObjectChecksums value) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.mergeFrom(value);
             } else {
-                contentRange_ = null;
+                if (null == objectChecksums_) {
+                    objectChecksums_ = value;
+                } else {
+                    objectChecksums_ = ObjectChecksums.newBuilder(objectChecksums_).mergeFrom(value).buildPartial();
+                }
                 onChanged();
             }
             return this;
         }
 
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         */
-        public com.google.storage.v2.ContentRange.Builder getContentRangeBuilder() {
-            onChanged();
-            return getContentRangeFieldBuilder().getBuilder();
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
         }
 
         /**
@@ -1222,126 +878,39 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
          *
          * <code>.google.storage.v2.ContentRange content_range = 3;</code>
          */
-        public com.google.storage.v2.ContentRangeOrBuilder getContentRangeOrBuilder() {
+        private com.google.protobuf.SingleFieldBuilderV3<ContentRange, ContentRange.Builder, ContentRangeOrBuilder> getContentRangeFieldBuilder() {
             if (null == contentRangeBuilder_) {
-                return null == contentRange_ ? com.google.storage.v2.ContentRange.getDefaultInstance() : contentRange_;
-            } else {
-                return contentRangeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * If read_offset and or read_limit was specified on the
-         * ReadObjectRequest, ContentRange will be populated on the first
-         * ReadObjectResponse message of the read stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ContentRange content_range = 3;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ContentRange, com.google.storage.v2.ContentRange.Builder, com.google.storage.v2.ContentRangeOrBuilder> getContentRangeFieldBuilder() {
-            if (null == contentRangeBuilder_) {
-                contentRangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ContentRange, com.google.storage.v2.ContentRange.Builder, com.google.storage.v2.ContentRangeOrBuilder>(getContentRange(), getParentForChildren(), isClean());
+                contentRangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ContentRange, ContentRange.Builder, ContentRangeOrBuilder>(getContentRange(), getParentForChildren(), isClean());
                 contentRange_ = null;
             }
             return contentRangeBuilder_;
         }
 
-        private com.google.storage.v2.Object metadata_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> metadataBuilder_;
-
         /**
          * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
+         * The checksums of the complete object. The client should compute one of
+         * these checksums over the downloaded object and compare it against the value
+         * provided here.
          * </pre>
          *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         *
-         * @return Whether the metadata field is set.
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
          */
-        public boolean hasMetadata() {
-            return null != metadataBuilder_ || null != metadata_;
-        }
-
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         *
-         * @return The metadata.
-         */
-        public com.google.storage.v2.Object getMetadata() {
-            if (null != metadataBuilder_) {
-                return metadataBuilder_.getMessage();
-            } else {
-                return null == metadata_ ? com.google.storage.v2.Object.getDefaultInstance() : metadata_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        public Builder setMetadata(com.google.storage.v2.Object value) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.setMessage(value);
+        public Builder setObjectChecksums(ObjectChecksums value) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.setMessage(value);
             } else {
                 if (null == value) {
                     throw new NullPointerException();
                 }
-                metadata_ = value;
+                objectChecksums_ = value;
                 onChanged();
             }
             return this;
         }
 
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        public Builder setMetadata(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.setMessage(builderForValue.build());
-            } else {
-                metadata_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        public Builder mergeMetadata(com.google.storage.v2.Object value) {
-            if (null != metadataBuilder_) {
-                metadataBuilder_.mergeFrom(value);
-            } else {
-                if (null == metadata_) {
-                    metadata_ = value;
-                } else {
-                    metadata_ = com.google.storage.v2.Object.newBuilder(metadata_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
         }
 
         /**
@@ -1363,61 +932,6 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
             return this;
         }
 
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        public com.google.storage.v2.Object.Builder getMetadataBuilder() {
-            onChanged();
-            return getMetadataFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getMetadataOrBuilder() {
-            if (null == metadataBuilder_) {
-                return null == metadata_ ? com.google.storage.v2.Object.getDefaultInstance() : metadata_;
-            } else {
-                return metadataBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Metadata of the object whose media is being returned.
-         * Only populated in the first response in the stream.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object metadata = 4;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getMetadataFieldBuilder() {
-            if (null == metadataBuilder_) {
-                metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getMetadata(), getParentForChildren(), isClean());
-                metadata_ = null;
-            }
-            return metadataBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ReadObjectResponse)
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.ReadObjectResponse)
@@ -1425,10 +939,6 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.ReadObjectResponse();
-    }
-
-    public static com.google.storage.v2.ReadObjectResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<ReadObjectResponse> PARSER = new com.google.protobuf.AbstractParser<ReadObjectResponse>() {
@@ -1439,8 +949,8 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
         }
     };
 
-    public static com.google.protobuf.Parser<ReadObjectResponse> parser() {
-        return PARSER;
+    public static ReadObjectResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
@@ -1449,7 +959,500 @@ ReadObjectResponse extends com.google.protobuf.GeneratedMessageV3 implements Rea
     }
 
     @java.lang.Override
-    public com.google.storage.v2.ReadObjectResponse getDefaultInstanceForType() {
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ReadObjectResponse)) {
+            return super.equals(obj);
+        }
+        ReadObjectResponse other = (ReadObjectResponse) obj;
+        if (other.hasChecksummedData() != hasChecksummedData())
+            return false;
+        if (hasChecksummedData()) {
+            if (!getChecksummedData().equals(other.getChecksummedData()))
+                return false;
+        }
+        if (other.hasObjectChecksums() != hasObjectChecksums())
+            return false;
+        if (hasObjectChecksums()) {
+            if (!getObjectChecksums().equals(other.getObjectChecksums()))
+                return false;
+        }
+        if (other.hasContentRange() != hasContentRange())
+            return false;
+        if (hasContentRange()) {
+            if (!getContentRange().equals(other.getContentRange()))
+                return false;
+        }
+        if (other.hasMetadata() != hasMetadata())
+            return false;
+        if (hasMetadata()) {
+            if (!getMetadata().equals(other.getMetadata()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static ReadObjectResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Metadata of the object whose media is being returned.
+     * Only populated in the first response in the stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object metadata = 4;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getMetadataOrBuilder() {
+        return getMetadata();
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static com.google.protobuf.Parser<ReadObjectResponse> parser() {
+        return PARSER;
+    }
+
+    // Use ReadObjectResponse.newBuilder() to construct.
+    private ReadObjectResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static ReadObjectResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ReadObjectResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A portion of the data for the object. The service **may** leave `data`
+     * empty for any given `ReadResponse`. This enables the service to inform the
+     * client that the request is still live while it is running an operation to
+     * generate more data.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+     *
+     * @return The checksummedData.
+     */
+    @java.lang.Override
+    public ChecksummedData getChecksummedData() {
+        return null == checksummedData_ ? ChecksummedData.getDefaultInstance() : checksummedData_;
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static ReadObjectResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ReadObjectResponse getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
+
+    /**
+     * <pre>
+     * Metadata of the object whose media is being returned.
+     * Only populated in the first response in the stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object metadata = 4;</code>
+     *
+     * @return The metadata.
+     */
+    @java.lang.Override
+    public Object getMetadata() {
+        return null == metadata_ ? Object.getDefaultInstance() : metadata_;
+    }
+
+    /**
+     * <pre>
+     * If read_offset and or read_limit was specified on the
+     * ReadObjectRequest, ContentRange will be populated on the first
+     * ReadObjectResponse message of the read stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+     *
+     * @return The contentRange.
+     */
+    @java.lang.Override
+    public ContentRange getContentRange() {
+        return null == contentRange_ ? ContentRange.getDefaultInstance() : contentRange_;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    private ReadObjectResponse() {
+    }
+
+    /**
+     * <pre>
+     * A portion of the data for the object. The service **may** leave `data`
+     * empty for any given `ReadResponse`. This enables the service to inform the
+     * client that the request is still live while it is running an operation to
+     * generate more data.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+     */
+    @java.lang.Override
+    public ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
+        return getChecksummedData();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static ReadObjectResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public ReadObjectResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ReadObjectResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Metadata of the object whose media is being returned.
+     * Only populated in the first response in the stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object metadata = 4;</code>
+     *
+     * @return Whether the metadata field is set.
+     */
+    @java.lang.Override
+    public boolean hasMetadata() {
+        return null != metadata_;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ReadObjectResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ReadObjectResponse.class, Builder.class);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ReadObjectResponse();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (null != checksummedData_) {
+            output.writeMessage(1, getChecksummedData());
+        }
+        if (null != objectChecksums_) {
+            output.writeMessage(2, getObjectChecksums());
+        }
+        if (null != contentRange_) {
+            output.writeMessage(3, getContentRange());
+        }
+        if (null != metadata_) {
+            output.writeMessage(4, getMetadata());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static ReadObjectResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * A portion of the data for the object. The service **may** leave `data`
+     * empty for any given `ReadResponse`. This enables the service to inform the
+     * client that the request is still live while it is running an operation to
+     * generate more data.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ChecksummedData checksummed_data = 1;</code>
+     *
+     * @return Whether the checksummedData field is set.
+     */
+    @java.lang.Override
+    public boolean hasChecksummedData() {
+        return null != checksummedData_;
+    }
+
+    /**
+     * <pre>
+     * If read_offset and or read_limit was specified on the
+     * ReadObjectRequest, ContentRange will be populated on the first
+     * ReadObjectResponse message of the read stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+     *
+     * @return Whether the contentRange field is set.
+     */
+    @java.lang.Override
+    public boolean hasContentRange() {
+        return null != contentRange_;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasChecksummedData()) {
+            hash = (37 * hash) + CHECKSUMMED_DATA_FIELD_NUMBER;
+            hash = (53 * hash) + getChecksummedData().hashCode();
+        }
+        if (hasObjectChecksums()) {
+            hash = (37 * hash) + OBJECT_CHECKSUMS_FIELD_NUMBER;
+            hash = (53 * hash) + getObjectChecksums().hashCode();
+        }
+        if (hasContentRange()) {
+            hash = (37 * hash) + CONTENT_RANGE_FIELD_NUMBER;
+            hash = (53 * hash) + getContentRange().hashCode();
+        }
+        if (hasMetadata()) {
+            hash = (37 * hash) + METADATA_FIELD_NUMBER;
+            hash = (53 * hash) + getMetadata().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static ReadObjectResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static ReadObjectResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static Builder newBuilder(ReadObjectResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ReadObjectResponse_descriptor;
+    }
+
+    /**
+     * <pre>
+     * The checksums of the complete object. The client should compute one of
+     * these checksums over the downloaded object and compare it against the value
+     * provided here.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+     *
+     * @return The objectChecksums.
+     */
+    @java.lang.Override
+    public ObjectChecksums getObjectChecksums() {
+        return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+    }
+
+    /**
+     * <pre>
+     * If read_offset and or read_limit was specified on the
+     * ReadObjectRequest, ContentRange will be populated on the first
+     * ReadObjectResponse message of the read stream.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ContentRange content_range = 3;</code>
+     */
+    @java.lang.Override
+    public ContentRangeOrBuilder getContentRangeOrBuilder() {
+        return getContentRange();
+    }
+
+    public static ReadObjectResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * The checksums of the complete object. The client should compute one of
+     * these checksums over the downloaded object and compare it against the value
+     * provided here.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+     *
+     * @return Whether the objectChecksums field is set.
+     */
+    @java.lang.Override
+    public boolean hasObjectChecksums() {
+        return null != objectChecksums_;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (null != checksummedData_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getChecksummedData());
+        }
+        if (null != objectChecksums_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getObjectChecksums());
+        }
+        if (null != contentRange_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getContentRange());
+        }
+        if (null != metadata_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, getMetadata());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    /**
+     * <pre>
+     * The checksums of the complete object. The client should compute one of
+     * these checksums over the downloaded object and compare it against the value
+     * provided here.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 2;</code>
+     */
+    @java.lang.Override
+    public ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
+        return getObjectChecksums();
+    }
+
+    private ReadObjectResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            ChecksummedData.Builder subBuilder = null;
+                            if (null != checksummedData_) {
+                                subBuilder = checksummedData_.toBuilder();
+                            }
+                            checksummedData_ = input.readMessage(ChecksummedData.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(checksummedData_);
+                                checksummedData_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 18:
+                        {
+                            ObjectChecksums.Builder subBuilder = null;
+                            if (null != objectChecksums_) {
+                                subBuilder = objectChecksums_.toBuilder();
+                            }
+                            objectChecksums_ = input.readMessage(ObjectChecksums.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(objectChecksums_);
+                                objectChecksums_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 26:
+                        {
+                            ContentRange.Builder subBuilder = null;
+                            if (null != contentRange_) {
+                                subBuilder = contentRange_.toBuilder();
+                            }
+                            contentRange_ = input.readMessage(ContentRange.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(contentRange_);
+                                contentRange_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 34:
+                        {
+                            Object.Builder subBuilder = null;
+                            if (null != metadata_) {
+                                subBuilder = metadata_.toBuilder();
+                            }
+                            metadata_ = input.readMessage(Object.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(metadata_);
+                                metadata_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ReadObjectResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
 }

@@ -30,28 +30,1247 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
 
     private static final long serialVersionUID = 0L;
 
-    // Use HmacKeyMetadata.newBuilder() to construct.
-    private HmacKeyMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int ID_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object id_;
+
+    public static final int ACCESS_ID_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object accessId_;
+
+    public static final int PROJECT_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object project_;
+
+    public static final int SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER = 4;
+
+    private volatile java.lang.Object serviceAccountEmail_;
+
+    public static final int STATE_FIELD_NUMBER = 5;
+
+    private volatile java.lang.Object state_;
+
+    public static final int CREATE_TIME_FIELD_NUMBER = 6;
+
+    private com.google.protobuf.Timestamp createTime_;
+
+    public static final int UPDATE_TIME_FIELD_NUMBER = 7;
+
+    private com.google.protobuf.Timestamp updateTime_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Hmac Key Metadata, which includes all information other than the secret.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.HmacKeyMetadata}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.HmacKeyMetadata)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.HmacKeyMetadata)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.HmacKeyMetadataOrBuilder {
+
+        private java.lang.Object id_ = "";
+
+        private java.lang.Object accessId_ = "";
+
+        private java.lang.Object project_ = "";
+
+        private java.lang.Object serviceAccountEmail_ = "";
+
+        private java.lang.Object state_ = "";
+
+        private com.google.protobuf.Timestamp createTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> createTimeBuilder_;
+
+        private com.google.protobuf.Timestamp updateTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateTimeBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.HmacKeyMetadata)
+
+        /**
+         * <pre>
+         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+         * </pre>
+         *
+         * <code>string id = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearId() {
+            id_ = getDefaultInstance().getId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public com.google.protobuf.Timestamp.Builder getUpdateTimeBuilder() {
+            onChanged();
+            return getUpdateTimeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * The project ID that the hmac key is contained in.
+         * </pre>
+         *
+         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The bytes for project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The project ID that the hmac key is contained in.
+         * </pre>
+         *
+         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The project.
+         */
+        public java.lang.String getProject() {
+            java.lang.Object ref = project_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                project_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+         * </pre>
+         *
+         * <code>string id = 1;</code>
+         *
+         * @param value The bytes for id to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            id_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof HmacKeyMetadata)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((HmacKeyMetadata) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * Email of the service account the key authenticates as.
+         * </pre>
+         *
+         * <code>string service_account_email = 4;</code>
+         *
+         * @param value The serviceAccountEmail to set.
+         * @return This builder for chaining.
+         */
+        public Builder setServiceAccountEmail(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            serviceAccountEmail_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
+            if (null == updateTimeBuilder_) {
+                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
+            } else {
+                return updateTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Email of the service account the key authenticates as.
+         * </pre>
+         *
+         * <code>string service_account_email = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearServiceAccountEmail() {
+            serviceAccountEmail_ = getDefaultInstance().getServiceAccountEmail();
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public com.google.protobuf.Timestamp.Builder getCreateTimeBuilder() {
+            onChanged();
+            return getCreateTimeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * The project ID that the hmac key is contained in.
+         * </pre>
+         *
+         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The bytes for project.
+         */
+        public com.google.protobuf.ByteString getProjectBytes() {
+            java.lang.Object ref = project_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                project_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         *
+         * @return Whether the createTime field is set.
+         */
+        public boolean hasCreateTime() {
+            return null != createTimeBuilder_ || null != createTime_;
+        }
+
+        /**
+         * <pre>
+         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
+         * </pre>
+         *
+         * <code>string state = 5;</code>
+         *
+         * @param value The bytes for state to set.
+         * @return This builder for chaining.
+         */
+        public Builder setStateBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            state_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public Builder mergeCreateTime(com.google.protobuf.Timestamp value) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == createTime_) {
+                    createTime_ = value;
+                } else {
+                    createTime_ = com.google.protobuf.Timestamp.newBuilder(createTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
+         * </pre>
+         *
+         * <code>string state = 5;</code>
+         *
+         * @param value The state to set.
+         * @return This builder for chaining.
+         */
+        public Builder setState(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            state_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public Builder setCreateTime(com.google.protobuf.Timestamp value) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                createTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public Builder setUpdateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != updateTimeBuilder_) {
+                updateTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                updateTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public HmacKeyMetadata getDefaultInstanceForType() {
+            return HmacKeyMetadata.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            HmacKeyMetadata parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (HmacKeyMetadata) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
+            if (null == createTimeBuilder_) {
+                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+            } else {
+                return createTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         *
+         * @return The updateTime.
+         */
+        public com.google.protobuf.Timestamp getUpdateTime() {
+            if (null != updateTimeBuilder_) {
+                return updateTimeBuilder_.getMessage();
+            } else {
+                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
+            }
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Email of the service account the key authenticates as.
+         * </pre>
+         *
+         * <code>string service_account_email = 4;</code>
+         *
+         * @return The serviceAccountEmail.
+         */
+        public java.lang.String getServiceAccountEmail() {
+            java.lang.Object ref = serviceAccountEmail_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                serviceAccountEmail_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Globally unique id for keys.
+         * </pre>
+         *
+         * <code>string access_id = 2;</code>
+         *
+         * @param value The bytes for accessId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            accessId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+         * </pre>
+         *
+         * <code>string id = 1;</code>
+         *
+         * @param value The id to set.
+         * @return This builder for chaining.
+         */
+        public Builder setId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            id_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Globally unique id for keys.
+         * </pre>
+         *
+         * <code>string access_id = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearAccessId() {
+            accessId_ = getDefaultInstance().getAccessId();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public Builder setUpdateTime(com.google.protobuf.Timestamp value) {
+            if (null != updateTimeBuilder_) {
+                updateTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                updateTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         *
+         * @return The createTime.
+         */
+        public com.google.protobuf.Timestamp getCreateTime() {
+            if (null != createTimeBuilder_) {
+                return createTimeBuilder_.getMessage();
+            } else {
+                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+            }
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * The project ID that the hmac key is contained in.
+         * </pre>
+         *
+         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public Builder clearUpdateTime() {
+            if (null != updateTimeBuilder_) {
+                updateTime_ = null;
+                updateTimeBuilder_ = null;
+            } else {
+                updateTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
+         * </pre>
+         *
+         * <code>string state = 5;</code>
+         *
+         * @return The bytes for state.
+         */
+        public com.google.protobuf.ByteString getStateBytes() {
+            java.lang.Object ref = state_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                state_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public HmacKeyMetadata buildPartial() {
+            HmacKeyMetadata result = new HmacKeyMetadata(this);
+            result.id_ = id_;
+            result.accessId_ = accessId_;
+            result.project_ = project_;
+            result.serviceAccountEmail_ = serviceAccountEmail_;
+            result.state_ = state_;
+            if (null != createTimeBuilder_) {
+                result.createTime_ = createTimeBuilder_.build();
+            } else {
+                result.createTime_ = createTime_;
+            }
+            if (null != updateTimeBuilder_) {
+                result.updateTime_ = updateTimeBuilder_.build();
+            } else {
+                result.updateTime_ = updateTime_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCreateTimeFieldBuilder() {
+            if (null == createTimeBuilder_) {
+                createTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCreateTime(), getParentForChildren(), isClean());
+                createTime_ = null;
+            }
+            return createTimeBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Email of the service account the key authenticates as.
+         * </pre>
+         *
+         * <code>string service_account_email = 4;</code>
+         *
+         * @return The bytes for serviceAccountEmail.
+         */
+        public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
+            java.lang.Object ref = serviceAccountEmail_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                serviceAccountEmail_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
+         * </pre>
+         *
+         * <code>string state = 5;</code>
+         *
+         * @return The state.
+         */
+        public java.lang.String getState() {
+            java.lang.Object ref = state_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                state_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public HmacKeyMetadata build() {
+            HmacKeyMetadata result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        public Builder mergeUpdateTime(com.google.protobuf.Timestamp value) {
+            if (null != updateTimeBuilder_) {
+                updateTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == updateTime_) {
+                    updateTime_ = value;
+                } else {
+                    updateTime_ = com.google.protobuf.Timestamp.newBuilder(updateTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_fieldAccessorTable.ensureFieldAccessorsInitialized(HmacKeyMetadata.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public Builder setCreateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                createTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Globally unique id for keys.
+         * </pre>
+         *
+         * <code>string access_id = 2;</code>
+         *
+         * @return The accessId.
+         */
+        public java.lang.String getAccessId() {
+            java.lang.Object ref = accessId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                accessId_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Email of the service account the key authenticates as.
+         * </pre>
+         *
+         * <code>string service_account_email = 4;</code>
+         *
+         * @param value The bytes for serviceAccountEmail to set.
+         * @return This builder for chaining.
+         */
+        public Builder setServiceAccountEmailBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            serviceAccountEmail_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Globally unique id for keys.
+         * </pre>
+         *
+         * <code>string access_id = 2;</code>
+         *
+         * @return The bytes for accessId.
+         */
+        public com.google.protobuf.ByteString getAccessIdBytes() {
+            java.lang.Object ref = accessId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                accessId_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The project ID that the hmac key is contained in.
+         * </pre>
+         *
+         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearProject() {
+            project_ = getDefaultInstance().getProject();
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.HmacKeyMetadata.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateTimeFieldBuilder() {
+            if (null == updateTimeBuilder_) {
+                updateTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateTime(), getParentForChildren(), isClean());
+                updateTime_ = null;
+            }
+            return updateTimeBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+         * </pre>
+         *
+         * <code>string id = 1;</code>
+         *
+         * @return The id.
+         */
+        public java.lang.String getId() {
+            java.lang.Object ref = id_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                id_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            id_ = "";
+            accessId_ = "";
+            project_ = "";
+            serviceAccountEmail_ = "";
+            state_ = "";
+            if (null != createTimeBuilder_) {
+                createTime_ = null;
+                createTimeBuilder_ = null;
+            } else {
+                createTime_ = null;
+            }
+            if (null != updateTimeBuilder_) {
+                updateTime_ = null;
+                updateTimeBuilder_ = null;
+            } else {
+                updateTime_ = null;
+            }
+            return this;
+        }
+
+        public Builder mergeFrom(HmacKeyMetadata other) {
+            if (HmacKeyMetadata.getDefaultInstance() == other)
+                return this;
+            if (!other.getId().isEmpty()) {
+                id_ = other.id_;
+                onChanged();
+            }
+            if (!other.getAccessId().isEmpty()) {
+                accessId_ = other.accessId_;
+                onChanged();
+            }
+            if (!other.getProject().isEmpty()) {
+                project_ = other.project_;
+                onChanged();
+            }
+            if (!other.getServiceAccountEmail().isEmpty()) {
+                serviceAccountEmail_ = other.serviceAccountEmail_;
+                onChanged();
+            }
+            if (!other.getState().isEmpty()) {
+                state_ = other.state_;
+                onChanged();
+            }
+            if (other.hasCreateTime()) {
+                mergeCreateTime(other.getCreateTime());
+            }
+            if (other.hasUpdateTime()) {
+                mergeUpdateTime(other.getUpdateTime());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+         * </pre>
+         *
+         * <code>string id = 1;</code>
+         *
+         * @return The bytes for id.
+         */
+        public com.google.protobuf.ByteString getIdBytes() {
+            java.lang.Object ref = id_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                id_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The creation time of the HMAC key.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp create_time = 6;</code>
+         */
+        public Builder clearCreateTime() {
+            if (null != createTimeBuilder_) {
+                createTime_ = null;
+                createTimeBuilder_ = null;
+            } else {
+                createTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Globally unique id for keys.
+         * </pre>
+         *
+         * <code>string access_id = 2;</code>
+         *
+         * @param value The accessId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            accessId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
+         * </pre>
+         *
+         * <code>string state = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearState() {
+            state_ = getDefaultInstance().getState();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The last modification time of the HMAC key metadata.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp update_time = 7;</code>
+         *
+         * @return Whether the updateTime field is set.
+         */
+        public boolean hasUpdateTime() {
+            return null != updateTimeBuilder_ || null != updateTime_;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
     }
 
-    private HmacKeyMetadata() {
-        id_ = "";
-        accessId_ = "";
-        project_ = "";
-        serviceAccountEmail_ = "";
-        state_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.HmacKeyMetadata)
+    private static final com.google.storage.v2.HmacKeyMetadata DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.HmacKeyMetadata();
     }
 
+    private static final com.google.protobuf.Parser<HmacKeyMetadata> PARSER = new com.google.protobuf.AbstractParser<HmacKeyMetadata>() {
+
+        @java.lang.Override
+        public HmacKeyMetadata parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new HmacKeyMetadata(input, extensionRegistry);
+        }
+    };
+
+    /**
+     * <pre>
+     * The creation time of the HMAC key.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 6;</code>
+     *
+     * @return The createTime.
+     */
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new HmacKeyMetadata();
+    public com.google.protobuf.Timestamp getCreateTime() {
+        return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+    }
+
+    public static HmacKeyMetadata parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * The last modification time of the HMAC key metadata.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp update_time = 7;</code>
+     *
+     * @return The updateTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getUpdateTime() {
+        return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    public static HmacKeyMetadata parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static HmacKeyMetadata parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static HmacKeyMetadata parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder(HmacKeyMetadata prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static HmacKeyMetadata parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * The creation time of the HMAC key.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 6;</code>
+     *
+     * @return Whether the createTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasCreateTime() {
+        return null != createTime_;
+    }
+
+    /**
+     * <pre>
+     * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     *
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            id_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static HmacKeyMetadata parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof HmacKeyMetadata)) {
+            return super.equals(obj);
+        }
+        HmacKeyMetadata other = (HmacKeyMetadata) obj;
+        if (!getId().equals(other.getId()))
+            return false;
+        if (!getAccessId().equals(other.getAccessId()))
+            return false;
+        if (!getProject().equals(other.getProject()))
+            return false;
+        if (!getServiceAccountEmail().equals(other.getServiceAccountEmail()))
+            return false;
+        if (!getState().equals(other.getState()))
+            return false;
+        if (other.hasCreateTime() != hasCreateTime())
+            return false;
+        if (hasCreateTime()) {
+            if (!getCreateTime().equals(other.getCreateTime()))
+                return false;
+        }
+        if (other.hasUpdateTime() != hasUpdateTime())
+            return false;
+        if (hasUpdateTime()) {
+            if (!getUpdateTime().equals(other.getUpdateTime()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, accessId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, project_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, serviceAccountEmail_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(state_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, state_);
+        }
+        if (null != createTime_) {
+            output.writeMessage(6, getCreateTime());
+        }
+        if (null != updateTime_) {
+            output.writeMessage(7, getUpdateTime());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static HmacKeyMetadata parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The creation time of the HMAC key.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 6;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
+        return getCreateTime();
+    }
+
+    /**
+     * <pre>
+     * Globally unique id for keys.
+     * </pre>
+     *
+     * <code>string access_id = 2;</code>
+     *
+     * @return The accessId.
+     */
+    @java.lang.Override
+    public java.lang.String getAccessId() {
+        java.lang.Object ref = accessId_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            accessId_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
     }
 
     private HmacKeyMetadata(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -145,112 +1364,48 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
+    /**
+     * <pre>
+     * Email of the service account the key authenticates as.
+     * </pre>
+     *
+     * <code>string service_account_email = 4;</code>
+     *
+     * @return The bytes for serviceAccountEmail.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
+        java.lang.Object ref = serviceAccountEmail_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            serviceAccountEmail_ = b;
+            return b;
+        }
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.HmacKeyMetadata.class, com.google.storage.v2.HmacKeyMetadata.Builder.class);
+        return StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_fieldAccessorTable.ensureFieldAccessorsInitialized(HmacKeyMetadata.class, Builder.class);
     }
 
-    public static final int ID_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object id_;
-
-    /**
-     * <pre>
-     * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     *
-     * @return The id.
-     */
-    @java.lang.Override
-    public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            id_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public static com.google.protobuf.Parser<HmacKeyMetadata> parser() {
+        return PARSER;
     }
 
-    /**
-     * <pre>
-     * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     *
-     * @return The bytes for id.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getIdBytes() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            id_ = b;
-            return b;
-        }
+    public static HmacKeyMetadata parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
-    public static final int ACCESS_ID_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object accessId_;
-
-    /**
-     * <pre>
-     * Globally unique id for keys.
-     * </pre>
-     *
-     * <code>string access_id = 2;</code>
-     *
-     * @return The accessId.
-     */
-    @java.lang.Override
-    public java.lang.String getAccessId() {
-        java.lang.Object ref = accessId_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            accessId_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public static HmacKeyMetadata getDefaultInstance() {
+        return DEFAULT_INSTANCE;
     }
-
-    /**
-     * <pre>
-     * Globally unique id for keys.
-     * </pre>
-     *
-     * <code>string access_id = 2;</code>
-     *
-     * @return The bytes for accessId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getAccessIdBytes() {
-        java.lang.Object ref = accessId_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            accessId_ = b;
-            return b;
-        }
-    }
-
-    public static final int PROJECT_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object project_;
 
     /**
      * <pre>
@@ -274,77 +1429,28 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
         }
     }
 
-    /**
-     * <pre>
-     * The project ID that the hmac key is contained in.
-     * </pre>
-     *
-     * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The bytes for project.
-     */
     @java.lang.Override
-    public com.google.protobuf.ByteString getProjectBytes() {
-        java.lang.Object ref = project_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            project_ = b;
-            return b;
-        }
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
     }
 
-    public static final int SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER = 4;
-
-    private volatile java.lang.Object serviceAccountEmail_;
-
-    /**
-     * <pre>
-     * Email of the service account the key authenticates as.
-     * </pre>
-     *
-     * <code>string service_account_email = 4;</code>
-     *
-     * @return The serviceAccountEmail.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceAccountEmail() {
-        java.lang.Object ref = serviceAccountEmail_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            serviceAccountEmail_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    private HmacKeyMetadata() {
+        id_ = "";
+        accessId_ = "";
+        project_ = "";
+        serviceAccountEmail_ = "";
+        state_ = "";
     }
 
-    /**
-     * <pre>
-     * Email of the service account the key authenticates as.
-     * </pre>
-     *
-     * <code>string service_account_email = 4;</code>
-     *
-     * @return The bytes for serviceAccountEmail.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
-        java.lang.Object ref = serviceAccountEmail_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            serviceAccountEmail_ = b;
-            return b;
-        }
+    public static HmacKeyMetadata parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
-
-    public static final int STATE_FIELD_NUMBER = 5;
-
-    private volatile java.lang.Object state_;
 
     /**
      * <pre>
@@ -370,6 +1476,55 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
 
     /**
      * <pre>
+     * The last modification time of the HMAC key metadata.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp update_time = 7;</code>
+     *
+     * @return Whether the updateTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasUpdateTime() {
+        return null != updateTime_;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static HmacKeyMetadata parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The project ID that the hmac key is contained in.
+     * </pre>
+     *
+     * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The bytes for project.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getProjectBytes() {
+        java.lang.Object ref = project_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            project_ = b;
+            return b;
+        }
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HmacKeyMetadata> getParserForType() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
      * State of the key. One of ACTIVE, INACTIVE, or DELETED.
      * </pre>
      *
@@ -389,82 +1544,6 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
         }
     }
 
-    public static final int CREATE_TIME_FIELD_NUMBER = 6;
-
-    private com.google.protobuf.Timestamp createTime_;
-
-    /**
-     * <pre>
-     * The creation time of the HMAC key.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 6;</code>
-     *
-     * @return Whether the createTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasCreateTime() {
-        return null != createTime_;
-    }
-
-    /**
-     * <pre>
-     * The creation time of the HMAC key.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 6;</code>
-     *
-     * @return The createTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getCreateTime() {
-        return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-    }
-
-    /**
-     * <pre>
-     * The creation time of the HMAC key.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 6;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
-        return getCreateTime();
-    }
-
-    public static final int UPDATE_TIME_FIELD_NUMBER = 7;
-
-    private com.google.protobuf.Timestamp updateTime_;
-
-    /**
-     * <pre>
-     * The last modification time of the HMAC key metadata.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp update_time = 7;</code>
-     *
-     * @return Whether the updateTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasUpdateTime() {
-        return null != updateTime_;
-    }
-
-    /**
-     * <pre>
-     * The last modification time of the HMAC key metadata.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp update_time = 7;</code>
-     *
-     * @return The updateTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getUpdateTime() {
-        return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-    }
-
     /**
      * <pre>
      * The last modification time of the HMAC key metadata.
@@ -475,45 +1554,6 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
     @java.lang.Override
     public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
         return getUpdateTime();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, accessId_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, project_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, serviceAccountEmail_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(state_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, state_);
-        }
-        if (null != createTime_) {
-            output.writeMessage(6, getCreateTime());
-        }
-        if (null != updateTime_) {
-            output.writeMessage(7, getUpdateTime());
-        }
-        unknownFields.writeTo(output);
     }
 
     @java.lang.Override
@@ -548,40 +1588,32 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
         return size;
     }
 
+    /**
+     * <pre>
+     * Email of the service account the key authenticates as.
+     * </pre>
+     *
+     * <code>string service_account_email = 4;</code>
+     *
+     * @return The serviceAccountEmail.
+     */
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
+    public java.lang.String getServiceAccountEmail() {
+        java.lang.Object ref = serviceAccountEmail_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            serviceAccountEmail_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
         }
-        if (!(obj instanceof com.google.storage.v2.HmacKeyMetadata)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.HmacKeyMetadata other = (com.google.storage.v2.HmacKeyMetadata) obj;
-        if (!getId().equals(other.getId()))
-            return false;
-        if (!getAccessId().equals(other.getAccessId()))
-            return false;
-        if (!getProject().equals(other.getProject()))
-            return false;
-        if (!getServiceAccountEmail().equals(other.getServiceAccountEmail()))
-            return false;
-        if (!getState().equals(other.getState()))
-            return false;
-        if (other.hasCreateTime() != hasCreateTime())
-            return false;
-        if (hasCreateTime()) {
-            if (!getCreateTime().equals(other.getCreateTime()))
-                return false;
-        }
-        if (other.hasUpdateTime() != hasUpdateTime())
-            return false;
-        if (hasUpdateTime()) {
-            if (!getUpdateTime().equals(other.getUpdateTime()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new HmacKeyMetadata();
     }
 
     @java.lang.Override
@@ -614,1103 +1646,74 @@ HmacKeyMetadata extends com.google.protobuf.GeneratedMessageV3 implements HmacKe
         return hash;
     }
 
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+    public static HmacKeyMetadata parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.HmacKeyMetadata parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.HmacKeyMetadata prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
     }
 
     /**
      * <pre>
-     * Hmac Key Metadata, which includes all information other than the secret.
+     * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.HmacKeyMetadata}
+     * <code>string id = 1;</code>
+     *
+     * @return The bytes for id.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.HmacKeyMetadata)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.HmacKeyMetadata)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.HmacKeyMetadataOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
+    @java.lang.Override
+    public com.google.protobuf.ByteString getIdBytes() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            id_ = b;
+            return b;
         }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.HmacKeyMetadata.class, com.google.storage.v2.HmacKeyMetadata.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.HmacKeyMetadata.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            id_ = "";
-            accessId_ = "";
-            project_ = "";
-            serviceAccountEmail_ = "";
-            state_ = "";
-            if (null != createTimeBuilder_) {
-                createTime_ = null;
-                createTimeBuilder_ = null;
-            } else {
-                createTime_ = null;
-            }
-            if (null != updateTimeBuilder_) {
-                updateTime_ = null;
-                updateTimeBuilder_ = null;
-            } else {
-                updateTime_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.HmacKeyMetadata getDefaultInstanceForType() {
-            return com.google.storage.v2.HmacKeyMetadata.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.HmacKeyMetadata build() {
-            com.google.storage.v2.HmacKeyMetadata result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.HmacKeyMetadata buildPartial() {
-            com.google.storage.v2.HmacKeyMetadata result = new com.google.storage.v2.HmacKeyMetadata(this);
-            result.id_ = id_;
-            result.accessId_ = accessId_;
-            result.project_ = project_;
-            result.serviceAccountEmail_ = serviceAccountEmail_;
-            result.state_ = state_;
-            if (null != createTimeBuilder_) {
-                result.createTime_ = createTimeBuilder_.build();
-            } else {
-                result.createTime_ = createTime_;
-            }
-            if (null != updateTimeBuilder_) {
-                result.updateTime_ = updateTimeBuilder_.build();
-            } else {
-                result.updateTime_ = updateTime_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.HmacKeyMetadata)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.HmacKeyMetadata) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.HmacKeyMetadata other) {
-            if (com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() == other)
-                return this;
-            if (!other.getId().isEmpty()) {
-                id_ = other.id_;
-                onChanged();
-            }
-            if (!other.getAccessId().isEmpty()) {
-                accessId_ = other.accessId_;
-                onChanged();
-            }
-            if (!other.getProject().isEmpty()) {
-                project_ = other.project_;
-                onChanged();
-            }
-            if (!other.getServiceAccountEmail().isEmpty()) {
-                serviceAccountEmail_ = other.serviceAccountEmail_;
-                onChanged();
-            }
-            if (!other.getState().isEmpty()) {
-                state_ = other.state_;
-                onChanged();
-            }
-            if (other.hasCreateTime()) {
-                mergeCreateTime(other.getCreateTime());
-            }
-            if (other.hasUpdateTime()) {
-                mergeUpdateTime(other.getUpdateTime());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.HmacKeyMetadata parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.HmacKeyMetadata) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object id_ = "";
-
-        /**
-         * <pre>
-         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-         * </pre>
-         *
-         * <code>string id = 1;</code>
-         *
-         * @return The id.
-         */
-        public java.lang.String getId() {
-            java.lang.Object ref = id_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                id_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-         * </pre>
-         *
-         * <code>string id = 1;</code>
-         *
-         * @return The bytes for id.
-         */
-        public com.google.protobuf.ByteString getIdBytes() {
-            java.lang.Object ref = id_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                id_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-         * </pre>
-         *
-         * <code>string id = 1;</code>
-         *
-         * @param value The id to set.
-         * @return This builder for chaining.
-         */
-        public Builder setId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            id_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-         * </pre>
-         *
-         * <code>string id = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearId() {
-            id_ = getDefaultInstance().getId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Resource name ID of the key in the format &lt;projectId&gt;/&lt;accessId&gt;.
-         * </pre>
-         *
-         * <code>string id = 1;</code>
-         *
-         * @param value The bytes for id to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            id_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object accessId_ = "";
-
-        /**
-         * <pre>
-         * Globally unique id for keys.
-         * </pre>
-         *
-         * <code>string access_id = 2;</code>
-         *
-         * @return The accessId.
-         */
-        public java.lang.String getAccessId() {
-            java.lang.Object ref = accessId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                accessId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Globally unique id for keys.
-         * </pre>
-         *
-         * <code>string access_id = 2;</code>
-         *
-         * @return The bytes for accessId.
-         */
-        public com.google.protobuf.ByteString getAccessIdBytes() {
-            java.lang.Object ref = accessId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                accessId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Globally unique id for keys.
-         * </pre>
-         *
-         * <code>string access_id = 2;</code>
-         *
-         * @param value The accessId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setAccessId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            accessId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Globally unique id for keys.
-         * </pre>
-         *
-         * <code>string access_id = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearAccessId() {
-            accessId_ = getDefaultInstance().getAccessId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Globally unique id for keys.
-         * </pre>
-         *
-         * <code>string access_id = 2;</code>
-         *
-         * @param value The bytes for accessId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setAccessIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            accessId_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object project_ = "";
-
-        /**
-         * <pre>
-         * The project ID that the hmac key is contained in.
-         * </pre>
-         *
-         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The project.
-         */
-        public java.lang.String getProject() {
-            java.lang.Object ref = project_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                project_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The project ID that the hmac key is contained in.
-         * </pre>
-         *
-         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The bytes for project.
-         */
-        public com.google.protobuf.ByteString getProjectBytes() {
-            java.lang.Object ref = project_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                project_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The project ID that the hmac key is contained in.
-         * </pre>
-         *
-         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project ID that the hmac key is contained in.
-         * </pre>
-         *
-         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearProject() {
-            project_ = getDefaultInstance().getProject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project ID that the hmac key is contained in.
-         * </pre>
-         *
-         * <code>string project = 3 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The bytes for project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object serviceAccountEmail_ = "";
-
-        /**
-         * <pre>
-         * Email of the service account the key authenticates as.
-         * </pre>
-         *
-         * <code>string service_account_email = 4;</code>
-         *
-         * @return The serviceAccountEmail.
-         */
-        public java.lang.String getServiceAccountEmail() {
-            java.lang.Object ref = serviceAccountEmail_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                serviceAccountEmail_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Email of the service account the key authenticates as.
-         * </pre>
-         *
-         * <code>string service_account_email = 4;</code>
-         *
-         * @return The bytes for serviceAccountEmail.
-         */
-        public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
-            java.lang.Object ref = serviceAccountEmail_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                serviceAccountEmail_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Email of the service account the key authenticates as.
-         * </pre>
-         *
-         * <code>string service_account_email = 4;</code>
-         *
-         * @param value The serviceAccountEmail to set.
-         * @return This builder for chaining.
-         */
-        public Builder setServiceAccountEmail(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            serviceAccountEmail_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Email of the service account the key authenticates as.
-         * </pre>
-         *
-         * <code>string service_account_email = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearServiceAccountEmail() {
-            serviceAccountEmail_ = getDefaultInstance().getServiceAccountEmail();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Email of the service account the key authenticates as.
-         * </pre>
-         *
-         * <code>string service_account_email = 4;</code>
-         *
-         * @param value The bytes for serviceAccountEmail to set.
-         * @return This builder for chaining.
-         */
-        public Builder setServiceAccountEmailBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            serviceAccountEmail_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object state_ = "";
-
-        /**
-         * <pre>
-         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
-         * </pre>
-         *
-         * <code>string state = 5;</code>
-         *
-         * @return The state.
-         */
-        public java.lang.String getState() {
-            java.lang.Object ref = state_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                state_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
-         * </pre>
-         *
-         * <code>string state = 5;</code>
-         *
-         * @return The bytes for state.
-         */
-        public com.google.protobuf.ByteString getStateBytes() {
-            java.lang.Object ref = state_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                state_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
-         * </pre>
-         *
-         * <code>string state = 5;</code>
-         *
-         * @param value The state to set.
-         * @return This builder for chaining.
-         */
-        public Builder setState(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            state_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
-         * </pre>
-         *
-         * <code>string state = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearState() {
-            state_ = getDefaultInstance().getState();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * State of the key. One of ACTIVE, INACTIVE, or DELETED.
-         * </pre>
-         *
-         * <code>string state = 5;</code>
-         *
-         * @param value The bytes for state to set.
-         * @return This builder for chaining.
-         */
-        public Builder setStateBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            state_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.Timestamp createTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> createTimeBuilder_;
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         *
-         * @return Whether the createTime field is set.
-         */
-        public boolean hasCreateTime() {
-            return null != createTimeBuilder_ || null != createTime_;
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         *
-         * @return The createTime.
-         */
-        public com.google.protobuf.Timestamp getCreateTime() {
-            if (null != createTimeBuilder_) {
-                return createTimeBuilder_.getMessage();
-            } else {
-                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public Builder setCreateTime(com.google.protobuf.Timestamp value) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                createTime_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public Builder setCreateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                createTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public Builder mergeCreateTime(com.google.protobuf.Timestamp value) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == createTime_) {
-                    createTime_ = value;
-                } else {
-                    createTime_ = com.google.protobuf.Timestamp.newBuilder(createTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public Builder clearCreateTime() {
-            if (null != createTimeBuilder_) {
-                createTime_ = null;
-                createTimeBuilder_ = null;
-            } else {
-                createTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public com.google.protobuf.Timestamp.Builder getCreateTimeBuilder() {
-            onChanged();
-            return getCreateTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
-            if (null == createTimeBuilder_) {
-                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-            } else {
-                return createTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The creation time of the HMAC key.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp create_time = 6;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCreateTimeFieldBuilder() {
-            if (null == createTimeBuilder_) {
-                createTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCreateTime(), getParentForChildren(), isClean());
-                createTime_ = null;
-            }
-            return createTimeBuilder_;
-        }
-
-        private com.google.protobuf.Timestamp updateTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateTimeBuilder_;
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         *
-         * @return Whether the updateTime field is set.
-         */
-        public boolean hasUpdateTime() {
-            return null != updateTimeBuilder_ || null != updateTime_;
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         *
-         * @return The updateTime.
-         */
-        public com.google.protobuf.Timestamp getUpdateTime() {
-            if (null != updateTimeBuilder_) {
-                return updateTimeBuilder_.getMessage();
-            } else {
-                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public Builder setUpdateTime(com.google.protobuf.Timestamp value) {
-            if (null != updateTimeBuilder_) {
-                updateTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                updateTime_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public Builder setUpdateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != updateTimeBuilder_) {
-                updateTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                updateTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public Builder mergeUpdateTime(com.google.protobuf.Timestamp value) {
-            if (null != updateTimeBuilder_) {
-                updateTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == updateTime_) {
-                    updateTime_ = value;
-                } else {
-                    updateTime_ = com.google.protobuf.Timestamp.newBuilder(updateTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public Builder clearUpdateTime() {
-            if (null != updateTimeBuilder_) {
-                updateTime_ = null;
-                updateTimeBuilder_ = null;
-            } else {
-                updateTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public com.google.protobuf.Timestamp.Builder getUpdateTimeBuilder() {
-            onChanged();
-            return getUpdateTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
-            if (null == updateTimeBuilder_) {
-                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-            } else {
-                return updateTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The last modification time of the HMAC key metadata.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp update_time = 7;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateTimeFieldBuilder() {
-            if (null == updateTimeBuilder_) {
-                updateTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateTime(), getParentForChildren(), isClean());
-                updateTime_ = null;
-            }
-            return updateTimeBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.HmacKeyMetadata)
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.HmacKeyMetadata)
-    private static final com.google.storage.v2.HmacKeyMetadata DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.HmacKeyMetadata();
+    // Use HmacKeyMetadata.newBuilder() to construct.
+    private HmacKeyMetadata(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
-    public static com.google.storage.v2.HmacKeyMetadata getDefaultInstance() {
-        return DEFAULT_INSTANCE;
+    public static HmacKeyMetadata parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
-    private static final com.google.protobuf.Parser<HmacKeyMetadata> PARSER = new com.google.protobuf.AbstractParser<HmacKeyMetadata>() {
-
-        @java.lang.Override
-        public HmacKeyMetadata parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new HmacKeyMetadata(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<HmacKeyMetadata> parser() {
-        return PARSER;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_HmacKeyMetadata_descriptor;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<HmacKeyMetadata> getParserForType() {
-        return PARSER;
+    public HmacKeyMetadata getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * Globally unique id for keys.
+     * </pre>
+     *
+     * <code>string access_id = 2;</code>
+     *
+     * @return The bytes for accessId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getAccessIdBytes() {
+        java.lang.Object ref = accessId_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            accessId_ = b;
+            return b;
+        }
     }
 
     @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadata getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
     }
+
 }

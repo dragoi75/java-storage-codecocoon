@@ -19,15 +19,8 @@
 package com.google.storage.v2;
 
 public final class StorageProto {
-  private StorageProto() {}
 
-  public static void registerAllExtensions(com.google.protobuf.ExtensionRegistryLite registry) {}
-
-  public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
-    registerAllExtensions((com.google.protobuf.ExtensionRegistryLite) registry);
-  }
-
-  static final com.google.protobuf.Descriptors.Descriptor
+    static final com.google.protobuf.Descriptors.Descriptor
       internal_static_google_storage_v2_DeleteBucketRequest_descriptor;
   static final com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_google_storage_v2_DeleteBucketRequest_fieldAccessorTable;
@@ -312,11 +305,7 @@ public final class StorageProto {
   static final com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_google_storage_v2_ContentRange_fieldAccessorTable;
 
-  public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
-    return descriptor;
-  }
-
-  private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
+    private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
   static {
     java.lang.String[] descriptorData = {
@@ -1618,4 +1607,17 @@ public final class StorageProto {
   }
 
   // @@protoc_insertion_point(outer_class_scope)
+
+    public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
+      return descriptor;
+    }
+
+    private StorageProto() {}
+
+    public static void registerAllExtensions(com.google.protobuf.ExtensionRegistryLite registry) {}
+
+    public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
+      registerAllExtensions((com.google.protobuf.ExtensionRegistryLite) registry);
+    }
+
 }

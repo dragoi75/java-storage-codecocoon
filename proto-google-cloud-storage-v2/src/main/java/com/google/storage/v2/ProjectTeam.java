@@ -30,25 +30,414 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
 
     private static final long serialVersionUID = 0L;
 
-    // Use ProjectTeam.newBuilder() to construct.
-    private ProjectTeam(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int PROJECT_NUMBER_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object projectNumber_;
+
+    public static final int TEAM_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object team_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Represents the Viewers, Editors, or Owners of a given project.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ProjectTeam}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ProjectTeam)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ProjectTeam)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ProjectTeamOrBuilder {
+
+        private java.lang.Object projectNumber_ = "";
+
+        private java.lang.Object team_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ProjectTeam)
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The project number.
+         * </pre>
+         *
+         * <code>string project_number = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearProjectNumber() {
+            projectNumber_ = getDefaultInstance().getProjectNumber();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * The project number.
+         * </pre>
+         *
+         * <code>string project_number = 1;</code>
+         *
+         * @return The bytes for projectNumber.
+         */
+        public com.google.protobuf.ByteString getProjectNumberBytes() {
+            java.lang.Object ref = projectNumber_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                projectNumber_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The team.
+         * </pre>
+         *
+         * <code>string team = 2;</code>
+         *
+         * @return The team.
+         */
+        public java.lang.String getTeam() {
+            java.lang.Object ref = team_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                team_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ProjectTeam)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ProjectTeam) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * The team.
+         * </pre>
+         *
+         * <code>string team = 2;</code>
+         *
+         * @param value The team to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTeam(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            team_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The team.
+         * </pre>
+         *
+         * <code>string team = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearTeam() {
+            team_ = getDefaultInstance().getTeam();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ProjectTeam getDefaultInstanceForType() {
+            return ProjectTeam.getDefaultInstance();
+        }
+
+        public Builder mergeFrom(ProjectTeam other) {
+            if (ProjectTeam.getDefaultInstance() == other)
+                return this;
+            if (!other.getProjectNumber().isEmpty()) {
+                projectNumber_ = other.projectNumber_;
+                onChanged();
+            }
+            if (!other.getTeam().isEmpty()) {
+                team_ = other.team_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ProjectTeam buildPartial() {
+            ProjectTeam result = new ProjectTeam(this);
+            result.projectNumber_ = projectNumber_;
+            result.team_ = team_;
+            onBuilt();
+            return result;
+        }
+
+        // Construct using com.google.storage.v2.ProjectTeam.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ProjectTeam parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ProjectTeam) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * The team.
+         * </pre>
+         *
+         * <code>string team = 2;</code>
+         *
+         * @return The bytes for team.
+         */
+        public com.google.protobuf.ByteString getTeamBytes() {
+            java.lang.Object ref = team_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                team_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The project number.
+         * </pre>
+         *
+         * <code>string project_number = 1;</code>
+         *
+         * @return The projectNumber.
+         */
+        public java.lang.String getProjectNumber() {
+            java.lang.Object ref = projectNumber_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                projectNumber_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The team.
+         * </pre>
+         *
+         * <code>string team = 2;</code>
+         *
+         * @param value The bytes for team to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTeamBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            team_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ProjectTeam_fieldAccessorTable.ensureFieldAccessorsInitialized(ProjectTeam.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public ProjectTeam build() {
+            ProjectTeam result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The project number.
+         * </pre>
+         *
+         * <code>string project_number = 1;</code>
+         *
+         * @param value The bytes for projectNumber to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProjectNumberBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            projectNumber_ = value;
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            projectNumber_ = "";
+            team_ = "";
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The project number.
+         * </pre>
+         *
+         * <code>string project_number = 1;</code>
+         *
+         * @param value The projectNumber to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProjectNumber(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            projectNumber_ = value;
+            onChanged();
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
     }
 
-    private ProjectTeam() {
-        projectNumber_ = "";
-        team_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ProjectTeam)
+    private static final com.google.storage.v2.ProjectTeam DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ProjectTeam();
     }
+
+    private static final com.google.protobuf.Parser<ProjectTeam> PARSER = new com.google.protobuf.AbstractParser<ProjectTeam>() {
+
+        @java.lang.Override
+        public ProjectTeam parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ProjectTeam(input, extensionRegistry);
+        }
+    };
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ProjectTeam();
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projectNumber_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, projectNumber_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(team_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, team_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public static ProjectTeam parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ProjectTeam parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ProjectTeam parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     private ProjectTeam(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -98,86 +487,31 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
-    }
-
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ProjectTeam_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ProjectTeam.class, com.google.storage.v2.ProjectTeam.Builder.class);
-    }
-
-    public static final int PROJECT_NUMBER_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object projectNumber_;
-
-    /**
-     * <pre>
-     * The project number.
-     * </pre>
-     *
-     * <code>string project_number = 1;</code>
-     *
-     * @return The projectNumber.
-     */
-    @java.lang.Override
-    public java.lang.String getProjectNumber() {
-        java.lang.Object ref = projectNumber_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            projectNumber_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
         }
+        if (!(obj instanceof ProjectTeam)) {
+            return super.equals(obj);
+        }
+        ProjectTeam other = (ProjectTeam) obj;
+        if (!getProjectNumber().equals(other.getProjectNumber()))
+            return false;
+        if (!getTeam().equals(other.getTeam()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
     }
 
-    /**
-     * <pre>
-     * The project number.
-     * </pre>
-     *
-     * <code>string project_number = 1;</code>
-     *
-     * @return The bytes for projectNumber.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getProjectNumberBytes() {
-        java.lang.Object ref = projectNumber_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            projectNumber_ = b;
-            return b;
-        }
+    public static ProjectTeam parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static final int TEAM_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object team_;
-
-    /**
-     * <pre>
-     * The team.
-     * </pre>
-     *
-     * <code>string team = 2;</code>
-     *
-     * @return The team.
-     */
     @java.lang.Override
-    public java.lang.String getTeam() {
-        java.lang.Object ref = team_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            team_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public ProjectTeam getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
 
     /**
@@ -201,63 +535,35 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
         }
     }
 
-    private byte memoizedIsInitialized = -1;
-
     @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
     }
 
+    /**
+     * <pre>
+     * The project number.
+     * </pre>
+     *
+     * <code>string project_number = 1;</code>
+     *
+     * @return The bytes for projectNumber.
+     */
     @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projectNumber_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, projectNumber_);
+    public com.google.protobuf.ByteString getProjectNumberBytes() {
+        java.lang.Object ref = projectNumber_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            projectNumber_ = b;
+            return b;
         }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(team_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, team_);
-        }
-        unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projectNumber_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, projectNumber_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(team_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, team_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ProjectTeam)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ProjectTeam other = (com.google.storage.v2.ProjectTeam) obj;
-        if (!getProjectNumber().equals(other.getProjectNumber()))
-            return false;
-        if (!getTeam().equals(other.getTeam()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    public static ProjectTeam parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
@@ -276,65 +582,57 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
         return hash;
     }
 
-    public static com.google.storage.v2.ProjectTeam parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ProjectTeam parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
+    public static Builder newBuilder(ProjectTeam prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
 
     public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
     }
 
-    public static Builder newBuilder(com.google.storage.v2.ProjectTeam prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    // Use ProjectTeam.newBuilder() to construct.
+    private ProjectTeam(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static ProjectTeam getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The team.
+     * </pre>
+     *
+     * <code>string team = 2;</code>
+     *
+     * @return The team.
+     */
+    @java.lang.Override
+    public java.lang.String getTeam() {
+        java.lang.Object ref = team_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            team_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static ProjectTeam parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ProjectTeam();
+    }
+
+    public static ProjectTeam parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
@@ -343,383 +641,15 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
     }
 
     @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(projectNumber_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, projectNumber_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(team_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, team_);
+        }
+        unknownFields.writeTo(output);
     }
-
-    /**
-     * <pre>
-     * Represents the Viewers, Editors, or Owners of a given project.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ProjectTeam}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ProjectTeam)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ProjectTeam)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ProjectTeamOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ProjectTeam_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ProjectTeam.class, com.google.storage.v2.ProjectTeam.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ProjectTeam.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            projectNumber_ = "";
-            team_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ProjectTeam getDefaultInstanceForType() {
-            return com.google.storage.v2.ProjectTeam.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ProjectTeam build() {
-            com.google.storage.v2.ProjectTeam result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ProjectTeam buildPartial() {
-            com.google.storage.v2.ProjectTeam result = new com.google.storage.v2.ProjectTeam(this);
-            result.projectNumber_ = projectNumber_;
-            result.team_ = team_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ProjectTeam)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ProjectTeam) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ProjectTeam other) {
-            if (com.google.storage.v2.ProjectTeam.getDefaultInstance() == other)
-                return this;
-            if (!other.getProjectNumber().isEmpty()) {
-                projectNumber_ = other.projectNumber_;
-                onChanged();
-            }
-            if (!other.getTeam().isEmpty()) {
-                team_ = other.team_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ProjectTeam parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ProjectTeam) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object projectNumber_ = "";
-
-        /**
-         * <pre>
-         * The project number.
-         * </pre>
-         *
-         * <code>string project_number = 1;</code>
-         *
-         * @return The projectNumber.
-         */
-        public java.lang.String getProjectNumber() {
-            java.lang.Object ref = projectNumber_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                projectNumber_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The project number.
-         * </pre>
-         *
-         * <code>string project_number = 1;</code>
-         *
-         * @return The bytes for projectNumber.
-         */
-        public com.google.protobuf.ByteString getProjectNumberBytes() {
-            java.lang.Object ref = projectNumber_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                projectNumber_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The project number.
-         * </pre>
-         *
-         * <code>string project_number = 1;</code>
-         *
-         * @param value The projectNumber to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProjectNumber(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            projectNumber_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project number.
-         * </pre>
-         *
-         * <code>string project_number = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearProjectNumber() {
-            projectNumber_ = getDefaultInstance().getProjectNumber();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project number.
-         * </pre>
-         *
-         * <code>string project_number = 1;</code>
-         *
-         * @param value The bytes for projectNumber to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProjectNumberBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            projectNumber_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object team_ = "";
-
-        /**
-         * <pre>
-         * The team.
-         * </pre>
-         *
-         * <code>string team = 2;</code>
-         *
-         * @return The team.
-         */
-        public java.lang.String getTeam() {
-            java.lang.Object ref = team_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                team_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The team.
-         * </pre>
-         *
-         * <code>string team = 2;</code>
-         *
-         * @return The bytes for team.
-         */
-        public com.google.protobuf.ByteString getTeamBytes() {
-            java.lang.Object ref = team_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                team_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The team.
-         * </pre>
-         *
-         * <code>string team = 2;</code>
-         *
-         * @param value The team to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTeam(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            team_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The team.
-         * </pre>
-         *
-         * <code>string team = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearTeam() {
-            team_ = getDefaultInstance().getTeam();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The team.
-         * </pre>
-         *
-         * <code>string team = 2;</code>
-         *
-         * @param value The bytes for team to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTeamBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            team_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ProjectTeam)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ProjectTeam)
-    private static final com.google.storage.v2.ProjectTeam DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ProjectTeam();
-    }
-
-    public static com.google.storage.v2.ProjectTeam getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ProjectTeam> PARSER = new com.google.protobuf.AbstractParser<ProjectTeam>() {
-
-        @java.lang.Override
-        public ProjectTeam parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ProjectTeam(input, extensionRegistry);
-        }
-    };
 
     public static com.google.protobuf.Parser<ProjectTeam> parser() {
         return PARSER;
@@ -730,8 +660,81 @@ ProjectTeam extends com.google.protobuf.GeneratedMessageV3 implements ProjectTea
         return PARSER;
     }
 
-    @java.lang.Override
-    public com.google.storage.v2.ProjectTeam getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public static ProjectTeam parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ProjectTeam_fieldAccessorTable.ensureFieldAccessorsInitialized(ProjectTeam.class, Builder.class);
+    }
+
+    public static ProjectTeam parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static ProjectTeam parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    private ProjectTeam() {
+        projectNumber_ = "";
+        team_ = "";
+    }
+
+    /**
+     * <pre>
+     * The project number.
+     * </pre>
+     *
+     * <code>string project_number = 1;</code>
+     *
+     * @return The projectNumber.
+     */
+    @java.lang.Override
+    public java.lang.String getProjectNumber() {
+        java.lang.Object ref = projectNumber_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            projectNumber_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static ProjectTeam parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ProjectTeam parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ProjectTeam_descriptor;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
 }

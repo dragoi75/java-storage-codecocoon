@@ -30,9 +30,860 @@ ListObjectsResponse extends com.google.protobuf.GeneratedMessageV3 implements Li
 
     private static final long serialVersionUID = 0L;
 
-    // Use ListObjectsResponse.newBuilder() to construct.
-    private ListObjectsResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int OBJECTS_FIELD_NUMBER = 1;
+
+    private java.util.List<com.google.storage.v2.Object> objects_;
+
+    public static final int PREFIXES_FIELD_NUMBER = 2;
+
+    private com.google.protobuf.LazyStringList prefixes_;
+
+    public static final int NEXT_PAGE_TOKEN_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object nextPageToken_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * The result of a call to Objects.ListObjects
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ListObjectsResponse}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsResponse)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsResponse)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListObjectsResponseOrBuilder {
+
+        private int bitField0_;
+
+        private java.util.List<com.google.storage.v2.Object> objects_ = java.util.Collections.emptyList();
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> objectsBuilder_;
+
+        private com.google.protobuf.LazyStringList prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+
+        private java.lang.Object nextPageToken_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListObjectsResponse)
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public java.util.List<Object> getObjectsList() {
+            if (null != objectsBuilder_) {
+                return objectsBuilder_.getMessageList();
+            } else {
+                return java.util.Collections.unmodifiableList(objects_);
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param index The index of the element to return.
+         * @return The prefixes at the given index.
+         */
+        public java.lang.String getPrefixes(int index) {
+            return prefixes_.get(index);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public java.util.List<Object.Builder> getObjectsBuilderList() {
+            return getObjectsFieldBuilder().getBuilderList();
+        }
+
+        // Construct using com.google.storage.v2.ListObjectsResponse.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 3;</code>
+         *
+         * @param value The bytes for nextPageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNextPageTokenBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            nextPageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder addObjects(int index, Object.Builder builderForValue) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.addMessage(index, builderForValue.build());
+            } else {
+                ensureObjectsIsMutable();
+                objects_.add(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param index The index to set the value at.
+         * @param value The prefixes to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPrefixes(int index, java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            ensurePrefixesIsMutable();
+            prefixes_.set(index, value);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPrefixes() {
+            prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public int getObjectsCount() {
+            if (null != objectsBuilder_) {
+                return objectsBuilder_.getCount();
+            } else {
+                return objects_.size();
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ListObjectsResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ListObjectsResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearNextPageToken() {
+            nextPageToken_ = getDefaultInstance().getNextPageToken();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder clearObjects() {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.clear();
+            } else {
+                objects_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param value The prefixes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addPrefixes(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            ensurePrefixesIsMutable();
+            prefixes_.add(value);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @return A list containing the prefixes.
+         */
+        public com.google.protobuf.ProtocolStringList getPrefixesList() {
+            return prefixes_.getUnmodifiableView();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ListObjectsResponse)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ListObjectsResponse) other);
+            }
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 3;</code>
+         *
+         * @param value The nextPageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNextPageToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            nextPageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ListObjectsResponse.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder setObjects(int index, Object value) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.setMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureObjectsIsMutable();
+                objects_.set(index, value);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder removeObjects(int index) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.remove(index);
+            } else {
+                ensureObjectsIsMutable();
+                objects_.remove(index);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public java.util.List<? extends ObjectOrBuilder> getObjectsOrBuilderList() {
+            if (null == objectsBuilder_) {
+                return java.util.Collections.unmodifiableList(objects_);
+            } else {
+                return objectsBuilder_.getMessageOrBuilderList();
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != objectsBuilder_) {
+                objectsBuilder_.clear();
+            } else {
+                objects_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            nextPageToken_ = "";
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder addObjects(Object.Builder builderForValue) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.addMessage(builderForValue.build());
+            } else {
+                ensureObjectsIsMutable();
+                objects_.add(builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder addAllObjects(java.lang.Iterable<? extends Object> values) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.addAllMessages(values);
+            } else {
+                ensureObjectsIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, objects_);
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param values The prefixes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addAllPrefixes(java.lang.Iterable<java.lang.String> values) {
+            ensurePrefixesIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(values, prefixes_);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Object.Builder addObjectsBuilder(int index) {
+            return getObjectsFieldBuilder().addBuilder(index, Object.getDefaultInstance());
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @return The count of prefixes.
+         */
+        public int getPrefixesCount() {
+            return prefixes_.size();
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 3;</code>
+         *
+         * @return The bytes for nextPageToken.
+         */
+        public com.google.protobuf.ByteString getNextPageTokenBytes() {
+            java.lang.Object ref = nextPageToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                nextPageToken_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param index The index of the value to return.
+         * @return The bytes of the prefixes at the given index.
+         */
+        public com.google.protobuf.ByteString getPrefixesBytes(int index) {
+            return prefixes_.getByteString(index);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public ObjectOrBuilder getObjectsOrBuilder(int index) {
+            if (null != objectsBuilder_) {
+                return objectsBuilder_.getMessageOrBuilder(index);
+            } else {
+                return objects_.get(index);
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder addObjects(int index, Object value) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.addMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureObjectsIsMutable();
+                objects_.add(index, value);
+                onChanged();
+            }
+            return this;
+        }
+
+        private void ensurePrefixesIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000002))) {
+                prefixes_ = new com.google.protobuf.LazyStringArrayList(prefixes_);
+                bitField0_ |= 0x00000002;
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Object getObjects(int index) {
+            if (null != objectsBuilder_) {
+                return objectsBuilder_.getMessage(index);
+            } else {
+                return objects_.get(index);
+            }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getObjectsFieldBuilder() {
+            if (null == objectsBuilder_) {
+                objectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(objects_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
+                objects_ = null;
+            }
+            return objectsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Object.Builder addObjectsBuilder() {
+            return getObjectsFieldBuilder().addBuilder(Object.getDefaultInstance());
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder addObjects(Object value) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.addMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureObjectsIsMutable();
+                objects_.add(value);
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        public Builder mergeFrom(ListObjectsResponse other) {
+            if (ListObjectsResponse.getDefaultInstance() == other)
+                return this;
+            if (null != objectsBuilder_) {
+                if (!other.objects_.isEmpty()) {
+                    if (!objectsBuilder_.isEmpty()) {
+                        objectsBuilder_.addAllMessages(other.objects_);
+                    } else {
+                        objectsBuilder_.dispose();
+                        objectsBuilder_ = null;
+                        objects_ = other.objects_;
+                        bitField0_ = (bitField0_ & ~0x00000001);
+                        objectsBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ? getObjectsFieldBuilder() : null;
+                    }
+                }
+            } else {
+                if (!other.objects_.isEmpty()) {
+                    if (!objects_.isEmpty()) {
+                        ensureObjectsIsMutable();
+                        objects_.addAll(other.objects_);
+                    } else {
+                        objects_ = other.objects_;
+                        bitField0_ = (bitField0_ & ~0x00000001);
+                    }
+                    onChanged();
+                }
+            }
+            if (!other.prefixes_.isEmpty()) {
+                if (!prefixes_.isEmpty()) {
+                    ensurePrefixesIsMutable();
+                    prefixes_.addAll(other.prefixes_);
+                } else {
+                    prefixes_ = other.prefixes_;
+                    bitField0_ = (bitField0_ & ~0x00000002);
+                }
+                onChanged();
+            }
+            if (!other.getNextPageToken().isEmpty()) {
+                nextPageToken_ = other.nextPageToken_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Object.Builder getObjectsBuilder(int index) {
+            return getObjectsFieldBuilder().getBuilder(index);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public ListObjectsResponse buildPartial() {
+            ListObjectsResponse result = new ListObjectsResponse(this);
+            int from_bitField0_ = bitField0_;
+            if (null != objectsBuilder_) {
+                result.objects_ = objectsBuilder_.build();
+            } else {
+                if ((0 != (bitField0_ & 0x00000001))) {
+                    objects_ = java.util.Collections.unmodifiableList(objects_);
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                }
+                result.objects_ = objects_;
+            }
+            if ((0 != (bitField0_ & 0x00000002))) {
+                prefixes_ = prefixes_.getUnmodifiableView();
+                bitField0_ = (bitField0_ & ~0x00000002);
+            }
+            result.prefixes_ = prefixes_;
+            result.nextPageToken_ = nextPageToken_;
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public ListObjectsResponse build() {
+            ListObjectsResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public ListObjectsResponse getDefaultInstanceForType() {
+            return ListObjectsResponse.getDefaultInstance();
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getObjectsFieldBuilder();
+            }
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The continuation token, used to page through large result sets. Provide
+         * this value in a subsequent request to return the next page of results.
+         * </pre>
+         *
+         * <code>string next_page_token = 3;</code>
+         *
+         * @return The nextPageToken.
+         */
+        public java.lang.String getNextPageToken() {
+            java.lang.Object ref = nextPageToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                nextPageToken_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of items.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.Object objects = 1;</code>
+         */
+        public Builder setObjects(int index, Object.Builder builderForValue) {
+            if (null != objectsBuilder_) {
+                objectsBuilder_.setMessage(index, builderForValue.build());
+            } else {
+                ensureObjectsIsMutable();
+                objects_.set(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        private void ensureObjectsIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000001))) {
+                objects_ = new java.util.ArrayList<Object>(objects_);
+                bitField0_ |= 0x00000001;
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of prefixes of objects matching-but-not-listed up to and including
+         * the requested delimiter.
+         * </pre>
+         *
+         * <code>repeated string prefixes = 2;</code>
+         *
+         * @param value The bytes of the prefixes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addPrefixesBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            ensurePrefixesIsMutable();
+            prefixes_.add(value);
+            onChanged();
+            return this;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ListObjectsResponse)
+    private static final com.google.storage.v2.ListObjectsResponse DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ListObjectsResponse();
+    }
+
+    private static final com.google.protobuf.Parser<ListObjectsResponse> PARSER = new com.google.protobuf.AbstractParser<ListObjectsResponse>() {
+
+        @java.lang.Override
+        public ListObjectsResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ListObjectsResponse(input, extensionRegistry);
+        }
+    };
+
+    public static com.google.protobuf.Parser<ListObjectsResponse> parser() {
+        return PARSER;
+    }
+
+    public static ListObjectsResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ListObjectsResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ListObjectsResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ListObjectsResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ListObjectsResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ListObjectsResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ListObjectsResponse> getParserForType() {
+        return PARSER;
     }
 
     private ListObjectsResponse() {
@@ -42,14 +893,241 @@ ListObjectsResponse extends com.google.protobuf.GeneratedMessageV3 implements Li
     }
 
     @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Object objects = 1;</code>
+     */
+    @java.lang.Override
+    public Object getObjects(int index) {
+        return objects_.get(index);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ListObjectsResponse)) {
+            return super.equals(obj);
+        }
+        ListObjectsResponse other = (ListObjectsResponse) obj;
+        if (!getObjectsList().equals(other.getObjectsList()))
+            return false;
+        if (!getPrefixesList().equals(other.getPrefixesList()))
+            return false;
+        if (!getNextPageToken().equals(other.getNextPageToken()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * The list of prefixes of objects matching-but-not-listed up to and including
+     * the requested delimiter.
+     * </pre>
+     *
+     * <code>repeated string prefixes = 2;</code>
+     *
+     * @param index The index of the element to return.
+     * @return The prefixes at the given index.
+     */
+    public java.lang.String getPrefixes(int index) {
+        return prefixes_.get(index);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
+    }
+
+    public static ListObjectsResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ListObjectsResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
     @SuppressWarnings({ "unused" })
     protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
         return new ListObjectsResponse();
     }
 
     @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        for (int i = 0; objects_.size() > i; i += 1) {
+            output.writeMessage(1, objects_.get(i));
+        }
+        for (int i = 0; prefixes_.size() > i; i += 1) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, prefixes_.getRaw(i));
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nextPageToken_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static ListObjectsResponse getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ListObjectsResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Object objects = 1;</code>
+     */
+    @java.lang.Override
+    public int getObjectsCount() {
+        return objects_.size();
+    }
+
+    /**
+     * <pre>
+     * The list of prefixes of objects matching-but-not-listed up to and including
+     * the requested delimiter.
+     * </pre>
+     *
+     * <code>repeated string prefixes = 2;</code>
+     *
+     * @param index The index of the value to return.
+     * @return The bytes of the prefixes at the given index.
+     */
+    public com.google.protobuf.ByteString getPrefixesBytes(int index) {
+        return prefixes_.getByteString(index);
+    }
+
+    public static ListObjectsResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (0 < getObjectsCount()) {
+            hash = (37 * hash) + OBJECTS_FIELD_NUMBER;
+            hash = (53 * hash) + getObjectsList().hashCode();
+        }
+        if (0 < getPrefixesCount()) {
+            hash = (37 * hash) + PREFIXES_FIELD_NUMBER;
+            hash = (53 * hash) + getPrefixesList().hashCode();
+        }
+        hash = (37 * hash) + NEXT_PAGE_TOKEN_FIELD_NUMBER;
+        hash = (53 * hash) + getNextPageToken().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * The list of prefixes of objects matching-but-not-listed up to and including
+     * the requested delimiter.
+     * </pre>
+     *
+     * <code>repeated string prefixes = 2;</code>
+     *
+     * @return The count of prefixes.
+     */
+    public int getPrefixesCount() {
+        return prefixes_.size();
+    }
+
+    public static Builder newBuilder(ListObjectsResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ListObjectsResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    // Use ListObjectsResponse.newBuilder() to construct.
+    private ListObjectsResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Object objects = 1;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getObjectsOrBuilder(int index) {
+        return objects_.get(index);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ListObjectsResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Object objects = 1;</code>
+     */
+    @java.lang.Override
+    public java.util.List<Object> getObjectsList() {
+        return objects_;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ListObjectsResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(ListObjectsResponse.class, Builder.class);
+    }
+
+    @java.lang.Override
+    public ListObjectsResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The list of prefixes of objects matching-but-not-listed up to and including
+     * the requested delimiter.
+     * </pre>
+     *
+     * <code>repeated string prefixes = 2;</code>
+     *
+     * @return A list containing the prefixes.
+     */
+    public com.google.protobuf.ProtocolStringList getPrefixesList() {
+        return prefixes_;
     }
 
     private ListObjectsResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -70,10 +1148,10 @@ ListObjectsResponse extends com.google.protobuf.GeneratedMessageV3 implements Li
                     case 10:
                         {
                             if (!(0 != (mutable_bitField0_ & 0x00000001))) {
-                                objects_ = new java.util.ArrayList<com.google.storage.v2.Object>();
+                                objects_ = new java.util.ArrayList<Object>();
                                 mutable_bitField0_ |= 0x00000001;
                             }
-                            objects_.add(input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry));
+                            objects_.add(input.readMessage(Object.parser(), extensionRegistry));
                             break;
                         }
                     case 18:
@@ -119,217 +1197,6 @@ ListObjectsResponse extends com.google.protobuf.GeneratedMessageV3 implements Li
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListObjectsResponse.class, com.google.storage.v2.ListObjectsResponse.Builder.class);
-    }
-
-    public static final int OBJECTS_FIELD_NUMBER = 1;
-
-    private java.util.List<com.google.storage.v2.Object> objects_;
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.Object objects = 1;</code>
-     */
-    @java.lang.Override
-    public java.util.List<com.google.storage.v2.Object> getObjectsList() {
-        return objects_;
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.Object objects = 1;</code>
-     */
-    @java.lang.Override
-    public java.util.List<? extends com.google.storage.v2.ObjectOrBuilder> getObjectsOrBuilderList() {
-        return objects_;
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.Object objects = 1;</code>
-     */
-    @java.lang.Override
-    public int getObjectsCount() {
-        return objects_.size();
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.Object objects = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getObjects(int index) {
-        return objects_.get(index);
-    }
-
-    /**
-     * <pre>
-     * The list of items.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.Object objects = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getObjectsOrBuilder(int index) {
-        return objects_.get(index);
-    }
-
-    public static final int PREFIXES_FIELD_NUMBER = 2;
-
-    private com.google.protobuf.LazyStringList prefixes_;
-
-    /**
-     * <pre>
-     * The list of prefixes of objects matching-but-not-listed up to and including
-     * the requested delimiter.
-     * </pre>
-     *
-     * <code>repeated string prefixes = 2;</code>
-     *
-     * @return A list containing the prefixes.
-     */
-    public com.google.protobuf.ProtocolStringList getPrefixesList() {
-        return prefixes_;
-    }
-
-    /**
-     * <pre>
-     * The list of prefixes of objects matching-but-not-listed up to and including
-     * the requested delimiter.
-     * </pre>
-     *
-     * <code>repeated string prefixes = 2;</code>
-     *
-     * @return The count of prefixes.
-     */
-    public int getPrefixesCount() {
-        return prefixes_.size();
-    }
-
-    /**
-     * <pre>
-     * The list of prefixes of objects matching-but-not-listed up to and including
-     * the requested delimiter.
-     * </pre>
-     *
-     * <code>repeated string prefixes = 2;</code>
-     *
-     * @param index The index of the element to return.
-     * @return The prefixes at the given index.
-     */
-    public java.lang.String getPrefixes(int index) {
-        return prefixes_.get(index);
-    }
-
-    /**
-     * <pre>
-     * The list of prefixes of objects matching-but-not-listed up to and including
-     * the requested delimiter.
-     * </pre>
-     *
-     * <code>repeated string prefixes = 2;</code>
-     *
-     * @param index The index of the value to return.
-     * @return The bytes of the prefixes at the given index.
-     */
-    public com.google.protobuf.ByteString getPrefixesBytes(int index) {
-        return prefixes_.getByteString(index);
-    }
-
-    public static final int NEXT_PAGE_TOKEN_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object nextPageToken_;
-
-    /**
-     * <pre>
-     * The continuation token, used to page through large result sets. Provide
-     * this value in a subsequent request to return the next page of results.
-     * </pre>
-     *
-     * <code>string next_page_token = 3;</code>
-     *
-     * @return The nextPageToken.
-     */
-    @java.lang.Override
-    public java.lang.String getNextPageToken() {
-        java.lang.Object ref = nextPageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            nextPageToken_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The continuation token, used to page through large result sets. Provide
-     * this value in a subsequent request to return the next page of results.
-     * </pre>
-     *
-     * <code>string next_page_token = 3;</code>
-     *
-     * @return The bytes for nextPageToken.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getNextPageTokenBytes() {
-        java.lang.Object ref = nextPageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            nextPageToken_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        for (int i = 0; objects_.size() > i; i += 1) {
-            output.writeMessage(1, objects_.get(i));
-        }
-        for (int i = 0; prefixes_.size() > i; i += 1) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, prefixes_.getRaw(i));
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nextPageToken_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nextPageToken_);
-        }
-        unknownFields.writeTo(output);
-    }
-
     @java.lang.Override
     public int getSerializedSize() {
         int size = memoizedSize;
@@ -357,942 +1224,78 @@ ListObjectsResponse extends com.google.protobuf.GeneratedMessageV3 implements Li
         return size;
     }
 
+    /**
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Object objects = 1;</code>
+     */
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ListObjectsResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ListObjectsResponse other = (com.google.storage.v2.ListObjectsResponse) obj;
-        if (!getObjectsList().equals(other.getObjectsList()))
-            return false;
-        if (!getPrefixesList().equals(other.getPrefixesList()))
-            return false;
-        if (!getNextPageToken().equals(other.getNextPageToken()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    public java.util.List<? extends ObjectOrBuilder> getObjectsOrBuilderList() {
+        return objects_;
     }
 
+    /**
+     * <pre>
+     * The continuation token, used to page through large result sets. Provide
+     * this value in a subsequent request to return the next page of results.
+     * </pre>
+     *
+     * <code>string next_page_token = 3;</code>
+     *
+     * @return The nextPageToken.
+     */
     @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
+    public java.lang.String getNextPageToken() {
+        java.lang.Object ref = nextPageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            nextPageToken_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
         }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (0 < getObjectsCount()) {
-            hash = (37 * hash) + OBJECTS_FIELD_NUMBER;
-            hash = (53 * hash) + getObjectsList().hashCode();
-        }
-        if (0 < getPrefixesCount()) {
-            hash = (37 * hash) + PREFIXES_FIELD_NUMBER;
-            hash = (53 * hash) + getPrefixesList().hashCode();
-        }
-        hash = (37 * hash) + NEXT_PAGE_TOKEN_FIELD_NUMBER;
-        hash = (53 * hash) + getNextPageToken().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ListObjectsResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+    protected Builder newBuilderForType(BuilderParent parent) {
         Builder builder = new Builder(parent);
         return builder;
     }
 
     /**
      * <pre>
-     * The result of a call to Objects.ListObjects
+     * The continuation token, used to page through large result sets. Provide
+     * this value in a subsequent request to return the next page of results.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.ListObjectsResponse}
+     * <code>string next_page_token = 3;</code>
+     *
+     * @return The bytes for nextPageToken.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsResponse)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsResponse)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListObjectsResponseOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
+    @java.lang.Override
+    public com.google.protobuf.ByteString getNextPageTokenBytes() {
+        java.lang.Object ref = nextPageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            nextPageToken_ = b;
+            return b;
         }
+    }
 
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListObjectsResponse.class, com.google.storage.v2.ListObjectsResponse.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ListObjectsResponse.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getObjectsFieldBuilder();
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != objectsBuilder_) {
-                objectsBuilder_.clear();
-            } else {
-                objects_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
-            }
-            prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            nextPageToken_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsResponse_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.ListObjectsResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsResponse build() {
-            com.google.storage.v2.ListObjectsResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsResponse buildPartial() {
-            com.google.storage.v2.ListObjectsResponse result = new com.google.storage.v2.ListObjectsResponse(this);
-            int from_bitField0_ = bitField0_;
-            if (null != objectsBuilder_) {
-                result.objects_ = objectsBuilder_.build();
-            } else {
-                if ((0 != (bitField0_ & 0x00000001))) {
-                    objects_ = java.util.Collections.unmodifiableList(objects_);
-                    bitField0_ = (bitField0_ & ~0x00000001);
-                }
-                result.objects_ = objects_;
-            }
-            if ((0 != (bitField0_ & 0x00000002))) {
-                prefixes_ = prefixes_.getUnmodifiableView();
-                bitField0_ = (bitField0_ & ~0x00000002);
-            }
-            result.prefixes_ = prefixes_;
-            result.nextPageToken_ = nextPageToken_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ListObjectsResponse)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ListObjectsResponse) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ListObjectsResponse other) {
-            if (com.google.storage.v2.ListObjectsResponse.getDefaultInstance() == other)
-                return this;
-            if (null != objectsBuilder_) {
-                if (!other.objects_.isEmpty()) {
-                    if (!objectsBuilder_.isEmpty()) {
-                        objectsBuilder_.addAllMessages(other.objects_);
-                    } else {
-                        objectsBuilder_.dispose();
-                        objectsBuilder_ = null;
-                        objects_ = other.objects_;
-                        bitField0_ = (bitField0_ & ~0x00000001);
-                        objectsBuilder_ = com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ? getObjectsFieldBuilder() : null;
-                    }
-                }
-            } else {
-                if (!other.objects_.isEmpty()) {
-                    if (!objects_.isEmpty()) {
-                        ensureObjectsIsMutable();
-                        objects_.addAll(other.objects_);
-                    } else {
-                        objects_ = other.objects_;
-                        bitField0_ = (bitField0_ & ~0x00000001);
-                    }
-                    onChanged();
-                }
-            }
-            if (!other.prefixes_.isEmpty()) {
-                if (!prefixes_.isEmpty()) {
-                    ensurePrefixesIsMutable();
-                    prefixes_.addAll(other.prefixes_);
-                } else {
-                    prefixes_ = other.prefixes_;
-                    bitField0_ = (bitField0_ & ~0x00000002);
-                }
-                onChanged();
-            }
-            if (!other.getNextPageToken().isEmpty()) {
-                nextPageToken_ = other.nextPageToken_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
             return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ListObjectsResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ListObjectsResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.util.List<com.google.storage.v2.Object> objects_ = java.util.Collections.emptyList();
-
-        private void ensureObjectsIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000001))) {
-                objects_ = new java.util.ArrayList<com.google.storage.v2.Object>(objects_);
-                bitField0_ |= 0x00000001;
-            }
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> objectsBuilder_;
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public java.util.List<com.google.storage.v2.Object> getObjectsList() {
-            if (null != objectsBuilder_) {
-                return objectsBuilder_.getMessageList();
-            } else {
-                return java.util.Collections.unmodifiableList(objects_);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public int getObjectsCount() {
-            if (null != objectsBuilder_) {
-                return objectsBuilder_.getCount();
-            } else {
-                return objects_.size();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public com.google.storage.v2.Object getObjects(int index) {
-            if (null != objectsBuilder_) {
-                return objectsBuilder_.getMessage(index);
-            } else {
-                return objects_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder setObjects(int index, com.google.storage.v2.Object value) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.setMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureObjectsIsMutable();
-                objects_.set(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder setObjects(int index, com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.setMessage(index, builderForValue.build());
-            } else {
-                ensureObjectsIsMutable();
-                objects_.set(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder addObjects(com.google.storage.v2.Object value) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.addMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureObjectsIsMutable();
-                objects_.add(value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder addObjects(int index, com.google.storage.v2.Object value) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.addMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureObjectsIsMutable();
-                objects_.add(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder addObjects(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.addMessage(builderForValue.build());
-            } else {
-                ensureObjectsIsMutable();
-                objects_.add(builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder addObjects(int index, com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.addMessage(index, builderForValue.build());
-            } else {
-                ensureObjectsIsMutable();
-                objects_.add(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder addAllObjects(java.lang.Iterable<? extends com.google.storage.v2.Object> values) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.addAllMessages(values);
-            } else {
-                ensureObjectsIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, objects_);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder clearObjects() {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.clear();
-            } else {
-                objects_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public Builder removeObjects(int index) {
-            if (null != objectsBuilder_) {
-                objectsBuilder_.remove(index);
-            } else {
-                ensureObjectsIsMutable();
-                objects_.remove(index);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder getObjectsBuilder(int index) {
-            return getObjectsFieldBuilder().getBuilder(index);
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getObjectsOrBuilder(int index) {
-            if (null != objectsBuilder_) {
-                return objectsBuilder_.getMessageOrBuilder(index);
-            } else {
-                return objects_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public java.util.List<? extends com.google.storage.v2.ObjectOrBuilder> getObjectsOrBuilderList() {
-            if (null == objectsBuilder_) {
-                return java.util.Collections.unmodifiableList(objects_);
-            } else {
-                return objectsBuilder_.getMessageOrBuilderList();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder addObjectsBuilder() {
-            return getObjectsFieldBuilder().addBuilder(com.google.storage.v2.Object.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder addObjectsBuilder(int index) {
-            return getObjectsFieldBuilder().addBuilder(index, com.google.storage.v2.Object.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of items.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.Object objects = 1;</code>
-         */
-        public java.util.List<com.google.storage.v2.Object.Builder> getObjectsBuilderList() {
-            return getObjectsFieldBuilder().getBuilderList();
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getObjectsFieldBuilder() {
-            if (null == objectsBuilder_) {
-                objectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(objects_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
-                objects_ = null;
-            }
-            return objectsBuilder_;
-        }
-
-        private com.google.protobuf.LazyStringList prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-
-        private void ensurePrefixesIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000002))) {
-                prefixes_ = new com.google.protobuf.LazyStringArrayList(prefixes_);
-                bitField0_ |= 0x00000002;
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @return A list containing the prefixes.
-         */
-        public com.google.protobuf.ProtocolStringList getPrefixesList() {
-            return prefixes_.getUnmodifiableView();
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @return The count of prefixes.
-         */
-        public int getPrefixesCount() {
-            return prefixes_.size();
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param index The index of the element to return.
-         * @return The prefixes at the given index.
-         */
-        public java.lang.String getPrefixes(int index) {
-            return prefixes_.get(index);
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param index The index of the value to return.
-         * @return The bytes of the prefixes at the given index.
-         */
-        public com.google.protobuf.ByteString getPrefixesBytes(int index) {
-            return prefixes_.getByteString(index);
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param index The index to set the value at.
-         * @param value The prefixes to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPrefixes(int index, java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            ensurePrefixesIsMutable();
-            prefixes_.set(index, value);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param value The prefixes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addPrefixes(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            ensurePrefixesIsMutable();
-            prefixes_.add(value);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param values The prefixes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addAllPrefixes(java.lang.Iterable<java.lang.String> values) {
-            ensurePrefixesIsMutable();
-            com.google.protobuf.AbstractMessageLite.Builder.addAll(values, prefixes_);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPrefixes() {
-            prefixes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of prefixes of objects matching-but-not-listed up to and including
-         * the requested delimiter.
-         * </pre>
-         *
-         * <code>repeated string prefixes = 2;</code>
-         *
-         * @param value The bytes of the prefixes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addPrefixesBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            ensurePrefixesIsMutable();
-            prefixes_.add(value);
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object nextPageToken_ = "";
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 3;</code>
-         *
-         * @return The nextPageToken.
-         */
-        public java.lang.String getNextPageToken() {
-            java.lang.Object ref = nextPageToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                nextPageToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 3;</code>
-         *
-         * @return The bytes for nextPageToken.
-         */
-        public com.google.protobuf.ByteString getNextPageTokenBytes() {
-            java.lang.Object ref = nextPageToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                nextPageToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 3;</code>
-         *
-         * @param value The nextPageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNextPageToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            nextPageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearNextPageToken() {
-            nextPageToken_ = getDefaultInstance().getNextPageToken();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The continuation token, used to page through large result sets. Provide
-         * this value in a subsequent request to return the next page of results.
-         * </pre>
-         *
-         * <code>string next_page_token = 3;</code>
-         *
-         * @param value The bytes for nextPageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNextPageTokenBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            nextPageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListObjectsResponse)
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ListObjectsResponse)
-    private static final com.google.storage.v2.ListObjectsResponse DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ListObjectsResponse();
-    }
-
-    public static com.google.storage.v2.ListObjectsResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ListObjectsResponse> PARSER = new com.google.protobuf.AbstractParser<ListObjectsResponse>() {
-
-        @java.lang.Override
-        public ListObjectsResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ListObjectsResponse(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ListObjectsResponse> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ListObjectsResponse> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ListObjectsResponse getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

@@ -30,9 +30,688 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
 
     private static final long serialVersionUID = 0L;
 
-    // Use RewriteResponse.newBuilder() to construct.
-    private RewriteResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int TOTAL_BYTES_REWRITTEN_FIELD_NUMBER = 1;
+
+    private long totalBytesRewritten_;
+
+    public static final int OBJECT_SIZE_FIELD_NUMBER = 2;
+
+    private long objectSize_;
+
+    public static final int DONE_FIELD_NUMBER = 3;
+
+    private boolean done_;
+
+    public static final int REWRITE_TOKEN_FIELD_NUMBER = 4;
+
+    private volatile java.lang.Object rewriteToken_;
+
+    public static final int RESOURCE_FIELD_NUMBER = 5;
+
+    private com.google.storage.v2.Object resource_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * A rewrite response.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.RewriteResponse}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteResponse)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteResponse)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.RewriteResponseOrBuilder {
+
+        private long totalBytesRewritten_;
+
+        private long objectSize_;
+
+        private boolean done_;
+
+        private java.lang.Object rewriteToken_ = "";
+
+        private com.google.storage.v2.Object resource_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.RewriteResponse)
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * A token to use in subsequent requests to continue copying data. This token
+         * is present in the response only when there is more data to copy.
+         * </pre>
+         *
+         * <code>string rewrite_token = 4;</code>
+         *
+         * @param value The bytes for rewriteToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewriteTokenBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            rewriteToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         *
+         * @return Whether the resource field is set.
+         */
+        public boolean hasResource() {
+            return null != resourceBuilder_ || null != resource_;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public Object.Builder getResourceBuilder() {
+            onChanged();
+            return getResourceFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof RewriteResponse)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((RewriteResponse) other);
+            }
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public Builder mergeResource(Object value) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.mergeFrom(value);
+            } else {
+                if (null == resource_) {
+                    resource_ = value;
+                } else {
+                    resource_ = Object.newBuilder(resource_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The total size of the object being copied in bytes. This property is always
+         * present in the response.
+         * </pre>
+         *
+         * <code>int64 object_size = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearObjectSize() {
+            objectSize_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The total bytes written so far, which can be used to provide a waiting user
+         * with a progress indicator. This property is always present in the response.
+         * </pre>
+         *
+         * <code>int64 total_bytes_rewritten = 1;</code>
+         *
+         * @return The totalBytesRewritten.
+         */
+        @java.lang.Override
+        public long getTotalBytesRewritten() {
+            return totalBytesRewritten_;
+        }
+
+        /**
+         * <pre>
+         * The total bytes written so far, which can be used to provide a waiting user
+         * with a progress indicator. This property is always present in the response.
+         * </pre>
+         *
+         * <code>int64 total_bytes_rewritten = 1;</code>
+         *
+         * @param value The totalBytesRewritten to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTotalBytesRewritten(long value) {
+            totalBytesRewritten_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * `true` if the copy is finished; otherwise, `false` if
+         * the copy is in progress. This property is always present in the response.
+         * </pre>
+         *
+         * <code>bool done = 3;</code>
+         *
+         * @return The done.
+         */
+        @java.lang.Override
+        public boolean getDone() {
+            return done_;
+        }
+
+        /**
+         * <pre>
+         * The total size of the object being copied in bytes. This property is always
+         * present in the response.
+         * </pre>
+         *
+         * <code>int64 object_size = 2;</code>
+         *
+         * @param value The objectSize to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObjectSize(long value) {
+            objectSize_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            RewriteResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (RewriteResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A token to use in subsequent requests to continue copying data. This token
+         * is present in the response only when there is more data to copy.
+         * </pre>
+         *
+         * <code>string rewrite_token = 4;</code>
+         *
+         * @return The rewriteToken.
+         */
+        public java.lang.String getRewriteToken() {
+            java.lang.Object ref = rewriteToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                rewriteToken_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_RewriteResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(RewriteResponse.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         *
+         * @return The resource.
+         */
+        public Object getResource() {
+            if (null != resourceBuilder_) {
+                return resourceBuilder_.getMessage();
+            } else {
+                return null == resource_ ? Object.getDefaultInstance() : resource_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        // Construct using com.google.storage.v2.RewriteResponse.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A token to use in subsequent requests to continue copying data. This token
+         * is present in the response only when there is more data to copy.
+         * </pre>
+         *
+         * <code>string rewrite_token = 4;</code>
+         *
+         * @param value The rewriteToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewriteToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            rewriteToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        public Builder mergeFrom(RewriteResponse other) {
+            if (RewriteResponse.getDefaultInstance() == other)
+                return this;
+            if (0L != other.getTotalBytesRewritten()) {
+                setTotalBytesRewritten(other.getTotalBytesRewritten());
+            }
+            if (0L != other.getObjectSize()) {
+                setObjectSize(other.getObjectSize());
+            }
+            if (false != other.getDone()) {
+                setDone(other.getDone());
+            }
+            if (!other.getRewriteToken().isEmpty()) {
+                rewriteToken_ = other.rewriteToken_;
+                onChanged();
+            }
+            if (other.hasResource()) {
+                mergeResource(other.getResource());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * `true` if the copy is finished; otherwise, `false` if
+         * the copy is in progress. This property is always present in the response.
+         * </pre>
+         *
+         * <code>bool done = 3;</code>
+         *
+         * @param value The done to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDone(boolean value) {
+            done_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A token to use in subsequent requests to continue copying data. This token
+         * is present in the response only when there is more data to copy.
+         * </pre>
+         *
+         * <code>string rewrite_token = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearRewriteToken() {
+            rewriteToken_ = getDefaultInstance().getRewriteToken();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The total bytes written so far, which can be used to provide a waiting user
+         * with a progress indicator. This property is always present in the response.
+         * </pre>
+         *
+         * <code>int64 total_bytes_rewritten = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearTotalBytesRewritten() {
+            totalBytesRewritten_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public Builder setResource(Object value) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                resource_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public Builder setResource(Object.Builder builderForValue) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(builderForValue.build());
+            } else {
+                resource_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public RewriteResponse build() {
+            RewriteResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public ObjectOrBuilder getResourceOrBuilder() {
+            if (null == resourceBuilder_) {
+                return null == resource_ ? Object.getDefaultInstance() : resource_;
+            } else {
+                return resourceBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getResourceFieldBuilder() {
+            if (null == resourceBuilder_) {
+                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getResource(), getParentForChildren(), isClean());
+                resource_ = null;
+            }
+            return resourceBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            totalBytesRewritten_ = 0L;
+            objectSize_ = 0L;
+            done_ = false;
+            rewriteToken_ = "";
+            if (null != resourceBuilder_) {
+                resource_ = null;
+                resourceBuilder_ = null;
+            } else {
+                resource_ = null;
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The total size of the object being copied in bytes. This property is always
+         * present in the response.
+         * </pre>
+         *
+         * <code>int64 object_size = 2;</code>
+         *
+         * @return The objectSize.
+         */
+        @java.lang.Override
+        public long getObjectSize() {
+            return objectSize_;
+        }
+
+        @java.lang.Override
+        public RewriteResponse buildPartial() {
+            RewriteResponse result = new RewriteResponse(this);
+            result.totalBytesRewritten_ = totalBytesRewritten_;
+            result.objectSize_ = objectSize_;
+            result.done_ = done_;
+            result.rewriteToken_ = rewriteToken_;
+            if (null != resourceBuilder_) {
+                result.resource_ = resourceBuilder_.build();
+            } else {
+                result.resource_ = resource_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * `true` if the copy is finished; otherwise, `false` if
+         * the copy is in progress. This property is always present in the response.
+         * </pre>
+         *
+         * <code>bool done = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDone() {
+            done_ = false;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public RewriteResponse getDefaultInstanceForType() {
+            return RewriteResponse.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the copied-to object. This property
+         * is present in the response only when copying completes.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 5;</code>
+         */
+        public Builder clearResource() {
+            if (null != resourceBuilder_) {
+                resource_ = null;
+                resourceBuilder_ = null;
+            } else {
+                resource_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A token to use in subsequent requests to continue copying data. This token
+         * is present in the response only when there is more data to copy.
+         * </pre>
+         *
+         * <code>string rewrite_token = 4;</code>
+         *
+         * @return The bytes for rewriteToken.
+         */
+        public com.google.protobuf.ByteString getRewriteTokenBytes() {
+            java.lang.Object ref = rewriteToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                rewriteToken_ = b;
+                return b;
+            }
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.RewriteResponse)
+    private static final com.google.storage.v2.RewriteResponse DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.RewriteResponse();
+    }
+
+    private static final com.google.protobuf.Parser<RewriteResponse> PARSER = new com.google.protobuf.AbstractParser<RewriteResponse>() {
+
+        @java.lang.Override
+        public RewriteResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RewriteResponse(input, extensionRegistry);
+        }
+    };
+
+    public static RewriteResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof RewriteResponse)) {
+            return super.equals(obj);
+        }
+        RewriteResponse other = (RewriteResponse) obj;
+        if (other.getTotalBytesRewritten() != getTotalBytesRewritten())
+            return false;
+        if (other.getObjectSize() != getObjectSize())
+            return false;
+        if (other.getDone() != getDone())
+            return false;
+        if (!getRewriteToken().equals(other.getRewriteToken()))
+            return false;
+        if (other.hasResource() != hasResource())
+            return false;
+        if (hasResource()) {
+            if (!getResource().equals(other.getResource()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static com.google.protobuf.Parser<RewriteResponse> parser() {
+        return PARSER;
+    }
+
+    public static RewriteResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static RewriteResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
     private RewriteResponse() {
@@ -40,14 +719,110 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new RewriteResponse();
+    public RewriteResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * A resource containing the metadata for the copied-to object. This property
+     * is present in the response only when copying completes.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 5;</code>
+     *
+     * @return The resource.
+     */
+    @java.lang.Override
+    public Object getResource() {
+        return null == resource_ ? Object.getDefaultInstance() : resource_;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static RewriteResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static Builder newBuilder(RewriteResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static RewriteResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RewriteResponse> getParserForType() {
+        return PARSER;
+    }
+
+    public static RewriteResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static RewriteResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static RewriteResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static RewriteResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_RewriteResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(RewriteResponse.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * The total bytes written so far, which can be used to provide a waiting user
+     * with a progress indicator. This property is always present in the response.
+     * </pre>
+     *
+     * <code>int64 total_bytes_rewritten = 1;</code>
+     *
+     * @return The totalBytesRewritten.
+     */
+    @java.lang.Override
+    public long getTotalBytesRewritten() {
+        return totalBytesRewritten_;
+    }
+
+    /**
+     * <pre>
+     * The total size of the object being copied in bytes. This property is always
+     * present in the response.
+     * </pre>
+     *
+     * <code>int64 object_size = 2;</code>
+     *
+     * @return The objectSize.
+     */
+    @java.lang.Override
+    public long getObjectSize() {
+        return objectSize_;
+    }
+
+    public static RewriteResponse getDefaultInstance() {
+        return DEFAULT_INSTANCE;
     }
 
     private RewriteResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -87,11 +862,11 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
                         }
                     case 42:
                         {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
+                            Object.Builder subBuilder = null;
                             if (null != resource_) {
                                 subBuilder = resource_.toBuilder();
                             }
-                            resource_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
+                            resource_ = input.readMessage(Object.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(resource_);
                                 resource_ = subBuilder.buildPartial();
@@ -120,198 +895,31 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
+        return StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
     }
 
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.RewriteResponse.class, com.google.storage.v2.RewriteResponse.Builder.class);
-    }
-
-    public static final int TOTAL_BYTES_REWRITTEN_FIELD_NUMBER = 1;
-
-    private long totalBytesRewritten_;
-
-    /**
-     * <pre>
-     * The total bytes written so far, which can be used to provide a waiting user
-     * with a progress indicator. This property is always present in the response.
-     * </pre>
-     *
-     * <code>int64 total_bytes_rewritten = 1;</code>
-     *
-     * @return The totalBytesRewritten.
-     */
-    @java.lang.Override
-    public long getTotalBytesRewritten() {
-        return totalBytesRewritten_;
-    }
-
-    public static final int OBJECT_SIZE_FIELD_NUMBER = 2;
-
-    private long objectSize_;
-
-    /**
-     * <pre>
-     * The total size of the object being copied in bytes. This property is always
-     * present in the response.
-     * </pre>
-     *
-     * <code>int64 object_size = 2;</code>
-     *
-     * @return The objectSize.
-     */
-    @java.lang.Override
-    public long getObjectSize() {
-        return objectSize_;
-    }
-
-    public static final int DONE_FIELD_NUMBER = 3;
-
-    private boolean done_;
-
-    /**
-     * <pre>
-     * `true` if the copy is finished; otherwise, `false` if
-     * the copy is in progress. This property is always present in the response.
-     * </pre>
-     *
-     * <code>bool done = 3;</code>
-     *
-     * @return The done.
-     */
-    @java.lang.Override
-    public boolean getDone() {
-        return done_;
-    }
-
-    public static final int REWRITE_TOKEN_FIELD_NUMBER = 4;
-
-    private volatile java.lang.Object rewriteToken_;
-
-    /**
-     * <pre>
-     * A token to use in subsequent requests to continue copying data. This token
-     * is present in the response only when there is more data to copy.
-     * </pre>
-     *
-     * <code>string rewrite_token = 4;</code>
-     *
-     * @return The rewriteToken.
-     */
-    @java.lang.Override
-    public java.lang.String getRewriteToken() {
-        java.lang.Object ref = rewriteToken_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            rewriteToken_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
         }
-    }
-
-    /**
-     * <pre>
-     * A token to use in subsequent requests to continue copying data. This token
-     * is present in the response only when there is more data to copy.
-     * </pre>
-     *
-     * <code>string rewrite_token = 4;</code>
-     *
-     * @return The bytes for rewriteToken.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getRewriteTokenBytes() {
-        java.lang.Object ref = rewriteToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            rewriteToken_ = b;
-            return b;
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + TOTAL_BYTES_REWRITTEN_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getTotalBytesRewritten());
+        hash = (37 * hash) + OBJECT_SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getObjectSize());
+        hash = (37 * hash) + DONE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getDone());
+        hash = (37 * hash) + REWRITE_TOKEN_FIELD_NUMBER;
+        hash = (53 * hash) + getRewriteToken().hashCode();
+        if (hasResource()) {
+            hash = (37 * hash) + RESOURCE_FIELD_NUMBER;
+            hash = (53 * hash) + getResource().hashCode();
         }
-    }
-
-    public static final int RESOURCE_FIELD_NUMBER = 5;
-
-    private com.google.storage.v2.Object resource_;
-
-    /**
-     * <pre>
-     * A resource containing the metadata for the copied-to object. This property
-     * is present in the response only when copying completes.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 5;</code>
-     *
-     * @return Whether the resource field is set.
-     */
-    @java.lang.Override
-    public boolean hasResource() {
-        return null != resource_;
-    }
-
-    /**
-     * <pre>
-     * A resource containing the metadata for the copied-to object. This property
-     * is present in the response only when copying completes.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 5;</code>
-     *
-     * @return The resource.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getResource() {
-        return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-    }
-
-    /**
-     * <pre>
-     * A resource containing the metadata for the copied-to object. This property
-     * is present in the response only when copying completes.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 5;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-        return getResource();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (0L != totalBytesRewritten_) {
-            output.writeInt64(1, totalBytesRewritten_);
-        }
-        if (0L != objectSize_) {
-            output.writeInt64(2, objectSize_);
-        }
-        if (false != done_) {
-            output.writeBool(3, done_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(rewriteToken_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, rewriteToken_);
-        }
-        if (null != resource_) {
-            output.writeMessage(5, getResource());
-        }
-        unknownFields.writeTo(output);
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
     }
 
     @java.lang.Override
@@ -340,117 +948,52 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
         return size;
     }
 
+    // Use RewriteResponse.newBuilder() to construct.
+    private RewriteResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static RewriteResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * `true` if the copy is finished; otherwise, `false` if
+     * the copy is in progress. This property is always present in the response.
+     * </pre>
+     *
+     * <code>bool done = 3;</code>
+     *
+     * @return The done.
+     */
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
+    public boolean getDone() {
+        return done_;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
             return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.RewriteResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.RewriteResponse other = (com.google.storage.v2.RewriteResponse) obj;
-        if (other.getTotalBytesRewritten() != getTotalBytesRewritten())
+        if (0 == isInitialized)
             return false;
-        if (other.getObjectSize() != getObjectSize())
-            return false;
-        if (other.getDone() != getDone())
-            return false;
-        if (!getRewriteToken().equals(other.getRewriteToken()))
-            return false;
-        if (other.hasResource() != hasResource())
-            return false;
-        if (hasResource()) {
-            if (!getResource().equals(other.getResource()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
+        memoizedIsInitialized = 1;
         return true;
     }
 
+    /**
+     * <pre>
+     * A resource containing the metadata for the copied-to object. This property
+     * is present in the response only when copying completes.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 5;</code>
+     */
     @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + TOTAL_BYTES_REWRITTEN_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getTotalBytesRewritten());
-        hash = (37 * hash) + OBJECT_SIZE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getObjectSize());
-        hash = (37 * hash) + DONE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getDone());
-        hash = (37 * hash) + REWRITE_TOKEN_FIELD_NUMBER;
-        hash = (53 * hash) + getRewriteToken().hashCode();
-        if (hasResource()) {
-            hash = (37 * hash) + RESOURCE_FIELD_NUMBER;
-            hash = (53 * hash) + getResource().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.RewriteResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    public ObjectOrBuilder getResourceOrBuilder() {
+        return getResource();
     }
 
     @java.lang.Override
@@ -459,637 +1002,97 @@ RewriteResponse extends com.google.protobuf.GeneratedMessageV3 implements Rewrit
     }
 
     @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (0L != totalBytesRewritten_) {
+            output.writeInt64(1, totalBytesRewritten_);
+        }
+        if (0L != objectSize_) {
+            output.writeInt64(2, objectSize_);
+        }
+        if (false != done_) {
+            output.writeBool(3, done_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(rewriteToken_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, rewriteToken_);
+        }
+        if (null != resource_) {
+            output.writeMessage(5, getResource());
+        }
+        unknownFields.writeTo(output);
     }
 
     /**
      * <pre>
-     * A rewrite response.
+     * A token to use in subsequent requests to continue copying data. This token
+     * is present in the response only when there is more data to copy.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.RewriteResponse}
+     * <code>string rewrite_token = 4;</code>
+     *
+     * @return The rewriteToken.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteResponse)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteResponse)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.RewriteResponseOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
+    @java.lang.Override
+    public java.lang.String getRewriteToken() {
+        java.lang.Object ref = rewriteToken_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            rewriteToken_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
         }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.RewriteResponse.class, com.google.storage.v2.RewriteResponse.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.RewriteResponse.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            totalBytesRewritten_ = 0L;
-            objectSize_ = 0L;
-            done_ = false;
-            rewriteToken_ = "";
-            if (null != resourceBuilder_) {
-                resource_ = null;
-                resourceBuilder_ = null;
-            } else {
-                resource_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteResponse_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.RewriteResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteResponse build() {
-            com.google.storage.v2.RewriteResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteResponse buildPartial() {
-            com.google.storage.v2.RewriteResponse result = new com.google.storage.v2.RewriteResponse(this);
-            result.totalBytesRewritten_ = totalBytesRewritten_;
-            result.objectSize_ = objectSize_;
-            result.done_ = done_;
-            result.rewriteToken_ = rewriteToken_;
-            if (null != resourceBuilder_) {
-                result.resource_ = resourceBuilder_.build();
-            } else {
-                result.resource_ = resource_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.RewriteResponse)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.RewriteResponse) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.RewriteResponse other) {
-            if (com.google.storage.v2.RewriteResponse.getDefaultInstance() == other)
-                return this;
-            if (0L != other.getTotalBytesRewritten()) {
-                setTotalBytesRewritten(other.getTotalBytesRewritten());
-            }
-            if (0L != other.getObjectSize()) {
-                setObjectSize(other.getObjectSize());
-            }
-            if (false != other.getDone()) {
-                setDone(other.getDone());
-            }
-            if (!other.getRewriteToken().isEmpty()) {
-                rewriteToken_ = other.rewriteToken_;
-                onChanged();
-            }
-            if (other.hasResource()) {
-                mergeResource(other.getResource());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.RewriteResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.RewriteResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private long totalBytesRewritten_;
-
-        /**
-         * <pre>
-         * The total bytes written so far, which can be used to provide a waiting user
-         * with a progress indicator. This property is always present in the response.
-         * </pre>
-         *
-         * <code>int64 total_bytes_rewritten = 1;</code>
-         *
-         * @return The totalBytesRewritten.
-         */
-        @java.lang.Override
-        public long getTotalBytesRewritten() {
-            return totalBytesRewritten_;
-        }
-
-        /**
-         * <pre>
-         * The total bytes written so far, which can be used to provide a waiting user
-         * with a progress indicator. This property is always present in the response.
-         * </pre>
-         *
-         * <code>int64 total_bytes_rewritten = 1;</code>
-         *
-         * @param value The totalBytesRewritten to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTotalBytesRewritten(long value) {
-            totalBytesRewritten_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The total bytes written so far, which can be used to provide a waiting user
-         * with a progress indicator. This property is always present in the response.
-         * </pre>
-         *
-         * <code>int64 total_bytes_rewritten = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearTotalBytesRewritten() {
-            totalBytesRewritten_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long objectSize_;
-
-        /**
-         * <pre>
-         * The total size of the object being copied in bytes. This property is always
-         * present in the response.
-         * </pre>
-         *
-         * <code>int64 object_size = 2;</code>
-         *
-         * @return The objectSize.
-         */
-        @java.lang.Override
-        public long getObjectSize() {
-            return objectSize_;
-        }
-
-        /**
-         * <pre>
-         * The total size of the object being copied in bytes. This property is always
-         * present in the response.
-         * </pre>
-         *
-         * <code>int64 object_size = 2;</code>
-         *
-         * @param value The objectSize to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObjectSize(long value) {
-            objectSize_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The total size of the object being copied in bytes. This property is always
-         * present in the response.
-         * </pre>
-         *
-         * <code>int64 object_size = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearObjectSize() {
-            objectSize_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private boolean done_;
-
-        /**
-         * <pre>
-         * `true` if the copy is finished; otherwise, `false` if
-         * the copy is in progress. This property is always present in the response.
-         * </pre>
-         *
-         * <code>bool done = 3;</code>
-         *
-         * @return The done.
-         */
-        @java.lang.Override
-        public boolean getDone() {
-            return done_;
-        }
-
-        /**
-         * <pre>
-         * `true` if the copy is finished; otherwise, `false` if
-         * the copy is in progress. This property is always present in the response.
-         * </pre>
-         *
-         * <code>bool done = 3;</code>
-         *
-         * @param value The done to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDone(boolean value) {
-            done_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * `true` if the copy is finished; otherwise, `false` if
-         * the copy is in progress. This property is always present in the response.
-         * </pre>
-         *
-         * <code>bool done = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDone() {
-            done_ = false;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object rewriteToken_ = "";
-
-        /**
-         * <pre>
-         * A token to use in subsequent requests to continue copying data. This token
-         * is present in the response only when there is more data to copy.
-         * </pre>
-         *
-         * <code>string rewrite_token = 4;</code>
-         *
-         * @return The rewriteToken.
-         */
-        public java.lang.String getRewriteToken() {
-            java.lang.Object ref = rewriteToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                rewriteToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * A token to use in subsequent requests to continue copying data. This token
-         * is present in the response only when there is more data to copy.
-         * </pre>
-         *
-         * <code>string rewrite_token = 4;</code>
-         *
-         * @return The bytes for rewriteToken.
-         */
-        public com.google.protobuf.ByteString getRewriteTokenBytes() {
-            java.lang.Object ref = rewriteToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                rewriteToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * A token to use in subsequent requests to continue copying data. This token
-         * is present in the response only when there is more data to copy.
-         * </pre>
-         *
-         * <code>string rewrite_token = 4;</code>
-         *
-         * @param value The rewriteToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRewriteToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            rewriteToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A token to use in subsequent requests to continue copying data. This token
-         * is present in the response only when there is more data to copy.
-         * </pre>
-         *
-         * <code>string rewrite_token = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearRewriteToken() {
-            rewriteToken_ = getDefaultInstance().getRewriteToken();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A token to use in subsequent requests to continue copying data. This token
-         * is present in the response only when there is more data to copy.
-         * </pre>
-         *
-         * <code>string rewrite_token = 4;</code>
-         *
-         * @param value The bytes for rewriteToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRewriteTokenBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            rewriteToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.Object resource_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         *
-         * @return Whether the resource field is set.
-         */
-        public boolean hasResource() {
-            return null != resourceBuilder_ || null != resource_;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         *
-         * @return The resource.
-         */
-        public com.google.storage.v2.Object getResource() {
-            if (null != resourceBuilder_) {
-                return resourceBuilder_.getMessage();
-            } else {
-                return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                resource_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(builderForValue.build());
-            } else {
-                resource_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public Builder mergeResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.mergeFrom(value);
-            } else {
-                if (null == resource_) {
-                    resource_ = value;
-                } else {
-                    resource_ = com.google.storage.v2.Object.newBuilder(resource_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public Builder clearResource() {
-            if (null != resourceBuilder_) {
-                resource_ = null;
-                resourceBuilder_ = null;
-            } else {
-                resource_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public com.google.storage.v2.Object.Builder getResourceBuilder() {
-            onChanged();
-            return getResourceFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-            if (null == resourceBuilder_) {
-                return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-            } else {
-                return resourceBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the copied-to object. This property
-         * is present in the response only when copying completes.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 5;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getResourceFieldBuilder() {
-            if (null == resourceBuilder_) {
-                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getResource(), getParentForChildren(), isClean());
-                resource_ = null;
-            }
-            return resourceBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.RewriteResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.RewriteResponse)
-    private static final com.google.storage.v2.RewriteResponse DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.RewriteResponse();
-    }
-
-    public static com.google.storage.v2.RewriteResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<RewriteResponse> PARSER = new com.google.protobuf.AbstractParser<RewriteResponse>() {
-
-        @java.lang.Override
-        public RewriteResponse parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new RewriteResponse(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<RewriteResponse> parser() {
-        return PARSER;
+    public static RewriteResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<RewriteResponse> getParserForType() {
-        return PARSER;
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new RewriteResponse();
     }
 
+    /**
+     * <pre>
+     * A token to use in subsequent requests to continue copying data. This token
+     * is present in the response only when there is more data to copy.
+     * </pre>
+     *
+     * <code>string rewrite_token = 4;</code>
+     *
+     * @return The bytes for rewriteToken.
+     */
     @java.lang.Override
-    public com.google.storage.v2.RewriteResponse getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public com.google.protobuf.ByteString getRewriteTokenBytes() {
+        java.lang.Object ref = rewriteToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            rewriteToken_ = b;
+            return b;
+        }
     }
+
+    /**
+     * <pre>
+     * A resource containing the metadata for the copied-to object. This property
+     * is present in the response only when copying completes.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 5;</code>
+     *
+     * @return Whether the resource field is set.
+     */
+    @java.lang.Override
+    public boolean hasResource() {
+        return null != resource_;
+    }
+
+    public static RewriteResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
 }

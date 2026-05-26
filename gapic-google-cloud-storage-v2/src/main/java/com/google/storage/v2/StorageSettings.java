@@ -81,425 +81,427 @@ import javax.annotation.Generated;
 @Generated("by gapic-generator-java")
 public class StorageSettings extends ClientSettings<StorageSettings> {
 
-  /** Returns the object with the settings used for calls to deleteBucket. */
-  public UnaryCallSettings<DeleteBucketRequest, Empty> deleteBucketSettings() {
-    return ((StorageStubSettings) getStubSettings()).deleteBucketSettings();
-  }
-
-  /** Returns the object with the settings used for calls to getBucket. */
-  public UnaryCallSettings<GetBucketRequest, Bucket> getBucketSettings() {
-    return ((StorageStubSettings) getStubSettings()).getBucketSettings();
-  }
-
-  /** Returns the object with the settings used for calls to createBucket. */
-  public UnaryCallSettings<CreateBucketRequest, Bucket> createBucketSettings() {
-    return ((StorageStubSettings) getStubSettings()).createBucketSettings();
-  }
-
-  /** Returns the object with the settings used for calls to listBuckets. */
-  public PagedCallSettings<ListBucketsRequest, ListBucketsResponse, ListBucketsPagedResponse>
-      listBucketsSettings() {
-    return ((StorageStubSettings) getStubSettings()).listBucketsSettings();
-  }
-
-  /** Returns the object with the settings used for calls to lockBucketRetentionPolicy. */
-  public UnaryCallSettings<LockBucketRetentionPolicyRequest, Bucket>
-      lockBucketRetentionPolicySettings() {
-    return ((StorageStubSettings) getStubSettings()).lockBucketRetentionPolicySettings();
-  }
-
-  /** Returns the object with the settings used for calls to getIamPolicy. */
-  public UnaryCallSettings<GetIamPolicyRequest, Policy> getIamPolicySettings() {
-    return ((StorageStubSettings) getStubSettings()).getIamPolicySettings();
-  }
-
-  /** Returns the object with the settings used for calls to setIamPolicy. */
-  public UnaryCallSettings<SetIamPolicyRequest, Policy> setIamPolicySettings() {
-    return ((StorageStubSettings) getStubSettings()).setIamPolicySettings();
-  }
-
-  /** Returns the object with the settings used for calls to testIamPermissions. */
-  public UnaryCallSettings<TestIamPermissionsRequest, TestIamPermissionsResponse>
-      testIamPermissionsSettings() {
-    return ((StorageStubSettings) getStubSettings()).testIamPermissionsSettings();
-  }
-
-  /** Returns the object with the settings used for calls to updateBucket. */
-  public UnaryCallSettings<UpdateBucketRequest, Bucket> updateBucketSettings() {
-    return ((StorageStubSettings) getStubSettings()).updateBucketSettings();
-  }
-
-  /** Returns the object with the settings used for calls to deleteNotification. */
-  public UnaryCallSettings<DeleteNotificationRequest, Empty> deleteNotificationSettings() {
-    return ((StorageStubSettings) getStubSettings()).deleteNotificationSettings();
-  }
-
-  /** Returns the object with the settings used for calls to getNotification. */
-  public UnaryCallSettings<GetNotificationRequest, Notification> getNotificationSettings() {
-    return ((StorageStubSettings) getStubSettings()).getNotificationSettings();
-  }
-
-  /** Returns the object with the settings used for calls to createNotification. */
-  public UnaryCallSettings<CreateNotificationRequest, Notification> createNotificationSettings() {
-    return ((StorageStubSettings) getStubSettings()).createNotificationSettings();
-  }
-
-  /** Returns the object with the settings used for calls to listNotifications. */
-  public PagedCallSettings<
-          ListNotificationsRequest, ListNotificationsResponse, ListNotificationsPagedResponse>
-      listNotificationsSettings() {
-    return ((StorageStubSettings) getStubSettings()).listNotificationsSettings();
-  }
-
-  /** Returns the object with the settings used for calls to composeObject. */
-  public UnaryCallSettings<ComposeObjectRequest, Object> composeObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).composeObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to deleteObject. */
-  public UnaryCallSettings<DeleteObjectRequest, Empty> deleteObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).deleteObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to getObject. */
-  public UnaryCallSettings<GetObjectRequest, Object> getObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).getObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to readObject. */
-  public ServerStreamingCallSettings<ReadObjectRequest, ReadObjectResponse> readObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).readObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to updateObject. */
-  public UnaryCallSettings<UpdateObjectRequest, Object> updateObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).updateObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to writeObject. */
-  public StreamingCallSettings<WriteObjectRequest, WriteObjectResponse> writeObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).writeObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to listObjects. */
-  public PagedCallSettings<ListObjectsRequest, ListObjectsResponse, ListObjectsPagedResponse>
-      listObjectsSettings() {
-    return ((StorageStubSettings) getStubSettings()).listObjectsSettings();
-  }
-
-  /** Returns the object with the settings used for calls to rewriteObject. */
-  public UnaryCallSettings<RewriteObjectRequest, RewriteResponse> rewriteObjectSettings() {
-    return ((StorageStubSettings) getStubSettings()).rewriteObjectSettings();
-  }
-
-  /** Returns the object with the settings used for calls to startResumableWrite. */
-  public UnaryCallSettings<StartResumableWriteRequest, StartResumableWriteResponse>
-      startResumableWriteSettings() {
-    return ((StorageStubSettings) getStubSettings()).startResumableWriteSettings();
-  }
-
-  /** Returns the object with the settings used for calls to queryWriteStatus. */
-  public UnaryCallSettings<QueryWriteStatusRequest, QueryWriteStatusResponse>
-      queryWriteStatusSettings() {
-    return ((StorageStubSettings) getStubSettings()).queryWriteStatusSettings();
-  }
-
-  /** Returns the object with the settings used for calls to getServiceAccount. */
-  public UnaryCallSettings<GetServiceAccountRequest, ServiceAccount> getServiceAccountSettings() {
-    return ((StorageStubSettings) getStubSettings()).getServiceAccountSettings();
-  }
-
-  /** Returns the object with the settings used for calls to createHmacKey. */
-  public UnaryCallSettings<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeySettings() {
-    return ((StorageStubSettings) getStubSettings()).createHmacKeySettings();
-  }
-
-  /** Returns the object with the settings used for calls to deleteHmacKey. */
-  public UnaryCallSettings<DeleteHmacKeyRequest, Empty> deleteHmacKeySettings() {
-    return ((StorageStubSettings) getStubSettings()).deleteHmacKeySettings();
-  }
-
-  /** Returns the object with the settings used for calls to getHmacKey. */
-  public UnaryCallSettings<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeySettings() {
-    return ((StorageStubSettings) getStubSettings()).getHmacKeySettings();
-  }
-
-  /** Returns the object with the settings used for calls to listHmacKeys. */
-  public PagedCallSettings<ListHmacKeysRequest, ListHmacKeysResponse, ListHmacKeysPagedResponse>
-      listHmacKeysSettings() {
-    return ((StorageStubSettings) getStubSettings()).listHmacKeysSettings();
-  }
-
-  /** Returns the object with the settings used for calls to updateHmacKey. */
-  public UnaryCallSettings<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeySettings() {
-    return ((StorageStubSettings) getStubSettings()).updateHmacKeySettings();
-  }
-
-  public static final StorageSettings create(StorageStubSettings stub) throws IOException {
-    return new StorageSettings.Builder(stub.toBuilder()).build();
-  }
-
-  /** Returns a builder for the default ExecutorProvider for this service. */
-  public static InstantiatingExecutorProvider.Builder defaultExecutorProviderBuilder() {
-    return StorageStubSettings.defaultExecutorProviderBuilder();
-  }
-
-  /** Returns the default service endpoint. */
-  public static String getDefaultEndpoint() {
-    return StorageStubSettings.getDefaultEndpoint();
-  }
-
-  /** Returns the default service scopes. */
-  public static List<String> getDefaultServiceScopes() {
-    return StorageStubSettings.getDefaultServiceScopes();
-  }
-
-  /** Returns a builder for the default credentials for this service. */
-  public static GoogleCredentialsProvider.Builder defaultCredentialsProviderBuilder() {
-    return StorageStubSettings.defaultCredentialsProviderBuilder();
-  }
-
-  /** Returns a builder for the default ChannelProvider for this service. */
-  public static InstantiatingGrpcChannelProvider.Builder defaultGrpcTransportProviderBuilder() {
-    return StorageStubSettings.defaultGrpcTransportProviderBuilder();
-  }
-
-  public static TransportChannelProvider defaultTransportChannelProvider() {
-    return StorageStubSettings.defaultTransportChannelProvider();
-  }
-
-  @BetaApi("The surface for customizing headers is not stable yet and may change in the future.")
-  public static ApiClientHeaderProvider.Builder defaultApiClientHeaderProviderBuilder() {
-    return StorageStubSettings.defaultApiClientHeaderProviderBuilder();
-  }
-
-  /** Returns a new builder for this class. */
-  public static Builder newBuilder() {
-    return Builder.createDefault();
-  }
-
-  /** Returns a new builder for this class. */
-  public static Builder newBuilder(ClientContext clientContext) {
-    return new Builder(clientContext);
-  }
-
-  /** Returns a builder containing all the values of this settings class. */
-  public Builder toBuilder() {
-    return new Builder(this);
-  }
-
-  protected StorageSettings(Builder settingsBuilder) throws IOException {
-    super(settingsBuilder);
-  }
-
-  /** Builder for StorageSettings. */
+    /** Builder for StorageSettings. */
   public static class Builder extends ClientSettings.Builder<StorageSettings, Builder> {
 
-    protected Builder() throws IOException {
-      this(((ClientContext) null));
+        /** Returns the builder for the settings used for calls to getIamPolicy. */
+        public UnaryCallSettings.Builder<GetIamPolicyRequest, Policy> getIamPolicySettings() {
+          return getStubSettingsBuilder().getIamPolicySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to rewriteObject. */
+        public UnaryCallSettings.Builder<RewriteObjectRequest, RewriteResponse>
+            rewriteObjectSettings() {
+          return getStubSettingsBuilder().rewriteObjectSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to readObject. */
+        public ServerStreamingCallSettings.Builder<ReadObjectRequest, ReadObjectResponse>
+            readObjectSettings() {
+          return getStubSettingsBuilder().readObjectSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to testIamPermissions. */
+        public UnaryCallSettings.Builder<TestIamPermissionsRequest, TestIamPermissionsResponse>
+            testIamPermissionsSettings() {
+          return getStubSettingsBuilder().testIamPermissionsSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to setIamPolicy. */
+        public UnaryCallSettings.Builder<SetIamPolicyRequest, Policy> setIamPolicySettings() {
+          return getStubSettingsBuilder().setIamPolicySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to startResumableWrite. */
+        public UnaryCallSettings.Builder<StartResumableWriteRequest, StartResumableWriteResponse>
+            startResumableWriteSettings() {
+          return getStubSettingsBuilder().startResumableWriteSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to listBuckets. */
+        public PagedCallSettings.Builder<
+                ListBucketsRequest, ListBucketsResponse, ListBucketsPagedResponse>
+            listBucketsSettings() {
+          return getStubSettingsBuilder().listBucketsSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to deleteNotification. */
+        public UnaryCallSettings.Builder<DeleteNotificationRequest, Empty>
+            deleteNotificationSettings() {
+          return getStubSettingsBuilder().deleteNotificationSettings();
+        }
+
+        protected Builder(StorageSettings settings) {
+          super(settings.getStubSettings().toBuilder());
+        }
+
+        public StorageStubSettings.Builder getStubSettingsBuilder() {
+          return ((StorageStubSettings.Builder) getStubSettings());
+        }
+
+        /** Returns the builder for the settings used for calls to getServiceAccount. */
+        public UnaryCallSettings.Builder<GetServiceAccountRequest, ServiceAccount>
+            getServiceAccountSettings() {
+          return getStubSettingsBuilder().getServiceAccountSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to updateHmacKey. */
+        public UnaryCallSettings.Builder<UpdateHmacKeyRequest, HmacKeyMetadata>
+            updateHmacKeySettings() {
+          return getStubSettingsBuilder().updateHmacKeySettings();
+        }
+
+        @Override
+        public StorageSettings build() throws IOException {
+          return new StorageSettings(this);
+        }
+
+        /** Returns the builder for the settings used for calls to writeObject. */
+        public StreamingCallSettings.Builder<WriteObjectRequest, WriteObjectResponse>
+            writeObjectSettings() {
+          return getStubSettingsBuilder().writeObjectSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to listObjects. */
+        public PagedCallSettings.Builder<
+                ListObjectsRequest, ListObjectsResponse, ListObjectsPagedResponse>
+            listObjectsSettings() {
+          return getStubSettingsBuilder().listObjectsSettings();
+        }
+
+        /**
+         * Applies the given settings updater function to all of the unary API methods in this service.
+         *
+         * <p>Note: This method does not support applying settings to streaming methods.
+         */
+        public Builder applyToAllUnaryMethods(
+            ApiFunction<UnaryCallSettings.Builder<?, ?>, Void> settingsUpdater) {
+          super.applyToAllUnaryMethods(
+              getStubSettingsBuilder().unaryMethodSettingsBuilders(), settingsUpdater);
+          return this;
+        }
+
+        /** Returns the builder for the settings used for calls to createHmacKey. */
+        public UnaryCallSettings.Builder<CreateHmacKeyRequest, CreateHmacKeyResponse>
+            createHmacKeySettings() {
+          return getStubSettingsBuilder().createHmacKeySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to getHmacKey. */
+        public UnaryCallSettings.Builder<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeySettings() {
+          return getStubSettingsBuilder().getHmacKeySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to updateBucket. */
+        public UnaryCallSettings.Builder<UpdateBucketRequest, Bucket> updateBucketSettings() {
+          return getStubSettingsBuilder().updateBucketSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to createBucket. */
+        public UnaryCallSettings.Builder<CreateBucketRequest, Bucket> createBucketSettings() {
+          return getStubSettingsBuilder().createBucketSettings();
+        }
+
+        protected Builder(ClientContext clientContext) {
+          super(StorageStubSettings.newBuilder(clientContext));
+        }
+
+        private static Builder createDefault() {
+          return new Builder(StorageStubSettings.newBuilder());
+        }
+
+        /** Returns the builder for the settings used for calls to listNotifications. */
+        public PagedCallSettings.Builder<
+                ListNotificationsRequest, ListNotificationsResponse, ListNotificationsPagedResponse>
+            listNotificationsSettings() {
+          return getStubSettingsBuilder().listNotificationsSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to deleteHmacKey. */
+        public UnaryCallSettings.Builder<DeleteHmacKeyRequest, Empty> deleteHmacKeySettings() {
+          return getStubSettingsBuilder().deleteHmacKeySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to lockBucketRetentionPolicy. */
+        public UnaryCallSettings.Builder<LockBucketRetentionPolicyRequest, Bucket>
+            lockBucketRetentionPolicySettings() {
+          return getStubSettingsBuilder().lockBucketRetentionPolicySettings();
+        }
+
+        /** Returns the builder for the settings used for calls to listHmacKeys. */
+        public PagedCallSettings.Builder<
+                ListHmacKeysRequest, ListHmacKeysResponse, ListHmacKeysPagedResponse>
+            listHmacKeysSettings() {
+          return getStubSettingsBuilder().listHmacKeysSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to getBucket. */
+        public UnaryCallSettings.Builder<GetBucketRequest, Bucket> getBucketSettings() {
+          return getStubSettingsBuilder().getBucketSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to createNotification. */
+        public UnaryCallSettings.Builder<CreateNotificationRequest, Notification>
+            createNotificationSettings() {
+          return getStubSettingsBuilder().createNotificationSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to getObject. */
+        public UnaryCallSettings.Builder<GetObjectRequest, Object> getObjectSettings() {
+          return getStubSettingsBuilder().getObjectSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to queryWriteStatus. */
+        public UnaryCallSettings.Builder<QueryWriteStatusRequest, QueryWriteStatusResponse>
+            queryWriteStatusSettings() {
+          return getStubSettingsBuilder().queryWriteStatusSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to updateObject. */
+        public UnaryCallSettings.Builder<UpdateObjectRequest, Object> updateObjectSettings() {
+          return getStubSettingsBuilder().updateObjectSettings();
+        }
+
+        protected Builder() throws IOException {
+          this(((ClientContext) null));
+        }
+
+        /** Returns the builder for the settings used for calls to deleteBucket. */
+        public UnaryCallSettings.Builder<DeleteBucketRequest, Empty> deleteBucketSettings() {
+          return getStubSettingsBuilder().deleteBucketSettings();
+        }
+
+        protected Builder(StorageStubSettings.Builder stubSettings) {
+          super(stubSettings);
+        }
+
+        /** Returns the builder for the settings used for calls to getNotification. */
+        public UnaryCallSettings.Builder<GetNotificationRequest, Notification>
+            getNotificationSettings() {
+          return getStubSettingsBuilder().getNotificationSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to deleteObject. */
+        public UnaryCallSettings.Builder<DeleteObjectRequest, Empty> deleteObjectSettings() {
+          return getStubSettingsBuilder().deleteObjectSettings();
+        }
+
+        /** Returns the builder for the settings used for calls to composeObject. */
+        public UnaryCallSettings.Builder<ComposeObjectRequest, Object> composeObjectSettings() {
+          return getStubSettingsBuilder().composeObjectSettings();
+        }
+
     }
 
-    protected Builder(ClientContext clientContext) {
-      super(StorageStubSettings.newBuilder(clientContext));
+    /** Returns the object with the settings used for calls to getServiceAccount. */
+    public UnaryCallSettings<GetServiceAccountRequest, ServiceAccount> getServiceAccountSettings() {
+      return ((StorageStubSettings) getStubSettings()).getServiceAccountSettings();
     }
 
-    protected Builder(StorageSettings settings) {
-      super(settings.getStubSettings().toBuilder());
+    @BetaApi("The surface for customizing headers is not stable yet and may change in the future.")
+    public static ApiClientHeaderProvider.Builder defaultApiClientHeaderProviderBuilder() {
+      return StorageStubSettings.defaultApiClientHeaderProviderBuilder();
     }
 
-    protected Builder(StorageStubSettings.Builder stubSettings) {
-      super(stubSettings);
+    /** Returns a builder for the default credentials for this service. */
+    public static GoogleCredentialsProvider.Builder defaultCredentialsProviderBuilder() {
+      return StorageStubSettings.defaultCredentialsProviderBuilder();
     }
 
-    private static Builder createDefault() {
-      return new Builder(StorageStubSettings.newBuilder());
+    /** Returns the default service scopes. */
+    public static List<String> getDefaultServiceScopes() {
+      return StorageStubSettings.getDefaultServiceScopes();
     }
 
-    public StorageStubSettings.Builder getStubSettingsBuilder() {
-      return ((StorageStubSettings.Builder) getStubSettings());
+    /** Returns a builder for the default ChannelProvider for this service. */
+    public static InstantiatingGrpcChannelProvider.Builder defaultGrpcTransportProviderBuilder() {
+      return StorageStubSettings.defaultGrpcTransportProviderBuilder();
     }
 
-    /**
-     * Applies the given settings updater function to all of the unary API methods in this service.
-     *
-     * <p>Note: This method does not support applying settings to streaming methods.
-     */
-    public Builder applyToAllUnaryMethods(
-        ApiFunction<UnaryCallSettings.Builder<?, ?>, Void> settingsUpdater) {
-      super.applyToAllUnaryMethods(
-          getStubSettingsBuilder().unaryMethodSettingsBuilders(), settingsUpdater);
-      return this;
+    /** Returns the object with the settings used for calls to composeObject. */
+    public UnaryCallSettings<ComposeObjectRequest, Object> composeObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).composeObjectSettings();
     }
 
-    /** Returns the builder for the settings used for calls to deleteBucket. */
-    public UnaryCallSettings.Builder<DeleteBucketRequest, Empty> deleteBucketSettings() {
-      return getStubSettingsBuilder().deleteBucketSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getBucket. */
-    public UnaryCallSettings.Builder<GetBucketRequest, Bucket> getBucketSettings() {
-      return getStubSettingsBuilder().getBucketSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to createBucket. */
-    public UnaryCallSettings.Builder<CreateBucketRequest, Bucket> createBucketSettings() {
-      return getStubSettingsBuilder().createBucketSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to listBuckets. */
-    public PagedCallSettings.Builder<
-            ListBucketsRequest, ListBucketsResponse, ListBucketsPagedResponse>
-        listBucketsSettings() {
-      return getStubSettingsBuilder().listBucketsSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to lockBucketRetentionPolicy. */
-    public UnaryCallSettings.Builder<LockBucketRetentionPolicyRequest, Bucket>
-        lockBucketRetentionPolicySettings() {
-      return getStubSettingsBuilder().lockBucketRetentionPolicySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getIamPolicy. */
-    public UnaryCallSettings.Builder<GetIamPolicyRequest, Policy> getIamPolicySettings() {
-      return getStubSettingsBuilder().getIamPolicySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to setIamPolicy. */
-    public UnaryCallSettings.Builder<SetIamPolicyRequest, Policy> setIamPolicySettings() {
-      return getStubSettingsBuilder().setIamPolicySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to testIamPermissions. */
-    public UnaryCallSettings.Builder<TestIamPermissionsRequest, TestIamPermissionsResponse>
-        testIamPermissionsSettings() {
-      return getStubSettingsBuilder().testIamPermissionsSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to updateBucket. */
-    public UnaryCallSettings.Builder<UpdateBucketRequest, Bucket> updateBucketSettings() {
-      return getStubSettingsBuilder().updateBucketSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to deleteNotification. */
-    public UnaryCallSettings.Builder<DeleteNotificationRequest, Empty>
-        deleteNotificationSettings() {
-      return getStubSettingsBuilder().deleteNotificationSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getNotification. */
-    public UnaryCallSettings.Builder<GetNotificationRequest, Notification>
-        getNotificationSettings() {
-      return getStubSettingsBuilder().getNotificationSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to createNotification. */
-    public UnaryCallSettings.Builder<CreateNotificationRequest, Notification>
-        createNotificationSettings() {
-      return getStubSettingsBuilder().createNotificationSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to listNotifications. */
-    public PagedCallSettings.Builder<
+    /** Returns the object with the settings used for calls to listNotifications. */
+    public PagedCallSettings<
             ListNotificationsRequest, ListNotificationsResponse, ListNotificationsPagedResponse>
         listNotificationsSettings() {
-      return getStubSettingsBuilder().listNotificationsSettings();
+      return ((StorageStubSettings) getStubSettings()).listNotificationsSettings();
     }
 
-    /** Returns the builder for the settings used for calls to composeObject. */
-    public UnaryCallSettings.Builder<ComposeObjectRequest, Object> composeObjectSettings() {
-      return getStubSettingsBuilder().composeObjectSettings();
+    /** Returns the object with the settings used for calls to getNotification. */
+    public UnaryCallSettings<GetNotificationRequest, Notification> getNotificationSettings() {
+      return ((StorageStubSettings) getStubSettings()).getNotificationSettings();
     }
 
-    /** Returns the builder for the settings used for calls to deleteObject. */
-    public UnaryCallSettings.Builder<DeleteObjectRequest, Empty> deleteObjectSettings() {
-      return getStubSettingsBuilder().deleteObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getObject. */
-    public UnaryCallSettings.Builder<GetObjectRequest, Object> getObjectSettings() {
-      return getStubSettingsBuilder().getObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to readObject. */
-    public ServerStreamingCallSettings.Builder<ReadObjectRequest, ReadObjectResponse>
-        readObjectSettings() {
-      return getStubSettingsBuilder().readObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to updateObject. */
-    public UnaryCallSettings.Builder<UpdateObjectRequest, Object> updateObjectSettings() {
-      return getStubSettingsBuilder().updateObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to writeObject. */
-    public StreamingCallSettings.Builder<WriteObjectRequest, WriteObjectResponse>
-        writeObjectSettings() {
-      return getStubSettingsBuilder().writeObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to listObjects. */
-    public PagedCallSettings.Builder<
-            ListObjectsRequest, ListObjectsResponse, ListObjectsPagedResponse>
-        listObjectsSettings() {
-      return getStubSettingsBuilder().listObjectsSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to rewriteObject. */
-    public UnaryCallSettings.Builder<RewriteObjectRequest, RewriteResponse>
-        rewriteObjectSettings() {
-      return getStubSettingsBuilder().rewriteObjectSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to startResumableWrite. */
-    public UnaryCallSettings.Builder<StartResumableWriteRequest, StartResumableWriteResponse>
-        startResumableWriteSettings() {
-      return getStubSettingsBuilder().startResumableWriteSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to queryWriteStatus. */
-    public UnaryCallSettings.Builder<QueryWriteStatusRequest, QueryWriteStatusResponse>
-        queryWriteStatusSettings() {
-      return getStubSettingsBuilder().queryWriteStatusSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getServiceAccount. */
-    public UnaryCallSettings.Builder<GetServiceAccountRequest, ServiceAccount>
-        getServiceAccountSettings() {
-      return getStubSettingsBuilder().getServiceAccountSettings();
-    }
-
-    /** Returns the builder for the settings used for calls to createHmacKey. */
-    public UnaryCallSettings.Builder<CreateHmacKeyRequest, CreateHmacKeyResponse>
-        createHmacKeySettings() {
-      return getStubSettingsBuilder().createHmacKeySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to deleteHmacKey. */
-    public UnaryCallSettings.Builder<DeleteHmacKeyRequest, Empty> deleteHmacKeySettings() {
-      return getStubSettingsBuilder().deleteHmacKeySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to getHmacKey. */
-    public UnaryCallSettings.Builder<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeySettings() {
-      return getStubSettingsBuilder().getHmacKeySettings();
-    }
-
-    /** Returns the builder for the settings used for calls to listHmacKeys. */
-    public PagedCallSettings.Builder<
-            ListHmacKeysRequest, ListHmacKeysResponse, ListHmacKeysPagedResponse>
+    /** Returns the object with the settings used for calls to listHmacKeys. */
+    public PagedCallSettings<ListHmacKeysRequest, ListHmacKeysResponse, ListHmacKeysPagedResponse>
         listHmacKeysSettings() {
-      return getStubSettingsBuilder().listHmacKeysSettings();
+      return ((StorageStubSettings) getStubSettings()).listHmacKeysSettings();
     }
 
-    /** Returns the builder for the settings used for calls to updateHmacKey. */
-    public UnaryCallSettings.Builder<UpdateHmacKeyRequest, HmacKeyMetadata>
-        updateHmacKeySettings() {
-      return getStubSettingsBuilder().updateHmacKeySettings();
+    /** Returns a new builder for this class. */
+    public static Builder newBuilder(ClientContext clientContext) {
+      return new Builder(clientContext);
     }
 
-    @Override
-    public StorageSettings build() throws IOException {
-      return new StorageSettings(this);
+    /** Returns a new builder for this class. */
+    public static Builder newBuilder() {
+      return Builder.createDefault();
     }
-  }
+
+    /** Returns the object with the settings used for calls to createNotification. */
+    public UnaryCallSettings<CreateNotificationRequest, Notification> createNotificationSettings() {
+      return ((StorageStubSettings) getStubSettings()).createNotificationSettings();
+    }
+
+    /** Returns the object with the settings used for calls to queryWriteStatus. */
+    public UnaryCallSettings<QueryWriteStatusRequest, QueryWriteStatusResponse>
+        queryWriteStatusSettings() {
+      return ((StorageStubSettings) getStubSettings()).queryWriteStatusSettings();
+    }
+
+    /** Returns the object with the settings used for calls to deleteNotification. */
+    public UnaryCallSettings<DeleteNotificationRequest, Empty> deleteNotificationSettings() {
+      return ((StorageStubSettings) getStubSettings()).deleteNotificationSettings();
+    }
+
+    /** Returns a builder for the default ExecutorProvider for this service. */
+    public static InstantiatingExecutorProvider.Builder defaultExecutorProviderBuilder() {
+      return StorageStubSettings.defaultExecutorProviderBuilder();
+    }
+
+    /** Returns the object with the settings used for calls to getHmacKey. */
+    public UnaryCallSettings<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeySettings() {
+      return ((StorageStubSettings) getStubSettings()).getHmacKeySettings();
+    }
+
+    /** Returns the object with the settings used for calls to deleteObject. */
+    public UnaryCallSettings<DeleteObjectRequest, Empty> deleteObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).deleteObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to updateHmacKey. */
+    public UnaryCallSettings<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeySettings() {
+      return ((StorageStubSettings) getStubSettings()).updateHmacKeySettings();
+    }
+
+    /** Returns the object with the settings used for calls to createBucket. */
+    public UnaryCallSettings<CreateBucketRequest, Bucket> createBucketSettings() {
+      return ((StorageStubSettings) getStubSettings()).createBucketSettings();
+    }
+
+    /** Returns the object with the settings used for calls to rewriteObject. */
+    public UnaryCallSettings<RewriteObjectRequest, RewriteResponse> rewriteObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).rewriteObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to readObject. */
+    public ServerStreamingCallSettings<ReadObjectRequest, ReadObjectResponse> readObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).readObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to createHmacKey. */
+    public UnaryCallSettings<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeySettings() {
+      return ((StorageStubSettings) getStubSettings()).createHmacKeySettings();
+    }
+
+    public static TransportChannelProvider defaultTransportChannelProvider() {
+      return StorageStubSettings.defaultTransportChannelProvider();
+    }
+
+    /** Returns the object with the settings used for calls to deleteBucket. */
+    public UnaryCallSettings<DeleteBucketRequest, Empty> deleteBucketSettings() {
+      return ((StorageStubSettings) getStubSettings()).deleteBucketSettings();
+    }
+
+    /** Returns the default service endpoint. */
+    public static String getDefaultEndpoint() {
+      return StorageStubSettings.getDefaultEndpoint();
+    }
+
+    protected StorageSettings(Builder settingsBuilder) throws IOException {
+      super(settingsBuilder);
+    }
+
+    /** Returns the object with the settings used for calls to setIamPolicy. */
+    public UnaryCallSettings<SetIamPolicyRequest, Policy> setIamPolicySettings() {
+      return ((StorageStubSettings) getStubSettings()).setIamPolicySettings();
+    }
+
+    /** Returns the object with the settings used for calls to testIamPermissions. */
+    public UnaryCallSettings<TestIamPermissionsRequest, TestIamPermissionsResponse>
+        testIamPermissionsSettings() {
+      return ((StorageStubSettings) getStubSettings()).testIamPermissionsSettings();
+    }
+
+    /** Returns the object with the settings used for calls to updateObject. */
+    public UnaryCallSettings<UpdateObjectRequest, Object> updateObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).updateObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to getBucket. */
+    public UnaryCallSettings<GetBucketRequest, Bucket> getBucketSettings() {
+      return ((StorageStubSettings) getStubSettings()).getBucketSettings();
+    }
+
+    /** Returns the object with the settings used for calls to startResumableWrite. */
+    public UnaryCallSettings<StartResumableWriteRequest, StartResumableWriteResponse>
+        startResumableWriteSettings() {
+      return ((StorageStubSettings) getStubSettings()).startResumableWriteSettings();
+    }
+
+    /** Returns the object with the settings used for calls to deleteHmacKey. */
+    public UnaryCallSettings<DeleteHmacKeyRequest, Empty> deleteHmacKeySettings() {
+      return ((StorageStubSettings) getStubSettings()).deleteHmacKeySettings();
+    }
+
+    /** Returns the object with the settings used for calls to updateBucket. */
+    public UnaryCallSettings<UpdateBucketRequest, Bucket> updateBucketSettings() {
+      return ((StorageStubSettings) getStubSettings()).updateBucketSettings();
+    }
+
+    /** Returns the object with the settings used for calls to getIamPolicy. */
+    public UnaryCallSettings<GetIamPolicyRequest, Policy> getIamPolicySettings() {
+      return ((StorageStubSettings) getStubSettings()).getIamPolicySettings();
+    }
+
+    /** Returns the object with the settings used for calls to getObject. */
+    public UnaryCallSettings<GetObjectRequest, Object> getObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).getObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to lockBucketRetentionPolicy. */
+    public UnaryCallSettings<LockBucketRetentionPolicyRequest, Bucket>
+        lockBucketRetentionPolicySettings() {
+      return ((StorageStubSettings) getStubSettings()).lockBucketRetentionPolicySettings();
+    }
+
+    /** Returns the object with the settings used for calls to listBuckets. */
+    public PagedCallSettings<ListBucketsRequest, ListBucketsResponse, ListBucketsPagedResponse>
+        listBucketsSettings() {
+      return ((StorageStubSettings) getStubSettings()).listBucketsSettings();
+    }
+
+    /** Returns the object with the settings used for calls to writeObject. */
+    public StreamingCallSettings<WriteObjectRequest, WriteObjectResponse> writeObjectSettings() {
+      return ((StorageStubSettings) getStubSettings()).writeObjectSettings();
+    }
+
+    /** Returns the object with the settings used for calls to listObjects. */
+    public PagedCallSettings<ListObjectsRequest, ListObjectsResponse, ListObjectsPagedResponse>
+        listObjectsSettings() {
+      return ((StorageStubSettings) getStubSettings()).listObjectsSettings();
+    }
+
+    /** Returns a builder containing all the values of this settings class. */
+    public Builder toBuilder() {
+      return new Builder(this);
+    }
+
+    public static final StorageSettings create(StorageStubSettings stub) throws IOException {
+      return new Builder(stub.toBuilder()).build();
+    }
+
 }

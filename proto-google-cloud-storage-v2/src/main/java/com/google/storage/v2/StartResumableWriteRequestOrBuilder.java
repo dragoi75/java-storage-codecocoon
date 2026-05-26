@@ -23,73 +23,78 @@ public interface StartResumableWriteRequestOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.StartResumableWriteRequest)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The destination bucket, object, and metadata, as well as any preconditions.
-   * </pre>
-   *
-   * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-   *
-   * @return Whether the writeObjectSpec field is set.
-   */
-  boolean hasWriteObjectSpec();
-  /**
-   *
-   *
-   * <pre>
-   * The destination bucket, object, and metadata, as well as any preconditions.
-   * </pre>
-   *
-   * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-   *
-   * @return The writeObjectSpec.
-   */
-  com.google.storage.v2.WriteObjectSpec getWriteObjectSpec();
-  /**
-   *
-   *
-   * <pre>
-   * The destination bucket, object, and metadata, as well as any preconditions.
-   * </pre>
-   *
-   * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
-   */
-  com.google.storage.v2.WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder();
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    CommonObjectRequestParams getCommonObjectRequestParams();
 
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-   *
-   * @return Whether the commonObjectRequestParams field is set.
-   */
-  boolean hasCommonObjectRequestParams();
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-   *
-   * @return The commonObjectRequestParams.
-   */
-  com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams();
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
-   */
-  com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder();
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    boolean hasCommonObjectRequestParams();
+
+    /**
+     *
+     *
+     * <pre>
+     * The destination bucket, object, and metadata, as well as any preconditions.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     *
+     * @return Whether the writeObjectSpec field is set.
+     */
+    boolean hasWriteObjectSpec();
+
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 3;</code>
+     */
+    CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder();
+
+    /**
+     *
+     *
+     * <pre>
+     * The destination bucket, object, and metadata, as well as any preconditions.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     */
+    WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder();
+
+    /**
+     *
+     *
+     * <pre>
+     * The destination bucket, object, and metadata, as well as any preconditions.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 1;</code>
+     *
+     * @return The writeObjectSpec.
+     */
+    WriteObjectSpec getWriteObjectSpec();
+
 }

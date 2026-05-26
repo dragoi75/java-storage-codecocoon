@@ -48,10 +48,191 @@ public class ObjectCopyWriter implements Restorable<ObjectCopyWriter> {
 
     private RewriteResult rewriteResult;
 
+    static class RewriteState implements RestorableState<ObjectCopyWriter>, Serializable {
+
+        private static final long serialVersionUID = 1693964441435822700L;
+
+        private final StorageClientOptions clientOptions;
+
+        private final BlobId originBlobId;
+
+        private final Map<StorageRpcClient.StorageOption, ?> originOptions;
+
+        private final boolean forceOverwrite;
+
+        private final BlobMetadata destinationBlob;
+
+        private final Map<StorageRpcClient.StorageOption, ?> destinationOptions;
+
+        private final BlobMetadata finalMetadata;
+
+        private final long contentLength;
+
+        private final boolean completed;
+
+        private final String operationToken;
+
+        private final long bytesTransferredTotal;
+
+        private final Long megabytesPerChunk;
+
+        static class RewriteResponseBuilder {
+
+            private final StorageClientOptions clientOptions;
+
+            private final BlobId originBlobId;
+
+            private final Map<StorageRpcClient.StorageOption, ?> originOptions;
+
+            private final boolean forceOverwrite;
+
+            private final BlobMetadata destinationBlob;
+
+            private final Map<StorageRpcClient.StorageOption, ?> destinationOptions;
+
+            private BlobMetadata finalMetadata;
+
+            private long contentLength;
+
+            private boolean completed;
+
+            private String operationToken;
+
+            private long bytesTransferredTotal;
+
+            private Long megabytesPerChunk;
+
+            RewriteResponseBuilder setMegabytesCopiedPerChunk(Long megabytesPerChunk) {
+                this.megabytesPerChunk = megabytesPerChunk;
+                return this;
+            }
+
+            RewriteResponseBuilder setTotalBytesRewritten(long rewrittenBytesCount) {
+                this.bytesTransferredTotal = rewrittenBytesCount;
+                return this;
+            }
+
+            RewriteResponseBuilder setBlobSize(long contentLength) {
+                this.contentLength = contentLength;
+                return this;
+            }
+
+            RewriteResponseBuilder setRewriteToken(String operationToken) {
+                this.operationToken = operationToken;
+                return this;
+            }
+
+            RestorableState<ObjectCopyWriter> create() {
+                return new RewriteState(this);
+            }
+
+            private RewriteResponseBuilder(StorageClientOptions clientOptions, BlobId originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean forceOverwrite, BlobMetadata destinationBlob, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
+                this.clientOptions = clientOptions;
+                this.originBlobId = originBlobId;
+                this.originOptions = originOptions;
+                this.forceOverwrite = forceOverwrite;
+                this.destinationBlob = destinationBlob;
+                this.destinationOptions = destinationOptions;
+            }
+
+            RewriteResponseBuilder setResult(BlobMetadata finalMetadata) {
+                this.finalMetadata = finalMetadata;
+                return this;
+            }
+
+            RewriteResponseBuilder setIsDone(boolean completed) {
+                this.completed = completed;
+                return this;
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("source", originBlobId).add("overrideInfo", forceOverwrite).add("target", destinationBlob).add("result", finalMetadata).add("blobSize", contentLength).add("isDone", completed).add("rewriteToken", operationToken).add("totalBytesCopied", bytesTransferredTotal).add("megabytesCopiedPerChunk", megabytesPerChunk).toString();
+        }
+
+        @Override
+        public boolean equals(Object candidate) {
+            if (null == candidate) {
+                return false;
+            }
+            if (!(candidate instanceof RewriteState)) {
+                return false;
+            }
+            final RewriteState thatState = (RewriteState) candidate;
+            return Objects.equals(this.clientOptions, thatState.clientOptions) && Objects.equals(this.originBlobId, thatState.originBlobId) && Objects.equals(this.originOptions, thatState.originOptions) && Objects.equals(this.forceOverwrite, thatState.forceOverwrite) && Objects.equals(this.destinationBlob, thatState.destinationBlob) && Objects.equals(this.destinationOptions, thatState.destinationOptions) && Objects.equals(this.finalMetadata, thatState.finalMetadata) && Objects.equals(this.operationToken, thatState.operationToken) && Objects.equals(this.megabytesPerChunk, thatState.megabytesPerChunk) && thatState.contentLength == this.contentLength && thatState.completed == this.completed && thatState.bytesTransferredTotal == this.bytesTransferredTotal;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(clientOptions, originBlobId, originOptions, forceOverwrite, destinationBlob, destinationOptions, finalMetadata, contentLength, completed, megabytesPerChunk, operationToken, bytesTransferredTotal);
+        }
+
+        RewriteState(RewriteResponseBuilder responseFactory) {
+            this.clientOptions = responseFactory.clientOptions;
+            this.originBlobId = responseFactory.originBlobId;
+            this.originOptions = responseFactory.originOptions;
+            this.forceOverwrite = responseFactory.forceOverwrite;
+            this.destinationBlob = responseFactory.destinationBlob;
+            this.destinationOptions = responseFactory.destinationOptions;
+            this.finalMetadata = responseFactory.finalMetadata;
+            this.contentLength = responseFactory.contentLength;
+            this.completed = responseFactory.completed;
+            this.operationToken = responseFactory.operationToken;
+            this.bytesTransferredTotal = responseFactory.bytesTransferredTotal;
+            this.megabytesPerChunk = responseFactory.megabytesPerChunk;
+        }
+
+        @Override
+        public ObjectCopyWriter restore() {
+            RewriteOperationRequest operationRequest = new RewriteOperationRequest(originBlobId.toProto(), originOptions, forceOverwrite, destinationBlob.toProto(), destinationOptions, megabytesPerChunk);
+            RewriteResult rewriteResult = new RewriteResult(operationRequest, null != finalMetadata ? finalMetadata.toProto() : null, contentLength, completed, operationToken, bytesTransferredTotal);
+            return new ObjectCopyWriter(clientOptions, rewriteResult);
+        }
+
+        static RewriteResponseBuilder createBuilder(StorageClientOptions clientOptions, BlobId originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean forceOverwrite, BlobMetadata destinationBlob, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
+            return new RewriteResponseBuilder(clientOptions, originBlobId, originOptions, forceOverwrite, destinationBlob, destinationOptions);
+        }
+
+    }
+
+    @Override
+    public RestorableState<ObjectCopyWriter> capture() {
+        return RewriteState.createBuilder(clientOptions, BlobId.fromProto(rewriteResult.rewriteRequest.source), rewriteResult.rewriteRequest.sourceOptions, rewriteResult.rewriteRequest.overrideInfo, BlobMetadata.fromProto(rewriteResult.rewriteRequest.target), rewriteResult.rewriteRequest.targetOptions).setResult(null != rewriteResult.result ? BlobMetadata.fromProto(rewriteResult.result) : null).setBlobSize(getBlobSize()).setIsDone(isDone()).setMegabytesCopiedPerChunk(rewriteResult.rewriteRequest.megabytesRewrittenPerCall).setRewriteToken(rewriteResult.rewriteToken).setTotalBytesRewritten(getTotalBytesCopied()).create();
+    }
+
+    /**
+     * Copies the next chunk of the blob. An RPC is issued only if copy has not finished yet ({@link
+     * #isDone} returns {@code false}).
+     *
+     * @throws StorageServiceException upon failure
+     */
+    public void copySegment() {
+        if (!isDone()) {
+            RewriteOperationRequest operationRequest = rewriteResult.rewriteRequest;
+            this.rewriteResult = Retrying.run(clientOptions, clientOptions.getRetryAlgorithmManager().getForObjectsRewrite(operationRequest), () -> rpcClient.continueRewrite(rewriteResult), Function.identity());
+        }
+    }
+
+    /**
+     * Returns the number of bytes copied.
+     */
+    public long getTotalBytesCopied() {
+        return rewriteResult.totalBytesRewritten;
+    }
+
     ObjectCopyWriter(StorageClientOptions clientOptions, RewriteResult rewriteResult) {
         this.clientOptions = clientOptions;
         this.rewriteResult = rewriteResult;
         this.rpcClient = clientOptions.getStorageRpcV1();
+    }
+
+    /**
+     * Returns {@code true} if blob copy has finished, {@code false} otherwise.
+     */
+    public boolean isDone() {
+        return rewriteResult.isDone;
     }
 
     /**
@@ -82,182 +263,4 @@ public class ObjectCopyWriter implements Restorable<ObjectCopyWriter> {
         return rewriteResult.blobSize;
     }
 
-    /**
-     * Returns {@code true} if blob copy has finished, {@code false} otherwise.
-     */
-    public boolean isDone() {
-        return rewriteResult.isDone;
-    }
-
-    /**
-     * Returns the number of bytes copied.
-     */
-    public long getTotalBytesCopied() {
-        return rewriteResult.totalBytesRewritten;
-    }
-
-    /**
-     * Copies the next chunk of the blob. An RPC is issued only if copy has not finished yet ({@link
-     * #isDone} returns {@code false}).
-     *
-     * @throws StorageServiceException upon failure
-     */
-    public void copySegment() {
-        if (!isDone()) {
-            StorageRpcClient.RewriteOperationRequest operationRequest = rewriteResult.rewriteRequest;
-            this.rewriteResult = Retrying.run(clientOptions, clientOptions.getRetryAlgorithmManager().getForObjectsRewrite(operationRequest), () -> rpcClient.continueRewrite(rewriteResult), Function.identity());
-        }
-    }
-
-    @Override
-    public RestorableState<ObjectCopyWriter> capture() {
-        return RewriteState.createBuilder(clientOptions, BlobId.fromProto(rewriteResult.rewriteRequest.source), rewriteResult.rewriteRequest.sourceOptions, rewriteResult.rewriteRequest.overrideInfo, BlobMetadata.fromProto(rewriteResult.rewriteRequest.target), rewriteResult.rewriteRequest.targetOptions).setResult(null != rewriteResult.result ? BlobMetadata.fromProto(rewriteResult.result) : null).setBlobSize(getBlobSize()).setIsDone(isDone()).setMegabytesCopiedPerChunk(rewriteResult.rewriteRequest.megabytesRewrittenPerCall).setRewriteToken(rewriteResult.rewriteToken).setTotalBytesRewritten(getTotalBytesCopied()).create();
-    }
-
-    static class RewriteState implements RestorableState<ObjectCopyWriter>, Serializable {
-
-        private static final long serialVersionUID = 1693964441435822700L;
-
-        private final StorageClientOptions clientOptions;
-
-        private final BlobId originBlobId;
-
-        private final Map<StorageRpcClient.StorageOption, ?> originOptions;
-
-        private final boolean forceOverwrite;
-
-        private final BlobMetadata destinationBlob;
-
-        private final Map<StorageRpcClient.StorageOption, ?> destinationOptions;
-
-        private final BlobMetadata finalMetadata;
-
-        private final long contentLength;
-
-        private final boolean completed;
-
-        private final String operationToken;
-
-        private final long bytesTransferredTotal;
-
-        private final Long megabytesPerChunk;
-
-        RewriteState(RewriteResponseBuilder responseFactory) {
-            this.clientOptions = responseFactory.clientOptions;
-            this.originBlobId = responseFactory.originBlobId;
-            this.originOptions = responseFactory.originOptions;
-            this.forceOverwrite = responseFactory.forceOverwrite;
-            this.destinationBlob = responseFactory.destinationBlob;
-            this.destinationOptions = responseFactory.destinationOptions;
-            this.finalMetadata = responseFactory.finalMetadata;
-            this.contentLength = responseFactory.contentLength;
-            this.completed = responseFactory.completed;
-            this.operationToken = responseFactory.operationToken;
-            this.bytesTransferredTotal = responseFactory.bytesTransferredTotal;
-            this.megabytesPerChunk = responseFactory.megabytesPerChunk;
-        }
-
-        static class RewriteResponseBuilder {
-
-            private final StorageClientOptions clientOptions;
-
-            private final BlobId originBlobId;
-
-            private final Map<StorageRpcClient.StorageOption, ?> originOptions;
-
-            private final boolean forceOverwrite;
-
-            private final BlobMetadata destinationBlob;
-
-            private final Map<StorageRpcClient.StorageOption, ?> destinationOptions;
-
-            private BlobMetadata finalMetadata;
-
-            private long contentLength;
-
-            private boolean completed;
-
-            private String operationToken;
-
-            private long bytesTransferredTotal;
-
-            private Long megabytesPerChunk;
-
-            private RewriteResponseBuilder(StorageClientOptions clientOptions, BlobId originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean forceOverwrite, BlobMetadata destinationBlob, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
-                this.clientOptions = clientOptions;
-                this.originBlobId = originBlobId;
-                this.originOptions = originOptions;
-                this.forceOverwrite = forceOverwrite;
-                this.destinationBlob = destinationBlob;
-                this.destinationOptions = destinationOptions;
-            }
-
-            RewriteResponseBuilder setResult(BlobMetadata finalMetadata) {
-                this.finalMetadata = finalMetadata;
-                return this;
-            }
-
-            RewriteResponseBuilder setBlobSize(long contentLength) {
-                this.contentLength = contentLength;
-                return this;
-            }
-
-            RewriteResponseBuilder setIsDone(boolean completed) {
-                this.completed = completed;
-                return this;
-            }
-
-            RewriteResponseBuilder setRewriteToken(String operationToken) {
-                this.operationToken = operationToken;
-                return this;
-            }
-
-            RewriteResponseBuilder setTotalBytesRewritten(long rewrittenBytesCount) {
-                this.bytesTransferredTotal = rewrittenBytesCount;
-                return this;
-            }
-
-            RewriteResponseBuilder setMegabytesCopiedPerChunk(Long megabytesPerChunk) {
-                this.megabytesPerChunk = megabytesPerChunk;
-                return this;
-            }
-
-            RestorableState<ObjectCopyWriter> create() {
-                return new RewriteState(this);
-            }
-        }
-
-        static RewriteResponseBuilder createBuilder(StorageClientOptions clientOptions, BlobId originBlobId, Map<StorageRpcClient.StorageOption, ?> originOptions, boolean forceOverwrite, BlobMetadata destinationBlob, Map<StorageRpcClient.StorageOption, ?> destinationOptions) {
-            return new RewriteResponseBuilder(clientOptions, originBlobId, originOptions, forceOverwrite, destinationBlob, destinationOptions);
-        }
-
-        @Override
-        public ObjectCopyWriter restore() {
-            RewriteOperationRequest operationRequest = new RewriteOperationRequest(originBlobId.toProto(), originOptions, forceOverwrite, destinationBlob.toProto(), destinationOptions, megabytesPerChunk);
-            RewriteResult rewriteResult = new StorageRpcClient.RewriteResult(operationRequest, null != finalMetadata ? finalMetadata.toProto() : null, contentLength, completed, operationToken, bytesTransferredTotal);
-            return new ObjectCopyWriter(clientOptions, rewriteResult);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(clientOptions, originBlobId, originOptions, forceOverwrite, destinationBlob, destinationOptions, finalMetadata, contentLength, completed, megabytesPerChunk, operationToken, bytesTransferredTotal);
-        }
-
-        @Override
-        public boolean equals(Object candidate) {
-            if (null == candidate) {
-                return false;
-            }
-            if (!(candidate instanceof RewriteState)) {
-                return false;
-            }
-            final RewriteState thatState = (RewriteState) candidate;
-            return Objects.equals(this.clientOptions, thatState.clientOptions) && Objects.equals(this.originBlobId, thatState.originBlobId) && Objects.equals(this.originOptions, thatState.originOptions) && Objects.equals(this.forceOverwrite, thatState.forceOverwrite) && Objects.equals(this.destinationBlob, thatState.destinationBlob) && Objects.equals(this.destinationOptions, thatState.destinationOptions) && Objects.equals(this.finalMetadata, thatState.finalMetadata) && Objects.equals(this.operationToken, thatState.operationToken) && Objects.equals(this.megabytesPerChunk, thatState.megabytesPerChunk) && thatState.contentLength == this.contentLength && thatState.completed == this.completed && thatState.bytesTransferredTotal == this.bytesTransferredTotal;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("source", originBlobId).add("overrideInfo", forceOverwrite).add("target", destinationBlob).add("result", finalMetadata).add("blobSize", contentLength).add("isDone", completed).add("rewriteToken", operationToken).add("totalBytesCopied", bytesTransferredTotal).add("megabytesCopiedPerChunk", megabytesPerChunk).toString();
-        }
-    }
 }

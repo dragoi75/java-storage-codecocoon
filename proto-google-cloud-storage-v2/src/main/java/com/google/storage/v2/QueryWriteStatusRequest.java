@@ -30,334 +30,15 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
 
     private static final long serialVersionUID = 0L;
 
-    // Use QueryWriteStatusRequest.newBuilder() to construct.
-    private QueryWriteStatusRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private QueryWriteStatusRequest() {
-        uploadId_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new QueryWriteStatusRequest();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private QueryWriteStatusRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            uploadId_ = s;
-                            break;
-                        }
-                    case 18:
-                        {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
-                            if (null != commonObjectRequestParams_) {
-                                subBuilder = commonObjectRequestParams_.toBuilder();
-                            }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(commonObjectRequestParams_);
-                                commonObjectRequestParams_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.QueryWriteStatusRequest.class, com.google.storage.v2.QueryWriteStatusRequest.Builder.class);
-    }
-
     public static final int UPLOAD_ID_FIELD_NUMBER = 1;
 
     private volatile java.lang.Object uploadId_;
-
-    /**
-     * <pre>
-     * Required. The name of the resume token for the object whose write status is being
-     * requested.
-     * </pre>
-     *
-     * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The uploadId.
-     */
-    @java.lang.Override
-    public java.lang.String getUploadId() {
-        java.lang.Object ref = uploadId_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            uploadId_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The name of the resume token for the object whose write status is being
-     * requested.
-     * </pre>
-     *
-     * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for uploadId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getUploadIdBytes() {
-        java.lang.Object ref = uploadId_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            uploadId_ = b;
-            return b;
-        }
-    }
 
     public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 2;
 
     private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
 
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, uploadId_);
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(2, getCommonObjectRequestParams());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, uploadId_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getCommonObjectRequestParams());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.QueryWriteStatusRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.QueryWriteStatusRequest other = (com.google.storage.v2.QueryWriteStatusRequest) obj;
-        if (!getUploadId().equals(other.getUploadId()))
-            return false;
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getUploadId().hashCode();
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.QueryWriteStatusRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -370,286 +51,13 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
     // @@protoc_insertion_point(builder_implements:google.storage.v2.QueryWriteStatusRequest)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.QueryWriteStatusRequestOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.QueryWriteStatusRequest.class, com.google.storage.v2.QueryWriteStatusRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.QueryWriteStatusRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            uploadId_ = "";
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.QueryWriteStatusRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusRequest build() {
-            com.google.storage.v2.QueryWriteStatusRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusRequest buildPartial() {
-            com.google.storage.v2.QueryWriteStatusRequest result = new com.google.storage.v2.QueryWriteStatusRequest(this);
-            result.uploadId_ = uploadId_;
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.QueryWriteStatusRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.QueryWriteStatusRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.QueryWriteStatusRequest other) {
-            if (com.google.storage.v2.QueryWriteStatusRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getUploadId().isEmpty()) {
-                uploadId_ = other.uploadId_;
-                onChanged();
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.QueryWriteStatusRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.QueryWriteStatusRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
         private java.lang.Object uploadId_ = "";
-
-        /**
-         * <pre>
-         * Required. The name of the resume token for the object whose write status is being
-         * requested.
-         * </pre>
-         *
-         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The uploadId.
-         */
-        public java.lang.String getUploadId() {
-            java.lang.Object ref = uploadId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                uploadId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the resume token for the object whose write status is being
-         * requested.
-         * </pre>
-         *
-         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for uploadId.
-         */
-        public com.google.protobuf.ByteString getUploadIdBytes() {
-            java.lang.Object ref = uploadId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                uploadId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the resume token for the object whose write status is being
-         * requested.
-         * </pre>
-         *
-         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            uploadId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the resume token for the object whose write status is being
-         * requested.
-         * </pre>
-         *
-         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearUploadId() {
-            uploadId_ = getDefaultInstance().getUploadId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The name of the resume token for the object whose write status is being
-         * requested.
-         * </pre>
-         *
-         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            uploadId_ = value;
-            onChanged();
-            return this;
-        }
 
         private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
 
         private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
 
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.QueryWriteStatusRequest)
 
         /**
          * <pre>
@@ -658,7 +66,7 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
          *
          * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
          */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
             if (null != commonObjectRequestParamsBuilder_) {
                 commonObjectRequestParamsBuilder_.setMessage(value);
             } else {
@@ -671,42 +79,9 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
             return this;
         }
 
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
         }
 
         /**
@@ -734,24 +109,14 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
          *
          * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
          */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
             onChanged();
             return getCommonObjectRequestParamsFieldBuilder().getBuilder();
         }
 
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
         }
 
         /**
@@ -761,12 +126,38 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
          *
          * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
          */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
             }
-            return commonObjectRequestParamsBuilder_;
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.QueryWriteStatusRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
         }
 
         @java.lang.Override
@@ -774,11 +165,303 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
             return super.setUnknownFields(unknownFields);
         }
 
+        /**
+         * <pre>
+         * Required. The name of the resume token for the object whose write status is being
+         * requested.
+         * </pre>
+         *
+         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearUploadId() {
+            uploadId_ = getDefaultInstance().getUploadId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        public Builder mergeFrom(QueryWriteStatusRequest other) {
+            if (QueryWriteStatusRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getUploadId().isEmpty()) {
+                uploadId_ = other.uploadId_;
+                onChanged();
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public QueryWriteStatusRequest getDefaultInstanceForType() {
+            return QueryWriteStatusRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            QueryWriteStatusRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (QueryWriteStatusRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public QueryWriteStatusRequest build() {
+            QueryWriteStatusRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            uploadId_ = "";
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the resume token for the object whose write status is being
+         * requested.
+         * </pre>
+         *
+         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The uploadId.
+         */
+        public java.lang.String getUploadId() {
+            java.lang.Object ref = uploadId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                uploadId_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof QueryWriteStatusRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((QueryWriteStatusRequest) other);
+            }
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the resume token for the object whose write status is being
+         * requested.
+         * </pre>
+         *
+         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for uploadId.
+         */
+        public com.google.protobuf.ByteString getUploadIdBytes() {
+            java.lang.Object ref = uploadId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                uploadId_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the resume token for the object whose write status is being
+         * requested.
+         * </pre>
+         *
+         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            uploadId_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Required. The name of the resume token for the object whose write status is being
+         * requested.
+         * </pre>
+         *
+         * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            uploadId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(QueryWriteStatusRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public QueryWriteStatusRequest buildPartial() {
+            QueryWriteStatusRequest result = new QueryWriteStatusRequest(this);
+            result.uploadId_ = uploadId_;
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            onBuilt();
+            return result;
+        }
+
         @java.lang.Override
         public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
             return super.mergeUnknownFields(unknownFields);
         }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.QueryWriteStatusRequest)
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
+        }
+
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.QueryWriteStatusRequest)
@@ -786,10 +469,6 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.QueryWriteStatusRequest();
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<QueryWriteStatusRequest> PARSER = new com.google.protobuf.AbstractParser<QueryWriteStatusRequest>() {
@@ -800,8 +479,27 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
         }
     };
 
-    public static com.google.protobuf.Parser<QueryWriteStatusRequest> parser() {
-        return PARSER;
+    public static QueryWriteStatusRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
@@ -810,7 +508,312 @@ QueryWriteStatusRequest extends com.google.protobuf.GeneratedMessageV3 implement
     }
 
     @java.lang.Override
-    public com.google.storage.v2.QueryWriteStatusRequest getDefaultInstanceForType() {
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    /**
+     * <pre>
+     * Required. The name of the resume token for the object whose write status is being
+     * requested.
+     * </pre>
+     *
+     * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The uploadId.
+     */
+    @java.lang.Override
+    public java.lang.String getUploadId() {
+        java.lang.Object ref = uploadId_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            uploadId_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static QueryWriteStatusRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static QueryWriteStatusRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static Builder newBuilder(QueryWriteStatusRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getUploadId().hashCode();
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_descriptor;
+    }
+
+    @java.lang.Override
+    public QueryWriteStatusRequest getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
     }
+
+    public static QueryWriteStatusRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof QueryWriteStatusRequest)) {
+            return super.equals(obj);
+        }
+        QueryWriteStatusRequest other = (QueryWriteStatusRequest) obj;
+        if (!getUploadId().equals(other.getUploadId()))
+            return false;
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    // Use QueryWriteStatusRequest.newBuilder() to construct.
+    private QueryWriteStatusRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static QueryWriteStatusRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static com.google.protobuf.Parser<QueryWriteStatusRequest> parser() {
+        return PARSER;
+    }
+
+    public static QueryWriteStatusRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static QueryWriteStatusRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static QueryWriteStatusRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. The name of the resume token for the object whose write status is being
+     * requested.
+     * </pre>
+     *
+     * <code>string upload_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for uploadId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getUploadIdBytes() {
+        java.lang.Object ref = uploadId_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            uploadId_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    public static QueryWriteStatusRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    private QueryWriteStatusRequest() {
+        uploadId_ = "";
+    }
+
+    public static QueryWriteStatusRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 2;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, uploadId_);
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(2, getCommonObjectRequestParams());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static QueryWriteStatusRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uploadId_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, uploadId_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getCommonObjectRequestParams());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    private QueryWriteStatusRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            uploadId_ = s;
+                            break;
+                        }
+                    case 18:
+                        {
+                            CommonObjectRequestParams.Builder subBuilder = null;
+                            if (null != commonObjectRequestParams_) {
+                                subBuilder = commonObjectRequestParams_.toBuilder();
+                            }
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(commonObjectRequestParams_);
+                                commonObjectRequestParams_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static QueryWriteStatusRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new QueryWriteStatusRequest();
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_QueryWriteStatusRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(QueryWriteStatusRequest.class, Builder.class);
+    }
+
+    public static QueryWriteStatusRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
 }

@@ -37,90 +37,9 @@ public final class BlobId implements Serializable {
 
     private final Long version;
 
-    private BlobId(String containerName, String objectKey, Long version) {
-        this.containerName = containerName;
-        this.objectKey = objectKey;
-        this.version = version;
-    }
-
-    /**
-     * Returns the name of the bucket containing the blob.
-     */
-    public String getBucket() {
-        return containerName;
-    }
-
-    /**
-     * Returns the name of the blob.
-     */
-    public String getName() {
-        return objectKey;
-    }
-
-    /**
-     * Returns blob's data generation. Used for versioning.
-     */
-    public Long getGeneration() {
-        return version;
-    }
-
-    /**
-     * Returns this blob's Storage url which can be used with gsutil
-     */
-    public String toGsUri() {
-        return "gs://" + containerName + "/" + objectKey;
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(containerName, objectKey, version);
-    }
-
-    @Override
-    public boolean equals(Object candidate) {
-        if (this == candidate) {
-            return true;
-        }
-        if (null == candidate || !candidate.getClass().equals(BlobId.class)) {
-            return false;
-        }
-        BlobId rhsBlobId = (BlobId) candidate;
-        return Objects.equals(containerName, rhsBlobId.containerName) && Objects.equals(objectKey, rhsBlobId.objectKey) && Objects.equals(version, rhsBlobId.version);
-    }
-
-    StorageObject toProto() {
-        StorageObject protoObject = new StorageObject();
-        protoObject.setBucket(containerName);
-        protoObject.setName(objectKey);
-        protoObject.setGeneration(version);
-        return protoObject;
-    }
-
-    /**
-     * Creates a blob identifier. Generation is set to {@code null}.
-     *
-     * @param containerName the name of the bucket that contains the blob
-     * @param objectKey the name of the blob
-     */
-    public static BlobId from(String containerName, String objectKey) {
-        return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), null);
-    }
-
-    /**
-     * Creates a {@code BlobId} object.
-     *
-     * @param containerName name of the containing bucket
-     * @param objectKey blob's name
-     * @param version blob's data generation, used for versioning. If {@code null} the identifier
-     *     refers to the latest blob's generation
-     */
-    public static BlobId from(String containerName, String objectKey, Long version) {
-        return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), version);
     }
 
     /**
@@ -138,7 +57,89 @@ public final class BlobId implements Serializable {
         return BlobId.from(containerName, objectKey);
     }
 
+    /**
+     * Creates a blob identifier. Generation is set to {@code null}.
+     *
+     * @param containerName the name of the bucket that contains the blob
+     * @param objectKey the name of the blob
+     */
+    public static BlobId from(String containerName, String objectKey) {
+        return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), null);
+    }
+
+    private BlobId(String containerName, String objectKey, Long version) {
+        this.containerName = containerName;
+        this.objectKey = objectKey;
+        this.version = version;
+    }
+
+    /**
+     * Returns the name of the bucket containing the blob.
+     */
+    public String getBucket() {
+        return containerName;
+    }
+
+    StorageObject toProto() {
+        StorageObject protoObject = new StorageObject();
+        protoObject.setBucket(containerName);
+        protoObject.setName(objectKey);
+        protoObject.setGeneration(version);
+        return protoObject;
+    }
+
+    @Override
+    public boolean equals(Object candidate) {
+        if (this == candidate) {
+            return true;
+        }
+        if (null == candidate || !candidate.getClass().equals(BlobId.class)) {
+            return false;
+        }
+        BlobId rhsBlobId = (BlobId) candidate;
+        return Objects.equals(containerName, rhsBlobId.containerName) && Objects.equals(objectKey, rhsBlobId.objectKey) && Objects.equals(version, rhsBlobId.version);
+    }
+
     static BlobId fromProto(StorageObject protoObject) {
         return BlobId.from(protoObject.getBucket(), protoObject.getName(), protoObject.getGeneration());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(containerName, objectKey, version);
+    }
+
+    /**
+     * Returns this blob's Storage url which can be used with gsutil
+     */
+    public String toGsUri() {
+        return "gs://" + containerName + "/" + objectKey;
+    }
+
+    /**
+     * Returns blob's data generation. Used for versioning.
+     */
+    public Long getGeneration() {
+        return version;
+    }
+
+    /**
+     * Creates a {@code BlobId} object.
+     *
+     * @param containerName name of the containing bucket
+     * @param objectKey blob's name
+     * @param version blob's data generation, used for versioning. If {@code null} the identifier
+     *     refers to the latest blob's generation
+     */
+    public static BlobId from(String containerName, String objectKey, Long version) {
+        return new BlobId(checkNotNull(containerName), checkNotNull(objectKey), version);
+    }
+
+    /**
+     * Returns the name of the blob.
+     */
+    public String getName() {
+        return objectKey;
+    }
+
 }

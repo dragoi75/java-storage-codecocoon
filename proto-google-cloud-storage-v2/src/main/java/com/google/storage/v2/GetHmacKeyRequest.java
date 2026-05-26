@@ -30,14 +30,522 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
 
     private static final long serialVersionUID = 0L;
 
-    // Use GetHmacKeyRequest.newBuilder() to construct.
-    private GetHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int ACCESS_ID_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object accessId_;
+
+    public static final int PROJECT_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object project_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request object to get metadata on a given HMAC key.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.GetHmacKeyRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.GetHmacKeyRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.GetHmacKeyRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.GetHmacKeyRequestOrBuilder {
+
+        private java.lang.Object accessId_ = "";
+
+        private java.lang.Object project_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.GetHmacKeyRequest)
+
+        /**
+         * <pre>
+         * Required. The identifying key for the HMAC to delete.
+         * </pre>
+         *
+         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for accessId.
+         */
+        public com.google.protobuf.ByteString getAccessIdBytes() {
+            java.lang.Object ref = accessId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                accessId_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The identifying key for the HMAC to delete.
+         * </pre>
+         *
+         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The accessId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            accessId_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Required. The project id the HMAC key lies in.
+         * </pre>
+         *
+         * <code>
+         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for project.
+         */
+        public com.google.protobuf.ByteString getProjectBytes() {
+            java.lang.Object ref = project_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                project_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public GetHmacKeyRequest getDefaultInstanceForType() {
+            return GetHmacKeyRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(GetHmacKeyRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        // Construct using com.google.storage.v2.GetHmacKeyRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. The identifying key for the HMAC to delete.
+         * </pre>
+         *
+         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for accessId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setAccessIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            accessId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The identifying key for the HMAC to delete.
+         * </pre>
+         *
+         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearAccessId() {
+            accessId_ = getDefaultInstance().getAccessId();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof GetHmacKeyRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((GetHmacKeyRequest) other);
+            }
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The project id the HMAC key lies in.
+         * </pre>
+         *
+         * <code>
+         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The project.
+         */
+        public java.lang.String getProject() {
+            java.lang.Object ref = project_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                project_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            accessId_ = "";
+            project_ = "";
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The project id the HMAC key lies in.
+         * </pre>
+         *
+         * <code>
+         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public GetHmacKeyRequest buildPartial() {
+            GetHmacKeyRequest result = new GetHmacKeyRequest(this);
+            result.accessId_ = accessId_;
+            result.project_ = project_;
+            onBuilt();
+            return result;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Required. The project id the HMAC key lies in.
+         * </pre>
+         *
+         * <code>
+         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearProject() {
+            project_ = getDefaultInstance().getProject();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public GetHmacKeyRequest build() {
+            GetHmacKeyRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        public Builder mergeFrom(GetHmacKeyRequest other) {
+            if (GetHmacKeyRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getAccessId().isEmpty()) {
+                accessId_ = other.accessId_;
+                onChanged();
+            }
+            if (!other.getProject().isEmpty()) {
+                project_ = other.project_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The identifying key for the HMAC to delete.
+         * </pre>
+         *
+         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The accessId.
+         */
+        public java.lang.String getAccessId() {
+            java.lang.Object ref = accessId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                accessId_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project id the HMAC key lies in.
+         * </pre>
+         *
+         * <code>
+         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            GetHmacKeyRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (GetHmacKeyRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.GetHmacKeyRequest)
+    private static final com.google.storage.v2.GetHmacKeyRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.GetHmacKeyRequest();
+    }
+
+    private static final com.google.protobuf.Parser<GetHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<GetHmacKeyRequest>() {
+
+        @java.lang.Override
+        public GetHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new GetHmacKeyRequest(input, extensionRegistry);
+        }
+    };
+
+    public static GetHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder(GetHmacKeyRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetHmacKeyRequest> getParserForType() {
+        return PARSER;
+    }
+
+    public static GetHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static com.google.protobuf.Parser<GetHmacKeyRequest> parser() {
+        return PARSER;
+    }
+
+    public static GetHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static GetHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public GetHmacKeyRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, accessId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, project_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static GetHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static GetHmacKeyRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static GetHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Required. The project id the HMAC key lies in.
+     * </pre>
+     *
+     * <code>
+     * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The project.
+     */
+    @java.lang.Override
+    public java.lang.String getProject() {
+        java.lang.Object ref = project_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            project_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, accessId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, project_);
+        }
+        unknownFields.writeTo(output);
     }
 
     private GetHmacKeyRequest() {
         accessId_ = "";
         project_ = "";
+    }
+
+    public static GetHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static GetHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -46,9 +554,77 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
         return new GetHmacKeyRequest();
     }
 
+    public static GetHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static GetHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + ACCESS_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getAccessId().hashCode();
+        hash = (37 * hash) + PROJECT_FIELD_NUMBER;
+        hash = (53 * hash) + getProject().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * Required. The identifying key for the HMAC to delete.
+     * </pre>
+     *
+     * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for accessId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getAccessIdBytes() {
+        java.lang.Object ref = accessId_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            accessId_ = b;
+            return b;
+        }
+    }
+
+    public static GetHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(GetHmacKeyRequest.class, Builder.class);
+    }
+
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    public static GetHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     private GetHmacKeyRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -98,88 +674,9 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
-    }
-
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.GetHmacKeyRequest.class, com.google.storage.v2.GetHmacKeyRequest.Builder.class);
-    }
-
-    public static final int ACCESS_ID_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object accessId_;
-
-    /**
-     * <pre>
-     * Required. The identifying key for the HMAC to delete.
-     * </pre>
-     *
-     * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The accessId.
-     */
-    @java.lang.Override
-    public java.lang.String getAccessId() {
-        java.lang.Object ref = accessId_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            accessId_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The identifying key for the HMAC to delete.
-     * </pre>
-     *
-     * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for accessId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getAccessIdBytes() {
-        java.lang.Object ref = accessId_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            accessId_ = b;
-            return b;
-        }
-    }
-
-    public static final int PROJECT_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object project_;
-
-    /**
-     * <pre>
-     * Required. The project id the HMAC key lies in.
-     * </pre>
-     *
-     * <code>
-     * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The project.
-     */
-    @java.lang.Override
-    public java.lang.String getProject() {
-        java.lang.Object ref = project_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            project_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     /**
@@ -205,45 +702,35 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
         }
     }
 
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    // Use GetHmacKeyRequest.newBuilder() to construct.
+    private GetHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, accessId_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, project_);
-        }
-        unknownFields.writeTo(output);
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
     }
 
+    /**
+     * <pre>
+     * Required. The identifying key for the HMAC to delete.
+     * </pre>
+     *
+     * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The accessId.
+     */
     @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(accessId_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, accessId_);
+    public java.lang.String getAccessId() {
+        java.lang.Object ref = accessId_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            accessId_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
         }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, project_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
     }
 
     @java.lang.Override
@@ -251,10 +738,10 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.GetHmacKeyRequest)) {
+        if (!(obj instanceof GetHmacKeyRequest)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.GetHmacKeyRequest other = (com.google.storage.v2.GetHmacKeyRequest) obj;
+        GetHmacKeyRequest other = (GetHmacKeyRequest) obj;
         if (!getAccessId().equals(other.getAccessId()))
             return false;
         if (!getProject().equals(other.getProject()))
@@ -264,488 +751,4 @@ GetHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements GetH
         return true;
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + ACCESS_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getAccessId().hashCode();
-        hash = (37 * hash) + PROJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getProject().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.GetHmacKeyRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request object to get metadata on a given HMAC key.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.GetHmacKeyRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.GetHmacKeyRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.GetHmacKeyRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.GetHmacKeyRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.GetHmacKeyRequest.class, com.google.storage.v2.GetHmacKeyRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.GetHmacKeyRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            accessId_ = "";
-            project_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetHmacKeyRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.GetHmacKeyRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetHmacKeyRequest build() {
-            com.google.storage.v2.GetHmacKeyRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetHmacKeyRequest buildPartial() {
-            com.google.storage.v2.GetHmacKeyRequest result = new com.google.storage.v2.GetHmacKeyRequest(this);
-            result.accessId_ = accessId_;
-            result.project_ = project_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.GetHmacKeyRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.GetHmacKeyRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.GetHmacKeyRequest other) {
-            if (com.google.storage.v2.GetHmacKeyRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getAccessId().isEmpty()) {
-                accessId_ = other.accessId_;
-                onChanged();
-            }
-            if (!other.getProject().isEmpty()) {
-                project_ = other.project_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.GetHmacKeyRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.GetHmacKeyRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object accessId_ = "";
-
-        /**
-         * <pre>
-         * Required. The identifying key for the HMAC to delete.
-         * </pre>
-         *
-         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The accessId.
-         */
-        public java.lang.String getAccessId() {
-            java.lang.Object ref = accessId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                accessId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The identifying key for the HMAC to delete.
-         * </pre>
-         *
-         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for accessId.
-         */
-        public com.google.protobuf.ByteString getAccessIdBytes() {
-            java.lang.Object ref = accessId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                accessId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The identifying key for the HMAC to delete.
-         * </pre>
-         *
-         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The accessId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setAccessId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            accessId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The identifying key for the HMAC to delete.
-         * </pre>
-         *
-         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearAccessId() {
-            accessId_ = getDefaultInstance().getAccessId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The identifying key for the HMAC to delete.
-         * </pre>
-         *
-         * <code>string access_id = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for accessId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setAccessIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            accessId_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object project_ = "";
-
-        /**
-         * <pre>
-         * Required. The project id the HMAC key lies in.
-         * </pre>
-         *
-         * <code>
-         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The project.
-         */
-        public java.lang.String getProject() {
-            java.lang.Object ref = project_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                project_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project id the HMAC key lies in.
-         * </pre>
-         *
-         * <code>
-         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for project.
-         */
-        public com.google.protobuf.ByteString getProjectBytes() {
-            java.lang.Object ref = project_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                project_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project id the HMAC key lies in.
-         * </pre>
-         *
-         * <code>
-         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project id the HMAC key lies in.
-         * </pre>
-         *
-         * <code>
-         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearProject() {
-            project_ = getDefaultInstance().getProject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project id the HMAC key lies in.
-         * </pre>
-         *
-         * <code>
-         * string project = 2 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.GetHmacKeyRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.GetHmacKeyRequest)
-    private static final com.google.storage.v2.GetHmacKeyRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.GetHmacKeyRequest();
-    }
-
-    public static com.google.storage.v2.GetHmacKeyRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<GetHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<GetHmacKeyRequest>() {
-
-        @java.lang.Override
-        public GetHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new GetHmacKeyRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<GetHmacKeyRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<GetHmacKeyRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.GetHmacKeyRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

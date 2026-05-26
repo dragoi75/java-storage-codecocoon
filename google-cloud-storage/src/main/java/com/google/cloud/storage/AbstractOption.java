@@ -31,38 +31,39 @@ public abstract class AbstractOption implements Serializable {
   private final StorageRpcClient.StorageOption remoteCallOption;
   private final Object payload;
 
-  AbstractOption(StorageRpcClient.StorageOption remoteCallOption, Object payload) {
-    this.remoteCallOption = checkNotNull(remoteCallOption);
-    this.payload = payload;
-  }
-
-  StorageRpcClient.StorageOption getRpcOption() {
-    return remoteCallOption;
-  }
-
-  Object getValue() {
-    return payload;
-  }
-
-  @Override
-  public boolean equals(Object otherObject) {
-    if (!(otherObject instanceof AbstractOption)) {
-      return false;
+    @Override
+    public boolean equals(Object otherObject) {
+      if (!(otherObject instanceof AbstractOption)) {
+        return false;
+      }
+      AbstractOption comparedOption = (AbstractOption) otherObject;
+      return Objects.equals(remoteCallOption, comparedOption.remoteCallOption) && Objects.equals(payload, comparedOption.payload);
     }
-    AbstractOption comparedOption = (AbstractOption) otherObject;
-    return Objects.equals(remoteCallOption, comparedOption.remoteCallOption) && Objects.equals(payload, comparedOption.payload);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(remoteCallOption, payload);
-  }
+    @Override
+    public int hashCode() {
+      return Objects.hash(remoteCallOption, payload);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", remoteCallOption.getValue())
-        .add("value", payload)
-        .toString();
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", remoteCallOption.getValue())
+          .add("value", payload)
+          .toString();
+    }
+
+    StorageRpcClient.StorageOption getRpcOption() {
+      return remoteCallOption;
+    }
+
+    AbstractOption(StorageRpcClient.StorageOption remoteCallOption, Object payload) {
+      this.remoteCallOption = checkNotNull(remoteCallOption);
+      this.payload = payload;
+    }
+
+    Object getValue() {
+      return payload;
+    }
+
 }

@@ -30,89 +30,6 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
 
     private static final long serialVersionUID = 0L;
 
-    // Use QueryWriteStatusResponse.newBuilder() to construct.
-    private QueryWriteStatusResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private QueryWriteStatusResponse() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new QueryWriteStatusResponse();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private QueryWriteStatusResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 8:
-                        {
-                            writeStatus_ = input.readInt64();
-                            writeStatusCase_ = 1;
-                            break;
-                        }
-                    case 18:
-                        {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
-                            if (2 == writeStatusCase_) {
-                                subBuilder = ((com.google.storage.v2.Object) writeStatus_).toBuilder();
-                            }
-                            writeStatus_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom((com.google.storage.v2.Object) writeStatus_);
-                                writeStatus_ = subBuilder.buildPartial();
-                            }
-                            writeStatusCase_ = 2;
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.QueryWriteStatusResponse.class, com.google.storage.v2.QueryWriteStatusResponse.Builder.class);
-    }
-
     private int writeStatusCase_ = 0;
 
     private java.lang.Object writeStatus_;
@@ -122,20 +39,6 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
         PERSISTED_SIZE(1), RESOURCE(2), WRITESTATUS_NOT_SET(0);
 
         private final int value;
-
-        private WriteStatusCase(int value) {
-            this.value = value;
-        }
-
-        /**
-         * @param value The number of the enum to look for.
-         * @return The enum associated with the given number.
-         * @deprecated Use {@link #forNumber(int)} instead.
-         */
-        @java.lang.Deprecated
-        public static WriteStatusCase valueOf(int value) {
-            return forNumber(value);
-        }
 
         public static WriteStatusCase forNumber(int value) {
             switch(value) {
@@ -153,266 +56,28 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
         public int getNumber() {
             return this.value;
         }
-    }
 
-    public WriteStatusCase getWriteStatusCase() {
-        return WriteStatusCase.forNumber(writeStatusCase_);
+        /**
+         * @param value The number of the enum to look for.
+         * @return The enum associated with the given number.
+         * @deprecated Use {@link #forNumber(int)} instead.
+         */
+        @java.lang.Deprecated
+        public static WriteStatusCase valueOf(int value) {
+            return forNumber(value);
+        }
+
+        private WriteStatusCase(int value) {
+            this.value = value;
+        }
+
     }
 
     public static final int PERSISTED_SIZE_FIELD_NUMBER = 1;
 
-    /**
-     * <pre>
-     * The total number of bytes that have been processed for the given object
-     * from all `WriteObject` calls. This is the correct value for the
-     * 'write_offset' field to use when resuming the `WriteObject` operation.
-     * Only set if the upload has not finalized.
-     * </pre>
-     *
-     * <code>int64 persisted_size = 1;</code>
-     *
-     * @return Whether the persistedSize field is set.
-     */
-    @java.lang.Override
-    public boolean hasPersistedSize() {
-        return 1 == writeStatusCase_;
-    }
-
-    /**
-     * <pre>
-     * The total number of bytes that have been processed for the given object
-     * from all `WriteObject` calls. This is the correct value for the
-     * 'write_offset' field to use when resuming the `WriteObject` operation.
-     * Only set if the upload has not finalized.
-     * </pre>
-     *
-     * <code>int64 persisted_size = 1;</code>
-     *
-     * @return The persistedSize.
-     */
-    @java.lang.Override
-    public long getPersistedSize() {
-        if (1 == writeStatusCase_) {
-            return (java.lang.Long) writeStatus_;
-        }
-        return 0L;
-    }
-
     public static final int RESOURCE_FIELD_NUMBER = 2;
 
-    /**
-     * <pre>
-     * A resource containing the metadata for the uploaded object. Only set if
-     * the upload has finalized.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 2;</code>
-     *
-     * @return Whether the resource field is set.
-     */
-    @java.lang.Override
-    public boolean hasResource() {
-        return 2 == writeStatusCase_;
-    }
-
-    /**
-     * <pre>
-     * A resource containing the metadata for the uploaded object. Only set if
-     * the upload has finalized.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 2;</code>
-     *
-     * @return The resource.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getResource() {
-        if (2 == writeStatusCase_) {
-            return (com.google.storage.v2.Object) writeStatus_;
-        }
-        return com.google.storage.v2.Object.getDefaultInstance();
-    }
-
-    /**
-     * <pre>
-     * A resource containing the metadata for the uploaded object. Only set if
-     * the upload has finalized.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-        if (2 == writeStatusCase_) {
-            return (com.google.storage.v2.Object) writeStatus_;
-        }
-        return com.google.storage.v2.Object.getDefaultInstance();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (1 == writeStatusCase_) {
-            output.writeInt64(1, (long) ((java.lang.Long) writeStatus_));
-        }
-        if (2 == writeStatusCase_) {
-            output.writeMessage(2, (com.google.storage.v2.Object) writeStatus_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (1 == writeStatusCase_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, (long) ((java.lang.Long) writeStatus_));
-        }
-        if (2 == writeStatusCase_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, (com.google.storage.v2.Object) writeStatus_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.QueryWriteStatusResponse)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.QueryWriteStatusResponse other = (com.google.storage.v2.QueryWriteStatusResponse) obj;
-        if (!getWriteStatusCase().equals(other.getWriteStatusCase()))
-            return false;
-        switch(writeStatusCase_) {
-            case 1:
-                if (other.getPersistedSize() != getPersistedSize())
-                    return false;
-                break;
-            case 2:
-                if (!getResource().equals(other.getResource()))
-                    return false;
-                break;
-            case 0:
-            default:
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        switch(writeStatusCase_) {
-            case 1:
-                hash = (37 * hash) + PERSISTED_SIZE_FIELD_NUMBER;
-                hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getPersistedSize());
-                break;
-            case 2:
-                hash = (37 * hash) + RESOURCE_FIELD_NUMBER;
-                hash = (53 * hash) + getResource().hashCode();
-                break;
-            case 0:
-            default:
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.QueryWriteStatusResponse prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -425,359 +90,76 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
     // @@protoc_insertion_point(builder_implements:google.storage.v2.QueryWriteStatusResponse)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.QueryWriteStatusResponseOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
-        }
+        private int writeStatusCase_ = 0;
 
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.QueryWriteStatusResponse.class, com.google.storage.v2.QueryWriteStatusResponse.Builder.class);
-        }
+        private java.lang.Object writeStatus_;
 
-        // Construct using com.google.storage.v2.QueryWriteStatusResponse.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            writeStatusCase_ = 0;
-            writeStatus_ = null;
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusResponse getDefaultInstanceForType() {
-            return com.google.storage.v2.QueryWriteStatusResponse.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusResponse build() {
-            com.google.storage.v2.QueryWriteStatusResponse result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.QueryWriteStatusResponse buildPartial() {
-            com.google.storage.v2.QueryWriteStatusResponse result = new com.google.storage.v2.QueryWriteStatusResponse(this);
-            if (1 == writeStatusCase_) {
-                result.writeStatus_ = writeStatus_;
-            }
-            if (2 == writeStatusCase_) {
-                if (null != resourceBuilder_) {
-                    result.writeStatus_ = resourceBuilder_.build();
-                } else {
-                    result.writeStatus_ = writeStatus_;
-                }
-            }
-            result.writeStatusCase_ = writeStatusCase_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.QueryWriteStatusResponse)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.QueryWriteStatusResponse) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.QueryWriteStatusResponse other) {
-            if (com.google.storage.v2.QueryWriteStatusResponse.getDefaultInstance() == other)
-                return this;
-            switch(other.getWriteStatusCase()) {
-                case PERSISTED_SIZE:
-                    {
-                        setPersistedSize(other.getPersistedSize());
-                        break;
-                    }
-                case RESOURCE:
-                    {
-                        mergeResource(other.getResource());
-                        break;
-                    }
-                case WRITESTATUS_NOT_SET:
-                    {
-                        break;
-                    }
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.QueryWriteStatusResponse)
 
         @java.lang.Override
         public final boolean isInitialized() {
             return true;
         }
 
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         */
+        public Object.Builder getResourceBuilder() {
+            return getResourceFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         */
         @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.QueryWriteStatusResponse parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.QueryWriteStatusResponse) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
+        public ObjectOrBuilder getResourceOrBuilder() {
+            if (!(2 == writeStatusCase_) || !(null != resourceBuilder_)) {
+                if (2 == writeStatusCase_) {
+                    return (Object) writeStatus_;
                 }
+                return Object.getDefaultInstance();
+            } else {
+                return resourceBuilder_.getMessageOrBuilder();
             }
-            return this;
-        }
-
-        private int writeStatusCase_ = 0;
-
-        private java.lang.Object writeStatus_;
-
-        public WriteStatusCase getWriteStatusCase() {
-            return WriteStatusCase.forNumber(writeStatusCase_);
-        }
-
-        public Builder clearWriteStatus() {
-            writeStatusCase_ = 0;
-            writeStatus_ = null;
-            onChanged();
-            return this;
         }
 
         /**
          * <pre>
-         * The total number of bytes that have been processed for the given object
-         * from all `WriteObject` calls. This is the correct value for the
-         * 'write_offset' field to use when resuming the `WriteObject` operation.
-         * Only set if the upload has not finalized.
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
          * </pre>
          *
-         * <code>int64 persisted_size = 1;</code>
-         *
-         * @return Whether the persistedSize field is set.
+         * <code>.google.storage.v2.Object resource = 2;</code>
          */
-        public boolean hasPersistedSize() {
-            return 1 == writeStatusCase_;
-        }
-
-        /**
-         * <pre>
-         * The total number of bytes that have been processed for the given object
-         * from all `WriteObject` calls. This is the correct value for the
-         * 'write_offset' field to use when resuming the `WriteObject` operation.
-         * Only set if the upload has not finalized.
-         * </pre>
-         *
-         * <code>int64 persisted_size = 1;</code>
-         *
-         * @return The persistedSize.
-         */
-        public long getPersistedSize() {
-            if (1 == writeStatusCase_) {
-                return (java.lang.Long) writeStatus_;
-            }
-            return 0L;
-        }
-
-        /**
-         * <pre>
-         * The total number of bytes that have been processed for the given object
-         * from all `WriteObject` calls. This is the correct value for the
-         * 'write_offset' field to use when resuming the `WriteObject` operation.
-         * Only set if the upload has not finalized.
-         * </pre>
-         *
-         * <code>int64 persisted_size = 1;</code>
-         *
-         * @param value The persistedSize to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPersistedSize(long value) {
-            writeStatusCase_ = 1;
-            writeStatus_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The total number of bytes that have been processed for the given object
-         * from all `WriteObject` calls. This is the correct value for the
-         * 'write_offset' field to use when resuming the `WriteObject` operation.
-         * Only set if the upload has not finalized.
-         * </pre>
-         *
-         * <code>int64 persisted_size = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPersistedSize() {
-            if (1 == writeStatusCase_) {
-                writeStatusCase_ = 0;
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getResourceFieldBuilder() {
+            if (null == resourceBuilder_) {
+                if (!(2 == writeStatusCase_)) {
+                    writeStatus_ = Object.getDefaultInstance();
+                }
+                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>((Object) writeStatus_, getParentForChildren(), isClean());
                 writeStatus_ = null;
-                onChanged();
             }
-            return this;
+            writeStatusCase_ = 2;
+            onChanged();
+            ;
+            return resourceBuilder_;
         }
 
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         *
-         * @return Whether the resource field is set.
-         */
         @java.lang.Override
-        public boolean hasResource() {
-            return 2 == writeStatusCase_;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         *
-         * @return The resource.
-         */
-        @java.lang.Override
-        public com.google.storage.v2.Object getResource() {
-            if (null != resourceBuilder_) {
-                if (2 == writeStatusCase_) {
-                    return resourceBuilder_.getMessage();
-                }
-                return com.google.storage.v2.Object.getDefaultInstance();
-            } else {
-                if (2 == writeStatusCase_) {
-                    return (com.google.storage.v2.Object) writeStatus_;
-                }
-                return com.google.storage.v2.Object.getDefaultInstance();
-            }
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                writeStatus_ = value;
-                onChanged();
-            }
-            writeStatusCase_ = 2;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(builderForValue.build());
-            } else {
-                writeStatus_ = builderForValue.build();
-                onChanged();
-            }
-            writeStatusCase_ = 2;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         */
-        public Builder mergeResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                if (2 != writeStatusCase_) {
-                    resourceBuilder_.setMessage(value);
-                } else {
-                    resourceBuilder_.mergeFrom(value);
-                }
-            } else {
-                if (2 != writeStatusCase_ || com.google.storage.v2.Object.getDefaultInstance() == writeStatus_) {
-                    writeStatus_ = value;
-                } else {
-                    writeStatus_ = com.google.storage.v2.Object.newBuilder((com.google.storage.v2.Object) writeStatus_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            writeStatusCase_ = 2;
-            return this;
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
         }
 
         /**
@@ -805,35 +187,44 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
             return this;
         }
 
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         */
-        public com.google.storage.v2.Object.Builder getResourceBuilder() {
-            return getResourceFieldBuilder().getBuilder();
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            QueryWriteStatusResponse parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (QueryWriteStatusResponse) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
         }
 
-        /**
-         * <pre>
-         * A resource containing the metadata for the uploaded object. Only set if
-         * the upload has finalized.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 2;</code>
-         */
         @java.lang.Override
-        public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-            if (!(2 == writeStatusCase_) || !(null != resourceBuilder_)) {
-                if (2 == writeStatusCase_) {
-                    return (com.google.storage.v2.Object) writeStatus_;
-                }
-                return com.google.storage.v2.Object.getDefaultInstance();
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(QueryWriteStatusResponse.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof QueryWriteStatusResponse)) {
+                super.mergeFrom(other);
+                return this;
             } else {
-                return resourceBuilder_.getMessageOrBuilder();
+                return mergeFrom((QueryWriteStatusResponse) other);
+            }
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
             }
         }
 
@@ -845,30 +236,306 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
          *
          * <code>.google.storage.v2.Object resource = 2;</code>
          */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getResourceFieldBuilder() {
-            if (null == resourceBuilder_) {
-                if (!(2 == writeStatusCase_)) {
-                    writeStatus_ = com.google.storage.v2.Object.getDefaultInstance();
+        public Builder setResource(Object value) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
                 }
-                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>((com.google.storage.v2.Object) writeStatus_, getParentForChildren(), isClean());
-                writeStatus_ = null;
+                writeStatus_ = value;
+                onChanged();
             }
             writeStatusCase_ = 2;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The total number of bytes that have been processed for the given object
+         * from all `WriteObject` calls. This is the correct value for the
+         * 'write_offset' field to use when resuming the `WriteObject` operation.
+         * Only set if the upload has not finalized.
+         * </pre>
+         *
+         * <code>int64 persisted_size = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPersistedSize() {
+            if (1 == writeStatusCase_) {
+                writeStatusCase_ = 0;
+                writeStatus_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        public Builder clearWriteStatus() {
+            writeStatusCase_ = 0;
+            writeStatus_ = null;
             onChanged();
-            ;
-            return resourceBuilder_;
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The total number of bytes that have been processed for the given object
+         * from all `WriteObject` calls. This is the correct value for the
+         * 'write_offset' field to use when resuming the `WriteObject` operation.
+         * Only set if the upload has not finalized.
+         * </pre>
+         *
+         * <code>int64 persisted_size = 1;</code>
+         *
+         * @return The persistedSize.
+         */
+        public long getPersistedSize() {
+            if (1 == writeStatusCase_) {
+                return (java.lang.Long) writeStatus_;
+            }
+            return 0L;
         }
 
         @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
+        public QueryWriteStatusResponse buildPartial() {
+            QueryWriteStatusResponse result = new QueryWriteStatusResponse(this);
+            if (1 == writeStatusCase_) {
+                result.writeStatus_ = writeStatus_;
+            }
+            if (2 == writeStatusCase_) {
+                if (null != resourceBuilder_) {
+                    result.writeStatus_ = resourceBuilder_.build();
+                } else {
+                    result.writeStatus_ = writeStatus_;
+                }
+            }
+            result.writeStatusCase_ = writeStatusCase_;
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The total number of bytes that have been processed for the given object
+         * from all `WriteObject` calls. This is the correct value for the
+         * 'write_offset' field to use when resuming the `WriteObject` operation.
+         * Only set if the upload has not finalized.
+         * </pre>
+         *
+         * <code>int64 persisted_size = 1;</code>
+         *
+         * @return Whether the persistedSize field is set.
+         */
+        public boolean hasPersistedSize() {
+            return 1 == writeStatusCase_;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            writeStatusCase_ = 0;
+            writeStatus_ = null;
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         *
+         * @return Whether the resource field is set.
+         */
+        @java.lang.Override
+        public boolean hasResource() {
+            return 2 == writeStatusCase_;
+        }
+
+        @java.lang.Override
+        public QueryWriteStatusResponse getDefaultInstanceForType() {
+            return QueryWriteStatusResponse.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The total number of bytes that have been processed for the given object
+         * from all `WriteObject` calls. This is the correct value for the
+         * 'write_offset' field to use when resuming the `WriteObject` operation.
+         * Only set if the upload has not finalized.
+         * </pre>
+         *
+         * <code>int64 persisted_size = 1;</code>
+         *
+         * @param value The persistedSize to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPersistedSize(long value) {
+            writeStatusCase_ = 1;
+            writeStatus_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public QueryWriteStatusResponse build() {
+            QueryWriteStatusResponse result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         */
+        public Builder mergeResource(Object value) {
+            if (null != resourceBuilder_) {
+                if (2 != writeStatusCase_) {
+                    resourceBuilder_.setMessage(value);
+                } else {
+                    resourceBuilder_.mergeFrom(value);
+                }
+            } else {
+                if (2 != writeStatusCase_ || Object.getDefaultInstance() == writeStatus_) {
+                    writeStatus_ = value;
+                } else {
+                    writeStatus_ = Object.newBuilder((Object) writeStatus_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            writeStatusCase_ = 2;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         */
+        public Builder setResource(Object.Builder builderForValue) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(builderForValue.build());
+            } else {
+                writeStatus_ = builderForValue.build();
+                onChanged();
+            }
+            writeStatusCase_ = 2;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A resource containing the metadata for the uploaded object. Only set if
+         * the upload has finalized.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 2;</code>
+         *
+         * @return The resource.
+         */
+        @java.lang.Override
+        public Object getResource() {
+            if (null != resourceBuilder_) {
+                if (2 == writeStatusCase_) {
+                    return resourceBuilder_.getMessage();
+                }
+                return Object.getDefaultInstance();
+            } else {
+                if (2 == writeStatusCase_) {
+                    return (Object) writeStatus_;
+                }
+                return Object.getDefaultInstance();
+            }
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        public WriteStatusCase getWriteStatusCase() {
+            return WriteStatusCase.forNumber(writeStatusCase_);
+        }
+
+        // Construct using com.google.storage.v2.QueryWriteStatusResponse.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        public Builder mergeFrom(QueryWriteStatusResponse other) {
+            if (QueryWriteStatusResponse.getDefaultInstance() == other)
+                return this;
+            switch(other.getWriteStatusCase()) {
+                case PERSISTED_SIZE:
+                    {
+                        setPersistedSize(other.getPersistedSize());
+                        break;
+                    }
+                case RESOURCE:
+                    {
+                        mergeResource(other.getResource());
+                        break;
+                    }
+                case WRITESTATUS_NOT_SET:
+                    {
+                        break;
+                    }
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
         }
 
         @java.lang.Override
         public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
             return super.mergeUnknownFields(unknownFields);
         }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.QueryWriteStatusResponse)
+
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.QueryWriteStatusResponse)
@@ -876,10 +543,6 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.QueryWriteStatusResponse();
-    }
-
-    public static com.google.storage.v2.QueryWriteStatusResponse getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<QueryWriteStatusResponse> PARSER = new com.google.protobuf.AbstractParser<QueryWriteStatusResponse>() {
@@ -890,8 +553,65 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
         }
     };
 
-    public static com.google.protobuf.Parser<QueryWriteStatusResponse> parser() {
-        return PARSER;
+    public static QueryWriteStatusResponse parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * The total number of bytes that have been processed for the given object
+     * from all `WriteObject` calls. This is the correct value for the
+     * 'write_offset' field to use when resuming the `WriteObject` operation.
+     * Only set if the upload has not finalized.
+     * </pre>
+     *
+     * <code>int64 persisted_size = 1;</code>
+     *
+     * @return Whether the persistedSize field is set.
+     */
+    @java.lang.Override
+    public boolean hasPersistedSize() {
+        return 1 == writeStatusCase_;
+    }
+
+    public static QueryWriteStatusResponse parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public QueryWriteStatusResponse getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (1 == writeStatusCase_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, (long) ((java.lang.Long) writeStatus_));
+        }
+        if (2 == writeStatusCase_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, (Object) writeStatus_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static Builder newBuilder(QueryWriteStatusResponse prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static QueryWriteStatusResponse parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
@@ -899,8 +619,292 @@ QueryWriteStatusResponse extends com.google.protobuf.GeneratedMessageV3 implemen
         return PARSER;
     }
 
+    public static QueryWriteStatusResponse parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.google.protobuf.Parser<QueryWriteStatusResponse> parser() {
+        return PARSER;
+    }
+
     @java.lang.Override
-    public com.google.storage.v2.QueryWriteStatusResponse getDefaultInstanceForType() {
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (1 == writeStatusCase_) {
+            output.writeInt64(1, (long) ((java.lang.Long) writeStatus_));
+        }
+        if (2 == writeStatusCase_) {
+            output.writeMessage(2, (Object) writeStatus_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * The total number of bytes that have been processed for the given object
+     * from all `WriteObject` calls. This is the correct value for the
+     * 'write_offset' field to use when resuming the `WriteObject` operation.
+     * Only set if the upload has not finalized.
+     * </pre>
+     *
+     * <code>int64 persisted_size = 1;</code>
+     *
+     * @return The persistedSize.
+     */
+    @java.lang.Override
+    public long getPersistedSize() {
+        if (1 == writeStatusCase_) {
+            return (java.lang.Long) writeStatus_;
+        }
+        return 0L;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_descriptor;
+    }
+
+    public static QueryWriteStatusResponse parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    private QueryWriteStatusResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 8:
+                        {
+                            writeStatus_ = input.readInt64();
+                            writeStatusCase_ = 1;
+                            break;
+                        }
+                    case 18:
+                        {
+                            Object.Builder subBuilder = null;
+                            if (2 == writeStatusCase_) {
+                                subBuilder = ((Object) writeStatus_).toBuilder();
+                            }
+                            writeStatus_ = input.readMessage(Object.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom((Object) writeStatus_);
+                                writeStatus_ = subBuilder.buildPartial();
+                            }
+                            writeStatusCase_ = 2;
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    public static QueryWriteStatusResponse parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    // Use QueryWriteStatusResponse.newBuilder() to construct.
+    private QueryWriteStatusResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new QueryWriteStatusResponse();
+    }
+
+    /**
+     * <pre>
+     * A resource containing the metadata for the uploaded object. Only set if
+     * the upload has finalized.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 2;</code>
+     *
+     * @return The resource.
+     */
+    @java.lang.Override
+    public Object getResource() {
+        if (2 == writeStatusCase_) {
+            return (Object) writeStatus_;
+        }
+        return Object.getDefaultInstance();
+    }
+
+    public static QueryWriteStatusResponse parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        switch(writeStatusCase_) {
+            case 1:
+                hash = (37 * hash) + PERSISTED_SIZE_FIELD_NUMBER;
+                hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getPersistedSize());
+                break;
+            case 2:
+                hash = (37 * hash) + RESOURCE_FIELD_NUMBER;
+                hash = (53 * hash) + getResource().hashCode();
+                break;
+            case 0:
+            default:
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * A resource containing the metadata for the uploaded object. Only set if
+     * the upload has finalized.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 2;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getResourceOrBuilder() {
+        if (2 == writeStatusCase_) {
+            return (Object) writeStatus_;
+        }
+        return Object.getDefaultInstance();
+    }
+
+    public WriteStatusCase getWriteStatusCase() {
+        return WriteStatusCase.forNumber(writeStatusCase_);
+    }
+
+    private QueryWriteStatusResponse() {
+    }
+
+    public static QueryWriteStatusResponse parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static QueryWriteStatusResponse getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static QueryWriteStatusResponse parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof QueryWriteStatusResponse)) {
+            return super.equals(obj);
+        }
+        QueryWriteStatusResponse other = (QueryWriteStatusResponse) obj;
+        if (!getWriteStatusCase().equals(other.getWriteStatusCase()))
+            return false;
+        switch(writeStatusCase_) {
+            case 1:
+                if (other.getPersistedSize() != getPersistedSize())
+                    return false;
+                break;
+            case 2:
+                if (!getResource().equals(other.getResource()))
+                    return false;
+                break;
+            case 0:
+            default:
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static QueryWriteStatusResponse parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A resource containing the metadata for the uploaded object. Only set if
+     * the upload has finalized.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 2;</code>
+     *
+     * @return Whether the resource field is set.
+     */
+    @java.lang.Override
+    public boolean hasResource() {
+        return 2 == writeStatusCase_;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static QueryWriteStatusResponse parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static QueryWriteStatusResponse parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_QueryWriteStatusResponse_fieldAccessorTable.ensureFieldAccessorsInitialized(QueryWriteStatusResponse.class, Builder.class);
+    }
+
 }

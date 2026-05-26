@@ -31,93 +31,94 @@ import java.io.Serializable;
  */
 public interface StorageRetryStrategy extends Serializable {
 
-  /**
-   * Factory method to provide a {@link ResultRetryAlgorithm} which will be used to evaluate whether
-   * a retry can happen for an operation which has been deemed idempotent.
-   *
-   * @return
-   */
-  ResultRetryAlgorithm<?> getIdempotentHandler();
+    /**
+     * Factory method to get an instance of {@link StorageRetryStrategy} with the behavior which was
+     * used prior to version 2.1.8. <b>This strategy is unsafe and will result in retying some
+     * non-idempotent calls.</b>
+     *
+     * @deprecated please migrate to using {@link #getDefaultStorageRetryStrategy()} which is capable
+     *     of providing handlers which are appropriate for idempotent and non-idempotent calls.
+     * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
+     * @see #getDefaultStorageRetryStrategy()
+     */
+    @Deprecated
+    static StorageRetryStrategy getLegacyStorageRetryStrategy() {
+      return new UniformStorageRetryStrategy(BaseService.EXCEPTION_HANDLER);
+    }
 
-  ResultRetryAlgorithm<?> getNonidempotentHandler();
+    /**
+     * Factory method to provide a {@link ResultRetryAlgorithm} which will be used to evaluate whether
+     * a retry can happen for an operation which has been deemed idempotent.
+     *
+     * @return
+     */
+    ResultRetryAlgorithm<?> getIdempotentHandler();
 
-  /**
-   * Factory method to get an instance of the default implementation of {@link
-   * StorageRetryStrategy}. The returned instance is provides handler which are appropriate for
-   * calls which are known to be idempotent vs non-idempotent.
-   *
-   * <p>All non-idempotent calls will not be retried
-   *
-   * <p>The set of retryable cases handled by this strategy is more comprehensive than that of the
-   * legacy strategy and should always be preferred.
-   *
-   * <p>The following HTTP Status Codes will be retried for all idempotent calls:
-   *
-   * <table>
-   *   <tr>
-   *     <th>Code</th>
-   *     <th>Name</th>
-   *   </tr>
-   *   <tr>
-   *     <td>408</td>
-   *     <td>Request Timeout</td>
-   *   </tr>
-   *   <tr>
-   *     <td>429</td>
-   *     <td>Too Many Requests</td>
-   *   </tr>
-   *   <tr>
-   *     <td>500</td>
-   *     <td>Internal Server Error</td>
-   *   </tr>
-   *   <tr>
-   *     <td>502</td>
-   *     <td>Bad Gateway</td>
-   *   </tr>
-   *   <tr>
-   *     <td>503</td>
-   *     <td>Service Unavailable</td>
-   *   </tr>
-   *   <tr>
-   *     <td>504</td>
-   *     <td>Gateway Timeout</td>
-   *   </tr>
-   * </table>
-   *
-   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
-   * @see #getUniformStorageRetryStrategy()
-   */
-  static StorageRetryStrategy getDefaultStorageRetryStrategy() {
-    return new DefaultStorageRetryStrategy();
-  }
+    /**
+     * Factory method to get an instance of {@link StorageRetryStrategy} which will uniformly retry
+     * all calls as if they were idempotent.
+     *
+     * <p><b><i>NOTE:</i></b>This strategy is unsafe and will result in retying some non-idempotent
+     * calls. Care should be taken to ensure calls which would not normally be considered idempotent
+     * are made idempotent by some other means in your program.
+     *
+     * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
+     * @see #getDefaultStorageRetryStrategy()
+     */
+    static StorageRetryStrategy getUniformStorageRetryStrategy() {
+      return new UniformStorageRetryStrategy(getDefaultStorageRetryStrategy().getIdempotentHandler());
+    }
 
-  /**
-   * Factory method to get an instance of {@link StorageRetryStrategy} which will uniformly retry
-   * all calls as if they were idempotent.
-   *
-   * <p><b><i>NOTE:</i></b>This strategy is unsafe and will result in retying some non-idempotent
-   * calls. Care should be taken to ensure calls which would not normally be considered idempotent
-   * are made idempotent by some other means in your program.
-   *
-   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
-   * @see #getDefaultStorageRetryStrategy()
-   */
-  static StorageRetryStrategy getUniformStorageRetryStrategy() {
-    return new UniformStorageRetryStrategy(getDefaultStorageRetryStrategy().getIdempotentHandler());
-  }
+    /**
+     * Factory method to get an instance of the default implementation of {@link
+     * StorageRetryStrategy}. The returned instance is provides handler which are appropriate for
+     * calls which are known to be idempotent vs non-idempotent.
+     *
+     * <p>All non-idempotent calls will not be retried
+     *
+     * <p>The set of retryable cases handled by this strategy is more comprehensive than that of the
+     * legacy strategy and should always be preferred.
+     *
+     * <p>The following HTTP Status Codes will be retried for all idempotent calls:
+     *
+     * <table>
+     *   <tr>
+     *     <th>Code</th>
+     *     <th>Name</th>
+     *   </tr>
+     *   <tr>
+     *     <td>408</td>
+     *     <td>Request Timeout</td>
+     *   </tr>
+     *   <tr>
+     *     <td>429</td>
+     *     <td>Too Many Requests</td>
+     *   </tr>
+     *   <tr>
+     *     <td>500</td>
+     *     <td>Internal Server Error</td>
+     *   </tr>
+     *   <tr>
+     *     <td>502</td>
+     *     <td>Bad Gateway</td>
+     *   </tr>
+     *   <tr>
+     *     <td>503</td>
+     *     <td>Service Unavailable</td>
+     *   </tr>
+     *   <tr>
+     *     <td>504</td>
+     *     <td>Gateway Timeout</td>
+     *   </tr>
+     * </table>
+     *
+     * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
+     * @see #getUniformStorageRetryStrategy()
+     */
+    static StorageRetryStrategy getDefaultStorageRetryStrategy() {
+      return new DefaultStorageRetryStrategy();
+    }
 
-  /**
-   * Factory method to get an instance of {@link StorageRetryStrategy} with the behavior which was
-   * used prior to version 2.1.8. <b>This strategy is unsafe and will result in retying some
-   * non-idempotent calls.</b>
-   *
-   * @deprecated please migrate to using {@link #getDefaultStorageRetryStrategy()} which is capable
-   *     of providing handlers which are appropriate for idempotent and non-idempotent calls.
-   * @see StorageClientOptions.StorageClientBuilder#setStorageRetryStrategy(StorageRetryStrategy)
-   * @see #getDefaultStorageRetryStrategy()
-   */
-  @Deprecated
-  static StorageRetryStrategy getLegacyStorageRetryStrategy() {
-    return new UniformStorageRetryStrategy(BaseService.EXCEPTION_HANDLER);
-  }
+    ResultRetryAlgorithm<?> getNonidempotentHandler();
+
 }

@@ -30,12 +30,616 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
 
     private static final long serialVersionUID = 0L;
 
-    // Use UpdateHmacKeyRequest.newBuilder() to construct.
-    private UpdateHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int HMAC_KEY_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.HmacKeyMetadata hmacKey_;
+
+    public static final int UPDATE_MASK_FIELD_NUMBER = 3;
+
+    private com.google.protobuf.FieldMask updateMask_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request object to update an HMAC key state.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.UpdateHmacKeyRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateHmacKeyRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateHmacKeyRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.UpdateHmacKeyRequestOrBuilder {
+
+        private com.google.storage.v2.HmacKeyMetadata hmacKey_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> hmacKeyBuilder_;
+
+        private com.google.protobuf.FieldMask updateMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> updateMaskBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.UpdateHmacKeyRequest)
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         *
+         * @return The hmacKey.
+         */
+        public HmacKeyMetadata getHmacKey() {
+            if (null != hmacKeyBuilder_) {
+                return hmacKeyBuilder_.getMessage();
+            } else {
+                return null == hmacKey_ ? HmacKeyMetadata.getDefaultInstance() : hmacKey_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public Builder setUpdateMask(com.google.protobuf.FieldMask value) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                updateMask_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public HmacKeyMetadata.Builder getHmacKeyBuilder() {
+            onChanged();
+            return getHmacKeyFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public Builder mergeUpdateMask(com.google.protobuf.FieldMask value) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.mergeFrom(value);
+            } else {
+                if (null == updateMask_) {
+                    updateMask_ = value;
+                } else {
+                    updateMask_ = com.google.protobuf.FieldMask.newBuilder(updateMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public UpdateHmacKeyRequest getDefaultInstanceForType() {
+            return UpdateHmacKeyRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            UpdateHmacKeyRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (UpdateHmacKeyRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder mergeHmacKey(HmacKeyMetadata value) {
+            if (null != hmacKeyBuilder_) {
+                hmacKeyBuilder_.mergeFrom(value);
+            } else {
+                if (null == hmacKey_) {
+                    hmacKey_ = value;
+                } else {
+                    hmacKey_ = HmacKeyMetadata.newBuilder(hmacKey_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
+            if (null == updateMaskBuilder_) {
+                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+            } else {
+                return updateMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setHmacKey(HmacKeyMetadata value) {
+            if (null != hmacKeyBuilder_) {
+                hmacKeyBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                hmacKey_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != hmacKeyBuilder_) {
+                hmacKey_ = null;
+                hmacKeyBuilder_ = null;
+            } else {
+                hmacKey_ = null;
+            }
+            if (null != updateMaskBuilder_) {
+                updateMask_ = null;
+                updateMaskBuilder_ = null;
+            } else {
+                updateMask_ = null;
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public Builder setUpdateMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                updateMask_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        // Construct using com.google.storage.v2.UpdateHmacKeyRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getUpdateMaskBuilder() {
+            onChanged();
+            return getUpdateMaskFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder> getHmacKeyFieldBuilder() {
+            if (null == hmacKeyBuilder_) {
+                hmacKeyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<HmacKeyMetadata, HmacKeyMetadata.Builder, HmacKeyMetadataOrBuilder>(getHmacKey(), getParentForChildren(), isClean());
+                hmacKey_ = null;
+            }
+            return hmacKeyBuilder_;
+        }
+
+        @java.lang.Override
+        public UpdateHmacKeyRequest buildPartial() {
+            UpdateHmacKeyRequest result = new UpdateHmacKeyRequest(this);
+            if (null != hmacKeyBuilder_) {
+                result.hmacKey_ = hmacKeyBuilder_.build();
+            } else {
+                result.hmacKey_ = hmacKey_;
+            }
+            if (null != updateMaskBuilder_) {
+                result.updateMask_ = updateMaskBuilder_.build();
+            } else {
+                result.updateMask_ = updateMask_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(UpdateHmacKeyRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public HmacKeyMetadataOrBuilder getHmacKeyOrBuilder() {
+            if (null == hmacKeyBuilder_) {
+                return null == hmacKey_ ? HmacKeyMetadata.getDefaultInstance() : hmacKey_;
+            } else {
+                return hmacKeyBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof UpdateHmacKeyRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((UpdateHmacKeyRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         *
+         * @return Whether the hmacKey field is set.
+         */
+        public boolean hasHmacKey() {
+            return null != hmacKeyBuilder_ || null != hmacKey_;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setHmacKey(HmacKeyMetadata.Builder builderForValue) {
+            if (null != hmacKeyBuilder_) {
+                hmacKeyBuilder_.setMessage(builderForValue.build());
+            } else {
+                hmacKey_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The HMAC key to update.
+         * If present, the hmac_key's `id` field will be used to identify the key.
+         * Otherwise, the hmac_key's access_id and project fields will be used to
+         * identify the key.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder clearHmacKey() {
+            if (null != hmacKeyBuilder_) {
+                hmacKey_ = null;
+                hmacKeyBuilder_ = null;
+            } else {
+                hmacKey_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         *
+         * @return The updateMask.
+         */
+        public com.google.protobuf.FieldMask getUpdateMask() {
+            if (null != updateMaskBuilder_) {
+                return updateMaskBuilder_.getMessage();
+            } else {
+                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         *
+         * @return Whether the updateMask field is set.
+         */
+        public boolean hasUpdateMask() {
+            return null != updateMaskBuilder_ || null != updateMask_;
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        public Builder clearUpdateMask() {
+            if (null != updateMaskBuilder_) {
+                updateMask_ = null;
+                updateMaskBuilder_ = null;
+            } else {
+                updateMask_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public UpdateHmacKeyRequest build() {
+            UpdateHmacKeyRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Update mask for hmac_key.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getUpdateMaskFieldBuilder() {
+            if (null == updateMaskBuilder_) {
+                updateMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getUpdateMask(), getParentForChildren(), isClean());
+                updateMask_ = null;
+            }
+            return updateMaskBuilder_;
+        }
+
+        public Builder mergeFrom(UpdateHmacKeyRequest other) {
+            if (UpdateHmacKeyRequest.getDefaultInstance() == other)
+                return this;
+            if (other.hasHmacKey()) {
+                mergeHmacKey(other.getHmacKey());
+            }
+            if (other.hasUpdateMask()) {
+                mergeUpdateMask(other.getUpdateMask());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
     }
 
-    private UpdateHmacKeyRequest() {
+    // @@protoc_insertion_point(class_scope:google.storage.v2.UpdateHmacKeyRequest)
+    private static final com.google.storage.v2.UpdateHmacKeyRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.UpdateHmacKeyRequest();
+    }
+
+    private static final com.google.protobuf.Parser<UpdateHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<UpdateHmacKeyRequest>() {
+
+        @java.lang.Override
+        public UpdateHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new UpdateHmacKeyRequest(input, extensionRegistry);
+        }
+    };
+
+    public static UpdateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. The HMAC key to update.
+     * If present, the hmac_key's `id` field will be used to identify the key.
+     * Otherwise, the hmac_key's access_id and project fields will be used to
+     * identify the key.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return The hmacKey.
+     */
+    @java.lang.Override
+    public HmacKeyMetadata getHmacKey() {
+        return null == hmacKey_ ? HmacKeyMetadata.getDefaultInstance() : hmacKey_;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static UpdateHmacKeyRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static UpdateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public UpdateHmacKeyRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static UpdateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
 
     @java.lang.Override
@@ -44,9 +648,87 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
         return new UpdateHmacKeyRequest();
     }
 
+    private UpdateHmacKeyRequest() {
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    // Use UpdateHmacKeyRequest.newBuilder() to construct.
+    private UpdateHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * Required. The HMAC key to update.
+     * If present, the hmac_key's `id` field will be used to identify the key.
+     * Otherwise, the hmac_key's access_id and project fields will be used to
+     * identify the key.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return Whether the hmacKey field is set.
+     */
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public boolean hasHmacKey() {
+        return null != hmacKey_;
+    }
+
+    /**
+     * <pre>
+     * Update mask for hmac_key.
+     * </pre>
+     *
+     * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
+        return getUpdateMask();
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * Update mask for hmac_key.
+     * </pre>
+     *
+     * <code>.google.protobuf.FieldMask update_mask = 3;</code>
+     *
+     * @return The updateMask.
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMask getUpdateMask() {
+        return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+    }
+
+    public static Builder newBuilder(UpdateHmacKeyRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
     }
 
     private UpdateHmacKeyRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -65,11 +747,11 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.HmacKeyMetadata.Builder subBuilder = null;
+                            HmacKeyMetadata.Builder subBuilder = null;
                             if (null != hmacKey_) {
                                 subBuilder = hmacKey_.toBuilder();
                             }
-                            hmacKey_ = input.readMessage(com.google.storage.v2.HmacKeyMetadata.parser(), extensionRegistry);
+                            hmacKey_ = input.readMessage(HmacKeyMetadata.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(hmacKey_);
                                 hmacKey_ = subBuilder.buildPartial();
@@ -110,55 +792,19 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
+    public static UpdateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.UpdateHmacKeyRequest.class, com.google.storage.v2.UpdateHmacKeyRequest.Builder.class);
-    }
-
-    public static final int HMAC_KEY_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.HmacKeyMetadata hmacKey_;
-
-    /**
-     * <pre>
-     * Required. The HMAC key to update.
-     * If present, the hmac_key's `id` field will be used to identify the key.
-     * Otherwise, the hmac_key's access_id and project fields will be used to
-     * identify the key.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return Whether the hmacKey field is set.
-     */
-    @java.lang.Override
-    public boolean hasHmacKey() {
-        return null != hmacKey_;
-    }
-
-    /**
-     * <pre>
-     * Required. The HMAC key to update.
-     * If present, the hmac_key's `id` field will be used to identify the key.
-     * Otherwise, the hmac_key's access_id and project fields will be used to
-     * identify the key.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return The hmacKey.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadata getHmacKey() {
-        return null == hmacKey_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : hmacKey_;
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (null != hmacKey_) {
+            output.writeMessage(1, getHmacKey());
+        }
+        if (null != updateMask_) {
+            output.writeMessage(3, getUpdateMask());
+        }
+        unknownFields.writeTo(output);
     }
 
     /**
@@ -174,13 +820,13 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
      * </code>
      */
     @java.lang.Override
-    public com.google.storage.v2.HmacKeyMetadataOrBuilder getHmacKeyOrBuilder() {
+    public HmacKeyMetadataOrBuilder getHmacKeyOrBuilder() {
         return getHmacKey();
     }
 
-    public static final int UPDATE_MASK_FIELD_NUMBER = 3;
-
-    private com.google.protobuf.FieldMask updateMask_;
+    public static com.google.protobuf.Parser<UpdateHmacKeyRequest> parser() {
+        return PARSER;
+    }
 
     /**
      * <pre>
@@ -196,54 +842,14 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
         return null != updateMask_;
     }
 
-    /**
-     * <pre>
-     * Update mask for hmac_key.
-     * </pre>
-     *
-     * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-     *
-     * @return The updateMask.
-     */
     @java.lang.Override
-    public com.google.protobuf.FieldMask getUpdateMask() {
-        return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-    }
-
-    /**
-     * <pre>
-     * Update mask for hmac_key.
-     * </pre>
-     *
-     * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
-        return getUpdateMask();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(UpdateHmacKeyRequest.class, Builder.class);
     }
 
     @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (null != hmacKey_) {
-            output.writeMessage(1, getHmacKey());
-        }
-        if (null != updateMask_) {
-            output.writeMessage(3, getUpdateMask());
-        }
-        unknownFields.writeTo(output);
+    public com.google.protobuf.Parser<UpdateHmacKeyRequest> getParserForType() {
+        return PARSER;
     }
 
     @java.lang.Override
@@ -264,14 +870,36 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
     }
 
     @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static UpdateHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.UpdateHmacKeyRequest)) {
+        if (!(obj instanceof UpdateHmacKeyRequest)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.UpdateHmacKeyRequest other = (com.google.storage.v2.UpdateHmacKeyRequest) obj;
+        UpdateHmacKeyRequest other = (UpdateHmacKeyRequest) obj;
         if (other.hasHmacKey() != hasHmacKey())
             return false;
         if (hasHmacKey()) {
@@ -287,6 +915,10 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
         if (!unknownFields.equals(other.unknownFields))
             return false;
         return true;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
     }
 
     @java.lang.Override
@@ -309,633 +941,4 @@ UpdateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements U
         return hash;
     }
 
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.UpdateHmacKeyRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request object to update an HMAC key state.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.UpdateHmacKeyRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateHmacKeyRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateHmacKeyRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.UpdateHmacKeyRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.UpdateHmacKeyRequest.class, com.google.storage.v2.UpdateHmacKeyRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.UpdateHmacKeyRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != hmacKeyBuilder_) {
-                hmacKey_ = null;
-                hmacKeyBuilder_ = null;
-            } else {
-                hmacKey_ = null;
-            }
-            if (null != updateMaskBuilder_) {
-                updateMask_ = null;
-                updateMaskBuilder_ = null;
-            } else {
-                updateMask_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateHmacKeyRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.UpdateHmacKeyRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateHmacKeyRequest build() {
-            com.google.storage.v2.UpdateHmacKeyRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateHmacKeyRequest buildPartial() {
-            com.google.storage.v2.UpdateHmacKeyRequest result = new com.google.storage.v2.UpdateHmacKeyRequest(this);
-            if (null != hmacKeyBuilder_) {
-                result.hmacKey_ = hmacKeyBuilder_.build();
-            } else {
-                result.hmacKey_ = hmacKey_;
-            }
-            if (null != updateMaskBuilder_) {
-                result.updateMask_ = updateMaskBuilder_.build();
-            } else {
-                result.updateMask_ = updateMask_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.UpdateHmacKeyRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.UpdateHmacKeyRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.UpdateHmacKeyRequest other) {
-            if (com.google.storage.v2.UpdateHmacKeyRequest.getDefaultInstance() == other)
-                return this;
-            if (other.hasHmacKey()) {
-                mergeHmacKey(other.getHmacKey());
-            }
-            if (other.hasUpdateMask()) {
-                mergeUpdateMask(other.getUpdateMask());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.UpdateHmacKeyRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.UpdateHmacKeyRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private com.google.storage.v2.HmacKeyMetadata hmacKey_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> hmacKeyBuilder_;
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         *
-         * @return Whether the hmacKey field is set.
-         */
-        public boolean hasHmacKey() {
-            return null != hmacKeyBuilder_ || null != hmacKey_;
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         *
-         * @return The hmacKey.
-         */
-        public com.google.storage.v2.HmacKeyMetadata getHmacKey() {
-            if (null != hmacKeyBuilder_) {
-                return hmacKeyBuilder_.getMessage();
-            } else {
-                return null == hmacKey_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : hmacKey_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder setHmacKey(com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != hmacKeyBuilder_) {
-                hmacKeyBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                hmacKey_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder setHmacKey(com.google.storage.v2.HmacKeyMetadata.Builder builderForValue) {
-            if (null != hmacKeyBuilder_) {
-                hmacKeyBuilder_.setMessage(builderForValue.build());
-            } else {
-                hmacKey_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder mergeHmacKey(com.google.storage.v2.HmacKeyMetadata value) {
-            if (null != hmacKeyBuilder_) {
-                hmacKeyBuilder_.mergeFrom(value);
-            } else {
-                if (null == hmacKey_) {
-                    hmacKey_ = value;
-                } else {
-                    hmacKey_ = com.google.storage.v2.HmacKeyMetadata.newBuilder(hmacKey_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder clearHmacKey() {
-            if (null != hmacKeyBuilder_) {
-                hmacKey_ = null;
-                hmacKeyBuilder_ = null;
-            } else {
-                hmacKey_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.HmacKeyMetadata.Builder getHmacKeyBuilder() {
-            onChanged();
-            return getHmacKeyFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.HmacKeyMetadataOrBuilder getHmacKeyOrBuilder() {
-            if (null == hmacKeyBuilder_) {
-                return null == hmacKey_ ? com.google.storage.v2.HmacKeyMetadata.getDefaultInstance() : hmacKey_;
-            } else {
-                return hmacKeyBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The HMAC key to update.
-         * If present, the hmac_key's `id` field will be used to identify the key.
-         * Otherwise, the hmac_key's access_id and project fields will be used to
-         * identify the key.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.HmacKeyMetadata hmac_key = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder> getHmacKeyFieldBuilder() {
-            if (null == hmacKeyBuilder_) {
-                hmacKeyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.HmacKeyMetadata, com.google.storage.v2.HmacKeyMetadata.Builder, com.google.storage.v2.HmacKeyMetadataOrBuilder>(getHmacKey(), getParentForChildren(), isClean());
-                hmacKey_ = null;
-            }
-            return hmacKeyBuilder_;
-        }
-
-        private com.google.protobuf.FieldMask updateMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> updateMaskBuilder_;
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         *
-         * @return Whether the updateMask field is set.
-         */
-        public boolean hasUpdateMask() {
-            return null != updateMaskBuilder_ || null != updateMask_;
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         *
-         * @return The updateMask.
-         */
-        public com.google.protobuf.FieldMask getUpdateMask() {
-            if (null != updateMaskBuilder_) {
-                return updateMaskBuilder_.getMessage();
-            } else {
-                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public Builder setUpdateMask(com.google.protobuf.FieldMask value) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                updateMask_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public Builder setUpdateMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                updateMask_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public Builder mergeUpdateMask(com.google.protobuf.FieldMask value) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.mergeFrom(value);
-            } else {
-                if (null == updateMask_) {
-                    updateMask_ = value;
-                } else {
-                    updateMask_ = com.google.protobuf.FieldMask.newBuilder(updateMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public Builder clearUpdateMask() {
-            if (null != updateMaskBuilder_) {
-                updateMask_ = null;
-                updateMaskBuilder_ = null;
-            } else {
-                updateMask_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getUpdateMaskBuilder() {
-            onChanged();
-            return getUpdateMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
-            if (null == updateMaskBuilder_) {
-                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-            } else {
-                return updateMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Update mask for hmac_key.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 3;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getUpdateMaskFieldBuilder() {
-            if (null == updateMaskBuilder_) {
-                updateMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getUpdateMask(), getParentForChildren(), isClean());
-                updateMask_ = null;
-            }
-            return updateMaskBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.UpdateHmacKeyRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.UpdateHmacKeyRequest)
-    private static final com.google.storage.v2.UpdateHmacKeyRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.UpdateHmacKeyRequest();
-    }
-
-    public static com.google.storage.v2.UpdateHmacKeyRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<UpdateHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<UpdateHmacKeyRequest>() {
-
-        @java.lang.Override
-        public UpdateHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new UpdateHmacKeyRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<UpdateHmacKeyRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<UpdateHmacKeyRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.UpdateHmacKeyRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

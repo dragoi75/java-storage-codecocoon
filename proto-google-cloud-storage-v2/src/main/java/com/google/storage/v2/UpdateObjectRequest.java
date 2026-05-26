@@ -30,24 +30,1290 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
 
     private static final long serialVersionUID = 0L;
 
-    // Use UpdateObjectRequest.newBuilder() to construct.
-    private UpdateObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int OBJECT_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.Object object_;
+
+    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 2;
+
+    private long ifGenerationMatch_;
+
+    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 3;
+
+    private long ifGenerationNotMatch_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 4;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 5;
+
+    private long ifMetagenerationNotMatch_;
+
+    public static final int PREDEFINED_ACL_FIELD_NUMBER = 10;
+
+    private volatile java.lang.Object predefinedAcl_;
+
+    public static final int UPDATE_MASK_FIELD_NUMBER = 7;
+
+    private com.google.protobuf.FieldMask updateMask_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 8;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for UpdateObject.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.UpdateObjectRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateObjectRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateObjectRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.UpdateObjectRequestOrBuilder {
+
+        private int bitField0_;
+
+        private com.google.storage.v2.Object object_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> objectBuilder_;
+
+        private long ifGenerationMatch_;
+
+        private long ifGenerationNotMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        private java.lang.Object predefinedAcl_ = "";
+
+        private com.google.protobuf.FieldMask updateMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> updateMaskBuilder_;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.UpdateObjectRequest)
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         *
+         * @return The updateMask.
+         */
+        public com.google.protobuf.FieldMask getUpdateMask() {
+            if (null != updateMaskBuilder_) {
+                return updateMaskBuilder_.getMessage();
+            } else {
+                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+            }
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public Builder setUpdateMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                updateMask_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public Object.Builder getObjectBuilder() {
+            onChanged();
+            return getObjectFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 10;</code>
+         *
+         * @return The predefinedAcl.
+         */
+        public java.lang.String getPredefinedAcl() {
+            java.lang.Object ref = predefinedAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                predefinedAcl_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getObjectFieldBuilder() {
+            if (null == objectBuilder_) {
+                objectBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getObject(), getParentForChildren(), isClean());
+                object_ = null;
+            }
+            return objectBuilder_;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof UpdateObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((UpdateObjectRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 10;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPredefinedAcl() {
+            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 2;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public Builder mergeObject(Object value) {
+            if (null != objectBuilder_) {
+                objectBuilder_.mergeFrom(value);
+            } else {
+                if (null == object_) {
+                    object_ = value;
+                } else {
+                    object_ = Object.newBuilder(object_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 10;</code>
+         *
+         * @param value The predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getUpdateMaskBuilder() {
+            onChanged();
+            return getUpdateMaskFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 2;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public UpdateObjectRequest getDefaultInstanceForType() {
+            return UpdateObjectRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public Builder mergeUpdateMask(com.google.protobuf.FieldMask value) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.mergeFrom(value);
+            } else {
+                if (null == updateMask_) {
+                    updateMask_ = value;
+                } else {
+                    updateMask_ = com.google.protobuf.FieldMask.newBuilder(updateMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 3;</code>
+         *
+         * @return The ifGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationNotMatch() {
+            return ifGenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 5;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000008));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
+            if (null == updateMaskBuilder_) {
+                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+            } else {
+                return updateMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 5;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000008;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public Builder setObject(Object.Builder builderForValue) {
+            if (null != objectBuilder_) {
+                objectBuilder_.setMessage(builderForValue.build());
+            } else {
+                object_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public Builder setObject(Object value) {
+            if (null != objectBuilder_) {
+                objectBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                object_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 10;</code>
+         *
+         * @return The bytes for predefinedAcl.
+         */
+        public com.google.protobuf.ByteString getPredefinedAclBytes() {
+            java.lang.Object ref = predefinedAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                predefinedAcl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public ObjectOrBuilder getObjectOrBuilder() {
+            if (null == objectBuilder_) {
+                return null == object_ ? Object.getDefaultInstance() : object_;
+            } else {
+                return objectBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 3;</code>
+         *
+         * @return Whether the ifGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public Builder clearUpdateMask() {
+            if (null != updateMaskBuilder_) {
+                updateMask_ = null;
+                updateMaskBuilder_ = null;
+            } else {
+                updateMask_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 3;</code>
+         *
+         * @param value The ifGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 4;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            UpdateObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (UpdateObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public UpdateObjectRequest buildPartial() {
+            UpdateObjectRequest result = new UpdateObjectRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (null != objectBuilder_) {
+                result.object_ = objectBuilder_.build();
+            } else {
+                result.object_ = object_;
+            }
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifGenerationMatch_ = ifGenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000004;
+            }
+            if ((0 != (from_bitField0_ & 0x00000008))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000008;
+            }
+            result.predefinedAcl_ = predefinedAcl_;
+            if (null != updateMaskBuilder_) {
+                result.updateMask_ = updateMaskBuilder_.build();
+            } else {
+                result.updateMask_ = updateMask_;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getUpdateMaskFieldBuilder() {
+            if (null == updateMaskBuilder_) {
+                updateMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getUpdateMask(), getParentForChildren(), isClean());
+                updateMask_ = null;
+            }
+            return updateMaskBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         *
+         * @return Whether the updateMask field is set.
+         */
+        public boolean hasUpdateMask() {
+            return null != updateMaskBuilder_ || null != updateMask_;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        // Construct using com.google.storage.v2.UpdateObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 10;</code>
+         *
+         * @param value The bytes for predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(UpdateObjectRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != objectBuilder_) {
+                object_ = null;
+                objectBuilder_ = null;
+            } else {
+                object_ = null;
+            }
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            predefinedAcl_ = "";
+            if (null != updateMaskBuilder_) {
+                updateMask_ = null;
+                updateMaskBuilder_ = null;
+            } else {
+                updateMask_ = null;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public UpdateObjectRequest build() {
+            UpdateObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 2;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         */
+        public Builder clearObject() {
+            if (null != objectBuilder_) {
+                object_ = null;
+                objectBuilder_ = null;
+            } else {
+                object_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 5;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         *
+         * @return The object.
+         */
+        public Object getObject() {
+            if (null != objectBuilder_) {
+                return objectBuilder_.getMessage();
+            } else {
+                return null == object_ ? Object.getDefaultInstance() : object_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 4;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * List of fields to be updated.
+         * To specify ALL fields, equivalent to the JSON API's "update" function,
+         * specify a single field with the value `*`. Note: not recommended. If a new
+         * field is introduced at a later time, an older client updating with the `*`
+         * may accidentally reset the new field's value.
+         * Not specifying any fields is an error.
+         * Not specifying a field while setting that field to a non-default value is
+         * an error.
+         * </pre>
+         *
+         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+         */
+        public Builder setUpdateMask(com.google.protobuf.FieldMask value) {
+            if (null != updateMaskBuilder_) {
+                updateMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                updateMask_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The object to update.
+         * The object's bucket and name fields are used to identify the object to
+         * update. If present, the object's generation field selects a specific
+         * revision of this object whose metadata should be updated. Otherwise,
+         * assumes the current, live version of the object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object object = 1;</code>
+         *
+         * @return Whether the object field is set.
+         */
+        public boolean hasObject() {
+            return null != objectBuilder_ || null != object_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 4;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        public Builder mergeFrom(UpdateObjectRequest other) {
+            if (UpdateObjectRequest.getDefaultInstance() == other)
+                return this;
+            if (other.hasObject()) {
+                mergeObject(other.getObject());
+            }
+            if (other.hasIfGenerationMatch()) {
+                setIfGenerationMatch(other.getIfGenerationMatch());
+            }
+            if (other.hasIfGenerationNotMatch()) {
+                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            if (!other.getPredefinedAcl().isEmpty()) {
+                predefinedAcl_ = other.predefinedAcl_;
+                onChanged();
+            }
+            if (other.hasUpdateMask()) {
+                mergeUpdateMask(other.getUpdateMask());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
     }
 
-    private UpdateObjectRequest() {
-        predefinedAcl_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.UpdateObjectRequest)
+    private static final com.google.storage.v2.UpdateObjectRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.UpdateObjectRequest();
     }
 
+    private static final com.google.protobuf.Parser<UpdateObjectRequest> PARSER = new com.google.protobuf.AbstractParser<UpdateObjectRequest>() {
+
+        @java.lang.Override
+        public UpdateObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new UpdateObjectRequest(input, extensionRegistry);
+        }
+    };
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new UpdateObjectRequest();
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
     }
 
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 5;</code>
+     *
+     * @return The ifMetagenerationNotMatch.
+     */
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public long getIfMetagenerationNotMatch() {
+        return ifMetagenerationNotMatch_;
+    }
+
+    /**
+     * <pre>
+     * List of fields to be updated.
+     * To specify ALL fields, equivalent to the JSON API's "update" function,
+     * specify a single field with the value `*`. Note: not recommended. If a new
+     * field is introduced at a later time, an older client updating with the `*`
+     * may accidentally reset the new field's value.
+     * Not specifying any fields is an error.
+     * Not specifying a field while setting that field to a non-default value is
+     * an error.
+     * </pre>
+     *
+     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+     *
+     * @return Whether the updateMask field is set.
+     */
+    @java.lang.Override
+    public boolean hasUpdateMask() {
+        return null != updateMask_;
+    }
+
+    public static UpdateObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     private UpdateObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -67,11 +1333,11 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
+                            Object.Builder subBuilder = null;
                             if (null != object_) {
                                 subBuilder = object_.toBuilder();
                             }
-                            object_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
+                            object_ = input.readMessage(Object.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(object_);
                                 object_ = subBuilder.buildPartial();
@@ -117,11 +1383,11 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
                         }
                     case 66:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -155,415 +1421,12 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
+    private UpdateObjectRequest() {
+        predefinedAcl_ = "";
     }
 
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.UpdateObjectRequest.class, com.google.storage.v2.UpdateObjectRequest.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int OBJECT_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.Object object_;
-
-    /**
-     * <pre>
-     * The object to update.
-     * The object's bucket and name fields are used to identify the object to
-     * update. If present, the object's generation field selects a specific
-     * revision of this object whose metadata should be updated. Otherwise,
-     * assumes the current, live version of the object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object object = 1;</code>
-     *
-     * @return Whether the object field is set.
-     */
-    @java.lang.Override
-    public boolean hasObject() {
-        return null != object_;
-    }
-
-    /**
-     * <pre>
-     * The object to update.
-     * The object's bucket and name fields are used to identify the object to
-     * update. If present, the object's generation field selects a specific
-     * revision of this object whose metadata should be updated. Otherwise,
-     * assumes the current, live version of the object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object object = 1;</code>
-     *
-     * @return The object.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getObject() {
-        return null == object_ ? com.google.storage.v2.Object.getDefaultInstance() : object_;
-    }
-
-    /**
-     * <pre>
-     * The object to update.
-     * The object's bucket and name fields are used to identify the object to
-     * update. If present, the object's generation field selects a specific
-     * revision of this object whose metadata should be updated. Otherwise,
-     * assumes the current, live version of the object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object object = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getObjectOrBuilder() {
-        return getObject();
-    }
-
-    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 2;
-
-    private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 2;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 2;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
-
-    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 3;
-
-    private long ifGenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 3;</code>
-     *
-     * @return Whether the ifGenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 3;</code>
-     *
-     * @return The ifGenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationNotMatch() {
-        return ifGenerationNotMatch_;
-    }
-
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 4;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 4;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 4;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 5;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 5;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000008));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 5;</code>
-     *
-     * @return The ifMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationNotMatch() {
-        return ifMetagenerationNotMatch_;
-    }
-
-    public static final int PREDEFINED_ACL_FIELD_NUMBER = 10;
-
-    private volatile java.lang.Object predefinedAcl_;
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_acl = 10;</code>
-     *
-     * @return The predefinedAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getPredefinedAcl() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            predefinedAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_acl = 10;</code>
-     *
-     * @return The bytes for predefinedAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPredefinedAclBytes() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            predefinedAcl_ = b;
-            return b;
-        }
-    }
-
-    public static final int UPDATE_MASK_FIELD_NUMBER = 7;
-
-    private com.google.protobuf.FieldMask updateMask_;
-
-    /**
-     * <pre>
-     * List of fields to be updated.
-     * To specify ALL fields, equivalent to the JSON API's "update" function,
-     * specify a single field with the value `*`. Note: not recommended. If a new
-     * field is introduced at a later time, an older client updating with the `*`
-     * may accidentally reset the new field's value.
-     * Not specifying any fields is an error.
-     * Not specifying a field while setting that field to a non-default value is
-     * an error.
-     * </pre>
-     *
-     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-     *
-     * @return Whether the updateMask field is set.
-     */
-    @java.lang.Override
-    public boolean hasUpdateMask() {
-        return null != updateMask_;
-    }
-
-    /**
-     * <pre>
-     * List of fields to be updated.
-     * To specify ALL fields, equivalent to the JSON API's "update" function,
-     * specify a single field with the value `*`. Note: not recommended. If a new
-     * field is introduced at a later time, an older client updating with the `*`
-     * may accidentally reset the new field's value.
-     * Not specifying any fields is an error.
-     * Not specifying a field while setting that field to a non-default value is
-     * an error.
-     * </pre>
-     *
-     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-     *
-     * @return The updateMask.
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMask getUpdateMask() {
-        return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-    }
-
-    /**
-     * <pre>
-     * List of fields to be updated.
-     * To specify ALL fields, equivalent to the JSON API's "update" function,
-     * specify a single field with the value `*`. Note: not recommended. If a new
-     * field is introduced at a later time, an older client updating with the `*`
-     * may accidentally reset the new field's value.
-     * Not specifying any fields is an error.
-     * Not specifying a field while setting that field to a non-default value is
-     * an error.
-     * </pre>
-     *
-     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
-        return getUpdateMask();
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 8;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (null != object_) {
-            output.writeMessage(1, getObject());
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeInt64(2, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            output.writeInt64(3, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            output.writeInt64(4, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            output.writeInt64(5, ifMetagenerationNotMatch_);
-        }
-        if (null != updateMask_) {
-            output.writeMessage(7, getUpdateMask());
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(8, getCommonObjectRequestParams());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 10, predefinedAcl_);
-        }
-        unknownFields.writeTo(output);
+    public static UpdateObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
@@ -601,15 +1464,417 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
         return size;
     }
 
+    public static UpdateObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 4;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    public static UpdateObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static UpdateObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(UpdateObjectRequest.class, Builder.class);
+    }
+
+    public static UpdateObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static UpdateObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The object to update.
+     * The object's bucket and name fields are used to identify the object to
+     * update. If present, the object's generation field selects a specific
+     * revision of this object whose metadata should be updated. Otherwise,
+     * assumes the current, live version of the object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object object = 1;</code>
+     *
+     * @return Whether the object field is set.
+     */
+    @java.lang.Override
+    public boolean hasObject() {
+        return null != object_;
+    }
+
+    // Use UpdateObjectRequest.newBuilder() to construct.
+    private UpdateObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasObject()) {
+            hash = (37 * hash) + OBJECT_FIELD_NUMBER;
+            hash = (53 * hash) + getObject().hashCode();
+        }
+        if (hasIfGenerationMatch()) {
+            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+        }
+        if (hasIfGenerationNotMatch()) {
+            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
+        }
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        if (hasIfMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
+        }
+        hash = (37 * hash) + PREDEFINED_ACL_FIELD_NUMBER;
+        hash = (53 * hash) + getPredefinedAcl().hashCode();
+        if (hasUpdateMask()) {
+            hash = (37 * hash) + UPDATE_MASK_FIELD_NUMBER;
+            hash = (53 * hash) + getUpdateMask().hashCode();
+        }
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static com.google.protobuf.Parser<UpdateObjectRequest> parser() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * The object to update.
+     * The object's bucket and name fields are used to identify the object to
+     * update. If present, the object's generation field selects a specific
+     * revision of this object whose metadata should be updated. Otherwise,
+     * assumes the current, live version of the object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object object = 1;</code>
+     *
+     * @return The object.
+     */
+    @java.lang.Override
+    public Object getObject() {
+        return null == object_ ? Object.getDefaultInstance() : object_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 5;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000008));
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 3;</code>
+     *
+     * @return The ifGenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationNotMatch() {
+        return ifGenerationNotMatch_;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UpdateObjectRequest> getParserForType() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static UpdateObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The object to update.
+     * The object's bucket and name fields are used to identify the object to
+     * update. If present, the object's generation field selects a specific
+     * revision of this object whose metadata should be updated. Otherwise,
+     * assumes the current, live version of the object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object object = 1;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getObjectOrBuilder() {
+        return getObject();
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 2;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static UpdateObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 4;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    public static Builder newBuilder(UpdateObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to this object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string predefined_acl = 10;</code>
+     *
+     * @return The predefinedAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getPredefinedAcl() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            predefinedAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static UpdateObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 2;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
+    }
+
+    public static UpdateObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 3;</code>
+     *
+     * @return Whether the ifGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    public static UpdateObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * List of fields to be updated.
+     * To specify ALL fields, equivalent to the JSON API's "update" function,
+     * specify a single field with the value `*`. Note: not recommended. If a new
+     * field is introduced at a later time, an older client updating with the `*`
+     * may accidentally reset the new field's value.
+     * Not specifying any fields is an error.
+     * Not specifying a field while setting that field to a non-default value is
+     * an error.
+     * </pre>
+     *
+     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
+        return getUpdateMask();
+    }
+
+    public static UpdateObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * List of fields to be updated.
+     * To specify ALL fields, equivalent to the JSON API's "update" function,
+     * specify a single field with the value `*`. Note: not recommended. If a new
+     * field is introduced at a later time, an older client updating with the `*`
+     * may accidentally reset the new field's value.
+     * Not specifying any fields is an error.
+     * Not specifying a field while setting that field to a non-default value is
+     * an error.
+     * </pre>
+     *
+     * <code>.google.protobuf.FieldMask update_mask = 7;</code>
+     *
+     * @return The updateMask.
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMask getUpdateMask() {
+        return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.UpdateObjectRequest)) {
+        if (!(obj instanceof UpdateObjectRequest)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.UpdateObjectRequest other = (com.google.storage.v2.UpdateObjectRequest) obj;
+        UpdateObjectRequest other = (UpdateObjectRequest) obj;
         if (other.hasObject() != hasObject())
             return false;
         if (hasObject()) {
@@ -659,1329 +1924,67 @@ UpdateObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Up
         return true;
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasObject()) {
-            hash = (37 * hash) + OBJECT_FIELD_NUMBER;
-            hash = (53 * hash) + getObject().hashCode();
-        }
-        if (hasIfGenerationMatch()) {
-            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-        }
-        if (hasIfGenerationNotMatch()) {
-            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
-        }
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        if (hasIfMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
-        }
-        hash = (37 * hash) + PREDEFINED_ACL_FIELD_NUMBER;
-        hash = (53 * hash) + getPredefinedAcl().hashCode();
-        if (hasUpdateMask()) {
-            hash = (37 * hash) + UPDATE_MASK_FIELD_NUMBER;
-            hash = (53 * hash) + getUpdateMask().hashCode();
-        }
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.UpdateObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
     /**
      * <pre>
-     * Request message for UpdateObject.
+     * Apply a predefined set of access controls to this object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.UpdateObjectRequest}
+     * <code>string predefined_acl = 10;</code>
+     *
+     * @return The bytes for predefinedAcl.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateObjectRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.UpdateObjectRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.UpdateObjectRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPredefinedAclBytes() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            predefinedAcl_ = b;
+            return b;
         }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.UpdateObjectRequest.class, com.google.storage.v2.UpdateObjectRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.UpdateObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != objectBuilder_) {
-                object_ = null;
-                objectBuilder_ = null;
-            } else {
-                object_ = null;
-            }
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            predefinedAcl_ = "";
-            if (null != updateMaskBuilder_) {
-                updateMask_ = null;
-                updateMaskBuilder_ = null;
-            } else {
-                updateMask_ = null;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_UpdateObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.UpdateObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateObjectRequest build() {
-            com.google.storage.v2.UpdateObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.UpdateObjectRequest buildPartial() {
-            com.google.storage.v2.UpdateObjectRequest result = new com.google.storage.v2.UpdateObjectRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            if (null != objectBuilder_) {
-                result.object_ = objectBuilder_.build();
-            } else {
-                result.object_ = object_;
-            }
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifGenerationMatch_ = ifGenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000004;
-            }
-            if ((0 != (from_bitField0_ & 0x00000008))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000008;
-            }
-            result.predefinedAcl_ = predefinedAcl_;
-            if (null != updateMaskBuilder_) {
-                result.updateMask_ = updateMaskBuilder_.build();
-            } else {
-                result.updateMask_ = updateMask_;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.UpdateObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.UpdateObjectRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.UpdateObjectRequest other) {
-            if (com.google.storage.v2.UpdateObjectRequest.getDefaultInstance() == other)
-                return this;
-            if (other.hasObject()) {
-                mergeObject(other.getObject());
-            }
-            if (other.hasIfGenerationMatch()) {
-                setIfGenerationMatch(other.getIfGenerationMatch());
-            }
-            if (other.hasIfGenerationNotMatch()) {
-                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            if (!other.getPredefinedAcl().isEmpty()) {
-                predefinedAcl_ = other.predefinedAcl_;
-                onChanged();
-            }
-            if (other.hasUpdateMask()) {
-                mergeUpdateMask(other.getUpdateMask());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.UpdateObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.UpdateObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private com.google.storage.v2.Object object_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> objectBuilder_;
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         *
-         * @return Whether the object field is set.
-         */
-        public boolean hasObject() {
-            return null != objectBuilder_ || null != object_;
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         *
-         * @return The object.
-         */
-        public com.google.storage.v2.Object getObject() {
-            if (null != objectBuilder_) {
-                return objectBuilder_.getMessage();
-            } else {
-                return null == object_ ? com.google.storage.v2.Object.getDefaultInstance() : object_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public Builder setObject(com.google.storage.v2.Object value) {
-            if (null != objectBuilder_) {
-                objectBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                object_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public Builder setObject(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != objectBuilder_) {
-                objectBuilder_.setMessage(builderForValue.build());
-            } else {
-                object_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public Builder mergeObject(com.google.storage.v2.Object value) {
-            if (null != objectBuilder_) {
-                objectBuilder_.mergeFrom(value);
-            } else {
-                if (null == object_) {
-                    object_ = value;
-                } else {
-                    object_ = com.google.storage.v2.Object.newBuilder(object_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public Builder clearObject() {
-            if (null != objectBuilder_) {
-                object_ = null;
-                objectBuilder_ = null;
-            } else {
-                object_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder getObjectBuilder() {
-            onChanged();
-            return getObjectFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getObjectOrBuilder() {
-            if (null == objectBuilder_) {
-                return null == object_ ? com.google.storage.v2.Object.getDefaultInstance() : object_;
-            } else {
-                return objectBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The object to update.
-         * The object's bucket and name fields are used to identify the object to
-         * update. If present, the object's generation field selects a specific
-         * revision of this object whose metadata should be updated. Otherwise,
-         * assumes the current, live version of the object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object object = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getObjectFieldBuilder() {
-            if (null == objectBuilder_) {
-                objectBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getObject(), getParentForChildren(), isClean());
-                object_ = null;
-            }
-            return objectBuilder_;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 2;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 2;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 2;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 3;</code>
-         *
-         * @return Whether the ifGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 3;</code>
-         *
-         * @return The ifGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationNotMatch() {
-            return ifGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 3;</code>
-         *
-         * @param value The ifGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 4;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 4;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 4;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 5;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000008));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 5;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 5;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000008;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object predefinedAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 10;</code>
-         *
-         * @return The predefinedAcl.
-         */
-        public java.lang.String getPredefinedAcl() {
-            java.lang.Object ref = predefinedAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                predefinedAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 10;</code>
-         *
-         * @return The bytes for predefinedAcl.
-         */
-        public com.google.protobuf.ByteString getPredefinedAclBytes() {
-            java.lang.Object ref = predefinedAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                predefinedAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 10;</code>
-         *
-         * @param value The predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 10;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPredefinedAcl() {
-            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 10;</code>
-         *
-         * @param value The bytes for predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.FieldMask updateMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> updateMaskBuilder_;
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         *
-         * @return Whether the updateMask field is set.
-         */
-        public boolean hasUpdateMask() {
-            return null != updateMaskBuilder_ || null != updateMask_;
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         *
-         * @return The updateMask.
-         */
-        public com.google.protobuf.FieldMask getUpdateMask() {
-            if (null != updateMaskBuilder_) {
-                return updateMaskBuilder_.getMessage();
-            } else {
-                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public Builder setUpdateMask(com.google.protobuf.FieldMask value) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                updateMask_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public Builder setUpdateMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                updateMask_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public Builder mergeUpdateMask(com.google.protobuf.FieldMask value) {
-            if (null != updateMaskBuilder_) {
-                updateMaskBuilder_.mergeFrom(value);
-            } else {
-                if (null == updateMask_) {
-                    updateMask_ = value;
-                } else {
-                    updateMask_ = com.google.protobuf.FieldMask.newBuilder(updateMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public Builder clearUpdateMask() {
-            if (null != updateMaskBuilder_) {
-                updateMask_ = null;
-                updateMaskBuilder_ = null;
-            } else {
-                updateMask_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getUpdateMaskBuilder() {
-            onChanged();
-            return getUpdateMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getUpdateMaskOrBuilder() {
-            if (null == updateMaskBuilder_) {
-                return null == updateMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : updateMask_;
-            } else {
-                return updateMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * List of fields to be updated.
-         * To specify ALL fields, equivalent to the JSON API's "update" function,
-         * specify a single field with the value `*`. Note: not recommended. If a new
-         * field is introduced at a later time, an older client updating with the `*`
-         * may accidentally reset the new field's value.
-         * Not specifying any fields is an error.
-         * Not specifying a field while setting that field to a non-default value is
-         * an error.
-         * </pre>
-         *
-         * <code>.google.protobuf.FieldMask update_mask = 7;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getUpdateMaskFieldBuilder() {
-            if (null == updateMaskBuilder_) {
-                updateMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getUpdateMask(), getParentForChildren(), isClean());
-                updateMask_ = null;
-            }
-            return updateMaskBuilder_;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.UpdateObjectRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.UpdateObjectRequest)
-    private static final com.google.storage.v2.UpdateObjectRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.UpdateObjectRequest();
-    }
-
-    public static com.google.storage.v2.UpdateObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<UpdateObjectRequest> PARSER = new com.google.protobuf.AbstractParser<UpdateObjectRequest>() {
-
-        @java.lang.Override
-        public UpdateObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new UpdateObjectRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<UpdateObjectRequest> parser() {
-        return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<UpdateObjectRequest> getParserForType() {
-        return PARSER;
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (null != object_) {
+            output.writeMessage(1, getObject());
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeInt64(2, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            output.writeInt64(3, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            output.writeInt64(4, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            output.writeInt64(5, ifMetagenerationNotMatch_);
+        }
+        if (null != updateMask_) {
+            output.writeMessage(7, getUpdateMask());
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(8, getCommonObjectRequestParams());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 10, predefinedAcl_);
+        }
+        unknownFields.writeTo(output);
     }
 
     @java.lang.Override
-    public com.google.storage.v2.UpdateObjectRequest getDefaultInstanceForType() {
+    public UpdateObjectRequest getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
     }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new UpdateObjectRequest();
+    }
+
 }

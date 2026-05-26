@@ -30,24 +30,455 @@ ObjectChecksums extends com.google.protobuf.GeneratedMessageV3 implements Object
 
     private static final long serialVersionUID = 0L;
 
-    // Use ObjectChecksums.newBuilder() to construct.
-    private ObjectChecksums(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int CRC32C_FIELD_NUMBER = 1;
+
+    private int crc32C_;
+
+    public static final int MD5_HASH_FIELD_NUMBER = 2;
+
+    private com.google.protobuf.ByteString md5Hash_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Message used for storing full (not subrange) object checksums.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ObjectChecksums}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectChecksums)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectChecksums)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ObjectChecksumsOrBuilder {
+
+        private int bitField0_;
+
+        private int crc32C_;
+
+        private com.google.protobuf.ByteString md5Hash_ = com.google.protobuf.ByteString.EMPTY;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ObjectChecksums)
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        // Construct using com.google.storage.v2.ObjectChecksums.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        public Builder mergeFrom(ObjectChecksums other) {
+            if (ObjectChecksums.getDefaultInstance() == other)
+                return this;
+            if (other.hasCrc32C()) {
+                setCrc32C(other.getCrc32C());
+            }
+            if (com.google.protobuf.ByteString.EMPTY != other.getMd5Hash()) {
+                setMd5Hash(other.getMd5Hash());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * CRC32C digest of the object data. Computed by the Cloud Storage service for
+         * all written objects.
+         * If set in an WriteObjectRequest, service will validate that the stored
+         * object matches this checksum.
+         * </pre>
+         *
+         * <code>optional fixed32 crc32c = 1;</code>
+         *
+         * @return The crc32c.
+         */
+        @java.lang.Override
+        public int getCrc32C() {
+            return crc32C_;
+        }
+
+        /**
+         * <pre>
+         * 128 bit MD5 hash of the object data.
+         * For more information about using the MD5 hash, see
+         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
+         * ETags: Best Practices].
+         * Not all objects will provide an MD5 hash. For example, composite objects
+         * provide only crc32c hashes.
+         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
+         * </pre>
+         *
+         * <code>bytes md5_hash = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearMd5Hash() {
+            md5Hash_ = getDefaultInstance().getMd5Hash();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ObjectChecksums)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ObjectChecksums) other);
+            }
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * CRC32C digest of the object data. Computed by the Cloud Storage service for
+         * all written objects.
+         * If set in an WriteObjectRequest, service will validate that the stored
+         * object matches this checksum.
+         * </pre>
+         *
+         * <code>optional fixed32 crc32c = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCrc32C() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            crc32C_ = 0;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ObjectChecksums parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ObjectChecksums) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * 128 bit MD5 hash of the object data.
+         * For more information about using the MD5 hash, see
+         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
+         * ETags: Best Practices].
+         * Not all objects will provide an MD5 hash. For example, composite objects
+         * provide only crc32c hashes.
+         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
+         * </pre>
+         *
+         * <code>bytes md5_hash = 2;</code>
+         *
+         * @return The md5Hash.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getMd5Hash() {
+            return md5Hash_;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            crc32C_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            md5Hash_ = com.google.protobuf.ByteString.EMPTY;
+            return this;
+        }
+
+        @java.lang.Override
+        public ObjectChecksums buildPartial() {
+            ObjectChecksums result = new ObjectChecksums(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.crc32C_ = crc32C_;
+                to_bitField0_ |= 0x00000001;
+            }
+            result.md5Hash_ = md5Hash_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * 128 bit MD5 hash of the object data.
+         * For more information about using the MD5 hash, see
+         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
+         * ETags: Best Practices].
+         * Not all objects will provide an MD5 hash. For example, composite objects
+         * provide only crc32c hashes.
+         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
+         * </pre>
+         *
+         * <code>bytes md5_hash = 2;</code>
+         *
+         * @param value The md5Hash to set.
+         * @return This builder for chaining.
+         */
+        public Builder setMd5Hash(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            md5Hash_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        public ObjectChecksums getDefaultInstanceForType() {
+            return ObjectChecksums.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * CRC32C digest of the object data. Computed by the Cloud Storage service for
+         * all written objects.
+         * If set in an WriteObjectRequest, service will validate that the stored
+         * object matches this checksum.
+         * </pre>
+         *
+         * <code>optional fixed32 crc32c = 1;</code>
+         *
+         * @return Whether the crc32c field is set.
+         */
+        @java.lang.Override
+        public boolean hasCrc32C() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ObjectChecksums_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectChecksums.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public ObjectChecksums build() {
+            ObjectChecksums result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * CRC32C digest of the object data. Computed by the Cloud Storage service for
+         * all written objects.
+         * If set in an WriteObjectRequest, service will validate that the stored
+         * object matches this checksum.
+         * </pre>
+         *
+         * <code>optional fixed32 crc32c = 1;</code>
+         *
+         * @param value The crc32c to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCrc32C(int value) {
+            bitField0_ |= 0x00000001;
+            crc32C_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
+        }
+
     }
 
-    private ObjectChecksums() {
-        md5Hash_ = com.google.protobuf.ByteString.EMPTY;
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ObjectChecksums)
+    private static final com.google.storage.v2.ObjectChecksums DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ObjectChecksums();
+    }
+
+    private static final com.google.protobuf.Parser<ObjectChecksums> PARSER = new com.google.protobuf.AbstractParser<ObjectChecksums>() {
+
+        @java.lang.Override
+        public ObjectChecksums parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ObjectChecksums(input, extensionRegistry);
+        }
+    };
+
+    public static ObjectChecksums parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ObjectChecksums();
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeFixed32Size(1, crc32C_);
+        }
+        if (!md5Hash_.isEmpty()) {
+            size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, md5Hash_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ObjectChecksums> getParserForType() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeFixed32(1, crc32C_);
+        }
+        if (!md5Hash_.isEmpty()) {
+            output.writeBytes(2, md5Hash_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ObjectChecksums parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ObjectChecksums parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * CRC32C digest of the object data. Computed by the Cloud Storage service for
+     * all written objects.
+     * If set in an WriteObjectRequest, service will validate that the stored
+     * object matches this checksum.
+     * </pre>
+     *
+     * <code>optional fixed32 crc32c = 1;</code>
+     *
+     * @return Whether the crc32c field is set.
+     */
+    @java.lang.Override
+    public boolean hasCrc32C() {
+        return (0 != (bitField0_ & 0x00000001));
+    }
+
+    public static com.google.protobuf.Parser<ObjectChecksums> parser() {
+        return PARSER;
+    }
+
+    public static ObjectChecksums parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public ObjectChecksums getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ObjectChecksums_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectChecksums.class, Builder.class);
+    }
+
+    public static ObjectChecksums parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ObjectChecksums parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static Builder newBuilder(ObjectChecksums prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
 
     private ObjectChecksums(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -97,36 +528,93 @@ ObjectChecksums extends com.google.protobuf.GeneratedMessageV3 implements Object
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static ObjectChecksums parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ObjectChecksums parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
 
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectChecksums_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ObjectChecksums.class, com.google.storage.v2.ObjectChecksums.Builder.class);
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasCrc32C()) {
+            hash = (37 * hash) + CRC32C_FIELD_NUMBER;
+            hash = (53 * hash) + getCrc32C();
+        }
+        hash = (37 * hash) + MD5_HASH_FIELD_NUMBER;
+        hash = (53 * hash) + getMd5Hash().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
     }
 
-    private int bitField0_;
+    public static ObjectChecksums parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
 
-    public static final int CRC32C_FIELD_NUMBER = 1;
-
-    private int crc32C_;
-
-    /**
-     * <pre>
-     * CRC32C digest of the object data. Computed by the Cloud Storage service for
-     * all written objects.
-     * If set in an WriteObjectRequest, service will validate that the stored
-     * object matches this checksum.
-     * </pre>
-     *
-     * <code>optional fixed32 crc32c = 1;</code>
-     *
-     * @return Whether the crc32c field is set.
-     */
     @java.lang.Override
-    public boolean hasCrc32C() {
-        return (0 != (bitField0_ & 0x00000001));
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ObjectChecksums parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ObjectChecksums parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ObjectChecksums();
+    }
+
+    public static ObjectChecksums getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    private ObjectChecksums() {
+        md5Hash_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ObjectChecksums)) {
+            return super.equals(obj);
+        }
+        ObjectChecksums other = (ObjectChecksums) obj;
+        if (other.hasCrc32C() != hasCrc32C())
+            return false;
+        if (hasCrc32C()) {
+            if (other.getCrc32C() != getCrc32C())
+                return false;
+        }
+        if (!getMd5Hash().equals(other.getMd5Hash()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static ObjectChecksums parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
     /**
@@ -146,9 +634,15 @@ ObjectChecksums extends com.google.protobuf.GeneratedMessageV3 implements Object
         return crc32C_;
     }
 
-    public static final int MD5_HASH_FIELD_NUMBER = 2;
+    // Use ObjectChecksums.newBuilder() to construct.
+    private ObjectChecksums(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
 
-    private com.google.protobuf.ByteString md5Hash_;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
 
     /**
      * <pre>
@@ -170,499 +664,8 @@ ObjectChecksums extends com.google.protobuf.GeneratedMessageV3 implements Object
         return md5Hash_;
     }
 
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
     }
 
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeFixed32(1, crc32C_);
-        }
-        if (!md5Hash_.isEmpty()) {
-            output.writeBytes(2, md5Hash_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeFixed32Size(1, crc32C_);
-        }
-        if (!md5Hash_.isEmpty()) {
-            size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, md5Hash_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ObjectChecksums)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ObjectChecksums other = (com.google.storage.v2.ObjectChecksums) obj;
-        if (other.hasCrc32C() != hasCrc32C())
-            return false;
-        if (hasCrc32C()) {
-            if (other.getCrc32C() != getCrc32C())
-                return false;
-        }
-        if (!getMd5Hash().equals(other.getMd5Hash()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasCrc32C()) {
-            hash = (37 * hash) + CRC32C_FIELD_NUMBER;
-            hash = (53 * hash) + getCrc32C();
-        }
-        hash = (37 * hash) + MD5_HASH_FIELD_NUMBER;
-        hash = (53 * hash) + getMd5Hash().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectChecksums parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ObjectChecksums prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Message used for storing full (not subrange) object checksums.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ObjectChecksums}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectChecksums)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectChecksums)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ObjectChecksumsOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectChecksums_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ObjectChecksums.class, com.google.storage.v2.ObjectChecksums.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ObjectChecksums.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            crc32C_ = 0;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            md5Hash_ = com.google.protobuf.ByteString.EMPTY;
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectChecksums_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectChecksums getDefaultInstanceForType() {
-            return com.google.storage.v2.ObjectChecksums.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectChecksums build() {
-            com.google.storage.v2.ObjectChecksums result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectChecksums buildPartial() {
-            com.google.storage.v2.ObjectChecksums result = new com.google.storage.v2.ObjectChecksums(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.crc32C_ = crc32C_;
-                to_bitField0_ |= 0x00000001;
-            }
-            result.md5Hash_ = md5Hash_;
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ObjectChecksums)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ObjectChecksums) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ObjectChecksums other) {
-            if (com.google.storage.v2.ObjectChecksums.getDefaultInstance() == other)
-                return this;
-            if (other.hasCrc32C()) {
-                setCrc32C(other.getCrc32C());
-            }
-            if (com.google.protobuf.ByteString.EMPTY != other.getMd5Hash()) {
-                setMd5Hash(other.getMd5Hash());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ObjectChecksums parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ObjectChecksums) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private int crc32C_;
-
-        /**
-         * <pre>
-         * CRC32C digest of the object data. Computed by the Cloud Storage service for
-         * all written objects.
-         * If set in an WriteObjectRequest, service will validate that the stored
-         * object matches this checksum.
-         * </pre>
-         *
-         * <code>optional fixed32 crc32c = 1;</code>
-         *
-         * @return Whether the crc32c field is set.
-         */
-        @java.lang.Override
-        public boolean hasCrc32C() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * CRC32C digest of the object data. Computed by the Cloud Storage service for
-         * all written objects.
-         * If set in an WriteObjectRequest, service will validate that the stored
-         * object matches this checksum.
-         * </pre>
-         *
-         * <code>optional fixed32 crc32c = 1;</code>
-         *
-         * @return The crc32c.
-         */
-        @java.lang.Override
-        public int getCrc32C() {
-            return crc32C_;
-        }
-
-        /**
-         * <pre>
-         * CRC32C digest of the object data. Computed by the Cloud Storage service for
-         * all written objects.
-         * If set in an WriteObjectRequest, service will validate that the stored
-         * object matches this checksum.
-         * </pre>
-         *
-         * <code>optional fixed32 crc32c = 1;</code>
-         *
-         * @param value The crc32c to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCrc32C(int value) {
-            bitField0_ |= 0x00000001;
-            crc32C_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * CRC32C digest of the object data. Computed by the Cloud Storage service for
-         * all written objects.
-         * If set in an WriteObjectRequest, service will validate that the stored
-         * object matches this checksum.
-         * </pre>
-         *
-         * <code>optional fixed32 crc32c = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCrc32C() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            crc32C_ = 0;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.ByteString md5Hash_ = com.google.protobuf.ByteString.EMPTY;
-
-        /**
-         * <pre>
-         * 128 bit MD5 hash of the object data.
-         * For more information about using the MD5 hash, see
-         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
-         * ETags: Best Practices].
-         * Not all objects will provide an MD5 hash. For example, composite objects
-         * provide only crc32c hashes.
-         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
-         * </pre>
-         *
-         * <code>bytes md5_hash = 2;</code>
-         *
-         * @return The md5Hash.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getMd5Hash() {
-            return md5Hash_;
-        }
-
-        /**
-         * <pre>
-         * 128 bit MD5 hash of the object data.
-         * For more information about using the MD5 hash, see
-         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
-         * ETags: Best Practices].
-         * Not all objects will provide an MD5 hash. For example, composite objects
-         * provide only crc32c hashes.
-         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
-         * </pre>
-         *
-         * <code>bytes md5_hash = 2;</code>
-         *
-         * @param value The md5Hash to set.
-         * @return This builder for chaining.
-         */
-        public Builder setMd5Hash(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            md5Hash_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * 128 bit MD5 hash of the object data.
-         * For more information about using the MD5 hash, see
-         * [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
-         * ETags: Best Practices].
-         * Not all objects will provide an MD5 hash. For example, composite objects
-         * provide only crc32c hashes.
-         * This value is equivalent to running `cat object.txt | openssl md5 -binary`
-         * </pre>
-         *
-         * <code>bytes md5_hash = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearMd5Hash() {
-            md5Hash_ = getDefaultInstance().getMd5Hash();
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ObjectChecksums)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ObjectChecksums)
-    private static final com.google.storage.v2.ObjectChecksums DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ObjectChecksums();
-    }
-
-    public static com.google.storage.v2.ObjectChecksums getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ObjectChecksums> PARSER = new com.google.protobuf.AbstractParser<ObjectChecksums>() {
-
-        @java.lang.Override
-        public ObjectChecksums parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ObjectChecksums(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ObjectChecksums> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ObjectChecksums> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksums getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

@@ -30,172 +30,8 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
     private static final long serialVersionUID = 0L;
 
-    // Use ComposeObjectRequest.newBuilder() to construct.
-    private ComposeObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private ComposeObjectRequest() {
-        sourceObjects_ = java.util.Collections.emptyList();
-        destinationPredefinedAcl_ = "";
-        kmsKey_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ComposeObjectRequest();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private ComposeObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
-                            if (null != destination_) {
-                                subBuilder = destination_.toBuilder();
-                            }
-                            destination_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(destination_);
-                                destination_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 18:
-                        {
-                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
-                                sourceObjects_ = new java.util.ArrayList<com.google.storage.v2.ComposeObjectRequest.SourceObject>();
-                                mutable_bitField0_ |= 0x00000001;
-                            }
-                            sourceObjects_.add(input.readMessage(com.google.storage.v2.ComposeObjectRequest.SourceObject.parser(), extensionRegistry));
-                            break;
-                        }
-                    case 32:
-                        {
-                            bitField0_ |= 0x00000001;
-                            ifGenerationMatch_ = input.readInt64();
-                            break;
-                        }
-                    case 40:
-                        {
-                            bitField0_ |= 0x00000002;
-                            ifMetagenerationMatch_ = input.readInt64();
-                            break;
-                        }
-                    case 50:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            kmsKey_ = s;
-                            break;
-                        }
-                    case 58:
-                        {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
-                            if (null != commonObjectRequestParams_) {
-                                subBuilder = commonObjectRequestParams_.toBuilder();
-                            }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(commonObjectRequestParams_);
-                                commonObjectRequestParams_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 74:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            destinationPredefinedAcl_ = s;
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            if ((0 != (mutable_bitField0_ & 0x00000001))) {
-                sourceObjects_ = java.util.Collections.unmodifiableList(sourceObjects_);
-            }
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.class, com.google.storage.v2.ComposeObjectRequest.Builder.class);
-    }
-
     public interface // @@protoc_insertion_point(interface_extends:google.storage.v2.ComposeObjectRequest.SourceObject)
     SourceObjectOrBuilder extends com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <pre>
-         * Required. The source object's name. All source objects must reside in the same
-         * bucket.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The name.
-         */
-        java.lang.String getName();
-
-        /**
-         * <pre>
-         * Required. The source object's name. All source objects must reside in the same
-         * bucket.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for name.
-         */
-        com.google.protobuf.ByteString getNameBytes();
-
-        /**
-         * <pre>
-         * The generation of this object to use as the source.
-         * </pre>
-         *
-         * <code>int64 generation = 2;</code>
-         *
-         * @return The generation.
-         */
-        long getGeneration();
 
         /**
          * <pre>
@@ -221,7 +57,7 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
          *
          * @return The objectPreconditions.
          */
-        com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getObjectPreconditions();
+        SourceObject.ObjectPreconditions getObjectPreconditions();
 
         /**
          * <pre>
@@ -232,7 +68,43 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
          * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
          * </code>
          */
-        com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder();
+        SourceObject.ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder();
+
+        /**
+         * <pre>
+         * The generation of this object to use as the source.
+         * </pre>
+         *
+         * <code>int64 generation = 2;</code>
+         *
+         * @return The generation.
+         */
+        long getGeneration();
+
+        /**
+         * <pre>
+         * Required. The source object's name. All source objects must reside in the same
+         * bucket.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for name.
+         */
+        com.google.protobuf.ByteString getNameBytes();
+
+        /**
+         * <pre>
+         * Required. The source object's name. All source objects must reside in the same
+         * bucket.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The name.
+         */
+        java.lang.String getName();
+
     }
 
     /**
@@ -248,96 +120,21 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
         private static final long serialVersionUID = 0L;
 
-        // Use SourceObject.newBuilder() to construct.
-        private SourceObject(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-            super(builder);
-        }
-
-        private SourceObject() {
-            name_ = "";
-        }
-
-        @java.lang.Override
-        @SuppressWarnings({ "unused" })
-        protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-            return new SourceObject();
-        }
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-            return this.unknownFields;
-        }
-
-        private SourceObject(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            this();
-            if (null == extensionRegistry) {
-                throw new java.lang.NullPointerException();
-            }
-            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-            try {
-                boolean done = false;
-                while (!done) {
-                    int tag = input.readTag();
-                    switch(tag) {
-                        case 0:
-                            done = true;
-                            break;
-                        case 10:
-                            {
-                                java.lang.String s = input.readStringRequireUtf8();
-                                name_ = s;
-                                break;
-                            }
-                        case 16:
-                            {
-                                generation_ = input.readInt64();
-                                break;
-                            }
-                        case 26:
-                            {
-                                com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder subBuilder = null;
-                                if (null != objectPreconditions_) {
-                                    subBuilder = objectPreconditions_.toBuilder();
-                                }
-                                objectPreconditions_ = input.readMessage(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.parser(), extensionRegistry);
-                                if (null != subBuilder) {
-                                    subBuilder.mergeFrom(objectPreconditions_);
-                                    objectPreconditions_ = subBuilder.buildPartial();
-                                }
-                                break;
-                            }
-                        default:
-                            {
-                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                    done = true;
-                                }
-                                break;
-                            }
-                    }
-                }
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                throw e.setUnfinishedMessage(this);
-            } catch (com.google.protobuf.UninitializedMessageException e) {
-                throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-            } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-            } finally {
-                this.unknownFields = unknownFields.build();
-                makeExtensionsImmutable();
-            }
-        }
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.SourceObject.class, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder.class);
-        }
-
         public interface // @@protoc_insertion_point(interface_extends:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
         ObjectPreconditionsOrBuilder extends com.google.protobuf.MessageOrBuilder {
+
+            /**
+             * <pre>
+             * Only perform the composition if the generation of the source object
+             * that would be used matches this value.  If this value and a generation
+             * are both specified, they must be the same value or the call will fail.
+             * </pre>
+             *
+             * <code>optional int64 if_generation_match = 1;</code>
+             *
+             * @return The ifGenerationMatch.
+             */
+            long getIfGenerationMatch();
 
             /**
              * <pre>
@@ -352,18 +149,6 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
              */
             boolean hasIfGenerationMatch();
 
-            /**
-             * <pre>
-             * Only perform the composition if the generation of the source object
-             * that would be used matches this value.  If this value and a generation
-             * are both specified, they must be the same value or the call will fail.
-             * </pre>
-             *
-             * <code>optional int64 if_generation_match = 1;</code>
-             *
-             * @return The ifGenerationMatch.
-             */
-            long getIfGenerationMatch();
         }
 
         /**
@@ -379,12 +164,284 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
             private static final long serialVersionUID = 0L;
 
-            // Use ObjectPreconditions.newBuilder() to construct.
-            private ObjectPreconditions(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-                super(builder);
+            private int bitField0_;
+
+            public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 1;
+
+            private long ifGenerationMatch_;
+
+            private byte memoizedIsInitialized = -1;
+
+            /**
+             * <pre>
+             * Preconditions for a source object of a composition request.
+             * </pre>
+             *
+             * Protobuf type {@code
+             * google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions}
+             */
+            public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
+            // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
+            Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder {
+
+                private int bitField0_;
+
+                private long ifGenerationMatch_;
+
+                // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
+
+                /**
+                 * <pre>
+                 * Only perform the composition if the generation of the source object
+                 * that would be used matches this value.  If this value and a generation
+                 * are both specified, they must be the same value or the call will fail.
+                 * </pre>
+                 *
+                 * <code>optional int64 if_generation_match = 1;</code>
+                 *
+                 * @return Whether the ifGenerationMatch field is set.
+                 */
+                @java.lang.Override
+                public boolean hasIfGenerationMatch() {
+                    return (0 != (bitField0_ & 0x00000001));
+                }
+
+                /**
+                 * <pre>
+                 * Only perform the composition if the generation of the source object
+                 * that would be used matches this value.  If this value and a generation
+                 * are both specified, they must be the same value or the call will fail.
+                 * </pre>
+                 *
+                 * <code>optional int64 if_generation_match = 1;</code>
+                 *
+                 * @return This builder for chaining.
+                 */
+                public Builder clearIfGenerationMatch() {
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                    ifGenerationMatch_ = 0L;
+                    onChanged();
+                    return this;
+                }
+
+                @java.lang.Override
+                public Builder mergeFrom(com.google.protobuf.Message other) {
+                    if (!(other instanceof ObjectPreconditions)) {
+                        super.mergeFrom(other);
+                        return this;
+                    } else {
+                        return mergeFrom((ObjectPreconditions) other);
+                    }
+                }
+
+                /**
+                 * <pre>
+                 * Only perform the composition if the generation of the source object
+                 * that would be used matches this value.  If this value and a generation
+                 * are both specified, they must be the same value or the call will fail.
+                 * </pre>
+                 *
+                 * <code>optional int64 if_generation_match = 1;</code>
+                 *
+                 * @param value The ifGenerationMatch to set.
+                 * @return This builder for chaining.
+                 */
+                public Builder setIfGenerationMatch(long value) {
+                    bitField0_ |= 0x00000001;
+                    ifGenerationMatch_ = value;
+                    onChanged();
+                    return this;
+                }
+
+                @java.lang.Override
+                public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+                    return super.clearOneof(oneof);
+                }
+
+                @java.lang.Override
+                public Builder clear() {
+                    super.clear();
+                    ifGenerationMatch_ = 0L;
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                    return this;
+                }
+
+                @java.lang.Override
+                public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+                    ObjectPreconditions parsedMessage = null;
+                    try {
+                        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                        parsedMessage = (ObjectPreconditions) e.getUnfinishedMessage();
+                        throw e.unwrapIOException();
+                    } finally {
+                        if (null != parsedMessage) {
+                            mergeFrom(parsedMessage);
+                        }
+                    }
+                    return this;
+                }
+
+                @java.lang.Override
+                public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+                    return super.clearField(field);
+                }
+
+                public Builder mergeFrom(ObjectPreconditions other) {
+                    if (ObjectPreconditions.getDefaultInstance() == other)
+                        return this;
+                    if (other.hasIfGenerationMatch()) {
+                        setIfGenerationMatch(other.getIfGenerationMatch());
+                    }
+                    this.mergeUnknownFields(other.unknownFields);
+                    onChanged();
+                    return this;
+                }
+
+                @java.lang.Override
+                public Builder clone() {
+                    return super.clone();
+                }
+
+                private void maybeForceBuilderInitialization() {
+                    if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                    }
+                }
+
+                /**
+                 * <pre>
+                 * Only perform the composition if the generation of the source object
+                 * that would be used matches this value.  If this value and a generation
+                 * are both specified, they must be the same value or the call will fail.
+                 * </pre>
+                 *
+                 * <code>optional int64 if_generation_match = 1;</code>
+                 *
+                 * @return The ifGenerationMatch.
+                 */
+                @java.lang.Override
+                public long getIfGenerationMatch() {
+                    return ifGenerationMatch_;
+                }
+
+                @java.lang.Override
+                public ComposeObjectRequest.SourceObject.ObjectPreconditions build() {
+                    ObjectPreconditions result = buildPartial();
+                    if (!result.isInitialized()) {
+                        throw newUninitializedMessageException(result);
+                    }
+                    return result;
+                }
+
+                @java.lang.Override
+                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+                    return super.setField(field, value);
+                }
+
+                @java.lang.Override
+                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+                    return super.mergeUnknownFields(unknownFields);
+                }
+
+                @java.lang.Override
+                public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+                    return super.addRepeatedField(field, value);
+                }
+
+                @java.lang.Override
+                public ComposeObjectRequest.SourceObject.ObjectPreconditions buildPartial() {
+                    ObjectPreconditions result = new ObjectPreconditions(this);
+                    int from_bitField0_ = bitField0_;
+                    int to_bitField0_ = 0;
+                    if ((0 != (from_bitField0_ & 0x00000001))) {
+                        result.ifGenerationMatch_ = ifGenerationMatch_;
+                        to_bitField0_ |= 0x00000001;
+                    }
+                    result.bitField0_ = to_bitField0_;
+                    onBuilt();
+                    return result;
+                }
+
+                @java.lang.Override
+                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+                    return super.setUnknownFields(unknownFields);
+                }
+
+                // Construct using
+                // com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.newBuilder()
+                private Builder() {
+                    maybeForceBuilderInitialization();
+                }
+
+                @java.lang.Override
+                public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                    return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
+                }
+
+                @java.lang.Override
+                public ComposeObjectRequest.SourceObject.ObjectPreconditions getDefaultInstanceForType() {
+                    return ObjectPreconditions.getDefaultInstance();
+                }
+
+                @java.lang.Override
+                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+                    return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectPreconditions.class, Builder.class);
+                }
+
+                @java.lang.Override
+                public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+                    return super.setRepeatedField(field, index, value);
+                }
+
+                public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                    return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
+                }
+
+                private Builder(BuilderParent parent) {
+                    super(parent);
+                    maybeForceBuilderInitialization();
+                }
+
+                @java.lang.Override
+                public final boolean isInitialized() {
+                    return true;
+                }
+
             }
 
-            private ObjectPreconditions() {
+            // @@protoc_insertion_point(class_scope:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
+            private static final com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions DEFAULT_INSTANCE;
+
+            static {
+                DEFAULT_INSTANCE = new com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions();
+            }
+
+            private static final com.google.protobuf.Parser<ObjectPreconditions> PARSER = new com.google.protobuf.AbstractParser<ObjectPreconditions>() {
+
+                @java.lang.Override
+                public ObjectPreconditions parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                    return new ObjectPreconditions(input, extensionRegistry);
+                }
+            };
+
+            public static ObjectPreconditions parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            @java.lang.Override
+            public int hashCode() {
+                if (0 != memoizedHashCode) {
+                    return memoizedHashCode;
+                }
+                int hash = 41;
+                hash = (19 * hash) + getDescriptor().hashCode();
+                if (hasIfGenerationMatch()) {
+                    hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+                    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+                }
+                hash = (29 * hash) + unknownFields.hashCode();
+                memoizedHashCode = hash;
+                return hash;
             }
 
             @java.lang.Override
@@ -393,9 +450,135 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 return new ObjectPreconditions();
             }
 
+            public static ObjectPreconditions parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return PARSER.parseFrom(data, extensionRegistry);
+            }
+
+            @java.lang.Override
+            protected Builder newBuilderForType(BuilderParent parent) {
+                Builder builder = new Builder(parent);
+                return builder;
+            }
+
+            public static ObjectPreconditions getDefaultInstance() {
+                return DEFAULT_INSTANCE;
+            }
+
+            @java.lang.Override
+            public com.google.protobuf.Parser<ObjectPreconditions> getParserForType() {
+                return PARSER;
+            }
+
+            public static ObjectPreconditions parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+                return PARSER.parseFrom(data);
+            }
+
+            @java.lang.Override
+            public Builder newBuilderForType() {
+                return newBuilder();
+            }
+
+            public static ObjectPreconditions parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+            }
+
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
+            }
+
+            @java.lang.Override
+            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+                if ((0 != (bitField0_ & 0x00000001))) {
+                    output.writeInt64(1, ifGenerationMatch_);
+                }
+                unknownFields.writeTo(output);
+            }
+
+            /**
+             * <pre>
+             * Only perform the composition if the generation of the source object
+             * that would be used matches this value.  If this value and a generation
+             * are both specified, they must be the same value or the call will fail.
+             * </pre>
+             *
+             * <code>optional int64 if_generation_match = 1;</code>
+             *
+             * @return Whether the ifGenerationMatch field is set.
+             */
+            @java.lang.Override
+            public boolean hasIfGenerationMatch() {
+                return (0 != (bitField0_ & 0x00000001));
+            }
+
+            @java.lang.Override
+            public ComposeObjectRequest.SourceObject.ObjectPreconditions getDefaultInstanceForType() {
+                return DEFAULT_INSTANCE;
+            }
+
+            public static Builder newBuilder(ObjectPreconditions prototype) {
+                return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+            }
+
+            public static ObjectPreconditions parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+                return PARSER.parseFrom(data);
+            }
+
+            public static Builder newBuilder() {
+                return DEFAULT_INSTANCE.toBuilder();
+            }
+
+            /**
+             * <pre>
+             * Only perform the composition if the generation of the source object
+             * that would be used matches this value.  If this value and a generation
+             * are both specified, they must be the same value or the call will fail.
+             * </pre>
+             *
+             * <code>optional int64 if_generation_match = 1;</code>
+             *
+             * @return The ifGenerationMatch.
+             */
+            @java.lang.Override
+            public long getIfGenerationMatch() {
+                return ifGenerationMatch_;
+            }
+
             @java.lang.Override
             public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
                 return this.unknownFields;
+            }
+
+            @java.lang.Override
+            public boolean equals(final java.lang.Object obj) {
+                if (this == obj) {
+                    return true;
+                }
+                if (!(obj instanceof ObjectPreconditions)) {
+                    return super.equals(obj);
+                }
+                ObjectPreconditions other = (ObjectPreconditions) obj;
+                if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
+                    return false;
+                if (hasIfGenerationMatch()) {
+                    if (other.getIfGenerationMatch() != getIfGenerationMatch())
+                        return false;
+                }
+                if (!unknownFields.equals(other.unknownFields))
+                    return false;
+                return true;
+            }
+
+            public static ObjectPreconditions parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            @java.lang.Override
+            public Builder toBuilder() {
+                return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+            }
+
+            public static ObjectPreconditions parseFrom(java.io.InputStream input) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
 
             private ObjectPreconditions(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -440,54 +623,26 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 }
             }
 
-            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
+            public static ObjectPreconditions parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return PARSER.parseFrom(data, extensionRegistry);
+            }
+
+            public static ObjectPreconditions parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+            }
+
+            public static com.google.protobuf.Parser<ObjectPreconditions> parser() {
+                return PARSER;
             }
 
             @java.lang.Override
             protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-                return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.class, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder.class);
+                return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectPreconditions.class, Builder.class);
             }
 
-            private int bitField0_;
-
-            public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 1;
-
-            private long ifGenerationMatch_;
-
-            /**
-             * <pre>
-             * Only perform the composition if the generation of the source object
-             * that would be used matches this value.  If this value and a generation
-             * are both specified, they must be the same value or the call will fail.
-             * </pre>
-             *
-             * <code>optional int64 if_generation_match = 1;</code>
-             *
-             * @return Whether the ifGenerationMatch field is set.
-             */
-            @java.lang.Override
-            public boolean hasIfGenerationMatch() {
-                return (0 != (bitField0_ & 0x00000001));
+            public static ObjectPreconditions parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
             }
-
-            /**
-             * <pre>
-             * Only perform the composition if the generation of the source object
-             * that would be used matches this value.  If this value and a generation
-             * are both specified, they must be the same value or the call will fail.
-             * </pre>
-             *
-             * <code>optional int64 if_generation_match = 1;</code>
-             *
-             * @return The ifGenerationMatch.
-             */
-            @java.lang.Override
-            public long getIfGenerationMatch() {
-                return ifGenerationMatch_;
-            }
-
-            private byte memoizedIsInitialized = -1;
 
             @java.lang.Override
             public final boolean isInitialized() {
@@ -498,14 +653,6 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                     return false;
                 memoizedIsInitialized = 1;
                 return true;
-            }
-
-            @java.lang.Override
-            public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-                if ((0 != (bitField0_ & 0x00000001))) {
-                    output.writeInt64(1, ifGenerationMatch_);
-                }
-                unknownFields.writeTo(output);
             }
 
             @java.lang.Override
@@ -522,662 +669,37 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 return size;
             }
 
-            @java.lang.Override
-            public boolean equals(final java.lang.Object obj) {
-                if (this == obj) {
-                    return true;
-                }
-                if (!(obj instanceof com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)) {
-                    return super.equals(obj);
-                }
-                com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions other = (com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions) obj;
-                if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
-                    return false;
-                if (hasIfGenerationMatch()) {
-                    if (other.getIfGenerationMatch() != getIfGenerationMatch())
-                        return false;
-                }
-                if (!unknownFields.equals(other.unknownFields))
-                    return false;
-                return true;
-            }
-
-            @java.lang.Override
-            public int hashCode() {
-                if (0 != memoizedHashCode) {
-                    return memoizedHashCode;
-                }
-                int hash = 41;
-                hash = (19 * hash) + getDescriptor().hashCode();
-                if (hasIfGenerationMatch()) {
-                    hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-                    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-                }
-                hash = (29 * hash) + unknownFields.hashCode();
-                memoizedHashCode = hash;
-                return hash;
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+            public static ObjectPreconditions parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data);
             }
 
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            // Use ObjectPreconditions.newBuilder() to construct.
+            private ObjectPreconditions(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+                super(builder);
+            }
+
+            public static ObjectPreconditions parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
                 return PARSER.parseFrom(data, extensionRegistry);
             }
 
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-                return PARSER.parseFrom(data);
+            private ObjectPreconditions() {
             }
 
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-                return PARSER.parseFrom(data, extensionRegistry);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-                return PARSER.parseFrom(data);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-                return PARSER.parseFrom(data, extensionRegistry);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-                return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-            }
-
-            @java.lang.Override
-            public Builder newBuilderForType() {
-                return newBuilder();
-            }
-
-            public static Builder newBuilder() {
-                return DEFAULT_INSTANCE.toBuilder();
-            }
-
-            public static Builder newBuilder(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions prototype) {
-                return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-            }
-
-            @java.lang.Override
-            public Builder toBuilder() {
-                return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-            }
-
-            @java.lang.Override
-            protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-                Builder builder = new Builder(parent);
-                return builder;
-            }
-
-            /**
-             * <pre>
-             * Preconditions for a source object of a composition request.
-             * </pre>
-             *
-             * Protobuf type {@code
-             * google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions}
-             */
-            public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
-            // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
-            Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder {
-
-                public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                    return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
-                }
-
-                @java.lang.Override
-                protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-                    return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.class, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder.class);
-                }
-
-                // Construct using
-                // com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.newBuilder()
-                private Builder() {
-                    maybeForceBuilderInitialization();
-                }
-
-                private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-                    super(parent);
-                    maybeForceBuilderInitialization();
-                }
-
-                private void maybeForceBuilderInitialization() {
-                    if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                    }
-                }
-
-                @java.lang.Override
-                public Builder clear() {
-                    super.clear();
-                    ifGenerationMatch_ = 0L;
-                    bitField0_ = (bitField0_ & ~0x00000001);
-                    return this;
-                }
-
-                @java.lang.Override
-                public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-                    return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_ObjectPreconditions_descriptor;
-                }
-
-                @java.lang.Override
-                public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getDefaultInstanceForType() {
-                    return com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.getDefaultInstance();
-                }
-
-                @java.lang.Override
-                public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions build() {
-                    com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions result = buildPartial();
-                    if (!result.isInitialized()) {
-                        throw newUninitializedMessageException(result);
-                    }
-                    return result;
-                }
-
-                @java.lang.Override
-                public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions buildPartial() {
-                    com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions result = new com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions(this);
-                    int from_bitField0_ = bitField0_;
-                    int to_bitField0_ = 0;
-                    if ((0 != (from_bitField0_ & 0x00000001))) {
-                        result.ifGenerationMatch_ = ifGenerationMatch_;
-                        to_bitField0_ |= 0x00000001;
-                    }
-                    result.bitField0_ = to_bitField0_;
-                    onBuilt();
-                    return result;
-                }
-
-                @java.lang.Override
-                public Builder clone() {
-                    return super.clone();
-                }
-
-                @java.lang.Override
-                public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-                    return super.setField(field, value);
-                }
-
-                @java.lang.Override
-                public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-                    return super.clearField(field);
-                }
-
-                @java.lang.Override
-                public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-                    return super.clearOneof(oneof);
-                }
-
-                @java.lang.Override
-                public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-                    return super.setRepeatedField(field, index, value);
-                }
-
-                @java.lang.Override
-                public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-                    return super.addRepeatedField(field, value);
-                }
-
-                @java.lang.Override
-                public Builder mergeFrom(com.google.protobuf.Message other) {
-                    if (!(other instanceof com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)) {
-                        super.mergeFrom(other);
-                        return this;
-                    } else {
-                        return mergeFrom((com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions) other);
-                    }
-                }
-
-                public Builder mergeFrom(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions other) {
-                    if (com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.getDefaultInstance() == other)
-                        return this;
-                    if (other.hasIfGenerationMatch()) {
-                        setIfGenerationMatch(other.getIfGenerationMatch());
-                    }
-                    this.mergeUnknownFields(other.unknownFields);
-                    onChanged();
-                    return this;
-                }
-
-                @java.lang.Override
-                public final boolean isInitialized() {
-                    return true;
-                }
-
-                @java.lang.Override
-                public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-                    com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions parsedMessage = null;
-                    try {
-                        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                        parsedMessage = (com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions) e.getUnfinishedMessage();
-                        throw e.unwrapIOException();
-                    } finally {
-                        if (null != parsedMessage) {
-                            mergeFrom(parsedMessage);
-                        }
-                    }
-                    return this;
-                }
-
-                private int bitField0_;
-
-                private long ifGenerationMatch_;
-
-                /**
-                 * <pre>
-                 * Only perform the composition if the generation of the source object
-                 * that would be used matches this value.  If this value and a generation
-                 * are both specified, they must be the same value or the call will fail.
-                 * </pre>
-                 *
-                 * <code>optional int64 if_generation_match = 1;</code>
-                 *
-                 * @return Whether the ifGenerationMatch field is set.
-                 */
-                @java.lang.Override
-                public boolean hasIfGenerationMatch() {
-                    return (0 != (bitField0_ & 0x00000001));
-                }
-
-                /**
-                 * <pre>
-                 * Only perform the composition if the generation of the source object
-                 * that would be used matches this value.  If this value and a generation
-                 * are both specified, they must be the same value or the call will fail.
-                 * </pre>
-                 *
-                 * <code>optional int64 if_generation_match = 1;</code>
-                 *
-                 * @return The ifGenerationMatch.
-                 */
-                @java.lang.Override
-                public long getIfGenerationMatch() {
-                    return ifGenerationMatch_;
-                }
-
-                /**
-                 * <pre>
-                 * Only perform the composition if the generation of the source object
-                 * that would be used matches this value.  If this value and a generation
-                 * are both specified, they must be the same value or the call will fail.
-                 * </pre>
-                 *
-                 * <code>optional int64 if_generation_match = 1;</code>
-                 *
-                 * @param value The ifGenerationMatch to set.
-                 * @return This builder for chaining.
-                 */
-                public Builder setIfGenerationMatch(long value) {
-                    bitField0_ |= 0x00000001;
-                    ifGenerationMatch_ = value;
-                    onChanged();
-                    return this;
-                }
-
-                /**
-                 * <pre>
-                 * Only perform the composition if the generation of the source object
-                 * that would be used matches this value.  If this value and a generation
-                 * are both specified, they must be the same value or the call will fail.
-                 * </pre>
-                 *
-                 * <code>optional int64 if_generation_match = 1;</code>
-                 *
-                 * @return This builder for chaining.
-                 */
-                public Builder clearIfGenerationMatch() {
-                    bitField0_ = (bitField0_ & ~0x00000001);
-                    ifGenerationMatch_ = 0L;
-                    onChanged();
-                    return this;
-                }
-
-                @java.lang.Override
-                public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-                    return super.setUnknownFields(unknownFields);
-                }
-
-                @java.lang.Override
-                public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-                    return super.mergeUnknownFields(unknownFields);
-                }
-                // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
-            }
-
-            // @@protoc_insertion_point(class_scope:google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions)
-            private static final com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions DEFAULT_INSTANCE;
-
-            static {
-                DEFAULT_INSTANCE = new com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions();
-            }
-
-            public static com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getDefaultInstance() {
-                return DEFAULT_INSTANCE;
-            }
-
-            private static final com.google.protobuf.Parser<ObjectPreconditions> PARSER = new com.google.protobuf.AbstractParser<ObjectPreconditions>() {
-
-                @java.lang.Override
-                public ObjectPreconditions parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-                    return new ObjectPreconditions(input, extensionRegistry);
-                }
-            };
-
-            public static com.google.protobuf.Parser<ObjectPreconditions> parser() {
-                return PARSER;
-            }
-
-            @java.lang.Override
-            public com.google.protobuf.Parser<ObjectPreconditions> getParserForType() {
-                return PARSER;
-            }
-
-            @java.lang.Override
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getDefaultInstanceForType() {
-                return DEFAULT_INSTANCE;
-            }
         }
 
         public static final int NAME_FIELD_NUMBER = 1;
 
         private volatile java.lang.Object name_;
 
-        /**
-         * <pre>
-         * Required. The source object's name. All source objects must reside in the same
-         * bucket.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The name.
-         */
-        @java.lang.Override
-        public java.lang.String getName() {
-            java.lang.Object ref = name_;
-            if (!(ref instanceof java.lang.String)) {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                name_ = s;
-                return s;
-            } else {
-                return (java.lang.String) ref;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The source object's name. All source objects must reside in the same
-         * bucket.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for name.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getNameBytes() {
-            java.lang.Object ref = name_;
-            if (!(ref instanceof java.lang.String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                name_ = b;
-                return b;
-            }
-        }
-
         public static final int GENERATION_FIELD_NUMBER = 2;
 
         private long generation_;
-
-        /**
-         * <pre>
-         * The generation of this object to use as the source.
-         * </pre>
-         *
-         * <code>int64 generation = 2;</code>
-         *
-         * @return The generation.
-         */
-        @java.lang.Override
-        public long getGeneration() {
-            return generation_;
-        }
 
         public static final int OBJECT_PRECONDITIONS_FIELD_NUMBER = 3;
 
         private com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions objectPreconditions_;
 
-        /**
-         * <pre>
-         * Conditions that must be met for this operation to execute.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-         * </code>
-         *
-         * @return Whether the objectPreconditions field is set.
-         */
-        @java.lang.Override
-        public boolean hasObjectPreconditions() {
-            return null != objectPreconditions_;
-        }
-
-        /**
-         * <pre>
-         * Conditions that must be met for this operation to execute.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-         * </code>
-         *
-         * @return The objectPreconditions.
-         */
-        @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getObjectPreconditions() {
-            return null == objectPreconditions_ ? com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
-        }
-
-        /**
-         * <pre>
-         * Conditions that must be met for this operation to execute.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-         * </code>
-         */
-        @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder() {
-            return getObjectPreconditions();
-        }
-
         private byte memoizedIsInitialized = -1;
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            byte isInitialized = memoizedIsInitialized;
-            if (1 == isInitialized)
-                return true;
-            if (0 == isInitialized)
-                return false;
-            memoizedIsInitialized = 1;
-            return true;
-        }
-
-        @java.lang.Override
-        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-            if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-                com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-            }
-            if (0L != generation_) {
-                output.writeInt64(2, generation_);
-            }
-            if (null != objectPreconditions_) {
-                output.writeMessage(3, getObjectPreconditions());
-            }
-            unknownFields.writeTo(output);
-        }
-
-        @java.lang.Override
-        public int getSerializedSize() {
-            int size = memoizedSize;
-            if (-1 != size)
-                return size;
-            size = 0;
-            if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-                size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-            }
-            if (0L != generation_) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, generation_);
-            }
-            if (null != objectPreconditions_) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getObjectPreconditions());
-            }
-            size += unknownFields.getSerializedSize();
-            memoizedSize = size;
-            return size;
-        }
-
-        @java.lang.Override
-        public boolean equals(final java.lang.Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof com.google.storage.v2.ComposeObjectRequest.SourceObject)) {
-                return super.equals(obj);
-            }
-            com.google.storage.v2.ComposeObjectRequest.SourceObject other = (com.google.storage.v2.ComposeObjectRequest.SourceObject) obj;
-            if (!getName().equals(other.getName()))
-                return false;
-            if (other.getGeneration() != getGeneration())
-                return false;
-            if (other.hasObjectPreconditions() != hasObjectPreconditions())
-                return false;
-            if (hasObjectPreconditions()) {
-                if (!getObjectPreconditions().equals(other.getObjectPreconditions()))
-                    return false;
-            }
-            if (!unknownFields.equals(other.unknownFields))
-                return false;
-            return true;
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-            if (0 != memoizedHashCode) {
-                return memoizedHashCode;
-            }
-            int hash = 41;
-            hash = (19 * hash) + getDescriptor().hashCode();
-            hash = (37 * hash) + NAME_FIELD_NUMBER;
-            hash = (53 * hash) + getName().hashCode();
-            hash = (37 * hash) + GENERATION_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
-            if (hasObjectPreconditions()) {
-                hash = (37 * hash) + OBJECT_PRECONDITIONS_FIELD_NUMBER;
-                hash = (53 * hash) + getObjectPreconditions().hashCode();
-            }
-            hash = (29 * hash) + unknownFields.hashCode();
-            memoizedHashCode = hash;
-            return hash;
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(java.io.InputStream input) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-        }
-
-        @java.lang.Override
-        public Builder newBuilderForType() {
-            return newBuilder();
-        }
-
-        public static Builder newBuilder() {
-            return DEFAULT_INSTANCE.toBuilder();
-        }
-
-        public static Builder newBuilder(com.google.storage.v2.ComposeObjectRequest.SourceObject prototype) {
-            return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-        }
-
-        @java.lang.Override
-        public Builder toBuilder() {
-            return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            Builder builder = new Builder(parent);
-            return builder;
-        }
 
         /**
          * <pre>
@@ -1190,23 +712,19 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
         // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest.SourceObject)
         Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder {
 
-            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
-            }
+            private java.lang.Object name_ = "";
+
+            private long generation_;
+
+            private com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions objectPreconditions_;
+
+            private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder> objectPreconditionsBuilder_;
+
+            // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest.SourceObject)
 
             @java.lang.Override
-            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-                return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.SourceObject.class, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder.class);
-            }
-
-            // Construct using com.google.storage.v2.ComposeObjectRequest.SourceObject.newBuilder()
-            private Builder() {
-                maybeForceBuilderInitialization();
-            }
-
-            private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-                super(parent);
-                maybeForceBuilderInitialization();
+            public final boolean isInitialized() {
+                return true;
             }
 
             private void maybeForceBuilderInitialization() {
@@ -1214,133 +732,94 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 }
             }
 
+            /**
+             * <pre>
+             * The generation of this object to use as the source.
+             * </pre>
+             *
+             * <code>int64 generation = 2;</code>
+             *
+             * @return The generation.
+             */
             @java.lang.Override
-            public Builder clear() {
-                super.clear();
-                name_ = "";
-                generation_ = 0L;
+            public long getGeneration() {
+                return generation_;
+            }
+
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             *
+             * @return The objectPreconditions.
+             */
+            public ObjectPreconditions getObjectPreconditions() {
                 if (null != objectPreconditionsBuilder_) {
-                    objectPreconditions_ = null;
-                    objectPreconditionsBuilder_ = null;
+                    return objectPreconditionsBuilder_.getMessage();
                 } else {
-                    objectPreconditions_ = null;
+                    return null == objectPreconditions_ ? ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
                 }
-                return this;
             }
 
-            @java.lang.Override
-            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-                return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
-            }
-
-            @java.lang.Override
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject getDefaultInstanceForType() {
-                return com.google.storage.v2.ComposeObjectRequest.SourceObject.getDefaultInstance();
-            }
-
-            @java.lang.Override
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject build() {
-                com.google.storage.v2.ComposeObjectRequest.SourceObject result = buildPartial();
-                if (!result.isInitialized()) {
-                    throw newUninitializedMessageException(result);
-                }
-                return result;
-            }
-
-            @java.lang.Override
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject buildPartial() {
-                com.google.storage.v2.ComposeObjectRequest.SourceObject result = new com.google.storage.v2.ComposeObjectRequest.SourceObject(this);
-                result.name_ = name_;
-                result.generation_ = generation_;
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             */
+            public Builder setObjectPreconditions(ObjectPreconditions.Builder builderForValue) {
                 if (null != objectPreconditionsBuilder_) {
-                    result.objectPreconditions_ = objectPreconditionsBuilder_.build();
+                    objectPreconditionsBuilder_.setMessage(builderForValue.build());
                 } else {
-                    result.objectPreconditions_ = objectPreconditions_;
-                }
-                onBuilt();
-                return result;
-            }
-
-            @java.lang.Override
-            public Builder clone() {
-                return super.clone();
-            }
-
-            @java.lang.Override
-            public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-                return super.setField(field, value);
-            }
-
-            @java.lang.Override
-            public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-                return super.clearField(field);
-            }
-
-            @java.lang.Override
-            public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-                return super.clearOneof(oneof);
-            }
-
-            @java.lang.Override
-            public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-                return super.setRepeatedField(field, index, value);
-            }
-
-            @java.lang.Override
-            public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-                return super.addRepeatedField(field, value);
-            }
-
-            @java.lang.Override
-            public Builder mergeFrom(com.google.protobuf.Message other) {
-                if (!(other instanceof com.google.storage.v2.ComposeObjectRequest.SourceObject)) {
-                    super.mergeFrom(other);
-                    return this;
-                } else {
-                    return mergeFrom((com.google.storage.v2.ComposeObjectRequest.SourceObject) other);
-                }
-            }
-
-            public Builder mergeFrom(com.google.storage.v2.ComposeObjectRequest.SourceObject other) {
-                if (com.google.storage.v2.ComposeObjectRequest.SourceObject.getDefaultInstance() == other)
-                    return this;
-                if (!other.getName().isEmpty()) {
-                    name_ = other.name_;
+                    objectPreconditions_ = builderForValue.build();
                     onChanged();
                 }
-                if (0L != other.getGeneration()) {
-                    setGeneration(other.getGeneration());
-                }
-                if (other.hasObjectPreconditions()) {
-                    mergeObjectPreconditions(other.getObjectPreconditions());
-                }
-                this.mergeUnknownFields(other.unknownFields);
-                onChanged();
                 return this;
             }
 
-            @java.lang.Override
-            public final boolean isInitialized() {
-                return true;
-            }
-
-            @java.lang.Override
-            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-                com.google.storage.v2.ComposeObjectRequest.SourceObject parsedMessage = null;
-                try {
-                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                    parsedMessage = (com.google.storage.v2.ComposeObjectRequest.SourceObject) e.getUnfinishedMessage();
-                    throw e.unwrapIOException();
-                } finally {
-                    if (null != parsedMessage) {
-                        mergeFrom(parsedMessage);
-                    }
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             */
+            public ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder() {
+                if (null == objectPreconditionsBuilder_) {
+                    return null == objectPreconditions_ ? ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
+                } else {
+                    return objectPreconditionsBuilder_.getMessageOrBuilder();
                 }
-                return this;
             }
 
-            private java.lang.Object name_ = "";
+            @java.lang.Override
+            public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+                return super.mergeUnknownFields(unknownFields);
+            }
+
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             *
+             * @return Whether the objectPreconditions field is set.
+             */
+            public boolean hasObjectPreconditions() {
+                return null != objectPreconditionsBuilder_ || null != objectPreconditions_;
+            }
 
             /**
              * <pre>
@@ -1362,6 +841,86 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                     name_ = s;
                     return s;
                 }
+            }
+
+            @java.lang.Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+                SourceObject parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (SourceObject) e.getUnfinishedMessage();
+                    throw e.unwrapIOException();
+                } finally {
+                    if (null != parsedMessage) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            @java.lang.Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
+            }
+
+            @java.lang.Override
+            public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+                return super.clearField(field);
+            }
+
+            @java.lang.Override
+            public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+                return super.setRepeatedField(field, index, value);
+            }
+
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             */
+            public Builder clearObjectPreconditions() {
+                if (null != objectPreconditionsBuilder_) {
+                    objectPreconditions_ = null;
+                    objectPreconditionsBuilder_ = null;
+                } else {
+                    objectPreconditions_ = null;
+                    onChanged();
+                }
+                return this;
+            }
+
+            @java.lang.Override
+            protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+                return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_fieldAccessorTable.ensureFieldAccessorsInitialized(SourceObject.class, Builder.class);
+            }
+
+            @java.lang.Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (!(other instanceof SourceObject)) {
+                    super.mergeFrom(other);
+                    return this;
+                } else {
+                    return mergeFrom((SourceObject) other);
+                }
+            }
+
+            @java.lang.Override
+            public Builder clear() {
+                super.clear();
+                name_ = "";
+                generation_ = 0L;
+                if (null != objectPreconditionsBuilder_) {
+                    objectPreconditions_ = null;
+                    objectPreconditionsBuilder_ = null;
+                } else {
+                    objectPreconditions_ = null;
+                }
+                return this;
             }
 
             /**
@@ -1405,20 +964,71 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 return this;
             }
 
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
+            }
+
+            @java.lang.Override
+            public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+                return super.setUnknownFields(unknownFields);
+            }
+
+            @java.lang.Override
+            public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+                return super.setField(field, value);
+            }
+
             /**
              * <pre>
-             * Required. The source object's name. All source objects must reside in the same
-             * bucket.
+             * The generation of this object to use as the source.
              * </pre>
              *
-             * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+             * <code>int64 generation = 2;</code>
              *
+             * @param value The generation to set.
              * @return This builder for chaining.
              */
-            public Builder clearName() {
-                name_ = getDefaultInstance().getName();
+            public Builder setGeneration(long value) {
+                generation_ = value;
                 onChanged();
                 return this;
+            }
+
+            public Builder mergeFrom(SourceObject other) {
+                if (SourceObject.getDefaultInstance() == other)
+                    return this;
+                if (!other.getName().isEmpty()) {
+                    name_ = other.name_;
+                    onChanged();
+                }
+                if (0L != other.getGeneration()) {
+                    setGeneration(other.getGeneration());
+                }
+                if (other.hasObjectPreconditions()) {
+                    mergeObjectPreconditions(other.getObjectPreconditions());
+                }
+                this.mergeUnknownFields(other.unknownFields);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <pre>
+             * Conditions that must be met for this operation to execute.
+             * </pre>
+             *
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
+             */
+            public ObjectPreconditions.Builder getObjectPreconditionsBuilder() {
+                onChanged();
+                return getObjectPreconditionsFieldBuilder().getBuilder();
+            }
+
+            private Builder(BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
             }
 
             /**
@@ -1442,36 +1052,35 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 return this;
             }
 
-            private long generation_;
-
-            /**
-             * <pre>
-             * The generation of this object to use as the source.
-             * </pre>
-             *
-             * <code>int64 generation = 2;</code>
-             *
-             * @return The generation.
-             */
             @java.lang.Override
-            public long getGeneration() {
-                return generation_;
+            public ComposeObjectRequest.SourceObject build() {
+                SourceObject result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
             }
 
             /**
              * <pre>
-             * The generation of this object to use as the source.
+             * Conditions that must be met for this operation to execute.
              * </pre>
              *
-             * <code>int64 generation = 2;</code>
-             *
-             * @param value The generation to set.
-             * @return This builder for chaining.
+             * <code>
+             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+             * </code>
              */
-            public Builder setGeneration(long value) {
-                generation_ = value;
-                onChanged();
-                return this;
+            private com.google.protobuf.SingleFieldBuilderV3<ObjectPreconditions, ObjectPreconditions.Builder, ObjectPreconditionsOrBuilder> getObjectPreconditionsFieldBuilder() {
+                if (null == objectPreconditionsBuilder_) {
+                    objectPreconditionsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ObjectPreconditions, ObjectPreconditions.Builder, ObjectPreconditionsOrBuilder>(getObjectPreconditions(), getParentForChildren(), isClean());
+                    objectPreconditions_ = null;
+                }
+                return objectPreconditionsBuilder_;
+            }
+
+            @java.lang.Override
+            public Builder clone() {
+                return super.clone();
             }
 
             /**
@@ -1489,42 +1098,28 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
                 return this;
             }
 
-            private com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions objectPreconditions_;
-
-            private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder> objectPreconditionsBuilder_;
-
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             *
-             * @return Whether the objectPreconditions field is set.
-             */
-            public boolean hasObjectPreconditions() {
-                return null != objectPreconditionsBuilder_ || null != objectPreconditions_;
+            // Construct using com.google.storage.v2.ComposeObjectRequest.SourceObject.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
             }
 
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             *
-             * @return The objectPreconditions.
-             */
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions getObjectPreconditions() {
+            @java.lang.Override
+            public ComposeObjectRequest.SourceObject buildPartial() {
+                SourceObject result = new SourceObject(this);
+                result.name_ = name_;
+                result.generation_ = generation_;
                 if (null != objectPreconditionsBuilder_) {
-                    return objectPreconditionsBuilder_.getMessage();
+                    result.objectPreconditions_ = objectPreconditionsBuilder_.build();
                 } else {
-                    return null == objectPreconditions_ ? com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
+                    result.objectPreconditions_ = objectPreconditions_;
                 }
+                onBuilt();
+                return result;
+            }
+
+            @java.lang.Override
+            public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+                return super.addRepeatedField(field, value);
             }
 
             /**
@@ -1536,7 +1131,7 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
              * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
              * </code>
              */
-            public Builder setObjectPreconditions(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions value) {
+            public Builder setObjectPreconditions(ObjectPreconditions value) {
                 if (null != objectPreconditionsBuilder_) {
                     objectPreconditionsBuilder_.setMessage(value);
                 } else {
@@ -1558,117 +1153,46 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
              * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
              * </code>
              */
-            public Builder setObjectPreconditions(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder builderForValue) {
-                if (null != objectPreconditionsBuilder_) {
-                    objectPreconditionsBuilder_.setMessage(builderForValue.build());
-                } else {
-                    objectPreconditions_ = builderForValue.build();
-                    onChanged();
-                }
-                return this;
-            }
-
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             */
-            public Builder mergeObjectPreconditions(com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions value) {
+            public Builder mergeObjectPreconditions(ObjectPreconditions value) {
                 if (null != objectPreconditionsBuilder_) {
                     objectPreconditionsBuilder_.mergeFrom(value);
                 } else {
                     if (null == objectPreconditions_) {
                         objectPreconditions_ = value;
                     } else {
-                        objectPreconditions_ = com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.newBuilder(objectPreconditions_).mergeFrom(value).buildPartial();
+                        objectPreconditions_ = ObjectPreconditions.newBuilder(objectPreconditions_).mergeFrom(value).buildPartial();
                     }
                     onChanged();
                 }
                 return this;
             }
 
+            @java.lang.Override
+            public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+                return super.clearOneof(oneof);
+            }
+
+            @java.lang.Override
+            public ComposeObjectRequest.SourceObject getDefaultInstanceForType() {
+                return SourceObject.getDefaultInstance();
+            }
+
             /**
              * <pre>
-             * Conditions that must be met for this operation to execute.
+             * Required. The source object's name. All source objects must reside in the same
+             * bucket.
              * </pre>
              *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
+             * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+             *
+             * @return This builder for chaining.
              */
-            public Builder clearObjectPreconditions() {
-                if (null != objectPreconditionsBuilder_) {
-                    objectPreconditions_ = null;
-                    objectPreconditionsBuilder_ = null;
-                } else {
-                    objectPreconditions_ = null;
-                    onChanged();
-                }
+            public Builder clearName() {
+                name_ = getDefaultInstance().getName();
+                onChanged();
                 return this;
             }
 
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             */
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder getObjectPreconditionsBuilder() {
-                onChanged();
-                return getObjectPreconditionsFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             */
-            public com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder() {
-                if (null == objectPreconditionsBuilder_) {
-                    return null == objectPreconditions_ ? com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
-                } else {
-                    return objectPreconditionsBuilder_.getMessageOrBuilder();
-                }
-            }
-
-            /**
-             * <pre>
-             * Conditions that must be met for this operation to execute.
-             * </pre>
-             *
-             * <code>
-             * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
-             * </code>
-             */
-            private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder> getObjectPreconditionsFieldBuilder() {
-                if (null == objectPreconditionsBuilder_) {
-                    objectPreconditionsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder>(getObjectPreconditions(), getParentForChildren(), isClean());
-                    objectPreconditions_ = null;
-                }
-                return objectPreconditionsBuilder_;
-            }
-
-            @java.lang.Override
-            public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-                return super.setUnknownFields(unknownFields);
-            }
-
-            @java.lang.Override
-            public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-                return super.mergeUnknownFields(unknownFields);
-            }
-            // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest.SourceObject)
         }
 
         // @@protoc_insertion_point(class_scope:google.storage.v2.ComposeObjectRequest.SourceObject)
@@ -1676,10 +1200,6 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
         static {
             DEFAULT_INSTANCE = new com.google.storage.v2.ComposeObjectRequest.SourceObject();
-        }
-
-        public static com.google.storage.v2.ComposeObjectRequest.SourceObject getDefaultInstance() {
-            return DEFAULT_INSTANCE;
         }
 
         private static final com.google.protobuf.Parser<SourceObject> PARSER = new com.google.protobuf.AbstractParser<SourceObject>() {
@@ -1690,8 +1210,331 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             }
         };
 
-        public static com.google.protobuf.Parser<SourceObject> parser() {
-            return PARSER;
+        public static SourceObject parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static SourceObject parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+                com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+            }
+            if (0L != generation_) {
+                output.writeInt64(2, generation_);
+            }
+            if (null != objectPreconditions_) {
+                output.writeMessage(3, getObjectPreconditions());
+            }
+            unknownFields.writeTo(output);
+        }
+
+        // Use SourceObject.newBuilder() to construct.
+        private SourceObject(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+            super(builder);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        public static SourceObject parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        public static Builder newBuilder(SourceObject prototype) {
+            return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+        }
+
+        public static SourceObject parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        @java.lang.Override
+        public ComposeObjectRequest.SourceObject getDefaultInstanceForType() {
+            return DEFAULT_INSTANCE;
+        }
+
+        /**
+         * <pre>
+         * Conditions that must be met for this operation to execute.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+         * </code>
+         */
+        @java.lang.Override
+        public ComposeObjectRequest.SourceObject.ObjectPreconditionsOrBuilder getObjectPreconditionsOrBuilder() {
+            return getObjectPreconditions();
+        }
+
+        public static SourceObject parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+        }
+
+        public static SourceObject getDefaultInstance() {
+            return DEFAULT_INSTANCE;
+        }
+
+        public static Builder newBuilder() {
+            return DEFAULT_INSTANCE.toBuilder();
+        }
+
+        public static SourceObject parseFrom(java.io.InputStream input) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+        }
+
+        public static SourceObject parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        /**
+         * <pre>
+         * Conditions that must be met for this operation to execute.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+         * </code>
+         *
+         * @return The objectPreconditions.
+         */
+        @java.lang.Override
+        public ComposeObjectRequest.SourceObject.ObjectPreconditions getObjectPreconditions() {
+            return null == objectPreconditions_ ? ObjectPreconditions.getDefaultInstance() : objectPreconditions_;
+        }
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
+        }
+
+        @java.lang.Override
+        public int getSerializedSize() {
+            int size = memoizedSize;
+            if (-1 != size)
+                return size;
+            size = 0;
+            if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+                size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+            }
+            if (0L != generation_) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, generation_);
+            }
+            if (null != objectPreconditions_) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getObjectPreconditions());
+            }
+            size += unknownFields.getSerializedSize();
+            memoizedSize = size;
+            return size;
+        }
+
+        public static SourceObject parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+        }
+
+        /**
+         * <pre>
+         * Conditions that must be met for this operation to execute.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ComposeObjectRequest.SourceObject.ObjectPreconditions object_preconditions = 3;
+         * </code>
+         *
+         * @return Whether the objectPreconditions field is set.
+         */
+        @java.lang.Override
+        public boolean hasObjectPreconditions() {
+            return null != objectPreconditions_;
+        }
+
+        /**
+         * <pre>
+         * The generation of this object to use as the source.
+         * </pre>
+         *
+         * <code>int64 generation = 2;</code>
+         *
+         * @return The generation.
+         */
+        @java.lang.Override
+        public long getGeneration() {
+            return generation_;
+        }
+
+        private SourceObject(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            this();
+            if (null == extensionRegistry) {
+                throw new java.lang.NullPointerException();
+            }
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch(tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        case 10:
+                            {
+                                java.lang.String s = input.readStringRequireUtf8();
+                                name_ = s;
+                                break;
+                            }
+                        case 16:
+                            {
+                                generation_ = input.readInt64();
+                                break;
+                            }
+                        case 26:
+                            {
+                                ObjectPreconditions.Builder subBuilder = null;
+                                if (null != objectPreconditions_) {
+                                    subBuilder = objectPreconditions_.toBuilder();
+                                }
+                                objectPreconditions_ = input.readMessage(ObjectPreconditions.parser(), extensionRegistry);
+                                if (null != subBuilder) {
+                                    subBuilder.mergeFrom(objectPreconditions_);
+                                    objectPreconditions_ = subBuilder.buildPartial();
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                    done = true;
+                                }
+                                break;
+                            }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (com.google.protobuf.UninitializedMessageException e) {
+                throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
+        }
+
+        @java.lang.Override
+        @SuppressWarnings({ "unused" })
+        protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+            return new SourceObject();
+        }
+
+        public static SourceObject parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        @java.lang.Override
+        public boolean equals(final java.lang.Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof SourceObject)) {
+                return super.equals(obj);
+            }
+            SourceObject other = (SourceObject) obj;
+            if (!getName().equals(other.getName()))
+                return false;
+            if (other.getGeneration() != getGeneration())
+                return false;
+            if (other.hasObjectPreconditions() != hasObjectPreconditions())
+                return false;
+            if (hasObjectPreconditions()) {
+                if (!getObjectPreconditions().equals(other.getObjectPreconditions()))
+                    return false;
+            }
+            if (!unknownFields.equals(other.unknownFields))
+                return false;
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Required. The source object's name. All source objects must reside in the same
+         * bucket.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The name.
+         */
+        @java.lang.Override
+        public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                name_ = s;
+                return s;
+            } else {
+                return (java.lang.String) ref;
+            }
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (1 == isInitialized)
+                return true;
+            if (0 == isInitialized)
+                return false;
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_descriptor;
+        }
+
+        public static SourceObject parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            if (0 != memoizedHashCode) {
+                return memoizedHashCode;
+            }
+            int hash = 41;
+            hash = (19 * hash) + getDescriptor().hashCode();
+            hash = (37 * hash) + NAME_FIELD_NUMBER;
+            hash = (53 * hash) + getName().hashCode();
+            hash = (37 * hash) + GENERATION_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
+            if (hasObjectPreconditions()) {
+                hash = (37 * hash) + OBJECT_PRECONDITIONS_FIELD_NUMBER;
+                hash = (53 * hash) + getObjectPreconditions().hashCode();
+            }
+            hash = (29 * hash) + unknownFields.hashCode();
+            memoizedHashCode = hash;
+            return hash;
+        }
+
+        public static SourceObject parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static SourceObject parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
         }
 
         @java.lang.Override
@@ -1699,10 +1542,46 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return PARSER;
         }
 
-        @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject getDefaultInstanceForType() {
-            return DEFAULT_INSTANCE;
+        public static com.google.protobuf.Parser<SourceObject> parser() {
+            return PARSER;
         }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_SourceObject_fieldAccessorTable.ensureFieldAccessorsInitialized(SourceObject.class, Builder.class);
+        }
+
+        private SourceObject() {
+            name_ = "";
+        }
+
+        /**
+         * <pre>
+         * Required. The source object's name. All source objects must reside in the same
+         * bucket.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for name.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getNameBytes() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                name_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder toBuilder() {
+            return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+        }
+
     }
 
     private int bitField0_;
@@ -1711,557 +1590,31 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
     private com.google.storage.v2.Object destination_;
 
-    /**
-     * <pre>
-     * Required. Properties of the resulting object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return Whether the destination field is set.
-     */
-    @java.lang.Override
-    public boolean hasDestination() {
-        return null != destination_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the resulting object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return The destination.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getDestination() {
-        return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the resulting object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getDestinationOrBuilder() {
-        return getDestination();
-    }
-
     public static final int SOURCE_OBJECTS_FIELD_NUMBER = 2;
 
     private java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> sourceObjects_;
-
-    /**
-     * <pre>
-     * The list of source objects that will be concatenated into a single object.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-     */
-    @java.lang.Override
-    public java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> getSourceObjectsList() {
-        return sourceObjects_;
-    }
-
-    /**
-     * <pre>
-     * The list of source objects that will be concatenated into a single object.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-     */
-    @java.lang.Override
-    public java.util.List<? extends com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder> getSourceObjectsOrBuilderList() {
-        return sourceObjects_;
-    }
-
-    /**
-     * <pre>
-     * The list of source objects that will be concatenated into a single object.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-     */
-    @java.lang.Override
-    public int getSourceObjectsCount() {
-        return sourceObjects_.size();
-    }
-
-    /**
-     * <pre>
-     * The list of source objects that will be concatenated into a single object.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ComposeObjectRequest.SourceObject getSourceObjects(int index) {
-        return sourceObjects_.get(index);
-    }
-
-    /**
-     * <pre>
-     * The list of source objects that will be concatenated into a single object.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder getSourceObjectsOrBuilder(int index) {
-        return sourceObjects_.get(index);
-    }
 
     public static final int DESTINATION_PREDEFINED_ACL_FIELD_NUMBER = 9;
 
     private volatile java.lang.Object destinationPredefinedAcl_;
 
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to the destination object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string destination_predefined_acl = 9;</code>
-     *
-     * @return The destinationPredefinedAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getDestinationPredefinedAcl() {
-        java.lang.Object ref = destinationPredefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            destinationPredefinedAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to the destination object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string destination_predefined_acl = 9;</code>
-     *
-     * @return The bytes for destinationPredefinedAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
-        java.lang.Object ref = destinationPredefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            destinationPredefinedAcl_ = b;
-            return b;
-        }
-    }
-
     public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 4;
 
     private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 4;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 4;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
 
     public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 5;
 
     private long ifMetagenerationMatch_;
 
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 5;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 5;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
     public static final int KMS_KEY_FIELD_NUMBER = 6;
 
     private volatile java.lang.Object kmsKey_;
-
-    /**
-     * <pre>
-     * Resource name of the Cloud KMS key, of the form
-     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-     * that will be used to encrypt the object. Overrides the object
-     * metadata's `kms_key_name` value, if any.
-     * </pre>
-     *
-     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The kmsKey.
-     */
-    @java.lang.Override
-    public java.lang.String getKmsKey() {
-        java.lang.Object ref = kmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            kmsKey_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Resource name of the Cloud KMS key, of the form
-     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-     * that will be used to encrypt the object. Overrides the object
-     * metadata's `kms_key_name` value, if any.
-     * </pre>
-     *
-     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The bytes for kmsKey.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getKmsKeyBytes() {
-        java.lang.Object ref = kmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            kmsKey_ = b;
-            return b;
-        }
-    }
 
     public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 7;
 
     private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
 
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (null != destination_) {
-            output.writeMessage(1, getDestination());
-        }
-        int i = 0;
-        while (sourceObjects_.size() > i) {
-            output.writeMessage(2, sourceObjects_.get(i));
-            i += 1;
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeInt64(4, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            output.writeInt64(5, ifMetagenerationMatch_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, kmsKey_);
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(7, getCommonObjectRequestParams());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 9, destinationPredefinedAcl_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (null != destination_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getDestination());
-        }
-        int i = 0;
-        while (sourceObjects_.size() > i) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, sourceObjects_.get(i));
-            i += 1;
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifMetagenerationMatch_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, kmsKey_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(7, getCommonObjectRequestParams());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, destinationPredefinedAcl_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ComposeObjectRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ComposeObjectRequest other = (com.google.storage.v2.ComposeObjectRequest) obj;
-        if (other.hasDestination() != hasDestination())
-            return false;
-        if (hasDestination()) {
-            if (!getDestination().equals(other.getDestination()))
-                return false;
-        }
-        if (!getSourceObjectsList().equals(other.getSourceObjectsList()))
-            return false;
-        if (!getDestinationPredefinedAcl().equals(other.getDestinationPredefinedAcl()))
-            return false;
-        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
-            return false;
-        if (hasIfGenerationMatch()) {
-            if (other.getIfGenerationMatch() != getIfGenerationMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
-            return false;
-        if (hasIfMetagenerationMatch()) {
-            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
-                return false;
-        }
-        if (!getKmsKey().equals(other.getKmsKey()))
-            return false;
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (hasDestination()) {
-            hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
-            hash = (53 * hash) + getDestination().hashCode();
-        }
-        if (0 < getSourceObjectsCount()) {
-            hash = (37 * hash) + SOURCE_OBJECTS_FIELD_NUMBER;
-            hash = (53 * hash) + getSourceObjectsList().hashCode();
-        }
-        hash = (37 * hash) + DESTINATION_PREDEFINED_ACL_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationPredefinedAcl().hashCode();
-        if (hasIfGenerationMatch()) {
-            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-        }
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        hash = (37 * hash) + KMS_KEY_FIELD_NUMBER;
-        hash = (53 * hash) + getKmsKey().hashCode();
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ComposeObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -2274,23 +1627,126 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
     // @@protoc_insertion_point(builder_implements:google.storage.v2.ComposeObjectRequest)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ComposeObjectRequestOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
+        private int bitField0_;
+
+        private com.google.storage.v2.Object destination_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> destinationBuilder_;
+
+        private java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> sourceObjects_ = java.util.Collections.emptyList();
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder> sourceObjectsBuilder_;
+
+        private java.lang.Object destinationPredefinedAcl_ = "";
+
+        private long ifGenerationMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private java.lang.Object kmsKey_ = "";
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest)
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder setSourceObjects(int index, SourceObject value) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.setMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.set(index, value);
+                onChanged();
+            }
+            return this;
         }
 
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ComposeObjectRequest.class, com.google.storage.v2.ComposeObjectRequest.Builder.class);
+        /**
+         * <pre>
+         * Resource name of the Cloud KMS key, of the form
+         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+         * that will be used to encrypt the object. Overrides the object
+         * metadata's `kms_key_name` value, if any.
+         * </pre>
+         *
+         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The kmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setKmsKey(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            kmsKey_ = value;
+            onChanged();
+            return this;
         }
 
-        // Construct using com.google.storage.v2.ComposeObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
         }
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public SourceObject getSourceObjects(int index) {
+            if (null != sourceObjectsBuilder_) {
+                return sourceObjectsBuilder_.getMessage(index);
+            } else {
+                return sourceObjects_.get(index);
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
         }
 
         private void maybeForceBuilderInitialization() {
@@ -2299,58 +1755,174 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             }
         }
 
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 9;</code>
+         *
+         * @return The bytes for destinationPredefinedAcl.
+         */
+        public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
+            java.lang.Object ref = destinationPredefinedAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                destinationPredefinedAcl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
         @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != destinationBuilder_) {
-                destination_ = null;
-                destinationBuilder_ = null;
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ComposeObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
             } else {
-                destination_ = null;
+                return mergeFrom((ComposeObjectRequest) other);
             }
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public ObjectOrBuilder getDestinationOrBuilder() {
+            if (null == destinationBuilder_) {
+                return null == destination_ ? Object.getDefaultInstance() : destination_;
+            } else {
+                return destinationBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public int getSourceObjectsCount() {
             if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.clear();
+                return sourceObjectsBuilder_.getCount();
             } else {
-                sourceObjects_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
+                return sourceObjects_.size();
             }
-            destinationPredefinedAcl_ = "";
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            kmsKey_ = "";
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 9;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDestinationPredefinedAcl() {
+            destinationPredefinedAcl_ = getDefaultInstance().getDestinationPredefinedAcl();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ComposeObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ComposeObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder removeSourceObjects(int index) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.remove(index);
             } else {
-                commonObjectRequestParams_ = null;
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.remove(index);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder addAllSourceObjects(java.lang.Iterable<? extends SourceObject> values) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.addAllMessages(values);
+            } else {
+                ensureSourceObjectsIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, sourceObjects_);
+                onChanged();
             }
             return this;
         }
 
         @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
+            return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
         }
 
         @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.ComposeObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest build() {
-            com.google.storage.v2.ComposeObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ComposeObjectRequest buildPartial() {
-            com.google.storage.v2.ComposeObjectRequest result = new com.google.storage.v2.ComposeObjectRequest(this);
+        public ComposeObjectRequest buildPartial() {
+            ComposeObjectRequest result = new ComposeObjectRequest(this);
             int from_bitField0_ = bitField0_;
             int to_bitField0_ = 0;
             if (null != destinationBuilder_) {
@@ -2387,9 +1959,152 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return result;
         }
 
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 9;</code>
+         *
+         * @param value The bytes for destinationPredefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationPredefinedAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            destinationPredefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public SourceObject.Builder addSourceObjectsBuilder() {
+            return getSourceObjectsFieldBuilder().addBuilder(SourceObject.getDefaultInstance());
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
         @java.lang.Override
-        public Builder clone() {
-            return super.clone();
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getDestinationFieldBuilder() {
+            if (null == destinationBuilder_) {
+                destinationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getDestination(), getParentForChildren(), isClean());
+                destination_ = null;
+            }
+            return destinationBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder addSourceObjects(int index, SourceObject.Builder builderForValue) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.addMessage(index, builderForValue.build());
+            } else {
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.add(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder addSourceObjects(SourceObject.Builder builderForValue) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.addMessage(builderForValue.build());
+            } else {
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.add(builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        private void ensureSourceObjectsIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000001))) {
+                sourceObjects_ = new java.util.ArrayList<SourceObject>(sourceObjects_);
+                bitField0_ |= 0x00000001;
+            }
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 9;</code>
+         *
+         * @param value The destinationPredefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationPredefinedAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            destinationPredefinedAcl_ = value;
+            onChanged();
+            return this;
         }
 
         @java.lang.Override
@@ -2397,9 +2112,164 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return super.setField(field, value);
         }
 
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Resource name of the Cloud KMS key, of the form
+         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+         * that will be used to encrypt the object. Overrides the object
+         * metadata's `kms_key_name` value, if any.
+         * </pre>
+         *
+         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The kmsKey.
+         */
+        public java.lang.String getKmsKey() {
+            java.lang.Object ref = kmsKey_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                kmsKey_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Resource name of the Cloud KMS key, of the form
+         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+         * that will be used to encrypt the object. Overrides the object
+         * metadata's `kms_key_name` value, if any.
+         * </pre>
+         *
+         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearKmsKey() {
+            kmsKey_ = getDefaultInstance().getKmsKey();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public java.util.List<SourceObject.Builder> getSourceObjectsBuilderList() {
+            return getSourceObjectsFieldBuilder().getBuilderList();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 4;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 4;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
         @java.lang.Override
         public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
             return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public java.util.List<? extends SourceObjectOrBuilder> getSourceObjectsOrBuilderList() {
+            if (null == sourceObjectsBuilder_) {
+                return java.util.Collections.unmodifiableList(sourceObjects_);
+            } else {
+                return sourceObjectsBuilder_.getMessageOrBuilderList();
+            }
         }
 
         @java.lang.Override
@@ -2407,9 +2277,408 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return super.clearOneof(oneof);
         }
 
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public java.util.List<SourceObject> getSourceObjectsList() {
+            if (null != sourceObjectsBuilder_) {
+                return sourceObjectsBuilder_.getMessageList();
+            } else {
+                return java.util.Collections.unmodifiableList(sourceObjects_);
+            }
+        }
+
         @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
+        public ComposeObjectRequest getDefaultInstanceForType() {
+            return ComposeObjectRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Resource name of the Cloud KMS key, of the form
+         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+         * that will be used to encrypt the object. Overrides the object
+         * metadata's `kms_key_name` value, if any.
+         * </pre>
+         *
+         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The bytes for kmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setKmsKeyBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            kmsKey_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public SourceObjectOrBuilder getSourceObjectsOrBuilder(int index) {
+            if (null != sourceObjectsBuilder_) {
+                return sourceObjectsBuilder_.getMessageOrBuilder(index);
+            } else {
+                return sourceObjects_.get(index);
+            }
+        }
+
+        // Construct using com.google.storage.v2.ComposeObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 4;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder setSourceObjects(int index, SourceObject.Builder builderForValue) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.setMessage(index, builderForValue.build());
+            } else {
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.set(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setDestination(Object value) {
+            if (null != destinationBuilder_) {
+                destinationBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                destination_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public ComposeObjectRequest build() {
+            ComposeObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Resource name of the Cloud KMS key, of the form
+         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+         * that will be used to encrypt the object. Overrides the object
+         * metadata's `kms_key_name` value, if any.
+         * </pre>
+         *
+         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The bytes for kmsKey.
+         */
+        public com.google.protobuf.ByteString getKmsKeyBytes() {
+            java.lang.Object ref = kmsKey_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                kmsKey_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder addSourceObjects(SourceObject value) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.addMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.add(value);
+                onChanged();
+            }
+            return this;
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<SourceObject, SourceObject.Builder, SourceObjectOrBuilder> getSourceObjectsFieldBuilder() {
+            if (null == sourceObjectsBuilder_) {
+                sourceObjectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<SourceObject, SourceObject.Builder, SourceObjectOrBuilder>(sourceObjects_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
+                sourceObjects_ = null;
+            }
+            return sourceObjectsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder addSourceObjects(int index, SourceObject value) {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.addMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureSourceObjectsIsMutable();
+                sourceObjects_.add(index, value);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public SourceObject.Builder getSourceObjectsBuilder(int index) {
+            return getSourceObjectsFieldBuilder().getBuilder(index);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ComposeObjectRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 9;</code>
+         *
+         * @return The destinationPredefinedAcl.
+         */
+        public java.lang.String getDestinationPredefinedAcl() {
+            java.lang.Object ref = destinationPredefinedAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                destinationPredefinedAcl_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != destinationBuilder_) {
+                destination_ = null;
+                destinationBuilder_ = null;
+            } else {
+                destination_ = null;
+            }
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.clear();
+            } else {
+                sourceObjects_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            destinationPredefinedAcl_ = "";
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            kmsKey_ = "";
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder clearDestination() {
+            if (null != destinationBuilder_) {
+                destination_ = null;
+                destinationBuilder_ = null;
+            } else {
+                destination_ = null;
+                onChanged();
+            }
+            return this;
         }
 
         @java.lang.Override
@@ -2417,18 +2686,102 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return super.addRepeatedField(field, value);
         }
 
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ComposeObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         *
+         * @return Whether the destination field is set.
+         */
+        public boolean hasDestination() {
+            return null != destinationBuilder_ || null != destination_;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setDestination(Object.Builder builderForValue) {
+            if (null != destinationBuilder_) {
+                destinationBuilder_.setMessage(builderForValue.build());
             } else {
-                return mergeFrom((com.google.storage.v2.ComposeObjectRequest) other);
+                destination_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public SourceObject.Builder addSourceObjectsBuilder(int index) {
+            return getSourceObjectsFieldBuilder().addBuilder(index, SourceObject.getDefaultInstance());
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Object.Builder getDestinationBuilder() {
+            onChanged();
+            return getDestinationFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * The list of source objects that will be concatenated into a single object.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
+         * </code>
+         */
+        public Builder clearSourceObjects() {
+            if (null != sourceObjectsBuilder_) {
+                sourceObjectsBuilder_.clear();
+            } else {
+                sourceObjects_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the resulting object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         *
+         * @return The destination.
+         */
+        public Object getDestination() {
+            if (null != destinationBuilder_) {
+                return destinationBuilder_.getMessage();
+            } else {
+                return null == destination_ ? Object.getDefaultInstance() : destination_;
             }
         }
 
-        public Builder mergeFrom(com.google.storage.v2.ComposeObjectRequest other) {
-            if (com.google.storage.v2.ComposeObjectRequest.getDefaultInstance() == other)
+        public Builder mergeFrom(ComposeObjectRequest other) {
+            if (ComposeObjectRequest.getDefaultInstance() == other)
                 return this;
             if (other.hasDestination()) {
                 mergeDestination(other.getDestination());
@@ -2479,63 +2832,9 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
             return this;
         }
 
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ComposeObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ComposeObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private com.google.storage.v2.Object destination_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> destinationBuilder_;
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         *
-         * @return Whether the destination field is set.
-         */
-        public boolean hasDestination() {
-            return null != destinationBuilder_ || null != destination_;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         *
-         * @return The destination.
-         */
-        public com.google.storage.v2.Object getDestination() {
-            if (null != destinationBuilder_) {
-                return destinationBuilder_.getMessage();
-            } else {
-                return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-            }
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
         }
 
         /**
@@ -2546,969 +2845,25 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
          * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
          * </code>
          */
-        public Builder setDestination(com.google.storage.v2.Object value) {
-            if (null != destinationBuilder_) {
-                destinationBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                destination_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder setDestination(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != destinationBuilder_) {
-                destinationBuilder_.setMessage(builderForValue.build());
-            } else {
-                destination_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder mergeDestination(com.google.storage.v2.Object value) {
+        public Builder mergeDestination(Object value) {
             if (null != destinationBuilder_) {
                 destinationBuilder_.mergeFrom(value);
             } else {
                 if (null == destination_) {
                     destination_ = value;
                 } else {
-                    destination_ = com.google.storage.v2.Object.newBuilder(destination_).mergeFrom(value).buildPartial();
+                    destination_ = Object.newBuilder(destination_).mergeFrom(value).buildPartial();
                 }
                 onChanged();
             }
             return this;
         }
 
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder clearDestination() {
-            if (null != destinationBuilder_) {
-                destination_ = null;
-                destinationBuilder_ = null;
-            } else {
-                destination_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.Object.Builder getDestinationBuilder() {
-            onChanged();
-            return getDestinationFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getDestinationOrBuilder() {
-            if (null == destinationBuilder_) {
-                return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-            } else {
-                return destinationBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the resulting object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getDestinationFieldBuilder() {
-            if (null == destinationBuilder_) {
-                destinationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getDestination(), getParentForChildren(), isClean());
-                destination_ = null;
-            }
-            return destinationBuilder_;
-        }
-
-        private java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> sourceObjects_ = java.util.Collections.emptyList();
-
-        private void ensureSourceObjectsIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000001))) {
-                sourceObjects_ = new java.util.ArrayList<com.google.storage.v2.ComposeObjectRequest.SourceObject>(sourceObjects_);
-                bitField0_ |= 0x00000001;
-            }
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder> sourceObjectsBuilder_;
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> getSourceObjectsList() {
-            if (null != sourceObjectsBuilder_) {
-                return sourceObjectsBuilder_.getMessageList();
-            } else {
-                return java.util.Collections.unmodifiableList(sourceObjects_);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public int getSourceObjectsCount() {
-            if (null != sourceObjectsBuilder_) {
-                return sourceObjectsBuilder_.getCount();
-            } else {
-                return sourceObjects_.size();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject getSourceObjects(int index) {
-            if (null != sourceObjectsBuilder_) {
-                return sourceObjectsBuilder_.getMessage(index);
-            } else {
-                return sourceObjects_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder setSourceObjects(int index, com.google.storage.v2.ComposeObjectRequest.SourceObject value) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.setMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.set(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder setSourceObjects(int index, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder builderForValue) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.setMessage(index, builderForValue.build());
-            } else {
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.set(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder addSourceObjects(com.google.storage.v2.ComposeObjectRequest.SourceObject value) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.addMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.add(value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder addSourceObjects(int index, com.google.storage.v2.ComposeObjectRequest.SourceObject value) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.addMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.add(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder addSourceObjects(com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder builderForValue) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.addMessage(builderForValue.build());
-            } else {
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.add(builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder addSourceObjects(int index, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder builderForValue) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.addMessage(index, builderForValue.build());
-            } else {
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.add(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder addAllSourceObjects(java.lang.Iterable<? extends com.google.storage.v2.ComposeObjectRequest.SourceObject> values) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.addAllMessages(values);
-            } else {
-                ensureSourceObjectsIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, sourceObjects_);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder clearSourceObjects() {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.clear();
-            } else {
-                sourceObjects_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public Builder removeSourceObjects(int index) {
-            if (null != sourceObjectsBuilder_) {
-                sourceObjectsBuilder_.remove(index);
-            } else {
-                ensureSourceObjectsIsMutable();
-                sourceObjects_.remove(index);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder getSourceObjectsBuilder(int index) {
-            return getSourceObjectsFieldBuilder().getBuilder(index);
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder getSourceObjectsOrBuilder(int index) {
-            if (null != sourceObjectsBuilder_) {
-                return sourceObjectsBuilder_.getMessageOrBuilder(index);
-            } else {
-                return sourceObjects_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public java.util.List<? extends com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder> getSourceObjectsOrBuilderList() {
-            if (null == sourceObjectsBuilder_) {
-                return java.util.Collections.unmodifiableList(sourceObjects_);
-            } else {
-                return sourceObjectsBuilder_.getMessageOrBuilderList();
-            }
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder addSourceObjectsBuilder() {
-            return getSourceObjectsFieldBuilder().addBuilder(com.google.storage.v2.ComposeObjectRequest.SourceObject.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder addSourceObjectsBuilder(int index) {
-            return getSourceObjectsFieldBuilder().addBuilder(index, com.google.storage.v2.ComposeObjectRequest.SourceObject.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * The list of source objects that will be concatenated into a single object.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;
-         * </code>
-         */
-        public java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder> getSourceObjectsBuilderList() {
-            return getSourceObjectsFieldBuilder().getBuilderList();
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder> getSourceObjectsFieldBuilder() {
-            if (null == sourceObjectsBuilder_) {
-                sourceObjectsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ComposeObjectRequest.SourceObject, com.google.storage.v2.ComposeObjectRequest.SourceObject.Builder, com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder>(sourceObjects_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
-                sourceObjects_ = null;
-            }
-            return sourceObjectsBuilder_;
-        }
-
-        private java.lang.Object destinationPredefinedAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 9;</code>
-         *
-         * @return The destinationPredefinedAcl.
-         */
-        public java.lang.String getDestinationPredefinedAcl() {
-            java.lang.Object ref = destinationPredefinedAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                destinationPredefinedAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 9;</code>
-         *
-         * @return The bytes for destinationPredefinedAcl.
-         */
-        public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
-            java.lang.Object ref = destinationPredefinedAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                destinationPredefinedAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 9;</code>
-         *
-         * @param value The destinationPredefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationPredefinedAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            destinationPredefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 9;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDestinationPredefinedAcl() {
-            destinationPredefinedAcl_ = getDefaultInstance().getDestinationPredefinedAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 9;</code>
-         *
-         * @param value The bytes for destinationPredefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationPredefinedAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            destinationPredefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 4;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
         @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000002));
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
         }
 
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 4;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 4;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object kmsKey_ = "";
-
-        /**
-         * <pre>
-         * Resource name of the Cloud KMS key, of the form
-         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-         * that will be used to encrypt the object. Overrides the object
-         * metadata's `kms_key_name` value, if any.
-         * </pre>
-         *
-         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The kmsKey.
-         */
-        public java.lang.String getKmsKey() {
-            java.lang.Object ref = kmsKey_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                kmsKey_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Resource name of the Cloud KMS key, of the form
-         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-         * that will be used to encrypt the object. Overrides the object
-         * metadata's `kms_key_name` value, if any.
-         * </pre>
-         *
-         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The bytes for kmsKey.
-         */
-        public com.google.protobuf.ByteString getKmsKeyBytes() {
-            java.lang.Object ref = kmsKey_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                kmsKey_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Resource name of the Cloud KMS key, of the form
-         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-         * that will be used to encrypt the object. Overrides the object
-         * metadata's `kms_key_name` value, if any.
-         * </pre>
-         *
-         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The kmsKey to set.
-         * @return This builder for chaining.
-         */
-        public Builder setKmsKey(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            kmsKey_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Resource name of the Cloud KMS key, of the form
-         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-         * that will be used to encrypt the object. Overrides the object
-         * metadata's `kms_key_name` value, if any.
-         * </pre>
-         *
-         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearKmsKey() {
-            kmsKey_ = getDefaultInstance().getKmsKey();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Resource name of the Cloud KMS key, of the form
-         * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-         * that will be used to encrypt the object. Overrides the object
-         * metadata's `kms_key_name` value, if any.
-         * </pre>
-         *
-         * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The bytes for kmsKey to set.
-         * @return This builder for chaining.
-         */
-        public Builder setKmsKeyBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            kmsKey_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ComposeObjectRequest)
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.ComposeObjectRequest)
@@ -3516,10 +2871,6 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.ComposeObjectRequest();
-    }
-
-    public static com.google.storage.v2.ComposeObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<ComposeObjectRequest> PARSER = new com.google.protobuf.AbstractParser<ComposeObjectRequest>() {
@@ -3530,8 +2881,385 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
         }
     };
 
-    public static com.google.protobuf.Parser<ComposeObjectRequest> parser() {
-        return PARSER;
+    public static ComposeObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public ComposeObjectRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getDestinationOrBuilder() {
+        return getDestination();
+    }
+
+    private ComposeObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            Object.Builder subBuilder = null;
+                            if (null != destination_) {
+                                subBuilder = destination_.toBuilder();
+                            }
+                            destination_ = input.readMessage(Object.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(destination_);
+                                destination_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 18:
+                        {
+                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
+                                sourceObjects_ = new java.util.ArrayList<SourceObject>();
+                                mutable_bitField0_ |= 0x00000001;
+                            }
+                            sourceObjects_.add(input.readMessage(SourceObject.parser(), extensionRegistry));
+                            break;
+                        }
+                    case 32:
+                        {
+                            bitField0_ |= 0x00000001;
+                            ifGenerationMatch_ = input.readInt64();
+                            break;
+                        }
+                    case 40:
+                        {
+                            bitField0_ |= 0x00000002;
+                            ifMetagenerationMatch_ = input.readInt64();
+                            break;
+                        }
+                    case 50:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            kmsKey_ = s;
+                            break;
+                        }
+                    case 58:
+                        {
+                            CommonObjectRequestParams.Builder subBuilder = null;
+                            if (null != commonObjectRequestParams_) {
+                                subBuilder = commonObjectRequestParams_.toBuilder();
+                            }
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(commonObjectRequestParams_);
+                                commonObjectRequestParams_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 74:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            destinationPredefinedAcl_ = s;
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            if ((0 != (mutable_bitField0_ & 0x00000001))) {
+                sourceObjects_ = java.util.Collections.unmodifiableList(sourceObjects_);
+            }
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    public static ComposeObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Resource name of the Cloud KMS key, of the form
+     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+     * that will be used to encrypt the object. Overrides the object
+     * metadata's `kms_key_name` value, if any.
+     * </pre>
+     *
+     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The kmsKey.
+     */
+    @java.lang.Override
+    public java.lang.String getKmsKey() {
+        java.lang.Object ref = kmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            kmsKey_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (null != destination_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getDestination());
+        }
+        int i = 0;
+        while (sourceObjects_.size() > i) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, sourceObjects_.get(i));
+            i += 1;
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifMetagenerationMatch_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, kmsKey_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(7, getCommonObjectRequestParams());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, destinationPredefinedAcl_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    /**
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    @java.lang.Override
+    public java.util.List<SourceObject> getSourceObjectsList() {
+        return sourceObjects_;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    public static ComposeObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ComposeObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ComposeObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ComposeObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    @java.lang.Override
+    public ComposeObjectRequest.SourceObject getSourceObjects(int index) {
+        return sourceObjects_.get(index);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasDestination()) {
+            hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
+            hash = (53 * hash) + getDestination().hashCode();
+        }
+        if (0 < getSourceObjectsCount()) {
+            hash = (37 * hash) + SOURCE_OBJECTS_FIELD_NUMBER;
+            hash = (53 * hash) + getSourceObjectsList().hashCode();
+        }
+        hash = (37 * hash) + DESTINATION_PREDEFINED_ACL_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationPredefinedAcl().hashCode();
+        if (hasIfGenerationMatch()) {
+            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+        }
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        hash = (37 * hash) + KMS_KEY_FIELD_NUMBER;
+        hash = (53 * hash) + getKmsKey().hashCode();
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static ComposeObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    // Use ComposeObjectRequest.newBuilder() to construct.
+    private ComposeObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * Resource name of the Cloud KMS key, of the form
+     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+     * that will be used to encrypt the object. Overrides the object
+     * metadata's `kms_key_name` value, if any.
+     * </pre>
+     *
+     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The bytes for kmsKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getKmsKeyBytes() {
+        java.lang.Object ref = kmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            kmsKey_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 9;</code>
+     *
+     * @return The destinationPredefinedAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getDestinationPredefinedAcl() {
+        java.lang.Object ref = destinationPredefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            destinationPredefinedAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    private ComposeObjectRequest() {
+        sourceObjects_ = java.util.Collections.emptyList();
+        destinationPredefinedAcl_ = "";
+        kmsKey_ = "";
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ComposeObjectRequest();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_descriptor;
+    }
+
+    public static ComposeObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static ComposeObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
@@ -3540,7 +3268,290 @@ ComposeObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements C
     }
 
     @java.lang.Override
-    public com.google.storage.v2.ComposeObjectRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ComposeObjectRequest)) {
+            return super.equals(obj);
+        }
+        ComposeObjectRequest other = (ComposeObjectRequest) obj;
+        if (other.hasDestination() != hasDestination())
+            return false;
+        if (hasDestination()) {
+            if (!getDestination().equals(other.getDestination()))
+                return false;
+        }
+        if (!getSourceObjectsList().equals(other.getSourceObjectsList()))
+            return false;
+        if (!getDestinationPredefinedAcl().equals(other.getDestinationPredefinedAcl()))
+            return false;
+        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
+            return false;
+        if (hasIfGenerationMatch()) {
+            if (other.getIfGenerationMatch() != getIfGenerationMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
+            return false;
+        if (hasIfMetagenerationMatch()) {
+            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
+                return false;
+        }
+        if (!getKmsKey().equals(other.getKmsKey()))
+            return false;
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
     }
+
+    public static ComposeObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static com.google.protobuf.Parser<ComposeObjectRequest> parser() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return The destination.
+     */
+    @java.lang.Override
+    public Object getDestination() {
+        return null == destination_ ? Object.getDefaultInstance() : destination_;
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 9;</code>
+     *
+     * @return The bytes for destinationPredefinedAcl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
+        java.lang.Object ref = destinationPredefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            destinationPredefinedAcl_ = b;
+            return b;
+        }
+    }
+
+    public static ComposeObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (null != destination_) {
+            output.writeMessage(1, getDestination());
+        }
+        int i = 0;
+        while (sourceObjects_.size() > i) {
+            output.writeMessage(2, sourceObjects_.get(i));
+            i += 1;
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeInt64(4, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            output.writeInt64(5, ifMetagenerationMatch_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, kmsKey_);
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(7, getCommonObjectRequestParams());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 9, destinationPredefinedAcl_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    @java.lang.Override
+    public int getSourceObjectsCount() {
+        return sourceObjects_.size();
+    }
+
+    public static Builder newBuilder(ComposeObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ComposeObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 4;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ComposeObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ComposeObjectRequest.class, Builder.class);
+    }
+
+    public static ComposeObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    @java.lang.Override
+    public ComposeObjectRequest.SourceObjectOrBuilder getSourceObjectsOrBuilder(int index) {
+        return sourceObjects_.get(index);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    /**
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends SourceObjectOrBuilder> getSourceObjectsOrBuilderList() {
+        return sourceObjects_;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return Whether the destination field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestination() {
+        return null != destination_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 4;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
+    }
+
 }

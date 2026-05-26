@@ -36,8 +36,35 @@ public class CanonicalExtensionHeadersSerializer {
 
     private final Storage.UrlSigningOption.SigningVersion signatureVersion;
 
-    public CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion signatureVersion) {
-        this.signatureVersion = signatureVersion;
+    private Map<String, String> getLowercaseHeaders(Map<String, String> canonicalizedExtensionHeaders) {
+        // Make all custom header names lowercase.
+        Map<String, String> lowercaseHeaders = new HashMap<>();
+        for (String headerName : new ArrayList<>(canonicalizedExtensionHeaders.keySet())) {
+            String lowercaseHeaderName = headerName.toLowerCase();
+            // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
+            // headers. (CSEK headers are allowed for V4)
+            if (Storage.UrlSigningOption.SigningVersion.V2.equals(signatureVersion) && ("x-goog-encryption-key".equals(lowercaseHeaderName) || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
+                continue;
+            }
+            lowercaseHeaders.put(lowercaseHeaderName, canonicalizedExtensionHeaders.get(headerName));
+        }
+        return lowercaseHeaders;
+    }
+
+    public StringBuilder serializeHeaderNames(Map<String, String> canonicalizedExtensionHeaders) {
+        StringBuilder serializedHeaders = new StringBuilder();
+        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
+            return serializedHeaders;
+        }
+        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
+        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
+        Collections.sort(sortedHeaderNames);
+        for (String headerName : sortedHeaderNames) {
+            serializedHeaders.append(headerName).append(HEADER_NAME_SEPARATOR);
+        }
+        // remove trailing semicolon
+        serializedHeaders.setLength(serializedHeaders.length() - 1);
+        return serializedHeaders;
     }
 
     public CanonicalExtensionHeadersSerializer() {
@@ -67,34 +94,8 @@ public class CanonicalExtensionHeadersSerializer {
         return serializedHeaders;
     }
 
-    public StringBuilder serializeHeaderNames(Map<String, String> canonicalizedExtensionHeaders) {
-        StringBuilder serializedHeaders = new StringBuilder();
-        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
-            return serializedHeaders;
-        }
-        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
-        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
-        Collections.sort(sortedHeaderNames);
-        for (String headerName : sortedHeaderNames) {
-            serializedHeaders.append(headerName).append(HEADER_NAME_SEPARATOR);
-        }
-        // remove trailing semicolon
-        serializedHeaders.setLength(serializedHeaders.length() - 1);
-        return serializedHeaders;
+    public CanonicalExtensionHeadersSerializer(Storage.UrlSigningOption.SigningVersion signatureVersion) {
+        this.signatureVersion = signatureVersion;
     }
 
-    private Map<String, String> getLowercaseHeaders(Map<String, String> canonicalizedExtensionHeaders) {
-        // Make all custom header names lowercase.
-        Map<String, String> lowercaseHeaders = new HashMap<>();
-        for (String headerName : new ArrayList<>(canonicalizedExtensionHeaders.keySet())) {
-            String lowercaseHeaderName = headerName.toLowerCase();
-            // If present and we're V2, remove the x-goog-encryption-key and x-goog-encryption-key-sha256
-            // headers. (CSEK headers are allowed for V4)
-            if (Storage.UrlSigningOption.SigningVersion.V2.equals(signatureVersion) && ("x-goog-encryption-key".equals(lowercaseHeaderName) || "x-goog-encryption-key-sha256".equals(lowercaseHeaderName))) {
-                continue;
-            }
-            lowercaseHeaders.put(lowercaseHeaderName, canonicalizedExtensionHeaders.get(headerName));
-        }
-        return lowercaseHeaders;
-    }
 }

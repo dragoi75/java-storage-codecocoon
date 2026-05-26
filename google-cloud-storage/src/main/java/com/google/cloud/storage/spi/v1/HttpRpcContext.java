@@ -31,6 +31,23 @@ public final class HttpRpcContext {
 
     private final Supplier<UUID> supplier;
 
+    @InternalApi
+    public static HttpRpcContext getInstance() {
+        if (null == instance) {
+            synchronized (GET_INSTANCE_LOCK) {
+                if (null == instance) {
+                    instance = init();
+                }
+            }
+        }
+        return instance;
+    }
+
+    @InternalApi
+    public static HttpRpcContext init() {
+        return new HttpRpcContext(UUID::randomUUID);
+    }
+
     HttpRpcContext(Supplier<UUID> randomUUID) {
         this.invocationId = new InheritableThreadLocal<>();
         this.supplier = randomUUID;
@@ -53,20 +70,4 @@ public final class HttpRpcContext {
         invocationId.remove();
     }
 
-    @InternalApi
-    public static HttpRpcContext init() {
-        return new HttpRpcContext(UUID::randomUUID);
-    }
-
-    @InternalApi
-    public static HttpRpcContext getInstance() {
-        if (null == instance) {
-            synchronized (GET_INSTANCE_LOCK) {
-                if (null == instance) {
-                    instance = init();
-                }
-            }
-        }
-        return instance;
-    }
 }

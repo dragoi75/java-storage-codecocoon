@@ -23,28 +23,30 @@ public interface ServiceAccountOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ServiceAccount)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The ID of the notification.
-   * </pre>
-   *
-   * <code>string email_address = 1;</code>
-   *
-   * @return The emailAddress.
-   */
-  java.lang.String getEmailAddress();
-  /**
-   *
-   *
-   * <pre>
-   * The ID of the notification.
-   * </pre>
-   *
-   * <code>string email_address = 1;</code>
-   *
-   * @return The bytes for emailAddress.
-   */
-  com.google.protobuf.ByteString getEmailAddressBytes();
+    /**
+     *
+     *
+     * <pre>
+     * The ID of the notification.
+     * </pre>
+     *
+     * <code>string email_address = 1;</code>
+     *
+     * @return The bytes for emailAddress.
+     */
+    com.google.protobuf.ByteString getEmailAddressBytes();
+
+    /**
+     *
+     *
+     * <pre>
+     * The ID of the notification.
+     * </pre>
+     *
+     * <code>string email_address = 1;</code>
+     *
+     * @return The emailAddress.
+     */
+    java.lang.String getEmailAddress();
+
 }

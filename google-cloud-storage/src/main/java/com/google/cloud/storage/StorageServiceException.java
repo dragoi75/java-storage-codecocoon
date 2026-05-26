@@ -42,26 +42,6 @@ public final class StorageServiceException extends BaseHttpServiceException {
 
     private static final long serialVersionUID = -4168430271327813063L;
 
-    public StorageServiceException(int statusValue, String detail) {
-        this(statusValue, detail, null);
-    }
-
-    public StorageServiceException(int statusValue, String detail, Throwable rootThrowable) {
-        super(statusValue, detail, null, true, RETRYABLE_ERROR_SET, rootThrowable);
-    }
-
-    public StorageServiceException(int statusValue, String detail, String explanation, Throwable rootThrowable) {
-        super(statusValue, detail, explanation, true, RETRYABLE_ERROR_SET, rootThrowable);
-    }
-
-    public StorageServiceException(IOException ioError) {
-        super(ioError, true, RETRYABLE_ERROR_SET);
-    }
-
-    public StorageServiceException(GoogleJsonError jsonFault) {
-        super(jsonFault, true, RETRYABLE_ERROR_SET);
-    }
-
     /**
      * Translate RetryHelperException to the StorageException that caused the error. This method will
      * always throw an exception.
@@ -75,21 +55,6 @@ public final class StorageServiceException extends BaseHttpServiceException {
 
     private static StorageServiceException getStorageException(Throwable throwable) {
         return new StorageServiceException(UNKNOWN_CODE, throwable.getMessage(), throwable.getCause());
-    }
-
-    /**
-     * Attempt to find an Exception which is a {@link BaseServiceException} If neither {@code t} or
-     * {@code t.getCause()} are a {@code BaseServiceException} a {@link StorageServiceException} will be
-     * created with an unknown status code.
-     */
-    static BaseServiceException coalesceException(Throwable throwable) {
-        if (throwable instanceof BaseServiceException) {
-            return (BaseServiceException) throwable;
-        }
-        if (throwable.getCause() instanceof BaseServiceException) {
-            return (BaseServiceException) throwable.getCause();
-        }
-        return getStorageException(throwable);
     }
 
     /**
@@ -107,4 +72,40 @@ public final class StorageServiceException extends BaseHttpServiceException {
             return new StorageServiceException(0, ioError.getMessage(), CONNECTION_CLOSED_EARLY, ioError);
         }
     }
+
+    public StorageServiceException(int statusValue, String detail, Throwable rootThrowable) {
+        super(statusValue, detail, null, true, RETRYABLE_ERROR_SET, rootThrowable);
+    }
+
+    /**
+     * Attempt to find an Exception which is a {@link BaseServiceException} If neither {@code t} or
+     * {@code t.getCause()} are a {@code BaseServiceException} a {@link StorageServiceException} will be
+     * created with an unknown status code.
+     */
+    static BaseServiceException coalesceException(Throwable throwable) {
+        if (throwable instanceof BaseServiceException) {
+            return (BaseServiceException) throwable;
+        }
+        if (throwable.getCause() instanceof BaseServiceException) {
+            return (BaseServiceException) throwable.getCause();
+        }
+        return getStorageException(throwable);
+    }
+
+    public StorageServiceException(GoogleJsonError jsonFault) {
+        super(jsonFault, true, RETRYABLE_ERROR_SET);
+    }
+
+    public StorageServiceException(int statusValue, String detail, String explanation, Throwable rootThrowable) {
+        super(statusValue, detail, explanation, true, RETRYABLE_ERROR_SET, rootThrowable);
+    }
+
+    public StorageServiceException(IOException ioError) {
+        super(ioError, true, RETRYABLE_ERROR_SET);
+    }
+
+    public StorageServiceException(int statusValue, String detail) {
+        this(statusValue, detail, null);
+    }
+
 }

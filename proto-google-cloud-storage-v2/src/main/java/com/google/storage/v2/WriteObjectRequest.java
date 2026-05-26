@@ -30,12 +30,1732 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
 
     private static final long serialVersionUID = 0L;
 
-    // Use WriteObjectRequest.newBuilder() to construct.
-    private WriteObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int firstMessageCase_ = 0;
+
+    private java.lang.Object firstMessage_;
+
+    public enum FirstMessageCase implements com.google.protobuf.Internal.EnumLite, com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+
+        UPLOAD_ID(1), WRITE_OBJECT_SPEC(2), FIRSTMESSAGE_NOT_SET(0);
+
+        private final int value;
+
+        public int getNumber() {
+            return this.value;
+        }
+
+        public static FirstMessageCase forNumber(int value) {
+            switch(value) {
+                case 1:
+                    return UPLOAD_ID;
+                case 2:
+                    return WRITE_OBJECT_SPEC;
+                case 0:
+                    return FIRSTMESSAGE_NOT_SET;
+                default:
+                    return null;
+            }
+        }
+
+        private FirstMessageCase(int value) {
+            this.value = value;
+        }
+
+        /**
+         * @param value The number of the enum to look for.
+         * @return The enum associated with the given number.
+         * @deprecated Use {@link #forNumber(int)} instead.
+         */
+        @java.lang.Deprecated
+        public static FirstMessageCase valueOf(int value) {
+            return forNumber(value);
+        }
+
     }
 
-    private WriteObjectRequest() {
+    private int dataCase_ = 0;
+
+    private java.lang.Object data_;
+
+    public enum DataCase implements com.google.protobuf.Internal.EnumLite, com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+
+        CHECKSUMMED_DATA(4), DATA_NOT_SET(0);
+
+        private final int value;
+
+        public static DataCase forNumber(int value) {
+            switch(value) {
+                case 4:
+                    return CHECKSUMMED_DATA;
+                case 0:
+                    return DATA_NOT_SET;
+                default:
+                    return null;
+            }
+        }
+
+        private DataCase(int value) {
+            this.value = value;
+        }
+
+        public int getNumber() {
+            return this.value;
+        }
+
+        /**
+         * @param value The number of the enum to look for.
+         * @return The enum associated with the given number.
+         * @deprecated Use {@link #forNumber(int)} instead.
+         */
+        @java.lang.Deprecated
+        public static DataCase valueOf(int value) {
+            return forNumber(value);
+        }
+
+    }
+
+    public static final int UPLOAD_ID_FIELD_NUMBER = 1;
+
+    public static final int WRITE_OBJECT_SPEC_FIELD_NUMBER = 2;
+
+    public static final int WRITE_OFFSET_FIELD_NUMBER = 3;
+
+    private long writeOffset_;
+
+    public static final int CHECKSUMMED_DATA_FIELD_NUMBER = 4;
+
+    public static final int OBJECT_CHECKSUMS_FIELD_NUMBER = 6;
+
+    private com.google.storage.v2.ObjectChecksums objectChecksums_;
+
+    public static final int FINISH_WRITE_FIELD_NUMBER = 7;
+
+    private boolean finishWrite_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 8;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for WriteObject.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.WriteObjectRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.WriteObjectRequestOrBuilder {
+
+        private int firstMessageCase_ = 0;
+
+        private java.lang.Object firstMessage_;
+
+        private int dataCase_ = 0;
+
+        private java.lang.Object data_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> writeObjectSpecBuilder_;
+
+        private long writeOffset_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> checksummedDataBuilder_;
+
+        private com.google.storage.v2.ObjectChecksums objectChecksums_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> objectChecksumsBuilder_;
+
+        private boolean finishWrite_;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.WriteObjectRequest)
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        public Builder setWriteObjectSpec(WriteObjectSpec.Builder builderForValue) {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_.setMessage(builderForValue.build());
+            } else {
+                firstMessage_ = builderForValue.build();
+                onChanged();
+            }
+            firstMessageCase_ = 2;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The offset from the beginning of the object at which the data should be
+         * written.
+         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
+         * indicates the initial offset for the `Write()` call. The value **must** be
+         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
+         * return (0 if this is the first write to the object).
+         * On subsequent calls, this value **must** be no larger than the sum of the
+         * first `write_offset` and the sizes of all `data` chunks sent previously on
+         * this stream.
+         * An incorrect value will cause an error.
+         * </pre>
+         *
+         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearWriteOffset() {
+            writeOffset_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If `true`, this indicates that the write is complete. Sending any
+         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
+         * will cause an error.
+         * For a non-resumable write (where the upload_id was not set in the first
+         * message), it is an error not to set this field in the final message of the
+         * stream.
+         * </pre>
+         *
+         * <code>bool finish_write = 7;</code>
+         *
+         * @return The finishWrite.
+         */
+        @java.lang.Override
+        public boolean getFinishWrite() {
+            return finishWrite_;
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        public Builder setChecksummedData(ChecksummedData.Builder builderForValue) {
+            if (null != checksummedDataBuilder_) {
+                checksummedDataBuilder_.setMessage(builderForValue.build());
+            } else {
+                data_ = builderForValue.build();
+                onChanged();
+            }
+            dataCase_ = 4;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        @java.lang.Override
+        public ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
+            if (!(4 == dataCase_) || !(null != checksummedDataBuilder_)) {
+                if (4 == dataCase_) {
+                    return (ChecksummedData) data_;
+                }
+                return ChecksummedData.getDefaultInstance();
+            } else {
+                return checksummedDataBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        public DataCase getDataCase() {
+            return DataCase.forNumber(dataCase_);
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        public Builder clearChecksummedData() {
+            if (null != checksummedDataBuilder_) {
+                if (4 == dataCase_) {
+                    dataCase_ = 0;
+                    data_ = null;
+                }
+                checksummedDataBuilder_.clear();
+            } else {
+                if (4 == dataCase_) {
+                    dataCase_ = 0;
+                    data_ = null;
+                    onChanged();
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder> getObjectChecksumsFieldBuilder() {
+            if (null == objectChecksumsBuilder_) {
+                objectChecksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder>(getObjectChecksums(), getParentForChildren(), isClean());
+                objectChecksums_ = null;
+            }
+            return objectChecksumsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public Builder clearObjectChecksums() {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksums_ = null;
+                objectChecksumsBuilder_ = null;
+            } else {
+                objectChecksums_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<WriteObjectSpec, WriteObjectSpec.Builder, WriteObjectSpecOrBuilder> getWriteObjectSpecFieldBuilder() {
+            if (null == writeObjectSpecBuilder_) {
+                if (!(2 == firstMessageCase_)) {
+                    firstMessage_ = WriteObjectSpec.getDefaultInstance();
+                }
+                writeObjectSpecBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<WriteObjectSpec, WriteObjectSpec.Builder, WriteObjectSpecOrBuilder>((WriteObjectSpec) firstMessage_, getParentForChildren(), isClean());
+                firstMessage_ = null;
+            }
+            firstMessageCase_ = 2;
+            onChanged();
+            ;
+            return writeObjectSpecBuilder_;
+        }
+
+        /**
+         * <pre>
+         * If `true`, this indicates that the write is complete. Sending any
+         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
+         * will cause an error.
+         * For a non-resumable write (where the upload_id was not set in the first
+         * message), it is an error not to set this field in the final message of the
+         * stream.
+         * </pre>
+         *
+         * <code>bool finish_write = 7;</code>
+         *
+         * @param value The finishWrite to set.
+         * @return This builder for chaining.
+         */
+        public Builder setFinishWrite(boolean value) {
+            finishWrite_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @return The bytes for uploadId.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getUploadIdBytes() {
+            java.lang.Object ref = "";
+            if (1 == firstMessageCase_) {
+                ref = firstMessage_;
+            }
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                if (1 == firstMessageCase_) {
+                    firstMessage_ = b;
+                }
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public Builder mergeObjectChecksums(ObjectChecksums value) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.mergeFrom(value);
+            } else {
+                if (null == objectChecksums_) {
+                    objectChecksums_ = value;
+                } else {
+                    objectChecksums_ = ObjectChecksums.newBuilder(objectChecksums_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public Builder setObjectChecksums(ObjectChecksums.Builder builderForValue) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.setMessage(builderForValue.build());
+            } else {
+                objectChecksums_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @return Whether the uploadId field is set.
+         */
+        @java.lang.Override
+        public boolean hasUploadId() {
+            return 1 == firstMessageCase_;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            WriteObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (WriteObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        public Builder setChecksummedData(ChecksummedData value) {
+            if (null != checksummedDataBuilder_) {
+                checksummedDataBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                data_ = value;
+                onChanged();
+            }
+            dataCase_ = 4;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         *
+         * @return Whether the objectChecksums field is set.
+         */
+        public boolean hasObjectChecksums() {
+            return null != objectChecksumsBuilder_ || null != objectChecksums_;
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        public Builder mergeChecksummedData(ChecksummedData value) {
+            if (null != checksummedDataBuilder_) {
+                if (4 != dataCase_) {
+                    checksummedDataBuilder_.setMessage(value);
+                } else {
+                    checksummedDataBuilder_.mergeFrom(value);
+                }
+            } else {
+                if (4 != dataCase_ || ChecksummedData.getDefaultInstance() == data_) {
+                    data_ = value;
+                } else {
+                    data_ = ChecksummedData.newBuilder((ChecksummedData) data_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            dataCase_ = 4;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @param value The uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            firstMessageCase_ = 1;
+            firstMessage_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(WriteObjectRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        public Builder mergeWriteObjectSpec(WriteObjectSpec value) {
+            if (null != writeObjectSpecBuilder_) {
+                if (2 != firstMessageCase_) {
+                    writeObjectSpecBuilder_.setMessage(value);
+                } else {
+                    writeObjectSpecBuilder_.mergeFrom(value);
+                }
+            } else {
+                if (2 != firstMessageCase_ || WriteObjectSpec.getDefaultInstance() == firstMessage_) {
+                    firstMessage_ = value;
+                } else {
+                    firstMessage_ = WriteObjectSpec.newBuilder((WriteObjectSpec) firstMessage_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            firstMessageCase_ = 2;
+            return this;
+        }
+
+        public Builder mergeFrom(WriteObjectRequest other) {
+            if (WriteObjectRequest.getDefaultInstance() == other)
+                return this;
+            if (0L != other.getWriteOffset()) {
+                setWriteOffset(other.getWriteOffset());
+            }
+            if (other.hasObjectChecksums()) {
+                mergeObjectChecksums(other.getObjectChecksums());
+            }
+            if (false != other.getFinishWrite()) {
+                setFinishWrite(other.getFinishWrite());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            switch(other.getFirstMessageCase()) {
+                case UPLOAD_ID:
+                    {
+                        firstMessageCase_ = 1;
+                        firstMessage_ = other.firstMessage_;
+                        onChanged();
+                        break;
+                    }
+                case WRITE_OBJECT_SPEC:
+                    {
+                        mergeWriteObjectSpec(other.getWriteObjectSpec());
+                        break;
+                    }
+                case FIRSTMESSAGE_NOT_SET:
+                    {
+                        break;
+                    }
+            }
+            switch(other.getDataCase()) {
+                case CHECKSUMMED_DATA:
+                    {
+                        mergeChecksummedData(other.getChecksummedData());
+                        break;
+                    }
+                case DATA_NOT_SET:
+                    {
+                        break;
+                    }
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        public ChecksummedData.Builder getChecksummedDataBuilder() {
+            return getChecksummedDataFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        @java.lang.Override
+        public WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
+            if (!(2 == firstMessageCase_) || !(null != writeObjectSpecBuilder_)) {
+                if (2 == firstMessageCase_) {
+                    return (WriteObjectSpec) firstMessage_;
+                }
+                return WriteObjectSpec.getDefaultInstance();
+            } else {
+                return writeObjectSpecBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        public Builder setWriteObjectSpec(WriteObjectSpec value) {
+            if (null != writeObjectSpecBuilder_) {
+                writeObjectSpecBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                firstMessage_ = value;
+                onChanged();
+            }
+            firstMessageCase_ = 2;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The offset from the beginning of the object at which the data should be
+         * written.
+         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
+         * indicates the initial offset for the `Write()` call. The value **must** be
+         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
+         * return (0 if this is the first write to the object).
+         * On subsequent calls, this value **must** be no larger than the sum of the
+         * first `write_offset` and the sizes of all `data` chunks sent previously on
+         * this stream.
+         * An incorrect value will cause an error.
+         * </pre>
+         *
+         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The writeOffset.
+         */
+        @java.lang.Override
+        public long getWriteOffset() {
+            return writeOffset_;
+        }
+
+        @java.lang.Override
+        public WriteObjectRequest buildPartial() {
+            WriteObjectRequest result = new WriteObjectRequest(this);
+            if (1 == firstMessageCase_) {
+                result.firstMessage_ = firstMessage_;
+            }
+            if (2 == firstMessageCase_) {
+                if (null != writeObjectSpecBuilder_) {
+                    result.firstMessage_ = writeObjectSpecBuilder_.build();
+                } else {
+                    result.firstMessage_ = firstMessage_;
+                }
+            }
+            result.writeOffset_ = writeOffset_;
+            if (4 == dataCase_) {
+                if (null != checksummedDataBuilder_) {
+                    result.data_ = checksummedDataBuilder_.build();
+                } else {
+                    result.data_ = data_;
+                }
+            }
+            if (null != objectChecksumsBuilder_) {
+                result.objectChecksums_ = objectChecksumsBuilder_.build();
+            } else {
+                result.objectChecksums_ = objectChecksums_;
+            }
+            result.finishWrite_ = finishWrite_;
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            result.firstMessageCase_ = firstMessageCase_;
+            result.dataCase_ = dataCase_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         *
+         * @return The objectChecksums.
+         */
+        public ObjectChecksums getObjectChecksums() {
+            if (null != objectChecksumsBuilder_) {
+                return objectChecksumsBuilder_.getMessage();
+            } else {
+                return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+            }
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * If `true`, this indicates that the write is complete. Sending any
+         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
+         * will cause an error.
+         * For a non-resumable write (where the upload_id was not set in the first
+         * message), it is an error not to set this field in the final message of the
+         * stream.
+         * </pre>
+         *
+         * <code>bool finish_write = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearFinishWrite() {
+            finishWrite_ = false;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public Builder setObjectChecksums(ObjectChecksums value) {
+            if (null != objectChecksumsBuilder_) {
+                objectChecksumsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                objectChecksums_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.WriteObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         *
+         * @return The checksummedData.
+         */
+        @java.lang.Override
+        public ChecksummedData getChecksummedData() {
+            if (null != checksummedDataBuilder_) {
+                if (4 == dataCase_) {
+                    return checksummedDataBuilder_.getMessage();
+                }
+                return ChecksummedData.getDefaultInstance();
+            } else {
+                if (4 == dataCase_) {
+                    return (ChecksummedData) data_;
+                }
+                return ChecksummedData.getDefaultInstance();
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        public WriteObjectSpec.Builder getWriteObjectSpecBuilder() {
+            return getWriteObjectSpecFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
+            if (null == objectChecksumsBuilder_) {
+                return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+            } else {
+                return objectChecksumsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        public FirstMessageCase getFirstMessageCase() {
+            return FirstMessageCase.forNumber(firstMessageCase_);
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         *
+         * @return Whether the checksummedData field is set.
+         */
+        @java.lang.Override
+        public boolean hasChecksummedData() {
+            return 4 == dataCase_;
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         *
+         * @return The writeObjectSpec.
+         */
+        @java.lang.Override
+        public WriteObjectSpec getWriteObjectSpec() {
+            if (null != writeObjectSpecBuilder_) {
+                if (2 == firstMessageCase_) {
+                    return writeObjectSpecBuilder_.getMessage();
+                }
+                return WriteObjectSpec.getDefaultInstance();
+            } else {
+                if (2 == firstMessageCase_) {
+                    return (WriteObjectSpec) firstMessage_;
+                }
+                return WriteObjectSpec.getDefaultInstance();
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof WriteObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((WriteObjectRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         */
+        public Builder clearWriteObjectSpec() {
+            if (null != writeObjectSpecBuilder_) {
+                if (2 == firstMessageCase_) {
+                    firstMessageCase_ = 0;
+                    firstMessage_ = null;
+                }
+                writeObjectSpecBuilder_.clear();
+            } else {
+                if (2 == firstMessageCase_) {
+                    firstMessageCase_ = 0;
+                    firstMessage_ = null;
+                    onChanged();
+                }
+            }
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        public Builder clearFirstMessage() {
+            firstMessageCase_ = 0;
+            firstMessage_ = null;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public WriteObjectRequest getDefaultInstanceForType() {
+            return WriteObjectRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * For non-resumable uploads. Describes the overall upload, including the
+         * destination bucket and object name, preconditions, etc.
+         * </pre>
+         *
+         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+         *
+         * @return Whether the writeObjectSpec field is set.
+         */
+        @java.lang.Override
+        public boolean hasWriteObjectSpec() {
+            return 2 == firstMessageCase_;
+        }
+
+        /**
+         * <pre>
+         * Required. The offset from the beginning of the object at which the data should be
+         * written.
+         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
+         * indicates the initial offset for the `Write()` call. The value **must** be
+         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
+         * return (0 if this is the first write to the object).
+         * On subsequent calls, this value **must** be no larger than the sum of the
+         * first `write_offset` and the sizes of all `data` chunks sent previously on
+         * this stream.
+         * An incorrect value will cause an error.
+         * </pre>
+         *
+         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The writeOffset to set.
+         * @return This builder for chaining.
+         */
+        public Builder setWriteOffset(long value) {
+            writeOffset_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @param value The bytes for uploadId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            firstMessageCase_ = 1;
+            firstMessage_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Checksums for the complete object. If the checksums computed by the service
+         * don't match the specifified checksums the call will fail. May only be
+         * provided in the first or last request (either with first_message, or
+         * finish_write set).
+         * </pre>
+         *
+         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+         */
+        public ObjectChecksums.Builder getObjectChecksumsBuilder() {
+            onChanged();
+            return getObjectChecksumsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * The data to insert. If a crc32c checksum is provided that doesn't match
+         * the checksum computed by the service, the request will fail.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ChecksummedData, ChecksummedData.Builder, ChecksummedDataOrBuilder> getChecksummedDataFieldBuilder() {
+            if (null == checksummedDataBuilder_) {
+                if (!(4 == dataCase_)) {
+                    data_ = ChecksummedData.getDefaultInstance();
+                }
+                checksummedDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ChecksummedData, ChecksummedData.Builder, ChecksummedDataOrBuilder>((ChecksummedData) data_, getParentForChildren(), isClean());
+                data_ = null;
+            }
+            dataCase_ = 4;
+            onChanged();
+            ;
+            return checksummedDataBuilder_;
+        }
+
+        @java.lang.Override
+        public WriteObjectRequest build() {
+            WriteObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            writeOffset_ = 0L;
+            if (null != objectChecksumsBuilder_) {
+                objectChecksums_ = null;
+                objectChecksumsBuilder_ = null;
+            } else {
+                objectChecksums_ = null;
+            }
+            finishWrite_ = false;
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            firstMessageCase_ = 0;
+            firstMessage_ = null;
+            dataCase_ = 0;
+            data_ = null;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearUploadId() {
+            if (1 == firstMessageCase_) {
+                firstMessageCase_ = 0;
+                firstMessage_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * For resumable uploads. This should be the `upload_id` returned from a
+         * call to `StartResumableWriteResponse`.
+         * </pre>
+         *
+         * <code>string upload_id = 1;</code>
+         *
+         * @return The uploadId.
+         */
+        @java.lang.Override
+        public java.lang.String getUploadId() {
+            java.lang.Object ref = "";
+            if (1 == firstMessageCase_) {
+                ref = firstMessage_;
+            }
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (1 == firstMessageCase_) {
+                    firstMessage_ = s;
+                }
+                return s;
+            }
+        }
+
+        public Builder clearData() {
+            dataCase_ = 0;
+            data_ = null;
+            onChanged();
+            return this;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.WriteObjectRequest)
+    private static final com.google.storage.v2.WriteObjectRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.WriteObjectRequest();
+    }
+
+    private static final com.google.protobuf.Parser<WriteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<WriteObjectRequest>() {
+
+        @java.lang.Override
+        public WriteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new WriteObjectRequest(input, extensionRegistry);
+        }
+    };
+
+    /**
+     * <pre>
+     * For non-resumable uploads. Describes the overall upload, including the
+     * destination bucket and object name, preconditions, etc.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+     *
+     * @return Whether the writeObjectSpec field is set.
+     */
+    @java.lang.Override
+    public boolean hasWriteObjectSpec() {
+        return 2 == firstMessageCase_;
+    }
+
+    /**
+     * <pre>
+     * For non-resumable uploads. Describes the overall upload, including the
+     * destination bucket and object name, preconditions, etc.
+     * </pre>
+     *
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
+     *
+     * @return The writeObjectSpec.
+     */
+    @java.lang.Override
+    public WriteObjectSpec getWriteObjectSpec() {
+        if (2 == firstMessageCase_) {
+            return (WriteObjectSpec) firstMessage_;
+        }
+        return WriteObjectSpec.getDefaultInstance();
+    }
+
+    @java.lang.Override
+    public WriteObjectRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static WriteObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (1 == firstMessageCase_) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, firstMessage_);
+        }
+        if (2 == firstMessageCase_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, (WriteObjectSpec) firstMessage_);
+        }
+        if (0L != writeOffset_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, writeOffset_);
+        }
+        if (4 == dataCase_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, (ChecksummedData) data_);
+        }
+        if (null != objectChecksums_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(6, getObjectChecksums());
+        }
+        if (false != finishWrite_) {
+            size += com.google.protobuf.CodedOutputStream.computeBoolSize(7, finishWrite_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(8, getCommonObjectRequestParams());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static WriteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    /**
+     * <pre>
+     * The data to insert. If a crc32c checksum is provided that doesn't match
+     * the checksum computed by the service, the request will fail.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+     *
+     * @return Whether the checksummedData field is set.
+     */
+    @java.lang.Override
+    public boolean hasChecksummedData() {
+        return 4 == dataCase_;
+    }
+
+    public static WriteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof WriteObjectRequest)) {
+            return super.equals(obj);
+        }
+        WriteObjectRequest other = (WriteObjectRequest) obj;
+        if (other.getWriteOffset() != getWriteOffset())
+            return false;
+        if (other.hasObjectChecksums() != hasObjectChecksums())
+            return false;
+        if (hasObjectChecksums()) {
+            if (!getObjectChecksums().equals(other.getObjectChecksums()))
+                return false;
+        }
+        if (other.getFinishWrite() != getFinishWrite())
+            return false;
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!getFirstMessageCase().equals(other.getFirstMessageCase()))
+            return false;
+        switch(firstMessageCase_) {
+            case 1:
+                if (!getUploadId().equals(other.getUploadId()))
+                    return false;
+                break;
+            case 2:
+                if (!getWriteObjectSpec().equals(other.getWriteObjectSpec()))
+                    return false;
+                break;
+            case 0:
+            default:
+        }
+        if (!getDataCase().equals(other.getDataCase()))
+            return false;
+        switch(dataCase_) {
+            case 4:
+                if (!getChecksummedData().equals(other.getChecksummedData()))
+                    return false;
+                break;
+            case 0:
+            default:
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static WriteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Checksums for the complete object. If the checksums computed by the service
+     * don't match the specifified checksums the call will fail. May only be
+     * provided in the first or last request (either with first_message, or
+     * finish_write set).
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+     */
+    @java.lang.Override
+    public ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
+        return getObjectChecksums();
+    }
+
+    public static WriteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static WriteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
+    }
+
+    public static WriteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    public static WriteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (1 == firstMessageCase_) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, firstMessage_);
+        }
+        if (2 == firstMessageCase_) {
+            output.writeMessage(2, (WriteObjectSpec) firstMessage_);
+        }
+        if (0L != writeOffset_) {
+            output.writeInt64(3, writeOffset_);
+        }
+        if (4 == dataCase_) {
+            output.writeMessage(4, (ChecksummedData) data_);
+        }
+        if (null != objectChecksums_) {
+            output.writeMessage(6, getObjectChecksums());
+        }
+        if (false != finishWrite_) {
+            output.writeBool(7, finishWrite_);
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(8, getCommonObjectRequestParams());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * Required. The offset from the beginning of the object at which the data should be
+     * written.
+     * In the first `WriteObjectRequest` of a `WriteObject()` action, it
+     * indicates the initial offset for the `Write()` call. The value **must** be
+     * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
+     * return (0 if this is the first write to the object).
+     * On subsequent calls, this value **must** be no larger than the sum of the
+     * first `write_offset` and the sizes of all `data` chunks sent previously on
+     * this stream.
+     * An incorrect value will cause an error.
+     * </pre>
+     *
+     * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The writeOffset.
+     */
+    @java.lang.Override
+    public long getWriteOffset() {
+        return writeOffset_;
+    }
+
+    public DataCase getDataCase() {
+        return DataCase.forNumber(dataCase_);
+    }
+
+    /**
+     * <pre>
+     * Checksums for the complete object. If the checksums computed by the service
+     * don't match the specifified checksums the call will fail. May only be
+     * provided in the first or last request (either with first_message, or
+     * finish_write set).
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+     *
+     * @return Whether the objectChecksums field is set.
+     */
+    @java.lang.Override
+    public boolean hasObjectChecksums() {
+        return null != objectChecksums_;
+    }
+
+    /**
+     * <pre>
+     * Checksums for the complete object. If the checksums computed by the service
+     * don't match the specifified checksums the call will fail. May only be
+     * provided in the first or last request (either with first_message, or
+     * finish_write set).
+     * </pre>
+     *
+     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
+     *
+     * @return The objectChecksums.
+     */
+    @java.lang.Override
+    public ObjectChecksums getObjectChecksums() {
+        return null == objectChecksums_ ? ObjectChecksums.getDefaultInstance() : objectChecksums_;
+    }
+
+    /**
+     * <pre>
+     * The data to insert. If a crc32c checksum is provided that doesn't match
+     * the checksum computed by the service, the request will fail.
+     * </pre>
+     *
+     * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
+     */
+    @java.lang.Override
+    public ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
+        if (4 == dataCase_) {
+            return (ChecksummedData) data_;
+        }
+        return ChecksummedData.getDefaultInstance();
+    }
+
+    /**
+     * <pre>
+     * For resumable uploads. This should be the `upload_id` returned from a
+     * call to `StartResumableWriteResponse`.
+     * </pre>
+     *
+     * <code>string upload_id = 1;</code>
+     *
+     * @return Whether the uploadId field is set.
+     */
+    public boolean hasUploadId() {
+        return 1 == firstMessageCase_;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
     }
 
     @java.lang.Override
@@ -45,8 +1765,8 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_WriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(WriteObjectRequest.class, Builder.class);
     }
 
     private WriteObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -72,13 +1792,13 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
                         }
                     case 18:
                         {
-                            com.google.storage.v2.WriteObjectSpec.Builder subBuilder = null;
+                            WriteObjectSpec.Builder subBuilder = null;
                             if (2 == firstMessageCase_) {
-                                subBuilder = ((com.google.storage.v2.WriteObjectSpec) firstMessage_).toBuilder();
+                                subBuilder = ((WriteObjectSpec) firstMessage_).toBuilder();
                             }
-                            firstMessage_ = input.readMessage(com.google.storage.v2.WriteObjectSpec.parser(), extensionRegistry);
+                            firstMessage_ = input.readMessage(WriteObjectSpec.parser(), extensionRegistry);
                             if (null != subBuilder) {
-                                subBuilder.mergeFrom((com.google.storage.v2.WriteObjectSpec) firstMessage_);
+                                subBuilder.mergeFrom((WriteObjectSpec) firstMessage_);
                                 firstMessage_ = subBuilder.buildPartial();
                             }
                             firstMessageCase_ = 2;
@@ -91,13 +1811,13 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
                         }
                     case 34:
                         {
-                            com.google.storage.v2.ChecksummedData.Builder subBuilder = null;
+                            ChecksummedData.Builder subBuilder = null;
                             if (4 == dataCase_) {
-                                subBuilder = ((com.google.storage.v2.ChecksummedData) data_).toBuilder();
+                                subBuilder = ((ChecksummedData) data_).toBuilder();
                             }
-                            data_ = input.readMessage(com.google.storage.v2.ChecksummedData.parser(), extensionRegistry);
+                            data_ = input.readMessage(ChecksummedData.parser(), extensionRegistry);
                             if (null != subBuilder) {
-                                subBuilder.mergeFrom((com.google.storage.v2.ChecksummedData) data_);
+                                subBuilder.mergeFrom((ChecksummedData) data_);
                                 data_ = subBuilder.buildPartial();
                             }
                             dataCase_ = 4;
@@ -105,11 +1825,11 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
                         }
                     case 50:
                         {
-                            com.google.storage.v2.ObjectChecksums.Builder subBuilder = null;
+                            ObjectChecksums.Builder subBuilder = null;
                             if (null != objectChecksums_) {
                                 subBuilder = objectChecksums_.toBuilder();
                             }
-                            objectChecksums_ = input.readMessage(com.google.storage.v2.ObjectChecksums.parser(), extensionRegistry);
+                            objectChecksums_ = input.readMessage(ObjectChecksums.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(objectChecksums_);
                                 objectChecksums_ = subBuilder.buildPartial();
@@ -123,11 +1843,11 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
                         }
                     case 66:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -155,119 +1875,106 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
-    }
-
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.WriteObjectRequest.class, com.google.storage.v2.WriteObjectRequest.Builder.class);
+    public com.google.protobuf.Parser<WriteObjectRequest> getParserForType() {
+        return PARSER;
     }
-
-    private int firstMessageCase_ = 0;
-
-    private java.lang.Object firstMessage_;
-
-    public enum FirstMessageCase implements com.google.protobuf.Internal.EnumLite, com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-
-        UPLOAD_ID(1), WRITE_OBJECT_SPEC(2), FIRSTMESSAGE_NOT_SET(0);
-
-        private final int value;
-
-        private FirstMessageCase(int value) {
-            this.value = value;
-        }
-
-        /**
-         * @param value The number of the enum to look for.
-         * @return The enum associated with the given number.
-         * @deprecated Use {@link #forNumber(int)} instead.
-         */
-        @java.lang.Deprecated
-        public static FirstMessageCase valueOf(int value) {
-            return forNumber(value);
-        }
-
-        public static FirstMessageCase forNumber(int value) {
-            switch(value) {
-                case 1:
-                    return UPLOAD_ID;
-                case 2:
-                    return WRITE_OBJECT_SPEC;
-                case 0:
-                    return FIRSTMESSAGE_NOT_SET;
-                default:
-                    return null;
-            }
-        }
-
-        public int getNumber() {
-            return this.value;
-        }
-    }
-
-    public FirstMessageCase getFirstMessageCase() {
-        return FirstMessageCase.forNumber(firstMessageCase_);
-    }
-
-    private int dataCase_ = 0;
-
-    private java.lang.Object data_;
-
-    public enum DataCase implements com.google.protobuf.Internal.EnumLite, com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-
-        CHECKSUMMED_DATA(4), DATA_NOT_SET(0);
-
-        private final int value;
-
-        private DataCase(int value) {
-            this.value = value;
-        }
-
-        /**
-         * @param value The number of the enum to look for.
-         * @return The enum associated with the given number.
-         * @deprecated Use {@link #forNumber(int)} instead.
-         */
-        @java.lang.Deprecated
-        public static DataCase valueOf(int value) {
-            return forNumber(value);
-        }
-
-        public static DataCase forNumber(int value) {
-            switch(value) {
-                case 4:
-                    return CHECKSUMMED_DATA;
-                case 0:
-                    return DATA_NOT_SET;
-                default:
-                    return null;
-            }
-        }
-
-        public int getNumber() {
-            return this.value;
-        }
-    }
-
-    public DataCase getDataCase() {
-        return DataCase.forNumber(dataCase_);
-    }
-
-    public static final int UPLOAD_ID_FIELD_NUMBER = 1;
 
     /**
      * <pre>
-     * For resumable uploads. This should be the `upload_id` returned from a
-     * call to `StartResumableWriteResponse`.
+     * For non-resumable uploads. Describes the overall upload, including the
+     * destination bucket and object name, preconditions, etc.
      * </pre>
      *
-     * <code>string upload_id = 1;</code>
-     *
-     * @return Whether the uploadId field is set.
+     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
      */
-    public boolean hasUploadId() {
-        return 1 == firstMessageCase_;
+    @java.lang.Override
+    public WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
+        if (2 == firstMessageCase_) {
+            return (WriteObjectSpec) firstMessage_;
+        }
+        return WriteObjectSpec.getDefaultInstance();
+    }
+
+    public static WriteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + WRITE_OFFSET_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getWriteOffset());
+        if (hasObjectChecksums()) {
+            hash = (37 * hash) + OBJECT_CHECKSUMS_FIELD_NUMBER;
+            hash = (53 * hash) + getObjectChecksums().hashCode();
+        }
+        hash = (37 * hash) + FINISH_WRITE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getFinishWrite());
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        switch(firstMessageCase_) {
+            case 1:
+                hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
+                hash = (53 * hash) + getUploadId().hashCode();
+                break;
+            case 2:
+                hash = (37 * hash) + WRITE_OBJECT_SPEC_FIELD_NUMBER;
+                hash = (53 * hash) + getWriteObjectSpec().hashCode();
+                break;
+            case 0:
+            default:
+        }
+        switch(dataCase_) {
+            case 4:
+                hash = (37 * hash) + CHECKSUMMED_DATA_FIELD_NUMBER;
+                hash = (53 * hash) + getChecksummedData().hashCode();
+                break;
+            case 0:
+            default:
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * If `true`, this indicates that the write is complete. Sending any
+     * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
+     * will cause an error.
+     * For a non-resumable write (where the upload_id was not set in the first
+     * message), it is an error not to set this field in the final message of the
+     * stream.
+     * </pre>
+     *
+     * <code>bool finish_write = 7;</code>
+     *
+     * @return The finishWrite.
+     */
+    @java.lang.Override
+    public boolean getFinishWrite() {
+        return finishWrite_;
     }
 
     /**
@@ -323,99 +2030,42 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
         }
     }
 
-    public static final int WRITE_OBJECT_SPEC_FIELD_NUMBER = 2;
-
-    /**
-     * <pre>
-     * For non-resumable uploads. Describes the overall upload, including the
-     * destination bucket and object name, preconditions, etc.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-     *
-     * @return Whether the writeObjectSpec field is set.
-     */
-    @java.lang.Override
-    public boolean hasWriteObjectSpec() {
-        return 2 == firstMessageCase_;
+    private WriteObjectRequest() {
     }
 
-    /**
-     * <pre>
-     * For non-resumable uploads. Describes the overall upload, including the
-     * destination bucket and object name, preconditions, etc.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-     *
-     * @return The writeObjectSpec.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.WriteObjectSpec getWriteObjectSpec() {
-        if (2 == firstMessageCase_) {
-            return (com.google.storage.v2.WriteObjectSpec) firstMessage_;
-        }
-        return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
+    public static WriteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
-    /**
-     * <pre>
-     * For non-resumable uploads. Describes the overall upload, including the
-     * destination bucket and object name, preconditions, etc.
-     * </pre>
-     *
-     * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
-        if (2 == firstMessageCase_) {
-            return (com.google.storage.v2.WriteObjectSpec) firstMessage_;
-        }
-        return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
+    public static Builder newBuilder(WriteObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
 
-    public static final int WRITE_OFFSET_FIELD_NUMBER = 3;
-
-    private long writeOffset_;
-
-    /**
-     * <pre>
-     * Required. The offset from the beginning of the object at which the data should be
-     * written.
-     * In the first `WriteObjectRequest` of a `WriteObject()` action, it
-     * indicates the initial offset for the `Write()` call. The value **must** be
-     * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
-     * return (0 if this is the first write to the object).
-     * On subsequent calls, this value **must** be no larger than the sum of the
-     * first `write_offset` and the sizes of all `data` chunks sent previously on
-     * this stream.
-     * An incorrect value will cause an error.
-     * </pre>
-     *
-     * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The writeOffset.
-     */
-    @java.lang.Override
-    public long getWriteOffset() {
-        return writeOffset_;
+    // Use WriteObjectRequest.newBuilder() to construct.
+    private WriteObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
-    public static final int CHECKSUMMED_DATA_FIELD_NUMBER = 4;
+    public static WriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
 
-    /**
-     * <pre>
-     * The data to insert. If a crc32c checksum is provided that doesn't match
-     * the checksum computed by the service, the request will fail.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-     *
-     * @return Whether the checksummedData field is set.
-     */
+    public static WriteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static WriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public FirstMessageCase getFirstMessageCase() {
+        return FirstMessageCase.forNumber(firstMessageCase_);
+    }
+
     @java.lang.Override
-    public boolean hasChecksummedData() {
-        return 4 == dataCase_;
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
     }
 
     /**
@@ -429,1665 +2079,20 @@ WriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Wri
      * @return The checksummedData.
      */
     @java.lang.Override
-    public com.google.storage.v2.ChecksummedData getChecksummedData() {
+    public ChecksummedData getChecksummedData() {
         if (4 == dataCase_) {
-            return (com.google.storage.v2.ChecksummedData) data_;
+            return (ChecksummedData) data_;
         }
-        return com.google.storage.v2.ChecksummedData.getDefaultInstance();
+        return ChecksummedData.getDefaultInstance();
     }
-
-    /**
-     * <pre>
-     * The data to insert. If a crc32c checksum is provided that doesn't match
-     * the checksum computed by the service, the request will fail.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
-        if (4 == dataCase_) {
-            return (com.google.storage.v2.ChecksummedData) data_;
-        }
-        return com.google.storage.v2.ChecksummedData.getDefaultInstance();
-    }
-
-    public static final int OBJECT_CHECKSUMS_FIELD_NUMBER = 6;
-
-    private com.google.storage.v2.ObjectChecksums objectChecksums_;
-
-    /**
-     * <pre>
-     * Checksums for the complete object. If the checksums computed by the service
-     * don't match the specifified checksums the call will fail. May only be
-     * provided in the first or last request (either with first_message, or
-     * finish_write set).
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-     *
-     * @return Whether the objectChecksums field is set.
-     */
-    @java.lang.Override
-    public boolean hasObjectChecksums() {
-        return null != objectChecksums_;
-    }
-
-    /**
-     * <pre>
-     * Checksums for the complete object. If the checksums computed by the service
-     * don't match the specifified checksums the call will fail. May only be
-     * provided in the first or last request (either with first_message, or
-     * finish_write set).
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-     *
-     * @return The objectChecksums.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksums getObjectChecksums() {
-        return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-    }
-
-    /**
-     * <pre>
-     * Checksums for the complete object. If the checksums computed by the service
-     * don't match the specifified checksums the call will fail. May only be
-     * provided in the first or last request (either with first_message, or
-     * finish_write set).
-     * </pre>
-     *
-     * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
-        return getObjectChecksums();
-    }
-
-    public static final int FINISH_WRITE_FIELD_NUMBER = 7;
-
-    private boolean finishWrite_;
-
-    /**
-     * <pre>
-     * If `true`, this indicates that the write is complete. Sending any
-     * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
-     * will cause an error.
-     * For a non-resumable write (where the upload_id was not set in the first
-     * message), it is an error not to set this field in the final message of the
-     * stream.
-     * </pre>
-     *
-     * <code>bool finish_write = 7;</code>
-     *
-     * @return The finishWrite.
-     */
-    @java.lang.Override
-    public boolean getFinishWrite() {
-        return finishWrite_;
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 8;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (1 == firstMessageCase_) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, firstMessage_);
-        }
-        if (2 == firstMessageCase_) {
-            output.writeMessage(2, (com.google.storage.v2.WriteObjectSpec) firstMessage_);
-        }
-        if (0L != writeOffset_) {
-            output.writeInt64(3, writeOffset_);
-        }
-        if (4 == dataCase_) {
-            output.writeMessage(4, (com.google.storage.v2.ChecksummedData) data_);
-        }
-        if (null != objectChecksums_) {
-            output.writeMessage(6, getObjectChecksums());
-        }
-        if (false != finishWrite_) {
-            output.writeBool(7, finishWrite_);
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(8, getCommonObjectRequestParams());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (1 == firstMessageCase_) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, firstMessage_);
-        }
-        if (2 == firstMessageCase_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, (com.google.storage.v2.WriteObjectSpec) firstMessage_);
-        }
-        if (0L != writeOffset_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, writeOffset_);
-        }
-        if (4 == dataCase_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, (com.google.storage.v2.ChecksummedData) data_);
-        }
-        if (null != objectChecksums_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(6, getObjectChecksums());
-        }
-        if (false != finishWrite_) {
-            size += com.google.protobuf.CodedOutputStream.computeBoolSize(7, finishWrite_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(8, getCommonObjectRequestParams());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.WriteObjectRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.WriteObjectRequest other = (com.google.storage.v2.WriteObjectRequest) obj;
-        if (other.getWriteOffset() != getWriteOffset())
-            return false;
-        if (other.hasObjectChecksums() != hasObjectChecksums())
-            return false;
-        if (hasObjectChecksums()) {
-            if (!getObjectChecksums().equals(other.getObjectChecksums()))
-                return false;
-        }
-        if (other.getFinishWrite() != getFinishWrite())
-            return false;
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!getFirstMessageCase().equals(other.getFirstMessageCase()))
-            return false;
-        switch(firstMessageCase_) {
-            case 1:
-                if (!getUploadId().equals(other.getUploadId()))
-                    return false;
-                break;
-            case 2:
-                if (!getWriteObjectSpec().equals(other.getWriteObjectSpec()))
-                    return false;
-                break;
-            case 0:
-            default:
-        }
-        if (!getDataCase().equals(other.getDataCase()))
-            return false;
-        switch(dataCase_) {
-            case 4:
-                if (!getChecksummedData().equals(other.getChecksummedData()))
-                    return false;
-                break;
-            case 0:
-            default:
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + WRITE_OFFSET_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getWriteOffset());
-        if (hasObjectChecksums()) {
-            hash = (37 * hash) + OBJECT_CHECKSUMS_FIELD_NUMBER;
-            hash = (53 * hash) + getObjectChecksums().hashCode();
-        }
-        hash = (37 * hash) + FINISH_WRITE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getFinishWrite());
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        switch(firstMessageCase_) {
-            case 1:
-                hash = (37 * hash) + UPLOAD_ID_FIELD_NUMBER;
-                hash = (53 * hash) + getUploadId().hashCode();
-                break;
-            case 2:
-                hash = (37 * hash) + WRITE_OBJECT_SPEC_FIELD_NUMBER;
-                hash = (53 * hash) + getWriteObjectSpec().hashCode();
-                break;
-            case 0:
-            default:
-        }
-        switch(dataCase_) {
-            case 4:
-                hash = (37 * hash) + CHECKSUMMED_DATA_FIELD_NUMBER;
-                hash = (53 * hash) + getChecksummedData().hashCode();
-                break;
-            case 0:
-            default:
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.WriteObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for WriteObject.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.WriteObjectRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.WriteObjectRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.WriteObjectRequest.class, com.google.storage.v2.WriteObjectRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.WriteObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            writeOffset_ = 0L;
-            if (null != objectChecksumsBuilder_) {
-                objectChecksums_ = null;
-                objectChecksumsBuilder_ = null;
-            } else {
-                objectChecksums_ = null;
-            }
-            finishWrite_ = false;
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            firstMessageCase_ = 0;
-            firstMessage_ = null;
-            dataCase_ = 0;
-            data_ = null;
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.WriteObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectRequest build() {
-            com.google.storage.v2.WriteObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectRequest buildPartial() {
-            com.google.storage.v2.WriteObjectRequest result = new com.google.storage.v2.WriteObjectRequest(this);
-            if (1 == firstMessageCase_) {
-                result.firstMessage_ = firstMessage_;
-            }
-            if (2 == firstMessageCase_) {
-                if (null != writeObjectSpecBuilder_) {
-                    result.firstMessage_ = writeObjectSpecBuilder_.build();
-                } else {
-                    result.firstMessage_ = firstMessage_;
-                }
-            }
-            result.writeOffset_ = writeOffset_;
-            if (4 == dataCase_) {
-                if (null != checksummedDataBuilder_) {
-                    result.data_ = checksummedDataBuilder_.build();
-                } else {
-                    result.data_ = data_;
-                }
-            }
-            if (null != objectChecksumsBuilder_) {
-                result.objectChecksums_ = objectChecksumsBuilder_.build();
-            } else {
-                result.objectChecksums_ = objectChecksums_;
-            }
-            result.finishWrite_ = finishWrite_;
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            result.firstMessageCase_ = firstMessageCase_;
-            result.dataCase_ = dataCase_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.WriteObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.WriteObjectRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.WriteObjectRequest other) {
-            if (com.google.storage.v2.WriteObjectRequest.getDefaultInstance() == other)
-                return this;
-            if (0L != other.getWriteOffset()) {
-                setWriteOffset(other.getWriteOffset());
-            }
-            if (other.hasObjectChecksums()) {
-                mergeObjectChecksums(other.getObjectChecksums());
-            }
-            if (false != other.getFinishWrite()) {
-                setFinishWrite(other.getFinishWrite());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            switch(other.getFirstMessageCase()) {
-                case UPLOAD_ID:
-                    {
-                        firstMessageCase_ = 1;
-                        firstMessage_ = other.firstMessage_;
-                        onChanged();
-                        break;
-                    }
-                case WRITE_OBJECT_SPEC:
-                    {
-                        mergeWriteObjectSpec(other.getWriteObjectSpec());
-                        break;
-                    }
-                case FIRSTMESSAGE_NOT_SET:
-                    {
-                        break;
-                    }
-            }
-            switch(other.getDataCase()) {
-                case CHECKSUMMED_DATA:
-                    {
-                        mergeChecksummedData(other.getChecksummedData());
-                        break;
-                    }
-                case DATA_NOT_SET:
-                    {
-                        break;
-                    }
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.WriteObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.WriteObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int firstMessageCase_ = 0;
-
-        private java.lang.Object firstMessage_;
-
-        public FirstMessageCase getFirstMessageCase() {
-            return FirstMessageCase.forNumber(firstMessageCase_);
-        }
-
-        public Builder clearFirstMessage() {
-            firstMessageCase_ = 0;
-            firstMessage_ = null;
-            onChanged();
-            return this;
-        }
-
-        private int dataCase_ = 0;
-
-        private java.lang.Object data_;
-
-        public DataCase getDataCase() {
-            return DataCase.forNumber(dataCase_);
-        }
-
-        public Builder clearData() {
-            dataCase_ = 0;
-            data_ = null;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @return Whether the uploadId field is set.
-         */
-        @java.lang.Override
-        public boolean hasUploadId() {
-            return 1 == firstMessageCase_;
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @return The uploadId.
-         */
-        @java.lang.Override
-        public java.lang.String getUploadId() {
-            java.lang.Object ref = "";
-            if (1 == firstMessageCase_) {
-                ref = firstMessage_;
-            }
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (1 == firstMessageCase_) {
-                    firstMessage_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @return The bytes for uploadId.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getUploadIdBytes() {
-            java.lang.Object ref = "";
-            if (1 == firstMessageCase_) {
-                ref = firstMessage_;
-            }
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                if (1 == firstMessageCase_) {
-                    firstMessage_ = b;
-                }
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @param value The uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            firstMessageCase_ = 1;
-            firstMessage_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearUploadId() {
-            if (1 == firstMessageCase_) {
-                firstMessageCase_ = 0;
-                firstMessage_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For resumable uploads. This should be the `upload_id` returned from a
-         * call to `StartResumableWriteResponse`.
-         * </pre>
-         *
-         * <code>string upload_id = 1;</code>
-         *
-         * @param value The bytes for uploadId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setUploadIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            firstMessageCase_ = 1;
-            firstMessage_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> writeObjectSpecBuilder_;
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         *
-         * @return Whether the writeObjectSpec field is set.
-         */
-        @java.lang.Override
-        public boolean hasWriteObjectSpec() {
-            return 2 == firstMessageCase_;
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         *
-         * @return The writeObjectSpec.
-         */
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectSpec getWriteObjectSpec() {
-            if (null != writeObjectSpecBuilder_) {
-                if (2 == firstMessageCase_) {
-                    return writeObjectSpecBuilder_.getMessage();
-                }
-                return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
-            } else {
-                if (2 == firstMessageCase_) {
-                    return (com.google.storage.v2.WriteObjectSpec) firstMessage_;
-                }
-                return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
-            }
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        public Builder setWriteObjectSpec(com.google.storage.v2.WriteObjectSpec value) {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                firstMessage_ = value;
-                onChanged();
-            }
-            firstMessageCase_ = 2;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        public Builder setWriteObjectSpec(com.google.storage.v2.WriteObjectSpec.Builder builderForValue) {
-            if (null != writeObjectSpecBuilder_) {
-                writeObjectSpecBuilder_.setMessage(builderForValue.build());
-            } else {
-                firstMessage_ = builderForValue.build();
-                onChanged();
-            }
-            firstMessageCase_ = 2;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        public Builder mergeWriteObjectSpec(com.google.storage.v2.WriteObjectSpec value) {
-            if (null != writeObjectSpecBuilder_) {
-                if (2 != firstMessageCase_) {
-                    writeObjectSpecBuilder_.setMessage(value);
-                } else {
-                    writeObjectSpecBuilder_.mergeFrom(value);
-                }
-            } else {
-                if (2 != firstMessageCase_ || com.google.storage.v2.WriteObjectSpec.getDefaultInstance() == firstMessage_) {
-                    firstMessage_ = value;
-                } else {
-                    firstMessage_ = com.google.storage.v2.WriteObjectSpec.newBuilder((com.google.storage.v2.WriteObjectSpec) firstMessage_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            firstMessageCase_ = 2;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        public Builder clearWriteObjectSpec() {
-            if (null != writeObjectSpecBuilder_) {
-                if (2 == firstMessageCase_) {
-                    firstMessageCase_ = 0;
-                    firstMessage_ = null;
-                }
-                writeObjectSpecBuilder_.clear();
-            } else {
-                if (2 == firstMessageCase_) {
-                    firstMessageCase_ = 0;
-                    firstMessage_ = null;
-                    onChanged();
-                }
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        public com.google.storage.v2.WriteObjectSpec.Builder getWriteObjectSpecBuilder() {
-            return getWriteObjectSpecFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectSpecOrBuilder getWriteObjectSpecOrBuilder() {
-            if (!(2 == firstMessageCase_) || !(null != writeObjectSpecBuilder_)) {
-                if (2 == firstMessageCase_) {
-                    return (com.google.storage.v2.WriteObjectSpec) firstMessage_;
-                }
-                return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
-            } else {
-                return writeObjectSpecBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * For non-resumable uploads. Describes the overall upload, including the
-         * destination bucket and object name, preconditions, etc.
-         * </pre>
-         *
-         * <code>.google.storage.v2.WriteObjectSpec write_object_spec = 2;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder> getWriteObjectSpecFieldBuilder() {
-            if (null == writeObjectSpecBuilder_) {
-                if (!(2 == firstMessageCase_)) {
-                    firstMessage_ = com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
-                }
-                writeObjectSpecBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.WriteObjectSpec, com.google.storage.v2.WriteObjectSpec.Builder, com.google.storage.v2.WriteObjectSpecOrBuilder>((com.google.storage.v2.WriteObjectSpec) firstMessage_, getParentForChildren(), isClean());
-                firstMessage_ = null;
-            }
-            firstMessageCase_ = 2;
-            onChanged();
-            ;
-            return writeObjectSpecBuilder_;
-        }
-
-        private long writeOffset_;
-
-        /**
-         * <pre>
-         * Required. The offset from the beginning of the object at which the data should be
-         * written.
-         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
-         * indicates the initial offset for the `Write()` call. The value **must** be
-         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
-         * return (0 if this is the first write to the object).
-         * On subsequent calls, this value **must** be no larger than the sum of the
-         * first `write_offset` and the sizes of all `data` chunks sent previously on
-         * this stream.
-         * An incorrect value will cause an error.
-         * </pre>
-         *
-         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The writeOffset.
-         */
-        @java.lang.Override
-        public long getWriteOffset() {
-            return writeOffset_;
-        }
-
-        /**
-         * <pre>
-         * Required. The offset from the beginning of the object at which the data should be
-         * written.
-         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
-         * indicates the initial offset for the `Write()` call. The value **must** be
-         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
-         * return (0 if this is the first write to the object).
-         * On subsequent calls, this value **must** be no larger than the sum of the
-         * first `write_offset` and the sizes of all `data` chunks sent previously on
-         * this stream.
-         * An incorrect value will cause an error.
-         * </pre>
-         *
-         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The writeOffset to set.
-         * @return This builder for chaining.
-         */
-        public Builder setWriteOffset(long value) {
-            writeOffset_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The offset from the beginning of the object at which the data should be
-         * written.
-         * In the first `WriteObjectRequest` of a `WriteObject()` action, it
-         * indicates the initial offset for the `Write()` call. The value **must** be
-         * equal to the `persisted_size` that a call to `QueryWriteStatus()` would
-         * return (0 if this is the first write to the object).
-         * On subsequent calls, this value **must** be no larger than the sum of the
-         * first `write_offset` and the sizes of all `data` chunks sent previously on
-         * this stream.
-         * An incorrect value will cause an error.
-         * </pre>
-         *
-         * <code>int64 write_offset = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearWriteOffset() {
-            writeOffset_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> checksummedDataBuilder_;
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         *
-         * @return Whether the checksummedData field is set.
-         */
-        @java.lang.Override
-        public boolean hasChecksummedData() {
-            return 4 == dataCase_;
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         *
-         * @return The checksummedData.
-         */
-        @java.lang.Override
-        public com.google.storage.v2.ChecksummedData getChecksummedData() {
-            if (null != checksummedDataBuilder_) {
-                if (4 == dataCase_) {
-                    return checksummedDataBuilder_.getMessage();
-                }
-                return com.google.storage.v2.ChecksummedData.getDefaultInstance();
-            } else {
-                if (4 == dataCase_) {
-                    return (com.google.storage.v2.ChecksummedData) data_;
-                }
-                return com.google.storage.v2.ChecksummedData.getDefaultInstance();
-            }
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        public Builder setChecksummedData(com.google.storage.v2.ChecksummedData value) {
-            if (null != checksummedDataBuilder_) {
-                checksummedDataBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                data_ = value;
-                onChanged();
-            }
-            dataCase_ = 4;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        public Builder setChecksummedData(com.google.storage.v2.ChecksummedData.Builder builderForValue) {
-            if (null != checksummedDataBuilder_) {
-                checksummedDataBuilder_.setMessage(builderForValue.build());
-            } else {
-                data_ = builderForValue.build();
-                onChanged();
-            }
-            dataCase_ = 4;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        public Builder mergeChecksummedData(com.google.storage.v2.ChecksummedData value) {
-            if (null != checksummedDataBuilder_) {
-                if (4 != dataCase_) {
-                    checksummedDataBuilder_.setMessage(value);
-                } else {
-                    checksummedDataBuilder_.mergeFrom(value);
-                }
-            } else {
-                if (4 != dataCase_ || com.google.storage.v2.ChecksummedData.getDefaultInstance() == data_) {
-                    data_ = value;
-                } else {
-                    data_ = com.google.storage.v2.ChecksummedData.newBuilder((com.google.storage.v2.ChecksummedData) data_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            dataCase_ = 4;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        public Builder clearChecksummedData() {
-            if (null != checksummedDataBuilder_) {
-                if (4 == dataCase_) {
-                    dataCase_ = 0;
-                    data_ = null;
-                }
-                checksummedDataBuilder_.clear();
-            } else {
-                if (4 == dataCase_) {
-                    dataCase_ = 0;
-                    data_ = null;
-                    onChanged();
-                }
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        public com.google.storage.v2.ChecksummedData.Builder getChecksummedDataBuilder() {
-            return getChecksummedDataFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        @java.lang.Override
-        public com.google.storage.v2.ChecksummedDataOrBuilder getChecksummedDataOrBuilder() {
-            if (!(4 == dataCase_) || !(null != checksummedDataBuilder_)) {
-                if (4 == dataCase_) {
-                    return (com.google.storage.v2.ChecksummedData) data_;
-                }
-                return com.google.storage.v2.ChecksummedData.getDefaultInstance();
-            } else {
-                return checksummedDataBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The data to insert. If a crc32c checksum is provided that doesn't match
-         * the checksum computed by the service, the request will fail.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ChecksummedData checksummed_data = 4;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder> getChecksummedDataFieldBuilder() {
-            if (null == checksummedDataBuilder_) {
-                if (!(4 == dataCase_)) {
-                    data_ = com.google.storage.v2.ChecksummedData.getDefaultInstance();
-                }
-                checksummedDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ChecksummedData, com.google.storage.v2.ChecksummedData.Builder, com.google.storage.v2.ChecksummedDataOrBuilder>((com.google.storage.v2.ChecksummedData) data_, getParentForChildren(), isClean());
-                data_ = null;
-            }
-            dataCase_ = 4;
-            onChanged();
-            ;
-            return checksummedDataBuilder_;
-        }
-
-        private com.google.storage.v2.ObjectChecksums objectChecksums_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> objectChecksumsBuilder_;
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         *
-         * @return Whether the objectChecksums field is set.
-         */
-        public boolean hasObjectChecksums() {
-            return null != objectChecksumsBuilder_ || null != objectChecksums_;
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         *
-         * @return The objectChecksums.
-         */
-        public com.google.storage.v2.ObjectChecksums getObjectChecksums() {
-            if (null != objectChecksumsBuilder_) {
-                return objectChecksumsBuilder_.getMessage();
-            } else {
-                return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public Builder setObjectChecksums(com.google.storage.v2.ObjectChecksums value) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                objectChecksums_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public Builder setObjectChecksums(com.google.storage.v2.ObjectChecksums.Builder builderForValue) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.setMessage(builderForValue.build());
-            } else {
-                objectChecksums_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public Builder mergeObjectChecksums(com.google.storage.v2.ObjectChecksums value) {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksumsBuilder_.mergeFrom(value);
-            } else {
-                if (null == objectChecksums_) {
-                    objectChecksums_ = value;
-                } else {
-                    objectChecksums_ = com.google.storage.v2.ObjectChecksums.newBuilder(objectChecksums_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public Builder clearObjectChecksums() {
-            if (null != objectChecksumsBuilder_) {
-                objectChecksums_ = null;
-                objectChecksumsBuilder_ = null;
-            } else {
-                objectChecksums_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public com.google.storage.v2.ObjectChecksums.Builder getObjectChecksumsBuilder() {
-            onChanged();
-            return getObjectChecksumsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        public com.google.storage.v2.ObjectChecksumsOrBuilder getObjectChecksumsOrBuilder() {
-            if (null == objectChecksumsBuilder_) {
-                return null == objectChecksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : objectChecksums_;
-            } else {
-                return objectChecksumsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Checksums for the complete object. If the checksums computed by the service
-         * don't match the specifified checksums the call will fail. May only be
-         * provided in the first or last request (either with first_message, or
-         * finish_write set).
-         * </pre>
-         *
-         * <code>.google.storage.v2.ObjectChecksums object_checksums = 6;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> getObjectChecksumsFieldBuilder() {
-            if (null == objectChecksumsBuilder_) {
-                objectChecksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder>(getObjectChecksums(), getParentForChildren(), isClean());
-                objectChecksums_ = null;
-            }
-            return objectChecksumsBuilder_;
-        }
-
-        private boolean finishWrite_;
-
-        /**
-         * <pre>
-         * If `true`, this indicates that the write is complete. Sending any
-         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
-         * will cause an error.
-         * For a non-resumable write (where the upload_id was not set in the first
-         * message), it is an error not to set this field in the final message of the
-         * stream.
-         * </pre>
-         *
-         * <code>bool finish_write = 7;</code>
-         *
-         * @return The finishWrite.
-         */
-        @java.lang.Override
-        public boolean getFinishWrite() {
-            return finishWrite_;
-        }
-
-        /**
-         * <pre>
-         * If `true`, this indicates that the write is complete. Sending any
-         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
-         * will cause an error.
-         * For a non-resumable write (where the upload_id was not set in the first
-         * message), it is an error not to set this field in the final message of the
-         * stream.
-         * </pre>
-         *
-         * <code>bool finish_write = 7;</code>
-         *
-         * @param value The finishWrite to set.
-         * @return This builder for chaining.
-         */
-        public Builder setFinishWrite(boolean value) {
-            finishWrite_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If `true`, this indicates that the write is complete. Sending any
-         * `WriteObjectRequest`s subsequent to one in which `finish_write` is `true`
-         * will cause an error.
-         * For a non-resumable write (where the upload_id was not set in the first
-         * message), it is an error not to set this field in the final message of the
-         * stream.
-         * </pre>
-         *
-         * <code>bool finish_write = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearFinishWrite() {
-            finishWrite_ = false;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 8;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.WriteObjectRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.WriteObjectRequest)
-    private static final com.google.storage.v2.WriteObjectRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.WriteObjectRequest();
-    }
-
-    public static com.google.storage.v2.WriteObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<WriteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<WriteObjectRequest>() {
-
-        @java.lang.Override
-        public WriteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new WriteObjectRequest(input, extensionRegistry);
-        }
-    };
 
     public static com.google.protobuf.Parser<WriteObjectRequest> parser() {
         return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<WriteObjectRequest> getParserForType() {
-        return PARSER;
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
 
-    @java.lang.Override
-    public com.google.storage.v2.WriteObjectRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

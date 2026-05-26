@@ -37,20 +37,6 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
 
     private static final ExceptionHandler NON_IDEMPOTENT_HANDLER = newHandler(INTERCEPTOR_NON_IDEMPOTENT);
 
-    @Override
-    public ExceptionHandler getIdempotentHandler() {
-        return IDEMPOTENT_HANDLER;
-    }
-
-    @Override
-    public ExceptionHandler getNonidempotentHandler() {
-        return NON_IDEMPOTENT_HANDLER;
-    }
-
-    private static ExceptionHandler newHandler(Interceptor... interceptors) {
-        return ExceptionHandler.newBuilder().addInterceptors(interceptors).build();
-    }
-
     private static class InterceptorImpl implements BaseInterceptor {
 
         private static final long serialVersionUID = -5153236691367895096L;
@@ -58,11 +44,6 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
         private final boolean idempotent;
 
         private final ImmutableSet<BaseServiceException.Error> retryableErrors;
-
-        private InterceptorImpl(boolean idempotent, Set<BaseServiceException.Error> retryableErrors) {
-            this.idempotent = idempotent;
-            this.retryableErrors = ImmutableSet.copyOf(retryableErrors);
-        }
 
         @Override
         public RetryResult beforeEval(Exception exception) {
@@ -83,12 +64,17 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
             return RetryResult.CONTINUE_EVALUATION;
         }
 
-        private RetryResult shouldRetryCodeReason(Integer code, String reason) {
-            if (!BaseServiceException.isRetryable(code, reason, idempotent, retryableErrors)) {
-                return RetryResult.NO_RETRY;
-            } else {
-                return RetryResult.RETRY;
+        private RetryResult deepShouldRetry(BaseServiceException baseServiceException) {
+            if (BaseServiceException.UNKNOWN_CODE == baseServiceException.getCode() && null == baseServiceException.getReason()) {
+                final Throwable cause = baseServiceException.getCause();
+                if (cause instanceof IOException) {
+                    IOException ioException = (IOException) cause;
+                    return shouldRetryIOException(ioException);
+                }
             }
+            int code = baseServiceException.getCode();
+            String reason = baseServiceException.getReason();
+            return shouldRetryCodeReason(code, reason);
         }
 
         private RetryResult shouldRetryIOException(IOException ioException) {
@@ -109,18 +95,19 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
             }
         }
 
-        private RetryResult deepShouldRetry(BaseServiceException baseServiceException) {
-            if (BaseServiceException.UNKNOWN_CODE == baseServiceException.getCode() && null == baseServiceException.getReason()) {
-                final Throwable cause = baseServiceException.getCause();
-                if (cause instanceof IOException) {
-                    IOException ioException = (IOException) cause;
-                    return shouldRetryIOException(ioException);
-                }
+        private RetryResult shouldRetryCodeReason(Integer code, String reason) {
+            if (!BaseServiceException.isRetryable(code, reason, idempotent, retryableErrors)) {
+                return RetryResult.NO_RETRY;
+            } else {
+                return RetryResult.RETRY;
             }
-            int code = baseServiceException.getCode();
-            String reason = baseServiceException.getReason();
-            return shouldRetryCodeReason(code, reason);
         }
+
+        private InterceptorImpl(boolean idempotent, Set<BaseServiceException.Error> retryableErrors) {
+            this.idempotent = idempotent;
+            this.retryableErrors = ImmutableSet.copyOf(retryableErrors);
+        }
+
     }
 
     private static final class EmptyJsonParsingExceptionInterceptor implements BaseInterceptor {
@@ -146,4 +133,19 @@ final class DefaultStorageRetryStrategy implements StorageRetryStrategy {
             return RetryResult.CONTINUE_EVALUATION;
         }
     }
+
+    private static ExceptionHandler newHandler(Interceptor... interceptors) {
+        return ExceptionHandler.newBuilder().addInterceptors(interceptors).build();
+    }
+
+    @Override
+    public ExceptionHandler getNonidempotentHandler() {
+        return NON_IDEMPOTENT_HANDLER;
+    }
+
+    @Override
+    public ExceptionHandler getIdempotentHandler() {
+        return IDEMPOTENT_HANDLER;
+    }
+
 }

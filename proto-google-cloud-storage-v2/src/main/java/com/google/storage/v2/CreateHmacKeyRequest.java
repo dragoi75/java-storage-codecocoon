@@ -30,14 +30,521 @@ CreateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements C
 
     private static final long serialVersionUID = 0L;
 
-    // Use CreateHmacKeyRequest.newBuilder() to construct.
-    private CreateHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int PROJECT_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object project_;
+
+    public static final int SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object serviceAccountEmail_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for CreateHmacKey.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.CreateHmacKeyRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateHmacKeyRequestOrBuilder {
+
+        private java.lang.Object project_ = "";
+
+        private java.lang.Object serviceAccountEmail_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateHmacKeyRequest)
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. The service account to create the HMAC for.
+         * </pre>
+         *
+         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for serviceAccountEmail to set.
+         * @return This builder for chaining.
+         */
+        public Builder setServiceAccountEmailBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            serviceAccountEmail_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The service account to create the HMAC for.
+         * </pre>
+         *
+         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for serviceAccountEmail.
+         */
+        public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
+            java.lang.Object ref = serviceAccountEmail_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                serviceAccountEmail_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project that the HMAC-owning service account lives in.
+         * </pre>
+         *
+         * <code>
+         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The project that the HMAC-owning service account lives in.
+         * </pre>
+         *
+         * <code>
+         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for project.
+         */
+        public com.google.protobuf.ByteString getProjectBytes() {
+            java.lang.Object ref = project_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                project_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The project that the HMAC-owning service account lives in.
+         * </pre>
+         *
+         * <code>
+         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The project.
+         */
+        public java.lang.String getProject() {
+            java.lang.Object ref = project_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                project_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            CreateHmacKeyRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (CreateHmacKeyRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        public Builder mergeFrom(CreateHmacKeyRequest other) {
+            if (CreateHmacKeyRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getProject().isEmpty()) {
+                project_ = other.project_;
+                onChanged();
+            }
+            if (!other.getServiceAccountEmail().isEmpty()) {
+                serviceAccountEmail_ = other.serviceAccountEmail_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The service account to create the HMAC for.
+         * </pre>
+         *
+         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearServiceAccountEmail() {
+            serviceAccountEmail_ = getDefaultInstance().getServiceAccountEmail();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyRequest buildPartial() {
+            CreateHmacKeyRequest result = new CreateHmacKeyRequest(this);
+            result.project_ = project_;
+            result.serviceAccountEmail_ = serviceAccountEmail_;
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyRequest getDefaultInstanceForType() {
+            return CreateHmacKeyRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public CreateHmacKeyRequest build() {
+            CreateHmacKeyRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The service account to create the HMAC for.
+         * </pre>
+         *
+         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The serviceAccountEmail.
+         */
+        public java.lang.String getServiceAccountEmail() {
+            java.lang.Object ref = serviceAccountEmail_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                serviceAccountEmail_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateHmacKeyRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Required. The service account to create the HMAC for.
+         * </pre>
+         *
+         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The serviceAccountEmail to set.
+         * @return This builder for chaining.
+         */
+        public Builder setServiceAccountEmail(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            serviceAccountEmail_ = value;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.CreateHmacKeyRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. The project that the HMAC-owning service account lives in.
+         * </pre>
+         *
+         * <code>
+         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearProject() {
+            project_ = getDefaultInstance().getProject();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The project that the HMAC-owning service account lives in.
+         * </pre>
+         *
+         * <code>
+         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for project to set.
+         * @return This builder for chaining.
+         */
+        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            project_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof CreateHmacKeyRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((CreateHmacKeyRequest) other);
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            project_ = "";
+            serviceAccountEmail_ = "";
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
+        }
+
     }
 
-    private CreateHmacKeyRequest() {
-        project_ = "";
-        serviceAccountEmail_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateHmacKeyRequest)
+    private static final com.google.storage.v2.CreateHmacKeyRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.CreateHmacKeyRequest();
+    }
+
+    private static final com.google.protobuf.Parser<CreateHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<CreateHmacKeyRequest>() {
+
+        @java.lang.Override
+        public CreateHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CreateHmacKeyRequest(input, extensionRegistry);
+        }
+    };
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + PROJECT_FIELD_NUMBER;
+        hash = (53 * hash) + getProject().hashCode();
+        hash = (37 * hash) + SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER;
+        hash = (53 * hash) + getServiceAccountEmail().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, project_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, serviceAccountEmail_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static CreateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static CreateHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static CreateHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CreateHmacKeyRequest> getParserForType() {
+        return PARSER;
+    }
+
+    public static Builder newBuilder(CreateHmacKeyRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static CreateHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. The service account to create the HMAC for.
+     * </pre>
+     *
+     * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The serviceAccountEmail.
+     */
+    @java.lang.Override
+    public java.lang.String getServiceAccountEmail() {
+        java.lang.Object ref = serviceAccountEmail_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            serviceAccountEmail_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, project_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, serviceAccountEmail_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public CreateHmacKeyRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static CreateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -46,9 +553,151 @@ CreateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements C
         return new CreateHmacKeyRequest();
     }
 
+    public static CreateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    // Use CreateHmacKeyRequest.newBuilder() to construct.
+    private CreateHmacKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static CreateHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
+    }
+
+    /**
+     * <pre>
+     * Required. The project that the HMAC-owning service account lives in.
+     * </pre>
+     *
+     * <code>
+     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for project.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getProjectBytes() {
+        java.lang.Object ref = project_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            project_ = b;
+            return b;
+        }
+    }
+
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateHmacKeyRequest.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Required. The service account to create the HMAC for.
+     * </pre>
+     *
+     * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for serviceAccountEmail.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
+        java.lang.Object ref = serviceAccountEmail_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            serviceAccountEmail_ = b;
+            return b;
+        }
+    }
+
+    private CreateHmacKeyRequest() {
+        project_ = "";
+        serviceAccountEmail_ = "";
+    }
+
+    public static com.google.protobuf.Parser<CreateHmacKeyRequest> parser() {
+        return PARSER;
+    }
+
+    public static CreateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CreateHmacKeyRequest)) {
+            return super.equals(obj);
+        }
+        CreateHmacKeyRequest other = (CreateHmacKeyRequest) obj;
+        if (!getProject().equals(other.getProject()))
+            return false;
+        if (!getServiceAccountEmail().equals(other.getServiceAccountEmail()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static CreateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static CreateHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static CreateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static CreateHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. The project that the HMAC-owning service account lives in.
+     * </pre>
+     *
+     * <code>
+     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The project.
+     */
+    @java.lang.Override
+    public java.lang.String getProject() {
+        java.lang.Object ref = project_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            project_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
     }
 
     private CreateHmacKeyRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -98,654 +747,8 @@ CreateHmacKeyRequest extends com.google.protobuf.GeneratedMessageV3 implements C
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateHmacKeyRequest.class, com.google.storage.v2.CreateHmacKeyRequest.Builder.class);
-    }
-
-    public static final int PROJECT_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object project_;
-
-    /**
-     * <pre>
-     * Required. The project that the HMAC-owning service account lives in.
-     * </pre>
-     *
-     * <code>
-     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The project.
-     */
-    @java.lang.Override
-    public java.lang.String getProject() {
-        java.lang.Object ref = project_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            project_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The project that the HMAC-owning service account lives in.
-     * </pre>
-     *
-     * <code>
-     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for project.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getProjectBytes() {
-        java.lang.Object ref = project_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            project_ = b;
-            return b;
-        }
-    }
-
-    public static final int SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object serviceAccountEmail_;
-
-    /**
-     * <pre>
-     * Required. The service account to create the HMAC for.
-     * </pre>
-     *
-     * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The serviceAccountEmail.
-     */
-    @java.lang.Override
-    public java.lang.String getServiceAccountEmail() {
-        java.lang.Object ref = serviceAccountEmail_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            serviceAccountEmail_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The service account to create the HMAC for.
-     * </pre>
-     *
-     * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for serviceAccountEmail.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
-        java.lang.Object ref = serviceAccountEmail_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            serviceAccountEmail_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, project_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, serviceAccountEmail_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(project_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, project_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serviceAccountEmail_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, serviceAccountEmail_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.CreateHmacKeyRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.CreateHmacKeyRequest other = (com.google.storage.v2.CreateHmacKeyRequest) obj;
-        if (!getProject().equals(other.getProject()))
-            return false;
-        if (!getServiceAccountEmail().equals(other.getServiceAccountEmail()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + PROJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getProject().hashCode();
-        hash = (37 * hash) + SERVICE_ACCOUNT_EMAIL_FIELD_NUMBER;
-        hash = (53 * hash) + getServiceAccountEmail().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.CreateHmacKeyRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for CreateHmacKey.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.CreateHmacKeyRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateHmacKeyRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateHmacKeyRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateHmacKeyRequest.class, com.google.storage.v2.CreateHmacKeyRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.CreateHmacKeyRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            project_ = "";
-            serviceAccountEmail_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateHmacKeyRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.CreateHmacKeyRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyRequest build() {
-            com.google.storage.v2.CreateHmacKeyRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateHmacKeyRequest buildPartial() {
-            com.google.storage.v2.CreateHmacKeyRequest result = new com.google.storage.v2.CreateHmacKeyRequest(this);
-            result.project_ = project_;
-            result.serviceAccountEmail_ = serviceAccountEmail_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.CreateHmacKeyRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.CreateHmacKeyRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.CreateHmacKeyRequest other) {
-            if (com.google.storage.v2.CreateHmacKeyRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getProject().isEmpty()) {
-                project_ = other.project_;
-                onChanged();
-            }
-            if (!other.getServiceAccountEmail().isEmpty()) {
-                serviceAccountEmail_ = other.serviceAccountEmail_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.CreateHmacKeyRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.CreateHmacKeyRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object project_ = "";
-
-        /**
-         * <pre>
-         * Required. The project that the HMAC-owning service account lives in.
-         * </pre>
-         *
-         * <code>
-         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The project.
-         */
-        public java.lang.String getProject() {
-            java.lang.Object ref = project_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                project_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project that the HMAC-owning service account lives in.
-         * </pre>
-         *
-         * <code>
-         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for project.
-         */
-        public com.google.protobuf.ByteString getProjectBytes() {
-            java.lang.Object ref = project_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                project_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project that the HMAC-owning service account lives in.
-         * </pre>
-         *
-         * <code>
-         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project that the HMAC-owning service account lives in.
-         * </pre>
-         *
-         * <code>
-         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearProject() {
-            project_ = getDefaultInstance().getProject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project that the HMAC-owning service account lives in.
-         * </pre>
-         *
-         * <code>
-         * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for project to set.
-         * @return This builder for chaining.
-         */
-        public Builder setProjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            project_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object serviceAccountEmail_ = "";
-
-        /**
-         * <pre>
-         * Required. The service account to create the HMAC for.
-         * </pre>
-         *
-         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The serviceAccountEmail.
-         */
-        public java.lang.String getServiceAccountEmail() {
-            java.lang.Object ref = serviceAccountEmail_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                serviceAccountEmail_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The service account to create the HMAC for.
-         * </pre>
-         *
-         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for serviceAccountEmail.
-         */
-        public com.google.protobuf.ByteString getServiceAccountEmailBytes() {
-            java.lang.Object ref = serviceAccountEmail_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                serviceAccountEmail_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The service account to create the HMAC for.
-         * </pre>
-         *
-         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The serviceAccountEmail to set.
-         * @return This builder for chaining.
-         */
-        public Builder setServiceAccountEmail(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            serviceAccountEmail_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The service account to create the HMAC for.
-         * </pre>
-         *
-         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearServiceAccountEmail() {
-            serviceAccountEmail_ = getDefaultInstance().getServiceAccountEmail();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The service account to create the HMAC for.
-         * </pre>
-         *
-         * <code>string service_account_email = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for serviceAccountEmail to set.
-         * @return This builder for chaining.
-         */
-        public Builder setServiceAccountEmailBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            serviceAccountEmail_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateHmacKeyRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateHmacKeyRequest)
-    private static final com.google.storage.v2.CreateHmacKeyRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.CreateHmacKeyRequest();
-    }
-
-    public static com.google.storage.v2.CreateHmacKeyRequest getDefaultInstance() {
+    public static CreateHmacKeyRequest getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<CreateHmacKeyRequest> PARSER = new com.google.protobuf.AbstractParser<CreateHmacKeyRequest>() {
-
-        @java.lang.Override
-        public CreateHmacKeyRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new CreateHmacKeyRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<CreateHmacKeyRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CreateHmacKeyRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.CreateHmacKeyRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

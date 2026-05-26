@@ -30,13 +30,775 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
 
     private static final long serialVersionUID = 0L;
 
+    private int bitField0_;
+
+    public static final int NAME_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object name_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 2;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 3;
+
+    private long ifMetagenerationNotMatch_;
+
+    public static final int READ_MASK_FIELD_NUMBER = 5;
+
+    private com.google.protobuf.FieldMask readMask_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for GetBucket.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.GetBucketRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.GetBucketRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.GetBucketRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.GetBucketRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object name_ = "";
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        private com.google.protobuf.FieldMask readMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.GetBucketRequest)
+
+        /**
+         * <pre>
+         * Required. Name of a bucket.
+         * </pre>
+         *
+         * <code>
+         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setName(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            name_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                readMask_ = value;
+                onChanged();
+            }
+            bitField0_ |= 0x00000004;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration matches the specified
+         * value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 3;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration does not match the
+         * specified value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 2;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration matches the specified
+         * value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 3;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         *
+         * @return Whether the readMask field is set.
+         */
+        public boolean hasReadMask() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_GetBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(GetBucketRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.mergeFrom(value);
+            } else {
+                if (!(0 != (bitField0_ & 0x00000004)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
+                    readMask_ = value;
+                } else {
+                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            bitField0_ |= 0x00000004;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder clearReadMask() {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+                onChanged();
+            }
+            bitField0_ = (bitField0_ & ~0x00000004);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of a bucket.
+         * </pre>
+         *
+         * <code>
+         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearName() {
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        public Builder mergeFrom(GetBucketRequest other) {
+            if (GetBucketRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getName().isEmpty()) {
+                name_ = other.name_;
+                onChanged();
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            if (other.hasReadMask()) {
+                mergeReadMask(other.getReadMask());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+            if (null == readMaskBuilder_) {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            } else {
+                return readMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. Name of a bucket.
+         * </pre>
+         *
+         * <code>
+         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNameBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            name_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration does not match the
+         * specified value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration does not match the
+         * specified value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 2;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
+            bitField0_ |= 0x00000004;
+            onChanged();
+            return getReadMaskFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof GetBucketRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((GetBucketRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                readMask_ = builderForValue.build();
+                onChanged();
+            }
+            bitField0_ |= 0x00000004;
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. Name of a bucket.
+         * </pre>
+         *
+         * <code>
+         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for name.
+         */
+        public com.google.protobuf.ByteString getNameBytes() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                name_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration does not match the
+         * specified value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 2;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration matches the specified
+         * value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            GetBucketRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (GetBucketRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public GetBucketRequest buildPartial() {
+            GetBucketRequest result = new GetBucketRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.name_ = name_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                if (null != readMaskBuilder_) {
+                    result.readMask_ = readMaskBuilder_.build();
+                } else {
+                    result.readMask_ = readMask_;
+                }
+                to_bitField0_ |= 0x00000004;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         *
+         * @return The readMask.
+         */
+        public com.google.protobuf.FieldMask getReadMask() {
+            if (null != readMaskBuilder_) {
+                return readMaskBuilder_.getMessage();
+            } else {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            }
+        }
+
+        @java.lang.Override
+        public GetBucketRequest getDefaultInstanceForType() {
+            return GetBucketRequest.getDefaultInstance();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getReadMaskFieldBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            name_ = "";
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+            }
+            bitField0_ = (bitField0_ & ~0x00000004);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public GetBucketRequest build() {
+            GetBucketRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        // Construct using com.google.storage.v2.GetBucketRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. Name of a bucket.
+         * </pre>
+         *
+         * <code>
+         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The name.
+         */
+        public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                name_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * A "*" field may be used to indicate all fields.
+         * If no mask is specified, will default to all fields.
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
+            if (null == readMaskBuilder_) {
+                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
+                readMask_ = null;
+            }
+            return readMaskBuilder_;
+        }
+
+        /**
+         * <pre>
+         * If set, and if the bucket's current metageneration matches the specified
+         * value, the request will return an error.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 3;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.GetBucketRequest)
+    private static final com.google.storage.v2.GetBucketRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.GetBucketRequest();
+    }
+
+    private static final com.google.protobuf.Parser<GetBucketRequest> PARSER = new com.google.protobuf.AbstractParser<GetBucketRequest>() {
+
+        @java.lang.Override
+        public GetBucketRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new GetBucketRequest(input, extensionRegistry);
+        }
+    };
+
     // Use GetBucketRequest.newBuilder() to construct.
     private GetBucketRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
         super(builder);
     }
 
-    private GetBucketRequest() {
-        name_ = "";
+    public static GetBucketRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static GetBucketRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * If set, and if the bucket's current metageneration matches the specified
+     * value, the request will return an error.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 3;</code>
+     *
+     * @return The ifMetagenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationNotMatch() {
+        return ifMetagenerationNotMatch_;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeInt64(2, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            output.writeInt64(3, ifMetagenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            output.writeMessage(5, getReadMask());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read.
+     * A "*" field may be used to indicate all fields.
+     * If no mask is specified, will default to all fields.
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    }
+
+    /**
+     * <pre>
+     * Required. Name of a bucket.
+     * </pre>
+     *
+     * <code>
+     * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getNameBytes() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            name_ = b;
+            return b;
+        }
+    }
+
+    public static GetBucketRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder(GetBucketRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static GetBucketRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static GetBucketRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_GetBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(GetBucketRequest.class, Builder.class);
     }
 
     @java.lang.Override
@@ -45,9 +807,184 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
         return new GetBucketRequest();
     }
 
+    /**
+     * <pre>
+     * If set, and if the bucket's current metageneration does not match the
+     * specified value, the request will return an error.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 2;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetBucketRequest> getParserForType() {
+        return PARSER;
+    }
+
+    public static GetBucketRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static GetBucketRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public GetBucketRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    private GetBucketRequest() {
+        name_ = "";
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, ifMetagenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(5, getReadMask());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static GetBucketRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static GetBucketRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        if (hasIfMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
+        }
+        if (hasReadMask()) {
+            hash = (37 * hash) + READ_MASK_FIELD_NUMBER;
+            hash = (53 * hash) + getReadMask().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static GetBucketRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static GetBucketRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.google.protobuf.Parser<GetBucketRequest> parser() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read.
+     * A "*" field may be used to indicate all fields.
+     * If no mask is specified, will default to all fields.
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+     *
+     * @return Whether the readMask field is set.
+     */
+    @java.lang.Override
+    public boolean hasReadMask() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    public static GetBucketRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Required. Name of a bucket.
+     * </pre>
+     *
+     * <code>
+     * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * If set, and if the bucket's current metageneration matches the specified
+     * value, the request will return an error.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 3;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
     }
 
     private GetBucketRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -118,156 +1055,6 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.GetBucketRequest.class, com.google.storage.v2.GetBucketRequest.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int NAME_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object name_;
-
-    /**
-     * <pre>
-     * Required. Name of a bucket.
-     * </pre>
-     *
-     * <code>
-     * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The name.
-     */
-    @java.lang.Override
-    public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            name_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. Name of a bucket.
-     * </pre>
-     *
-     * <code>
-     * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for name.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getNameBytes() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            name_ = b;
-            return b;
-        }
-    }
-
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 2;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * If set, and if the bucket's current metageneration does not match the
-     * specified value, the request will return an error.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 2;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * If set, and if the bucket's current metageneration does not match the
-     * specified value, the request will return an error.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 2;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 3;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * If set, and if the bucket's current metageneration matches the specified
-     * value, the request will return an error.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 3;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * If set, and if the bucket's current metageneration matches the specified
-     * value, the request will return an error.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 3;</code>
-     *
-     * @return The ifMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationNotMatch() {
-        return ifMetagenerationNotMatch_;
-    }
-
-    public static final int READ_MASK_FIELD_NUMBER = 5;
-
-    private com.google.protobuf.FieldMask readMask_;
-
-    /**
-     * <pre>
-     * Mask specifying which fields to read.
-     * A "*" field may be used to indicate all fields.
-     * If no mask is specified, will default to all fields.
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-     *
-     * @return Whether the readMask field is set.
-     */
-    @java.lang.Override
-    public boolean hasReadMask() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
     /**
      * <pre>
      * Mask specifying which fields to read.
@@ -284,71 +1071,23 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
         return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
     }
 
+    public static GetBucketRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
     /**
      * <pre>
-     * Mask specifying which fields to read.
-     * A "*" field may be used to indicate all fields.
-     * If no mask is specified, will default to all fields.
+     * If set, and if the bucket's current metageneration does not match the
+     * specified value, the request will return an error.
      * </pre>
      *
-     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+     * <code>optional int64 if_metageneration_match = 2;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
      */
     @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeInt64(2, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            output.writeInt64(3, ifMetagenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            output.writeMessage(5, getReadMask());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, ifMetagenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(5, getReadMask());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
     }
 
     @java.lang.Override
@@ -356,10 +1095,10 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.GetBucketRequest)) {
+        if (!(obj instanceof GetBucketRequest)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.GetBucketRequest other = (com.google.storage.v2.GetBucketRequest) obj;
+        GetBucketRequest other = (GetBucketRequest) obj;
         if (!getName().equals(other.getName()))
             return false;
         if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
@@ -385,744 +1124,8 @@ GetBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements GetBu
         return true;
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getName().hashCode();
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        if (hasIfMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
-        }
-        if (hasReadMask()) {
-            hash = (37 * hash) + READ_MASK_FIELD_NUMBER;
-            hash = (53 * hash) + getReadMask().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
     }
 
-    public static com.google.storage.v2.GetBucketRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.GetBucketRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.GetBucketRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for GetBucket.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.GetBucketRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.GetBucketRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.GetBucketRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.GetBucketRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.GetBucketRequest.class, com.google.storage.v2.GetBucketRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.GetBucketRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getReadMaskFieldBuilder();
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            name_ = "";
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-            }
-            bitField0_ = (bitField0_ & ~0x00000004);
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_GetBucketRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetBucketRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.GetBucketRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetBucketRequest build() {
-            com.google.storage.v2.GetBucketRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.GetBucketRequest buildPartial() {
-            com.google.storage.v2.GetBucketRequest result = new com.google.storage.v2.GetBucketRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.name_ = name_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                if (null != readMaskBuilder_) {
-                    result.readMask_ = readMaskBuilder_.build();
-                } else {
-                    result.readMask_ = readMask_;
-                }
-                to_bitField0_ |= 0x00000004;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.GetBucketRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.GetBucketRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.GetBucketRequest other) {
-            if (com.google.storage.v2.GetBucketRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getName().isEmpty()) {
-                name_ = other.name_;
-                onChanged();
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            if (other.hasReadMask()) {
-                mergeReadMask(other.getReadMask());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.GetBucketRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.GetBucketRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object name_ = "";
-
-        /**
-         * <pre>
-         * Required. Name of a bucket.
-         * </pre>
-         *
-         * <code>
-         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The name.
-         */
-        public java.lang.String getName() {
-            java.lang.Object ref = name_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                name_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of a bucket.
-         * </pre>
-         *
-         * <code>
-         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for name.
-         */
-        public com.google.protobuf.ByteString getNameBytes() {
-            java.lang.Object ref = name_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                name_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of a bucket.
-         * </pre>
-         *
-         * <code>
-         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The name to set.
-         * @return This builder for chaining.
-         */
-        public Builder setName(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            name_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of a bucket.
-         * </pre>
-         *
-         * <code>
-         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearName() {
-            name_ = getDefaultInstance().getName();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of a bucket.
-         * </pre>
-         *
-         * <code>
-         * string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for name to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNameBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            name_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration does not match the
-         * specified value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 2;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration does not match the
-         * specified value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 2;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration does not match the
-         * specified value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 2;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration does not match the
-         * specified value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration matches the specified
-         * value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 3;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration matches the specified
-         * value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 3;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration matches the specified
-         * value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 3;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If set, and if the bucket's current metageneration matches the specified
-         * value, the request will return an error.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.FieldMask readMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         *
-         * @return Whether the readMask field is set.
-         */
-        public boolean hasReadMask() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         *
-         * @return The readMask.
-         */
-        public com.google.protobuf.FieldMask getReadMask() {
-            if (null != readMaskBuilder_) {
-                return readMaskBuilder_.getMessage();
-            } else {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                readMask_ = value;
-                onChanged();
-            }
-            bitField0_ |= 0x00000004;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                readMask_ = builderForValue.build();
-                onChanged();
-            }
-            bitField0_ |= 0x00000004;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.mergeFrom(value);
-            } else {
-                if (!(0 != (bitField0_ & 0x00000004)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
-                    readMask_ = value;
-                } else {
-                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            bitField0_ |= 0x00000004;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder clearReadMask() {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-                onChanged();
-            }
-            bitField0_ = (bitField0_ & ~0x00000004);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
-            bitField0_ |= 0x00000004;
-            onChanged();
-            return getReadMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-            if (null == readMaskBuilder_) {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            } else {
-                return readMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * A "*" field may be used to indicate all fields.
-         * If no mask is specified, will default to all fields.
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
-            if (null == readMaskBuilder_) {
-                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
-                readMask_ = null;
-            }
-            return readMaskBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.GetBucketRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.GetBucketRequest)
-    private static final com.google.storage.v2.GetBucketRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.GetBucketRequest();
-    }
-
-    public static com.google.storage.v2.GetBucketRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<GetBucketRequest> PARSER = new com.google.protobuf.AbstractParser<GetBucketRequest>() {
-
-        @java.lang.Override
-        public GetBucketRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new GetBucketRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<GetBucketRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<GetBucketRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.GetBucketRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

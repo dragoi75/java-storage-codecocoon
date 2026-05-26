@@ -23,245 +23,258 @@ public interface ComposeObjectRequestOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ComposeObjectRequest)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * Required. Properties of the resulting object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-   * </code>
-   *
-   * @return Whether the destination field is set.
-   */
-  boolean hasDestination();
-  /**
-   *
-   *
-   * <pre>
-   * Required. Properties of the resulting object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-   * </code>
-   *
-   * @return The destination.
-   */
-  com.google.storage.v2.Object getDestination();
-  /**
-   *
-   *
-   * <pre>
-   * Required. Properties of the resulting object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
-   * </code>
-   */
-  com.google.storage.v2.ObjectOrBuilder getDestinationOrBuilder();
+    /**
+     *
+     *
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    long getIfMetagenerationMatch();
 
-  /**
-   *
-   *
-   * <pre>
-   * The list of source objects that will be concatenated into a single object.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-   */
-  java.util.List<com.google.storage.v2.ComposeObjectRequest.SourceObject> getSourceObjectsList();
-  /**
-   *
-   *
-   * <pre>
-   * The list of source objects that will be concatenated into a single object.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-   */
-  com.google.storage.v2.ComposeObjectRequest.SourceObject getSourceObjects(int index);
-  /**
-   *
-   *
-   * <pre>
-   * The list of source objects that will be concatenated into a single object.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-   */
-  int getSourceObjectsCount();
-  /**
-   *
-   *
-   * <pre>
-   * The list of source objects that will be concatenated into a single object.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-   */
-  java.util.List<? extends com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder>
-      getSourceObjectsOrBuilderList();
-  /**
-   *
-   *
-   * <pre>
-   * The list of source objects that will be concatenated into a single object.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
-   */
-  com.google.storage.v2.ComposeObjectRequest.SourceObjectOrBuilder getSourceObjectsOrBuilder(
-      int index);
+    /**
+     *
+     *
+     * <pre>
+     * Resource name of the Cloud KMS key, of the form
+     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+     * that will be used to encrypt the object. Overrides the object
+     * metadata's `kms_key_name` value, if any.
+     * </pre>
+     *
+     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The kmsKey.
+     */
+    java.lang.String getKmsKey();
 
-  /**
-   *
-   *
-   * <pre>
-   * Apply a predefined set of access controls to the destination object.
-   * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-   * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-   * </pre>
-   *
-   * <code>string destination_predefined_acl = 9;</code>
-   *
-   * @return The destinationPredefinedAcl.
-   */
-  java.lang.String getDestinationPredefinedAcl();
-  /**
-   *
-   *
-   * <pre>
-   * Apply a predefined set of access controls to the destination object.
-   * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-   * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-   * </pre>
-   *
-   * <code>string destination_predefined_acl = 9;</code>
-   *
-   * @return The bytes for destinationPredefinedAcl.
-   */
-  com.google.protobuf.ByteString getDestinationPredefinedAclBytes();
+    /**
+     *
+     *
+     * <pre>
+     * Resource name of the Cloud KMS key, of the form
+     * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+     * that will be used to encrypt the object. Overrides the object
+     * metadata's `kms_key_name` value, if any.
+     * </pre>
+     *
+     * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The bytes for kmsKey.
+     */
+    com.google.protobuf.ByteString getKmsKeyBytes();
 
-  /**
-   *
-   *
-   * <pre>
-   * Makes the operation conditional on whether the object's current generation
-   * matches the given value. Setting to 0 makes the operation succeed only if
-   * there are no live versions of the object.
-   * </pre>
-   *
-   * <code>optional int64 if_generation_match = 4;</code>
-   *
-   * @return Whether the ifGenerationMatch field is set.
-   */
-  boolean hasIfGenerationMatch();
-  /**
-   *
-   *
-   * <pre>
-   * Makes the operation conditional on whether the object's current generation
-   * matches the given value. Setting to 0 makes the operation succeed only if
-   * there are no live versions of the object.
-   * </pre>
-   *
-   * <code>optional int64 if_generation_match = 4;</code>
-   *
-   * @return The ifGenerationMatch.
-   */
-  long getIfGenerationMatch();
+    /**
+     *
+     *
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return The destination.
+     */
+    Object getDestination();
 
-  /**
-   *
-   *
-   * <pre>
-   * Makes the operation conditional on whether the object's current
-   * metageneration matches the given value.
-   * </pre>
-   *
-   * <code>optional int64 if_metageneration_match = 5;</code>
-   *
-   * @return Whether the ifMetagenerationMatch field is set.
-   */
-  boolean hasIfMetagenerationMatch();
-  /**
-   *
-   *
-   * <pre>
-   * Makes the operation conditional on whether the object's current
-   * metageneration matches the given value.
-   * </pre>
-   *
-   * <code>optional int64 if_metageneration_match = 5;</code>
-   *
-   * @return The ifMetagenerationMatch.
-   */
-  long getIfMetagenerationMatch();
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    CommonObjectRequestParams getCommonObjectRequestParams();
 
-  /**
-   *
-   *
-   * <pre>
-   * Resource name of the Cloud KMS key, of the form
-   * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-   * that will be used to encrypt the object. Overrides the object
-   * metadata's `kms_key_name` value, if any.
-   * </pre>
-   *
-   * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-   *
-   * @return The kmsKey.
-   */
-  java.lang.String getKmsKey();
-  /**
-   *
-   *
-   * <pre>
-   * Resource name of the Cloud KMS key, of the form
-   * `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
-   * that will be used to encrypt the object. Overrides the object
-   * metadata's `kms_key_name` value, if any.
-   * </pre>
-   *
-   * <code>string kms_key = 6 [(.google.api.resource_reference) = { ... }</code>
-   *
-   * @return The bytes for kmsKey.
-   */
-  com.google.protobuf.ByteString getKmsKeyBytes();
+    /**
+     *
+     *
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 4;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    long getIfGenerationMatch();
 
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-   *
-   * @return Whether the commonObjectRequestParams field is set.
-   */
-  boolean hasCommonObjectRequestParams();
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-   *
-   * @return The commonObjectRequestParams.
-   */
-  com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams();
-  /**
-   *
-   *
-   * <pre>
-   * A set of parameters common to Storage API requests concerning an object.
-   * </pre>
-   *
-   * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
-   */
-  com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder();
+    /**
+     *
+     *
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    int getSourceObjectsCount();
+
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    boolean hasCommonObjectRequestParams();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    ComposeObjectRequest.SourceObjectOrBuilder getSourceObjectsOrBuilder(
+        int index);
+
+    /**
+     *
+     *
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 9;</code>
+     *
+     * @return The bytes for destinationPredefinedAcl.
+     */
+    com.google.protobuf.ByteString getDestinationPredefinedAclBytes();
+
+    /**
+     *
+     *
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return Whether the destination field is set.
+     */
+    boolean hasDestination();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    java.util.List<? extends ComposeObjectRequest.SourceObjectOrBuilder>
+        getSourceObjectsOrBuilderList();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    java.util.List<ComposeObjectRequest.SourceObject> getSourceObjectsList();
+
+    /**
+     *
+     *
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 9;</code>
+     *
+     * @return The destinationPredefinedAcl.
+     */
+    java.lang.String getDestinationPredefinedAcl();
+
+    /**
+     *
+     *
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    boolean hasIfMetagenerationMatch();
+
+    /**
+     *
+     *
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 4;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    boolean hasIfGenerationMatch();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of source objects that will be concatenated into a single object.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ComposeObjectRequest.SourceObject source_objects = 2;</code>
+     */
+    ComposeObjectRequest.SourceObject getSourceObjects(int index);
+
+    /**
+     *
+     *
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 7;</code>
+     */
+    CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder();
+
+    /**
+     *
+     *
+     * <pre>
+     * Required. Properties of the resulting object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     */
+    ObjectOrBuilder getDestinationOrBuilder();
+
 }

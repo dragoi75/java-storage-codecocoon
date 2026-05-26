@@ -23,82 +23,88 @@ public interface ListNotificationsResponseOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ListNotificationsResponse)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The list of items.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
-   */
-  java.util.List<com.google.storage.v2.Notification> getNotificationsList();
-  /**
-   *
-   *
-   * <pre>
-   * The list of items.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
-   */
-  com.google.storage.v2.Notification getNotifications(int index);
-  /**
-   *
-   *
-   * <pre>
-   * The list of items.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
-   */
-  int getNotificationsCount();
-  /**
-   *
-   *
-   * <pre>
-   * The list of items.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
-   */
-  java.util.List<? extends com.google.storage.v2.NotificationOrBuilder>
-      getNotificationsOrBuilderList();
-  /**
-   *
-   *
-   * <pre>
-   * The list of items.
-   * </pre>
-   *
-   * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
-   */
-  com.google.storage.v2.NotificationOrBuilder getNotificationsOrBuilder(int index);
+    /**
+     *
+     *
+     * <pre>
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     * </pre>
+     *
+     * <code>string next_page_token = 2;</code>
+     *
+     * @return The bytes for nextPageToken.
+     */
+    com.google.protobuf.ByteString getNextPageTokenBytes();
 
-  /**
-   *
-   *
-   * <pre>
-   * A token, which can be sent as `page_token` to retrieve the next page.
-   * If this field is omitted, there are no subsequent pages.
-   * </pre>
-   *
-   * <code>string next_page_token = 2;</code>
-   *
-   * @return The nextPageToken.
-   */
-  java.lang.String getNextPageToken();
-  /**
-   *
-   *
-   * <pre>
-   * A token, which can be sent as `page_token` to retrieve the next page.
-   * If this field is omitted, there are no subsequent pages.
-   * </pre>
-   *
-   * <code>string next_page_token = 2;</code>
-   *
-   * @return The bytes for nextPageToken.
-   */
-  com.google.protobuf.ByteString getNextPageTokenBytes();
+    /**
+     *
+     *
+     * <pre>
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     * </pre>
+     *
+     * <code>string next_page_token = 2;</code>
+     *
+     * @return The nextPageToken.
+     */
+    java.lang.String getNextPageToken();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
+     */
+    NotificationOrBuilder getNotificationsOrBuilder(int index);
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
+     */
+    Notification getNotifications(int index);
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
+     */
+    int getNotificationsCount();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
+     */
+    java.util.List<Notification> getNotificationsList();
+
+    /**
+     *
+     *
+     * <pre>
+     * The list of items.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.Notification notifications = 1;</code>
+     */
+    java.util.List<? extends NotificationOrBuilder>
+        getNotificationsOrBuilderList();
+
 }

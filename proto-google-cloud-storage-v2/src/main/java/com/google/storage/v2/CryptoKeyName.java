@@ -41,51 +41,88 @@ public class CryptoKeyName implements ResourceName {
 
     private final String cryptoKey;
 
-    @Deprecated
-    protected CryptoKeyName() {
-        project = null;
-        location = null;
-        keyRing = null;
-        cryptoKey = null;
-    }
+    /**
+     * Builder for
+     * projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
+     */
+    public static class Builder {
 
-    private CryptoKeyName(Builder builder) {
-        project = Preconditions.checkNotNull(builder.getProject());
-        location = Preconditions.checkNotNull(builder.getLocation());
-        keyRing = Preconditions.checkNotNull(builder.getKeyRing());
-        cryptoKey = Preconditions.checkNotNull(builder.getCryptoKey());
-    }
+        private String project;
 
-    public String getProject() {
-        return project;
-    }
+        private String location;
 
-    public String getLocation() {
-        return location;
-    }
+        private String keyRing;
 
-    public String getKeyRing() {
-        return keyRing;
-    }
+        private String cryptoKey;
 
-    public String getCryptoKey() {
-        return cryptoKey;
-    }
+        private Builder(CryptoKeyName cryptoKeyName) {
+            this.project = cryptoKeyName.project;
+            this.location = cryptoKeyName.location;
+            this.keyRing = cryptoKeyName.keyRing;
+            this.cryptoKey = cryptoKeyName.cryptoKey;
+        }
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
+        public String getCryptoKey() {
+            return cryptoKey;
+        }
 
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
+        public CryptoKeyName build() {
+            return new CryptoKeyName(this);
+        }
 
-    public static CryptoKeyName of(String project, String location, String keyRing, String cryptoKey) {
-        return newBuilder().setProject(project).setLocation(location).setKeyRing(keyRing).setCryptoKey(cryptoKey).build();
+        public String getKeyRing() {
+            return keyRing;
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public Builder setCryptoKey(String cryptoKey) {
+            this.cryptoKey = cryptoKey;
+            return this;
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        protected Builder() {
+        }
+
+        public Builder setKeyRing(String keyRing) {
+            this.keyRing = keyRing;
+            return this;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
     }
 
     public static String format(String project, String location, String keyRing, String cryptoKey) {
         return newBuilder().setProject(project).setLocation(location).setKeyRing(keyRing).setCryptoKey(cryptoKey).build().toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        h *= 1000003;
+        h ^= Objects.hashCode(location);
+        h *= 1000003;
+        h ^= Objects.hashCode(keyRing);
+        h *= 1000003;
+        h ^= Objects.hashCode(cryptoKey);
+        return h;
     }
 
     public static CryptoKeyName parse(String formattedString) {
@@ -104,6 +141,62 @@ public class CryptoKeyName implements ResourceName {
         return list;
     }
 
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
+    @Override
+    public String toString() {
+        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.instantiate("project", project, "location", location, "key_ring", keyRing, "crypto_key", cryptoKey);
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.matches(formattedString);
+    }
+
+    private CryptoKeyName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+        location = Preconditions.checkNotNull(builder.getLocation());
+        keyRing = Preconditions.checkNotNull(builder.getKeyRing());
+        cryptoKey = Preconditions.checkNotNull(builder.getCryptoKey());
+    }
+
+    @Deprecated
+    protected CryptoKeyName() {
+        project = null;
+        location = null;
+        keyRing = null;
+        cryptoKey = null;
+    }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null != o || o.getClass() == getClass()) {
+            CryptoKeyName that = ((CryptoKeyName) o);
+            return Objects.equals(this.project, that.project) && Objects.equals(this.location, that.location) && Objects.equals(this.keyRing, that.keyRing) && Objects.equals(this.cryptoKey, that.cryptoKey);
+        }
+        return false;
+    }
+
+    public static CryptoKeyName of(String project, String location, String keyRing, String cryptoKey) {
+        return newBuilder().setProject(project).setLocation(location).setKeyRing(keyRing).setCryptoKey(cryptoKey).build();
+    }
+
+    public String getCryptoKey() {
+        return cryptoKey;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
     public static List<String> toStringList(List<CryptoKeyName> values) {
         List<String> list = new ArrayList<>(values.size());
         for (CryptoKeyName value : values) {
@@ -116,8 +209,8 @@ public class CryptoKeyName implements ResourceName {
         return list;
     }
 
-    public static boolean isParsableFrom(String formattedString) {
-        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.matches(formattedString);
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     @Override
@@ -149,99 +242,8 @@ public class CryptoKeyName implements ResourceName {
         return getFieldValuesMap().get(fieldName);
     }
 
-    @Override
-    public String toString() {
-        return PROJECT_LOCATION_KEY_RING_CRYPTO_KEY.instantiate("project", project, "location", location, "key_ring", keyRing, "crypto_key", cryptoKey);
+    public String getKeyRing() {
+        return keyRing;
     }
 
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (null != o || o.getClass() == getClass()) {
-            CryptoKeyName that = ((CryptoKeyName) o);
-            return Objects.equals(this.project, that.project) && Objects.equals(this.location, that.location) && Objects.equals(this.keyRing, that.keyRing) && Objects.equals(this.cryptoKey, that.cryptoKey);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int h = 1;
-        h *= 1000003;
-        h ^= Objects.hashCode(project);
-        h *= 1000003;
-        h ^= Objects.hashCode(location);
-        h *= 1000003;
-        h ^= Objects.hashCode(keyRing);
-        h *= 1000003;
-        h ^= Objects.hashCode(cryptoKey);
-        return h;
-    }
-
-    /**
-     * Builder for
-     * projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
-     */
-    public static class Builder {
-
-        private String project;
-
-        private String location;
-
-        private String keyRing;
-
-        private String cryptoKey;
-
-        protected Builder() {
-        }
-
-        public String getProject() {
-            return project;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public String getKeyRing() {
-            return keyRing;
-        }
-
-        public String getCryptoKey() {
-            return cryptoKey;
-        }
-
-        public Builder setProject(String project) {
-            this.project = project;
-            return this;
-        }
-
-        public Builder setLocation(String location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder setKeyRing(String keyRing) {
-            this.keyRing = keyRing;
-            return this;
-        }
-
-        public Builder setCryptoKey(String cryptoKey) {
-            this.cryptoKey = cryptoKey;
-            return this;
-        }
-
-        private Builder(CryptoKeyName cryptoKeyName) {
-            this.project = cryptoKeyName.project;
-            this.location = cryptoKeyName.location;
-            this.keyRing = cryptoKeyName.keyRing;
-            this.cryptoKey = cryptoKeyName.cryptoKey;
-        }
-
-        public CryptoKeyName build() {
-            return new CryptoKeyName(this);
-        }
-    }
 }

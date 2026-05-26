@@ -30,1289 +30,91 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
     private static final long serialVersionUID = 0L;
 
-    // Use Object.newBuilder() to construct.
-    private Object(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private Object() {
-        name_ = "";
-        bucket_ = "";
-        storageClass_ = "";
-        contentEncoding_ = "";
-        contentDisposition_ = "";
-        cacheControl_ = "";
-        acl_ = java.util.Collections.emptyList();
-        contentLanguage_ = "";
-        contentType_ = "";
-        kmsKey_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new Object();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private Object(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            name_ = s;
-                            break;
-                        }
-                    case 18:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            bucket_ = s;
-                            break;
-                        }
-                    case 24:
-                        {
-                            generation_ = input.readInt64();
-                            break;
-                        }
-                    case 32:
-                        {
-                            metageneration_ = input.readInt64();
-                            break;
-                        }
-                    case 42:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            storageClass_ = s;
-                            break;
-                        }
-                    case 48:
-                        {
-                            size_ = input.readInt64();
-                            break;
-                        }
-                    case 58:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            contentEncoding_ = s;
-                            break;
-                        }
-                    case 66:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            contentDisposition_ = s;
-                            break;
-                        }
-                    case 74:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            cacheControl_ = s;
-                            break;
-                        }
-                    case 82:
-                        {
-                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
-                                acl_ = new java.util.ArrayList<com.google.storage.v2.ObjectAccessControl>();
-                                mutable_bitField0_ |= 0x00000001;
-                            }
-                            acl_.add(input.readMessage(com.google.storage.v2.ObjectAccessControl.parser(), extensionRegistry));
-                            break;
-                        }
-                    case 90:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            contentLanguage_ = s;
-                            break;
-                        }
-                    case 98:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != deleteTime_) {
-                                subBuilder = deleteTime_.toBuilder();
-                            }
-                            deleteTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(deleteTime_);
-                                deleteTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 106:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            contentType_ = s;
-                            break;
-                        }
-                    case 114:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != createTime_) {
-                                subBuilder = createTime_.toBuilder();
-                            }
-                            createTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(createTime_);
-                                createTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 120:
-                        {
-                            componentCount_ = input.readInt32();
-                            break;
-                        }
-                    case 130:
-                        {
-                            com.google.storage.v2.ObjectChecksums.Builder subBuilder = null;
-                            if (null != checksums_) {
-                                subBuilder = checksums_.toBuilder();
-                            }
-                            checksums_ = input.readMessage(com.google.storage.v2.ObjectChecksums.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(checksums_);
-                                checksums_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 138:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != updateTime_) {
-                                subBuilder = updateTime_.toBuilder();
-                            }
-                            updateTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(updateTime_);
-                                updateTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 146:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            kmsKey_ = s;
-                            break;
-                        }
-                    case 154:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != updateStorageClassTime_) {
-                                subBuilder = updateStorageClassTime_.toBuilder();
-                            }
-                            updateStorageClassTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(updateStorageClassTime_);
-                                updateStorageClassTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 160:
-                        {
-                            temporaryHold_ = input.readBool();
-                            break;
-                        }
-                    case 170:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != retentionExpireTime_) {
-                                subBuilder = retentionExpireTime_.toBuilder();
-                            }
-                            retentionExpireTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(retentionExpireTime_);
-                                retentionExpireTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 178:
-                        {
-                            if (!(0 != (mutable_bitField0_ & 0x00000002))) {
-                                metadata_ = com.google.protobuf.MapField.newMapField(MetadataDefaultEntryHolder.defaultEntry);
-                                mutable_bitField0_ |= 0x00000002;
-                            }
-                            com.google.protobuf.MapEntry<java.lang.String, java.lang.String> metadata__ = input.readMessage(MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-                            metadata_.getMutableMap().put(metadata__.getKey(), metadata__.getValue());
-                            break;
-                        }
-                    case 184:
-                        {
-                            bitField0_ |= 0x00000001;
-                            eventBasedHold_ = input.readBool();
-                            break;
-                        }
-                    case 194:
-                        {
-                            com.google.storage.v2.Owner.Builder subBuilder = null;
-                            if (null != owner_) {
-                                subBuilder = owner_.toBuilder();
-                            }
-                            owner_ = input.readMessage(com.google.storage.v2.Owner.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(owner_);
-                                owner_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 202:
-                        {
-                            com.google.storage.v2.CustomerEncryption.Builder subBuilder = null;
-                            if (null != customerEncryption_) {
-                                subBuilder = customerEncryption_.toBuilder();
-                            }
-                            customerEncryption_ = input.readMessage(com.google.storage.v2.CustomerEncryption.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(customerEncryption_);
-                                customerEncryption_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    case 210:
-                        {
-                            com.google.protobuf.Timestamp.Builder subBuilder = null;
-                            if (null != customTime_) {
-                                subBuilder = customTime_.toBuilder();
-                            }
-                            customTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(customTime_);
-                                customTime_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            if ((0 != (mutable_bitField0_ & 0x00000001))) {
-                acl_ = java.util.Collections.unmodifiableList(acl_);
-            }
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Object_descriptor;
-    }
-
-    @SuppressWarnings({ "rawtypes" })
-    @java.lang.Override
-    protected com.google.protobuf.MapField internalGetMapField(int number) {
-        switch(number) {
-            case 22:
-                return internalGetMetadata();
-            default:
-                throw new RuntimeException("Invalid map field number: " + number);
-        }
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Object_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.Object.class, com.google.storage.v2.Object.Builder.class);
-    }
-
     private int bitField0_;
 
     public static final int NAME_FIELD_NUMBER = 1;
 
     private volatile java.lang.Object name_;
 
-    /**
-     * <pre>
-     * Immutable. The name of this object. Nearly any sequence of unicode characters is
-     * valid. See
-     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-     * Example: `test.txt`
-     * The `name` field by itself does not uniquely identify a Cloud Storage
-     * object. A Cloud Storage object is uniquely identified by the tuple of
-     * (bucket, object, generation).
-     * </pre>
-     *
-     * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
-     *
-     * @return The name.
-     */
-    @java.lang.Override
-    public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            name_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Immutable. The name of this object. Nearly any sequence of unicode characters is
-     * valid. See
-     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-     * Example: `test.txt`
-     * The `name` field by itself does not uniquely identify a Cloud Storage
-     * object. A Cloud Storage object is uniquely identified by the tuple of
-     * (bucket, object, generation).
-     * </pre>
-     *
-     * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
-     *
-     * @return The bytes for name.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getNameBytes() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            name_ = b;
-            return b;
-        }
-    }
-
     public static final int BUCKET_FIELD_NUMBER = 2;
 
     private volatile java.lang.Object bucket_;
-
-    /**
-     * <pre>
-     * Immutable. The name of the bucket containing this object.
-     * </pre>
-     *
-     * <code>
-     * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bucket.
-     */
-    @java.lang.Override
-    public java.lang.String getBucket() {
-        java.lang.Object ref = bucket_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            bucket_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Immutable. The name of the bucket containing this object.
-     * </pre>
-     *
-     * <code>
-     * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for bucket.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getBucketBytes() {
-        java.lang.Object ref = bucket_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            bucket_ = b;
-            return b;
-        }
-    }
 
     public static final int GENERATION_FIELD_NUMBER = 3;
 
     private long generation_;
 
-    /**
-     * <pre>
-     * Immutable. The content generation of this object. Used for object versioning.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
-     *
-     * @return The generation.
-     */
-    @java.lang.Override
-    public long getGeneration() {
-        return generation_;
-    }
-
     public static final int METAGENERATION_FIELD_NUMBER = 4;
 
     private long metageneration_;
-
-    /**
-     * <pre>
-     * Output only. The version of the metadata for this generation of this object. Used for
-     * preconditions and for detecting changes in metadata. A metageneration
-     * number is only meaningful in the context of a particular generation of a
-     * particular object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     *
-     * @return The metageneration.
-     */
-    @java.lang.Override
-    public long getMetageneration() {
-        return metageneration_;
-    }
 
     public static final int STORAGE_CLASS_FIELD_NUMBER = 5;
 
     private volatile java.lang.Object storageClass_;
 
-    /**
-     * <pre>
-     * Storage class of the object.
-     * </pre>
-     *
-     * <code>string storage_class = 5;</code>
-     *
-     * @return The storageClass.
-     */
-    @java.lang.Override
-    public java.lang.String getStorageClass() {
-        java.lang.Object ref = storageClass_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            storageClass_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Storage class of the object.
-     * </pre>
-     *
-     * <code>string storage_class = 5;</code>
-     *
-     * @return The bytes for storageClass.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getStorageClassBytes() {
-        java.lang.Object ref = storageClass_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            storageClass_ = b;
-            return b;
-        }
-    }
-
     public static final int SIZE_FIELD_NUMBER = 6;
 
     private long size_;
-
-    /**
-     * <pre>
-     * Output only. Content-Length of the object data in bytes, matching
-     * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     *
-     * @return The size.
-     */
-    @java.lang.Override
-    public long getSize() {
-        return size_;
-    }
 
     public static final int CONTENT_ENCODING_FIELD_NUMBER = 7;
 
     private volatile java.lang.Object contentEncoding_;
 
-    /**
-     * <pre>
-     * Content-Encoding of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-     * </pre>
-     *
-     * <code>string content_encoding = 7;</code>
-     *
-     * @return The contentEncoding.
-     */
-    @java.lang.Override
-    public java.lang.String getContentEncoding() {
-        java.lang.Object ref = contentEncoding_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            contentEncoding_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Content-Encoding of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-     * </pre>
-     *
-     * <code>string content_encoding = 7;</code>
-     *
-     * @return The bytes for contentEncoding.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getContentEncodingBytes() {
-        java.lang.Object ref = contentEncoding_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            contentEncoding_ = b;
-            return b;
-        }
-    }
-
     public static final int CONTENT_DISPOSITION_FIELD_NUMBER = 8;
 
     private volatile java.lang.Object contentDisposition_;
-
-    /**
-     * <pre>
-     * Content-Disposition of the object data, matching
-     * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-     * </pre>
-     *
-     * <code>string content_disposition = 8;</code>
-     *
-     * @return The contentDisposition.
-     */
-    @java.lang.Override
-    public java.lang.String getContentDisposition() {
-        java.lang.Object ref = contentDisposition_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            contentDisposition_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Content-Disposition of the object data, matching
-     * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-     * </pre>
-     *
-     * <code>string content_disposition = 8;</code>
-     *
-     * @return The bytes for contentDisposition.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getContentDispositionBytes() {
-        java.lang.Object ref = contentDisposition_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            contentDisposition_ = b;
-            return b;
-        }
-    }
 
     public static final int CACHE_CONTROL_FIELD_NUMBER = 9;
 
     private volatile java.lang.Object cacheControl_;
 
-    /**
-     * <pre>
-     * Cache-Control directive for the object data, matching
-     * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-     * If omitted, and the object is accessible to all anonymous users, the
-     * default will be `public, max-age=3600`.
-     * </pre>
-     *
-     * <code>string cache_control = 9;</code>
-     *
-     * @return The cacheControl.
-     */
-    @java.lang.Override
-    public java.lang.String getCacheControl() {
-        java.lang.Object ref = cacheControl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            cacheControl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Cache-Control directive for the object data, matching
-     * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-     * If omitted, and the object is accessible to all anonymous users, the
-     * default will be `public, max-age=3600`.
-     * </pre>
-     *
-     * <code>string cache_control = 9;</code>
-     *
-     * @return The bytes for cacheControl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getCacheControlBytes() {
-        java.lang.Object ref = cacheControl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            cacheControl_ = b;
-            return b;
-        }
-    }
-
     public static final int ACL_FIELD_NUMBER = 10;
 
     private java.util.List<com.google.storage.v2.ObjectAccessControl> acl_;
-
-    /**
-     * <pre>
-     * Access controls on the object.
-     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-     * bucket, requests to set, read, or modify acl is an error.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-     */
-    @java.lang.Override
-    public java.util.List<com.google.storage.v2.ObjectAccessControl> getAclList() {
-        return acl_;
-    }
-
-    /**
-     * <pre>
-     * Access controls on the object.
-     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-     * bucket, requests to set, read, or modify acl is an error.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-     */
-    @java.lang.Override
-    public java.util.List<? extends com.google.storage.v2.ObjectAccessControlOrBuilder> getAclOrBuilderList() {
-        return acl_;
-    }
-
-    /**
-     * <pre>
-     * Access controls on the object.
-     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-     * bucket, requests to set, read, or modify acl is an error.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-     */
-    @java.lang.Override
-    public int getAclCount() {
-        return acl_.size();
-    }
-
-    /**
-     * <pre>
-     * Access controls on the object.
-     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-     * bucket, requests to set, read, or modify acl is an error.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectAccessControl getAcl(int index) {
-        return acl_.get(index);
-    }
-
-    /**
-     * <pre>
-     * Access controls on the object.
-     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-     * bucket, requests to set, read, or modify acl is an error.
-     * </pre>
-     *
-     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectAccessControlOrBuilder getAclOrBuilder(int index) {
-        return acl_.get(index);
-    }
 
     public static final int CONTENT_LANGUAGE_FIELD_NUMBER = 11;
 
     private volatile java.lang.Object contentLanguage_;
 
-    /**
-     * <pre>
-     * Content-Language of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
-     * </pre>
-     *
-     * <code>string content_language = 11;</code>
-     *
-     * @return The contentLanguage.
-     */
-    @java.lang.Override
-    public java.lang.String getContentLanguage() {
-        java.lang.Object ref = contentLanguage_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            contentLanguage_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Content-Language of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
-     * </pre>
-     *
-     * <code>string content_language = 11;</code>
-     *
-     * @return The bytes for contentLanguage.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getContentLanguageBytes() {
-        java.lang.Object ref = contentLanguage_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            contentLanguage_ = b;
-            return b;
-        }
-    }
-
     public static final int DELETE_TIME_FIELD_NUMBER = 12;
 
     private com.google.protobuf.Timestamp deleteTime_;
-
-    /**
-     * <pre>
-     * Output only. The deletion time of the object. Will be returned if and only if this
-     * version of the object has been deleted.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return Whether the deleteTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasDeleteTime() {
-        return null != deleteTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The deletion time of the object. Will be returned if and only if this
-     * version of the object has been deleted.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return The deleteTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getDeleteTime() {
-        return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The deletion time of the object. Will be returned if and only if this
-     * version of the object has been deleted.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getDeleteTimeOrBuilder() {
-        return getDeleteTime();
-    }
 
     public static final int CONTENT_TYPE_FIELD_NUMBER = 13;
 
     private volatile java.lang.Object contentType_;
 
-    /**
-     * <pre>
-     * Content-Type of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-     * If an object is stored without a Content-Type, it is served as
-     * `application/octet-stream`.
-     * </pre>
-     *
-     * <code>string content_type = 13;</code>
-     *
-     * @return The contentType.
-     */
-    @java.lang.Override
-    public java.lang.String getContentType() {
-        java.lang.Object ref = contentType_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            contentType_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Content-Type of the object data, matching
-     * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-     * If an object is stored without a Content-Type, it is served as
-     * `application/octet-stream`.
-     * </pre>
-     *
-     * <code>string content_type = 13;</code>
-     *
-     * @return The bytes for contentType.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getContentTypeBytes() {
-        java.lang.Object ref = contentType_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            contentType_ = b;
-            return b;
-        }
-    }
-
     public static final int CREATE_TIME_FIELD_NUMBER = 14;
 
     private com.google.protobuf.Timestamp createTime_;
-
-    /**
-     * <pre>
-     * Output only. The creation time of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return Whether the createTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasCreateTime() {
-        return null != createTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The creation time of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return The createTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getCreateTime() {
-        return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The creation time of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
-        return getCreateTime();
-    }
 
     public static final int COMPONENT_COUNT_FIELD_NUMBER = 15;
 
     private int componentCount_;
 
-    /**
-     * <pre>
-     * Output only. Number of underlying components that make up this object. Components are
-     * accumulated by compose operations.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     *
-     * @return The componentCount.
-     */
-    @java.lang.Override
-    public int getComponentCount() {
-        return componentCount_;
-    }
-
     public static final int CHECKSUMS_FIELD_NUMBER = 16;
 
     private com.google.storage.v2.ObjectChecksums checksums_;
-
-    /**
-     * <pre>
-     * Output only. Hashes for the data part of this object.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return Whether the checksums field is set.
-     */
-    @java.lang.Override
-    public boolean hasChecksums() {
-        return null != checksums_;
-    }
-
-    /**
-     * <pre>
-     * Output only. Hashes for the data part of this object.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return The checksums.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksums getChecksums() {
-        return null == checksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : checksums_;
-    }
-
-    /**
-     * <pre>
-     * Output only. Hashes for the data part of this object.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectChecksumsOrBuilder getChecksumsOrBuilder() {
-        return getChecksums();
-    }
 
     public static final int UPDATE_TIME_FIELD_NUMBER = 17;
 
     private com.google.protobuf.Timestamp updateTime_;
 
-    /**
-     * <pre>
-     * Output only. The modification time of the object metadata.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return Whether the updateTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasUpdateTime() {
-        return null != updateTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The modification time of the object metadata.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return The updateTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getUpdateTime() {
-        return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The modification time of the object metadata.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
-        return getUpdateTime();
-    }
-
     public static final int KMS_KEY_FIELD_NUMBER = 18;
 
     private volatile java.lang.Object kmsKey_;
-
-    /**
-     * <pre>
-     * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-     * such a key.
-     * </pre>
-     *
-     * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The kmsKey.
-     */
-    @java.lang.Override
-    public java.lang.String getKmsKey() {
-        java.lang.Object ref = kmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            kmsKey_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-     * such a key.
-     * </pre>
-     *
-     * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The bytes for kmsKey.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getKmsKeyBytes() {
-        java.lang.Object ref = kmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            kmsKey_ = b;
-            return b;
-        }
-    }
 
     public static final int UPDATE_STORAGE_CLASS_TIME_FIELD_NUMBER = 19;
 
     private com.google.protobuf.Timestamp updateStorageClassTime_;
 
-    /**
-     * <pre>
-     * Output only. The time at which the object's storage class was last changed. When the
-     * object is initially created, it will be set to time_created.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>
-     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return Whether the updateStorageClassTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasUpdateStorageClassTime() {
-        return null != updateStorageClassTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The time at which the object's storage class was last changed. When the
-     * object is initially created, it will be set to time_created.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>
-     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     *
-     * @return The updateStorageClassTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getUpdateStorageClassTime() {
-        return null == updateStorageClassTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateStorageClassTime_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The time at which the object's storage class was last changed. When the
-     * object is initially created, it will be set to time_created.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>
-     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getUpdateStorageClassTimeOrBuilder() {
-        return getUpdateStorageClassTime();
-    }
-
     public static final int TEMPORARY_HOLD_FIELD_NUMBER = 20;
 
     private boolean temporaryHold_;
 
-    /**
-     * <pre>
-     * Whether an object is under temporary hold. While this flag is set to true,
-     * the object is protected against deletion and overwrites.  A common use case
-     * of this flag is regulatory investigations where objects need to be retained
-     * while the investigation is ongoing. Note that unlike event-based hold,
-     * temporary hold does not impact retention expiration time of an object.
-     * </pre>
-     *
-     * <code>bool temporary_hold = 20;</code>
-     *
-     * @return The temporaryHold.
-     */
-    @java.lang.Override
-    public boolean getTemporaryHold() {
-        return temporaryHold_;
-    }
-
     public static final int RETENTION_EXPIRE_TIME_FIELD_NUMBER = 21;
 
     private com.google.protobuf.Timestamp retentionExpireTime_;
-
-    /**
-     * <pre>
-     * A server-determined value that specifies the earliest time that the
-     * object's retention period expires.
-     * Note 1: This field is not provided for objects with an active event-based
-     * hold, since retention expiration is unknown until the hold is removed.
-     * Note 2: This value can be provided even when temporary hold is set (so that
-     * the user can reason about policy without having to first unset the
-     * temporary hold).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-     *
-     * @return Whether the retentionExpireTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasRetentionExpireTime() {
-        return null != retentionExpireTime_;
-    }
-
-    /**
-     * <pre>
-     * A server-determined value that specifies the earliest time that the
-     * object's retention period expires.
-     * Note 1: This field is not provided for objects with an active event-based
-     * hold, since retention expiration is unknown until the hold is removed.
-     * Note 2: This value can be provided even when temporary hold is set (so that
-     * the user can reason about policy without having to first unset the
-     * temporary hold).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-     *
-     * @return The retentionExpireTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getRetentionExpireTime() {
-        return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
-    }
-
-    /**
-     * <pre>
-     * A server-determined value that specifies the earliest time that the
-     * object's retention period expires.
-     * Note 1: This field is not provided for objects with an active event-based
-     * hold, since retention expiration is unknown until the hold is removed.
-     * Note 2: This value can be provided even when temporary hold is set (so that
-     * the user can reason about policy without having to first unset the
-     * temporary hold).
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getRetentionExpireTimeOrBuilder() {
-        return getRetentionExpireTime();
-    }
 
     public static final int METADATA_FIELD_NUMBER = 22;
 
@@ -1323,732 +125,23 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
     private com.google.protobuf.MapField<java.lang.String, java.lang.String> metadata_;
 
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMetadata() {
-        if (null == metadata_) {
-            return com.google.protobuf.MapField.emptyMapField(MetadataDefaultEntryHolder.defaultEntry);
-        }
-        return metadata_;
-    }
-
-    public int getMetadataCount() {
-        return internalGetMetadata().getMap().size();
-    }
-
-    /**
-     * <pre>
-     * User-provided metadata, in key/value pairs.
-     * </pre>
-     *
-     * <code>map&lt;string, string&gt; metadata = 22;</code>
-     */
-    @java.lang.Override
-    public boolean containsMetadata(java.lang.String key) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        return internalGetMetadata().getMap().containsKey(key);
-    }
-
-    /**
-     * Use {@link #getMetadataMap()} instead.
-     */
-    @java.lang.Override
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
-        return getMetadataMap();
-    }
-
-    /**
-     * <pre>
-     * User-provided metadata, in key/value pairs.
-     * </pre>
-     *
-     * <code>map&lt;string, string&gt; metadata = 22;</code>
-     */
-    @java.lang.Override
-    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
-        return internalGetMetadata().getMap();
-    }
-
-    /**
-     * <pre>
-     * User-provided metadata, in key/value pairs.
-     * </pre>
-     *
-     * <code>map&lt;string, string&gt; metadata = 22;</code>
-     */
-    @java.lang.Override
-    public java.lang.String getMetadataOrDefault(java.lang.String key, java.lang.String defaultValue) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-
-    /**
-     * <pre>
-     * User-provided metadata, in key/value pairs.
-     * </pre>
-     *
-     * <code>map&lt;string, string&gt; metadata = 22;</code>
-     */
-    @java.lang.Override
-    public java.lang.String getMetadataOrThrow(java.lang.String key) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
-        if (!map.containsKey(key)) {
-            throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-    }
-
     public static final int EVENT_BASED_HOLD_FIELD_NUMBER = 23;
 
     private boolean eventBasedHold_;
-
-    /**
-     * <pre>
-     * Whether an object is under event-based hold.
-     * An event-based hold is a way to force the retention of an object until
-     * after some event occurs. Once the hold is released by explicitly setting
-     * this field to false, the object will become subject to any bucket-level
-     * retention policy, except that the retention duration will be calculated
-     * from the time the event based hold was lifted, rather than the time the
-     * object was created.
-     * In a WriteObject request, not setting this field implies that the value
-     * should be taken from the parent bucket's "default_event_based_hold" field.
-     * In a response, this field will always be set to true or false.
-     * </pre>
-     *
-     * <code>optional bool event_based_hold = 23;</code>
-     *
-     * @return Whether the eventBasedHold field is set.
-     */
-    @java.lang.Override
-    public boolean hasEventBasedHold() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Whether an object is under event-based hold.
-     * An event-based hold is a way to force the retention of an object until
-     * after some event occurs. Once the hold is released by explicitly setting
-     * this field to false, the object will become subject to any bucket-level
-     * retention policy, except that the retention duration will be calculated
-     * from the time the event based hold was lifted, rather than the time the
-     * object was created.
-     * In a WriteObject request, not setting this field implies that the value
-     * should be taken from the parent bucket's "default_event_based_hold" field.
-     * In a response, this field will always be set to true or false.
-     * </pre>
-     *
-     * <code>optional bool event_based_hold = 23;</code>
-     *
-     * @return The eventBasedHold.
-     */
-    @java.lang.Override
-    public boolean getEventBasedHold() {
-        return eventBasedHold_;
-    }
 
     public static final int OWNER_FIELD_NUMBER = 24;
 
     private com.google.storage.v2.Owner owner_;
 
-    /**
-     * <pre>
-     * Output only. The owner of the object. This will always be the uploader of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     *
-     * @return Whether the owner field is set.
-     */
-    @java.lang.Override
-    public boolean hasOwner() {
-        return null != owner_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The owner of the object. This will always be the uploader of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     *
-     * @return The owner.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Owner getOwner() {
-        return null == owner_ ? com.google.storage.v2.Owner.getDefaultInstance() : owner_;
-    }
-
-    /**
-     * <pre>
-     * Output only. The owner of the object. This will always be the uploader of the object.
-     * Attempting to set or update this field will result in a
-     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-     * </pre>
-     *
-     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.OwnerOrBuilder getOwnerOrBuilder() {
-        return getOwner();
-    }
-
     public static final int CUSTOMER_ENCRYPTION_FIELD_NUMBER = 25;
 
     private com.google.storage.v2.CustomerEncryption customerEncryption_;
-
-    /**
-     * <pre>
-     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-     * such a key.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-     *
-     * @return Whether the customerEncryption field is set.
-     */
-    @java.lang.Override
-    public boolean hasCustomerEncryption() {
-        return null != customerEncryption_;
-    }
-
-    /**
-     * <pre>
-     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-     * such a key.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-     *
-     * @return The customerEncryption.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CustomerEncryption getCustomerEncryption() {
-        return null == customerEncryption_ ? com.google.storage.v2.CustomerEncryption.getDefaultInstance() : customerEncryption_;
-    }
-
-    /**
-     * <pre>
-     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-     * such a key.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CustomerEncryptionOrBuilder getCustomerEncryptionOrBuilder() {
-        return getCustomerEncryption();
-    }
 
     public static final int CUSTOM_TIME_FIELD_NUMBER = 26;
 
     private com.google.protobuf.Timestamp customTime_;
 
-    /**
-     * <pre>
-     * A user-specified timestamp set on an object.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-     *
-     * @return Whether the customTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasCustomTime() {
-        return null != customTime_;
-    }
-
-    /**
-     * <pre>
-     * A user-specified timestamp set on an object.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-     *
-     * @return The customTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Timestamp getCustomTime() {
-        return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
-    }
-
-    /**
-     * <pre>
-     * A user-specified timestamp set on an object.
-     * </pre>
-     *
-     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.TimestampOrBuilder getCustomTimeOrBuilder() {
-        return getCustomTime();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, bucket_);
-        }
-        if (0L != generation_) {
-            output.writeInt64(3, generation_);
-        }
-        if (0L != metageneration_) {
-            output.writeInt64(4, metageneration_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(storageClass_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, storageClass_);
-        }
-        if (0L != size_) {
-            output.writeInt64(6, size_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentEncoding_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, contentEncoding_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentDisposition_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 8, contentDisposition_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(cacheControl_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 9, cacheControl_);
-        }
-        int i = 0;
-        while (acl_.size() > i) {
-            output.writeMessage(10, acl_.get(i));
-            i += 1;
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentLanguage_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, contentLanguage_);
-        }
-        if (null != deleteTime_) {
-            output.writeMessage(12, getDeleteTime());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 13, contentType_);
-        }
-        if (null != createTime_) {
-            output.writeMessage(14, getCreateTime());
-        }
-        if (0 != componentCount_) {
-            output.writeInt32(15, componentCount_);
-        }
-        if (null != checksums_) {
-            output.writeMessage(16, getChecksums());
-        }
-        if (null != updateTime_) {
-            output.writeMessage(17, getUpdateTime());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 18, kmsKey_);
-        }
-        if (null != updateStorageClassTime_) {
-            output.writeMessage(19, getUpdateStorageClassTime());
-        }
-        if (false != temporaryHold_) {
-            output.writeBool(20, temporaryHold_);
-        }
-        if (null != retentionExpireTime_) {
-            output.writeMessage(21, getRetentionExpireTime());
-        }
-        com.google.protobuf.GeneratedMessageV3.serializeStringMapTo(output, internalGetMetadata(), MetadataDefaultEntryHolder.defaultEntry, 22);
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeBool(23, eventBasedHold_);
-        }
-        if (null != owner_) {
-            output.writeMessage(24, getOwner());
-        }
-        if (null != customerEncryption_) {
-            output.writeMessage(25, getCustomerEncryption());
-        }
-        if (null != customTime_) {
-            output.writeMessage(26, getCustomTime());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, bucket_);
-        }
-        if (0L != generation_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, generation_);
-        }
-        if (0L != metageneration_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, metageneration_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(storageClass_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, storageClass_);
-        }
-        if (0L != size_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, size_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentEncoding_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, contentEncoding_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentDisposition_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, contentDisposition_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(cacheControl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, cacheControl_);
-        }
-        int i = 0;
-        while (acl_.size() > i) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, acl_.get(i));
-            i += 1;
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentLanguage_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, contentLanguage_);
-        }
-        if (null != deleteTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(12, getDeleteTime());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, contentType_);
-        }
-        if (null != createTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(14, getCreateTime());
-        }
-        if (0 != componentCount_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt32Size(15, componentCount_);
-        }
-        if (null != checksums_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, getChecksums());
-        }
-        if (null != updateTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(17, getUpdateTime());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, kmsKey_);
-        }
-        if (null != updateStorageClassTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(19, getUpdateStorageClassTime());
-        }
-        if (false != temporaryHold_) {
-            size += com.google.protobuf.CodedOutputStream.computeBoolSize(20, temporaryHold_);
-        }
-        if (null != retentionExpireTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(21, getRetentionExpireTime());
-        }
-        for (java.util.Map.Entry<java.lang.String, java.lang.String> entry : internalGetMetadata().getMap().entrySet()) {
-            com.google.protobuf.MapEntry<java.lang.String, java.lang.String> metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType().setKey(entry.getKey()).setValue(entry.getValue()).build();
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(22, metadata__);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeBoolSize(23, eventBasedHold_);
-        }
-        if (null != owner_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(24, getOwner());
-        }
-        if (null != customerEncryption_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(25, getCustomerEncryption());
-        }
-        if (null != customTime_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(26, getCustomTime());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.Object)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.Object other = (com.google.storage.v2.Object) obj;
-        if (!getName().equals(other.getName()))
-            return false;
-        if (!getBucket().equals(other.getBucket()))
-            return false;
-        if (other.getGeneration() != getGeneration())
-            return false;
-        if (other.getMetageneration() != getMetageneration())
-            return false;
-        if (!getStorageClass().equals(other.getStorageClass()))
-            return false;
-        if (other.getSize() != getSize())
-            return false;
-        if (!getContentEncoding().equals(other.getContentEncoding()))
-            return false;
-        if (!getContentDisposition().equals(other.getContentDisposition()))
-            return false;
-        if (!getCacheControl().equals(other.getCacheControl()))
-            return false;
-        if (!getAclList().equals(other.getAclList()))
-            return false;
-        if (!getContentLanguage().equals(other.getContentLanguage()))
-            return false;
-        if (other.hasDeleteTime() != hasDeleteTime())
-            return false;
-        if (hasDeleteTime()) {
-            if (!getDeleteTime().equals(other.getDeleteTime()))
-                return false;
-        }
-        if (!getContentType().equals(other.getContentType()))
-            return false;
-        if (other.hasCreateTime() != hasCreateTime())
-            return false;
-        if (hasCreateTime()) {
-            if (!getCreateTime().equals(other.getCreateTime()))
-                return false;
-        }
-        if (other.getComponentCount() != getComponentCount())
-            return false;
-        if (other.hasChecksums() != hasChecksums())
-            return false;
-        if (hasChecksums()) {
-            if (!getChecksums().equals(other.getChecksums()))
-                return false;
-        }
-        if (other.hasUpdateTime() != hasUpdateTime())
-            return false;
-        if (hasUpdateTime()) {
-            if (!getUpdateTime().equals(other.getUpdateTime()))
-                return false;
-        }
-        if (!getKmsKey().equals(other.getKmsKey()))
-            return false;
-        if (other.hasUpdateStorageClassTime() != hasUpdateStorageClassTime())
-            return false;
-        if (hasUpdateStorageClassTime()) {
-            if (!getUpdateStorageClassTime().equals(other.getUpdateStorageClassTime()))
-                return false;
-        }
-        if (other.getTemporaryHold() != getTemporaryHold())
-            return false;
-        if (other.hasRetentionExpireTime() != hasRetentionExpireTime())
-            return false;
-        if (hasRetentionExpireTime()) {
-            if (!getRetentionExpireTime().equals(other.getRetentionExpireTime()))
-                return false;
-        }
-        if (!internalGetMetadata().equals(other.internalGetMetadata()))
-            return false;
-        if (other.hasEventBasedHold() != hasEventBasedHold())
-            return false;
-        if (hasEventBasedHold()) {
-            if (other.getEventBasedHold() != getEventBasedHold())
-                return false;
-        }
-        if (other.hasOwner() != hasOwner())
-            return false;
-        if (hasOwner()) {
-            if (!getOwner().equals(other.getOwner()))
-                return false;
-        }
-        if (other.hasCustomerEncryption() != hasCustomerEncryption())
-            return false;
-        if (hasCustomerEncryption()) {
-            if (!getCustomerEncryption().equals(other.getCustomerEncryption()))
-                return false;
-        }
-        if (other.hasCustomTime() != hasCustomTime())
-            return false;
-        if (hasCustomTime()) {
-            if (!getCustomTime().equals(other.getCustomTime()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getName().hashCode();
-        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
-        hash = (53 * hash) + getBucket().hashCode();
-        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
-        hash = (37 * hash) + METAGENERATION_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getMetageneration());
-        hash = (37 * hash) + STORAGE_CLASS_FIELD_NUMBER;
-        hash = (53 * hash) + getStorageClass().hashCode();
-        hash = (37 * hash) + SIZE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getSize());
-        hash = (37 * hash) + CONTENT_ENCODING_FIELD_NUMBER;
-        hash = (53 * hash) + getContentEncoding().hashCode();
-        hash = (37 * hash) + CONTENT_DISPOSITION_FIELD_NUMBER;
-        hash = (53 * hash) + getContentDisposition().hashCode();
-        hash = (37 * hash) + CACHE_CONTROL_FIELD_NUMBER;
-        hash = (53 * hash) + getCacheControl().hashCode();
-        if (0 < getAclCount()) {
-            hash = (37 * hash) + ACL_FIELD_NUMBER;
-            hash = (53 * hash) + getAclList().hashCode();
-        }
-        hash = (37 * hash) + CONTENT_LANGUAGE_FIELD_NUMBER;
-        hash = (53 * hash) + getContentLanguage().hashCode();
-        if (hasDeleteTime()) {
-            hash = (37 * hash) + DELETE_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getDeleteTime().hashCode();
-        }
-        hash = (37 * hash) + CONTENT_TYPE_FIELD_NUMBER;
-        hash = (53 * hash) + getContentType().hashCode();
-        if (hasCreateTime()) {
-            hash = (37 * hash) + CREATE_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getCreateTime().hashCode();
-        }
-        hash = (37 * hash) + COMPONENT_COUNT_FIELD_NUMBER;
-        hash = (53 * hash) + getComponentCount();
-        if (hasChecksums()) {
-            hash = (37 * hash) + CHECKSUMS_FIELD_NUMBER;
-            hash = (53 * hash) + getChecksums().hashCode();
-        }
-        if (hasUpdateTime()) {
-            hash = (37 * hash) + UPDATE_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getUpdateTime().hashCode();
-        }
-        hash = (37 * hash) + KMS_KEY_FIELD_NUMBER;
-        hash = (53 * hash) + getKmsKey().hashCode();
-        if (hasUpdateStorageClassTime()) {
-            hash = (37 * hash) + UPDATE_STORAGE_CLASS_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getUpdateStorageClassTime().hashCode();
-        }
-        hash = (37 * hash) + TEMPORARY_HOLD_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getTemporaryHold());
-        if (hasRetentionExpireTime()) {
-            hash = (37 * hash) + RETENTION_EXPIRE_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getRetentionExpireTime().hashCode();
-        }
-        if (!internalGetMetadata().getMap().isEmpty()) {
-            hash = (37 * hash) + METADATA_FIELD_NUMBER;
-            hash = (53 * hash) + internalGetMetadata().hashCode();
-        }
-        if (hasEventBasedHold()) {
-            hash = (37 * hash) + EVENT_BASED_HOLD_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getEventBasedHold());
-        }
-        if (hasOwner()) {
-            hash = (37 * hash) + OWNER_FIELD_NUMBER;
-            hash = (53 * hash) + getOwner().hashCode();
-        }
-        if (hasCustomerEncryption()) {
-            hash = (37 * hash) + CUSTOMER_ENCRYPTION_FIELD_NUMBER;
-            hash = (53 * hash) + getCustomerEncryption().hashCode();
-        }
-        if (hasCustomTime()) {
-            hash = (37 * hash) + CUSTOM_TIME_FIELD_NUMBER;
-            hash = (53 * hash) + getCustomTime().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.Object parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Object parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Object parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Object parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.Object prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -2061,48 +154,261 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
     // @@protoc_insertion_point(builder_implements:google.storage.v2.Object)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ObjectOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Object_descriptor;
-        }
+        private int bitField0_;
 
-        @SuppressWarnings({ "rawtypes" })
-        protected com.google.protobuf.MapField internalGetMapField(int number) {
-            switch(number) {
-                case 22:
-                    return internalGetMetadata();
-                default:
-                    throw new RuntimeException("Invalid map field number: " + number);
+        private java.lang.Object name_ = "";
+
+        private java.lang.Object bucket_ = "";
+
+        private long generation_;
+
+        private long metageneration_;
+
+        private java.lang.Object storageClass_ = "";
+
+        private long size_;
+
+        private java.lang.Object contentEncoding_ = "";
+
+        private java.lang.Object contentDisposition_ = "";
+
+        private java.lang.Object cacheControl_ = "";
+
+        private java.util.List<com.google.storage.v2.ObjectAccessControl> acl_ = java.util.Collections.emptyList();
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ObjectAccessControl, com.google.storage.v2.ObjectAccessControl.Builder, com.google.storage.v2.ObjectAccessControlOrBuilder> aclBuilder_;
+
+        private java.lang.Object contentLanguage_ = "";
+
+        private com.google.protobuf.Timestamp deleteTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> deleteTimeBuilder_;
+
+        private java.lang.Object contentType_ = "";
+
+        private com.google.protobuf.Timestamp createTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> createTimeBuilder_;
+
+        private int componentCount_;
+
+        private com.google.storage.v2.ObjectChecksums checksums_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> checksumsBuilder_;
+
+        private com.google.protobuf.Timestamp updateTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateTimeBuilder_;
+
+        private java.lang.Object kmsKey_ = "";
+
+        private com.google.protobuf.Timestamp updateStorageClassTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateStorageClassTimeBuilder_;
+
+        private boolean temporaryHold_;
+
+        private com.google.protobuf.Timestamp retentionExpireTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> retentionExpireTimeBuilder_;
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> metadata_;
+
+        private boolean eventBasedHold_;
+
+        private com.google.storage.v2.Owner owner_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Owner, com.google.storage.v2.Owner.Builder, com.google.storage.v2.OwnerOrBuilder> ownerBuilder_;
+
+        private com.google.storage.v2.CustomerEncryption customerEncryption_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CustomerEncryption, com.google.storage.v2.CustomerEncryption.Builder, com.google.storage.v2.CustomerEncryptionOrBuilder> customerEncryptionBuilder_;
+
+        private com.google.protobuf.Timestamp customTime_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> customTimeBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.Object)
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CustomerEncryption, CustomerEncryption.Builder, CustomerEncryptionOrBuilder> getCustomerEncryptionFieldBuilder() {
+            if (null == customerEncryptionBuilder_) {
+                customerEncryptionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CustomerEncryption, CustomerEncryption.Builder, CustomerEncryptionOrBuilder>(getCustomerEncryption(), getParentForChildren(), isClean());
+                customerEncryption_ = null;
             }
+            return customerEncryptionBuilder_;
         }
 
-        @SuppressWarnings({ "rawtypes" })
-        protected com.google.protobuf.MapField internalGetMutableMapField(int number) {
-            switch(number) {
-                case 22:
-                    return internalGetMutableMetadata();
-                default:
-                    throw new RuntimeException("Invalid map field number: " + number);
+        /**
+         * <pre>
+         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The bytes for kmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setKmsKeyBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            kmsKey_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearCreateTime() {
+            if (null != createTimeBuilder_) {
+                createTime_ = null;
+                createTimeBuilder_ = null;
+            } else {
+                createTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public java.util.List<ObjectAccessControl> getAclList() {
+            if (null != aclBuilder_) {
+                return aclBuilder_.getMessageList();
+            } else {
+                return java.util.Collections.unmodifiableList(acl_);
             }
         }
 
         @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Object_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.Object.class, com.google.storage.v2.Object.Builder.class);
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
         }
 
-        // Construct using com.google.storage.v2.Object.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
+        private void ensureAclIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000001))) {
+                acl_ = new java.util.ArrayList<ObjectAccessControl>(acl_);
+                bitField0_ |= 0x00000001;
+            }
         }
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
+        /**
+         * <pre>
+         * Immutable. The name of this object. Nearly any sequence of unicode characters is
+         * valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNameBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            name_ = value;
+            onChanged();
+            return this;
         }
 
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getAclFieldBuilder();
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        @java.lang.Override
+        public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+            return internalGetMetadata().getMap();
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         *
+         * @return Whether the customerEncryption field is set.
+         */
+        public boolean hasCustomerEncryption() {
+            return null != customerEncryptionBuilder_ || null != customerEncryption_;
+        }
+
+        /**
+         * <pre>
+         * Storage class of the object.
+         * </pre>
+         *
+         * <code>string storage_class = 5;</code>
+         *
+         * @param value The bytes for storageClass to set.
+         * @return This builder for chaining.
+         */
+        public Builder setStorageClassBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            storageClass_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The kmsKey.
+         */
+        public java.lang.String getKmsKey() {
+            java.lang.Object ref = kmsKey_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                kmsKey_ = s;
+                return s;
             }
         }
 
@@ -2189,28 +495,1364 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
             return this;
         }
 
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Object_descriptor;
+        /**
+         * <pre>
+         * Cache-Control directive for the object data, matching
+         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+         * If omitted, and the object is accessible to all anonymous users, the
+         * default will be `public, max-age=3600`.
+         * </pre>
+         *
+         * <code>string cache_control = 9;</code>
+         *
+         * @return The bytes for cacheControl.
+         */
+        public com.google.protobuf.ByteString getCacheControlBytes() {
+            java.lang.Object ref = cacheControl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                cacheControl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return The owner.
+         */
+        public Owner getOwner() {
+            if (null != ownerBuilder_) {
+                return ownerBuilder_.getMessage();
+            } else {
+                return null == owner_ ? Owner.getDefaultInstance() : owner_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Storage class of the object.
+         * </pre>
+         *
+         * <code>string storage_class = 5;</code>
+         *
+         * @return The storageClass.
+         */
+        public java.lang.String getStorageClass() {
+            java.lang.Object ref = storageClass_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                storageClass_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder mergeCreateTime(com.google.protobuf.Timestamp value) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == createTime_) {
+                    createTime_ = value;
+                } else {
+                    createTime_ = com.google.protobuf.Timestamp.newBuilder(createTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getRetentionExpireTimeOrBuilder() {
+            if (null == retentionExpireTimeBuilder_) {
+                return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
+            } else {
+                return retentionExpireTimeBuilder_.getMessageOrBuilder();
+            }
         }
 
         @java.lang.Override
-        public com.google.storage.v2.Object getDefaultInstanceForType() {
-            return com.google.storage.v2.Object.getDefaultInstance();
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        @java.lang.Override
+        public java.lang.String getMetadataOrDefault(java.lang.String key, java.lang.String defaultValue) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
+            return map.containsKey(key) ? map.get(key) : defaultValue;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_Object_descriptor;
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public Builder clearCustomTime() {
+            if (null != customTimeBuilder_) {
+                customTime_ = null;
+                customTimeBuilder_ = null;
+            } else {
+                customTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public Builder mergeRetentionExpireTime(com.google.protobuf.Timestamp value) {
+            if (null != retentionExpireTimeBuilder_) {
+                retentionExpireTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == retentionExpireTime_) {
+                    retentionExpireTime_ = value;
+                } else {
+                    retentionExpireTime_ = com.google.protobuf.Timestamp.newBuilder(retentionExpireTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder setAcl(int index, ObjectAccessControl.Builder builderForValue) {
+            if (null != aclBuilder_) {
+                aclBuilder_.setMessage(index, builderForValue.build());
+            } else {
+                ensureAclIsMutable();
+                acl_.set(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        public Builder clearCustomerEncryption() {
+            if (null != customerEncryptionBuilder_) {
+                customerEncryption_ = null;
+                customerEncryptionBuilder_ = null;
+            } else {
+                customerEncryption_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public java.util.List<? extends ObjectAccessControlOrBuilder> getAclOrBuilderList() {
+            if (null == aclBuilder_) {
+                return java.util.Collections.unmodifiableList(acl_);
+            } else {
+                return aclBuilder_.getMessageOrBuilderList();
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. Number of underlying components that make up this object. Components are
+         * accumulated by compose operations.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearComponentCount() {
+            componentCount_ = 0;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The content generation of this object. Used for object versioning.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearGeneration() {
+            generation_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCreateTimeFieldBuilder() {
+            if (null == createTimeBuilder_) {
+                createTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCreateTime(), getParentForChildren(), isClean());
+                createTime_ = null;
+            }
+            return createTimeBuilder_;
         }
 
         @java.lang.Override
-        public com.google.storage.v2.Object build() {
-            com.google.storage.v2.Object result = buildPartial();
+        public Object build() {
+            Object result = buildPartial();
             if (!result.isInitialized()) {
                 throw newUninitializedMessageException(result);
             }
             return result;
         }
 
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return The updateTime.
+         */
+        public com.google.protobuf.Timestamp getUpdateTime() {
+            if (null != updateTimeBuilder_) {
+                return updateTimeBuilder_.getMessage();
+            } else {
+                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
+            }
+        }
+
+        /**
+         * Use {@link #getMetadataMap()} instead.
+         */
         @java.lang.Override
-        public com.google.storage.v2.Object buildPartial() {
-            com.google.storage.v2.Object result = new com.google.storage.v2.Object(this);
+        @java.lang.Deprecated
+        public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+            return getMetadataMap();
+        }
+
+        /**
+         * <pre>
+         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The kmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setKmsKey(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            kmsKey_ = value;
+            onChanged();
+            return this;
+        }
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMutableMetadata() {
+            onChanged();
+            ;
+            if (null == metadata_) {
+                metadata_ = com.google.protobuf.MapField.newMapField(MetadataDefaultEntryHolder.defaultEntry);
+            }
+            if (!metadata_.isMutable()) {
+                metadata_ = metadata_.copy();
+            }
+            return metadata_;
+        }
+
+        /**
+         * <pre>
+         * Content-Encoding of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+         * </pre>
+         *
+         * <code>string content_encoding = 7;</code>
+         *
+         * @return The contentEncoding.
+         */
+        public java.lang.String getContentEncoding() {
+            java.lang.Object ref = contentEncoding_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                contentEncoding_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder mergeOwner(Owner value) {
+            if (null != ownerBuilder_) {
+                ownerBuilder_.mergeFrom(value);
+            } else {
+                if (null == owner_) {
+                    owner_ = value;
+                } else {
+                    owner_ = Owner.newBuilder(owner_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearKmsKey() {
+            kmsKey_ = getDefaultInstance().getKmsKey();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setCreateTime(com.google.protobuf.Timestamp value) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                createTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder addAllAcl(java.lang.Iterable<? extends ObjectAccessControl> values) {
+            if (null != aclBuilder_) {
+                aclBuilder_.addAllMessages(values);
+            } else {
+                ensureAclIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, acl_);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getCustomTimeOrBuilder() {
+            if (null == customTimeBuilder_) {
+                return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
+            } else {
+                return customTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        public Builder setCustomerEncryption(CustomerEncryption value) {
+            if (null != customerEncryptionBuilder_) {
+                customerEncryptionBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                customerEncryption_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateStorageClassTimeFieldBuilder() {
+            if (null == updateStorageClassTimeBuilder_) {
+                updateStorageClassTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateStorageClassTime(), getParentForChildren(), isClean());
+                updateStorageClassTime_ = null;
+            }
+            return updateStorageClassTimeBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder mergeDeleteTime(com.google.protobuf.Timestamp value) {
+            if (null != deleteTimeBuilder_) {
+                deleteTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == deleteTime_) {
+                    deleteTime_ = value;
+                } else {
+                    deleteTime_ = com.google.protobuf.Timestamp.newBuilder(deleteTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the deleteTime field is set.
+         */
+        public boolean hasDeleteTime() {
+            return null != deleteTimeBuilder_ || null != deleteTime_;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_Object_descriptor;
+        }
+
+        @SuppressWarnings({ "rawtypes" })
+        protected com.google.protobuf.MapField internalGetMutableMapField(int number) {
+            switch(number) {
+                case 22:
+                    return internalGetMutableMetadata();
+                default:
+                    throw new RuntimeException("Invalid map field number: " + number);
+            }
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         *
+         * @return The customerEncryption.
+         */
+        public CustomerEncryption getCustomerEncryption() {
+            if (null != customerEncryptionBuilder_) {
+                return customerEncryptionBuilder_.getMessage();
+            } else {
+                return null == customerEncryption_ ? CustomerEncryption.getDefaultInstance() : customerEncryption_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCustomTimeFieldBuilder() {
+            if (null == customTimeBuilder_) {
+                customTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCustomTime(), getParentForChildren(), isClean());
+                customTime_ = null;
+            }
+            return customTimeBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Whether an object is under event-based hold.
+         * An event-based hold is a way to force the retention of an object until
+         * after some event occurs. Once the hold is released by explicitly setting
+         * this field to false, the object will become subject to any bucket-level
+         * retention policy, except that the retention duration will be calculated
+         * from the time the event based hold was lifted, rather than the time the
+         * object was created.
+         * In a WriteObject request, not setting this field implies that the value
+         * should be taken from the parent bucket's "default_event_based_hold" field.
+         * In a response, this field will always be set to true or false.
+         * </pre>
+         *
+         * <code>optional bool event_based_hold = 23;</code>
+         *
+         * @return The eventBasedHold.
+         */
+        @java.lang.Override
+        public boolean getEventBasedHold() {
+            return eventBasedHold_;
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        public Builder removeMetadata(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            internalGetMutableMetadata().getMutableMap().remove(key);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         *
+         * @return The customTime.
+         */
+        public com.google.protobuf.Timestamp getCustomTime() {
+            if (null != customTimeBuilder_) {
+                return customTimeBuilder_.getMessage();
+            } else {
+                return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public OwnerOrBuilder getOwnerOrBuilder() {
+            if (null == ownerBuilder_) {
+                return null == owner_ ? Owner.getDefaultInstance() : owner_;
+            } else {
+                return ownerBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Content-Type of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+         * If an object is stored without a Content-Type, it is served as
+         * `application/octet-stream`.
+         * </pre>
+         *
+         * <code>string content_type = 13;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearContentType() {
+            contentType_ = getDefaultInstance().getContentType();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Cache-Control directive for the object data, matching
+         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+         * If omitted, and the object is accessible to all anonymous users, the
+         * default will be `public, max-age=3600`.
+         * </pre>
+         *
+         * <code>string cache_control = 9;</code>
+         *
+         * @return The cacheControl.
+         */
+        public java.lang.String getCacheControl() {
+            java.lang.Object ref = cacheControl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                cacheControl_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         *
+         * @return Whether the customTime field is set.
+         */
+        public boolean hasCustomTime() {
+            return null != customTimeBuilder_ || null != customTime_;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing this object.
+         * </pre>
+         *
+         * <code>
+         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        @java.lang.Override
+        public java.lang.String getMetadataOrThrow(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
+            if (!map.containsKey(key)) {
+                throw new java.lang.IllegalArgumentException();
+            }
+            return map.get(key);
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public ObjectAccessControl getAcl(int index) {
+            if (null != aclBuilder_) {
+                return aclBuilder_.getMessage(index);
+            } else {
+                return acl_.get(index);
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder> getChecksumsFieldBuilder() {
+            if (null == checksumsBuilder_) {
+                checksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ObjectChecksums, ObjectChecksums.Builder, ObjectChecksumsOrBuilder>(getChecksums(), getParentForChildren(), isClean());
+                checksums_ = null;
+            }
+            return checksumsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder addAcl(int index, ObjectAccessControl.Builder builderForValue) {
+            if (null != aclBuilder_) {
+                aclBuilder_.addMessage(index, builderForValue.build());
+            } else {
+                ensureAclIsMutable();
+                acl_.add(index, builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setUpdateStorageClassTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != updateStorageClassTimeBuilder_) {
+                updateStorageClassTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                updateStorageClassTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. Number of underlying components that make up this object. Components are
+         * accumulated by compose operations.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @param value The componentCount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setComponentCount(int value) {
+            componentCount_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Output only. Content-Length of the object data in bytes, matching
+         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @param value The size to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSize(long value) {
+            size_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the owner field is set.
+         */
+        public boolean hasOwner() {
+            return null != ownerBuilder_ || null != owner_;
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        public Builder putAllMetadata(java.util.Map<java.lang.String, java.lang.String> values) {
+            internalGetMutableMetadata().getMutableMap().putAll(values);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        public Builder putMetadata(java.lang.String key, java.lang.String value) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            if (null == value) {
+                throw new NullPointerException("map value");
+            }
+            internalGetMutableMetadata().getMutableMap().put(key, value);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public ObjectChecksumsOrBuilder getChecksumsOrBuilder() {
+            if (null == checksumsBuilder_) {
+                return null == checksums_ ? ObjectChecksums.getDefaultInstance() : checksums_;
+            } else {
+                return checksumsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return The createTime.
+         */
+        public com.google.protobuf.Timestamp getCreateTime() {
+            if (null != createTimeBuilder_) {
+                return createTimeBuilder_.getMessage();
+            } else {
+                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public Builder mergeCustomTime(com.google.protobuf.Timestamp value) {
+            if (null != customTimeBuilder_) {
+                customTimeBuilder_.mergeFrom(value);
+            } else {
+                if (null == customTime_) {
+                    customTime_ = value;
+                } else {
+                    customTime_ = com.google.protobuf.Timestamp.newBuilder(customTime_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder setAcl(int index, ObjectAccessControl value) {
+            if (null != aclBuilder_) {
+                aclBuilder_.setMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureAclIsMutable();
+                acl_.set(index, value);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public com.google.protobuf.Timestamp.Builder getRetentionExpireTimeBuilder() {
+            onChanged();
+            return getRetentionExpireTimeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public Builder clearRetentionExpireTime() {
+            if (null != retentionExpireTimeBuilder_) {
+                retentionExpireTime_ = null;
+                retentionExpireTimeBuilder_ = null;
+            } else {
+                retentionExpireTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearDeleteTime() {
+            if (null != deleteTimeBuilder_) {
+                deleteTime_ = null;
+                deleteTimeBuilder_ = null;
+            } else {
+                deleteTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The version of the metadata for this generation of this object. Used for
+         * preconditions and for detecting changes in metadata. A metageneration
+         * number is only meaningful in the context of a particular generation of a
+         * particular object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return The metageneration.
+         */
+        @java.lang.Override
+        public long getMetageneration() {
+            return metageneration_;
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getUpdateStorageClassTimeOrBuilder() {
+            if (null == updateStorageClassTimeBuilder_) {
+                return null == updateStorageClassTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateStorageClassTime_;
+            } else {
+                return updateStorageClassTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        public int getMetadataCount() {
+            return internalGetMetadata().getMap().size();
+        }
+
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the updateTime field is set.
+         */
+        public boolean hasUpdateTime() {
+            return null != updateTimeBuilder_ || null != updateTime_;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing this object.
+         * </pre>
+         *
+         * <code>
+         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucket(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing this object.
+         * </pre>
+         *
+         * <code>
+         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearBucket() {
+            bucket_ = getDefaultInstance().getBucket();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public Builder setRetentionExpireTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != retentionExpireTimeBuilder_) {
+                retentionExpireTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                retentionExpireTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setUpdateStorageClassTime(com.google.protobuf.Timestamp value) {
+            if (null != updateStorageClassTimeBuilder_) {
+                updateStorageClassTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                updateStorageClassTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public com.google.protobuf.Timestamp.Builder getCustomTimeBuilder() {
+            onChanged();
+            return getCustomTimeFieldBuilder().getBuilder();
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<ObjectAccessControl, ObjectAccessControl.Builder, ObjectAccessControlOrBuilder> getAclFieldBuilder() {
+            if (null == aclBuilder_) {
+                aclBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<ObjectAccessControl, ObjectAccessControl.Builder, ObjectAccessControlOrBuilder>(acl_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
+                acl_ = null;
+            }
+            return aclBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Output only. Content-Length of the object data in bytes, matching
+         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearSize() {
+            size_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Object getDefaultInstanceForType() {
+            return Object.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.Timestamp.Builder getUpdateStorageClassTimeBuilder() {
+            onChanged();
+            return getUpdateStorageClassTimeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing this object.
+         * </pre>
+         *
+         * <code>
+         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bucket.
+         */
+        public java.lang.String getBucket() {
+            java.lang.Object ref = bucket_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                bucket_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder clearAcl() {
+            if (null != aclBuilder_) {
+                aclBuilder_.clear();
+            } else {
+                acl_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00000001);
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Object buildPartial() {
+            Object result = new Object(this);
             int from_bitField0_ = bitField0_;
             int to_bitField0_ = 0;
             result.name_ = name_;
@@ -2292,24 +1934,383 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
             return result;
         }
 
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public ObjectChecksums.Builder getChecksumsBuilder() {
+            onChanged();
+            return getChecksumsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * User-provided metadata, in key/value pairs.
+         * </pre>
+         *
+         * <code>map&lt;string, string&gt; metadata = 22;</code>
+         */
+        @java.lang.Override
+        public boolean containsMetadata(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            return internalGetMetadata().getMap().containsKey(key);
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         *
+         * @return The retentionExpireTime.
+         */
+        public com.google.protobuf.Timestamp getRetentionExpireTime() {
+            if (null != retentionExpireTimeBuilder_) {
+                return retentionExpireTimeBuilder_.getMessage();
+            } else {
+                return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Whether an object is under event-based hold.
+         * An event-based hold is a way to force the retention of an object until
+         * after some event occurs. Once the hold is released by explicitly setting
+         * this field to false, the object will become subject to any bucket-level
+         * retention policy, except that the retention duration will be calculated
+         * from the time the event based hold was lifted, rather than the time the
+         * object was created.
+         * In a WriteObject request, not setting this field implies that the value
+         * should be taken from the parent bucket's "default_event_based_hold" field.
+         * In a response, this field will always be set to true or false.
+         * </pre>
+         *
+         * <code>optional bool event_based_hold = 23;</code>
+         *
+         * @param value The eventBasedHold to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEventBasedHold(boolean value) {
+            bitField0_ |= 0x00000004;
+            eventBasedHold_ = value;
+            onChanged();
+            return this;
+        }
+
         @java.lang.Override
         public Builder clone() {
             return super.clone();
         }
 
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public ObjectAccessControl.Builder addAclBuilder() {
+            return getAclFieldBuilder().addBuilder(ObjectAccessControl.getDefaultInstance());
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        public Builder mergeCustomerEncryption(CustomerEncryption value) {
+            if (null != customerEncryptionBuilder_) {
+                customerEncryptionBuilder_.mergeFrom(value);
+            } else {
+                if (null == customerEncryption_) {
+                    customerEncryption_ = value;
+                } else {
+                    customerEncryption_ = CustomerEncryption.newBuilder(customerEncryption_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
         }
 
         @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_Object_fieldAccessorTable.ensureFieldAccessorsInitialized(Object.class, Builder.class);
         }
 
+        /**
+         * <pre>
+         * Storage class of the object.
+         * </pre>
+         *
+         * <code>string storage_class = 5;</code>
+         *
+         * @return The bytes for storageClass.
+         */
+        public com.google.protobuf.ByteString getStorageClassBytes() {
+            java.lang.Object ref = storageClass_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                storageClass_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getDeleteTimeOrBuilder() {
+            if (null == deleteTimeBuilder_) {
+                return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
+            } else {
+                return deleteTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder addAcl(ObjectAccessControl.Builder builderForValue) {
+            if (null != aclBuilder_) {
+                aclBuilder_.addMessage(builderForValue.build());
+            } else {
+                ensureAclIsMutable();
+                acl_.add(builderForValue.build());
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of this object. Nearly any sequence of unicode characters is
+         * valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearName() {
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        public Builder setRetentionExpireTime(com.google.protobuf.Timestamp value) {
+            if (null != retentionExpireTimeBuilder_) {
+                retentionExpireTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                retentionExpireTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Content-Language of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+         * </pre>
+         *
+         * <code>string content_language = 11;</code>
+         *
+         * @return The contentLanguage.
+         */
+        public java.lang.String getContentLanguage() {
+            java.lang.Object ref = contentLanguage_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                contentLanguage_ = s;
+                return s;
+            }
+        }
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMetadata() {
+            if (null == metadata_) {
+                return com.google.protobuf.MapField.emptyMapField(MetadataDefaultEntryHolder.defaultEntry);
+            }
+            return metadata_;
+        }
+
+        // Construct using com.google.storage.v2.Object.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public Builder setCustomTime(com.google.protobuf.Timestamp value) {
+            if (null != customTimeBuilder_) {
+                customTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                customTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The content generation of this object. Used for object versioning.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return The generation.
+         */
         @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
+        public long getGeneration() {
+            return generation_;
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setCreateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != createTimeBuilder_) {
+                createTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                createTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Cache-Control directive for the object data, matching
+         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+         * If omitted, and the object is accessible to all anonymous users, the
+         * default will be `public, max-age=3600`.
+         * </pre>
+         *
+         * <code>string cache_control = 9;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCacheControl() {
+            cacheControl_ = getDefaultInstance().getCacheControl();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public Builder addAcl(ObjectAccessControl value) {
+            if (null != aclBuilder_) {
+                aclBuilder_.addMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureAclIsMutable();
+                acl_.add(value);
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the createTime field is set.
+         */
+        public boolean hasCreateTime() {
+            return null != createTimeBuilder_ || null != createTime_;
         }
 
         @java.lang.Override
@@ -2317,23 +2318,829 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
             return super.setRepeatedField(field, index, value);
         }
 
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return The checksums.
+         */
+        public ObjectChecksums getChecksums() {
+            if (null != checksumsBuilder_) {
+                return checksumsBuilder_.getMessage();
+            } else {
+                return null == checksums_ ? ObjectChecksums.getDefaultInstance() : checksums_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearUpdateStorageClassTime() {
+            if (null != updateStorageClassTimeBuilder_) {
+                updateStorageClassTime_ = null;
+                updateStorageClassTimeBuilder_ = null;
+            } else {
+                updateStorageClassTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * Use alternate mutation accessors instead.
+         */
+        @java.lang.Deprecated
+        public java.util.Map<java.lang.String, java.lang.String> getMutableMetadata() {
+            return internalGetMutableMetadata().getMutableMap();
+        }
+
+        public Builder clearMetadata() {
+            internalGetMutableMetadata().getMutableMap().clear();
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The bytes for kmsKey.
+         */
+        public com.google.protobuf.ByteString getKmsKeyBytes() {
+            java.lang.Object ref = kmsKey_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                kmsKey_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setOwner(Owner value) {
+            if (null != ownerBuilder_) {
+                ownerBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                owner_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
         @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of this object. Nearly any sequence of unicode characters is
+         * valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @param value The name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setName(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            name_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The version of the metadata for this generation of this object. Used for
+         * preconditions and for detecting changes in metadata. A metageneration
+         * number is only meaningful in the context of a particular generation of a
+         * particular object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearMetageneration() {
+            metageneration_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateTimeFieldBuilder() {
+            if (null == updateTimeBuilder_) {
+                updateTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateTime(), getParentForChildren(), isClean());
+                updateTime_ = null;
+            }
+            return updateTimeBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
+            if (null == updateTimeBuilder_) {
+                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
+            } else {
+                return updateTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearUpdateTime() {
+            if (null != updateTimeBuilder_) {
+                updateTime_ = null;
+                updateTimeBuilder_ = null;
+            } else {
+                updateTime_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Content-Type of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+         * If an object is stored without a Content-Type, it is served as
+         * `application/octet-stream`.
+         * </pre>
+         *
+         * <code>string content_type = 13;</code>
+         *
+         * @param value The bytes for contentType to set.
+         * @return This builder for chaining.
+         */
+        public Builder setContentTypeBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            contentType_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of this object. Nearly any sequence of unicode characters is
+         * valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return The name.
+         */
+        public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                name_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Content-Disposition of the object data, matching
+         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
+         * </pre>
+         *
+         * <code>string content_disposition = 8;</code>
+         *
+         * @param value The contentDisposition to set.
+         * @return This builder for chaining.
+         */
+        public Builder setContentDisposition(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            contentDisposition_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getRetentionExpireTimeFieldBuilder() {
+            if (null == retentionExpireTimeBuilder_) {
+                retentionExpireTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getRetentionExpireTime(), getParentForChildren(), isClean());
+                retentionExpireTime_ = null;
+            }
+            return retentionExpireTimeBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.Timestamp.Builder getDeleteTimeBuilder() {
+            onChanged();
+            return getDeleteTimeFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Output only. The creation time of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
+            if (null == createTimeBuilder_) {
+                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+            } else {
+                return createTimeBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. Content-Length of the object data in bytes, matching
+         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return The size.
+         */
+        @java.lang.Override
+        public long getSize() {
+            return size_;
         }
 
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.Object)) {
+            if (!(other instanceof Object)) {
                 super.mergeFrom(other);
                 return this;
             } else {
-                return mergeFrom((com.google.storage.v2.Object) other);
+                return mergeFrom((Object) other);
             }
         }
 
-        public Builder mergeFrom(com.google.storage.v2.Object other) {
-            if (com.google.storage.v2.Object.getDefaultInstance() == other)
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getAclFieldBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of this object. Nearly any sequence of unicode characters is
+         * valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return The bytes for name.
+         */
+        public com.google.protobuf.ByteString getNameBytes() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                name_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Content-Language of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+         * </pre>
+         *
+         * <code>string content_language = 11;</code>
+         *
+         * @param value The bytes for contentLanguage to set.
+         * @return This builder for chaining.
+         */
+        public Builder setContentLanguageBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            contentLanguage_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. Number of underlying components that make up this object. Components are
+         * accumulated by compose operations.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @return The componentCount.
+         */
+        @java.lang.Override
+        public int getComponentCount() {
+            return componentCount_;
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        public Builder setCustomerEncryption(CustomerEncryption.Builder builderForValue) {
+            if (null != customerEncryptionBuilder_) {
+                customerEncryptionBuilder_.setMessage(builderForValue.build());
+            } else {
+                customerEncryption_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Storage class of the object.
+         * </pre>
+         *
+         * <code>string storage_class = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearStorageClass() {
+            storageClass_ = getDefaultInstance().getStorageClass();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Whether an object is under event-based hold.
+         * An event-based hold is a way to force the retention of an object until
+         * after some event occurs. Once the hold is released by explicitly setting
+         * this field to false, the object will become subject to any bucket-level
+         * retention policy, except that the retention duration will be calculated
+         * from the time the event based hold was lifted, rather than the time the
+         * object was created.
+         * In a WriteObject request, not setting this field implies that the value
+         * should be taken from the parent bucket's "default_event_based_hold" field.
+         * In a response, this field will always be set to true or false.
+         * </pre>
+         *
+         * <code>optional bool event_based_hold = 23;</code>
+         *
+         * @return Whether the eventBasedHold field is set.
+         */
+        @java.lang.Override
+        public boolean hasEventBasedHold() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            Object parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (Object) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A server-determined value that specifies the earliest time that the
+         * object's retention period expires.
+         * Note 1: This field is not provided for objects with an active event-based
+         * hold, since retention expiration is unknown until the hold is removed.
+         * Note 2: This value can be provided even when temporary hold is set (so that
+         * the user can reason about policy without having to first unset the
+         * temporary hold).
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+         *
+         * @return Whether the retentionExpireTime field is set.
+         */
+        public boolean hasRetentionExpireTime() {
+            return null != retentionExpireTimeBuilder_ || null != retentionExpireTime_;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public int getAclCount() {
+            if (null != aclBuilder_) {
+                return aclBuilder_.getCount();
+            } else {
+                return acl_.size();
+            }
+        }
+
+        /**
+         * <pre>
+         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+         * such a key.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         */
+        public CustomerEncryptionOrBuilder getCustomerEncryptionOrBuilder() {
+            if (null == customerEncryptionBuilder_) {
+                return null == customerEncryption_ ? CustomerEncryption.getDefaultInstance() : customerEncryption_;
+            } else {
+                return customerEncryptionBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return The deleteTime.
+         */
+        public com.google.protobuf.Timestamp getDeleteTime() {
+            if (null != deleteTimeBuilder_) {
+                return deleteTimeBuilder_.getMessage();
+            } else {
+                return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A user-specified timestamp set on an object.
+         * </pre>
+         *
+         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         */
+        public Builder setCustomTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != customTimeBuilder_) {
+                customTimeBuilder_.setMessage(builderForValue.build());
+            } else {
+                customTime_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The version of the metadata for this generation of this object. Used for
+         * preconditions and for detecting changes in metadata. A metageneration
+         * number is only meaningful in the context of a particular generation of a
+         * particular object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         *
+         * @param value The metageneration to set.
+         * @return This builder for chaining.
+         */
+        public Builder setMetageneration(long value) {
+            metageneration_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Content-Encoding of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+         * </pre>
+         *
+         * <code>string content_encoding = 7;</code>
+         *
+         * @return The bytes for contentEncoding.
+         */
+        public com.google.protobuf.ByteString getContentEncodingBytes() {
+            java.lang.Object ref = contentEncoding_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                contentEncoding_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Whether an object is under temporary hold. While this flag is set to true,
+         * the object is protected against deletion and overwrites.  A common use case
+         * of this flag is regulatory investigations where objects need to be retained
+         * while the investigation is ongoing. Note that unlike event-based hold,
+         * temporary hold does not impact retention expiration time of an object.
+         * </pre>
+         *
+         * <code>bool temporary_hold = 20;</code>
+         *
+         * @param value The temporaryHold to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTemporaryHold(boolean value) {
+            temporaryHold_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public ObjectAccessControlOrBuilder getAclOrBuilder(int index) {
+            if (null != aclBuilder_) {
+                return aclBuilder_.getMessageOrBuilder(index);
+            } else {
+                return acl_.get(index);
+            }
+        }
+
+        /**
+         * <pre>
+         * Content-Type of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+         * If an object is stored without a Content-Type, it is served as
+         * `application/octet-stream`.
+         * </pre>
+         *
+         * <code>string content_type = 13;</code>
+         *
+         * @param value The contentType to set.
+         * @return This builder for chaining.
+         */
+        public Builder setContentType(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            contentType_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Output only. The time at which the object's storage class was last changed. When the
+         * object is initially created, it will be set to time_created.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the updateStorageClassTime field is set.
+         */
+        public boolean hasUpdateStorageClassTime() {
+            return null != updateStorageClassTimeBuilder_ || null != updateStorageClassTime_;
+        }
+
+        /**
+         * <pre>
+         * Content-Language of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+         * </pre>
+         *
+         * <code>string content_language = 11;</code>
+         *
+         * @return The bytes for contentLanguage.
+         */
+        public com.google.protobuf.ByteString getContentLanguageBytes() {
+            java.lang.Object ref = contentLanguage_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                contentLanguage_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearOwner() {
+            if (null != ownerBuilder_) {
+                owner_ = null;
+                ownerBuilder_ = null;
+            } else {
+                owner_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Content-Disposition of the object data, matching
+         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
+         * </pre>
+         *
+         * <code>string content_disposition = 8;</code>
+         *
+         * @return The contentDisposition.
+         */
+        public java.lang.String getContentDisposition() {
+            java.lang.Object ref = contentDisposition_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                contentDisposition_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
+         * </pre>
+         *
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         */
+        public ObjectAccessControl.Builder addAclBuilder(int index) {
+            return getAclFieldBuilder().addBuilder(index, ObjectAccessControl.getDefaultInstance());
+        }
+
+        /**
+         * <pre>
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * </pre>
+         *
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder setUpdateTime(com.google.protobuf.Timestamp value) {
+            if (null != updateTimeBuilder_) {
+                updateTimeBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                updateTime_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        public Builder mergeFrom(Object other) {
+            if (Object.getDefaultInstance() == other)
                 return this;
             if (!other.getName().isEmpty()) {
                 name_ = other.name_;
@@ -2446,279 +3253,96 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
             return this;
         }
 
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.Object parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.Object) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        public Builder clearChecksums() {
+            if (null != checksumsBuilder_) {
+                checksums_ = null;
+                checksumsBuilder_ = null;
+            } else {
+                checksums_ = null;
+                onChanged();
             }
             return this;
         }
 
-        private int bitField0_;
-
-        private java.lang.Object name_ = "";
+        /**
+         * <pre>
+         * Whether an object is under temporary hold. While this flag is set to true,
+         * the object is protected against deletion and overwrites.  A common use case
+         * of this flag is regulatory investigations where objects need to be retained
+         * while the investigation is ongoing. Note that unlike event-based hold,
+         * temporary hold does not impact retention expiration time of an object.
+         * </pre>
+         *
+         * <code>bool temporary_hold = 20;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearTemporaryHold() {
+            temporaryHold_ = false;
+            onChanged();
+            return this;
+        }
 
         /**
          * <pre>
-         * Immutable. The name of this object. Nearly any sequence of unicode characters is
-         * valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
+         * Content-Type of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+         * If an object is stored without a Content-Type, it is served as
+         * `application/octet-stream`.
          * </pre>
          *
-         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         * <code>string content_type = 13;</code>
          *
-         * @return The name.
+         * @return The contentType.
          */
-        public java.lang.String getName() {
-            java.lang.Object ref = name_;
+        public java.lang.String getContentType() {
+            java.lang.Object ref = contentType_;
             if ((ref instanceof java.lang.String)) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
-                name_ = s;
+                contentType_ = s;
                 return s;
             }
         }
 
         /**
          * <pre>
-         * Immutable. The name of this object. Nearly any sequence of unicode characters is
-         * valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
+         * Content-Disposition of the object data, matching
+         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
          * </pre>
          *
-         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         * <code>string content_disposition = 8;</code>
          *
-         * @return The bytes for name.
-         */
-        public com.google.protobuf.ByteString getNameBytes() {
-            java.lang.Object ref = name_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                name_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of this object. Nearly any sequence of unicode characters is
-         * valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @param value The name to set.
          * @return This builder for chaining.
          */
-        public Builder setName(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            name_ = value;
+        public Builder clearContentDisposition() {
+            contentDisposition_ = getDefaultInstance().getContentDisposition();
             onChanged();
             return this;
         }
 
         /**
          * <pre>
-         * Immutable. The name of this object. Nearly any sequence of unicode characters is
-         * valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
          * </pre>
          *
-         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return This builder for chaining.
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
          */
-        public Builder clearName() {
-            name_ = getDefaultInstance().getName();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of this object. Nearly any sequence of unicode characters is
-         * valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @param value The bytes for name to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNameBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            name_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object bucket_ = "";
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing this object.
-         * </pre>
-         *
-         * <code>
-         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bucket.
-         */
-        public java.lang.String getBucket() {
-            java.lang.Object ref = bucket_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                bucket_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing this object.
-         * </pre>
-         *
-         * <code>
-         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for bucket.
-         */
-        public com.google.protobuf.ByteString getBucketBytes() {
-            java.lang.Object ref = bucket_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                bucket_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing this object.
-         * </pre>
-         *
-         * <code>
-         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucket(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing this object.
-         * </pre>
-         *
-         * <code>
-         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearBucket() {
-            bucket_ = getDefaultInstance().getBucket();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing this object.
-         * </pre>
-         *
-         * <code>
-         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long generation_;
-
-        /**
-         * <pre>
-         * Immutable. The content generation of this object. Used for object versioning.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return The generation.
-         */
-        @java.lang.Override
-        public long getGeneration() {
-            return generation_;
+        public ObjectAccessControl.Builder getAclBuilder(int index) {
+            return getAclFieldBuilder().getBuilder(index);
         }
 
         /**
@@ -2741,279 +3365,39 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Immutable. The content generation of this object. Used for object versioning.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Output only. Hashes for the data part of this object.
          * </pre>
          *
-         * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return This builder for chaining.
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
          */
-        public Builder clearGeneration() {
-            generation_ = 0L;
-            onChanged();
+        public Builder setChecksums(ObjectChecksums.Builder builderForValue) {
+            if (null != checksumsBuilder_) {
+                checksumsBuilder_.setMessage(builderForValue.build());
+            } else {
+                checksums_ = builderForValue.build();
+                onChanged();
+            }
             return this;
         }
 
-        private long metageneration_;
-
         /**
          * <pre>
-         * Output only. The version of the metadata for this generation of this object. Used for
-         * preconditions and for detecting changes in metadata. A metageneration
-         * number is only meaningful in the context of a particular generation of a
-         * particular object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Whether an object is under temporary hold. While this flag is set to true,
+         * the object is protected against deletion and overwrites.  A common use case
+         * of this flag is regulatory investigations where objects need to be retained
+         * while the investigation is ongoing. Note that unlike event-based hold,
+         * temporary hold does not impact retention expiration time of an object.
          * </pre>
          *
-         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+         * <code>bool temporary_hold = 20;</code>
          *
-         * @return The metageneration.
+         * @return The temporaryHold.
          */
         @java.lang.Override
-        public long getMetageneration() {
-            return metageneration_;
-        }
-
-        /**
-         * <pre>
-         * Output only. The version of the metadata for this generation of this object. Used for
-         * preconditions and for detecting changes in metadata. A metageneration
-         * number is only meaningful in the context of a particular generation of a
-         * particular object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @param value The metageneration to set.
-         * @return This builder for chaining.
-         */
-        public Builder setMetageneration(long value) {
-            metageneration_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The version of the metadata for this generation of this object. Used for
-         * preconditions and for detecting changes in metadata. A metageneration
-         * number is only meaningful in the context of a particular generation of a
-         * particular object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearMetageneration() {
-            metageneration_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object storageClass_ = "";
-
-        /**
-         * <pre>
-         * Storage class of the object.
-         * </pre>
-         *
-         * <code>string storage_class = 5;</code>
-         *
-         * @return The storageClass.
-         */
-        public java.lang.String getStorageClass() {
-            java.lang.Object ref = storageClass_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                storageClass_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Storage class of the object.
-         * </pre>
-         *
-         * <code>string storage_class = 5;</code>
-         *
-         * @return The bytes for storageClass.
-         */
-        public com.google.protobuf.ByteString getStorageClassBytes() {
-            java.lang.Object ref = storageClass_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                storageClass_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Storage class of the object.
-         * </pre>
-         *
-         * <code>string storage_class = 5;</code>
-         *
-         * @param value The storageClass to set.
-         * @return This builder for chaining.
-         */
-        public Builder setStorageClass(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            storageClass_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Storage class of the object.
-         * </pre>
-         *
-         * <code>string storage_class = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearStorageClass() {
-            storageClass_ = getDefaultInstance().getStorageClass();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Storage class of the object.
-         * </pre>
-         *
-         * <code>string storage_class = 5;</code>
-         *
-         * @param value The bytes for storageClass to set.
-         * @return This builder for chaining.
-         */
-        public Builder setStorageClassBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            storageClass_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long size_;
-
-        /**
-         * <pre>
-         * Output only. Content-Length of the object data in bytes, matching
-         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @return The size.
-         */
-        @java.lang.Override
-        public long getSize() {
-            return size_;
-        }
-
-        /**
-         * <pre>
-         * Output only. Content-Length of the object data in bytes, matching
-         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @param value The size to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSize(long value) {
-            size_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. Content-Length of the object data in bytes, matching
-         * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearSize() {
-            size_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object contentEncoding_ = "";
-
-        /**
-         * <pre>
-         * Content-Encoding of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-         * </pre>
-         *
-         * <code>string content_encoding = 7;</code>
-         *
-         * @return The contentEncoding.
-         */
-        public java.lang.String getContentEncoding() {
-            java.lang.Object ref = contentEncoding_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                contentEncoding_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Encoding of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-         * </pre>
-         *
-         * <code>string content_encoding = 7;</code>
-         *
-         * @return The bytes for contentEncoding.
-         */
-        public com.google.protobuf.ByteString getContentEncodingBytes() {
-            java.lang.Object ref = contentEncoding_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                contentEncoding_ = b;
-                return b;
-            }
+        public boolean getTemporaryHold() {
+            return temporaryHold_;
         }
 
         /**
@@ -3033,488 +3417,6 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
             }
             contentEncoding_ = value;
             onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Encoding of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-         * </pre>
-         *
-         * <code>string content_encoding = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearContentEncoding() {
-            contentEncoding_ = getDefaultInstance().getContentEncoding();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Encoding of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
-         * </pre>
-         *
-         * <code>string content_encoding = 7;</code>
-         *
-         * @param value The bytes for contentEncoding to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentEncodingBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            contentEncoding_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object contentDisposition_ = "";
-
-        /**
-         * <pre>
-         * Content-Disposition of the object data, matching
-         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-         * </pre>
-         *
-         * <code>string content_disposition = 8;</code>
-         *
-         * @return The contentDisposition.
-         */
-        public java.lang.String getContentDisposition() {
-            java.lang.Object ref = contentDisposition_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                contentDisposition_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Disposition of the object data, matching
-         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-         * </pre>
-         *
-         * <code>string content_disposition = 8;</code>
-         *
-         * @return The bytes for contentDisposition.
-         */
-        public com.google.protobuf.ByteString getContentDispositionBytes() {
-            java.lang.Object ref = contentDisposition_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                contentDisposition_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Disposition of the object data, matching
-         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-         * </pre>
-         *
-         * <code>string content_disposition = 8;</code>
-         *
-         * @param value The contentDisposition to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentDisposition(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            contentDisposition_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Disposition of the object data, matching
-         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-         * </pre>
-         *
-         * <code>string content_disposition = 8;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearContentDisposition() {
-            contentDisposition_ = getDefaultInstance().getContentDisposition();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Disposition of the object data, matching
-         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
-         * </pre>
-         *
-         * <code>string content_disposition = 8;</code>
-         *
-         * @param value The bytes for contentDisposition to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentDispositionBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            contentDisposition_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object cacheControl_ = "";
-
-        /**
-         * <pre>
-         * Cache-Control directive for the object data, matching
-         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-         * If omitted, and the object is accessible to all anonymous users, the
-         * default will be `public, max-age=3600`.
-         * </pre>
-         *
-         * <code>string cache_control = 9;</code>
-         *
-         * @return The cacheControl.
-         */
-        public java.lang.String getCacheControl() {
-            java.lang.Object ref = cacheControl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                cacheControl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Cache-Control directive for the object data, matching
-         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-         * If omitted, and the object is accessible to all anonymous users, the
-         * default will be `public, max-age=3600`.
-         * </pre>
-         *
-         * <code>string cache_control = 9;</code>
-         *
-         * @return The bytes for cacheControl.
-         */
-        public com.google.protobuf.ByteString getCacheControlBytes() {
-            java.lang.Object ref = cacheControl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                cacheControl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Cache-Control directive for the object data, matching
-         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-         * If omitted, and the object is accessible to all anonymous users, the
-         * default will be `public, max-age=3600`.
-         * </pre>
-         *
-         * <code>string cache_control = 9;</code>
-         *
-         * @param value The cacheControl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCacheControl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            cacheControl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Cache-Control directive for the object data, matching
-         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-         * If omitted, and the object is accessible to all anonymous users, the
-         * default will be `public, max-age=3600`.
-         * </pre>
-         *
-         * <code>string cache_control = 9;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCacheControl() {
-            cacheControl_ = getDefaultInstance().getCacheControl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Cache-Control directive for the object data, matching
-         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
-         * If omitted, and the object is accessible to all anonymous users, the
-         * default will be `public, max-age=3600`.
-         * </pre>
-         *
-         * <code>string cache_control = 9;</code>
-         *
-         * @param value The bytes for cacheControl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCacheControlBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            cacheControl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.util.List<com.google.storage.v2.ObjectAccessControl> acl_ = java.util.Collections.emptyList();
-
-        private void ensureAclIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000001))) {
-                acl_ = new java.util.ArrayList<com.google.storage.v2.ObjectAccessControl>(acl_);
-                bitField0_ |= 0x00000001;
-            }
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ObjectAccessControl, com.google.storage.v2.ObjectAccessControl.Builder, com.google.storage.v2.ObjectAccessControlOrBuilder> aclBuilder_;
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public java.util.List<com.google.storage.v2.ObjectAccessControl> getAclList() {
-            if (null != aclBuilder_) {
-                return aclBuilder_.getMessageList();
-            } else {
-                return java.util.Collections.unmodifiableList(acl_);
-            }
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public int getAclCount() {
-            if (null != aclBuilder_) {
-                return aclBuilder_.getCount();
-            } else {
-                return acl_.size();
-            }
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public com.google.storage.v2.ObjectAccessControl getAcl(int index) {
-            if (null != aclBuilder_) {
-                return aclBuilder_.getMessage(index);
-            } else {
-                return acl_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder setAcl(int index, com.google.storage.v2.ObjectAccessControl value) {
-            if (null != aclBuilder_) {
-                aclBuilder_.setMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureAclIsMutable();
-                acl_.set(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder setAcl(int index, com.google.storage.v2.ObjectAccessControl.Builder builderForValue) {
-            if (null != aclBuilder_) {
-                aclBuilder_.setMessage(index, builderForValue.build());
-            } else {
-                ensureAclIsMutable();
-                acl_.set(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder addAcl(com.google.storage.v2.ObjectAccessControl value) {
-            if (null != aclBuilder_) {
-                aclBuilder_.addMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureAclIsMutable();
-                acl_.add(value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder addAcl(int index, com.google.storage.v2.ObjectAccessControl value) {
-            if (null != aclBuilder_) {
-                aclBuilder_.addMessage(index, value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                ensureAclIsMutable();
-                acl_.add(index, value);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder addAcl(com.google.storage.v2.ObjectAccessControl.Builder builderForValue) {
-            if (null != aclBuilder_) {
-                aclBuilder_.addMessage(builderForValue.build());
-            } else {
-                ensureAclIsMutable();
-                acl_.add(builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder addAcl(int index, com.google.storage.v2.ObjectAccessControl.Builder builderForValue) {
-            if (null != aclBuilder_) {
-                aclBuilder_.addMessage(index, builderForValue.build());
-            } else {
-                ensureAclIsMutable();
-                acl_.add(index, builderForValue.build());
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder addAllAcl(java.lang.Iterable<? extends com.google.storage.v2.ObjectAccessControl> values) {
-            if (null != aclBuilder_) {
-                aclBuilder_.addAllMessages(values);
-            } else {
-                ensureAclIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, acl_);
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public Builder clearAcl() {
-            if (null != aclBuilder_) {
-                aclBuilder_.clear();
-            } else {
-                acl_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000001);
-                onChanged();
-            }
             return this;
         }
 
@@ -3540,161 +3442,17 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
          */
-        public com.google.storage.v2.ObjectAccessControl.Builder getAclBuilder(int index) {
-            return getAclFieldBuilder().getBuilder(index);
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public com.google.storage.v2.ObjectAccessControlOrBuilder getAclOrBuilder(int index) {
-            if (null != aclBuilder_) {
-                return aclBuilder_.getMessageOrBuilder(index);
-            } else {
-                return acl_.get(index);
-            }
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public java.util.List<? extends com.google.storage.v2.ObjectAccessControlOrBuilder> getAclOrBuilderList() {
-            if (null == aclBuilder_) {
-                return java.util.Collections.unmodifiableList(acl_);
-            } else {
-                return aclBuilder_.getMessageOrBuilderList();
-            }
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public com.google.storage.v2.ObjectAccessControl.Builder addAclBuilder() {
-            return getAclFieldBuilder().addBuilder(com.google.storage.v2.ObjectAccessControl.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public com.google.storage.v2.ObjectAccessControl.Builder addAclBuilder(int index) {
-            return getAclFieldBuilder().addBuilder(index, com.google.storage.v2.ObjectAccessControl.getDefaultInstance());
-        }
-
-        /**
-         * <pre>
-         * Access controls on the object.
-         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
-         * bucket, requests to set, read, or modify acl is an error.
-         * </pre>
-         *
-         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
-         */
-        public java.util.List<com.google.storage.v2.ObjectAccessControl.Builder> getAclBuilderList() {
-            return getAclFieldBuilder().getBuilderList();
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ObjectAccessControl, com.google.storage.v2.ObjectAccessControl.Builder, com.google.storage.v2.ObjectAccessControlOrBuilder> getAclFieldBuilder() {
-            if (null == aclBuilder_) {
-                aclBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<com.google.storage.v2.ObjectAccessControl, com.google.storage.v2.ObjectAccessControl.Builder, com.google.storage.v2.ObjectAccessControlOrBuilder>(acl_, (0 != (bitField0_ & 0x00000001)), getParentForChildren(), isClean());
-                acl_ = null;
-            }
-            return aclBuilder_;
-        }
-
-        private java.lang.Object contentLanguage_ = "";
-
-        /**
-         * <pre>
-         * Content-Language of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
-         * </pre>
-         *
-         * <code>string content_language = 11;</code>
-         *
-         * @return The contentLanguage.
-         */
-        public java.lang.String getContentLanguage() {
-            java.lang.Object ref = contentLanguage_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                contentLanguage_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Language of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
-         * </pre>
-         *
-         * <code>string content_language = 11;</code>
-         *
-         * @return The bytes for contentLanguage.
-         */
-        public com.google.protobuf.ByteString getContentLanguageBytes() {
-            java.lang.Object ref = contentLanguage_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                contentLanguage_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Language of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
-         * </pre>
-         *
-         * <code>string content_language = 11;</code>
-         *
-         * @param value The contentLanguage to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentLanguage(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            contentLanguage_ = value;
+        public Owner.Builder getOwnerBuilder() {
             onChanged();
-            return this;
+            return getOwnerFieldBuilder().getBuilder();
         }
 
         /**
@@ -3715,67 +3473,45 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Content-Language of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
-         * <code>string content_language = 11;</code>
+         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Owner, Owner.Builder, OwnerOrBuilder> getOwnerFieldBuilder() {
+            if (null == ownerBuilder_) {
+                ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Owner, Owner.Builder, OwnerOrBuilder>(getOwner(), getParentForChildren(), isClean());
+                owner_ = null;
+            }
+            return ownerBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Whether an object is under event-based hold.
+         * An event-based hold is a way to force the retention of an object until
+         * after some event occurs. Once the hold is released by explicitly setting
+         * this field to false, the object will become subject to any bucket-level
+         * retention policy, except that the retention duration will be calculated
+         * from the time the event based hold was lifted, rather than the time the
+         * object was created.
+         * In a WriteObject request, not setting this field implies that the value
+         * should be taken from the parent bucket's "default_event_based_hold" field.
+         * In a response, this field will always be set to true or false.
+         * </pre>
          *
-         * @param value The bytes for contentLanguage to set.
+         * <code>optional bool event_based_hold = 23;</code>
+         *
          * @return This builder for chaining.
          */
-        public Builder setContentLanguageBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            contentLanguage_ = value;
+        public Builder clearEventBasedHold() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            eventBasedHold_ = false;
             onChanged();
             return this;
-        }
-
-        private com.google.protobuf.Timestamp deleteTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> deleteTimeBuilder_;
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return Whether the deleteTime field is set.
-         */
-        public boolean hasDeleteTime() {
-            return null != deleteTimeBuilder_ || null != deleteTime_;
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return The deleteTime.
-         */
-        public com.google.protobuf.Timestamp getDeleteTime() {
-            if (null != deleteTimeBuilder_) {
-                return deleteTimeBuilder_.getMessage();
-            } else {
-                return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
-            }
         }
 
         /**
@@ -3805,528 +3541,6 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setDeleteTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != deleteTimeBuilder_) {
-                deleteTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                deleteTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder mergeDeleteTime(com.google.protobuf.Timestamp value) {
-            if (null != deleteTimeBuilder_) {
-                deleteTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == deleteTime_) {
-                    deleteTime_ = value;
-                } else {
-                    deleteTime_ = com.google.protobuf.Timestamp.newBuilder(deleteTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder clearDeleteTime() {
-            if (null != deleteTimeBuilder_) {
-                deleteTime_ = null;
-                deleteTimeBuilder_ = null;
-            } else {
-                deleteTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.Timestamp.Builder getDeleteTimeBuilder() {
-            onChanged();
-            return getDeleteTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getDeleteTimeOrBuilder() {
-            if (null == deleteTimeBuilder_) {
-                return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
-            } else {
-                return deleteTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The deletion time of the object. Will be returned if and only if this
-         * version of the object has been deleted.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getDeleteTimeFieldBuilder() {
-            if (null == deleteTimeBuilder_) {
-                deleteTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getDeleteTime(), getParentForChildren(), isClean());
-                deleteTime_ = null;
-            }
-            return deleteTimeBuilder_;
-        }
-
-        private java.lang.Object contentType_ = "";
-
-        /**
-         * <pre>
-         * Content-Type of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-         * If an object is stored without a Content-Type, it is served as
-         * `application/octet-stream`.
-         * </pre>
-         *
-         * <code>string content_type = 13;</code>
-         *
-         * @return The contentType.
-         */
-        public java.lang.String getContentType() {
-            java.lang.Object ref = contentType_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                contentType_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Type of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-         * If an object is stored without a Content-Type, it is served as
-         * `application/octet-stream`.
-         * </pre>
-         *
-         * <code>string content_type = 13;</code>
-         *
-         * @return The bytes for contentType.
-         */
-        public com.google.protobuf.ByteString getContentTypeBytes() {
-            java.lang.Object ref = contentType_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                contentType_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Content-Type of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-         * If an object is stored without a Content-Type, it is served as
-         * `application/octet-stream`.
-         * </pre>
-         *
-         * <code>string content_type = 13;</code>
-         *
-         * @param value The contentType to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentType(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            contentType_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Type of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-         * If an object is stored without a Content-Type, it is served as
-         * `application/octet-stream`.
-         * </pre>
-         *
-         * <code>string content_type = 13;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearContentType() {
-            contentType_ = getDefaultInstance().getContentType();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Content-Type of the object data, matching
-         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
-         * If an object is stored without a Content-Type, it is served as
-         * `application/octet-stream`.
-         * </pre>
-         *
-         * <code>string content_type = 13;</code>
-         *
-         * @param value The bytes for contentType to set.
-         * @return This builder for chaining.
-         */
-        public Builder setContentTypeBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            contentType_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.Timestamp createTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> createTimeBuilder_;
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return Whether the createTime field is set.
-         */
-        public boolean hasCreateTime() {
-            return null != createTimeBuilder_ || null != createTime_;
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return The createTime.
-         */
-        public com.google.protobuf.Timestamp getCreateTime() {
-            if (null != createTimeBuilder_) {
-                return createTimeBuilder_.getMessage();
-            } else {
-                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setCreateTime(com.google.protobuf.Timestamp value) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                createTime_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setCreateTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                createTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder mergeCreateTime(com.google.protobuf.Timestamp value) {
-            if (null != createTimeBuilder_) {
-                createTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == createTime_) {
-                    createTime_ = value;
-                } else {
-                    createTime_ = com.google.protobuf.Timestamp.newBuilder(createTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder clearCreateTime() {
-            if (null != createTimeBuilder_) {
-                createTime_ = null;
-                createTimeBuilder_ = null;
-            } else {
-                createTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.Timestamp.Builder getCreateTimeBuilder() {
-            onChanged();
-            return getCreateTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
-            if (null == createTimeBuilder_) {
-                return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
-            } else {
-                return createTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The creation time of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCreateTimeFieldBuilder() {
-            if (null == createTimeBuilder_) {
-                createTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCreateTime(), getParentForChildren(), isClean());
-                createTime_ = null;
-            }
-            return createTimeBuilder_;
-        }
-
-        private int componentCount_;
-
-        /**
-         * <pre>
-         * Output only. Number of underlying components that make up this object. Components are
-         * accumulated by compose operations.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @return The componentCount.
-         */
-        @java.lang.Override
-        public int getComponentCount() {
-            return componentCount_;
-        }
-
-        /**
-         * <pre>
-         * Output only. Number of underlying components that make up this object. Components are
-         * accumulated by compose operations.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @param value The componentCount to set.
-         * @return This builder for chaining.
-         */
-        public Builder setComponentCount(int value) {
-            componentCount_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. Number of underlying components that make up this object. Components are
-         * accumulated by compose operations.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearComponentCount() {
-            componentCount_ = 0;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.ObjectChecksums checksums_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> checksumsBuilder_;
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return Whether the checksums field is set.
-         */
-        public boolean hasChecksums() {
-            return null != checksumsBuilder_ || null != checksums_;
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return The checksums.
-         */
-        public com.google.storage.v2.ObjectChecksums getChecksums() {
-            if (null != checksumsBuilder_) {
-                return checksumsBuilder_.getMessage();
-            } else {
-                return null == checksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : checksums_;
-            }
-        }
-
-        /**
-         * <pre>
          * Output only. Hashes for the data part of this object.
          * </pre>
          *
@@ -4334,55 +3548,14 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
          * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
          */
-        public Builder setChecksums(com.google.storage.v2.ObjectChecksums value) {
-            if (null != checksumsBuilder_) {
-                checksumsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                checksums_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setChecksums(com.google.storage.v2.ObjectChecksums.Builder builderForValue) {
-            if (null != checksumsBuilder_) {
-                checksumsBuilder_.setMessage(builderForValue.build());
-            } else {
-                checksums_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder mergeChecksums(com.google.storage.v2.ObjectChecksums value) {
+        public Builder mergeChecksums(ObjectChecksums value) {
             if (null != checksumsBuilder_) {
                 checksumsBuilder_.mergeFrom(value);
             } else {
                 if (null == checksums_) {
                     checksums_ = value;
                 } else {
-                    checksums_ = com.google.storage.v2.ObjectChecksums.newBuilder(checksums_).mergeFrom(value).buildPartial();
+                    checksums_ = ObjectChecksums.newBuilder(checksums_).mergeFrom(value).buildPartial();
                 }
                 onChanged();
             }
@@ -4391,135 +3564,21 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. Hashes for the data part of this object.
+         * Content-Language of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
          * </pre>
          *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
+         * <code>string content_language = 11;</code>
+         *
+         * @param value The contentLanguage to set.
+         * @return This builder for chaining.
          */
-        public Builder clearChecksums() {
-            if (null != checksumsBuilder_) {
-                checksums_ = null;
-                checksumsBuilder_ = null;
-            } else {
-                checksums_ = null;
-                onChanged();
+        public Builder setContentLanguage(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
             }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.storage.v2.ObjectChecksums.Builder getChecksumsBuilder() {
+            contentLanguage_ = value;
             onChanged();
-            return getChecksumsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.storage.v2.ObjectChecksumsOrBuilder getChecksumsOrBuilder() {
-            if (null == checksumsBuilder_) {
-                return null == checksums_ ? com.google.storage.v2.ObjectChecksums.getDefaultInstance() : checksums_;
-            } else {
-                return checksumsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. Hashes for the data part of this object.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder> getChecksumsFieldBuilder() {
-            if (null == checksumsBuilder_) {
-                checksumsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ObjectChecksums, com.google.storage.v2.ObjectChecksums.Builder, com.google.storage.v2.ObjectChecksumsOrBuilder>(getChecksums(), getParentForChildren(), isClean());
-                checksums_ = null;
-            }
-            return checksumsBuilder_;
-        }
-
-        private com.google.protobuf.Timestamp updateTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateTimeBuilder_;
-
-        /**
-         * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return Whether the updateTime field is set.
-         */
-        public boolean hasUpdateTime() {
-            return null != updateTimeBuilder_ || null != updateTime_;
-        }
-
-        /**
-         * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return The updateTime.
-         */
-        public com.google.protobuf.Timestamp getUpdateTime() {
-            if (null != updateTimeBuilder_) {
-                return updateTimeBuilder_.getMessage();
-            } else {
-                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setUpdateTime(com.google.protobuf.Timestamp value) {
-            if (null != updateTimeBuilder_) {
-                updateTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                updateTime_ = value;
-                onChanged();
-            }
             return this;
         }
 
@@ -4546,49 +3605,22 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. The modification time of the object metadata.
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
          * Attempting to set or update this field will result in a
          * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
          * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
          */
-        public Builder mergeUpdateTime(com.google.protobuf.Timestamp value) {
-            if (null != updateTimeBuilder_) {
-                updateTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == updateTime_) {
-                    updateTime_ = value;
-                } else {
-                    updateTime_ = com.google.protobuf.Timestamp.newBuilder(updateTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getDeleteTimeFieldBuilder() {
+            if (null == deleteTimeBuilder_) {
+                deleteTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getDeleteTime(), getParentForChildren(), isClean());
+                deleteTime_ = null;
             }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder clearUpdateTime() {
-            if (null != updateTimeBuilder_) {
-                updateTime_ = null;
-                updateTimeBuilder_ = null;
-            } else {
-                updateTime_ = null;
-                onChanged();
-            }
-            return this;
+            return deleteTimeBuilder_;
         }
 
         /**
@@ -4609,164 +3641,41 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Content-Encoding of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
          * </pre>
          *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
-            if (null == updateTimeBuilder_) {
-                return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
-            } else {
-                return updateTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The modification time of the object metadata.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
+         * <code>string content_encoding = 7;</code>
          *
-         * <code>
-         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateTimeFieldBuilder() {
-            if (null == updateTimeBuilder_) {
-                updateTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateTime(), getParentForChildren(), isClean());
-                updateTime_ = null;
-            }
-            return updateTimeBuilder_;
-        }
-
-        private java.lang.Object kmsKey_ = "";
-
-        /**
-         * <pre>
-         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The kmsKey.
-         */
-        public java.lang.String getKmsKey() {
-            java.lang.Object ref = kmsKey_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                kmsKey_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The bytes for kmsKey.
-         */
-        public com.google.protobuf.ByteString getKmsKeyBytes() {
-            java.lang.Object ref = kmsKey_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                kmsKey_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The kmsKey to set.
          * @return This builder for chaining.
          */
-        public Builder setKmsKey(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            kmsKey_ = value;
+        public Builder clearContentEncoding() {
+            contentEncoding_ = getDefaultInstance().getContentEncoding();
             onChanged();
             return this;
         }
 
         /**
          * <pre>
-         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-         * such a key.
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
          * </pre>
          *
-         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return This builder for chaining.
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
          */
-        public Builder clearKmsKey() {
-            kmsKey_ = getDefaultInstance().getKmsKey();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Cloud KMS Key used to encrypt this object, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The bytes for kmsKey to set.
-         * @return This builder for chaining.
-         */
-        public Builder setKmsKeyBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
+        public Builder addAcl(int index, ObjectAccessControl value) {
+            if (null != aclBuilder_) {
+                aclBuilder_.addMessage(index, value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                ensureAclIsMutable();
+                acl_.add(index, value);
+                onChanged();
             }
-            checkByteStringIsUtf8(value);
-            kmsKey_ = value;
-            onChanged();
             return this;
-        }
-
-        private com.google.protobuf.Timestamp updateStorageClassTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updateStorageClassTimeBuilder_;
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return Whether the updateStorageClassTime field is set.
-         */
-        public boolean hasUpdateStorageClassTime() {
-            return null != updateStorageClassTimeBuilder_ || null != updateStorageClassTime_;
         }
 
         /**
@@ -4803,53 +3712,6 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
          * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
          */
-        public Builder setUpdateStorageClassTime(com.google.protobuf.Timestamp value) {
-            if (null != updateStorageClassTimeBuilder_) {
-                updateStorageClassTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                updateStorageClassTime_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder setUpdateStorageClassTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != updateStorageClassTimeBuilder_) {
-                updateStorageClassTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                updateStorageClassTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
         public Builder mergeUpdateStorageClassTime(com.google.protobuf.Timestamp value) {
             if (null != updateStorageClassTimeBuilder_) {
                 updateStorageClassTimeBuilder_.mergeFrom(value);
@@ -4866,660 +3728,86 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Cache-Control directive for the object data, matching
+         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+         * If omitted, and the object is accessible to all anonymous users, the
+         * default will be `public, max-age=3600`.
          * </pre>
          *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public Builder clearUpdateStorageClassTime() {
-            if (null != updateStorageClassTimeBuilder_) {
-                updateStorageClassTime_ = null;
-                updateStorageClassTimeBuilder_ = null;
-            } else {
-                updateStorageClassTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
+         * <code>string cache_control = 9;</code>
          *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.Timestamp.Builder getUpdateStorageClassTimeBuilder() {
-            onChanged();
-            return getUpdateStorageClassTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getUpdateStorageClassTimeOrBuilder() {
-            if (null == updateStorageClassTimeBuilder_) {
-                return null == updateStorageClassTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateStorageClassTime_;
-            } else {
-                return updateStorageClassTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The time at which the object's storage class was last changed. When the
-         * object is initially created, it will be set to time_created.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>
-         * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getUpdateStorageClassTimeFieldBuilder() {
-            if (null == updateStorageClassTimeBuilder_) {
-                updateStorageClassTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getUpdateStorageClassTime(), getParentForChildren(), isClean());
-                updateStorageClassTime_ = null;
-            }
-            return updateStorageClassTimeBuilder_;
-        }
-
-        private boolean temporaryHold_;
-
-        /**
-         * <pre>
-         * Whether an object is under temporary hold. While this flag is set to true,
-         * the object is protected against deletion and overwrites.  A common use case
-         * of this flag is regulatory investigations where objects need to be retained
-         * while the investigation is ongoing. Note that unlike event-based hold,
-         * temporary hold does not impact retention expiration time of an object.
-         * </pre>
-         *
-         * <code>bool temporary_hold = 20;</code>
-         *
-         * @return The temporaryHold.
-         */
-        @java.lang.Override
-        public boolean getTemporaryHold() {
-            return temporaryHold_;
-        }
-
-        /**
-         * <pre>
-         * Whether an object is under temporary hold. While this flag is set to true,
-         * the object is protected against deletion and overwrites.  A common use case
-         * of this flag is regulatory investigations where objects need to be retained
-         * while the investigation is ongoing. Note that unlike event-based hold,
-         * temporary hold does not impact retention expiration time of an object.
-         * </pre>
-         *
-         * <code>bool temporary_hold = 20;</code>
-         *
-         * @param value The temporaryHold to set.
+         * @param value The bytes for cacheControl to set.
          * @return This builder for chaining.
          */
-        public Builder setTemporaryHold(boolean value) {
-            temporaryHold_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Whether an object is under temporary hold. While this flag is set to true,
-         * the object is protected against deletion and overwrites.  A common use case
-         * of this flag is regulatory investigations where objects need to be retained
-         * while the investigation is ongoing. Note that unlike event-based hold,
-         * temporary hold does not impact retention expiration time of an object.
-         * </pre>
-         *
-         * <code>bool temporary_hold = 20;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearTemporaryHold() {
-            temporaryHold_ = false;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.Timestamp retentionExpireTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> retentionExpireTimeBuilder_;
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         *
-         * @return Whether the retentionExpireTime field is set.
-         */
-        public boolean hasRetentionExpireTime() {
-            return null != retentionExpireTimeBuilder_ || null != retentionExpireTime_;
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         *
-         * @return The retentionExpireTime.
-         */
-        public com.google.protobuf.Timestamp getRetentionExpireTime() {
-            if (null != retentionExpireTimeBuilder_) {
-                return retentionExpireTimeBuilder_.getMessage();
-            } else {
-                return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public Builder setRetentionExpireTime(com.google.protobuf.Timestamp value) {
-            if (null != retentionExpireTimeBuilder_) {
-                retentionExpireTimeBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                retentionExpireTime_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public Builder setRetentionExpireTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != retentionExpireTimeBuilder_) {
-                retentionExpireTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                retentionExpireTime_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public Builder mergeRetentionExpireTime(com.google.protobuf.Timestamp value) {
-            if (null != retentionExpireTimeBuilder_) {
-                retentionExpireTimeBuilder_.mergeFrom(value);
-            } else {
-                if (null == retentionExpireTime_) {
-                    retentionExpireTime_ = value;
-                } else {
-                    retentionExpireTime_ = com.google.protobuf.Timestamp.newBuilder(retentionExpireTime_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public Builder clearRetentionExpireTime() {
-            if (null != retentionExpireTimeBuilder_) {
-                retentionExpireTime_ = null;
-                retentionExpireTimeBuilder_ = null;
-            } else {
-                retentionExpireTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public com.google.protobuf.Timestamp.Builder getRetentionExpireTimeBuilder() {
-            onChanged();
-            return getRetentionExpireTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getRetentionExpireTimeOrBuilder() {
-            if (null == retentionExpireTimeBuilder_) {
-                return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
-            } else {
-                return retentionExpireTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A server-determined value that specifies the earliest time that the
-         * object's retention period expires.
-         * Note 1: This field is not provided for objects with an active event-based
-         * hold, since retention expiration is unknown until the hold is removed.
-         * Note 2: This value can be provided even when temporary hold is set (so that
-         * the user can reason about policy without having to first unset the
-         * temporary hold).
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getRetentionExpireTimeFieldBuilder() {
-            if (null == retentionExpireTimeBuilder_) {
-                retentionExpireTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getRetentionExpireTime(), getParentForChildren(), isClean());
-                retentionExpireTime_ = null;
-            }
-            return retentionExpireTimeBuilder_;
-        }
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> metadata_;
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMetadata() {
-            if (null == metadata_) {
-                return com.google.protobuf.MapField.emptyMapField(MetadataDefaultEntryHolder.defaultEntry);
-            }
-            return metadata_;
-        }
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMutableMetadata() {
-            onChanged();
-            ;
-            if (null == metadata_) {
-                metadata_ = com.google.protobuf.MapField.newMapField(MetadataDefaultEntryHolder.defaultEntry);
-            }
-            if (!metadata_.isMutable()) {
-                metadata_ = metadata_.copy();
-            }
-            return metadata_;
-        }
-
-        public int getMetadataCount() {
-            return internalGetMetadata().getMap().size();
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        @java.lang.Override
-        public boolean containsMetadata(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            return internalGetMetadata().getMap().containsKey(key);
-        }
-
-        /**
-         * Use {@link #getMetadataMap()} instead.
-         */
-        @java.lang.Override
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
-            return getMetadataMap();
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        @java.lang.Override
-        public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
-            return internalGetMetadata().getMap();
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        @java.lang.Override
-        public java.lang.String getMetadataOrDefault(java.lang.String key, java.lang.String defaultValue) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
-            return map.containsKey(key) ? map.get(key) : defaultValue;
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        @java.lang.Override
-        public java.lang.String getMetadataOrThrow(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
-            if (!map.containsKey(key)) {
-                throw new java.lang.IllegalArgumentException();
-            }
-            return map.get(key);
-        }
-
-        public Builder clearMetadata() {
-            internalGetMutableMetadata().getMutableMap().clear();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        public Builder removeMetadata(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            internalGetMutableMetadata().getMutableMap().remove(key);
-            return this;
-        }
-
-        /**
-         * Use alternate mutation accessors instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.String> getMutableMetadata() {
-            return internalGetMutableMetadata().getMutableMap();
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        public Builder putMetadata(java.lang.String key, java.lang.String value) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
+        public Builder setCacheControlBytes(com.google.protobuf.ByteString value) {
             if (null == value) {
-                throw new NullPointerException("map value");
+                throw new NullPointerException();
             }
-            internalGetMutableMetadata().getMutableMap().put(key, value);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * User-provided metadata, in key/value pairs.
-         * </pre>
-         *
-         * <code>map&lt;string, string&gt; metadata = 22;</code>
-         */
-        public Builder putAllMetadata(java.util.Map<java.lang.String, java.lang.String> values) {
-            internalGetMutableMetadata().getMutableMap().putAll(values);
-            return this;
-        }
-
-        private boolean eventBasedHold_;
-
-        /**
-         * <pre>
-         * Whether an object is under event-based hold.
-         * An event-based hold is a way to force the retention of an object until
-         * after some event occurs. Once the hold is released by explicitly setting
-         * this field to false, the object will become subject to any bucket-level
-         * retention policy, except that the retention duration will be calculated
-         * from the time the event based hold was lifted, rather than the time the
-         * object was created.
-         * In a WriteObject request, not setting this field implies that the value
-         * should be taken from the parent bucket's "default_event_based_hold" field.
-         * In a response, this field will always be set to true or false.
-         * </pre>
-         *
-         * <code>optional bool event_based_hold = 23;</code>
-         *
-         * @return Whether the eventBasedHold field is set.
-         */
-        @java.lang.Override
-        public boolean hasEventBasedHold() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Whether an object is under event-based hold.
-         * An event-based hold is a way to force the retention of an object until
-         * after some event occurs. Once the hold is released by explicitly setting
-         * this field to false, the object will become subject to any bucket-level
-         * retention policy, except that the retention duration will be calculated
-         * from the time the event based hold was lifted, rather than the time the
-         * object was created.
-         * In a WriteObject request, not setting this field implies that the value
-         * should be taken from the parent bucket's "default_event_based_hold" field.
-         * In a response, this field will always be set to true or false.
-         * </pre>
-         *
-         * <code>optional bool event_based_hold = 23;</code>
-         *
-         * @return The eventBasedHold.
-         */
-        @java.lang.Override
-        public boolean getEventBasedHold() {
-            return eventBasedHold_;
-        }
-
-        /**
-         * <pre>
-         * Whether an object is under event-based hold.
-         * An event-based hold is a way to force the retention of an object until
-         * after some event occurs. Once the hold is released by explicitly setting
-         * this field to false, the object will become subject to any bucket-level
-         * retention policy, except that the retention duration will be calculated
-         * from the time the event based hold was lifted, rather than the time the
-         * object was created.
-         * In a WriteObject request, not setting this field implies that the value
-         * should be taken from the parent bucket's "default_event_based_hold" field.
-         * In a response, this field will always be set to true or false.
-         * </pre>
-         *
-         * <code>optional bool event_based_hold = 23;</code>
-         *
-         * @param value The eventBasedHold to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEventBasedHold(boolean value) {
-            bitField0_ |= 0x00000004;
-            eventBasedHold_ = value;
+            checkByteStringIsUtf8(value);
+            cacheControl_ = value;
             onChanged();
             return this;
         }
 
         /**
          * <pre>
-         * Whether an object is under event-based hold.
-         * An event-based hold is a way to force the retention of an object until
-         * after some event occurs. Once the hold is released by explicitly setting
-         * this field to false, the object will become subject to any bucket-level
-         * retention policy, except that the retention duration will be calculated
-         * from the time the event based hold was lifted, rather than the time the
-         * object was created.
-         * In a WriteObject request, not setting this field implies that the value
-         * should be taken from the parent bucket's "default_event_based_hold" field.
-         * In a response, this field will always be set to true or false.
+         * Content-Disposition of the object data, matching
+         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
          * </pre>
          *
-         * <code>optional bool event_based_hold = 23;</code>
+         * <code>string content_disposition = 8;</code>
          *
+         * @param value The bytes for contentDisposition to set.
          * @return This builder for chaining.
          */
-        public Builder clearEventBasedHold() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            eventBasedHold_ = false;
+        public Builder setContentDispositionBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            contentDisposition_ = value;
             onChanged();
             return this;
         }
 
-        private com.google.storage.v2.Owner owner_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Owner, com.google.storage.v2.Owner.Builder, com.google.storage.v2.OwnerOrBuilder> ownerBuilder_;
-
         /**
          * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Output only. The creation time of the object.
          * Attempting to set or update this field will result in a
          * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * <code>
+         * .google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
-         *
-         * @return Whether the owner field is set.
          */
-        public boolean hasOwner() {
-            return null != ownerBuilder_ || null != owner_;
+        public com.google.protobuf.Timestamp.Builder getCreateTimeBuilder() {
+            onChanged();
+            return getCreateTimeFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
         }
 
         /**
          * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
+         * Output only. The deletion time of the object. Will be returned if and only if this
+         * version of the object has been deleted.
          * Attempting to set or update this field will result in a
          * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         *
-         * @return The owner.
-         */
-        public com.google.storage.v2.Owner getOwner() {
-            if (null != ownerBuilder_) {
-                return ownerBuilder_.getMessage();
-            } else {
-                return null == owner_ ? com.google.storage.v2.Owner.getDefaultInstance() : owner_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * <code>
+         * .google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
          */
-        public Builder setOwner(com.google.storage.v2.Owner value) {
-            if (null != ownerBuilder_) {
-                ownerBuilder_.setMessage(value);
+        public Builder setDeleteTime(com.google.protobuf.Timestamp.Builder builderForValue) {
+            if (null != deleteTimeBuilder_) {
+                deleteTimeBuilder_.setMessage(builderForValue.build());
             } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                owner_ = value;
+                deleteTime_ = builderForValue.build();
                 onChanged();
             }
             return this;
@@ -5535,7 +3823,7 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
          * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
          * </code>
          */
-        public Builder setOwner(com.google.storage.v2.Owner.Builder builderForValue) {
+        public Builder setOwner(Owner.Builder builderForValue) {
             if (null != ownerBuilder_) {
                 ownerBuilder_.setMessage(builderForValue.build());
             } else {
@@ -5547,154 +3835,46 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Content-Type of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+         * If an object is stored without a Content-Type, it is served as
+         * `application/octet-stream`.
          * </pre>
          *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
+         * <code>string content_type = 13;</code>
+         *
+         * @return The bytes for contentType.
          */
-        public Builder mergeOwner(com.google.storage.v2.Owner value) {
-            if (null != ownerBuilder_) {
-                ownerBuilder_.mergeFrom(value);
+        public com.google.protobuf.ByteString getContentTypeBytes() {
+            java.lang.Object ref = contentType_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
             } else {
-                if (null == owner_) {
-                    owner_ = value;
-                } else {
-                    owner_ = com.google.storage.v2.Owner.newBuilder(owner_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                contentType_ = b;
+                return b;
             }
-            return this;
         }
 
         /**
          * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+         * Cache-Control directive for the object data, matching
+         * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+         * If omitted, and the object is accessible to all anonymous users, the
+         * default will be `public, max-age=3600`.
          * </pre>
          *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
+         * <code>string cache_control = 9;</code>
+         *
+         * @param value The cacheControl to set.
+         * @return This builder for chaining.
          */
-        public Builder clearOwner() {
-            if (null != ownerBuilder_) {
-                owner_ = null;
-                ownerBuilder_ = null;
-            } else {
-                owner_ = null;
-                onChanged();
+        public Builder setCacheControl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
             }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.storage.v2.Owner.Builder getOwnerBuilder() {
+            cacheControl_ = value;
             onChanged();
-            return getOwnerFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        public com.google.storage.v2.OwnerOrBuilder getOwnerOrBuilder() {
-            if (null == ownerBuilder_) {
-                return null == owner_ ? com.google.storage.v2.Owner.getDefaultInstance() : owner_;
-            } else {
-                return ownerBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Output only. The owner of the object. This will always be the uploader of the object.
-         * Attempting to set or update this field will result in a
-         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
-         * </pre>
-         *
-         * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Owner, com.google.storage.v2.Owner.Builder, com.google.storage.v2.OwnerOrBuilder> getOwnerFieldBuilder() {
-            if (null == ownerBuilder_) {
-                ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Owner, com.google.storage.v2.Owner.Builder, com.google.storage.v2.OwnerOrBuilder>(getOwner(), getParentForChildren(), isClean());
-                owner_ = null;
-            }
-            return ownerBuilder_;
-        }
-
-        private com.google.storage.v2.CustomerEncryption customerEncryption_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CustomerEncryption, com.google.storage.v2.CustomerEncryption.Builder, com.google.storage.v2.CustomerEncryptionOrBuilder> customerEncryptionBuilder_;
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         *
-         * @return Whether the customerEncryption field is set.
-         */
-        public boolean hasCustomerEncryption() {
-            return null != customerEncryptionBuilder_ || null != customerEncryption_;
-        }
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         *
-         * @return The customerEncryption.
-         */
-        public com.google.storage.v2.CustomerEncryption getCustomerEncryption() {
-            if (null != customerEncryptionBuilder_) {
-                return customerEncryptionBuilder_.getMessage();
-            } else {
-                return null == customerEncryption_ ? com.google.storage.v2.CustomerEncryption.getDefaultInstance() : customerEncryption_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         */
-        public Builder setCustomerEncryption(com.google.storage.v2.CustomerEncryption value) {
-            if (null != customerEncryptionBuilder_) {
-                customerEncryptionBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                customerEncryption_ = value;
-                onChanged();
-            }
             return this;
         }
 
@@ -5706,151 +3886,102 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
          *
          * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
          */
-        public Builder setCustomerEncryption(com.google.storage.v2.CustomerEncryption.Builder builderForValue) {
-            if (null != customerEncryptionBuilder_) {
-                customerEncryptionBuilder_.setMessage(builderForValue.build());
-            } else {
-                customerEncryption_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         */
-        public Builder mergeCustomerEncryption(com.google.storage.v2.CustomerEncryption value) {
-            if (null != customerEncryptionBuilder_) {
-                customerEncryptionBuilder_.mergeFrom(value);
-            } else {
-                if (null == customerEncryption_) {
-                    customerEncryption_ = value;
-                } else {
-                    customerEncryption_ = com.google.storage.v2.CustomerEncryption.newBuilder(customerEncryption_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         */
-        public Builder clearCustomerEncryption() {
-            if (null != customerEncryptionBuilder_) {
-                customerEncryption_ = null;
-                customerEncryptionBuilder_ = null;
-            } else {
-                customerEncryption_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
-         */
-        public com.google.storage.v2.CustomerEncryption.Builder getCustomerEncryptionBuilder() {
+        public CustomerEncryption.Builder getCustomerEncryptionBuilder() {
             onChanged();
             return getCustomerEncryptionFieldBuilder().getBuilder();
         }
 
         /**
          * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
+         * Content-Encoding of the object data, matching
+         * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
          * </pre>
          *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         * <code>string content_encoding = 7;</code>
+         *
+         * @param value The bytes for contentEncoding to set.
+         * @return This builder for chaining.
          */
-        public com.google.storage.v2.CustomerEncryptionOrBuilder getCustomerEncryptionOrBuilder() {
-            if (null == customerEncryptionBuilder_) {
-                return null == customerEncryption_ ? com.google.storage.v2.CustomerEncryption.getDefaultInstance() : customerEncryption_;
+        public Builder setContentEncodingBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            contentEncoding_ = value;
+            onChanged();
+            return this;
+        }
+
+        @SuppressWarnings({ "rawtypes" })
+        protected com.google.protobuf.MapField internalGetMapField(int number) {
+            switch(number) {
+                case 22:
+                    return internalGetMetadata();
+                default:
+                    throw new RuntimeException("Invalid map field number: " + number);
+            }
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing this object.
+         * </pre>
+         *
+         * <code>
+         * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for bucket.
+         */
+        public com.google.protobuf.ByteString getBucketBytes() {
+            java.lang.Object ref = bucket_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
             } else {
-                return customerEncryptionBuilder_.getMessageOrBuilder();
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                bucket_ = b;
+                return b;
             }
         }
 
         /**
          * <pre>
-         * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
-         * such a key.
+         * Content-Disposition of the object data, matching
+         * [https://tools.ietf.org/html/rfc6266][RFC 6266].
          * </pre>
          *
-         * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+         * <code>string content_disposition = 8;</code>
+         *
+         * @return The bytes for contentDisposition.
          */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CustomerEncryption, com.google.storage.v2.CustomerEncryption.Builder, com.google.storage.v2.CustomerEncryptionOrBuilder> getCustomerEncryptionFieldBuilder() {
-            if (null == customerEncryptionBuilder_) {
-                customerEncryptionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CustomerEncryption, com.google.storage.v2.CustomerEncryption.Builder, com.google.storage.v2.CustomerEncryptionOrBuilder>(getCustomerEncryption(), getParentForChildren(), isClean());
-                customerEncryption_ = null;
-            }
-            return customerEncryptionBuilder_;
-        }
-
-        private com.google.protobuf.Timestamp customTime_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> customTimeBuilder_;
-
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         *
-         * @return Whether the customTime field is set.
-         */
-        public boolean hasCustomTime() {
-            return null != customTimeBuilder_ || null != customTime_;
-        }
-
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         *
-         * @return The customTime.
-         */
-        public com.google.protobuf.Timestamp getCustomTime() {
-            if (null != customTimeBuilder_) {
-                return customTimeBuilder_.getMessage();
+        public com.google.protobuf.ByteString getContentDispositionBytes() {
+            java.lang.Object ref = contentDisposition_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
             } else {
-                return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                contentDisposition_ = b;
+                return b;
             }
         }
 
         /**
          * <pre>
-         * A user-specified timestamp set on an object.
+         * Output only. Hashes for the data part of this object.
          * </pre>
          *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
          */
-        public Builder setCustomTime(com.google.protobuf.Timestamp value) {
-            if (null != customTimeBuilder_) {
-                customTimeBuilder_.setMessage(value);
+        public Builder setChecksums(ObjectChecksums value) {
+            if (null != checksumsBuilder_) {
+                checksumsBuilder_.setMessage(value);
             } else {
                 if (null == value) {
                     throw new NullPointerException();
                 }
-                customTime_ = value;
+                checksums_ = value;
                 onChanged();
             }
             return this;
@@ -5858,112 +3989,76 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
         /**
          * <pre>
-         * A user-specified timestamp set on an object.
+         * Access controls on the object.
+         * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+         * bucket, requests to set, read, or modify acl is an error.
          * </pre>
          *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
          */
-        public Builder setCustomTime(com.google.protobuf.Timestamp.Builder builderForValue) {
-            if (null != customTimeBuilder_) {
-                customTimeBuilder_.setMessage(builderForValue.build());
-            } else {
-                customTime_ = builderForValue.build();
-                onChanged();
+        public java.util.List<ObjectAccessControl.Builder> getAclBuilderList() {
+            return getAclFieldBuilder().getBuilderList();
+        }
+
+        /**
+         * <pre>
+         * Output only. Hashes for the data part of this object.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
+         *
+         * @return Whether the checksums field is set.
+         */
+        public boolean hasChecksums() {
+            return null != checksumsBuilder_ || null != checksums_;
+        }
+
+        /**
+         * <pre>
+         * Storage class of the object.
+         * </pre>
+         *
+         * <code>string storage_class = 5;</code>
+         *
+         * @param value The storageClass to set.
+         * @return This builder for chaining.
+         */
+        public Builder setStorageClass(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
             }
+            storageClass_ = value;
+            onChanged();
             return this;
         }
 
         /**
          * <pre>
-         * A user-specified timestamp set on an object.
+         * Output only. The modification time of the object metadata.
+         * Attempting to set or update this field will result in a
+         * [FieldViolation][google.rpc.BadRequest.FieldViolation].
          * </pre>
          *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+         * <code>
+         * .google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+         * </code>
          */
-        public Builder mergeCustomTime(com.google.protobuf.Timestamp value) {
-            if (null != customTimeBuilder_) {
-                customTimeBuilder_.mergeFrom(value);
+        public Builder mergeUpdateTime(com.google.protobuf.Timestamp value) {
+            if (null != updateTimeBuilder_) {
+                updateTimeBuilder_.mergeFrom(value);
             } else {
-                if (null == customTime_) {
-                    customTime_ = value;
+                if (null == updateTime_) {
+                    updateTime_ = value;
                 } else {
-                    customTime_ = com.google.protobuf.Timestamp.newBuilder(customTime_).mergeFrom(value).buildPartial();
+                    updateTime_ = com.google.protobuf.Timestamp.newBuilder(updateTime_).mergeFrom(value).buildPartial();
                 }
                 onChanged();
             }
             return this;
         }
 
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         */
-        public Builder clearCustomTime() {
-            if (null != customTimeBuilder_) {
-                customTime_ = null;
-                customTimeBuilder_ = null;
-            } else {
-                customTime_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         */
-        public com.google.protobuf.Timestamp.Builder getCustomTimeBuilder() {
-            onChanged();
-            return getCustomTimeFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         */
-        public com.google.protobuf.TimestampOrBuilder getCustomTimeOrBuilder() {
-            if (null == customTimeBuilder_) {
-                return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
-            } else {
-                return customTimeBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A user-specified timestamp set on an object.
-         * </pre>
-         *
-         * <code>.google.protobuf.Timestamp custom_time = 26;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> getCustomTimeFieldBuilder() {
-            if (null == customTimeBuilder_) {
-                customTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(getCustomTime(), getParentForChildren(), isClean());
-                customTime_ = null;
-            }
-            return customTimeBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.Object)
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.Object)
@@ -5971,10 +4066,6 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.Object();
-    }
-
-    public static com.google.storage.v2.Object getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<Object> PARSER = new com.google.protobuf.AbstractParser<Object>() {
@@ -5985,8 +4076,488 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
         }
     };
 
-    public static com.google.protobuf.Parser<Object> parser() {
-        return PARSER;
+    /**
+     * <pre>
+     * User-provided metadata, in key/value pairs.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 22;</code>
+     */
+    @java.lang.Override
+    public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
+        return internalGetMetadata().getMap();
+    }
+
+    /**
+     * <pre>
+     * Output only. The creation time of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return The createTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getCreateTime() {
+        return null == createTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : createTime_;
+    }
+
+    public static Object parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Access controls on the object.
+     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+     * bucket, requests to set, read, or modify acl is an error.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+     */
+    @java.lang.Override
+    public int getAclCount() {
+        return acl_.size();
+    }
+
+    /**
+     * <pre>
+     * Content-Language of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+     * </pre>
+     *
+     * <code>string content_language = 11;</code>
+     *
+     * @return The bytes for contentLanguage.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getContentLanguageBytes() {
+        java.lang.Object ref = contentLanguage_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            contentLanguage_ = b;
+            return b;
+        }
+    }
+
+    public int getMetadataCount() {
+        return internalGetMetadata().getMap().size();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new Object();
+    }
+
+    /**
+     * <pre>
+     * User-provided metadata, in key/value pairs.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 22;</code>
+     */
+    @java.lang.Override
+    public boolean containsMetadata(java.lang.String key) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        return internalGetMetadata().getMap().containsKey(key);
+    }
+
+    /**
+     * <pre>
+     * Output only. The creation time of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getCreateTimeOrBuilder() {
+        return getCreateTime();
+    }
+
+    /**
+     * <pre>
+     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+     * such a key.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+     *
+     * @return Whether the customerEncryption field is set.
+     */
+    @java.lang.Override
+    public boolean hasCustomerEncryption() {
+        return null != customerEncryption_;
+    }
+
+    /**
+     * <pre>
+     * Content-Type of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+     * If an object is stored without a Content-Type, it is served as
+     * `application/octet-stream`.
+     * </pre>
+     *
+     * <code>string content_type = 13;</code>
+     *
+     * @return The bytes for contentType.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getContentTypeBytes() {
+        java.lang.Object ref = contentType_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            contentType_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. The time at which the object's storage class was last changed. When the
+     * object is initially created, it will be set to time_created.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>
+     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return The updateStorageClassTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getUpdateStorageClassTime() {
+        return null == updateStorageClassTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateStorageClassTime_;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, bucket_);
+        }
+        if (0L != generation_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, generation_);
+        }
+        if (0L != metageneration_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, metageneration_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(storageClass_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, storageClass_);
+        }
+        if (0L != size_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, size_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentEncoding_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, contentEncoding_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentDisposition_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, contentDisposition_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(cacheControl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, cacheControl_);
+        }
+        int i = 0;
+        while (acl_.size() > i) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, acl_.get(i));
+            i += 1;
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentLanguage_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, contentLanguage_);
+        }
+        if (null != deleteTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(12, getDeleteTime());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, contentType_);
+        }
+        if (null != createTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(14, getCreateTime());
+        }
+        if (0 != componentCount_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt32Size(15, componentCount_);
+        }
+        if (null != checksums_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, getChecksums());
+        }
+        if (null != updateTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(17, getUpdateTime());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, kmsKey_);
+        }
+        if (null != updateStorageClassTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(19, getUpdateStorageClassTime());
+        }
+        if (false != temporaryHold_) {
+            size += com.google.protobuf.CodedOutputStream.computeBoolSize(20, temporaryHold_);
+        }
+        if (null != retentionExpireTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(21, getRetentionExpireTime());
+        }
+        for (java.util.Map.Entry<java.lang.String, java.lang.String> entry : internalGetMetadata().getMap().entrySet()) {
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.String> metadata__ = MetadataDefaultEntryHolder.defaultEntry.newBuilderForType().setKey(entry.getKey()).setValue(entry.getValue()).build();
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(22, metadata__);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeBoolSize(23, eventBasedHold_);
+        }
+        if (null != owner_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(24, getOwner());
+        }
+        if (null != customerEncryption_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(25, getCustomerEncryption());
+        }
+        if (null != customTime_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(26, getCustomTime());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    /**
+     * <pre>
+     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+     * such a key.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+     *
+     * @return The customerEncryption.
+     */
+    @java.lang.Override
+    public CustomerEncryption getCustomerEncryption() {
+        return null == customerEncryption_ ? CustomerEncryption.getDefaultInstance() : customerEncryption_;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
+        hash = (53 * hash) + getBucket().hashCode();
+        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
+        hash = (37 * hash) + METAGENERATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getMetageneration());
+        hash = (37 * hash) + STORAGE_CLASS_FIELD_NUMBER;
+        hash = (53 * hash) + getStorageClass().hashCode();
+        hash = (37 * hash) + SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getSize());
+        hash = (37 * hash) + CONTENT_ENCODING_FIELD_NUMBER;
+        hash = (53 * hash) + getContentEncoding().hashCode();
+        hash = (37 * hash) + CONTENT_DISPOSITION_FIELD_NUMBER;
+        hash = (53 * hash) + getContentDisposition().hashCode();
+        hash = (37 * hash) + CACHE_CONTROL_FIELD_NUMBER;
+        hash = (53 * hash) + getCacheControl().hashCode();
+        if (0 < getAclCount()) {
+            hash = (37 * hash) + ACL_FIELD_NUMBER;
+            hash = (53 * hash) + getAclList().hashCode();
+        }
+        hash = (37 * hash) + CONTENT_LANGUAGE_FIELD_NUMBER;
+        hash = (53 * hash) + getContentLanguage().hashCode();
+        if (hasDeleteTime()) {
+            hash = (37 * hash) + DELETE_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getDeleteTime().hashCode();
+        }
+        hash = (37 * hash) + CONTENT_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + getContentType().hashCode();
+        if (hasCreateTime()) {
+            hash = (37 * hash) + CREATE_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getCreateTime().hashCode();
+        }
+        hash = (37 * hash) + COMPONENT_COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getComponentCount();
+        if (hasChecksums()) {
+            hash = (37 * hash) + CHECKSUMS_FIELD_NUMBER;
+            hash = (53 * hash) + getChecksums().hashCode();
+        }
+        if (hasUpdateTime()) {
+            hash = (37 * hash) + UPDATE_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getUpdateTime().hashCode();
+        }
+        hash = (37 * hash) + KMS_KEY_FIELD_NUMBER;
+        hash = (53 * hash) + getKmsKey().hashCode();
+        if (hasUpdateStorageClassTime()) {
+            hash = (37 * hash) + UPDATE_STORAGE_CLASS_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getUpdateStorageClassTime().hashCode();
+        }
+        hash = (37 * hash) + TEMPORARY_HOLD_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getTemporaryHold());
+        if (hasRetentionExpireTime()) {
+            hash = (37 * hash) + RETENTION_EXPIRE_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getRetentionExpireTime().hashCode();
+        }
+        if (!internalGetMetadata().getMap().isEmpty()) {
+            hash = (37 * hash) + METADATA_FIELD_NUMBER;
+            hash = (53 * hash) + internalGetMetadata().hashCode();
+        }
+        if (hasEventBasedHold()) {
+            hash = (37 * hash) + EVENT_BASED_HOLD_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(getEventBasedHold());
+        }
+        if (hasOwner()) {
+            hash = (37 * hash) + OWNER_FIELD_NUMBER;
+            hash = (53 * hash) + getOwner().hashCode();
+        }
+        if (hasCustomerEncryption()) {
+            hash = (37 * hash) + CUSTOMER_ENCRYPTION_FIELD_NUMBER;
+            hash = (53 * hash) + getCustomerEncryption().hashCode();
+        }
+        if (hasCustomTime()) {
+            hash = (37 * hash) + CUSTOM_TIME_FIELD_NUMBER;
+            hash = (53 * hash) + getCustomTime().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+     * such a key.
+     * </pre>
+     *
+     * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The kmsKey.
+     */
+    @java.lang.Override
+    public java.lang.String getKmsKey() {
+        java.lang.Object ref = kmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            kmsKey_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * A server-determined value that specifies the earliest time that the
+     * object's retention period expires.
+     * Note 1: This field is not provided for objects with an active event-based
+     * hold, since retention expiration is unknown until the hold is removed.
+     * Note 2: This value can be provided even when temporary hold is set (so that
+     * the user can reason about policy without having to first unset the
+     * temporary hold).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+     *
+     * @return Whether the retentionExpireTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasRetentionExpireTime() {
+        return null != retentionExpireTime_;
+    }
+
+    public static Object parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Output only. The deletion time of the object. Will be returned if and only if this
+     * version of the object has been deleted.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return Whether the deleteTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasDeleteTime() {
+        return null != deleteTime_;
+    }
+
+    /**
+     * <pre>
+     * A user-specified timestamp set on an object.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getCustomTimeOrBuilder() {
+        return getCustomTime();
+    }
+
+    /**
+     * <pre>
+     * Output only. The time at which the object's storage class was last changed. When the
+     * object is initially created, it will be set to time_created.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>
+     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getUpdateStorageClassTimeOrBuilder() {
+        return getUpdateStorageClassTime();
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_Object_fieldAccessorTable.ensureFieldAccessorsInitialized(Object.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Whether an object is under event-based hold.
+     * An event-based hold is a way to force the retention of an object until
+     * after some event occurs. Once the hold is released by explicitly setting
+     * this field to false, the object will become subject to any bucket-level
+     * retention policy, except that the retention duration will be calculated
+     * from the time the event based hold was lifted, rather than the time the
+     * object was created.
+     * In a WriteObject request, not setting this field implies that the value
+     * should be taken from the parent bucket's "default_event_based_hold" field.
+     * In a response, this field will always be set to true or false.
+     * </pre>
+     *
+     * <code>optional bool event_based_hold = 23;</code>
+     *
+     * @return Whether the eventBasedHold field is set.
+     */
+    @java.lang.Override
+    public boolean hasEventBasedHold() {
+        return (0 != (bitField0_ & 0x00000001));
     }
 
     @java.lang.Override
@@ -5994,8 +4565,1440 @@ Object extends com.google.protobuf.GeneratedMessageV3 implements ObjectOrBuilder
         return PARSER;
     }
 
+    public static Object parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static Object parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMetadata() {
+        if (null == metadata_) {
+            return com.google.protobuf.MapField.emptyMapField(MetadataDefaultEntryHolder.defaultEntry);
+        }
+        return metadata_;
+    }
+
+    /**
+     * <pre>
+     * Storage class of the object.
+     * </pre>
+     *
+     * <code>string storage_class = 5;</code>
+     *
+     * @return The storageClass.
+     */
     @java.lang.Override
-    public com.google.storage.v2.Object getDefaultInstanceForType() {
+    public java.lang.String getStorageClass() {
+        java.lang.Object ref = storageClass_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            storageClass_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Access controls on the object.
+     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+     * bucket, requests to set, read, or modify acl is an error.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends ObjectAccessControlOrBuilder> getAclOrBuilderList() {
+        return acl_;
+    }
+
+    /**
+     * <pre>
+     * Immutable. The content generation of this object. Used for object versioning.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>int64 generation = 3 [(.google.api.field_behavior) = IMMUTABLE];</code>
+     *
+     * @return The generation.
+     */
+    @java.lang.Override
+    public long getGeneration() {
+        return generation_;
+    }
+
+    public static Object parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Cache-Control directive for the object data, matching
+     * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+     * If omitted, and the object is accessible to all anonymous users, the
+     * default will be `public, max-age=3600`.
+     * </pre>
+     *
+     * <code>string cache_control = 9;</code>
+     *
+     * @return The cacheControl.
+     */
+    @java.lang.Override
+    public java.lang.String getCacheControl() {
+        java.lang.Object ref = cacheControl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            cacheControl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static Builder newBuilder(Object prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * Access controls on the object.
+     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+     * bucket, requests to set, read, or modify acl is an error.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<ObjectAccessControl> getAclList() {
+        return acl_;
+    }
+
+    /**
+     * Use {@link #getMetadataMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getMetadata() {
+        return getMetadataMap();
+    }
+
+    /**
+     * <pre>
+     * A user-specified timestamp set on an object.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+     *
+     * @return Whether the customTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasCustomTime() {
+        return null != customTime_;
+    }
+
+    /**
+     * <pre>
+     * Output only. Hashes for the data part of this object.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return Whether the checksums field is set.
+     */
+    @java.lang.Override
+    public boolean hasChecksums() {
+        return null != checksums_;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    /**
+     * <pre>
+     * User-provided metadata, in key/value pairs.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 22;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getMetadataOrDefault(java.lang.String key, java.lang.String defaultValue) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
+        return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+
+    /**
+     * <pre>
+     * Immutable. The name of the bucket containing this object.
+     * </pre>
+     *
+     * <code>
+     * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bucket.
+     */
+    @java.lang.Override
+    public java.lang.String getBucket() {
+        java.lang.Object ref = bucket_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            bucket_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Object)) {
+            return super.equals(obj);
+        }
+        Object other = (Object) obj;
+        if (!getName().equals(other.getName()))
+            return false;
+        if (!getBucket().equals(other.getBucket()))
+            return false;
+        if (other.getGeneration() != getGeneration())
+            return false;
+        if (other.getMetageneration() != getMetageneration())
+            return false;
+        if (!getStorageClass().equals(other.getStorageClass()))
+            return false;
+        if (other.getSize() != getSize())
+            return false;
+        if (!getContentEncoding().equals(other.getContentEncoding()))
+            return false;
+        if (!getContentDisposition().equals(other.getContentDisposition()))
+            return false;
+        if (!getCacheControl().equals(other.getCacheControl()))
+            return false;
+        if (!getAclList().equals(other.getAclList()))
+            return false;
+        if (!getContentLanguage().equals(other.getContentLanguage()))
+            return false;
+        if (other.hasDeleteTime() != hasDeleteTime())
+            return false;
+        if (hasDeleteTime()) {
+            if (!getDeleteTime().equals(other.getDeleteTime()))
+                return false;
+        }
+        if (!getContentType().equals(other.getContentType()))
+            return false;
+        if (other.hasCreateTime() != hasCreateTime())
+            return false;
+        if (hasCreateTime()) {
+            if (!getCreateTime().equals(other.getCreateTime()))
+                return false;
+        }
+        if (other.getComponentCount() != getComponentCount())
+            return false;
+        if (other.hasChecksums() != hasChecksums())
+            return false;
+        if (hasChecksums()) {
+            if (!getChecksums().equals(other.getChecksums()))
+                return false;
+        }
+        if (other.hasUpdateTime() != hasUpdateTime())
+            return false;
+        if (hasUpdateTime()) {
+            if (!getUpdateTime().equals(other.getUpdateTime()))
+                return false;
+        }
+        if (!getKmsKey().equals(other.getKmsKey()))
+            return false;
+        if (other.hasUpdateStorageClassTime() != hasUpdateStorageClassTime())
+            return false;
+        if (hasUpdateStorageClassTime()) {
+            if (!getUpdateStorageClassTime().equals(other.getUpdateStorageClassTime()))
+                return false;
+        }
+        if (other.getTemporaryHold() != getTemporaryHold())
+            return false;
+        if (other.hasRetentionExpireTime() != hasRetentionExpireTime())
+            return false;
+        if (hasRetentionExpireTime()) {
+            if (!getRetentionExpireTime().equals(other.getRetentionExpireTime()))
+                return false;
+        }
+        if (!internalGetMetadata().equals(other.internalGetMetadata()))
+            return false;
+        if (other.hasEventBasedHold() != hasEventBasedHold())
+            return false;
+        if (hasEventBasedHold()) {
+            if (other.getEventBasedHold() != getEventBasedHold())
+                return false;
+        }
+        if (other.hasOwner() != hasOwner())
+            return false;
+        if (hasOwner()) {
+            if (!getOwner().equals(other.getOwner()))
+                return false;
+        }
+        if (other.hasCustomerEncryption() != hasCustomerEncryption())
+            return false;
+        if (hasCustomerEncryption()) {
+            if (!getCustomerEncryption().equals(other.getCustomerEncryption()))
+                return false;
+        }
+        if (other.hasCustomTime() != hasCustomTime())
+            return false;
+        if (hasCustomTime()) {
+            if (!getCustomTime().equals(other.getCustomTime()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static Object parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static Object getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
+
+    private Object() {
+        name_ = "";
+        bucket_ = "";
+        storageClass_ = "";
+        contentEncoding_ = "";
+        contentDisposition_ = "";
+        cacheControl_ = "";
+        acl_ = java.util.Collections.emptyList();
+        contentLanguage_ = "";
+        contentType_ = "";
+        kmsKey_ = "";
+    }
+
+    /**
+     * <pre>
+     * Content-Disposition of the object data, matching
+     * [https://tools.ietf.org/html/rfc6266][RFC 6266].
+     * </pre>
+     *
+     * <code>string content_disposition = 8;</code>
+     *
+     * @return The bytes for contentDisposition.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getContentDispositionBytes() {
+        java.lang.Object ref = contentDisposition_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            contentDisposition_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Cloud KMS Key used to encrypt this object, if the object is encrypted by
+     * such a key.
+     * </pre>
+     *
+     * <code>string kms_key = 18 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The bytes for kmsKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getKmsKeyBytes() {
+        java.lang.Object ref = kmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            kmsKey_ = b;
+            return b;
+        }
+    }
+
+    @SuppressWarnings({ "rawtypes" })
+    @java.lang.Override
+    protected com.google.protobuf.MapField internalGetMapField(int number) {
+        switch(number) {
+            case 22:
+                return internalGetMetadata();
+            default:
+                throw new RuntimeException("Invalid map field number: " + number);
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. The creation time of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp create_time = 14 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return Whether the createTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasCreateTime() {
+        return null != createTime_;
+    }
+
+    public static Object parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Object parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Object parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Object parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Output only. The deletion time of the object. Will be returned if and only if this
+     * version of the object has been deleted.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return The deleteTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getDeleteTime() {
+        return null == deleteTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : deleteTime_;
+    }
+
+    /**
+     * <pre>
+     * Access controls on the object.
+     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+     * bucket, requests to set, read, or modify acl is an error.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+     */
+    @java.lang.Override
+    public ObjectAccessControlOrBuilder getAclOrBuilder(int index) {
+        return acl_.get(index);
+    }
+
+    /**
+     * <pre>
+     * User-provided metadata, in key/value pairs.
+     * </pre>
+     *
+     * <code>map&lt;string, string&gt; metadata = 22;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getMetadataOrThrow(java.lang.String key) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        java.util.Map<java.lang.String, java.lang.String> map = internalGetMetadata().getMap();
+        if (!map.containsKey(key)) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        return map.get(key);
+    }
+
+    private Object(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            name_ = s;
+                            break;
+                        }
+                    case 18:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            bucket_ = s;
+                            break;
+                        }
+                    case 24:
+                        {
+                            generation_ = input.readInt64();
+                            break;
+                        }
+                    case 32:
+                        {
+                            metageneration_ = input.readInt64();
+                            break;
+                        }
+                    case 42:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            storageClass_ = s;
+                            break;
+                        }
+                    case 48:
+                        {
+                            size_ = input.readInt64();
+                            break;
+                        }
+                    case 58:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            contentEncoding_ = s;
+                            break;
+                        }
+                    case 66:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            contentDisposition_ = s;
+                            break;
+                        }
+                    case 74:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            cacheControl_ = s;
+                            break;
+                        }
+                    case 82:
+                        {
+                            if (!(0 != (mutable_bitField0_ & 0x00000001))) {
+                                acl_ = new java.util.ArrayList<ObjectAccessControl>();
+                                mutable_bitField0_ |= 0x00000001;
+                            }
+                            acl_.add(input.readMessage(ObjectAccessControl.parser(), extensionRegistry));
+                            break;
+                        }
+                    case 90:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            contentLanguage_ = s;
+                            break;
+                        }
+                    case 98:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != deleteTime_) {
+                                subBuilder = deleteTime_.toBuilder();
+                            }
+                            deleteTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(deleteTime_);
+                                deleteTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 106:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            contentType_ = s;
+                            break;
+                        }
+                    case 114:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != createTime_) {
+                                subBuilder = createTime_.toBuilder();
+                            }
+                            createTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(createTime_);
+                                createTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 120:
+                        {
+                            componentCount_ = input.readInt32();
+                            break;
+                        }
+                    case 130:
+                        {
+                            ObjectChecksums.Builder subBuilder = null;
+                            if (null != checksums_) {
+                                subBuilder = checksums_.toBuilder();
+                            }
+                            checksums_ = input.readMessage(ObjectChecksums.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(checksums_);
+                                checksums_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 138:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != updateTime_) {
+                                subBuilder = updateTime_.toBuilder();
+                            }
+                            updateTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(updateTime_);
+                                updateTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 146:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            kmsKey_ = s;
+                            break;
+                        }
+                    case 154:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != updateStorageClassTime_) {
+                                subBuilder = updateStorageClassTime_.toBuilder();
+                            }
+                            updateStorageClassTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(updateStorageClassTime_);
+                                updateStorageClassTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 160:
+                        {
+                            temporaryHold_ = input.readBool();
+                            break;
+                        }
+                    case 170:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != retentionExpireTime_) {
+                                subBuilder = retentionExpireTime_.toBuilder();
+                            }
+                            retentionExpireTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(retentionExpireTime_);
+                                retentionExpireTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 178:
+                        {
+                            if (!(0 != (mutable_bitField0_ & 0x00000002))) {
+                                metadata_ = com.google.protobuf.MapField.newMapField(MetadataDefaultEntryHolder.defaultEntry);
+                                mutable_bitField0_ |= 0x00000002;
+                            }
+                            com.google.protobuf.MapEntry<java.lang.String, java.lang.String> metadata__ = input.readMessage(MetadataDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+                            metadata_.getMutableMap().put(metadata__.getKey(), metadata__.getValue());
+                            break;
+                        }
+                    case 184:
+                        {
+                            bitField0_ |= 0x00000001;
+                            eventBasedHold_ = input.readBool();
+                            break;
+                        }
+                    case 194:
+                        {
+                            Owner.Builder subBuilder = null;
+                            if (null != owner_) {
+                                subBuilder = owner_.toBuilder();
+                            }
+                            owner_ = input.readMessage(Owner.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(owner_);
+                                owner_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 202:
+                        {
+                            CustomerEncryption.Builder subBuilder = null;
+                            if (null != customerEncryption_) {
+                                subBuilder = customerEncryption_.toBuilder();
+                            }
+                            customerEncryption_ = input.readMessage(CustomerEncryption.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(customerEncryption_);
+                                customerEncryption_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    case 210:
+                        {
+                            com.google.protobuf.Timestamp.Builder subBuilder = null;
+                            if (null != customTime_) {
+                                subBuilder = customTime_.toBuilder();
+                            }
+                            customTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(customTime_);
+                                customTime_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            if ((0 != (mutable_bitField0_ & 0x00000001))) {
+                acl_ = java.util.Collections.unmodifiableList(acl_);
+            }
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. Number of underlying components that make up this object. Components are
+     * accumulated by compose operations.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>int32 component_count = 15 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     *
+     * @return The componentCount.
+     */
+    @java.lang.Override
+    public int getComponentCount() {
+        return componentCount_;
+    }
+
+    /**
+     * <pre>
+     * A server-determined value that specifies the earliest time that the
+     * object's retention period expires.
+     * Note 1: This field is not provided for objects with an active event-based
+     * hold, since retention expiration is unknown until the hold is removed.
+     * Note 2: This value can be provided even when temporary hold is set (so that
+     * the user can reason about policy without having to first unset the
+     * temporary hold).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+     *
+     * @return The retentionExpireTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getRetentionExpireTime() {
+        return null == retentionExpireTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : retentionExpireTime_;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    /**
+     * <pre>
+     * Immutable. The name of the bucket containing this object.
+     * </pre>
+     *
+     * <code>
+     * string bucket = 2 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for bucket.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getBucketBytes() {
+        java.lang.Object ref = bucket_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            bucket_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
+     * such a key.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CustomerEncryption customer_encryption = 25;</code>
+     */
+    @java.lang.Override
+    public CustomerEncryptionOrBuilder getCustomerEncryptionOrBuilder() {
+        return getCustomerEncryption();
+    }
+
+    /**
+     * <pre>
+     * Output only. The modification time of the object metadata.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return The updateTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getUpdateTime() {
+        return null == updateTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : updateTime_;
+    }
+
+    /**
+     * <pre>
+     * Access controls on the object.
+     * If iamConfig.uniformBucketLevelAccess is enabled on the parent
+     * bucket, requests to set, read, or modify acl is an error.
+     * </pre>
+     *
+     * <code>repeated .google.storage.v2.ObjectAccessControl acl = 10;</code>
+     */
+    @java.lang.Override
+    public ObjectAccessControl getAcl(int index) {
+        return acl_.get(index);
+    }
+
+    /**
+     * <pre>
+     * Output only. The owner of the object. This will always be the uploader of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     */
+    @java.lang.Override
+    public OwnerOrBuilder getOwnerOrBuilder() {
+        return getOwner();
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    public Object getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * Immutable. The name of this object. Nearly any sequence of unicode characters is
+     * valid. See
+     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+     * Example: `test.txt`
+     * The `name` field by itself does not uniquely identify a Cloud Storage
+     * object. A Cloud Storage object is uniquely identified by the tuple of
+     * (bucket, object, generation).
+     * </pre>
+     *
+     * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+     *
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getNameBytes() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            name_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Content-Encoding of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+     * </pre>
+     *
+     * <code>string content_encoding = 7;</code>
+     *
+     * @return The bytes for contentEncoding.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getContentEncodingBytes() {
+        java.lang.Object ref = contentEncoding_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            contentEncoding_ = b;
+            return b;
+        }
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_Object_descriptor;
+    }
+
+    // Use Object.newBuilder() to construct.
+    private Object(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * Output only. Hashes for the data part of this object.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     */
+    @java.lang.Override
+    public ObjectChecksumsOrBuilder getChecksumsOrBuilder() {
+        return getChecksums();
+    }
+
+    /**
+     * <pre>
+     * Storage class of the object.
+     * </pre>
+     *
+     * <code>string storage_class = 5;</code>
+     *
+     * @return The bytes for storageClass.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getStorageClassBytes() {
+        java.lang.Object ref = storageClass_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            storageClass_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. Hashes for the data part of this object.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.ObjectChecksums checksums = 16 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return The checksums.
+     */
+    @java.lang.Override
+    public ObjectChecksums getChecksums() {
+        return null == checksums_ ? ObjectChecksums.getDefaultInstance() : checksums_;
+    }
+
+    public static Object parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Immutable. The name of this object. Nearly any sequence of unicode characters is
+     * valid. See
+     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+     * Example: `test.txt`
+     * The `name` field by itself does not uniquely identify a Cloud Storage
+     * object. A Cloud Storage object is uniquely identified by the tuple of
+     * (bucket, object, generation).
+     * </pre>
+     *
+     * <code>string name = 1 [(.google.api.field_behavior) = IMMUTABLE];</code>
+     *
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * Cache-Control directive for the object data, matching
+     * [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+     * If omitted, and the object is accessible to all anonymous users, the
+     * default will be `public, max-age=3600`.
+     * </pre>
+     *
+     * <code>string cache_control = 9;</code>
+     *
+     * @return The bytes for cacheControl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getCacheControlBytes() {
+        java.lang.Object ref = cacheControl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            cacheControl_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. The owner of the object. This will always be the uploader of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     *
+     * @return The owner.
+     */
+    @java.lang.Override
+    public Owner getOwner() {
+        return null == owner_ ? Owner.getDefaultInstance() : owner_;
+    }
+
+    /**
+     * <pre>
+     * Whether an object is under temporary hold. While this flag is set to true,
+     * the object is protected against deletion and overwrites.  A common use case
+     * of this flag is regulatory investigations where objects need to be retained
+     * while the investigation is ongoing. Note that unlike event-based hold,
+     * temporary hold does not impact retention expiration time of an object.
+     * </pre>
+     *
+     * <code>bool temporary_hold = 20;</code>
+     *
+     * @return The temporaryHold.
+     */
+    @java.lang.Override
+    public boolean getTemporaryHold() {
+        return temporaryHold_;
+    }
+
+    /**
+     * <pre>
+     * Whether an object is under event-based hold.
+     * An event-based hold is a way to force the retention of an object until
+     * after some event occurs. Once the hold is released by explicitly setting
+     * this field to false, the object will become subject to any bucket-level
+     * retention policy, except that the retention duration will be calculated
+     * from the time the event based hold was lifted, rather than the time the
+     * object was created.
+     * In a WriteObject request, not setting this field implies that the value
+     * should be taken from the parent bucket's "default_event_based_hold" field.
+     * In a response, this field will always be set to true or false.
+     * </pre>
+     *
+     * <code>optional bool event_based_hold = 23;</code>
+     *
+     * @return The eventBasedHold.
+     */
+    @java.lang.Override
+    public boolean getEventBasedHold() {
+        return eventBasedHold_;
+    }
+
+    /**
+     * <pre>
+     * Output only. Content-Length of the object data in bytes, matching
+     * [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>int64 size = 6 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     *
+     * @return The size.
+     */
+    @java.lang.Override
+    public long getSize() {
+        return size_;
+    }
+
+    /**
+     * <pre>
+     * Content-Encoding of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+     * </pre>
+     *
+     * <code>string content_encoding = 7;</code>
+     *
+     * @return The contentEncoding.
+     */
+    @java.lang.Override
+    public java.lang.String getContentEncoding() {
+        java.lang.Object ref = contentEncoding_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            contentEncoding_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Output only. The modification time of the object metadata.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getUpdateTimeOrBuilder() {
+        return getUpdateTime();
+    }
+
+    /**
+     * <pre>
+     * Content-Disposition of the object data, matching
+     * [https://tools.ietf.org/html/rfc6266][RFC 6266].
+     * </pre>
+     *
+     * <code>string content_disposition = 8;</code>
+     *
+     * @return The contentDisposition.
+     */
+    @java.lang.Override
+    public java.lang.String getContentDisposition() {
+        java.lang.Object ref = contentDisposition_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            contentDisposition_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Content-Type of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+     * If an object is stored without a Content-Type, it is served as
+     * `application/octet-stream`.
+     * </pre>
+     *
+     * <code>string content_type = 13;</code>
+     *
+     * @return The contentType.
+     */
+    @java.lang.Override
+    public java.lang.String getContentType() {
+        java.lang.Object ref = contentType_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            contentType_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * A user-specified timestamp set on an object.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp custom_time = 26;</code>
+     *
+     * @return The customTime.
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getCustomTime() {
+        return null == customTime_ ? com.google.protobuf.Timestamp.getDefaultInstance() : customTime_;
+    }
+
+    /**
+     * <pre>
+     * Output only. The modification time of the object metadata.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp update_time = 17 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return Whether the updateTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasUpdateTime() {
+        return null != updateTime_;
+    }
+
+    /**
+     * <pre>
+     * A server-determined value that specifies the earliest time that the
+     * object's retention period expires.
+     * Note 1: This field is not provided for objects with an active event-based
+     * hold, since retention expiration is unknown until the hold is removed.
+     * Note 2: This value can be provided even when temporary hold is set (so that
+     * the user can reason about policy without having to first unset the
+     * temporary hold).
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp retention_expire_time = 21;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getRetentionExpireTimeOrBuilder() {
+        return getRetentionExpireTime();
+    }
+
+    /**
+     * <pre>
+     * Content-Language of the object data, matching
+     * [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+     * </pre>
+     *
+     * <code>string content_language = 11;</code>
+     *
+     * @return The contentLanguage.
+     */
+    @java.lang.Override
+    public java.lang.String getContentLanguage() {
+        java.lang.Object ref = contentLanguage_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            contentLanguage_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static com.google.protobuf.Parser<Object> parser() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, bucket_);
+        }
+        if (0L != generation_) {
+            output.writeInt64(3, generation_);
+        }
+        if (0L != metageneration_) {
+            output.writeInt64(4, metageneration_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(storageClass_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, storageClass_);
+        }
+        if (0L != size_) {
+            output.writeInt64(6, size_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentEncoding_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, contentEncoding_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentDisposition_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 8, contentDisposition_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(cacheControl_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 9, cacheControl_);
+        }
+        int i = 0;
+        while (acl_.size() > i) {
+            output.writeMessage(10, acl_.get(i));
+            i += 1;
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentLanguage_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, contentLanguage_);
+        }
+        if (null != deleteTime_) {
+            output.writeMessage(12, getDeleteTime());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 13, contentType_);
+        }
+        if (null != createTime_) {
+            output.writeMessage(14, getCreateTime());
+        }
+        if (0 != componentCount_) {
+            output.writeInt32(15, componentCount_);
+        }
+        if (null != checksums_) {
+            output.writeMessage(16, getChecksums());
+        }
+        if (null != updateTime_) {
+            output.writeMessage(17, getUpdateTime());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(kmsKey_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 18, kmsKey_);
+        }
+        if (null != updateStorageClassTime_) {
+            output.writeMessage(19, getUpdateStorageClassTime());
+        }
+        if (false != temporaryHold_) {
+            output.writeBool(20, temporaryHold_);
+        }
+        if (null != retentionExpireTime_) {
+            output.writeMessage(21, getRetentionExpireTime());
+        }
+        com.google.protobuf.GeneratedMessageV3.serializeStringMapTo(output, internalGetMetadata(), MetadataDefaultEntryHolder.defaultEntry, 22);
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeBool(23, eventBasedHold_);
+        }
+        if (null != owner_) {
+            output.writeMessage(24, getOwner());
+        }
+        if (null != customerEncryption_) {
+            output.writeMessage(25, getCustomerEncryption());
+        }
+        if (null != customTime_) {
+            output.writeMessage(26, getCustomTime());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * Output only. The time at which the object's storage class was last changed. When the
+     * object is initially created, it will be set to time_created.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>
+     * .google.protobuf.Timestamp update_storage_class_time = 19 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     *
+     * @return Whether the updateStorageClassTime field is set.
+     */
+    @java.lang.Override
+    public boolean hasUpdateStorageClassTime() {
+        return null != updateStorageClassTime_;
+    }
+
+    /**
+     * <pre>
+     * Output only. The version of the metadata for this generation of this object. Used for
+     * preconditions and for detecting changes in metadata. A metageneration
+     * number is only meaningful in the context of a particular generation of a
+     * particular object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>int64 metageneration = 4 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     *
+     * @return The metageneration.
+     */
+    @java.lang.Override
+    public long getMetageneration() {
+        return metageneration_;
+    }
+
+    /**
+     * <pre>
+     * Output only. The deletion time of the object. Will be returned if and only if this
+     * version of the object has been deleted.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp delete_time = 12 [(.google.api.field_behavior) = OUTPUT_ONLY];
+     * </code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.TimestampOrBuilder getDeleteTimeOrBuilder() {
+        return getDeleteTime();
+    }
+
+    /**
+     * <pre>
+     * Output only. The owner of the object. This will always be the uploader of the object.
+     * Attempting to set or update this field will result in a
+     * [FieldViolation][google.rpc.BadRequest.FieldViolation].
+     * </pre>
+     *
+     * <code>.google.storage.v2.Owner owner = 24 [(.google.api.field_behavior) = OUTPUT_ONLY];</code>
+     *
+     * @return Whether the owner field is set.
+     */
+    @java.lang.Override
+    public boolean hasOwner() {
+        return null != owner_;
+    }
+
+    public static Object parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
 }

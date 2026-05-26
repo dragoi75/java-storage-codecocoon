@@ -30,17 +30,1276 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
 
     private static final long serialVersionUID = 0L;
 
-    // Use Notification.newBuilder() to construct.
-    private Notification(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int NAME_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object name_;
+
+    public static final int TOPIC_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object topic_;
+
+    public static final int EVENT_TYPES_FIELD_NUMBER = 3;
+
+    private com.google.protobuf.LazyStringList eventTypes_;
+
+    public static final int CUSTOM_ATTRIBUTES_FIELD_NUMBER = 4;
+
+    private static final class CustomAttributesDefaultEntryHolder {
+
+        static final com.google.protobuf.MapEntry<java.lang.String, java.lang.String> defaultEntry = com.google.protobuf.MapEntry.<java.lang.String, java.lang.String>newDefaultInstance(com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_CustomAttributesEntry_descriptor, com.google.protobuf.WireFormat.FieldType.STRING, "", com.google.protobuf.WireFormat.FieldType.STRING, "");
     }
 
-    private Notification() {
-        name_ = "";
-        topic_ = "";
-        eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        objectNamePrefix_ = "";
-        payloadFormat_ = "";
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String> customAttributes_;
+
+    public static final int OBJECT_NAME_PREFIX_FIELD_NUMBER = 5;
+
+    private volatile java.lang.Object objectNamePrefix_;
+
+    public static final int PAYLOAD_FORMAT_FIELD_NUMBER = 6;
+
+    private volatile java.lang.Object payloadFormat_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * A directive to publish Pub/Sub notifications upon changes to a bucket.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.Notification}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.Notification)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.Notification)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.NotificationOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object name_ = "";
+
+        private java.lang.Object topic_ = "";
+
+        private com.google.protobuf.LazyStringList eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> customAttributes_;
+
+        private java.lang.Object objectNamePrefix_ = "";
+
+        private java.lang.Object payloadFormat_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.Notification)
+
+        /**
+         * <pre>
+         * Optional. If present, only apply this notification config to object names that
+         * begin with this prefix.
+         * </pre>
+         *
+         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param value The bytes for objectNamePrefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObjectNamePrefixBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            objectNamePrefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof Notification)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((Notification) other);
+            }
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param value The bytes of the eventTypes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addEventTypesBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            ensureEventTypesIsMutable();
+            eventTypes_.add(value);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * Use {@link #getCustomAttributesMap()} instead.
+         */
+        @java.lang.Override
+        @java.lang.Deprecated
+        public java.util.Map<java.lang.String, java.lang.String> getCustomAttributes() {
+            return getCustomAttributesMap();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_Notification_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        @java.lang.Override
+        public java.util.Map<java.lang.String, java.lang.String> getCustomAttributesMap() {
+            return internalGetCustomAttributes().getMap();
+        }
+
+        /**
+         * <pre>
+         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+         * </pre>
+         *
+         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearTopic() {
+            topic_ = getDefaultInstance().getTopic();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only apply this notification config to object names that
+         * begin with this prefix.
+         * </pre>
+         *
+         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearObjectNamePrefix() {
+            objectNamePrefix_ = getDefaultInstance().getObjectNamePrefix();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+         * </pre>
+         *
+         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The topic.
+         */
+        public java.lang.String getTopic() {
+            java.lang.Object ref = topic_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                topic_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        @java.lang.Override
+        public java.lang.String getCustomAttributesOrThrow(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
+            if (!map.containsKey(key)) {
+                throw new java.lang.IllegalArgumentException();
+            }
+            return map.get(key);
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        public Builder putCustomAttributes(java.lang.String key, java.lang.String value) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            if (null == value) {
+                throw new NullPointerException("map value");
+            }
+            internalGetMutableCustomAttributes().getMutableMap().put(key, value);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param index The index of the value to return.
+         * @return The bytes of the eventTypes at the given index.
+         */
+        public com.google.protobuf.ByteString getEventTypesBytes(int index) {
+            return eventTypes_.getByteString(index);
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param value The eventTypes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addEventTypes(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            ensureEventTypesIsMutable();
+            eventTypes_.add(value);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Required. The resource name of this notification.
+         * Format:
+         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+         * The `{project}` portion may be `_` for globally unique buckets.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearName() {
+            name_ = getDefaultInstance().getName();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The desired content of the Payload.
+         * </pre>
+         *
+         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for payloadFormat to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPayloadFormatBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            payloadFormat_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Notification build() {
+            Notification result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMutableCustomAttributes() {
+            onChanged();
+            ;
+            if (null == customAttributes_) {
+                customAttributes_ = com.google.protobuf.MapField.newMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
+            }
+            if (!customAttributes_.isMutable()) {
+                customAttributes_ = customAttributes_.copy();
+            }
+            return customAttributes_;
+        }
+
+        public Builder clearCustomAttributes() {
+            internalGetMutableCustomAttributes().getMutableMap().clear();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEventTypes() {
+            eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.Notification.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only apply this notification config to object names that
+         * begin with this prefix.
+         * </pre>
+         *
+         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return The bytes for objectNamePrefix.
+         */
+        public com.google.protobuf.ByteString getObjectNamePrefixBytes() {
+            java.lang.Object ref = objectNamePrefix_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                objectNamePrefix_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        @java.lang.Override
+        public java.lang.String getCustomAttributesOrDefault(java.lang.String key, java.lang.String defaultValue) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
+            return map.containsKey(key) ? map.get(key) : defaultValue;
+        }
+
+        /**
+         * <pre>
+         * Required. The desired content of the Payload.
+         * </pre>
+         *
+         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPayloadFormat() {
+            payloadFormat_ = getDefaultInstance().getPayloadFormat();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param index The index of the element to return.
+         * @return The eventTypes at the given index.
+         */
+        public java.lang.String getEventTypes(int index) {
+            return eventTypes_.get(index);
+        }
+
+        /**
+         * <pre>
+         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+         * </pre>
+         *
+         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The topic to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTopic(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            topic_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return The count of eventTypes.
+         */
+        public int getEventTypesCount() {
+            return eventTypes_.size();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The desired content of the Payload.
+         * </pre>
+         *
+         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for payloadFormat.
+         */
+        public com.google.protobuf.ByteString getPayloadFormatBytes() {
+            java.lang.Object ref = payloadFormat_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                payloadFormat_ = b;
+                return b;
+            }
+        }
+
+        @SuppressWarnings({ "rawtypes" })
+        protected com.google.protobuf.MapField internalGetMutableMapField(int number) {
+            switch(number) {
+                case 4:
+                    return internalGetMutableCustomAttributes();
+                default:
+                    throw new RuntimeException("Invalid map field number: " + number);
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. The desired content of the Payload.
+         * </pre>
+         *
+         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The payloadFormat.
+         */
+        public java.lang.String getPayloadFormat() {
+            java.lang.Object ref = payloadFormat_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                payloadFormat_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only apply this notification config to object names that
+         * begin with this prefix.
+         * </pre>
+         *
+         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param value The objectNamePrefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObjectNamePrefix(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            objectNamePrefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The resource name of this notification.
+         * Format:
+         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+         * The `{project}` portion may be `_` for globally unique buckets.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setName(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            name_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param values The eventTypes to add.
+         * @return This builder for chaining.
+         */
+        public Builder addAllEventTypes(java.lang.Iterable<java.lang.String> values) {
+            ensureEventTypesIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(values, eventTypes_);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return A list containing the eventTypes.
+         */
+        public com.google.protobuf.ProtocolStringList getEventTypesList() {
+            return eventTypes_.getUnmodifiableView();
+        }
+
+        /**
+         * <pre>
+         * Required. The resource name of this notification.
+         * Format:
+         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+         * The `{project}` portion may be `_` for globally unique buckets.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for name.
+         */
+        public com.google.protobuf.ByteString getNameBytes() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                name_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Notification getDefaultInstanceForType() {
+            return Notification.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_Notification_fieldAccessorTable.ensureFieldAccessorsInitialized(Notification.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Required. The resource name of this notification.
+         * Format:
+         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+         * The `{project}` portion may be `_` for globally unique buckets.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The name.
+         */
+        public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                name_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The resource name of this notification.
+         * Format:
+         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+         * The `{project}` portion may be `_` for globally unique buckets.
+         * </pre>
+         *
+         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNameBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            name_ = value;
+            onChanged();
+            return this;
+        }
+
+        private void ensureEventTypesIsMutable() {
+            if (!(0 != (bitField0_ & 0x00000001))) {
+                eventTypes_ = new com.google.protobuf.LazyStringArrayList(eventTypes_);
+                bitField0_ |= 0x00000001;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The desired content of the Payload.
+         * </pre>
+         *
+         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The payloadFormat to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPayloadFormat(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            payloadFormat_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Notification buildPartial() {
+            Notification result = new Notification(this);
+            int from_bitField0_ = bitField0_;
+            result.name_ = name_;
+            result.topic_ = topic_;
+            if ((0 != (bitField0_ & 0x00000001))) {
+                eventTypes_ = eventTypes_.getUnmodifiableView();
+                bitField0_ = (bitField0_ & ~0x00000001);
+            }
+            result.eventTypes_ = eventTypes_;
+            result.customAttributes_ = internalGetCustomAttributes();
+            result.customAttributes_.makeImmutable();
+            result.objectNamePrefix_ = objectNamePrefix_;
+            result.payloadFormat_ = payloadFormat_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * Use alternate mutation accessors instead.
+         */
+        @java.lang.Deprecated
+        public java.util.Map<java.lang.String, java.lang.String> getMutableCustomAttributes() {
+            return internalGetMutableCustomAttributes().getMutableMap();
+        }
+
+        public Builder mergeFrom(Notification other) {
+            if (Notification.getDefaultInstance() == other)
+                return this;
+            if (!other.getName().isEmpty()) {
+                name_ = other.name_;
+                onChanged();
+            }
+            if (!other.getTopic().isEmpty()) {
+                topic_ = other.topic_;
+                onChanged();
+            }
+            if (!other.eventTypes_.isEmpty()) {
+                if (!eventTypes_.isEmpty()) {
+                    ensureEventTypesIsMutable();
+                    eventTypes_.addAll(other.eventTypes_);
+                } else {
+                    eventTypes_ = other.eventTypes_;
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                }
+                onChanged();
+            }
+            internalGetMutableCustomAttributes().mergeFrom(other.internalGetCustomAttributes());
+            if (!other.getObjectNamePrefix().isEmpty()) {
+                objectNamePrefix_ = other.objectNamePrefix_;
+                onChanged();
+            }
+            if (!other.getPayloadFormat().isEmpty()) {
+                payloadFormat_ = other.payloadFormat_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        @java.lang.Override
+        public boolean containsCustomAttributes(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            return internalGetCustomAttributes().getMap().containsKey(key);
+        }
+
+        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetCustomAttributes() {
+            if (null == customAttributes_) {
+                return com.google.protobuf.MapField.emptyMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
+            }
+            return customAttributes_;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            name_ = "";
+            topic_ = "";
+            eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            internalGetMutableCustomAttributes().clear();
+            objectNamePrefix_ = "";
+            payloadFormat_ = "";
+            return this;
+        }
+
+        @SuppressWarnings({ "rawtypes" })
+        protected com.google.protobuf.MapField internalGetMapField(int number) {
+            switch(number) {
+                case 4:
+                    return internalGetCustomAttributes();
+                default:
+                    throw new RuntimeException("Invalid map field number: " + number);
+            }
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only apply this notification config to object names that
+         * begin with this prefix.
+         * </pre>
+         *
+         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @return The objectNamePrefix.
+         */
+        public java.lang.String getObjectNamePrefix() {
+            java.lang.Object ref = objectNamePrefix_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                objectNamePrefix_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        public Builder putAllCustomAttributes(java.util.Map<java.lang.String, java.lang.String> values) {
+            internalGetMutableCustomAttributes().getMutableMap().putAll(values);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Optional. An optional list of additional attributes to attach to each Pub/Sub
+         * message published for this notification subscription.
+         * </pre>
+         *
+         * <code>
+         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+         * </code>
+         */
+        public Builder removeCustomAttributes(java.lang.String key) {
+            if (null == key) {
+                throw new NullPointerException("map key");
+            }
+            internalGetMutableCustomAttributes().getMutableMap().remove(key);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+         * </pre>
+         *
+         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for topic.
+         */
+        public com.google.protobuf.ByteString getTopicBytes() {
+            java.lang.Object ref = topic_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                topic_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+         * </pre>
+         *
+         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for topic to set.
+         * @return This builder for chaining.
+         */
+        public Builder setTopicBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            topic_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_Notification_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Optional. If present, only send notifications about listed event types. If empty,
+         * sent notifications for all event types.
+         * </pre>
+         *
+         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+         *
+         * @param index The index to set the value at.
+         * @param value The eventTypes to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEventTypes(int index, java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            ensureEventTypesIsMutable();
+            eventTypes_.set(index, value);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            Notification parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (Notification) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        public int getCustomAttributesCount() {
+            return internalGetCustomAttributes().getMap().size();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.Notification)
+    private static final com.google.storage.v2.Notification DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.Notification();
+    }
+
+    private static final com.google.protobuf.Parser<Notification> PARSER = new com.google.protobuf.AbstractParser<Notification>() {
+
+        @java.lang.Override
+        public Notification parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new Notification(input, extensionRegistry);
+        }
+    };
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static Notification parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Optional. An optional list of additional attributes to attach to each Pub/Sub
+     * message published for this notification subscription.
+     * </pre>
+     *
+     * <code>
+     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+     * </code>
+     */
+    @java.lang.Override
+    public java.lang.String getCustomAttributesOrThrow(java.lang.String key) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
+        if (!map.containsKey(key)) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        return map.get(key);
+    }
+
+    public static Notification parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static Notification parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Notification getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(topic_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, topic_);
+        }
+        int i = 0;
+        while (eventTypes_.size() > i) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, eventTypes_.getRaw(i));
+            i += 1;
+        }
+        com.google.protobuf.GeneratedMessageV3.serializeStringMapTo(output, internalGetCustomAttributes(), CustomAttributesDefaultEntryHolder.defaultEntry, 4);
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectNamePrefix_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, objectNamePrefix_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(payloadFormat_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, payloadFormat_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * Required. The resource name of this notification.
+     * Format:
+     * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+     * The `{project}` portion may be `_` for globally unique buckets.
+     * </pre>
+     *
+     * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static Notification parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        hash = (37 * hash) + TOPIC_FIELD_NUMBER;
+        hash = (53 * hash) + getTopic().hashCode();
+        if (0 < getEventTypesCount()) {
+            hash = (37 * hash) + EVENT_TYPES_FIELD_NUMBER;
+            hash = (53 * hash) + getEventTypesList().hashCode();
+        }
+        if (!internalGetCustomAttributes().getMap().isEmpty()) {
+            hash = (37 * hash) + CUSTOM_ATTRIBUTES_FIELD_NUMBER;
+            hash = (53 * hash) + internalGetCustomAttributes().hashCode();
+        }
+        hash = (37 * hash) + OBJECT_NAME_PREFIX_FIELD_NUMBER;
+        hash = (53 * hash) + getObjectNamePrefix().hashCode();
+        hash = (37 * hash) + PAYLOAD_FORMAT_FIELD_NUMBER;
+        hash = (53 * hash) + getPayloadFormat().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static Builder newBuilder(Notification prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @SuppressWarnings({ "rawtypes" })
+    @java.lang.Override
+    protected com.google.protobuf.MapField internalGetMapField(int number) {
+        switch(number) {
+            case 4:
+                return internalGetCustomAttributes();
+            default:
+                throw new RuntimeException("Invalid map field number: " + number);
+        }
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    public static Notification parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Notification> getParserForType() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * Optional. If present, only apply this notification config to object names that
+     * begin with this prefix.
+     * </pre>
+     *
+     * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+     *
+     * @return The objectNamePrefix.
+     */
+    @java.lang.Override
+    public java.lang.String getObjectNamePrefix() {
+        java.lang.Object ref = objectNamePrefix_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            objectNamePrefix_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Notification)) {
+            return super.equals(obj);
+        }
+        Notification other = (Notification) obj;
+        if (!getName().equals(other.getName()))
+            return false;
+        if (!getTopic().equals(other.getTopic()))
+            return false;
+        if (!getEventTypesList().equals(other.getEventTypesList()))
+            return false;
+        if (!internalGetCustomAttributes().equals(other.internalGetCustomAttributes()))
+            return false;
+        if (!getObjectNamePrefix().equals(other.getObjectNamePrefix()))
+            return false;
+        if (!getPayloadFormat().equals(other.getPayloadFormat()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Required. The desired content of the Payload.
+     * </pre>
+     *
+     * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The payloadFormat.
+     */
+    @java.lang.Override
+    public java.lang.String getPayloadFormat() {
+        java.lang.Object ref = payloadFormat_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            payloadFormat_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Optional. An optional list of additional attributes to attach to each Pub/Sub
+     * message published for this notification subscription.
+     * </pre>
+     *
+     * <code>
+     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+     * </code>
+     */
+    @java.lang.Override
+    public java.lang.String getCustomAttributesOrDefault(java.lang.String key, java.lang.String defaultValue) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
+        return map.containsKey(key) ? map.get(key) : defaultValue;
     }
 
     @java.lang.Override
@@ -49,9 +1308,16 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
         return new Notification();
     }
 
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetCustomAttributes() {
+        if (null == customAttributes_) {
+            return com.google.protobuf.MapField.emptyMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
+        }
+        return customAttributes_;
+    }
+
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public Builder newBuilderForType() {
+        return newBuilder();
     }
 
     private Notification(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -137,53 +1403,24 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_descriptor;
+    // Use Notification.newBuilder() to construct.
+    private Notification(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
-
-    @SuppressWarnings({ "rawtypes" })
-    @java.lang.Override
-    protected com.google.protobuf.MapField internalGetMapField(int number) {
-        switch(number) {
-            case 4:
-                return internalGetCustomAttributes();
-            default:
-                throw new RuntimeException("Invalid map field number: " + number);
-        }
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.Notification.class, com.google.storage.v2.Notification.Builder.class);
-    }
-
-    public static final int NAME_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object name_;
 
     /**
      * <pre>
-     * Required. The resource name of this notification.
-     * Format:
-     * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-     * The `{project}` portion may be `_` for globally unique buckets.
+     * Optional. If present, only send notifications about listed event types. If empty,
+     * sent notifications for all event types.
      * </pre>
      *
-     * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
+     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
      *
-     * @return The name.
+     * @param index The index of the value to return.
+     * @return The bytes of the eventTypes at the given index.
      */
-    @java.lang.Override
-    public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            name_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public com.google.protobuf.ByteString getEventTypesBytes(int index) {
+        return eventTypes_.getByteString(index);
     }
 
     /**
@@ -210,164 +1447,6 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
         }
     }
 
-    public static final int TOPIC_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object topic_;
-
-    /**
-     * <pre>
-     * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-     * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-     * </pre>
-     *
-     * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The topic.
-     */
-    @java.lang.Override
-    public java.lang.String getTopic() {
-        java.lang.Object ref = topic_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            topic_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-     * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-     * </pre>
-     *
-     * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for topic.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getTopicBytes() {
-        java.lang.Object ref = topic_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            topic_ = b;
-            return b;
-        }
-    }
-
-    public static final int EVENT_TYPES_FIELD_NUMBER = 3;
-
-    private com.google.protobuf.LazyStringList eventTypes_;
-
-    /**
-     * <pre>
-     * Optional. If present, only send notifications about listed event types. If empty,
-     * sent notifications for all event types.
-     * </pre>
-     *
-     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @return A list containing the eventTypes.
-     */
-    public com.google.protobuf.ProtocolStringList getEventTypesList() {
-        return eventTypes_;
-    }
-
-    /**
-     * <pre>
-     * Optional. If present, only send notifications about listed event types. If empty,
-     * sent notifications for all event types.
-     * </pre>
-     *
-     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @return The count of eventTypes.
-     */
-    public int getEventTypesCount() {
-        return eventTypes_.size();
-    }
-
-    /**
-     * <pre>
-     * Optional. If present, only send notifications about listed event types. If empty,
-     * sent notifications for all event types.
-     * </pre>
-     *
-     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @param index The index of the element to return.
-     * @return The eventTypes at the given index.
-     */
-    public java.lang.String getEventTypes(int index) {
-        return eventTypes_.get(index);
-    }
-
-    /**
-     * <pre>
-     * Optional. If present, only send notifications about listed event types. If empty,
-     * sent notifications for all event types.
-     * </pre>
-     *
-     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @param index The index of the value to return.
-     * @return The bytes of the eventTypes at the given index.
-     */
-    public com.google.protobuf.ByteString getEventTypesBytes(int index) {
-        return eventTypes_.getByteString(index);
-    }
-
-    public static final int CUSTOM_ATTRIBUTES_FIELD_NUMBER = 4;
-
-    private static final class CustomAttributesDefaultEntryHolder {
-
-        static final com.google.protobuf.MapEntry<java.lang.String, java.lang.String> defaultEntry = com.google.protobuf.MapEntry.<java.lang.String, java.lang.String>newDefaultInstance(com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_CustomAttributesEntry_descriptor, com.google.protobuf.WireFormat.FieldType.STRING, "", com.google.protobuf.WireFormat.FieldType.STRING, "");
-    }
-
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String> customAttributes_;
-
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetCustomAttributes() {
-        if (null == customAttributes_) {
-            return com.google.protobuf.MapField.emptyMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
-        }
-        return customAttributes_;
-    }
-
-    public int getCustomAttributesCount() {
-        return internalGetCustomAttributes().getMap().size();
-    }
-
-    /**
-     * <pre>
-     * Optional. An optional list of additional attributes to attach to each Pub/Sub
-     * message published for this notification subscription.
-     * </pre>
-     *
-     * <code>
-     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-     * </code>
-     */
-    @java.lang.Override
-    public boolean containsCustomAttributes(java.lang.String key) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        return internalGetCustomAttributes().getMap().containsKey(key);
-    }
-
-    /**
-     * Use {@link #getCustomAttributesMap()} instead.
-     */
-    @java.lang.Override
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String> getCustomAttributes() {
-        return getCustomAttributesMap();
-    }
-
     /**
      * <pre>
      * Optional. An optional list of additional attributes to attach to each Pub/Sub
@@ -383,177 +1462,8 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
         return internalGetCustomAttributes().getMap();
     }
 
-    /**
-     * <pre>
-     * Optional. An optional list of additional attributes to attach to each Pub/Sub
-     * message published for this notification subscription.
-     * </pre>
-     *
-     * <code>
-     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-     * </code>
-     */
-    @java.lang.Override
-    public java.lang.String getCustomAttributesOrDefault(java.lang.String key, java.lang.String defaultValue) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-
-    /**
-     * <pre>
-     * Optional. An optional list of additional attributes to attach to each Pub/Sub
-     * message published for this notification subscription.
-     * </pre>
-     *
-     * <code>
-     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-     * </code>
-     */
-    @java.lang.Override
-    public java.lang.String getCustomAttributesOrThrow(java.lang.String key) {
-        if (null == key) {
-            throw new NullPointerException("map key");
-        }
-        java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
-        if (!map.containsKey(key)) {
-            throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-    }
-
-    public static final int OBJECT_NAME_PREFIX_FIELD_NUMBER = 5;
-
-    private volatile java.lang.Object objectNamePrefix_;
-
-    /**
-     * <pre>
-     * Optional. If present, only apply this notification config to object names that
-     * begin with this prefix.
-     * </pre>
-     *
-     * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @return The objectNamePrefix.
-     */
-    @java.lang.Override
-    public java.lang.String getObjectNamePrefix() {
-        java.lang.Object ref = objectNamePrefix_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            objectNamePrefix_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Optional. If present, only apply this notification config to object names that
-     * begin with this prefix.
-     * </pre>
-     *
-     * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-     *
-     * @return The bytes for objectNamePrefix.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getObjectNamePrefixBytes() {
-        java.lang.Object ref = objectNamePrefix_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            objectNamePrefix_ = b;
-            return b;
-        }
-    }
-
-    public static final int PAYLOAD_FORMAT_FIELD_NUMBER = 6;
-
-    private volatile java.lang.Object payloadFormat_;
-
-    /**
-     * <pre>
-     * Required. The desired content of the Payload.
-     * </pre>
-     *
-     * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The payloadFormat.
-     */
-    @java.lang.Override
-    public java.lang.String getPayloadFormat() {
-        java.lang.Object ref = payloadFormat_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            payloadFormat_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The desired content of the Payload.
-     * </pre>
-     *
-     * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for payloadFormat.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPayloadFormatBytes() {
-        java.lang.Object ref = payloadFormat_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            payloadFormat_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(topic_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, topic_);
-        }
-        int i = 0;
-        while (eventTypes_.size() > i) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, eventTypes_.getRaw(i));
-            i += 1;
-        }
-        com.google.protobuf.GeneratedMessageV3.serializeStringMapTo(output, internalGetCustomAttributes(), CustomAttributesDefaultEntryHolder.defaultEntry, 4);
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectNamePrefix_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, objectNamePrefix_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(payloadFormat_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, payloadFormat_);
-        }
-        unknownFields.writeTo(output);
+    public static Notification parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -593,1133 +1503,226 @@ Notification extends com.google.protobuf.GeneratedMessageV3 implements Notificat
         return size;
     }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.Notification)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.Notification other = (com.google.storage.v2.Notification) obj;
-        if (!getName().equals(other.getName()))
-            return false;
-        if (!getTopic().equals(other.getTopic()))
-            return false;
-        if (!getEventTypesList().equals(other.getEventTypesList()))
-            return false;
-        if (!internalGetCustomAttributes().equals(other.internalGetCustomAttributes()))
-            return false;
-        if (!getObjectNamePrefix().equals(other.getObjectNamePrefix()))
-            return false;
-        if (!getPayloadFormat().equals(other.getPayloadFormat()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getName().hashCode();
-        hash = (37 * hash) + TOPIC_FIELD_NUMBER;
-        hash = (53 * hash) + getTopic().hashCode();
-        if (0 < getEventTypesCount()) {
-            hash = (37 * hash) + EVENT_TYPES_FIELD_NUMBER;
-            hash = (53 * hash) + getEventTypesList().hashCode();
-        }
-        if (!internalGetCustomAttributes().getMap().isEmpty()) {
-            hash = (37 * hash) + CUSTOM_ATTRIBUTES_FIELD_NUMBER;
-            hash = (53 * hash) + internalGetCustomAttributes().hashCode();
-        }
-        hash = (37 * hash) + OBJECT_NAME_PREFIX_FIELD_NUMBER;
-        hash = (53 * hash) + getObjectNamePrefix().hashCode();
-        hash = (37 * hash) + PAYLOAD_FORMAT_FIELD_NUMBER;
-        hash = (53 * hash) + getPayloadFormat().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Notification parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Notification parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.Notification parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.Notification prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    /**
+     * <pre>
+     * Optional. If present, only send notifications about listed event types. If empty,
+     * sent notifications for all event types.
+     * </pre>
+     *
+     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+     *
+     * @return The count of eventTypes.
+     */
+    public int getEventTypesCount() {
+        return eventTypes_.size();
     }
 
     /**
      * <pre>
-     * A directive to publish Pub/Sub notifications upon changes to a bucket.
+     * Optional. An optional list of additional attributes to attach to each Pub/Sub
+     * message published for this notification subscription.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.Notification}
+     * <code>
+     * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
+     * </code>
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.Notification)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.Notification)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.NotificationOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_descriptor;
-        }
-
-        @SuppressWarnings({ "rawtypes" })
-        protected com.google.protobuf.MapField internalGetMapField(int number) {
-            switch(number) {
-                case 4:
-                    return internalGetCustomAttributes();
-                default:
-                    throw new RuntimeException("Invalid map field number: " + number);
-            }
-        }
-
-        @SuppressWarnings({ "rawtypes" })
-        protected com.google.protobuf.MapField internalGetMutableMapField(int number) {
-            switch(number) {
-                case 4:
-                    return internalGetMutableCustomAttributes();
-                default:
-                    throw new RuntimeException("Invalid map field number: " + number);
-            }
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.Notification.class, com.google.storage.v2.Notification.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.Notification.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            name_ = "";
-            topic_ = "";
-            eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            internalGetMutableCustomAttributes().clear();
-            objectNamePrefix_ = "";
-            payloadFormat_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_Notification_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.Notification getDefaultInstanceForType() {
-            return com.google.storage.v2.Notification.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.Notification build() {
-            com.google.storage.v2.Notification result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.Notification buildPartial() {
-            com.google.storage.v2.Notification result = new com.google.storage.v2.Notification(this);
-            int from_bitField0_ = bitField0_;
-            result.name_ = name_;
-            result.topic_ = topic_;
-            if ((0 != (bitField0_ & 0x00000001))) {
-                eventTypes_ = eventTypes_.getUnmodifiableView();
-                bitField0_ = (bitField0_ & ~0x00000001);
-            }
-            result.eventTypes_ = eventTypes_;
-            result.customAttributes_ = internalGetCustomAttributes();
-            result.customAttributes_.makeImmutable();
-            result.objectNamePrefix_ = objectNamePrefix_;
-            result.payloadFormat_ = payloadFormat_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.Notification)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.Notification) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.Notification other) {
-            if (com.google.storage.v2.Notification.getDefaultInstance() == other)
-                return this;
-            if (!other.getName().isEmpty()) {
-                name_ = other.name_;
-                onChanged();
-            }
-            if (!other.getTopic().isEmpty()) {
-                topic_ = other.topic_;
-                onChanged();
-            }
-            if (!other.eventTypes_.isEmpty()) {
-                if (!eventTypes_.isEmpty()) {
-                    ensureEventTypesIsMutable();
-                    eventTypes_.addAll(other.eventTypes_);
-                } else {
-                    eventTypes_ = other.eventTypes_;
-                    bitField0_ = (bitField0_ & ~0x00000001);
-                }
-                onChanged();
-            }
-            internalGetMutableCustomAttributes().mergeFrom(other.internalGetCustomAttributes());
-            if (!other.getObjectNamePrefix().isEmpty()) {
-                objectNamePrefix_ = other.objectNamePrefix_;
-                onChanged();
-            }
-            if (!other.getPayloadFormat().isEmpty()) {
-                payloadFormat_ = other.payloadFormat_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.Notification parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.Notification) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object name_ = "";
-
-        /**
-         * <pre>
-         * Required. The resource name of this notification.
-         * Format:
-         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-         * The `{project}` portion may be `_` for globally unique buckets.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The name.
-         */
-        public java.lang.String getName() {
-            java.lang.Object ref = name_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                name_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The resource name of this notification.
-         * Format:
-         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-         * The `{project}` portion may be `_` for globally unique buckets.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for name.
-         */
-        public com.google.protobuf.ByteString getNameBytes() {
-            java.lang.Object ref = name_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                name_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The resource name of this notification.
-         * Format:
-         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-         * The `{project}` portion may be `_` for globally unique buckets.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The name to set.
-         * @return This builder for chaining.
-         */
-        public Builder setName(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            name_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The resource name of this notification.
-         * Format:
-         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-         * The `{project}` portion may be `_` for globally unique buckets.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearName() {
-            name_ = getDefaultInstance().getName();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The resource name of this notification.
-         * Format:
-         * `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
-         * The `{project}` portion may be `_` for globally unique buckets.
-         * </pre>
-         *
-         * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for name to set.
-         * @return This builder for chaining.
-         */
-        public Builder setNameBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            name_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object topic_ = "";
-
-        /**
-         * <pre>
-         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-         * </pre>
-         *
-         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The topic.
-         */
-        public java.lang.String getTopic() {
-            java.lang.Object ref = topic_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                topic_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-         * </pre>
-         *
-         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for topic.
-         */
-        public com.google.protobuf.ByteString getTopicBytes() {
-            java.lang.Object ref = topic_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                topic_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-         * </pre>
-         *
-         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The topic to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTopic(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            topic_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-         * </pre>
-         *
-         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearTopic() {
-            topic_ = getDefaultInstance().getTopic();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
-         * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-         * </pre>
-         *
-         * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for topic to set.
-         * @return This builder for chaining.
-         */
-        public Builder setTopicBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            topic_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.LazyStringList eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-
-        private void ensureEventTypesIsMutable() {
-            if (!(0 != (bitField0_ & 0x00000001))) {
-                eventTypes_ = new com.google.protobuf.LazyStringArrayList(eventTypes_);
-                bitField0_ |= 0x00000001;
-            }
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return A list containing the eventTypes.
-         */
-        public com.google.protobuf.ProtocolStringList getEventTypesList() {
-            return eventTypes_.getUnmodifiableView();
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return The count of eventTypes.
-         */
-        public int getEventTypesCount() {
-            return eventTypes_.size();
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param index The index of the element to return.
-         * @return The eventTypes at the given index.
-         */
-        public java.lang.String getEventTypes(int index) {
-            return eventTypes_.get(index);
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param index The index of the value to return.
-         * @return The bytes of the eventTypes at the given index.
-         */
-        public com.google.protobuf.ByteString getEventTypesBytes(int index) {
-            return eventTypes_.getByteString(index);
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param index The index to set the value at.
-         * @param value The eventTypes to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEventTypes(int index, java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            ensureEventTypesIsMutable();
-            eventTypes_.set(index, value);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param value The eventTypes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addEventTypes(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            ensureEventTypesIsMutable();
-            eventTypes_.add(value);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param values The eventTypes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addAllEventTypes(java.lang.Iterable<java.lang.String> values) {
-            ensureEventTypesIsMutable();
-            com.google.protobuf.AbstractMessageLite.Builder.addAll(values, eventTypes_);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEventTypes() {
-            eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only send notifications about listed event types. If empty,
-         * sent notifications for all event types.
-         * </pre>
-         *
-         * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param value The bytes of the eventTypes to add.
-         * @return This builder for chaining.
-         */
-        public Builder addEventTypesBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            ensureEventTypesIsMutable();
-            eventTypes_.add(value);
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> customAttributes_;
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetCustomAttributes() {
-            if (null == customAttributes_) {
-                return com.google.protobuf.MapField.emptyMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
-            }
-            return customAttributes_;
-        }
-
-        private com.google.protobuf.MapField<java.lang.String, java.lang.String> internalGetMutableCustomAttributes() {
-            onChanged();
-            ;
-            if (null == customAttributes_) {
-                customAttributes_ = com.google.protobuf.MapField.newMapField(CustomAttributesDefaultEntryHolder.defaultEntry);
-            }
-            if (!customAttributes_.isMutable()) {
-                customAttributes_ = customAttributes_.copy();
-            }
-            return customAttributes_;
-        }
-
-        public int getCustomAttributesCount() {
-            return internalGetCustomAttributes().getMap().size();
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        @java.lang.Override
-        public boolean containsCustomAttributes(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            return internalGetCustomAttributes().getMap().containsKey(key);
-        }
-
-        /**
-         * Use {@link #getCustomAttributesMap()} instead.
-         */
-        @java.lang.Override
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.String> getCustomAttributes() {
-            return getCustomAttributesMap();
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        @java.lang.Override
-        public java.util.Map<java.lang.String, java.lang.String> getCustomAttributesMap() {
-            return internalGetCustomAttributes().getMap();
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        @java.lang.Override
-        public java.lang.String getCustomAttributesOrDefault(java.lang.String key, java.lang.String defaultValue) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
-            return map.containsKey(key) ? map.get(key) : defaultValue;
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        @java.lang.Override
-        public java.lang.String getCustomAttributesOrThrow(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            java.util.Map<java.lang.String, java.lang.String> map = internalGetCustomAttributes().getMap();
-            if (!map.containsKey(key)) {
-                throw new java.lang.IllegalArgumentException();
-            }
-            return map.get(key);
-        }
-
-        public Builder clearCustomAttributes() {
-            internalGetMutableCustomAttributes().getMutableMap().clear();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        public Builder removeCustomAttributes(java.lang.String key) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            internalGetMutableCustomAttributes().getMutableMap().remove(key);
-            return this;
-        }
-
-        /**
-         * Use alternate mutation accessors instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.String> getMutableCustomAttributes() {
-            return internalGetMutableCustomAttributes().getMutableMap();
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        public Builder putCustomAttributes(java.lang.String key, java.lang.String value) {
-            if (null == key) {
-                throw new NullPointerException("map key");
-            }
-            if (null == value) {
-                throw new NullPointerException("map value");
-            }
-            internalGetMutableCustomAttributes().getMutableMap().put(key, value);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. An optional list of additional attributes to attach to each Pub/Sub
-         * message published for this notification subscription.
-         * </pre>
-         *
-         * <code>
-         * map&lt;string, string&gt; custom_attributes = 4 [(.google.api.field_behavior) = OPTIONAL];
-         * </code>
-         */
-        public Builder putAllCustomAttributes(java.util.Map<java.lang.String, java.lang.String> values) {
-            internalGetMutableCustomAttributes().getMutableMap().putAll(values);
-            return this;
-        }
-
-        private java.lang.Object objectNamePrefix_ = "";
-
-        /**
-         * <pre>
-         * Optional. If present, only apply this notification config to object names that
-         * begin with this prefix.
-         * </pre>
-         *
-         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return The objectNamePrefix.
-         */
-        public java.lang.String getObjectNamePrefix() {
-            java.lang.Object ref = objectNamePrefix_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                objectNamePrefix_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only apply this notification config to object names that
-         * begin with this prefix.
-         * </pre>
-         *
-         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return The bytes for objectNamePrefix.
-         */
-        public com.google.protobuf.ByteString getObjectNamePrefixBytes() {
-            java.lang.Object ref = objectNamePrefix_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                objectNamePrefix_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only apply this notification config to object names that
-         * begin with this prefix.
-         * </pre>
-         *
-         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param value The objectNamePrefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObjectNamePrefix(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            objectNamePrefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only apply this notification config to object names that
-         * begin with this prefix.
-         * </pre>
-         *
-         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearObjectNamePrefix() {
-            objectNamePrefix_ = getDefaultInstance().getObjectNamePrefix();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Optional. If present, only apply this notification config to object names that
-         * begin with this prefix.
-         * </pre>
-         *
-         * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
-         *
-         * @param value The bytes for objectNamePrefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObjectNamePrefixBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            objectNamePrefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object payloadFormat_ = "";
-
-        /**
-         * <pre>
-         * Required. The desired content of the Payload.
-         * </pre>
-         *
-         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The payloadFormat.
-         */
-        public java.lang.String getPayloadFormat() {
-            java.lang.Object ref = payloadFormat_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                payloadFormat_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The desired content of the Payload.
-         * </pre>
-         *
-         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for payloadFormat.
-         */
-        public com.google.protobuf.ByteString getPayloadFormatBytes() {
-            java.lang.Object ref = payloadFormat_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                payloadFormat_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The desired content of the Payload.
-         * </pre>
-         *
-         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The payloadFormat to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPayloadFormat(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            payloadFormat_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The desired content of the Payload.
-         * </pre>
-         *
-         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPayloadFormat() {
-            payloadFormat_ = getDefaultInstance().getPayloadFormat();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The desired content of the Payload.
-         * </pre>
-         *
-         * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for payloadFormat to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPayloadFormatBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            payloadFormat_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.Notification)
+    @java.lang.Override
+    public boolean containsCustomAttributes(java.lang.String key) {
+        if (null == key) {
+            throw new NullPointerException("map key");
+        }
+        return internalGetCustomAttributes().getMap().containsKey(key);
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.Notification)
-    private static final com.google.storage.v2.Notification DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.Notification();
+    /**
+     * <pre>
+     * Optional. If present, only send notifications about listed event types. If empty,
+     * sent notifications for all event types.
+     * </pre>
+     *
+     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+     *
+     * @return A list containing the eventTypes.
+     */
+    public com.google.protobuf.ProtocolStringList getEventTypesList() {
+        return eventTypes_;
     }
 
-    public static com.google.storage.v2.Notification getDefaultInstance() {
+    public static Notification parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_Notification_descriptor;
+    }
+
+    /**
+     * <pre>
+     * Optional. If present, only send notifications about listed event types. If empty,
+     * sent notifications for all event types.
+     * </pre>
+     *
+     * <code>repeated string event_types = 3 [(.google.api.field_behavior) = OPTIONAL];</code>
+     *
+     * @param index The index of the element to return.
+     * @return The eventTypes at the given index.
+     */
+    public java.lang.String getEventTypes(int index) {
+        return eventTypes_.get(index);
+    }
+
+    public int getCustomAttributesCount() {
+        return internalGetCustomAttributes().getMap().size();
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_Notification_fieldAccessorTable.ensureFieldAccessorsInitialized(Notification.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Required. The desired content of the Payload.
+     * </pre>
+     *
+     * <code>string payload_format = 6 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for payloadFormat.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPayloadFormatBytes() {
+        java.lang.Object ref = payloadFormat_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            payloadFormat_ = b;
+            return b;
+        }
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static Notification parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Optional. If present, only apply this notification config to object names that
+     * begin with this prefix.
+     * </pre>
+     *
+     * <code>string object_name_prefix = 5 [(.google.api.field_behavior) = OPTIONAL];</code>
+     *
+     * @return The bytes for objectNamePrefix.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getObjectNamePrefixBytes() {
+        java.lang.Object ref = objectNamePrefix_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            objectNamePrefix_ = b;
+            return b;
+        }
+    }
+
+    public static Notification parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * Use {@link #getCustomAttributesMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getCustomAttributes() {
+        return getCustomAttributesMap();
+    }
+
+    public static Notification getDefaultInstance() {
         return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Notification> PARSER = new com.google.protobuf.AbstractParser<Notification>() {
-
-        @java.lang.Override
-        public Notification parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new Notification(input, extensionRegistry);
+    /**
+     * <pre>
+     * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+     * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+     * </pre>
+     *
+     * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The topic.
+     */
+    @java.lang.Override
+    public java.lang.String getTopic() {
+        java.lang.Object ref = topic_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            topic_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
         }
-    };
+    }
+
+    public static Notification parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    public static Notification parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
 
     public static com.google.protobuf.Parser<Notification> parser() {
         return PARSER;
     }
 
-    @java.lang.Override
-    public com.google.protobuf.Parser<Notification> getParserForType() {
-        return PARSER;
+    public static Notification parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
+    /**
+     * <pre>
+     * Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+     * '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+     * </pre>
+     *
+     * <code>string topic = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for topic.
+     */
     @java.lang.Override
-    public com.google.storage.v2.Notification getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public com.google.protobuf.ByteString getTopicBytes() {
+        java.lang.Object ref = topic_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            topic_ = b;
+            return b;
+        }
     }
+
+    private Notification() {
+        name_ = "";
+        topic_ = "";
+        eventTypes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        objectNamePrefix_ = "";
+        payloadFormat_ = "";
+    }
+
 }

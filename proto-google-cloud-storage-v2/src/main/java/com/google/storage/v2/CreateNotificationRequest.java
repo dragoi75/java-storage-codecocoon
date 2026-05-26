@@ -30,342 +30,15 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
 
     private static final long serialVersionUID = 0L;
 
-    // Use CreateNotificationRequest.newBuilder() to construct.
-    private CreateNotificationRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private CreateNotificationRequest() {
-        parent_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new CreateNotificationRequest();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private CreateNotificationRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    case 10:
-                        {
-                            java.lang.String s = input.readStringRequireUtf8();
-                            parent_ = s;
-                            break;
-                        }
-                    case 18:
-                        {
-                            com.google.storage.v2.Notification.Builder subBuilder = null;
-                            if (null != notification_) {
-                                subBuilder = notification_.toBuilder();
-                            }
-                            notification_ = input.readMessage(com.google.storage.v2.Notification.parser(), extensionRegistry);
-                            if (null != subBuilder) {
-                                subBuilder.mergeFrom(notification_);
-                                notification_ = subBuilder.buildPartial();
-                            }
-                            break;
-                        }
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateNotificationRequest.class, com.google.storage.v2.CreateNotificationRequest.Builder.class);
-    }
-
     public static final int PARENT_FIELD_NUMBER = 1;
 
     private volatile java.lang.Object parent_;
-
-    /**
-     * <pre>
-     * Required. The bucket to which this notification belongs.
-     * </pre>
-     *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The parent.
-     */
-    @java.lang.Override
-    public java.lang.String getParent() {
-        java.lang.Object ref = parent_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            parent_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The bucket to which this notification belongs.
-     * </pre>
-     *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for parent.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getParentBytes() {
-        java.lang.Object ref = parent_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            parent_ = b;
-            return b;
-        }
-    }
 
     public static final int NOTIFICATION_FIELD_NUMBER = 2;
 
     private com.google.storage.v2.Notification notification_;
 
-    /**
-     * <pre>
-     * Required. Properties of the notification to be inserted.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return Whether the notification field is set.
-     */
-    @java.lang.Override
-    public boolean hasNotification() {
-        return null != notification_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the notification to be inserted.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     *
-     * @return The notification.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Notification getNotification() {
-        return null == notification_ ? com.google.storage.v2.Notification.getDefaultInstance() : notification_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the notification to be inserted.
-     * </pre>
-     *
-     * <code>
-     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-     * </code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.NotificationOrBuilder getNotificationOrBuilder() {
-        return getNotification();
-    }
-
     private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
-        }
-        if (null != notification_) {
-            output.writeMessage(2, getNotification());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
-        }
-        if (null != notification_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getNotification());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.CreateNotificationRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.CreateNotificationRequest other = (com.google.storage.v2.CreateNotificationRequest) obj;
-        if (!getParent().equals(other.getParent()))
-            return false;
-        if (other.hasNotification() != hasNotification())
-            return false;
-        if (hasNotification()) {
-            if (!getNotification().equals(other.getNotification()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + PARENT_FIELD_NUMBER;
-        hash = (53 * hash) + getParent().hashCode();
-        if (hasNotification()) {
-            hash = (37 * hash) + NOTIFICATION_FIELD_NUMBER;
-            hash = (53 * hash) + getNotification().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.CreateNotificationRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
 
     /**
      * <pre>
@@ -378,27 +51,173 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
     // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateNotificationRequest)
     Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateNotificationRequestOrBuilder {
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
+        private java.lang.Object parent_ = "";
+
+        private com.google.storage.v2.Notification notification_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Notification, com.google.storage.v2.Notification.Builder, com.google.storage.v2.NotificationOrBuilder> notificationBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateNotificationRequest)
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setNotification(Notification value) {
+            if (null != notificationBuilder_) {
+                notificationBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                notification_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Notification, Notification.Builder, NotificationOrBuilder> getNotificationFieldBuilder() {
+            if (null == notificationBuilder_) {
+                notificationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Notification, Notification.Builder, NotificationOrBuilder>(getNotification(), getParentForChildren(), isClean());
+                notification_ = null;
+            }
+            return notificationBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder mergeNotification(Notification value) {
+            if (null != notificationBuilder_) {
+                notificationBuilder_.mergeFrom(value);
+            } else {
+                if (null == notification_) {
+                    notification_ = value;
+                } else {
+                    notification_ = Notification.newBuilder(notification_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder clearNotification() {
+            if (null != notificationBuilder_) {
+                notification_ = null;
+                notificationBuilder_ = null;
+            } else {
+                notification_ = null;
+                onChanged();
+            }
+            return this;
         }
 
         @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateNotificationRequest.class, com.google.storage.v2.CreateNotificationRequest.Builder.class);
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
         }
 
-        // Construct using com.google.storage.v2.CreateNotificationRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
         }
 
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
         }
 
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         *
+         * @return Whether the notification field is set.
+         */
+        public boolean hasNotification() {
+            return null != notificationBuilder_ || null != notification_;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Builder setNotification(Notification.Builder builderForValue) {
+            if (null != notificationBuilder_) {
+                notificationBuilder_.setMessage(builderForValue.build());
+            } else {
+                notification_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public CreateNotificationRequest build() {
+            CreateNotificationRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public NotificationOrBuilder getNotificationOrBuilder() {
+            if (null == notificationBuilder_) {
+                return null == notification_ ? Notification.getDefaultInstance() : notification_;
+            } else {
+                return notificationBuilder_.getMessageOrBuilder();
             }
         }
 
@@ -416,79 +235,26 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
         }
 
         @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateNotificationRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.CreateNotificationRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateNotificationRequest build() {
-            com.google.storage.v2.CreateNotificationRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateNotificationRequest buildPartial() {
-            com.google.storage.v2.CreateNotificationRequest result = new com.google.storage.v2.CreateNotificationRequest(this);
-            result.parent_ = parent_;
-            if (null != notificationBuilder_) {
-                result.notification_ = notificationBuilder_.build();
-            } else {
-                result.notification_ = notification_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
         }
 
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.CreateNotificationRequest)) {
+            if (!(other instanceof CreateNotificationRequest)) {
                 super.mergeFrom(other);
                 return this;
             } else {
-                return mergeFrom((com.google.storage.v2.CreateNotificationRequest) other);
+                return mergeFrom((CreateNotificationRequest) other);
             }
         }
 
-        public Builder mergeFrom(com.google.storage.v2.CreateNotificationRequest other) {
-            if (com.google.storage.v2.CreateNotificationRequest.getDefaultInstance() == other)
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
+        }
+
+        public Builder mergeFrom(CreateNotificationRequest other) {
+            if (CreateNotificationRequest.getDefaultInstance() == other)
                 return this;
             if (!other.getParent().isEmpty()) {
                 parent_ = other.parent_;
@@ -500,52 +266,6 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
             this.mergeUnknownFields(other.unknownFields);
             onChanged();
             return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.CreateNotificationRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.CreateNotificationRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object parent_ = "";
-
-        /**
-         * <pre>
-         * Required. The bucket to which this notification belongs.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The parent.
-         */
-        public java.lang.String getParent() {
-            java.lang.Object ref = parent_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                parent_ = s;
-                return s;
-            }
         }
 
         /**
@@ -579,16 +299,37 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
          * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
          * </code>
          *
-         * @param value The parent to set.
-         * @return This builder for chaining.
+         * @return The parent.
          */
-        public Builder setParent(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
+        public java.lang.String getParent() {
+            java.lang.Object ref = parent_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                parent_ = s;
+                return s;
             }
-            parent_ = value;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the notification to be inserted.
+         * </pre>
+         *
+         * <code>
+         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * </code>
+         */
+        public Notification.Builder getNotificationBuilder() {
             onChanged();
-            return this;
+            return getNotificationFieldBuilder().getBuilder();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
         }
 
         /**
@@ -606,6 +347,21 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
             parent_ = getDefaultInstance().getParent();
             onChanged();
             return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateNotificationRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public CreateNotificationRequest getDefaultInstanceForType() {
+            return CreateNotificationRequest.getDefaultInstance();
         }
 
         /**
@@ -630,23 +386,69 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
             return this;
         }
 
-        private com.google.storage.v2.Notification notification_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Notification, com.google.storage.v2.Notification.Builder, com.google.storage.v2.NotificationOrBuilder> notificationBuilder_;
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
 
         /**
          * <pre>
-         * Required. Properties of the notification to be inserted.
+         * Required. The bucket to which this notification belongs.
          * </pre>
          *
          * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
          * </code>
          *
-         * @return Whether the notification field is set.
+         * @param value The parent to set.
+         * @return This builder for chaining.
          */
-        public boolean hasNotification() {
-            return null != notificationBuilder_ || null != notification_;
+        public Builder setParent(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        // Construct using com.google.storage.v2.CreateNotificationRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public CreateNotificationRequest buildPartial() {
+            CreateNotificationRequest result = new CreateNotificationRequest(this);
+            result.parent_ = parent_;
+            if (null != notificationBuilder_) {
+                result.notification_ = notificationBuilder_.build();
+            } else {
+                result.notification_ = notification_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            CreateNotificationRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (CreateNotificationRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
         }
 
         /**
@@ -660,156 +462,29 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
          *
          * @return The notification.
          */
-        public com.google.storage.v2.Notification getNotification() {
+        public Notification getNotification() {
             if (null != notificationBuilder_) {
                 return notificationBuilder_.getMessage();
             } else {
-                return null == notification_ ? com.google.storage.v2.Notification.getDefaultInstance() : notification_;
+                return null == notification_ ? Notification.getDefaultInstance() : notification_;
             }
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder setNotification(com.google.storage.v2.Notification value) {
-            if (null != notificationBuilder_) {
-                notificationBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                notification_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder setNotification(com.google.storage.v2.Notification.Builder builderForValue) {
-            if (null != notificationBuilder_) {
-                notificationBuilder_.setMessage(builderForValue.build());
-            } else {
-                notification_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder mergeNotification(com.google.storage.v2.Notification value) {
-            if (null != notificationBuilder_) {
-                notificationBuilder_.mergeFrom(value);
-            } else {
-                if (null == notification_) {
-                    notification_ = value;
-                } else {
-                    notification_ = com.google.storage.v2.Notification.newBuilder(notification_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public Builder clearNotification() {
-            if (null != notificationBuilder_) {
-                notification_ = null;
-                notificationBuilder_ = null;
-            } else {
-                notification_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.Notification.Builder getNotificationBuilder() {
-            onChanged();
-            return getNotificationFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        public com.google.storage.v2.NotificationOrBuilder getNotificationOrBuilder() {
-            if (null == notificationBuilder_) {
-                return null == notification_ ? com.google.storage.v2.Notification.getDefaultInstance() : notification_;
-            } else {
-                return notificationBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the notification to be inserted.
-         * </pre>
-         *
-         * <code>
-         * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
-         * </code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Notification, com.google.storage.v2.Notification.Builder, com.google.storage.v2.NotificationOrBuilder> getNotificationFieldBuilder() {
-            if (null == notificationBuilder_) {
-                notificationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Notification, com.google.storage.v2.Notification.Builder, com.google.storage.v2.NotificationOrBuilder>(getNotification(), getParentForChildren(), isClean());
-                notification_ = null;
-            }
-            return notificationBuilder_;
         }
 
         @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
         }
 
         @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
         }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateNotificationRequest)
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
     }
 
     // @@protoc_insertion_point(class_scope:google.storage.v2.CreateNotificationRequest)
@@ -817,10 +492,6 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
 
     static {
         DEFAULT_INSTANCE = new com.google.storage.v2.CreateNotificationRequest();
-    }
-
-    public static com.google.storage.v2.CreateNotificationRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<CreateNotificationRequest> PARSER = new com.google.protobuf.AbstractParser<CreateNotificationRequest>() {
@@ -831,8 +502,69 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
         }
     };
 
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static CreateNotificationRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
     public static com.google.protobuf.Parser<CreateNotificationRequest> parser() {
         return PARSER;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
+        }
+        if (null != notification_) {
+            output.writeMessage(2, getNotification());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CreateNotificationRequest)) {
+            return super.equals(obj);
+        }
+        CreateNotificationRequest other = (CreateNotificationRequest) obj;
+        if (!getParent().equals(other.getParent()))
+            return false;
+        if (other.hasNotification() != hasNotification())
+            return false;
+        if (hasNotification()) {
+            if (!getNotification().equals(other.getNotification()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static CreateNotificationRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static CreateNotificationRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
@@ -840,8 +572,279 @@ CreateNotificationRequest extends com.google.protobuf.GeneratedMessageV3 impleme
         return PARSER;
     }
 
+    public static CreateNotificationRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static CreateNotificationRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
     @java.lang.Override
-    public com.google.storage.v2.CreateNotificationRequest getDefaultInstanceForType() {
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
+        }
+        if (null != notification_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getNotification());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    /**
+     * <pre>
+     * Required. The bucket to which this notification belongs.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for parent.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getParentBytes() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            parent_ = b;
+            return b;
+        }
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the notification to be inserted.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return Whether the notification field is set.
+     */
+    @java.lang.Override
+    public boolean hasNotification() {
+        return null != notification_;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateNotificationRequest.class, Builder.class);
+    }
+
+    public static CreateNotificationRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static CreateNotificationRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static CreateNotificationRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static CreateNotificationRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the notification to be inserted.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     */
+    @java.lang.Override
+    public NotificationOrBuilder getNotificationOrBuilder() {
+        return getNotification();
+    }
+
+    public static Builder newBuilder(CreateNotificationRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    // Use CreateNotificationRequest.newBuilder() to construct.
+    private CreateNotificationRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    private CreateNotificationRequest() {
+        parent_ = "";
+    }
+
+    public static CreateNotificationRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static CreateNotificationRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    private CreateNotificationRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    case 10:
+                        {
+                            java.lang.String s = input.readStringRequireUtf8();
+                            parent_ = s;
+                            break;
+                        }
+                    case 18:
+                        {
+                            Notification.Builder subBuilder = null;
+                            if (null != notification_) {
+                                subBuilder = notification_.toBuilder();
+                            }
+                            notification_ = input.readMessage(Notification.parser(), extensionRegistry);
+                            if (null != subBuilder) {
+                                subBuilder.mergeFrom(notification_);
+                                notification_ = subBuilder.buildPartial();
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    public static CreateNotificationRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new CreateNotificationRequest();
+    }
+
+    @java.lang.Override
+    public CreateNotificationRequest getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
     }
+
+    /**
+     * <pre>
+     * Required. The bucket to which this notification belongs.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The parent.
+     */
+    @java.lang.Override
+    public java.lang.String getParent() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            parent_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static CreateNotificationRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + PARENT_FIELD_NUMBER;
+        hash = (53 * hash) + getParent().hashCode();
+        if (hasNotification()) {
+            hash = (37 * hash) + NOTIFICATION_FIELD_NUMBER;
+            hash = (53 * hash) + getNotification().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the notification to be inserted.
+     * </pre>
+     *
+     * <code>
+     * .google.storage.v2.Notification notification = 2 [(.google.api.field_behavior) = REQUIRED];
+     * </code>
+     *
+     * @return The notification.
+     */
+    @java.lang.Override
+    public Notification getNotification() {
+        return null == notification_ ? Notification.getDefaultInstance() : notification_;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_CreateNotificationRequest_descriptor;
+    }
+
 }

@@ -30,26 +30,867 @@ ListBucketsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
 
     private static final long serialVersionUID = 0L;
 
-    // Use ListBucketsRequest.newBuilder() to construct.
-    private ListBucketsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int PARENT_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object parent_;
+
+    public static final int PAGE_SIZE_FIELD_NUMBER = 2;
+
+    private int pageSize_;
+
+    public static final int PAGE_TOKEN_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object pageToken_;
+
+    public static final int PREFIX_FIELD_NUMBER = 4;
+
+    private volatile java.lang.Object prefix_;
+
+    public static final int READ_MASK_FIELD_NUMBER = 5;
+
+    private com.google.protobuf.FieldMask readMask_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for ListBuckets.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ListBucketsRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListBucketsRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListBucketsRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListBucketsRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object parent_ = "";
+
+        private int pageSize_;
+
+        private java.lang.Object pageToken_ = "";
+
+        private java.lang.Object prefix_ = "";
+
+        private com.google.protobuf.FieldMask readMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListBucketsRequest)
+
+        /**
+         * <pre>
+         * Filter results to buckets whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 4;</code>
+         *
+         * @return The bytes for prefix.
+         */
+        public com.google.protobuf.ByteString getPrefixBytes() {
+            java.lang.Object ref = prefix_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                prefix_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The project whose buckets we are listing.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParent(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                readMask_ = builderForValue.build();
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
+            bitField0_ |= 0x00000001;
+            onChanged();
+            return getReadMaskFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Filter results to buckets whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPrefix() {
+            prefix_ = getDefaultInstance().getPrefix();
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return The bytes for pageToken.
+         */
+        public com.google.protobuf.ByteString getPageTokenBytes() {
+            java.lang.Object ref = pageToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                pageToken_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder clearReadMask() {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+                onChanged();
+            }
+            bitField0_ = (bitField0_ & ~0x00000001);
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return The pageToken.
+         */
+        public java.lang.String getPageToken() {
+            java.lang.Object ref = pageToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                pageToken_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @param value The pageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            pageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                readMask_ = value;
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The project whose buckets we are listing.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearParent() {
+            parent_ = getDefaultInstance().getParent();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to buckets whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 4;</code>
+         *
+         * @return The prefix.
+         */
+        public java.lang.String getPrefix() {
+            java.lang.Object ref = prefix_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                prefix_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         *
+         * @return Whether the readMask field is set.
+         */
+        public boolean hasReadMask() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
+            if (null == readMaskBuilder_) {
+                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
+                readMask_ = null;
+            }
+            return readMaskBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            parent_ = "";
+            pageSize_ = 0;
+            pageToken_ = "";
+            prefix_ = "";
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+            }
+            bitField0_ = (bitField0_ & ~0x00000001);
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ListBucketsRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ListBucketsRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.ListBucketsRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ListBucketsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ListBucketsRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Filter results to buckets whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 4;</code>
+         *
+         * @param value The prefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPrefix(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            prefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The project whose buckets we are listing.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for parent.
+         */
+        public com.google.protobuf.ByteString getParentBytes() {
+            java.lang.Object ref = parent_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                parent_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Filter results to buckets whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 4;</code>
+         *
+         * @param value The bytes for prefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPrefixBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            prefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Maximum number of buckets to return in a single response. The service will
+         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
+         * present in the read_mask, the service will use this parameter of 200 items,
+         * whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @param value The pageSize to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageSize(int value) {
+            pageSize_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ListBucketsRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ListBucketsRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project whose buckets we are listing.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParentBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @param value The bytes for pageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageTokenBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            pageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The project whose buckets we are listing.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The parent.
+         */
+        public java.lang.String getParent() {
+            java.lang.Object ref = parent_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                parent_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Maximum number of buckets to return in a single response. The service will
+         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
+         * present in the read_mask, the service will use this parameter of 200 items,
+         * whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @return The pageSize.
+         */
+        @java.lang.Override
+        public int getPageSize() {
+            return pageSize_;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public ListBucketsRequest build() {
+            ListBucketsRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Maximum number of buckets to return in a single response. The service will
+         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
+         * present in the read_mask, the service will use this parameter of 200 items,
+         * whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPageSize() {
+            pageSize_ = 0;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.mergeFrom(value);
+            } else {
+                if (!(0 != (bitField0_ & 0x00000001)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
+                    readMask_ = value;
+                } else {
+                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getReadMaskFieldBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPageToken() {
+            pageToken_ = getDefaultInstance().getPageToken();
+            onChanged();
+            return this;
+        }
+
+        public Builder mergeFrom(ListBucketsRequest other) {
+            if (ListBucketsRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getParent().isEmpty()) {
+                parent_ = other.parent_;
+                onChanged();
+            }
+            if (0 != other.getPageSize()) {
+                setPageSize(other.getPageSize());
+            }
+            if (!other.getPageToken().isEmpty()) {
+                pageToken_ = other.pageToken_;
+                onChanged();
+            }
+            if (!other.getPrefix().isEmpty()) {
+                prefix_ = other.prefix_;
+                onChanged();
+            }
+            if (other.hasReadMask()) {
+                mergeReadMask(other.getReadMask());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public ListBucketsRequest buildPartial() {
+            ListBucketsRequest result = new ListBucketsRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.parent_ = parent_;
+            result.pageSize_ = pageSize_;
+            result.pageToken_ = pageToken_;
+            result.prefix_ = prefix_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                if (null != readMaskBuilder_) {
+                    result.readMask_ = readMaskBuilder_.build();
+                } else {
+                    result.readMask_ = readMask_;
+                }
+                to_bitField0_ |= 0x00000001;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+            if (null == readMaskBuilder_) {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            } else {
+                return readMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.owner,
+         * items.acl, and items.default_object_acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+         *
+         * @return The readMask.
+         */
+        public com.google.protobuf.FieldMask getReadMask() {
+            if (null != readMaskBuilder_) {
+                return readMaskBuilder_.getMessage();
+            } else {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public ListBucketsRequest getDefaultInstanceForType() {
+            return ListBucketsRequest.getDefaultInstance();
+        }
+
     }
 
-    private ListBucketsRequest() {
-        parent_ = "";
-        pageToken_ = "";
-        prefix_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ListBucketsRequest)
+    private static final com.google.storage.v2.ListBucketsRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ListBucketsRequest();
+    }
+
+    private static final com.google.protobuf.Parser<ListBucketsRequest> PARSER = new com.google.protobuf.AbstractParser<ListBucketsRequest>() {
+
+        @java.lang.Override
+        public ListBucketsRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ListBucketsRequest(input, extensionRegistry);
+        }
+    };
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static com.google.protobuf.Parser<ListBucketsRequest> parser() {
+        return PARSER;
+    }
+
+    public static ListBucketsRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * A previously-returned page token representing part of the larger set of
+     * results to view.
+     * </pre>
+     *
+     * <code>string page_token = 3;</code>
+     *
+     * @return The bytes for pageToken.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPageTokenBytes() {
+        java.lang.Object ref = pageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            pageToken_ = b;
+            return b;
+        }
+    }
+
+    public static ListBucketsRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder(ListBucketsRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ListBucketsRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ListBucketsRequest();
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
+        }
+        if (0 != pageSize_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, pageSize_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, pageToken_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, prefix_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(5, getReadMask());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static ListBucketsRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     private ListBucketsRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -125,43 +966,34 @@ ListBucketsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListBucketsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListBucketsRequest.class, com.google.storage.v2.ListBucketsRequest.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int PARENT_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object parent_;
-
     /**
      * <pre>
-     * Required. The project whose buckets we are listing.
+     * Filter results to buckets whose names begin with this prefix.
      * </pre>
      *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
+     * <code>string prefix = 4;</code>
      *
-     * @return The parent.
+     * @return The bytes for prefix.
      */
     @java.lang.Override
-    public java.lang.String getParent() {
-        java.lang.Object ref = parent_;
+    public com.google.protobuf.ByteString getPrefixBytes() {
+        java.lang.Object ref = prefix_;
         if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            parent_ = s;
-            return s;
+            return (com.google.protobuf.ByteString) ref;
         } else {
-            return (java.lang.String) ref;
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            prefix_ = b;
+            return b;
         }
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ListBucketsRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     /**
@@ -187,126 +1019,42 @@ ListBucketsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         }
     }
 
-    public static final int PAGE_SIZE_FIELD_NUMBER = 2;
-
-    private int pageSize_;
-
-    /**
-     * <pre>
-     * Maximum number of buckets to return in a single response. The service will
-     * use this parameter or 1,000 items, whichever is smaller. If "acl" is
-     * present in the read_mask, the service will use this parameter of 200 items,
-     * whichever is smaller.
-     * </pre>
-     *
-     * <code>int32 page_size = 2;</code>
-     *
-     * @return The pageSize.
-     */
     @java.lang.Override
-    public int getPageSize() {
-        return pageSize_;
-    }
-
-    public static final int PAGE_TOKEN_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object pageToken_;
-
-    /**
-     * <pre>
-     * A previously-returned page token representing part of the larger set of
-     * results to view.
-     * </pre>
-     *
-     * <code>string page_token = 3;</code>
-     *
-     * @return The pageToken.
-     */
-    @java.lang.Override
-    public java.lang.String getPageToken() {
-        java.lang.Object ref = pageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            pageToken_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
         }
-    }
-
-    /**
-     * <pre>
-     * A previously-returned page token representing part of the larger set of
-     * results to view.
-     * </pre>
-     *
-     * <code>string page_token = 3;</code>
-     *
-     * @return The bytes for pageToken.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPageTokenBytes() {
-        java.lang.Object ref = pageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            pageToken_ = b;
-            return b;
+        if (!(obj instanceof ListBucketsRequest)) {
+            return super.equals(obj);
         }
-    }
-
-    public static final int PREFIX_FIELD_NUMBER = 4;
-
-    private volatile java.lang.Object prefix_;
-
-    /**
-     * <pre>
-     * Filter results to buckets whose names begin with this prefix.
-     * </pre>
-     *
-     * <code>string prefix = 4;</code>
-     *
-     * @return The prefix.
-     */
-    @java.lang.Override
-    public java.lang.String getPrefix() {
-        java.lang.Object ref = prefix_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            prefix_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
+        ListBucketsRequest other = (ListBucketsRequest) obj;
+        if (!getParent().equals(other.getParent()))
+            return false;
+        if (other.getPageSize() != getPageSize())
+            return false;
+        if (!getPageToken().equals(other.getPageToken()))
+            return false;
+        if (!getPrefix().equals(other.getPrefix()))
+            return false;
+        if (other.hasReadMask() != hasReadMask())
+            return false;
+        if (hasReadMask()) {
+            if (!getReadMask().equals(other.getReadMask()))
+                return false;
         }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
     }
 
-    /**
-     * <pre>
-     * Filter results to buckets whose names begin with this prefix.
-     * </pre>
-     *
-     * <code>string prefix = 4;</code>
-     *
-     * @return The bytes for prefix.
-     */
     @java.lang.Override
-    public com.google.protobuf.ByteString getPrefixBytes() {
-        java.lang.Object ref = prefix_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            prefix_ = b;
-            return b;
-        }
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
 
-    public static final int READ_MASK_FIELD_NUMBER = 5;
-
-    private com.google.protobuf.FieldMask readMask_;
+    public static ListBucketsRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
 
     /**
      * <pre>
@@ -325,123 +1073,24 @@ ListBucketsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return (0 != (bitField0_ & 0x00000001));
     }
 
-    /**
-     * <pre>
-     * Mask specifying which fields to read from each result.
-     * If no mask is specified, will default to all fields except items.owner,
-     * items.acl, and items.default_object_acl.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-     *
-     * @return The readMask.
-     */
     @java.lang.Override
-    public com.google.protobuf.FieldMask getReadMask() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    public ListBucketsRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
 
-    /**
-     * <pre>
-     * Mask specifying which fields to read from each result.
-     * If no mask is specified, will default to all fields except items.owner,
-     * items.acl, and items.default_object_acl.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
+    // Use ListBucketsRequest.newBuilder() to construct.
+    private ListBucketsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
     @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
-        }
-        if (0 != pageSize_) {
-            output.writeInt32(2, pageSize_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pageToken_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, prefix_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeMessage(5, getReadMask());
-        }
-        unknownFields.writeTo(output);
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ListBucketsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ListBucketsRequest.class, Builder.class);
     }
 
     @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
-        }
-        if (0 != pageSize_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, pageSize_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, pageToken_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, prefix_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(5, getReadMask());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ListBucketsRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ListBucketsRequest other = (com.google.storage.v2.ListBucketsRequest) obj;
-        if (!getParent().equals(other.getParent()))
-            return false;
-        if (other.getPageSize() != getPageSize())
-            return false;
-        if (!getPageToken().equals(other.getPageToken()))
-            return false;
-        if (!getPrefix().equals(other.getPrefix()))
-            return false;
-        if (other.hasReadMask() != hasReadMask())
-            return false;
-        if (hasReadMask()) {
-            if (!getReadMask().equals(other.getReadMask()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    public com.google.protobuf.Parser<ListBucketsRequest> getParserForType() {
+        return PARSER;
     }
 
     @java.lang.Override
@@ -468,847 +1117,201 @@ ListBucketsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return hash;
     }
 
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
+    private ListBucketsRequest() {
+        parent_ = "";
+        pageToken_ = "";
+        prefix_ = "";
     }
 
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+    public static ListBucketsRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
     }
 
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+    public static ListBucketsRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.google.storage.v2.ListBucketsRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+    public static ListBucketsRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
-    public static com.google.storage.v2.ListBucketsRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    /**
+     * <pre>
+     * Maximum number of buckets to return in a single response. The service will
+     * use this parameter or 1,000 items, whichever is smaller. If "acl" is
+     * present in the read_mask, the service will use this parameter of 200 items,
+     * whichever is smaller.
+     * </pre>
+     *
+     * <code>int32 page_size = 2;</code>
+     *
+     * @return The pageSize.
+     */
+    @java.lang.Override
+    public int getPageSize() {
+        return pageSize_;
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read from each result.
+     * If no mask is specified, will default to all fields except items.owner,
+     * items.acl, and items.default_object_acl.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
     }
 
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read from each result.
+     * If no mask is specified, will default to all fields except items.owner,
+     * items.acl, and items.default_object_acl.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
+     *
+     * @return The readMask.
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMask getReadMask() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ListBucketsRequest();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
+        }
+        if (0 != pageSize_) {
+            output.writeInt32(2, pageSize_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pageToken_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, prefix_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeMessage(5, getReadMask());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static ListBucketsRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * A previously-returned page token representing part of the larger set of
+     * results to view.
+     * </pre>
+     *
+     * <code>string page_token = 3;</code>
+     *
+     * @return The pageToken.
+     */
+    @java.lang.Override
+    public java.lang.String getPageToken() {
+        java.lang.Object ref = pageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            pageToken_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. The project whose buckets we are listing.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The parent.
+     */
+    @java.lang.Override
+    public java.lang.String getParent() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            parent_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
+    }
+
+    public static ListBucketsRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Filter results to buckets whose names begin with this prefix.
+     * </pre>
+     *
+     * <code>string prefix = 4;</code>
+     *
+     * @return The prefix.
+     */
+    @java.lang.Override
+    public java.lang.String getPrefix() {
+        java.lang.Object ref = prefix_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            prefix_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static ListBucketsRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
     }
 
-    public static Builder newBuilder(com.google.storage.v2.ListBucketsRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    public static ListBucketsRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for ListBuckets.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ListBucketsRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListBucketsRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListBucketsRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListBucketsRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListBucketsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListBucketsRequest.class, com.google.storage.v2.ListBucketsRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ListBucketsRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getReadMaskFieldBuilder();
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            parent_ = "";
-            pageSize_ = 0;
-            pageToken_ = "";
-            prefix_ = "";
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-            }
-            bitField0_ = (bitField0_ & ~0x00000001);
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListBucketsRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListBucketsRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.ListBucketsRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListBucketsRequest build() {
-            com.google.storage.v2.ListBucketsRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListBucketsRequest buildPartial() {
-            com.google.storage.v2.ListBucketsRequest result = new com.google.storage.v2.ListBucketsRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.parent_ = parent_;
-            result.pageSize_ = pageSize_;
-            result.pageToken_ = pageToken_;
-            result.prefix_ = prefix_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                if (null != readMaskBuilder_) {
-                    result.readMask_ = readMaskBuilder_.build();
-                } else {
-                    result.readMask_ = readMask_;
-                }
-                to_bitField0_ |= 0x00000001;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ListBucketsRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ListBucketsRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ListBucketsRequest other) {
-            if (com.google.storage.v2.ListBucketsRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getParent().isEmpty()) {
-                parent_ = other.parent_;
-                onChanged();
-            }
-            if (0 != other.getPageSize()) {
-                setPageSize(other.getPageSize());
-            }
-            if (!other.getPageToken().isEmpty()) {
-                pageToken_ = other.pageToken_;
-                onChanged();
-            }
-            if (!other.getPrefix().isEmpty()) {
-                prefix_ = other.prefix_;
-                onChanged();
-            }
-            if (other.hasReadMask()) {
-                mergeReadMask(other.getReadMask());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ListBucketsRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ListBucketsRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object parent_ = "";
-
-        /**
-         * <pre>
-         * Required. The project whose buckets we are listing.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The parent.
-         */
-        public java.lang.String getParent() {
-            java.lang.Object ref = parent_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                parent_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project whose buckets we are listing.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for parent.
-         */
-        public com.google.protobuf.ByteString getParentBytes() {
-            java.lang.Object ref = parent_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                parent_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project whose buckets we are listing.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParent(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project whose buckets we are listing.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearParent() {
-            parent_ = getDefaultInstance().getParent();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project whose buckets we are listing.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParentBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        private int pageSize_;
-
-        /**
-         * <pre>
-         * Maximum number of buckets to return in a single response. The service will
-         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
-         * present in the read_mask, the service will use this parameter of 200 items,
-         * whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @return The pageSize.
-         */
-        @java.lang.Override
-        public int getPageSize() {
-            return pageSize_;
-        }
-
-        /**
-         * <pre>
-         * Maximum number of buckets to return in a single response. The service will
-         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
-         * present in the read_mask, the service will use this parameter of 200 items,
-         * whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @param value The pageSize to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageSize(int value) {
-            pageSize_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Maximum number of buckets to return in a single response. The service will
-         * use this parameter or 1,000 items, whichever is smaller. If "acl" is
-         * present in the read_mask, the service will use this parameter of 200 items,
-         * whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPageSize() {
-            pageSize_ = 0;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object pageToken_ = "";
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return The pageToken.
-         */
-        public java.lang.String getPageToken() {
-            java.lang.Object ref = pageToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                pageToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return The bytes for pageToken.
-         */
-        public com.google.protobuf.ByteString getPageTokenBytes() {
-            java.lang.Object ref = pageToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                pageToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @param value The pageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            pageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPageToken() {
-            pageToken_ = getDefaultInstance().getPageToken();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @param value The bytes for pageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageTokenBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            pageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object prefix_ = "";
-
-        /**
-         * <pre>
-         * Filter results to buckets whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 4;</code>
-         *
-         * @return The prefix.
-         */
-        public java.lang.String getPrefix() {
-            java.lang.Object ref = prefix_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                prefix_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to buckets whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 4;</code>
-         *
-         * @return The bytes for prefix.
-         */
-        public com.google.protobuf.ByteString getPrefixBytes() {
-            java.lang.Object ref = prefix_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                prefix_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to buckets whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 4;</code>
-         *
-         * @param value The prefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPrefix(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            prefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to buckets whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPrefix() {
-            prefix_ = getDefaultInstance().getPrefix();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to buckets whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 4;</code>
-         *
-         * @param value The bytes for prefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPrefixBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            prefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.FieldMask readMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         *
-         * @return Whether the readMask field is set.
-         */
-        public boolean hasReadMask() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         *
-         * @return The readMask.
-         */
-        public com.google.protobuf.FieldMask getReadMask() {
-            if (null != readMaskBuilder_) {
-                return readMaskBuilder_.getMessage();
-            } else {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                readMask_ = value;
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                readMask_ = builderForValue.build();
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.mergeFrom(value);
-            } else {
-                if (!(0 != (bitField0_ & 0x00000001)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
-                    readMask_ = value;
-                } else {
-                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public Builder clearReadMask() {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-                onChanged();
-            }
-            bitField0_ = (bitField0_ & ~0x00000001);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
-            bitField0_ |= 0x00000001;
-            onChanged();
-            return getReadMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-            if (null == readMaskBuilder_) {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            } else {
-                return readMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.owner,
-         * items.acl, and items.default_object_acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 5;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
-            if (null == readMaskBuilder_) {
-                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
-                readMask_ = null;
-            }
-            return readMaskBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListBucketsRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ListBucketsRequest)
-    private static final com.google.storage.v2.ListBucketsRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ListBucketsRequest();
-    }
-
-    public static com.google.storage.v2.ListBucketsRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ListBucketsRequest> PARSER = new com.google.protobuf.AbstractParser<ListBucketsRequest>() {
-
-        @java.lang.Override
-        public ListBucketsRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ListBucketsRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ListBucketsRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ListBucketsRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ListBucketsRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

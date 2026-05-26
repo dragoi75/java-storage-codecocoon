@@ -37,9 +37,2470 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
 
     private static final long serialVersionUID = 0L;
 
-    // Use RewriteObjectRequest.newBuilder() to construct.
-    private RewriteObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int DESTINATION_NAME_FIELD_NUMBER = 24;
+
+    private volatile java.lang.Object destinationName_;
+
+    public static final int DESTINATION_BUCKET_FIELD_NUMBER = 25;
+
+    private volatile java.lang.Object destinationBucket_;
+
+    public static final int DESTINATION_KMS_KEY_FIELD_NUMBER = 27;
+
+    private volatile java.lang.Object destinationKmsKey_;
+
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.Object destination_;
+
+    public static final int SOURCE_BUCKET_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object sourceBucket_;
+
+    public static final int SOURCE_OBJECT_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object sourceObject_;
+
+    public static final int SOURCE_GENERATION_FIELD_NUMBER = 4;
+
+    private long sourceGeneration_;
+
+    public static final int REWRITE_TOKEN_FIELD_NUMBER = 5;
+
+    private volatile java.lang.Object rewriteToken_;
+
+    public static final int DESTINATION_PREDEFINED_ACL_FIELD_NUMBER = 28;
+
+    private volatile java.lang.Object destinationPredefinedAcl_;
+
+    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 7;
+
+    private long ifGenerationMatch_;
+
+    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 8;
+
+    private long ifGenerationNotMatch_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 9;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 10;
+
+    private long ifMetagenerationNotMatch_;
+
+    public static final int IF_SOURCE_GENERATION_MATCH_FIELD_NUMBER = 11;
+
+    private long ifSourceGenerationMatch_;
+
+    public static final int IF_SOURCE_GENERATION_NOT_MATCH_FIELD_NUMBER = 12;
+
+    private long ifSourceGenerationNotMatch_;
+
+    public static final int IF_SOURCE_METAGENERATION_MATCH_FIELD_NUMBER = 13;
+
+    private long ifSourceMetagenerationMatch_;
+
+    public static final int IF_SOURCE_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 14;
+
+    private long ifSourceMetagenerationNotMatch_;
+
+    public static final int MAX_BYTES_REWRITTEN_PER_CALL_FIELD_NUMBER = 15;
+
+    private long maxBytesRewrittenPerCall_;
+
+    public static final int COPY_SOURCE_ENCRYPTION_ALGORITHM_FIELD_NUMBER = 16;
+
+    private volatile java.lang.Object copySourceEncryptionAlgorithm_;
+
+    public static final int COPY_SOURCE_ENCRYPTION_KEY_BYTES_FIELD_NUMBER = 21;
+
+    private com.google.protobuf.ByteString copySourceEncryptionKeyBytes_;
+
+    public static final int COPY_SOURCE_ENCRYPTION_KEY_SHA256_BYTES_FIELD_NUMBER = 22;
+
+    private com.google.protobuf.ByteString copySourceEncryptionKeySha256Bytes_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 19;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for RewriteObject.
+     * If the source object is encrypted using a Customer-Supplied Encryption Key
+     * the key information must be provided in the copy_source_encryption_algorithm,
+     * copy_source_encryption_key_bytes, and copy_source_encryption_key_sha256_bytes
+     * fields. If the destination object should be encrypted the keying information
+     * should be provided in the encryption_algorithm, encryption_key_bytes, and
+     * encryption_key_sha256_bytes fields of the
+     * common_object_request_params.customer_encryption field.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.RewriteObjectRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteObjectRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteObjectRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.RewriteObjectRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object destinationName_ = "";
+
+        private java.lang.Object destinationBucket_ = "";
+
+        private java.lang.Object destinationKmsKey_ = "";
+
+        private com.google.storage.v2.Object destination_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> destinationBuilder_;
+
+        private java.lang.Object sourceBucket_ = "";
+
+        private java.lang.Object sourceObject_ = "";
+
+        private long sourceGeneration_;
+
+        private java.lang.Object rewriteToken_ = "";
+
+        private java.lang.Object destinationPredefinedAcl_ = "";
+
+        private long ifGenerationMatch_;
+
+        private long ifGenerationNotMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        private long ifSourceGenerationMatch_;
+
+        private long ifSourceGenerationNotMatch_;
+
+        private long ifSourceMetagenerationMatch_;
+
+        private long ifSourceMetagenerationNotMatch_;
+
+        private long maxBytesRewrittenPerCall_;
+
+        private java.lang.Object copySourceEncryptionAlgorithm_ = "";
+
+        private com.google.protobuf.ByteString copySourceEncryptionKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
+
+        private com.google.protobuf.ByteString copySourceEncryptionKeySha256Bytes_ = com.google.protobuf.ByteString.EMPTY;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.RewriteObjectRequest)
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
+         * the source object, if it was encrypted with a Customer-Supplied Encryption
+         * Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
+         *
+         * @return The copySourceEncryptionKeyBytes.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getCopySourceEncryptionKeyBytes() {
+            return copySourceEncryptionKeyBytes_;
+        }
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
+         * the source object, if it was encrypted with a Customer-Supplied Encryption
+         * Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCopySourceEncryptionKeyBytes() {
+            copySourceEncryptionKeyBytes_ = getDefaultInstance().getCopySourceEncryptionKeyBytes();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Include this field (from the previous rewrite response) on each rewrite
+         * request after the first one, until the rewrite response 'done' flag is
+         * true. Calls that provide a rewriteToken can omit all other request fields,
+         * but if included those fields must match the values provided in the first
+         * rewrite request.
+         * </pre>
+         *
+         * <code>string rewrite_token = 5;</code>
+         *
+         * @return The rewriteToken.
+         */
+        public java.lang.String getRewriteToken() {
+            java.lang.Object ref = rewriteToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                rewriteToken_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the destination object. Nearly any sequence of unicode
+         * characters is valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDestinationName() {
+            destinationName_ = getDefaultInstance().getDestinationName();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the source object.
+         * </pre>
+         *
+         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The sourceObject.
+         */
+        public java.lang.String getSourceObject() {
+            java.lang.Object ref = sourceObject_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                sourceObject_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public ObjectOrBuilder getDestinationOrBuilder() {
+            if (null == destinationBuilder_) {
+                return null == destination_ ? Object.getDefaultInstance() : destination_;
+            } else {
+                return destinationBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
+         * to encrypt the source object, if it was encrypted with a Customer-Supplied
+         * Encryption Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
+         *
+         * @return The copySourceEncryptionKeySha256Bytes.
+         */
+        @java.lang.Override
+        public com.google.protobuf.ByteString getCopySourceEncryptionKeySha256Bytes() {
+            return copySourceEncryptionKeySha256Bytes_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 10;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 9;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 10;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_not_match = 12;</code>
+         *
+         * @param value The ifSourceGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfSourceGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000020;
+            ifSourceGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 10;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000008;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Include this field (from the previous rewrite response) on each rewrite
+         * request after the first one, until the rewrite response 'done' flag is
+         * true. Calls that provide a rewriteToken can omit all other request fields,
+         * but if included those fields must match the values provided in the first
+         * rewrite request.
+         * </pre>
+         *
+         * <code>string rewrite_token = 5;</code>
+         *
+         * @param value The bytes for rewriteToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewriteTokenBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            rewriteToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the destination object. Nearly any sequence of unicode
+         * characters is valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return The destinationName.
+         */
+        public java.lang.String getDestinationName() {
+            java.lang.Object ref = destinationName_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                destinationName_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_match = 13;</code>
+         *
+         * @return Whether the ifSourceMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfSourceMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000040));
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public Builder setDestination(Object.Builder builderForValue) {
+            if (null != destinationBuilder_) {
+                destinationBuilder_.setMessage(builderForValue.build());
+            } else {
+                destination_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of the source object (as opposed to
+         * the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 source_generation = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearSourceGeneration() {
+            sourceGeneration_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public Builder setDestination(Object value) {
+            if (null != destinationBuilder_) {
+                destinationBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                destination_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing The name of the destination object.
+         * </pre>
+         *
+         * <code>
+         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The destinationBucket.
+         */
+        public java.lang.String getDestinationBucket() {
+            java.lang.Object ref = destinationBucket_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                destinationBucket_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 28;</code>
+         *
+         * @param value The bytes for destinationPredefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationPredefinedAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            destinationPredefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of the source object (as opposed to
+         * the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 source_generation = 4;</code>
+         *
+         * @param value The sourceGeneration to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSourceGeneration(long value) {
+            sourceGeneration_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 8;</code>
+         *
+         * @param value The ifGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 10;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000008));
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to find the source object.
+         * </pre>
+         *
+         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The sourceBucket.
+         */
+        public java.lang.String getSourceBucket() {
+            java.lang.Object ref = sourceBucket_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                sourceBucket_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(RewriteObjectRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 7;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * The algorithm used to encrypt the source object, if any. Used if the source
+         * object was encrypted with a Customer-Supplied Encryption Key.
+         * </pre>
+         *
+         * <code>string copy_source_encryption_algorithm = 16;</code>
+         *
+         * @return The bytes for copySourceEncryptionAlgorithm.
+         */
+        public com.google.protobuf.ByteString getCopySourceEncryptionAlgorithmBytes() {
+            java.lang.Object ref = copySourceEncryptionAlgorithm_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                copySourceEncryptionAlgorithm_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The maximum number of bytes that will be rewritten per rewrite request.
+         * Most callers
+         * shouldn't need to specify this parameter - it is primarily in place to
+         * support testing. If specified the value must be an integral multiple of
+         * 1 MiB (1048576). Also, this only applies to requests where the source and
+         * destination span locations and/or storage classes. Finally, this value must
+         * not change across rewrite calls else you'll get an error that the
+         * `rewriteToken` is invalid.
+         * </pre>
+         *
+         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
+         *
+         * @return The maxBytesRewrittenPerCall.
+         */
+        @java.lang.Override
+        public long getMaxBytesRewrittenPerCall() {
+            return maxBytesRewrittenPerCall_;
+        }
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
+         * to encrypt the source object, if it was encrypted with a Customer-Supplied
+         * Encryption Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
+         *
+         * @param value The copySourceEncryptionKeySha256Bytes to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCopySourceEncryptionKeySha256Bytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            copySourceEncryptionKeySha256Bytes_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 8;</code>
+         *
+         * @return Whether the ifGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        /**
+         * <pre>
+         * The maximum number of bytes that will be rewritten per rewrite request.
+         * Most callers
+         * shouldn't need to specify this parameter - it is primarily in place to
+         * support testing. If specified the value must be an integral multiple of
+         * 1 MiB (1048576). Also, this only applies to requests where the source and
+         * destination span locations and/or storage classes. Finally, this value must
+         * not change across rewrite calls else you'll get an error that the
+         * `rewriteToken` is invalid.
+         * </pre>
+         *
+         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearMaxBytesRewrittenPerCall() {
+            maxBytesRewrittenPerCall_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.RewriteObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing The name of the destination object.
+         * </pre>
+         *
+         * <code>
+         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The destinationBucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationBucket(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            destinationBucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_match = 13;</code>
+         *
+         * @param value The ifSourceMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfSourceMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000040;
+            ifSourceMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+         *
+         * @return The ifSourceMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfSourceMetagenerationNotMatch() {
+            return ifSourceMetagenerationNotMatch_;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfSourceMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000080);
+            ifSourceMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of the source object (as opposed to
+         * the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 source_generation = 4;</code>
+         *
+         * @return The sourceGeneration.
+         */
+        @java.lang.Override
+        public long getSourceGeneration() {
+            return sourceGeneration_;
+        }
+
+        @java.lang.Override
+        public RewriteObjectRequest build() {
+            RewriteObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
+         * to encrypt the source object, if it was encrypted with a Customer-Supplied
+         * Encryption Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCopySourceEncryptionKeySha256Bytes() {
+            copySourceEncryptionKeySha256Bytes_ = getDefaultInstance().getCopySourceEncryptionKeySha256Bytes();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getDestinationFieldBuilder() {
+            if (null == destinationBuilder_) {
+                destinationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getDestination(), getParentForChildren(), isClean());
+                destination_ = null;
+            }
+            return destinationBuilder_;
+        }
+
+        public Builder mergeFrom(RewriteObjectRequest other) {
+            if (RewriteObjectRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getDestinationName().isEmpty()) {
+                destinationName_ = other.destinationName_;
+                onChanged();
+            }
+            if (!other.getDestinationBucket().isEmpty()) {
+                destinationBucket_ = other.destinationBucket_;
+                onChanged();
+            }
+            if (!other.getDestinationKmsKey().isEmpty()) {
+                destinationKmsKey_ = other.destinationKmsKey_;
+                onChanged();
+            }
+            if (other.hasDestination()) {
+                mergeDestination(other.getDestination());
+            }
+            if (!other.getSourceBucket().isEmpty()) {
+                sourceBucket_ = other.sourceBucket_;
+                onChanged();
+            }
+            if (!other.getSourceObject().isEmpty()) {
+                sourceObject_ = other.sourceObject_;
+                onChanged();
+            }
+            if (0L != other.getSourceGeneration()) {
+                setSourceGeneration(other.getSourceGeneration());
+            }
+            if (!other.getRewriteToken().isEmpty()) {
+                rewriteToken_ = other.rewriteToken_;
+                onChanged();
+            }
+            if (!other.getDestinationPredefinedAcl().isEmpty()) {
+                destinationPredefinedAcl_ = other.destinationPredefinedAcl_;
+                onChanged();
+            }
+            if (other.hasIfGenerationMatch()) {
+                setIfGenerationMatch(other.getIfGenerationMatch());
+            }
+            if (other.hasIfGenerationNotMatch()) {
+                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            if (other.hasIfSourceGenerationMatch()) {
+                setIfSourceGenerationMatch(other.getIfSourceGenerationMatch());
+            }
+            if (other.hasIfSourceGenerationNotMatch()) {
+                setIfSourceGenerationNotMatch(other.getIfSourceGenerationNotMatch());
+            }
+            if (other.hasIfSourceMetagenerationMatch()) {
+                setIfSourceMetagenerationMatch(other.getIfSourceMetagenerationMatch());
+            }
+            if (other.hasIfSourceMetagenerationNotMatch()) {
+                setIfSourceMetagenerationNotMatch(other.getIfSourceMetagenerationNotMatch());
+            }
+            if (0L != other.getMaxBytesRewrittenPerCall()) {
+                setMaxBytesRewrittenPerCall(other.getMaxBytesRewrittenPerCall());
+            }
+            if (!other.getCopySourceEncryptionAlgorithm().isEmpty()) {
+                copySourceEncryptionAlgorithm_ = other.copySourceEncryptionAlgorithm_;
+                onChanged();
+            }
+            if (com.google.protobuf.ByteString.EMPTY != other.getCopySourceEncryptionKeyBytes()) {
+                setCopySourceEncryptionKeyBytes(other.getCopySourceEncryptionKeyBytes());
+            }
+            if (com.google.protobuf.ByteString.EMPTY != other.getCopySourceEncryptionKeySha256Bytes()) {
+                setCopySourceEncryptionKeySha256Bytes(other.getCopySourceEncryptionKeySha256Bytes());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing The name of the destination object.
+         * </pre>
+         *
+         * <code>
+         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDestinationBucket() {
+            destinationBucket_ = getDefaultInstance().getDestinationBucket();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_not_match = 12;</code>
+         *
+         * @return Whether the ifSourceGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfSourceGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000020));
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 8;</code>
+         *
+         * @return The ifGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationNotMatch() {
+            return ifGenerationNotMatch_;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         *
+         * @return Whether the destination field is set.
+         */
+        public boolean hasDestination() {
+            return null != destinationBuilder_ || null != destination_;
+        }
+
+        /**
+         * <pre>
+         * The algorithm used to encrypt the source object, if any. Used if the source
+         * object was encrypted with a Customer-Supplied Encryption Key.
+         * </pre>
+         *
+         * <code>string copy_source_encryption_algorithm = 16;</code>
+         *
+         * @return The copySourceEncryptionAlgorithm.
+         */
+        public java.lang.String getCopySourceEncryptionAlgorithm() {
+            java.lang.Object ref = copySourceEncryptionAlgorithm_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                copySourceEncryptionAlgorithm_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the source object.
+         * </pre>
+         *
+         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearSourceObject() {
+            sourceObject_ = getDefaultInstance().getSourceObject();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Include this field (from the previous rewrite response) on each rewrite
+         * request after the first one, until the rewrite response 'done' flag is
+         * true. Calls that provide a rewriteToken can omit all other request fields,
+         * but if included those fields must match the values provided in the first
+         * rewrite request.
+         * </pre>
+         *
+         * <code>string rewrite_token = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearRewriteToken() {
+            rewriteToken_ = getDefaultInstance().getRewriteToken();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 28;</code>
+         *
+         * @param value The destinationPredefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationPredefinedAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            destinationPredefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Include this field (from the previous rewrite response) on each rewrite
+         * request after the first one, until the rewrite response 'done' flag is
+         * true. Calls that provide a rewriteToken can omit all other request fields,
+         * but if included those fields must match the values provided in the first
+         * rewrite request.
+         * </pre>
+         *
+         * <code>string rewrite_token = 5;</code>
+         *
+         * @param value The rewriteToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRewriteToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            rewriteToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 28;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDestinationPredefinedAcl() {
+            destinationPredefinedAcl_ = getDefaultInstance().getDestinationPredefinedAcl();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_not_match = 12;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfSourceGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            ifSourceGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 7;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+         *
+         * @param value The ifSourceMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfSourceMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000080;
+            ifSourceMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public Object.Builder getDestinationBuilder() {
+            onChanged();
+            return getDestinationFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 9;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the destination object. Nearly any sequence of unicode
+         * characters is valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @return The bytes for destinationName.
+         */
+        public com.google.protobuf.ByteString getDestinationNameBytes() {
+            java.lang.Object ref = destinationName_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                destinationName_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The name of the Cloud KMS key that will be used to encrypt the destination
+         * object. The Cloud KMS key must be located in same location as the object.
+         * If the parameter is not specified, the request uses the destination
+         * bucket's default encryption key, if any, or else the Google-managed
+         * encryption key.
+         * </pre>
+         *
+         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDestinationKmsKey() {
+            destinationKmsKey_ = getDefaultInstance().getDestinationKmsKey();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 28;</code>
+         *
+         * @return The destinationPredefinedAcl.
+         */
+        public java.lang.String getDestinationPredefinedAcl() {
+            java.lang.Object ref = destinationPredefinedAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                destinationPredefinedAcl_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 9;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_match = 11;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfSourceGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            ifSourceGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The algorithm used to encrypt the source object, if any. Used if the source
+         * object was encrypted with a Customer-Supplied Encryption Key.
+         * </pre>
+         *
+         * <code>string copy_source_encryption_algorithm = 16;</code>
+         *
+         * @param value The bytes for copySourceEncryptionAlgorithm to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCopySourceEncryptionAlgorithmBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            copySourceEncryptionAlgorithm_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
+         * the source object, if it was encrypted with a Customer-Supplied Encryption
+         * Key.
+         * </pre>
+         *
+         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
+         *
+         * @param value The copySourceEncryptionKeyBytes to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCopySourceEncryptionKeyBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            copySourceEncryptionKeyBytes_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the source object.
+         * </pre>
+         *
+         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for sourceObject.
+         */
+        public com.google.protobuf.ByteString getSourceObjectBytes() {
+            java.lang.Object ref = sourceObject_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                sourceObject_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the source object.
+         * </pre>
+         *
+         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The sourceObject to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSourceObject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            sourceObject_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_match = 13;</code>
+         *
+         * @return The ifSourceMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfSourceMetagenerationMatch() {
+            return ifSourceMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_match = 11;</code>
+         *
+         * @return The ifSourceGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfSourceGenerationMatch() {
+            return ifSourceGenerationMatch_;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            destinationName_ = "";
+            destinationBucket_ = "";
+            destinationKmsKey_ = "";
+            if (null != destinationBuilder_) {
+                destination_ = null;
+                destinationBuilder_ = null;
+            } else {
+                destination_ = null;
+            }
+            sourceBucket_ = "";
+            sourceObject_ = "";
+            sourceGeneration_ = 0L;
+            rewriteToken_ = "";
+            destinationPredefinedAcl_ = "";
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifSourceGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000010);
+            ifSourceGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000020);
+            ifSourceMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000040);
+            ifSourceMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000080);
+            maxBytesRewrittenPerCall_ = 0L;
+            copySourceEncryptionAlgorithm_ = "";
+            copySourceEncryptionKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
+            copySourceEncryptionKeySha256Bytes_ = com.google.protobuf.ByteString.EMPTY;
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public Builder mergeDestination(Object value) {
+            if (null != destinationBuilder_) {
+                destinationBuilder_.mergeFrom(value);
+            } else {
+                if (null == destination_) {
+                    destination_ = value;
+                } else {
+                    destination_ = Object.newBuilder(destination_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The maximum number of bytes that will be rewritten per rewrite request.
+         * Most callers
+         * shouldn't need to specify this parameter - it is primarily in place to
+         * support testing. If specified the value must be an integral multiple of
+         * 1 MiB (1048576). Also, this only applies to requests where the source and
+         * destination span locations and/or storage classes. Finally, this value must
+         * not change across rewrite calls else you'll get an error that the
+         * `rewriteToken` is invalid.
+         * </pre>
+         *
+         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
+         *
+         * @param value The maxBytesRewrittenPerCall to set.
+         * @return This builder for chaining.
+         */
+        public Builder setMaxBytesRewrittenPerCall(long value) {
+            maxBytesRewrittenPerCall_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to find the source object.
+         * </pre>
+         *
+         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for sourceBucket.
+         */
+        public com.google.protobuf.ByteString getSourceBucketBytes() {
+            java.lang.Object ref = sourceBucket_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                sourceBucket_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Include this field (from the previous rewrite response) on each rewrite
+         * request after the first one, until the rewrite response 'done' flag is
+         * true. Calls that provide a rewriteToken can omit all other request fields,
+         * but if included those fields must match the values provided in the first
+         * rewrite request.
+         * </pre>
+         *
+         * <code>string rewrite_token = 5;</code>
+         *
+         * @return The bytes for rewriteToken.
+         */
+        public com.google.protobuf.ByteString getRewriteTokenBytes() {
+            java.lang.Object ref = rewriteToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                rewriteToken_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to the destination object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string destination_predefined_acl = 28;</code>
+         *
+         * @return The bytes for destinationPredefinedAcl.
+         */
+        public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
+            java.lang.Object ref = destinationPredefinedAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                destinationPredefinedAcl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 7;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+         *
+         * @return Whether the ifSourceMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfSourceMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000080));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         */
+        public Builder clearDestination() {
+            if (null != destinationBuilder_) {
+                destination_ = null;
+                destinationBuilder_ = null;
+            } else {
+                destination_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            RewriteObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (RewriteObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the Cloud KMS key that will be used to encrypt the destination
+         * object. The Cloud KMS key must be located in same location as the object.
+         * If the parameter is not specified, the request uses the destination
+         * bucket's default encryption key, if any, or else the Google-managed
+         * encryption key.
+         * </pre>
+         *
+         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The bytes for destinationKmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationKmsKeyBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            destinationKmsKey_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the destination object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 9;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the destination object. Nearly any sequence of unicode
+         * characters is valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @param value The destinationName to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationName(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            destinationName_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to find the source object.
+         * </pre>
+         *
+         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The sourceBucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSourceBucket(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            sourceBucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public RewriteObjectRequest getDefaultInstanceForType() {
+            return RewriteObjectRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the destination object. Nearly any sequence of unicode
+         * characters is valid. See
+         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+         * Example: `test.txt`
+         * The `name` field by itself does not uniquely identify a Cloud Storage
+         * object. A Cloud Storage object is uniquely identified by the tuple of
+         * (bucket, object, generation).
+         * </pre>
+         *
+         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+         *
+         * @param value The bytes for destinationName to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationNameBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            destinationName_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Properties of the destination, post-rewrite object.
+         * The `name`, `bucket` and `kms_key` fields must not be populated (these
+         * values are specified in the `destination_name`, `destination_bucket`, and
+         * `destination_kms_key` fields).
+         * If `destination` is present it will be used to construct the destination
+         * object's metadata; otherwise the destination object's metadata will be
+         * copied from the source object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object destination = 1;</code>
+         *
+         * @return The destination.
+         */
+        public Object getDestination() {
+            if (null != destinationBuilder_) {
+                return destinationBuilder_.getMessage();
+            } else {
+                return null == destination_ ? Object.getDefaultInstance() : destination_;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing The name of the destination object.
+         * </pre>
+         *
+         * <code>
+         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for destinationBucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationBucketBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            destinationBucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_match = 11;</code>
+         *
+         * @param value The ifSourceGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfSourceGenerationMatch(long value) {
+            bitField0_ |= 0x00000010;
+            ifSourceGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Immutable. The name of the bucket containing The name of the destination object.
+         * </pre>
+         *
+         * <code>
+         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for destinationBucket.
+         */
+        public com.google.protobuf.ByteString getDestinationBucketBytes() {
+            java.lang.Object ref = destinationBucket_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                destinationBucket_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof RewriteObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((RewriteObjectRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * The name of the Cloud KMS key that will be used to encrypt the destination
+         * object. The Cloud KMS key must be located in same location as the object.
+         * If the parameter is not specified, the request uses the destination
+         * bucket's default encryption key, if any, or else the Google-managed
+         * encryption key.
+         * </pre>
+         *
+         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The destinationKmsKey.
+         */
+        public java.lang.String getDestinationKmsKey() {
+            java.lang.Object ref = destinationKmsKey_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                destinationKmsKey_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * The algorithm used to encrypt the source object, if any. Used if the source
+         * object was encrypted with a Customer-Supplied Encryption Key.
+         * </pre>
+         *
+         * <code>string copy_source_encryption_algorithm = 16;</code>
+         *
+         * @param value The copySourceEncryptionAlgorithm to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCopySourceEncryptionAlgorithm(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            copySourceEncryptionAlgorithm_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the Cloud KMS key that will be used to encrypt the destination
+         * object. The Cloud KMS key must be located in same location as the object.
+         * If the parameter is not specified, the request uses the destination
+         * bucket's default encryption key, if any, or else the Google-managed
+         * encryption key.
+         * </pre>
+         *
+         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @return The bytes for destinationKmsKey.
+         */
+        public com.google.protobuf.ByteString getDestinationKmsKeyBytes() {
+            java.lang.Object ref = destinationKmsKey_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                destinationKmsKey_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_match = 11;</code>
+         *
+         * @return Whether the ifSourceGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfSourceGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000010));
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the source object.
+         * </pre>
+         *
+         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for sourceObject to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSourceObjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            sourceObject_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The algorithm used to encrypt the source object, if any. Used if the source
+         * object was encrypted with a Customer-Supplied Encryption Key.
+         * </pre>
+         *
+         * <code>string copy_source_encryption_algorithm = 16;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCopySourceEncryptionAlgorithm() {
+            copySourceEncryptionAlgorithm_ = getDefaultInstance().getCopySourceEncryptionAlgorithm();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_metageneration_match = 13;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfSourceMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            ifSourceMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public RewriteObjectRequest buildPartial() {
+            RewriteObjectRequest result = new RewriteObjectRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.destinationName_ = destinationName_;
+            result.destinationBucket_ = destinationBucket_;
+            result.destinationKmsKey_ = destinationKmsKey_;
+            if (null != destinationBuilder_) {
+                result.destination_ = destinationBuilder_.build();
+            } else {
+                result.destination_ = destination_;
+            }
+            result.sourceBucket_ = sourceBucket_;
+            result.sourceObject_ = sourceObject_;
+            result.sourceGeneration_ = sourceGeneration_;
+            result.rewriteToken_ = rewriteToken_;
+            result.destinationPredefinedAcl_ = destinationPredefinedAcl_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifGenerationMatch_ = ifGenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000004;
+            }
+            if ((0 != (from_bitField0_ & 0x00000008))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000008;
+            }
+            if ((0 != (from_bitField0_ & 0x00000010))) {
+                result.ifSourceGenerationMatch_ = ifSourceGenerationMatch_;
+                to_bitField0_ |= 0x00000010;
+            }
+            if ((0 != (from_bitField0_ & 0x00000020))) {
+                result.ifSourceGenerationNotMatch_ = ifSourceGenerationNotMatch_;
+                to_bitField0_ |= 0x00000020;
+            }
+            if ((0 != (from_bitField0_ & 0x00000040))) {
+                result.ifSourceMetagenerationMatch_ = ifSourceMetagenerationMatch_;
+                to_bitField0_ |= 0x00000040;
+            }
+            if ((0 != (from_bitField0_ & 0x00000080))) {
+                result.ifSourceMetagenerationNotMatch_ = ifSourceMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000080;
+            }
+            result.maxBytesRewrittenPerCall_ = maxBytesRewrittenPerCall_;
+            result.copySourceEncryptionAlgorithm_ = copySourceEncryptionAlgorithm_;
+            result.copySourceEncryptionKeyBytes_ = copySourceEncryptionKeyBytes_;
+            result.copySourceEncryptionKeySha256Bytes_ = copySourceEncryptionKeySha256Bytes_;
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the source object's current
+         * generation does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_source_generation_not_match = 12;</code>
+         *
+         * @return The ifSourceGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfSourceGenerationNotMatch() {
+            return ifSourceGenerationNotMatch_;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The name of the Cloud KMS key that will be used to encrypt the destination
+         * object. The Cloud KMS key must be located in same location as the object.
+         * If the parameter is not specified, the request uses the destination
+         * bucket's default encryption key, if any, or else the Google-managed
+         * encryption key.
+         * </pre>
+         *
+         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+         *
+         * @param value The destinationKmsKey to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDestinationKmsKey(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            destinationKmsKey_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 8;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to find the source object.
+         * </pre>
+         *
+         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for sourceBucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setSourceBucketBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            sourceBucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to find the source object.
+         * </pre>
+         *
+         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearSourceBucket() {
+            sourceBucket_ = getDefaultInstance().getSourceBucket();
+            onChanged();
+            return this;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.RewriteObjectRequest)
+    private static final com.google.storage.v2.RewriteObjectRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.RewriteObjectRequest();
+    }
+
+    private static final com.google.protobuf.Parser<RewriteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<RewriteObjectRequest>() {
+
+        @java.lang.Override
+        public RewriteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RewriteObjectRequest(input, extensionRegistry);
+        }
+    };
+
+    /**
+     * <pre>
+     * Required. Name of the source object.
+     * </pre>
+     *
+     * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The sourceObject.
+     */
+    @java.lang.Override
+    public java.lang.String getSourceObject() {
+        java.lang.Object ref = sourceObject_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            sourceObject_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
     }
 
     private RewriteObjectRequest() {
@@ -55,15 +2516,855 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         copySourceEncryptionKeySha256Bytes_ = com.google.protobuf.ByteString.EMPTY;
     }
 
+    /**
+     * <pre>
+     * Immutable. The name of the destination object. Nearly any sequence of unicode
+     * characters is valid. See
+     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
+     * Example: `test.txt`
+     * The `name` field by itself does not uniquely identify a Cloud Storage
+     * object. A Cloud Storage object is uniquely identified by the tuple of
+     * (bucket, object, generation).
+     * </pre>
+     *
+     * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
+     *
+     * @return The bytes for destinationName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getDestinationNameBytes() {
+        java.lang.Object ref = destinationName_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            destinationName_ = b;
+            return b;
+        }
+    }
+
+    public static RewriteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static com.google.protobuf.Parser<RewriteObjectRequest> parser() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the destination object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 9;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
+    }
+
+    public static RewriteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_metageneration_match = 13;</code>
+     *
+     * @return Whether the ifSourceMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfSourceMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000040));
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * generation does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_generation_not_match = 12;</code>
+     *
+     * @return The ifSourceGenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfSourceGenerationNotMatch() {
+        return ifSourceGenerationNotMatch_;
+    }
+
+    /**
+     * <pre>
+     * The algorithm used to encrypt the source object, if any. Used if the source
+     * object was encrypted with a Customer-Supplied Encryption Key.
+     * </pre>
+     *
+     * <code>string copy_source_encryption_algorithm = 16;</code>
+     *
+     * @return The bytes for copySourceEncryptionAlgorithm.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getCopySourceEncryptionAlgorithmBytes() {
+        java.lang.Object ref = copySourceEncryptionAlgorithm_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            copySourceEncryptionAlgorithm_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 8;</code>
+     *
+     * @return Whether the ifGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * generation matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_generation_match = 11;</code>
+     *
+     * @return Whether the ifSourceGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfSourceGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000010));
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (null != destination_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getDestination());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceBucket_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sourceBucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceObject_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, sourceObject_);
+        }
+        if (0L != sourceGeneration_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, sourceGeneration_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(rewriteToken_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, rewriteToken_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(10, ifMetagenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000010))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(11, ifSourceGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000020))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(12, ifSourceGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000040))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(13, ifSourceMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000080))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(14, ifSourceMetagenerationNotMatch_);
+        }
+        if (0L != maxBytesRewrittenPerCall_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(15, maxBytesRewrittenPerCall_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(copySourceEncryptionAlgorithm_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, copySourceEncryptionAlgorithm_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(19, getCommonObjectRequestParams());
+        }
+        if (!copySourceEncryptionKeyBytes_.isEmpty()) {
+            size += com.google.protobuf.CodedOutputStream.computeBytesSize(21, copySourceEncryptionKeyBytes_);
+        }
+        if (!copySourceEncryptionKeySha256Bytes_.isEmpty()) {
+            size += com.google.protobuf.CodedOutputStream.computeBytesSize(22, copySourceEncryptionKeySha256Bytes_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationName_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, destinationName_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationBucket_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(25, destinationBucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationKmsKey_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, destinationKmsKey_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(28, destinationPredefinedAcl_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static RewriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * generation does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_generation_not_match = 12;</code>
+     *
+     * @return Whether the ifSourceGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfSourceGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000020));
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 28;</code>
+     *
+     * @return The bytes for destinationPredefinedAcl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
+        java.lang.Object ref = destinationPredefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            destinationPredefinedAcl_ = b;
+            return b;
+        }
+    }
+
+    public static RewriteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static RewriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static RewriteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    /**
+     * <pre>
+     * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
+     * to encrypt the source object, if it was encrypted with a Customer-Supplied
+     * Encryption Key.
+     * </pre>
+     *
+     * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
+     *
+     * @return The copySourceEncryptionKeySha256Bytes.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getCopySourceEncryptionKeySha256Bytes() {
+        return copySourceEncryptionKeySha256Bytes_;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RewriteObjectRequest> getParserForType() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * The algorithm used to encrypt the source object, if any. Used if the source
+     * object was encrypted with a Customer-Supplied Encryption Key.
+     * </pre>
+     *
+     * <code>string copy_source_encryption_algorithm = 16;</code>
+     *
+     * @return The copySourceEncryptionAlgorithm.
+     */
+    @java.lang.Override
+    public java.lang.String getCopySourceEncryptionAlgorithm() {
+        java.lang.Object ref = copySourceEncryptionAlgorithm_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            copySourceEncryptionAlgorithm_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+     *
+     * @return The ifSourceMetagenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfSourceMetagenerationNotMatch() {
+        return ifSourceMetagenerationNotMatch_;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof RewriteObjectRequest)) {
+            return super.equals(obj);
+        }
+        RewriteObjectRequest other = (RewriteObjectRequest) obj;
+        if (!getDestinationName().equals(other.getDestinationName()))
+            return false;
+        if (!getDestinationBucket().equals(other.getDestinationBucket()))
+            return false;
+        if (!getDestinationKmsKey().equals(other.getDestinationKmsKey()))
+            return false;
+        if (other.hasDestination() != hasDestination())
+            return false;
+        if (hasDestination()) {
+            if (!getDestination().equals(other.getDestination()))
+                return false;
+        }
+        if (!getSourceBucket().equals(other.getSourceBucket()))
+            return false;
+        if (!getSourceObject().equals(other.getSourceObject()))
+            return false;
+        if (other.getSourceGeneration() != getSourceGeneration())
+            return false;
+        if (!getRewriteToken().equals(other.getRewriteToken()))
+            return false;
+        if (!getDestinationPredefinedAcl().equals(other.getDestinationPredefinedAcl()))
+            return false;
+        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
+            return false;
+        if (hasIfGenerationMatch()) {
+            if (other.getIfGenerationMatch() != getIfGenerationMatch())
+                return false;
+        }
+        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
+            return false;
+        if (hasIfGenerationNotMatch()) {
+            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
+            return false;
+        if (hasIfMetagenerationMatch()) {
+            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
+            return false;
+        if (hasIfMetagenerationNotMatch()) {
+            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
+                return false;
+        }
+        if (other.hasIfSourceGenerationMatch() != hasIfSourceGenerationMatch())
+            return false;
+        if (hasIfSourceGenerationMatch()) {
+            if (other.getIfSourceGenerationMatch() != getIfSourceGenerationMatch())
+                return false;
+        }
+        if (other.hasIfSourceGenerationNotMatch() != hasIfSourceGenerationNotMatch())
+            return false;
+        if (hasIfSourceGenerationNotMatch()) {
+            if (other.getIfSourceGenerationNotMatch() != getIfSourceGenerationNotMatch())
+                return false;
+        }
+        if (other.hasIfSourceMetagenerationMatch() != hasIfSourceMetagenerationMatch())
+            return false;
+        if (hasIfSourceMetagenerationMatch()) {
+            if (other.getIfSourceMetagenerationMatch() != getIfSourceMetagenerationMatch())
+                return false;
+        }
+        if (other.hasIfSourceMetagenerationNotMatch() != hasIfSourceMetagenerationNotMatch())
+            return false;
+        if (hasIfSourceMetagenerationNotMatch()) {
+            if (other.getIfSourceMetagenerationNotMatch() != getIfSourceMetagenerationNotMatch())
+                return false;
+        }
+        if (other.getMaxBytesRewrittenPerCall() != getMaxBytesRewrittenPerCall())
+            return false;
+        if (!getCopySourceEncryptionAlgorithm().equals(other.getCopySourceEncryptionAlgorithm()))
+            return false;
+        if (!getCopySourceEncryptionKeyBytes().equals(other.getCopySourceEncryptionKeyBytes()))
+            return false;
+        if (!getCopySourceEncryptionKeySha256Bytes().equals(other.getCopySourceEncryptionKeySha256Bytes()))
+            return false;
+        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
+            return false;
+        if (hasCommonObjectRequestParams()) {
+            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Required. Name of the bucket in which to find the source object.
+     * </pre>
+     *
+     * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The sourceBucket.
+     */
+    @java.lang.Override
+    public java.lang.String getSourceBucket() {
+        java.lang.Object ref = sourceBucket_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            sourceBucket_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static RewriteObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Builder newBuilder(RewriteObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_metageneration_not_match = 14;</code>
+     *
+     * @return Whether the ifSourceMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfSourceMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000080));
+    }
+
+    public static RewriteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 7;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
+    }
+
     @java.lang.Override
     @SuppressWarnings({ "unused" })
     protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
         return new RewriteObjectRequest();
     }
 
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the destination object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 9;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    // Use RewriteObjectRequest.newBuilder() to construct.
+    private RewriteObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
+    }
+
+    /**
+     * <pre>
+     * The name of the Cloud KMS key that will be used to encrypt the destination
+     * object. The Cloud KMS key must be located in same location as the object.
+     * If the parameter is not specified, the request uses the destination
+     * bucket's default encryption key, if any, or else the Google-managed
+     * encryption key.
+     * </pre>
+     *
+     * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The bytes for destinationKmsKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getDestinationKmsKeyBytes() {
+        java.lang.Object ref = destinationKmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            destinationKmsKey_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. Name of the bucket in which to find the source object.
+     * </pre>
+     *
+     * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for sourceBucket.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getSourceBucketBytes() {
+        java.lang.Object ref = sourceBucket_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            sourceBucket_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Immutable. The name of the bucket containing The name of the destination object.
+     * </pre>
+     *
+     * <code>
+     * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The destinationBucket.
+     */
+    @java.lang.Override
+    public java.lang.String getDestinationBucket() {
+        java.lang.Object ref = destinationBucket_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            destinationBucket_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static RewriteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to the destination object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string destination_predefined_acl = 28;</code>
+     *
+     * @return The destinationPredefinedAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getDestinationPredefinedAcl() {
+        java.lang.Object ref = destinationPredefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            destinationPredefinedAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 8;</code>
+     *
+     * @return The ifGenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationNotMatch() {
+        return ifGenerationNotMatch_;
+    }
+
+    /**
+     * <pre>
+     * If present, selects a specific revision of the source object (as opposed to
+     * the latest version, the default).
+     * </pre>
+     *
+     * <code>int64 source_generation = 4;</code>
+     *
+     * @return The sourceGeneration.
+     */
+    @java.lang.Override
+    public long getSourceGeneration() {
+        return sourceGeneration_;
+    }
+
+    /**
+     * <pre>
+     * The name of the Cloud KMS key that will be used to encrypt the destination
+     * object. The Cloud KMS key must be located in same location as the object.
+     * If the parameter is not specified, the request uses the destination
+     * bucket's default encryption key, if any, or else the Google-managed
+     * encryption key.
+     * </pre>
+     *
+     * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
+     *
+     * @return The destinationKmsKey.
+     */
+    @java.lang.Override
+    public java.lang.String getDestinationKmsKey() {
+        java.lang.Object ref = destinationKmsKey_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            destinationKmsKey_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the destination object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 10;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000008));
+    }
+
+    public static RewriteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + DESTINATION_NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationName().hashCode();
+        hash = (37 * hash) + DESTINATION_BUCKET_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationBucket().hashCode();
+        hash = (37 * hash) + DESTINATION_KMS_KEY_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationKmsKey().hashCode();
+        if (hasDestination()) {
+            hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
+            hash = (53 * hash) + getDestination().hashCode();
+        }
+        hash = (37 * hash) + SOURCE_BUCKET_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceBucket().hashCode();
+        hash = (37 * hash) + SOURCE_OBJECT_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceObject().hashCode();
+        hash = (37 * hash) + SOURCE_GENERATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getSourceGeneration());
+        hash = (37 * hash) + REWRITE_TOKEN_FIELD_NUMBER;
+        hash = (53 * hash) + getRewriteToken().hashCode();
+        hash = (37 * hash) + DESTINATION_PREDEFINED_ACL_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationPredefinedAcl().hashCode();
+        if (hasIfGenerationMatch()) {
+            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+        }
+        if (hasIfGenerationNotMatch()) {
+            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
+        }
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        if (hasIfMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
+        }
+        if (hasIfSourceGenerationMatch()) {
+            hash = (37 * hash) + IF_SOURCE_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceGenerationMatch());
+        }
+        if (hasIfSourceGenerationNotMatch()) {
+            hash = (37 * hash) + IF_SOURCE_GENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceGenerationNotMatch());
+        }
+        if (hasIfSourceMetagenerationMatch()) {
+            hash = (37 * hash) + IF_SOURCE_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceMetagenerationMatch());
+        }
+        if (hasIfSourceMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_SOURCE_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceMetagenerationNotMatch());
+        }
+        hash = (37 * hash) + MAX_BYTES_REWRITTEN_PER_CALL_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getMaxBytesRewrittenPerCall());
+        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_ALGORITHM_FIELD_NUMBER;
+        hash = (53 * hash) + getCopySourceEncryptionAlgorithm().hashCode();
+        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_KEY_BYTES_FIELD_NUMBER;
+        hash = (53 * hash) + getCopySourceEncryptionKeyBytes().hashCode();
+        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_KEY_SHA256_BYTES_FIELD_NUMBER;
+        hash = (53 * hash) + getCopySourceEncryptionKeySha256Bytes().hashCode();
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * Include this field (from the previous rewrite response) on each rewrite
+     * request after the first one, until the rewrite response 'done' flag is
+     * true. Calls that provide a rewriteToken can omit all other request fields,
+     * but if included those fields must match the values provided in the first
+     * rewrite request.
+     * </pre>
+     *
+     * <code>string rewrite_token = 5;</code>
+     *
+     * @return The bytes for rewriteToken.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getRewriteTokenBytes() {
+        java.lang.Object ref = rewriteToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            rewriteToken_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 7;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
     }
 
     private RewriteObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,11 +3384,11 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
+                            Object.Builder subBuilder = null;
                             if (null != destination_) {
                                 subBuilder = destination_.toBuilder();
                             }
-                            destination_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
+                            destination_ = input.readMessage(Object.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(destination_);
                                 destination_ = subBuilder.buildPartial();
@@ -178,11 +3479,11 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
                         }
                     case 154:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -245,19 +3546,78 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
+        return StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
     }
 
+    public static RewriteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static RewriteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the source object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_source_metageneration_match = 13;</code>
+     *
+     * @return The ifSourceMetagenerationMatch.
+     */
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.RewriteObjectRequest.class, com.google.storage.v2.RewriteObjectRequest.Builder.class);
+    public long getIfSourceMetagenerationMatch() {
+        return ifSourceMetagenerationMatch_;
     }
 
-    private int bitField0_;
+    public static RewriteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
 
-    public static final int DESTINATION_NAME_FIELD_NUMBER = 24;
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
 
-    private volatile java.lang.Object destinationName_;
+    /**
+     * <pre>
+     * Properties of the destination, post-rewrite object.
+     * The `name`, `bucket` and `kms_key` fields must not be populated (these
+     * values are specified in the `destination_name`, `destination_bucket`, and
+     * `destination_kms_key` fields).
+     * If `destination` is present it will be used to construct the destination
+     * object's metadata; otherwise the destination object's metadata will be
+     * copied from the source object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getDestinationOrBuilder() {
+        return getDestination();
+    }
+
+    /**
+     * <pre>
+     * The maximum number of bytes that will be rewritten per rewrite request.
+     * Most callers
+     * shouldn't need to specify this parameter - it is primarily in place to
+     * support testing. If specified the value must be an integral multiple of
+     * 1 MiB (1048576). Also, this only applies to requests where the source and
+     * destination span locations and/or storage classes. Finally, this value must
+     * not change across rewrite calls else you'll get an error that the
+     * `rewriteToken` is invalid.
+     * </pre>
+     *
+     * <code>int64 max_bytes_rewritten_per_call = 15;</code>
+     *
+     * @return The maxBytesRewrittenPerCall.
+     */
+    @java.lang.Override
+    public long getMaxBytesRewrittenPerCall() {
+        return maxBytesRewrittenPerCall_;
+    }
 
     /**
      * <pre>
@@ -287,59 +3647,54 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         }
     }
 
-    /**
-     * <pre>
-     * Immutable. The name of the destination object. Nearly any sequence of unicode
-     * characters is valid. See
-     * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-     * Example: `test.txt`
-     * The `name` field by itself does not uniquely identify a Cloud Storage
-     * object. A Cloud Storage object is uniquely identified by the tuple of
-     * (bucket, object, generation).
-     * </pre>
-     *
-     * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-     *
-     * @return The bytes for destinationName.
-     */
     @java.lang.Override
-    public com.google.protobuf.ByteString getDestinationNameBytes() {
-        java.lang.Object ref = destinationName_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            destinationName_ = b;
-            return b;
-        }
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
     }
 
-    public static final int DESTINATION_BUCKET_FIELD_NUMBER = 25;
-
-    private volatile java.lang.Object destinationBucket_;
+    /**
+     * <pre>
+     * Properties of the destination, post-rewrite object.
+     * The `name`, `bucket` and `kms_key` fields must not be populated (these
+     * values are specified in the `destination_name`, `destination_bucket`, and
+     * `destination_kms_key` fields).
+     * If `destination` is present it will be used to construct the destination
+     * object's metadata; otherwise the destination object's metadata will be
+     * copied from the source object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object destination = 1;</code>
+     *
+     * @return Whether the destination field is set.
+     */
+    @java.lang.Override
+    public boolean hasDestination() {
+        return null != destination_;
+    }
 
     /**
      * <pre>
-     * Immutable. The name of the bucket containing The name of the destination object.
+     * A set of parameters common to Storage API requests concerning an object.
      * </pre>
      *
-     * <code>
-     * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-     * </code>
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
      *
-     * @return The destinationBucket.
+     * @return The commonObjectRequestParams.
      */
     @java.lang.Override
-    public java.lang.String getDestinationBucket() {
-        java.lang.Object ref = destinationBucket_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            destinationBucket_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
 
     /**
@@ -365,239 +3720,10 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         }
     }
 
-    public static final int DESTINATION_KMS_KEY_FIELD_NUMBER = 27;
-
-    private volatile java.lang.Object destinationKmsKey_;
-
-    /**
-     * <pre>
-     * The name of the Cloud KMS key that will be used to encrypt the destination
-     * object. The Cloud KMS key must be located in same location as the object.
-     * If the parameter is not specified, the request uses the destination
-     * bucket's default encryption key, if any, or else the Google-managed
-     * encryption key.
-     * </pre>
-     *
-     * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The destinationKmsKey.
-     */
     @java.lang.Override
-    public java.lang.String getDestinationKmsKey() {
-        java.lang.Object ref = destinationKmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            destinationKmsKey_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
+    public RewriteObjectRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
-
-    /**
-     * <pre>
-     * The name of the Cloud KMS key that will be used to encrypt the destination
-     * object. The Cloud KMS key must be located in same location as the object.
-     * If the parameter is not specified, the request uses the destination
-     * bucket's default encryption key, if any, or else the Google-managed
-     * encryption key.
-     * </pre>
-     *
-     * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-     *
-     * @return The bytes for destinationKmsKey.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDestinationKmsKeyBytes() {
-        java.lang.Object ref = destinationKmsKey_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            destinationKmsKey_ = b;
-            return b;
-        }
-    }
-
-    public static final int DESTINATION_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.Object destination_;
-
-    /**
-     * <pre>
-     * Properties of the destination, post-rewrite object.
-     * The `name`, `bucket` and `kms_key` fields must not be populated (these
-     * values are specified in the `destination_name`, `destination_bucket`, and
-     * `destination_kms_key` fields).
-     * If `destination` is present it will be used to construct the destination
-     * object's metadata; otherwise the destination object's metadata will be
-     * copied from the source object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1;</code>
-     *
-     * @return Whether the destination field is set.
-     */
-    @java.lang.Override
-    public boolean hasDestination() {
-        return null != destination_;
-    }
-
-    /**
-     * <pre>
-     * Properties of the destination, post-rewrite object.
-     * The `name`, `bucket` and `kms_key` fields must not be populated (these
-     * values are specified in the `destination_name`, `destination_bucket`, and
-     * `destination_kms_key` fields).
-     * If `destination` is present it will be used to construct the destination
-     * object's metadata; otherwise the destination object's metadata will be
-     * copied from the source object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1;</code>
-     *
-     * @return The destination.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getDestination() {
-        return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-    }
-
-    /**
-     * <pre>
-     * Properties of the destination, post-rewrite object.
-     * The `name`, `bucket` and `kms_key` fields must not be populated (these
-     * values are specified in the `destination_name`, `destination_bucket`, and
-     * `destination_kms_key` fields).
-     * If `destination` is present it will be used to construct the destination
-     * object's metadata; otherwise the destination object's metadata will be
-     * copied from the source object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object destination = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getDestinationOrBuilder() {
-        return getDestination();
-    }
-
-    public static final int SOURCE_BUCKET_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object sourceBucket_;
-
-    /**
-     * <pre>
-     * Required. Name of the bucket in which to find the source object.
-     * </pre>
-     *
-     * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The sourceBucket.
-     */
-    @java.lang.Override
-    public java.lang.String getSourceBucket() {
-        java.lang.Object ref = sourceBucket_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            sourceBucket_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. Name of the bucket in which to find the source object.
-     * </pre>
-     *
-     * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for sourceBucket.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getSourceBucketBytes() {
-        java.lang.Object ref = sourceBucket_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            sourceBucket_ = b;
-            return b;
-        }
-    }
-
-    public static final int SOURCE_OBJECT_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object sourceObject_;
-
-    /**
-     * <pre>
-     * Required. Name of the source object.
-     * </pre>
-     *
-     * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The sourceObject.
-     */
-    @java.lang.Override
-    public java.lang.String getSourceObject() {
-        java.lang.Object ref = sourceObject_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            sourceObject_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. Name of the source object.
-     * </pre>
-     *
-     * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for sourceObject.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getSourceObjectBytes() {
-        java.lang.Object ref = sourceObject_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            sourceObject_ = b;
-            return b;
-        }
-    }
-
-    public static final int SOURCE_GENERATION_FIELD_NUMBER = 4;
-
-    private long sourceGeneration_;
-
-    /**
-     * <pre>
-     * If present, selects a specific revision of the source object (as opposed to
-     * the latest version, the default).
-     * </pre>
-     *
-     * <code>int64 source_generation = 4;</code>
-     *
-     * @return The sourceGeneration.
-     */
-    @java.lang.Override
-    public long getSourceGeneration() {
-        return sourceGeneration_;
-    }
-
-    public static final int REWRITE_TOKEN_FIELD_NUMBER = 5;
-
-    private volatile java.lang.Object rewriteToken_;
 
     /**
      * <pre>
@@ -627,205 +3753,22 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
 
     /**
      * <pre>
-     * Include this field (from the previous rewrite response) on each rewrite
-     * request after the first one, until the rewrite response 'done' flag is
-     * true. Calls that provide a rewriteToken can omit all other request fields,
-     * but if included those fields must match the values provided in the first
-     * rewrite request.
+     * Properties of the destination, post-rewrite object.
+     * The `name`, `bucket` and `kms_key` fields must not be populated (these
+     * values are specified in the `destination_name`, `destination_bucket`, and
+     * `destination_kms_key` fields).
+     * If `destination` is present it will be used to construct the destination
+     * object's metadata; otherwise the destination object's metadata will be
+     * copied from the source object.
      * </pre>
      *
-     * <code>string rewrite_token = 5;</code>
+     * <code>.google.storage.v2.Object destination = 1;</code>
      *
-     * @return The bytes for rewriteToken.
+     * @return The destination.
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString getRewriteTokenBytes() {
-        java.lang.Object ref = rewriteToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            rewriteToken_ = b;
-            return b;
-        }
-    }
-
-    public static final int DESTINATION_PREDEFINED_ACL_FIELD_NUMBER = 28;
-
-    private volatile java.lang.Object destinationPredefinedAcl_;
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to the destination object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string destination_predefined_acl = 28;</code>
-     *
-     * @return The destinationPredefinedAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getDestinationPredefinedAcl() {
-        java.lang.Object ref = destinationPredefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            destinationPredefinedAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to the destination object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string destination_predefined_acl = 28;</code>
-     *
-     * @return The bytes for destinationPredefinedAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
-        java.lang.Object ref = destinationPredefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            destinationPredefinedAcl_ = b;
-            return b;
-        }
-    }
-
-    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 7;
-
-    private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 7;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 7;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
-
-    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 8;
-
-    private long ifGenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 8;</code>
-     *
-     * @return Whether the ifGenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 8;</code>
-     *
-     * @return The ifGenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationNotMatch() {
-        return ifGenerationNotMatch_;
-    }
-
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 9;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the destination object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 9;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the destination object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 9;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 10;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the destination object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 10;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000008));
+    public Object getDestination() {
+        return null == destination_ ? Object.getDefaultInstance() : destination_;
     }
 
     /**
@@ -843,25 +3786,6 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         return ifMetagenerationNotMatch_;
     }
 
-    public static final int IF_SOURCE_GENERATION_MATCH_FIELD_NUMBER = 11;
-
-    private long ifSourceGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * generation matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_generation_match = 11;</code>
-     *
-     * @return Whether the ifSourceGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfSourceGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000010));
-    }
-
     /**
      * <pre>
      * Makes the operation conditional on whether the source object's current
@@ -877,185 +3801,31 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         return ifSourceGenerationMatch_;
     }
 
-    public static final int IF_SOURCE_GENERATION_NOT_MATCH_FIELD_NUMBER = 12;
-
-    private long ifSourceGenerationNotMatch_;
-
     /**
      * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * generation does not match the given value.
+     * Required. Name of the source object.
      * </pre>
      *
-     * <code>optional int64 if_source_generation_not_match = 12;</code>
+     * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
      *
-     * @return Whether the ifSourceGenerationNotMatch field is set.
+     * @return The bytes for sourceObject.
      */
     @java.lang.Override
-    public boolean hasIfSourceGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000020));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * generation does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_generation_not_match = 12;</code>
-     *
-     * @return The ifSourceGenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfSourceGenerationNotMatch() {
-        return ifSourceGenerationNotMatch_;
-    }
-
-    public static final int IF_SOURCE_METAGENERATION_MATCH_FIELD_NUMBER = 13;
-
-    private long ifSourceMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_metageneration_match = 13;</code>
-     *
-     * @return Whether the ifSourceMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfSourceMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000040));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_metageneration_match = 13;</code>
-     *
-     * @return The ifSourceMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfSourceMetagenerationMatch() {
-        return ifSourceMetagenerationMatch_;
-    }
-
-    public static final int IF_SOURCE_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 14;
-
-    private long ifSourceMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-     *
-     * @return Whether the ifSourceMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfSourceMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000080));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the source object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-     *
-     * @return The ifSourceMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfSourceMetagenerationNotMatch() {
-        return ifSourceMetagenerationNotMatch_;
-    }
-
-    public static final int MAX_BYTES_REWRITTEN_PER_CALL_FIELD_NUMBER = 15;
-
-    private long maxBytesRewrittenPerCall_;
-
-    /**
-     * <pre>
-     * The maximum number of bytes that will be rewritten per rewrite request.
-     * Most callers
-     * shouldn't need to specify this parameter - it is primarily in place to
-     * support testing. If specified the value must be an integral multiple of
-     * 1 MiB (1048576). Also, this only applies to requests where the source and
-     * destination span locations and/or storage classes. Finally, this value must
-     * not change across rewrite calls else you'll get an error that the
-     * `rewriteToken` is invalid.
-     * </pre>
-     *
-     * <code>int64 max_bytes_rewritten_per_call = 15;</code>
-     *
-     * @return The maxBytesRewrittenPerCall.
-     */
-    @java.lang.Override
-    public long getMaxBytesRewrittenPerCall() {
-        return maxBytesRewrittenPerCall_;
-    }
-
-    public static final int COPY_SOURCE_ENCRYPTION_ALGORITHM_FIELD_NUMBER = 16;
-
-    private volatile java.lang.Object copySourceEncryptionAlgorithm_;
-
-    /**
-     * <pre>
-     * The algorithm used to encrypt the source object, if any. Used if the source
-     * object was encrypted with a Customer-Supplied Encryption Key.
-     * </pre>
-     *
-     * <code>string copy_source_encryption_algorithm = 16;</code>
-     *
-     * @return The copySourceEncryptionAlgorithm.
-     */
-    @java.lang.Override
-    public java.lang.String getCopySourceEncryptionAlgorithm() {
-        java.lang.Object ref = copySourceEncryptionAlgorithm_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            copySourceEncryptionAlgorithm_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The algorithm used to encrypt the source object, if any. Used if the source
-     * object was encrypted with a Customer-Supplied Encryption Key.
-     * </pre>
-     *
-     * <code>string copy_source_encryption_algorithm = 16;</code>
-     *
-     * @return The bytes for copySourceEncryptionAlgorithm.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getCopySourceEncryptionAlgorithmBytes() {
-        java.lang.Object ref = copySourceEncryptionAlgorithm_;
+    public com.google.protobuf.ByteString getSourceObjectBytes() {
+        java.lang.Object ref = sourceObject_;
         if (!(ref instanceof java.lang.String)) {
             return (com.google.protobuf.ByteString) ref;
         } else {
             com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            copySourceEncryptionAlgorithm_ = b;
+            sourceObject_ = b;
             return b;
         }
     }
 
-    public static final int COPY_SOURCE_ENCRYPTION_KEY_BYTES_FIELD_NUMBER = 21;
-
-    private com.google.protobuf.ByteString copySourceEncryptionKeyBytes_;
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(RewriteObjectRequest.class, Builder.class);
+    }
 
     /**
      * <pre>
@@ -1071,83 +3841,6 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
     @java.lang.Override
     public com.google.protobuf.ByteString getCopySourceEncryptionKeyBytes() {
         return copySourceEncryptionKeyBytes_;
-    }
-
-    public static final int COPY_SOURCE_ENCRYPTION_KEY_SHA256_BYTES_FIELD_NUMBER = 22;
-
-    private com.google.protobuf.ByteString copySourceEncryptionKeySha256Bytes_;
-
-    /**
-     * <pre>
-     * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
-     * to encrypt the source object, if it was encrypted with a Customer-Supplied
-     * Encryption Key.
-     * </pre>
-     *
-     * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
-     *
-     * @return The copySourceEncryptionKeySha256Bytes.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getCopySourceEncryptionKeySha256Bytes() {
-        return copySourceEncryptionKeySha256Bytes_;
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 19;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
     }
 
     @java.lang.Override
@@ -1221,2694 +3914,4 @@ RewriteObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements R
         unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (null != destination_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getDestination());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceBucket_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sourceBucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceObject_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, sourceObject_);
-        }
-        if (0L != sourceGeneration_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, sourceGeneration_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(rewriteToken_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, rewriteToken_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(10, ifMetagenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000010))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(11, ifSourceGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000020))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(12, ifSourceGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000040))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(13, ifSourceMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000080))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(14, ifSourceMetagenerationNotMatch_);
-        }
-        if (0L != maxBytesRewrittenPerCall_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(15, maxBytesRewrittenPerCall_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(copySourceEncryptionAlgorithm_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, copySourceEncryptionAlgorithm_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(19, getCommonObjectRequestParams());
-        }
-        if (!copySourceEncryptionKeyBytes_.isEmpty()) {
-            size += com.google.protobuf.CodedOutputStream.computeBytesSize(21, copySourceEncryptionKeyBytes_);
-        }
-        if (!copySourceEncryptionKeySha256Bytes_.isEmpty()) {
-            size += com.google.protobuf.CodedOutputStream.computeBytesSize(22, copySourceEncryptionKeySha256Bytes_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationName_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, destinationName_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationBucket_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(25, destinationBucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationKmsKey_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, destinationKmsKey_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationPredefinedAcl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(28, destinationPredefinedAcl_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.RewriteObjectRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.RewriteObjectRequest other = (com.google.storage.v2.RewriteObjectRequest) obj;
-        if (!getDestinationName().equals(other.getDestinationName()))
-            return false;
-        if (!getDestinationBucket().equals(other.getDestinationBucket()))
-            return false;
-        if (!getDestinationKmsKey().equals(other.getDestinationKmsKey()))
-            return false;
-        if (other.hasDestination() != hasDestination())
-            return false;
-        if (hasDestination()) {
-            if (!getDestination().equals(other.getDestination()))
-                return false;
-        }
-        if (!getSourceBucket().equals(other.getSourceBucket()))
-            return false;
-        if (!getSourceObject().equals(other.getSourceObject()))
-            return false;
-        if (other.getSourceGeneration() != getSourceGeneration())
-            return false;
-        if (!getRewriteToken().equals(other.getRewriteToken()))
-            return false;
-        if (!getDestinationPredefinedAcl().equals(other.getDestinationPredefinedAcl()))
-            return false;
-        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
-            return false;
-        if (hasIfGenerationMatch()) {
-            if (other.getIfGenerationMatch() != getIfGenerationMatch())
-                return false;
-        }
-        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
-            return false;
-        if (hasIfGenerationNotMatch()) {
-            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
-            return false;
-        if (hasIfMetagenerationMatch()) {
-            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
-            return false;
-        if (hasIfMetagenerationNotMatch()) {
-            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
-                return false;
-        }
-        if (other.hasIfSourceGenerationMatch() != hasIfSourceGenerationMatch())
-            return false;
-        if (hasIfSourceGenerationMatch()) {
-            if (other.getIfSourceGenerationMatch() != getIfSourceGenerationMatch())
-                return false;
-        }
-        if (other.hasIfSourceGenerationNotMatch() != hasIfSourceGenerationNotMatch())
-            return false;
-        if (hasIfSourceGenerationNotMatch()) {
-            if (other.getIfSourceGenerationNotMatch() != getIfSourceGenerationNotMatch())
-                return false;
-        }
-        if (other.hasIfSourceMetagenerationMatch() != hasIfSourceMetagenerationMatch())
-            return false;
-        if (hasIfSourceMetagenerationMatch()) {
-            if (other.getIfSourceMetagenerationMatch() != getIfSourceMetagenerationMatch())
-                return false;
-        }
-        if (other.hasIfSourceMetagenerationNotMatch() != hasIfSourceMetagenerationNotMatch())
-            return false;
-        if (hasIfSourceMetagenerationNotMatch()) {
-            if (other.getIfSourceMetagenerationNotMatch() != getIfSourceMetagenerationNotMatch())
-                return false;
-        }
-        if (other.getMaxBytesRewrittenPerCall() != getMaxBytesRewrittenPerCall())
-            return false;
-        if (!getCopySourceEncryptionAlgorithm().equals(other.getCopySourceEncryptionAlgorithm()))
-            return false;
-        if (!getCopySourceEncryptionKeyBytes().equals(other.getCopySourceEncryptionKeyBytes()))
-            return false;
-        if (!getCopySourceEncryptionKeySha256Bytes().equals(other.getCopySourceEncryptionKeySha256Bytes()))
-            return false;
-        if (other.hasCommonObjectRequestParams() != hasCommonObjectRequestParams())
-            return false;
-        if (hasCommonObjectRequestParams()) {
-            if (!getCommonObjectRequestParams().equals(other.getCommonObjectRequestParams()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + DESTINATION_NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationName().hashCode();
-        hash = (37 * hash) + DESTINATION_BUCKET_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationBucket().hashCode();
-        hash = (37 * hash) + DESTINATION_KMS_KEY_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationKmsKey().hashCode();
-        if (hasDestination()) {
-            hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
-            hash = (53 * hash) + getDestination().hashCode();
-        }
-        hash = (37 * hash) + SOURCE_BUCKET_FIELD_NUMBER;
-        hash = (53 * hash) + getSourceBucket().hashCode();
-        hash = (37 * hash) + SOURCE_OBJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getSourceObject().hashCode();
-        hash = (37 * hash) + SOURCE_GENERATION_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getSourceGeneration());
-        hash = (37 * hash) + REWRITE_TOKEN_FIELD_NUMBER;
-        hash = (53 * hash) + getRewriteToken().hashCode();
-        hash = (37 * hash) + DESTINATION_PREDEFINED_ACL_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationPredefinedAcl().hashCode();
-        if (hasIfGenerationMatch()) {
-            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-        }
-        if (hasIfGenerationNotMatch()) {
-            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
-        }
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        if (hasIfMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
-        }
-        if (hasIfSourceGenerationMatch()) {
-            hash = (37 * hash) + IF_SOURCE_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceGenerationMatch());
-        }
-        if (hasIfSourceGenerationNotMatch()) {
-            hash = (37 * hash) + IF_SOURCE_GENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceGenerationNotMatch());
-        }
-        if (hasIfSourceMetagenerationMatch()) {
-            hash = (37 * hash) + IF_SOURCE_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceMetagenerationMatch());
-        }
-        if (hasIfSourceMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_SOURCE_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfSourceMetagenerationNotMatch());
-        }
-        hash = (37 * hash) + MAX_BYTES_REWRITTEN_PER_CALL_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getMaxBytesRewrittenPerCall());
-        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_ALGORITHM_FIELD_NUMBER;
-        hash = (53 * hash) + getCopySourceEncryptionAlgorithm().hashCode();
-        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_KEY_BYTES_FIELD_NUMBER;
-        hash = (53 * hash) + getCopySourceEncryptionKeyBytes().hashCode();
-        hash = (37 * hash) + COPY_SOURCE_ENCRYPTION_KEY_SHA256_BYTES_FIELD_NUMBER;
-        hash = (53 * hash) + getCopySourceEncryptionKeySha256Bytes().hashCode();
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.RewriteObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for RewriteObject.
-     * If the source object is encrypted using a Customer-Supplied Encryption Key
-     * the key information must be provided in the copy_source_encryption_algorithm,
-     * copy_source_encryption_key_bytes, and copy_source_encryption_key_sha256_bytes
-     * fields. If the destination object should be encrypted the keying information
-     * should be provided in the encryption_algorithm, encryption_key_bytes, and
-     * encryption_key_sha256_bytes fields of the
-     * common_object_request_params.customer_encryption field.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.RewriteObjectRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteObjectRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.RewriteObjectRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.RewriteObjectRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.RewriteObjectRequest.class, com.google.storage.v2.RewriteObjectRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.RewriteObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            destinationName_ = "";
-            destinationBucket_ = "";
-            destinationKmsKey_ = "";
-            if (null != destinationBuilder_) {
-                destination_ = null;
-                destinationBuilder_ = null;
-            } else {
-                destination_ = null;
-            }
-            sourceBucket_ = "";
-            sourceObject_ = "";
-            sourceGeneration_ = 0L;
-            rewriteToken_ = "";
-            destinationPredefinedAcl_ = "";
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifSourceGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000010);
-            ifSourceGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000020);
-            ifSourceMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000040);
-            ifSourceMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000080);
-            maxBytesRewrittenPerCall_ = 0L;
-            copySourceEncryptionAlgorithm_ = "";
-            copySourceEncryptionKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
-            copySourceEncryptionKeySha256Bytes_ = com.google.protobuf.ByteString.EMPTY;
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_RewriteObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.RewriteObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteObjectRequest build() {
-            com.google.storage.v2.RewriteObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.RewriteObjectRequest buildPartial() {
-            com.google.storage.v2.RewriteObjectRequest result = new com.google.storage.v2.RewriteObjectRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.destinationName_ = destinationName_;
-            result.destinationBucket_ = destinationBucket_;
-            result.destinationKmsKey_ = destinationKmsKey_;
-            if (null != destinationBuilder_) {
-                result.destination_ = destinationBuilder_.build();
-            } else {
-                result.destination_ = destination_;
-            }
-            result.sourceBucket_ = sourceBucket_;
-            result.sourceObject_ = sourceObject_;
-            result.sourceGeneration_ = sourceGeneration_;
-            result.rewriteToken_ = rewriteToken_;
-            result.destinationPredefinedAcl_ = destinationPredefinedAcl_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifGenerationMatch_ = ifGenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000004;
-            }
-            if ((0 != (from_bitField0_ & 0x00000008))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000008;
-            }
-            if ((0 != (from_bitField0_ & 0x00000010))) {
-                result.ifSourceGenerationMatch_ = ifSourceGenerationMatch_;
-                to_bitField0_ |= 0x00000010;
-            }
-            if ((0 != (from_bitField0_ & 0x00000020))) {
-                result.ifSourceGenerationNotMatch_ = ifSourceGenerationNotMatch_;
-                to_bitField0_ |= 0x00000020;
-            }
-            if ((0 != (from_bitField0_ & 0x00000040))) {
-                result.ifSourceMetagenerationMatch_ = ifSourceMetagenerationMatch_;
-                to_bitField0_ |= 0x00000040;
-            }
-            if ((0 != (from_bitField0_ & 0x00000080))) {
-                result.ifSourceMetagenerationNotMatch_ = ifSourceMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000080;
-            }
-            result.maxBytesRewrittenPerCall_ = maxBytesRewrittenPerCall_;
-            result.copySourceEncryptionAlgorithm_ = copySourceEncryptionAlgorithm_;
-            result.copySourceEncryptionKeyBytes_ = copySourceEncryptionKeyBytes_;
-            result.copySourceEncryptionKeySha256Bytes_ = copySourceEncryptionKeySha256Bytes_;
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.RewriteObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.RewriteObjectRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.RewriteObjectRequest other) {
-            if (com.google.storage.v2.RewriteObjectRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getDestinationName().isEmpty()) {
-                destinationName_ = other.destinationName_;
-                onChanged();
-            }
-            if (!other.getDestinationBucket().isEmpty()) {
-                destinationBucket_ = other.destinationBucket_;
-                onChanged();
-            }
-            if (!other.getDestinationKmsKey().isEmpty()) {
-                destinationKmsKey_ = other.destinationKmsKey_;
-                onChanged();
-            }
-            if (other.hasDestination()) {
-                mergeDestination(other.getDestination());
-            }
-            if (!other.getSourceBucket().isEmpty()) {
-                sourceBucket_ = other.sourceBucket_;
-                onChanged();
-            }
-            if (!other.getSourceObject().isEmpty()) {
-                sourceObject_ = other.sourceObject_;
-                onChanged();
-            }
-            if (0L != other.getSourceGeneration()) {
-                setSourceGeneration(other.getSourceGeneration());
-            }
-            if (!other.getRewriteToken().isEmpty()) {
-                rewriteToken_ = other.rewriteToken_;
-                onChanged();
-            }
-            if (!other.getDestinationPredefinedAcl().isEmpty()) {
-                destinationPredefinedAcl_ = other.destinationPredefinedAcl_;
-                onChanged();
-            }
-            if (other.hasIfGenerationMatch()) {
-                setIfGenerationMatch(other.getIfGenerationMatch());
-            }
-            if (other.hasIfGenerationNotMatch()) {
-                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            if (other.hasIfSourceGenerationMatch()) {
-                setIfSourceGenerationMatch(other.getIfSourceGenerationMatch());
-            }
-            if (other.hasIfSourceGenerationNotMatch()) {
-                setIfSourceGenerationNotMatch(other.getIfSourceGenerationNotMatch());
-            }
-            if (other.hasIfSourceMetagenerationMatch()) {
-                setIfSourceMetagenerationMatch(other.getIfSourceMetagenerationMatch());
-            }
-            if (other.hasIfSourceMetagenerationNotMatch()) {
-                setIfSourceMetagenerationNotMatch(other.getIfSourceMetagenerationNotMatch());
-            }
-            if (0L != other.getMaxBytesRewrittenPerCall()) {
-                setMaxBytesRewrittenPerCall(other.getMaxBytesRewrittenPerCall());
-            }
-            if (!other.getCopySourceEncryptionAlgorithm().isEmpty()) {
-                copySourceEncryptionAlgorithm_ = other.copySourceEncryptionAlgorithm_;
-                onChanged();
-            }
-            if (com.google.protobuf.ByteString.EMPTY != other.getCopySourceEncryptionKeyBytes()) {
-                setCopySourceEncryptionKeyBytes(other.getCopySourceEncryptionKeyBytes());
-            }
-            if (com.google.protobuf.ByteString.EMPTY != other.getCopySourceEncryptionKeySha256Bytes()) {
-                setCopySourceEncryptionKeySha256Bytes(other.getCopySourceEncryptionKeySha256Bytes());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.RewriteObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.RewriteObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object destinationName_ = "";
-
-        /**
-         * <pre>
-         * Immutable. The name of the destination object. Nearly any sequence of unicode
-         * characters is valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return The destinationName.
-         */
-        public java.lang.String getDestinationName() {
-            java.lang.Object ref = destinationName_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                destinationName_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the destination object. Nearly any sequence of unicode
-         * characters is valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return The bytes for destinationName.
-         */
-        public com.google.protobuf.ByteString getDestinationNameBytes() {
-            java.lang.Object ref = destinationName_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                destinationName_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the destination object. Nearly any sequence of unicode
-         * characters is valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @param value The destinationName to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationName(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            destinationName_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the destination object. Nearly any sequence of unicode
-         * characters is valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDestinationName() {
-            destinationName_ = getDefaultInstance().getDestinationName();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the destination object. Nearly any sequence of unicode
-         * characters is valid. See
-         * [Guidelines](https://cloud.google.com/storage/docs/naming-objects).
-         * Example: `test.txt`
-         * The `name` field by itself does not uniquely identify a Cloud Storage
-         * object. A Cloud Storage object is uniquely identified by the tuple of
-         * (bucket, object, generation).
-         * </pre>
-         *
-         * <code>string destination_name = 24 [(.google.api.field_behavior) = IMMUTABLE];</code>
-         *
-         * @param value The bytes for destinationName to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationNameBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            destinationName_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object destinationBucket_ = "";
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing The name of the destination object.
-         * </pre>
-         *
-         * <code>
-         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The destinationBucket.
-         */
-        public java.lang.String getDestinationBucket() {
-            java.lang.Object ref = destinationBucket_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                destinationBucket_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing The name of the destination object.
-         * </pre>
-         *
-         * <code>
-         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for destinationBucket.
-         */
-        public com.google.protobuf.ByteString getDestinationBucketBytes() {
-            java.lang.Object ref = destinationBucket_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                destinationBucket_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing The name of the destination object.
-         * </pre>
-         *
-         * <code>
-         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The destinationBucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationBucket(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            destinationBucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing The name of the destination object.
-         * </pre>
-         *
-         * <code>
-         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDestinationBucket() {
-            destinationBucket_ = getDefaultInstance().getDestinationBucket();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Immutable. The name of the bucket containing The name of the destination object.
-         * </pre>
-         *
-         * <code>
-         * string destination_bucket = 25 [(.google.api.field_behavior) = IMMUTABLE, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for destinationBucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationBucketBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            destinationBucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object destinationKmsKey_ = "";
-
-        /**
-         * <pre>
-         * The name of the Cloud KMS key that will be used to encrypt the destination
-         * object. The Cloud KMS key must be located in same location as the object.
-         * If the parameter is not specified, the request uses the destination
-         * bucket's default encryption key, if any, or else the Google-managed
-         * encryption key.
-         * </pre>
-         *
-         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The destinationKmsKey.
-         */
-        public java.lang.String getDestinationKmsKey() {
-            java.lang.Object ref = destinationKmsKey_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                destinationKmsKey_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the Cloud KMS key that will be used to encrypt the destination
-         * object. The Cloud KMS key must be located in same location as the object.
-         * If the parameter is not specified, the request uses the destination
-         * bucket's default encryption key, if any, or else the Google-managed
-         * encryption key.
-         * </pre>
-         *
-         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return The bytes for destinationKmsKey.
-         */
-        public com.google.protobuf.ByteString getDestinationKmsKeyBytes() {
-            java.lang.Object ref = destinationKmsKey_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                destinationKmsKey_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the Cloud KMS key that will be used to encrypt the destination
-         * object. The Cloud KMS key must be located in same location as the object.
-         * If the parameter is not specified, the request uses the destination
-         * bucket's default encryption key, if any, or else the Google-managed
-         * encryption key.
-         * </pre>
-         *
-         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The destinationKmsKey to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationKmsKey(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            destinationKmsKey_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the Cloud KMS key that will be used to encrypt the destination
-         * object. The Cloud KMS key must be located in same location as the object.
-         * If the parameter is not specified, the request uses the destination
-         * bucket's default encryption key, if any, or else the Google-managed
-         * encryption key.
-         * </pre>
-         *
-         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDestinationKmsKey() {
-            destinationKmsKey_ = getDefaultInstance().getDestinationKmsKey();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the Cloud KMS key that will be used to encrypt the destination
-         * object. The Cloud KMS key must be located in same location as the object.
-         * If the parameter is not specified, the request uses the destination
-         * bucket's default encryption key, if any, or else the Google-managed
-         * encryption key.
-         * </pre>
-         *
-         * <code>string destination_kms_key = 27 [(.google.api.resource_reference) = { ... }</code>
-         *
-         * @param value The bytes for destinationKmsKey to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationKmsKeyBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            destinationKmsKey_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.Object destination_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> destinationBuilder_;
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         *
-         * @return Whether the destination field is set.
-         */
-        public boolean hasDestination() {
-            return null != destinationBuilder_ || null != destination_;
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         *
-         * @return The destination.
-         */
-        public com.google.storage.v2.Object getDestination() {
-            if (null != destinationBuilder_) {
-                return destinationBuilder_.getMessage();
-            } else {
-                return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public Builder setDestination(com.google.storage.v2.Object value) {
-            if (null != destinationBuilder_) {
-                destinationBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                destination_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public Builder setDestination(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != destinationBuilder_) {
-                destinationBuilder_.setMessage(builderForValue.build());
-            } else {
-                destination_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public Builder mergeDestination(com.google.storage.v2.Object value) {
-            if (null != destinationBuilder_) {
-                destinationBuilder_.mergeFrom(value);
-            } else {
-                if (null == destination_) {
-                    destination_ = value;
-                } else {
-                    destination_ = com.google.storage.v2.Object.newBuilder(destination_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public Builder clearDestination() {
-            if (null != destinationBuilder_) {
-                destination_ = null;
-                destinationBuilder_ = null;
-            } else {
-                destination_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder getDestinationBuilder() {
-            onChanged();
-            return getDestinationFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getDestinationOrBuilder() {
-            if (null == destinationBuilder_) {
-                return null == destination_ ? com.google.storage.v2.Object.getDefaultInstance() : destination_;
-            } else {
-                return destinationBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Properties of the destination, post-rewrite object.
-         * The `name`, `bucket` and `kms_key` fields must not be populated (these
-         * values are specified in the `destination_name`, `destination_bucket`, and
-         * `destination_kms_key` fields).
-         * If `destination` is present it will be used to construct the destination
-         * object's metadata; otherwise the destination object's metadata will be
-         * copied from the source object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object destination = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getDestinationFieldBuilder() {
-            if (null == destinationBuilder_) {
-                destinationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getDestination(), getParentForChildren(), isClean());
-                destination_ = null;
-            }
-            return destinationBuilder_;
-        }
-
-        private java.lang.Object sourceBucket_ = "";
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to find the source object.
-         * </pre>
-         *
-         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The sourceBucket.
-         */
-        public java.lang.String getSourceBucket() {
-            java.lang.Object ref = sourceBucket_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                sourceBucket_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to find the source object.
-         * </pre>
-         *
-         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for sourceBucket.
-         */
-        public com.google.protobuf.ByteString getSourceBucketBytes() {
-            java.lang.Object ref = sourceBucket_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                sourceBucket_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to find the source object.
-         * </pre>
-         *
-         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The sourceBucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSourceBucket(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            sourceBucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to find the source object.
-         * </pre>
-         *
-         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearSourceBucket() {
-            sourceBucket_ = getDefaultInstance().getSourceBucket();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to find the source object.
-         * </pre>
-         *
-         * <code>string source_bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for sourceBucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSourceBucketBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            sourceBucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object sourceObject_ = "";
-
-        /**
-         * <pre>
-         * Required. Name of the source object.
-         * </pre>
-         *
-         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The sourceObject.
-         */
-        public java.lang.String getSourceObject() {
-            java.lang.Object ref = sourceObject_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                sourceObject_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the source object.
-         * </pre>
-         *
-         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for sourceObject.
-         */
-        public com.google.protobuf.ByteString getSourceObjectBytes() {
-            java.lang.Object ref = sourceObject_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                sourceObject_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the source object.
-         * </pre>
-         *
-         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The sourceObject to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSourceObject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            sourceObject_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the source object.
-         * </pre>
-         *
-         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearSourceObject() {
-            sourceObject_ = getDefaultInstance().getSourceObject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the source object.
-         * </pre>
-         *
-         * <code>string source_object = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for sourceObject to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSourceObjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            sourceObject_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long sourceGeneration_;
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of the source object (as opposed to
-         * the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 source_generation = 4;</code>
-         *
-         * @return The sourceGeneration.
-         */
-        @java.lang.Override
-        public long getSourceGeneration() {
-            return sourceGeneration_;
-        }
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of the source object (as opposed to
-         * the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 source_generation = 4;</code>
-         *
-         * @param value The sourceGeneration to set.
-         * @return This builder for chaining.
-         */
-        public Builder setSourceGeneration(long value) {
-            sourceGeneration_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of the source object (as opposed to
-         * the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 source_generation = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearSourceGeneration() {
-            sourceGeneration_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object rewriteToken_ = "";
-
-        /**
-         * <pre>
-         * Include this field (from the previous rewrite response) on each rewrite
-         * request after the first one, until the rewrite response 'done' flag is
-         * true. Calls that provide a rewriteToken can omit all other request fields,
-         * but if included those fields must match the values provided in the first
-         * rewrite request.
-         * </pre>
-         *
-         * <code>string rewrite_token = 5;</code>
-         *
-         * @return The rewriteToken.
-         */
-        public java.lang.String getRewriteToken() {
-            java.lang.Object ref = rewriteToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                rewriteToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Include this field (from the previous rewrite response) on each rewrite
-         * request after the first one, until the rewrite response 'done' flag is
-         * true. Calls that provide a rewriteToken can omit all other request fields,
-         * but if included those fields must match the values provided in the first
-         * rewrite request.
-         * </pre>
-         *
-         * <code>string rewrite_token = 5;</code>
-         *
-         * @return The bytes for rewriteToken.
-         */
-        public com.google.protobuf.ByteString getRewriteTokenBytes() {
-            java.lang.Object ref = rewriteToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                rewriteToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Include this field (from the previous rewrite response) on each rewrite
-         * request after the first one, until the rewrite response 'done' flag is
-         * true. Calls that provide a rewriteToken can omit all other request fields,
-         * but if included those fields must match the values provided in the first
-         * rewrite request.
-         * </pre>
-         *
-         * <code>string rewrite_token = 5;</code>
-         *
-         * @param value The rewriteToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRewriteToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            rewriteToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Include this field (from the previous rewrite response) on each rewrite
-         * request after the first one, until the rewrite response 'done' flag is
-         * true. Calls that provide a rewriteToken can omit all other request fields,
-         * but if included those fields must match the values provided in the first
-         * rewrite request.
-         * </pre>
-         *
-         * <code>string rewrite_token = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearRewriteToken() {
-            rewriteToken_ = getDefaultInstance().getRewriteToken();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Include this field (from the previous rewrite response) on each rewrite
-         * request after the first one, until the rewrite response 'done' flag is
-         * true. Calls that provide a rewriteToken can omit all other request fields,
-         * but if included those fields must match the values provided in the first
-         * rewrite request.
-         * </pre>
-         *
-         * <code>string rewrite_token = 5;</code>
-         *
-         * @param value The bytes for rewriteToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRewriteTokenBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            rewriteToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object destinationPredefinedAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 28;</code>
-         *
-         * @return The destinationPredefinedAcl.
-         */
-        public java.lang.String getDestinationPredefinedAcl() {
-            java.lang.Object ref = destinationPredefinedAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                destinationPredefinedAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 28;</code>
-         *
-         * @return The bytes for destinationPredefinedAcl.
-         */
-        public com.google.protobuf.ByteString getDestinationPredefinedAclBytes() {
-            java.lang.Object ref = destinationPredefinedAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                destinationPredefinedAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 28;</code>
-         *
-         * @param value The destinationPredefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationPredefinedAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            destinationPredefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 28;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDestinationPredefinedAcl() {
-            destinationPredefinedAcl_ = getDefaultInstance().getDestinationPredefinedAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to the destination object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string destination_predefined_acl = 28;</code>
-         *
-         * @param value The bytes for destinationPredefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDestinationPredefinedAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            destinationPredefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 7;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 7;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 7;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 8;</code>
-         *
-         * @return Whether the ifGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 8;</code>
-         *
-         * @return The ifGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationNotMatch() {
-            return ifGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 8;</code>
-         *
-         * @param value The ifGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 8;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 9;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 9;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 9;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 9;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 10;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000008));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 10;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 10;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000008;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the destination object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 10;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifSourceGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_match = 11;</code>
-         *
-         * @return Whether the ifSourceGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfSourceGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000010));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_match = 11;</code>
-         *
-         * @return The ifSourceGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfSourceGenerationMatch() {
-            return ifSourceGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_match = 11;</code>
-         *
-         * @param value The ifSourceGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfSourceGenerationMatch(long value) {
-            bitField0_ |= 0x00000010;
-            ifSourceGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_match = 11;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfSourceGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000010);
-            ifSourceGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifSourceGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_not_match = 12;</code>
-         *
-         * @return Whether the ifSourceGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfSourceGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000020));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_not_match = 12;</code>
-         *
-         * @return The ifSourceGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfSourceGenerationNotMatch() {
-            return ifSourceGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_not_match = 12;</code>
-         *
-         * @param value The ifSourceGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfSourceGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000020;
-            ifSourceGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * generation does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_generation_not_match = 12;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfSourceGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000020);
-            ifSourceGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifSourceMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_match = 13;</code>
-         *
-         * @return Whether the ifSourceMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfSourceMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000040));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_match = 13;</code>
-         *
-         * @return The ifSourceMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfSourceMetagenerationMatch() {
-            return ifSourceMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_match = 13;</code>
-         *
-         * @param value The ifSourceMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfSourceMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000040;
-            ifSourceMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_match = 13;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfSourceMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000040);
-            ifSourceMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifSourceMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-         *
-         * @return Whether the ifSourceMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfSourceMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000080));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-         *
-         * @return The ifSourceMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfSourceMetagenerationNotMatch() {
-            return ifSourceMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-         *
-         * @param value The ifSourceMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfSourceMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000080;
-            ifSourceMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the source object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_source_metageneration_not_match = 14;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfSourceMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000080);
-            ifSourceMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long maxBytesRewrittenPerCall_;
-
-        /**
-         * <pre>
-         * The maximum number of bytes that will be rewritten per rewrite request.
-         * Most callers
-         * shouldn't need to specify this parameter - it is primarily in place to
-         * support testing. If specified the value must be an integral multiple of
-         * 1 MiB (1048576). Also, this only applies to requests where the source and
-         * destination span locations and/or storage classes. Finally, this value must
-         * not change across rewrite calls else you'll get an error that the
-         * `rewriteToken` is invalid.
-         * </pre>
-         *
-         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
-         *
-         * @return The maxBytesRewrittenPerCall.
-         */
-        @java.lang.Override
-        public long getMaxBytesRewrittenPerCall() {
-            return maxBytesRewrittenPerCall_;
-        }
-
-        /**
-         * <pre>
-         * The maximum number of bytes that will be rewritten per rewrite request.
-         * Most callers
-         * shouldn't need to specify this parameter - it is primarily in place to
-         * support testing. If specified the value must be an integral multiple of
-         * 1 MiB (1048576). Also, this only applies to requests where the source and
-         * destination span locations and/or storage classes. Finally, this value must
-         * not change across rewrite calls else you'll get an error that the
-         * `rewriteToken` is invalid.
-         * </pre>
-         *
-         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
-         *
-         * @param value The maxBytesRewrittenPerCall to set.
-         * @return This builder for chaining.
-         */
-        public Builder setMaxBytesRewrittenPerCall(long value) {
-            maxBytesRewrittenPerCall_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The maximum number of bytes that will be rewritten per rewrite request.
-         * Most callers
-         * shouldn't need to specify this parameter - it is primarily in place to
-         * support testing. If specified the value must be an integral multiple of
-         * 1 MiB (1048576). Also, this only applies to requests where the source and
-         * destination span locations and/or storage classes. Finally, this value must
-         * not change across rewrite calls else you'll get an error that the
-         * `rewriteToken` is invalid.
-         * </pre>
-         *
-         * <code>int64 max_bytes_rewritten_per_call = 15;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearMaxBytesRewrittenPerCall() {
-            maxBytesRewrittenPerCall_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object copySourceEncryptionAlgorithm_ = "";
-
-        /**
-         * <pre>
-         * The algorithm used to encrypt the source object, if any. Used if the source
-         * object was encrypted with a Customer-Supplied Encryption Key.
-         * </pre>
-         *
-         * <code>string copy_source_encryption_algorithm = 16;</code>
-         *
-         * @return The copySourceEncryptionAlgorithm.
-         */
-        public java.lang.String getCopySourceEncryptionAlgorithm() {
-            java.lang.Object ref = copySourceEncryptionAlgorithm_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                copySourceEncryptionAlgorithm_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The algorithm used to encrypt the source object, if any. Used if the source
-         * object was encrypted with a Customer-Supplied Encryption Key.
-         * </pre>
-         *
-         * <code>string copy_source_encryption_algorithm = 16;</code>
-         *
-         * @return The bytes for copySourceEncryptionAlgorithm.
-         */
-        public com.google.protobuf.ByteString getCopySourceEncryptionAlgorithmBytes() {
-            java.lang.Object ref = copySourceEncryptionAlgorithm_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                copySourceEncryptionAlgorithm_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The algorithm used to encrypt the source object, if any. Used if the source
-         * object was encrypted with a Customer-Supplied Encryption Key.
-         * </pre>
-         *
-         * <code>string copy_source_encryption_algorithm = 16;</code>
-         *
-         * @param value The copySourceEncryptionAlgorithm to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCopySourceEncryptionAlgorithm(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            copySourceEncryptionAlgorithm_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The algorithm used to encrypt the source object, if any. Used if the source
-         * object was encrypted with a Customer-Supplied Encryption Key.
-         * </pre>
-         *
-         * <code>string copy_source_encryption_algorithm = 16;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCopySourceEncryptionAlgorithm() {
-            copySourceEncryptionAlgorithm_ = getDefaultInstance().getCopySourceEncryptionAlgorithm();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The algorithm used to encrypt the source object, if any. Used if the source
-         * object was encrypted with a Customer-Supplied Encryption Key.
-         * </pre>
-         *
-         * <code>string copy_source_encryption_algorithm = 16;</code>
-         *
-         * @param value The bytes for copySourceEncryptionAlgorithm to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCopySourceEncryptionAlgorithmBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            copySourceEncryptionAlgorithm_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.ByteString copySourceEncryptionKeyBytes_ = com.google.protobuf.ByteString.EMPTY;
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
-         * the source object, if it was encrypted with a Customer-Supplied Encryption
-         * Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
-         *
-         * @return The copySourceEncryptionKeyBytes.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getCopySourceEncryptionKeyBytes() {
-            return copySourceEncryptionKeyBytes_;
-        }
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
-         * the source object, if it was encrypted with a Customer-Supplied Encryption
-         * Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
-         *
-         * @param value The copySourceEncryptionKeyBytes to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCopySourceEncryptionKeyBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            copySourceEncryptionKeyBytes_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
-         * the source object, if it was encrypted with a Customer-Supplied Encryption
-         * Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_bytes = 21;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCopySourceEncryptionKeyBytes() {
-            copySourceEncryptionKeyBytes_ = getDefaultInstance().getCopySourceEncryptionKeyBytes();
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.ByteString copySourceEncryptionKeySha256Bytes_ = com.google.protobuf.ByteString.EMPTY;
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
-         * to encrypt the source object, if it was encrypted with a Customer-Supplied
-         * Encryption Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
-         *
-         * @return The copySourceEncryptionKeySha256Bytes.
-         */
-        @java.lang.Override
-        public com.google.protobuf.ByteString getCopySourceEncryptionKeySha256Bytes() {
-            return copySourceEncryptionKeySha256Bytes_;
-        }
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
-         * to encrypt the source object, if it was encrypted with a Customer-Supplied
-         * Encryption Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
-         *
-         * @param value The copySourceEncryptionKeySha256Bytes to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCopySourceEncryptionKeySha256Bytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            copySourceEncryptionKeySha256Bytes_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
-         * to encrypt the source object, if it was encrypted with a Customer-Supplied
-         * Encryption Key.
-         * </pre>
-         *
-         * <code>bytes copy_source_encryption_key_sha256_bytes = 22;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCopySourceEncryptionKeySha256Bytes() {
-            copySourceEncryptionKeySha256Bytes_ = getDefaultInstance().getCopySourceEncryptionKeySha256Bytes();
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 19;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.RewriteObjectRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.RewriteObjectRequest)
-    private static final com.google.storage.v2.RewriteObjectRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.RewriteObjectRequest();
-    }
-
-    public static com.google.storage.v2.RewriteObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<RewriteObjectRequest> PARSER = new com.google.protobuf.AbstractParser<RewriteObjectRequest>() {
-
-        @java.lang.Override
-        public RewriteObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new RewriteObjectRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<RewriteObjectRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RewriteObjectRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.RewriteObjectRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

@@ -30,24 +30,949 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
 
     private static final long serialVersionUID = 0L;
 
-    // Use WriteObjectSpec.newBuilder() to construct.
-    private WriteObjectSpec(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int RESOURCE_FIELD_NUMBER = 1;
+
+    private com.google.storage.v2.Object resource_;
+
+    public static final int PREDEFINED_ACL_FIELD_NUMBER = 7;
+
+    private volatile java.lang.Object predefinedAcl_;
+
+    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 3;
+
+    private long ifGenerationMatch_;
+
+    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 4;
+
+    private long ifGenerationNotMatch_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 5;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 6;
+
+    private long ifMetagenerationNotMatch_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Describes an attempt to insert an object, possibly over multiple requests.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.WriteObjectSpec}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectSpec)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectSpec)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.WriteObjectSpecOrBuilder {
+
+        private int bitField0_;
+
+        private com.google.storage.v2.Object resource_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
+
+        private java.lang.Object predefinedAcl_ = "";
+
+        private long ifGenerationMatch_;
+
+        private long ifGenerationNotMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.WriteObjectSpec)
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public Object.Builder getResourceBuilder() {
+            onChanged();
+            return getResourceFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation matches the given value. Setting to 0 makes the operation
+         * succeed only if there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 3;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation does not match the given value. If no live object exists, the
+         * precondition fails. Setting to 0 makes the operation succeed only if
+         * there is a live version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 7;</code>
+         *
+         * @return The predefinedAcl.
+         */
+        public java.lang.String getPredefinedAcl() {
+            java.lang.Object ref = predefinedAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                predefinedAcl_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation does not match the given value. If no live object exists, the
+         * precondition fails. Setting to 0 makes the operation succeed only if
+         * there is a live version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 4;</code>
+         *
+         * @param value The ifGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation matches the given value. Setting to 0 makes the operation
+         * succeed only if there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 3;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 7;</code>
+         *
+         * @return The bytes for predefinedAcl.
+         */
+        public com.google.protobuf.ByteString getPredefinedAclBytes() {
+            java.lang.Object ref = predefinedAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                predefinedAcl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public Builder clearResource() {
+            if (null != resourceBuilder_) {
+                resource_ = null;
+                resourceBuilder_ = null;
+            } else {
+                resource_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            WriteObjectSpec parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (WriteObjectSpec) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder> getResourceFieldBuilder() {
+            if (null == resourceBuilder_) {
+                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Object, Object.Builder, ObjectOrBuilder>(getResource(), getParentForChildren(), isClean());
+                resource_ = null;
+            }
+            return resourceBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         *
+         * @return Whether the resource field is set.
+         */
+        public boolean hasResource() {
+            return null != resourceBuilder_ || null != resource_;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public ObjectOrBuilder getResourceOrBuilder() {
+            if (null == resourceBuilder_) {
+                return null == resource_ ? Object.getDefaultInstance() : resource_;
+            } else {
+                return resourceBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 6;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000008;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public WriteObjectSpec getDefaultInstanceForType() {
+            return WriteObjectSpec.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 7;</code>
+         *
+         * @param value The predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            if (null != resourceBuilder_) {
+                resource_ = null;
+                resourceBuilder_ = null;
+            } else {
+                resource_ = null;
+            }
+            predefinedAcl_ = "";
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation matches the given value. Setting to 0 makes the operation
+         * succeed only if there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 3;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public Builder setResource(Object value) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                resource_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public Builder setResource(Object.Builder builderForValue) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.setMessage(builderForValue.build());
+            } else {
+                resource_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 6;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 5;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation does not match the given value. If no live object exists, the
+         * precondition fails. Setting to 0 makes the operation succeed only if
+         * there is a live version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 4;</code>
+         *
+         * @return Whether the ifGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        @java.lang.Override
+        public WriteObjectSpec buildPartial() {
+            WriteObjectSpec result = new WriteObjectSpec(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (null != resourceBuilder_) {
+                result.resource_ = resourceBuilder_.build();
+            } else {
+                result.resource_ = resource_;
+            }
+            result.predefinedAcl_ = predefinedAcl_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifGenerationMatch_ = ifGenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000004;
+            }
+            if ((0 != (from_bitField0_ & 0x00000008))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000008;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        // Construct using com.google.storage.v2.WriteObjectSpec.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 7;</code>
+         *
+         * @param value The bytes for predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation matches the given value. Setting to 0 makes the operation
+         * succeed only if there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof WriteObjectSpec)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((WriteObjectSpec) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         *
+         * @return The resource.
+         */
+        public Object getResource() {
+            if (null != resourceBuilder_) {
+                return resourceBuilder_.getMessage();
+            } else {
+                return null == resource_ ? Object.getDefaultInstance() : resource_;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectSpec_fieldAccessorTable.ensureFieldAccessorsInitialized(WriteObjectSpec.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this object.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_acl = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPredefinedAcl() {
+            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 6;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000008));
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        public Builder mergeFrom(WriteObjectSpec other) {
+            if (WriteObjectSpec.getDefaultInstance() == other)
+                return this;
+            if (other.hasResource()) {
+                mergeResource(other.getResource());
+            }
+            if (!other.getPredefinedAcl().isEmpty()) {
+                predefinedAcl_ = other.predefinedAcl_;
+                onChanged();
+            }
+            if (other.hasIfGenerationMatch()) {
+                setIfGenerationMatch(other.getIfGenerationMatch());
+            }
+            if (other.hasIfGenerationNotMatch()) {
+                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Destination object, including its name and its metadata.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Object resource = 1;</code>
+         */
+        public Builder mergeResource(Object value) {
+            if (null != resourceBuilder_) {
+                resourceBuilder_.mergeFrom(value);
+            } else {
+                if (null == resource_) {
+                    resource_ = value;
+                } else {
+                    resource_ = Object.newBuilder(resource_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public WriteObjectSpec build() {
+            WriteObjectSpec result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * generation does not match the given value. If no live object exists, the
+         * precondition fails. Setting to 0 makes the operation succeed only if
+         * there is a live version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 4;</code>
+         *
+         * @return The ifGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationNotMatch() {
+            return ifGenerationNotMatch_;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.WriteObjectSpec)
+    private static final com.google.storage.v2.WriteObjectSpec DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.WriteObjectSpec();
+    }
+
+    private static final com.google.protobuf.Parser<WriteObjectSpec> PARSER = new com.google.protobuf.AbstractParser<WriteObjectSpec>() {
+
+        @java.lang.Override
+        public WriteObjectSpec parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new WriteObjectSpec(input, extensionRegistry);
+        }
+    };
+
+    public static WriteObjectSpec parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Destination object, including its name and its metadata.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 1;</code>
+     */
+    @java.lang.Override
+    public ObjectOrBuilder getResourceOrBuilder() {
+        return getResource();
+    }
+
+    public static Builder newBuilder(WriteObjectSpec prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<WriteObjectSpec> getParserForType() {
+        return PARSER;
+    }
+
+    public static WriteObjectSpec parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to this object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string predefined_acl = 7;</code>
+     *
+     * @return The bytes for predefinedAcl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPredefinedAclBytes() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            predefinedAcl_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * generation does not match the given value. If no live object exists, the
+     * precondition fails. Setting to 0 makes the operation succeed only if
+     * there is a live version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 4;</code>
+     *
+     * @return Whether the ifGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    public static WriteObjectSpec parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static WriteObjectSpec parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof WriteObjectSpec)) {
+            return super.equals(obj);
+        }
+        WriteObjectSpec other = (WriteObjectSpec) obj;
+        if (other.hasResource() != hasResource())
+            return false;
+        if (hasResource()) {
+            if (!getResource().equals(other.getResource()))
+                return false;
+        }
+        if (!getPredefinedAcl().equals(other.getPredefinedAcl()))
+            return false;
+        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
+            return false;
+        if (hasIfGenerationMatch()) {
+            if (other.getIfGenerationMatch() != getIfGenerationMatch())
+                return false;
+        }
+        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
+            return false;
+        if (hasIfGenerationNotMatch()) {
+            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
+            return false;
+        if (hasIfMetagenerationMatch()) {
+            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
+                return false;
+        }
+        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
+            return false;
+        if (hasIfMetagenerationNotMatch()) {
+            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
     }
 
     private WriteObjectSpec() {
         predefinedAcl_ = "";
     }
 
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new WriteObjectSpec();
+    public static WriteObjectSpec parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
 
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * generation matches the given value. Setting to 0 makes the operation
+     * succeed only if there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 3;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
     }
 
     private WriteObjectSpec(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -67,11 +992,11 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
                         break;
                     case 10:
                         {
-                            com.google.storage.v2.Object.Builder subBuilder = null;
+                            Object.Builder subBuilder = null;
                             if (null != resource_) {
                                 subBuilder = resource_.toBuilder();
                             }
-                            resource_ = input.readMessage(com.google.storage.v2.Object.parser(), extensionRegistry);
+                            resource_ = input.readMessage(Object.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(resource_);
                                 resource_ = subBuilder.buildPartial();
@@ -129,267 +1054,6 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectSpec_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.WriteObjectSpec.class, com.google.storage.v2.WriteObjectSpec.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int RESOURCE_FIELD_NUMBER = 1;
-
-    private com.google.storage.v2.Object resource_;
-
-    /**
-     * <pre>
-     * Destination object, including its name and its metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 1;</code>
-     *
-     * @return Whether the resource field is set.
-     */
-    @java.lang.Override
-    public boolean hasResource() {
-        return null != resource_;
-    }
-
-    /**
-     * <pre>
-     * Destination object, including its name and its metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 1;</code>
-     *
-     * @return The resource.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Object getResource() {
-        return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-    }
-
-    /**
-     * <pre>
-     * Destination object, including its name and its metadata.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Object resource = 1;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-        return getResource();
-    }
-
-    public static final int PREDEFINED_ACL_FIELD_NUMBER = 7;
-
-    private volatile java.lang.Object predefinedAcl_;
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_acl = 7;</code>
-     *
-     * @return The predefinedAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getPredefinedAcl() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            predefinedAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this object.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_acl = 7;</code>
-     *
-     * @return The bytes for predefinedAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPredefinedAclBytes() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            predefinedAcl_ = b;
-            return b;
-        }
-    }
-
-    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 3;
-
-    private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * generation matches the given value. Setting to 0 makes the operation
-     * succeed only if there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 3;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * generation matches the given value. Setting to 0 makes the operation
-     * succeed only if there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 3;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
-
-    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 4;
-
-    private long ifGenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * generation does not match the given value. If no live object exists, the
-     * precondition fails. Setting to 0 makes the operation succeed only if
-     * there is a live version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 4;</code>
-     *
-     * @return Whether the ifGenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * generation does not match the given value. If no live object exists, the
-     * precondition fails. Setting to 0 makes the operation succeed only if
-     * there is a live version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 4;</code>
-     *
-     * @return The ifGenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationNotMatch() {
-        return ifGenerationNotMatch_;
-    }
-
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 5;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 5;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 5;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 6;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 6;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000008));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 6;</code>
-     *
-     * @return The ifMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationNotMatch() {
-        return ifMetagenerationNotMatch_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
         if (null != resource_) {
@@ -413,79 +1077,39 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
         unknownFields.writeTo(output);
     }
 
+    /**
+     * <pre>
+     * Destination object, including its name and its metadata.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 1;</code>
+     *
+     * @return The resource.
+     */
     @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (null != resource_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getResource());
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifMetagenerationNotMatch_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, predefinedAcl_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
+    public Object getResource() {
+        return null == resource_ ? Object.getDefaultInstance() : resource_;
     }
 
+    public static WriteObjectSpec parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * generation does not match the given value. If no live object exists, the
+     * precondition fails. Setting to 0 makes the operation succeed only if
+     * there is a live version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 4;</code>
+     *
+     * @return The ifGenerationNotMatch.
+     */
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.WriteObjectSpec)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.WriteObjectSpec other = (com.google.storage.v2.WriteObjectSpec) obj;
-        if (other.hasResource() != hasResource())
-            return false;
-        if (hasResource()) {
-            if (!getResource().equals(other.getResource()))
-                return false;
-        }
-        if (!getPredefinedAcl().equals(other.getPredefinedAcl()))
-            return false;
-        if (other.hasIfGenerationMatch() != hasIfGenerationMatch())
-            return false;
-        if (hasIfGenerationMatch()) {
-            if (other.getIfGenerationMatch() != getIfGenerationMatch())
-                return false;
-        }
-        if (other.hasIfGenerationNotMatch() != hasIfGenerationNotMatch())
-            return false;
-        if (hasIfGenerationNotMatch()) {
-            if (other.getIfGenerationNotMatch() != getIfGenerationNotMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationMatch() != hasIfMetagenerationMatch())
-            return false;
-        if (hasIfMetagenerationMatch()) {
-            if (other.getIfMetagenerationMatch() != getIfMetagenerationMatch())
-                return false;
-        }
-        if (other.hasIfMetagenerationNotMatch() != hasIfMetagenerationNotMatch())
-            return false;
-        if (hasIfMetagenerationNotMatch()) {
-            if (other.getIfMetagenerationNotMatch() != getIfMetagenerationNotMatch())
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    public long getIfGenerationNotMatch() {
+        return ifGenerationNotMatch_;
     }
 
     @java.lang.Override
@@ -522,65 +1146,104 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
         return hash;
     }
 
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
+    public static WriteObjectSpec getDefaultInstance() {
+        return DEFAULT_INSTANCE;
     }
 
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 6;</code>
+     *
+     * @return The ifMetagenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationNotMatch() {
+        return ifMetagenerationNotMatch_;
     }
 
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(java.io.InputStream input) throws java.io.IOException {
+    public static WriteObjectSpec parseFrom(java.io.InputStream input) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.WriteObjectSpec parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    // Use WriteObjectSpec.newBuilder() to construct.
+    private WriteObjectSpec(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static WriteObjectSpec parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new WriteObjectSpec();
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_WriteObjectSpec_fieldAccessorTable.ensureFieldAccessorsInitialized(WriteObjectSpec.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Destination object, including its name and its metadata.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Object resource = 1;</code>
+     *
+     * @return Whether the resource field is set.
+     */
+    @java.lang.Override
+    public boolean hasResource() {
+        return null != resource_;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
     }
 
     public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
     }
 
-    public static Builder newBuilder(com.google.storage.v2.WriteObjectSpec prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    @java.lang.Override
+    public WriteObjectSpec getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to this object.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string predefined_acl = 7;</code>
+     *
+     * @return The predefinedAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getPredefinedAcl() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            predefinedAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
     }
 
     @java.lang.Override
@@ -588,790 +1251,130 @@ WriteObjectSpec extends com.google.protobuf.GeneratedMessageV3 implements WriteO
         return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
     /**
      * <pre>
-     * Describes an attempt to insert an object, possibly over multiple requests.
+     * Makes the operation conditional on whether the object's current
+     * generation matches the given value. Setting to 0 makes the operation
+     * succeed only if there are no live versions of the object.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.WriteObjectSpec}
+     * <code>optional int64 if_generation_match = 3;</code>
+     *
+     * @return The ifGenerationMatch.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectSpec)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.WriteObjectSpec)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.WriteObjectSpecOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectSpec_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.WriteObjectSpec.class, com.google.storage.v2.WriteObjectSpec.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.WriteObjectSpec.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            if (null != resourceBuilder_) {
-                resource_ = null;
-                resourceBuilder_ = null;
-            } else {
-                resource_ = null;
-            }
-            predefinedAcl_ = "";
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_WriteObjectSpec_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectSpec getDefaultInstanceForType() {
-            return com.google.storage.v2.WriteObjectSpec.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectSpec build() {
-            com.google.storage.v2.WriteObjectSpec result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.WriteObjectSpec buildPartial() {
-            com.google.storage.v2.WriteObjectSpec result = new com.google.storage.v2.WriteObjectSpec(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            if (null != resourceBuilder_) {
-                result.resource_ = resourceBuilder_.build();
-            } else {
-                result.resource_ = resource_;
-            }
-            result.predefinedAcl_ = predefinedAcl_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifGenerationMatch_ = ifGenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000004;
-            }
-            if ((0 != (from_bitField0_ & 0x00000008))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000008;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.WriteObjectSpec)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.WriteObjectSpec) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.WriteObjectSpec other) {
-            if (com.google.storage.v2.WriteObjectSpec.getDefaultInstance() == other)
-                return this;
-            if (other.hasResource()) {
-                mergeResource(other.getResource());
-            }
-            if (!other.getPredefinedAcl().isEmpty()) {
-                predefinedAcl_ = other.predefinedAcl_;
-                onChanged();
-            }
-            if (other.hasIfGenerationMatch()) {
-                setIfGenerationMatch(other.getIfGenerationMatch());
-            }
-            if (other.hasIfGenerationNotMatch()) {
-                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.WriteObjectSpec parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.WriteObjectSpec) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private com.google.storage.v2.Object resource_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> resourceBuilder_;
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         *
-         * @return Whether the resource field is set.
-         */
-        public boolean hasResource() {
-            return null != resourceBuilder_ || null != resource_;
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         *
-         * @return The resource.
-         */
-        public com.google.storage.v2.Object getResource() {
-            if (null != resourceBuilder_) {
-                return resourceBuilder_.getMessage();
-            } else {
-                return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                resource_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public Builder setResource(com.google.storage.v2.Object.Builder builderForValue) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.setMessage(builderForValue.build());
-            } else {
-                resource_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public Builder mergeResource(com.google.storage.v2.Object value) {
-            if (null != resourceBuilder_) {
-                resourceBuilder_.mergeFrom(value);
-            } else {
-                if (null == resource_) {
-                    resource_ = value;
-                } else {
-                    resource_ = com.google.storage.v2.Object.newBuilder(resource_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public Builder clearResource() {
-            if (null != resourceBuilder_) {
-                resource_ = null;
-                resourceBuilder_ = null;
-            } else {
-                resource_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public com.google.storage.v2.Object.Builder getResourceBuilder() {
-            onChanged();
-            return getResourceFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        public com.google.storage.v2.ObjectOrBuilder getResourceOrBuilder() {
-            if (null == resourceBuilder_) {
-                return null == resource_ ? com.google.storage.v2.Object.getDefaultInstance() : resource_;
-            } else {
-                return resourceBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Destination object, including its name and its metadata.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Object resource = 1;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder> getResourceFieldBuilder() {
-            if (null == resourceBuilder_) {
-                resourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Object, com.google.storage.v2.Object.Builder, com.google.storage.v2.ObjectOrBuilder>(getResource(), getParentForChildren(), isClean());
-                resource_ = null;
-            }
-            return resourceBuilder_;
-        }
-
-        private java.lang.Object predefinedAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 7;</code>
-         *
-         * @return The predefinedAcl.
-         */
-        public java.lang.String getPredefinedAcl() {
-            java.lang.Object ref = predefinedAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                predefinedAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 7;</code>
-         *
-         * @return The bytes for predefinedAcl.
-         */
-        public com.google.protobuf.ByteString getPredefinedAclBytes() {
-            java.lang.Object ref = predefinedAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                predefinedAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 7;</code>
-         *
-         * @param value The predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPredefinedAcl() {
-            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this object.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_acl = 7;</code>
-         *
-         * @param value The bytes for predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation matches the given value. Setting to 0 makes the operation
-         * succeed only if there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 3;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation matches the given value. Setting to 0 makes the operation
-         * succeed only if there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 3;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation matches the given value. Setting to 0 makes the operation
-         * succeed only if there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 3;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation matches the given value. Setting to 0 makes the operation
-         * succeed only if there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation does not match the given value. If no live object exists, the
-         * precondition fails. Setting to 0 makes the operation succeed only if
-         * there is a live version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 4;</code>
-         *
-         * @return Whether the ifGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation does not match the given value. If no live object exists, the
-         * precondition fails. Setting to 0 makes the operation succeed only if
-         * there is a live version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 4;</code>
-         *
-         * @return The ifGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationNotMatch() {
-            return ifGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation does not match the given value. If no live object exists, the
-         * precondition fails. Setting to 0 makes the operation succeed only if
-         * there is a live version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 4;</code>
-         *
-         * @param value The ifGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * generation does not match the given value. If no live object exists, the
-         * precondition fails. Setting to 0 makes the operation succeed only if
-         * there is a live version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 6;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000008));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 6;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 6;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000008;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.WriteObjectSpec)
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.WriteObjectSpec)
-    private static final com.google.storage.v2.WriteObjectSpec DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.WriteObjectSpec();
+    public static WriteObjectSpec parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
-    public static com.google.storage.v2.WriteObjectSpec getDefaultInstance() {
-        return DEFAULT_INSTANCE;
+    public static WriteObjectSpec parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
-    private static final com.google.protobuf.Parser<WriteObjectSpec> PARSER = new com.google.protobuf.AbstractParser<WriteObjectSpec>() {
-
-        @java.lang.Override
-        public WriteObjectSpec parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new WriteObjectSpec(input, extensionRegistry);
-        }
-    };
+    public static WriteObjectSpec parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
 
     public static com.google.protobuf.Parser<WriteObjectSpec> parser() {
         return PARSER;
     }
 
+    public static WriteObjectSpec parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 6;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
     @java.lang.Override
-    public com.google.protobuf.Parser<WriteObjectSpec> getParserForType() {
-        return PARSER;
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000008));
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 5;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
     }
 
     @java.lang.Override
-    public com.google.storage.v2.WriteObjectSpec getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (null != resource_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, getResource());
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifMetagenerationNotMatch_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, predefinedAcl_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
 }

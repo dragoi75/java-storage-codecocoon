@@ -23,41 +23,43 @@ public interface ChecksummedDataOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ChecksummedData)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The data.
-   * </pre>
-   *
-   * <code>bytes content = 1;</code>
-   *
-   * @return The content.
-   */
-  com.google.protobuf.ByteString getContent();
+    /**
+     *
+     *
+     * <pre>
+     * If set, the CRC32C digest of the content field.
+     * </pre>
+     *
+     * <code>optional fixed32 crc32c = 2;</code>
+     *
+     * @return Whether the crc32c field is set.
+     */
+    boolean hasCrc32C();
 
-  /**
-   *
-   *
-   * <pre>
-   * If set, the CRC32C digest of the content field.
-   * </pre>
-   *
-   * <code>optional fixed32 crc32c = 2;</code>
-   *
-   * @return Whether the crc32c field is set.
-   */
-  boolean hasCrc32C();
-  /**
-   *
-   *
-   * <pre>
-   * If set, the CRC32C digest of the content field.
-   * </pre>
-   *
-   * <code>optional fixed32 crc32c = 2;</code>
-   *
-   * @return The crc32c.
-   */
-  int getCrc32C();
+    /**
+     *
+     *
+     * <pre>
+     * If set, the CRC32C digest of the content field.
+     * </pre>
+     *
+     * <code>optional fixed32 crc32c = 2;</code>
+     *
+     * @return The crc32c.
+     */
+    int getCrc32C();
+
+    /**
+     *
+     *
+     * <pre>
+     * The data.
+     * </pre>
+     *
+     * <code>bytes content = 1;</code>
+     *
+     * @return The content.
+     */
+    com.google.protobuf.ByteString getContent();
+
 }

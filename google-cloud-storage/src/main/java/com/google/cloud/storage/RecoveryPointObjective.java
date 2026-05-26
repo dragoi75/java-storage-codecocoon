@@ -30,11 +30,7 @@ public final class RecoveryPointObjective extends StringEnumValue {
 
   private static final long serialVersionUID = -3954216195295821508L;
 
-  private RecoveryPointObjective(String value) {
-    super(value);
-  }
-
-  private static final ApiFunction<String, RecoveryPointObjective> FROM_STRING_FACTORY = RecoveryPointObjective::new;
+    private static final ApiFunction<String, RecoveryPointObjective> FROM_STRING_FACTORY = RecoveryPointObjective::new;
 
   private static final StringEnumType<RecoveryPointObjective> RECOVERY_POINT_ENUM = new StringEnumType<>(RecoveryPointObjective.class, FROM_STRING_FACTORY);
 
@@ -50,21 +46,26 @@ public final class RecoveryPointObjective extends StringEnumValue {
    */
   public static final RecoveryPointObjective ASYNC_TURBO = RECOVERY_POINT_ENUM.createAndRegister("ASYNC_TURBO");
 
-  /**
-   * Get the Rpo for the given String constant, and throw an exception if the constant is not
-   * recognized.
-   */
-  public static RecoveryPointObjective valueOfStrict(String value) {
-    return RECOVERY_POINT_ENUM.valueOfStrict(value);
-  }
+    /** Get the Rpo for the given String constant, and allow unrecognized values. */
+    public static RecoveryPointObjective fromValue(String value) {
+      return RECOVERY_POINT_ENUM.valueOf(value);
+    }
 
-  /** Get the Rpo for the given String constant, and allow unrecognized values. */
-  public static RecoveryPointObjective fromValue(String value) {
-    return RECOVERY_POINT_ENUM.valueOf(value);
-  }
+    /** Return the known values for Rpo. */
+    public static RecoveryPointObjective[] values() {
+      return RECOVERY_POINT_ENUM.values();
+    }
 
-  /** Return the known values for Rpo. */
-  public static RecoveryPointObjective[] values() {
-    return RECOVERY_POINT_ENUM.values();
-  }
+    private RecoveryPointObjective(String value) {
+      super(value);
+    }
+
+    /**
+     * Get the Rpo for the given String constant, and throw an exception if the constant is not
+     * recognized.
+     */
+    public static RecoveryPointObjective valueOfStrict(String value) {
+      return RECOVERY_POINT_ENUM.valueOfStrict(value);
+    }
+
 }

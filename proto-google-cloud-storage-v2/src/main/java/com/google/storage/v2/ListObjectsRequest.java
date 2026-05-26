@@ -30,18 +30,1496 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
 
     private static final long serialVersionUID = 0L;
 
-    // Use ListObjectsRequest.newBuilder() to construct.
-    private ListObjectsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int PARENT_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object parent_;
+
+    public static final int PAGE_SIZE_FIELD_NUMBER = 2;
+
+    private int pageSize_;
+
+    public static final int PAGE_TOKEN_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object pageToken_;
+
+    public static final int DELIMITER_FIELD_NUMBER = 4;
+
+    private volatile java.lang.Object delimiter_;
+
+    public static final int INCLUDE_TRAILING_DELIMITER_FIELD_NUMBER = 5;
+
+    private boolean includeTrailingDelimiter_;
+
+    public static final int PREFIX_FIELD_NUMBER = 6;
+
+    private volatile java.lang.Object prefix_;
+
+    public static final int VERSIONS_FIELD_NUMBER = 7;
+
+    private boolean versions_;
+
+    public static final int READ_MASK_FIELD_NUMBER = 8;
+
+    private com.google.protobuf.FieldMask readMask_;
+
+    public static final int LEXICOGRAPHIC_START_FIELD_NUMBER = 10;
+
+    private volatile java.lang.Object lexicographicStart_;
+
+    public static final int LEXICOGRAPHIC_END_FIELD_NUMBER = 11;
+
+    private volatile java.lang.Object lexicographicEnd_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for ListObjects.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ListObjectsRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListObjectsRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object parent_ = "";
+
+        private int pageSize_;
+
+        private java.lang.Object pageToken_ = "";
+
+        private java.lang.Object delimiter_ = "";
+
+        private boolean includeTrailingDelimiter_;
+
+        private java.lang.Object prefix_ = "";
+
+        private boolean versions_;
+
+        private com.google.protobuf.FieldMask readMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
+
+        private java.lang.Object lexicographicStart_ = "";
+
+        private java.lang.Object lexicographicEnd_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListObjectsRequest)
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically before
+         * lexicographic_end. If lexicographic_start is also set, the objects listed
+         * have names between lexicographic_start (inclusive) and lexicographic_end
+         * (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_end = 11;</code>
+         *
+         * @return The lexicographicEnd.
+         */
+        public java.lang.String getLexicographicEnd() {
+            java.lang.Object ref = lexicographicEnd_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                lexicographicEnd_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically before
+         * lexicographic_end. If lexicographic_start is also set, the objects listed
+         * have names between lexicographic_start (inclusive) and lexicographic_end
+         * (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_end = 11;</code>
+         *
+         * @param value The lexicographicEnd to set.
+         * @return This builder for chaining.
+         */
+        public Builder setLexicographicEnd(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            lexicographicEnd_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically equal to or
+         * after lexicographic_start. If lexicographic_end is also set, the objects
+         * listed have names between lexicographic_start (inclusive) and
+         * lexicographic_end (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_start = 10;</code>
+         *
+         * @return The bytes for lexicographicStart.
+         */
+        public com.google.protobuf.ByteString getLexicographicStartBytes() {
+            java.lang.Object ref = lexicographicStart_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                lexicographicStart_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @param value The pageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageToken(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            pageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 6;</code>
+         *
+         * @param value The prefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPrefix(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            prefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If `true`, lists all versions of an object as distinct results.
+         * For more information, see
+         * [Object
+         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
+         * </pre>
+         *
+         * <code>bool versions = 7;</code>
+         *
+         * @return The versions.
+         */
+        @java.lang.Override
+        public boolean getVersions() {
+            return versions_;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to look for objects.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for parent.
+         */
+        public com.google.protobuf.ByteString getParentBytes() {
+            java.lang.Object ref = parent_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                parent_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * If `true`, lists all versions of an object as distinct results.
+         * For more information, see
+         * [Object
+         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
+         * </pre>
+         *
+         * <code>bool versions = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearVersions() {
+            versions_ = false;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.ListObjectsRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
+            if (null == readMaskBuilder_) {
+                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
+                readMask_ = null;
+            }
+            return readMaskBuilder_;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically before
+         * lexicographic_end. If lexicographic_start is also set, the objects listed
+         * have names between lexicographic_start (inclusive) and lexicographic_end
+         * (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_end = 11;</code>
+         *
+         * @return The bytes for lexicographicEnd.
+         */
+        public com.google.protobuf.ByteString getLexicographicEndBytes() {
+            java.lang.Object ref = lexicographicEnd_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                lexicographicEnd_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         *
+         * @return Whether the readMask field is set.
+         */
+        public boolean hasReadMask() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        /**
+         * <pre>
+         * Maximum number of `items` plus `prefixes` to return
+         * in a single page of responses. As duplicate `prefixes` are
+         * omitted, fewer total results may be returned than requested. The service
+         * will use this parameter or 1,000 items, whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPageSize() {
+            pageSize_ = 0;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to look for objects.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParentBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically before
+         * lexicographic_end. If lexicographic_start is also set, the objects listed
+         * have names between lexicographic_start (inclusive) and lexicographic_end
+         * (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_end = 11;</code>
+         *
+         * @param value The bytes for lexicographicEnd to set.
+         * @return This builder for chaining.
+         */
+        public Builder setLexicographicEndBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            lexicographicEnd_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 6;</code>
+         *
+         * @param value The bytes for prefix to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPrefixBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            prefix_ = value;
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * If set, returns results in a directory-like mode. `items` will contain
+         * only objects whose names, aside from the `prefix`, do not
+         * contain `delimiter`. Objects whose names, aside from the
+         * `prefix`, contain `delimiter` will have their name,
+         * truncated after the `delimiter`, returned in
+         * `prefixes`. Duplicate `prefixes` are omitted.
+         * </pre>
+         *
+         * <code>string delimiter = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDelimiter() {
+            delimiter_ = getDefaultInstance().getDelimiter();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ListObjectsRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ListObjectsRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, returns results in a directory-like mode. `items` will contain
+         * only objects whose names, aside from the `prefix`, do not
+         * contain `delimiter`. Objects whose names, aside from the
+         * `prefix`, contain `delimiter` will have their name,
+         * truncated after the `delimiter`, returned in
+         * `prefixes`. Duplicate `prefixes` are omitted.
+         * </pre>
+         *
+         * <code>string delimiter = 4;</code>
+         *
+         * @return The bytes for delimiter.
+         */
+        public com.google.protobuf.ByteString getDelimiterBytes() {
+            java.lang.Object ref = delimiter_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                delimiter_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically equal to or
+         * after lexicographic_start. If lexicographic_end is also set, the objects
+         * listed have names between lexicographic_start (inclusive) and
+         * lexicographic_end (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_start = 10;</code>
+         *
+         * @param value The bytes for lexicographicStart to set.
+         * @return This builder for chaining.
+         */
+        public Builder setLexicographicStartBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            lexicographicStart_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
+            bitField0_ |= 0x00000001;
+            onChanged();
+            return getReadMaskFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            parent_ = "";
+            pageSize_ = 0;
+            pageToken_ = "";
+            delimiter_ = "";
+            includeTrailingDelimiter_ = false;
+            prefix_ = "";
+            versions_ = false;
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+            }
+            bitField0_ = (bitField0_ & ~0x00000001);
+            lexicographicStart_ = "";
+            lexicographicEnd_ = "";
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @param value The bytes for pageToken to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageTokenBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            pageToken_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically equal to or
+         * after lexicographic_start. If lexicographic_end is also set, the objects
+         * listed have names between lexicographic_start (inclusive) and
+         * lexicographic_end (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_start = 10;</code>
+         *
+         * @return The lexicographicStart.
+         */
+        public java.lang.String getLexicographicStart() {
+            java.lang.Object ref = lexicographicStart_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                lexicographicStart_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 6;</code>
+         *
+         * @return The prefix.
+         */
+        public java.lang.String getPrefix() {
+            java.lang.Object ref = prefix_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                prefix_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * If true, objects that end in exactly one instance of `delimiter`
+         * will have their metadata included in `items` in addition to
+         * `prefixes`.
+         * </pre>
+         *
+         * <code>bool include_trailing_delimiter = 5;</code>
+         *
+         * @return The includeTrailingDelimiter.
+         */
+        @java.lang.Override
+        public boolean getIncludeTrailingDelimiter() {
+            return includeTrailingDelimiter_;
+        }
+
+        @java.lang.Override
+        public ListObjectsRequest buildPartial() {
+            ListObjectsRequest result = new ListObjectsRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.parent_ = parent_;
+            result.pageSize_ = pageSize_;
+            result.pageToken_ = pageToken_;
+            result.delimiter_ = delimiter_;
+            result.includeTrailingDelimiter_ = includeTrailingDelimiter_;
+            result.prefix_ = prefix_;
+            result.versions_ = versions_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                if (null != readMaskBuilder_) {
+                    result.readMask_ = readMaskBuilder_.build();
+                } else {
+                    result.readMask_ = readMask_;
+                }
+                to_bitField0_ |= 0x00000001;
+            }
+            result.lexicographicStart_ = lexicographicStart_;
+            result.lexicographicEnd_ = lexicographicEnd_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getReadMaskFieldBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Maximum number of `items` plus `prefixes` to return
+         * in a single page of responses. As duplicate `prefixes` are
+         * omitted, fewer total results may be returned than requested. The service
+         * will use this parameter or 1,000 items, whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @return The pageSize.
+         */
+        @java.lang.Override
+        public int getPageSize() {
+            return pageSize_;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.mergeFrom(value);
+            } else {
+                if (!(0 != (bitField0_ & 0x00000001)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
+                    readMask_ = value;
+                } else {
+                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 6;</code>
+         *
+         * @return The bytes for prefix.
+         */
+        public com.google.protobuf.ByteString getPrefixBytes() {
+            java.lang.Object ref = prefix_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                prefix_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to look for objects.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearParent() {
+            parent_ = getDefaultInstance().getParent();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ListObjectsRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * If set, returns results in a directory-like mode. `items` will contain
+         * only objects whose names, aside from the `prefix`, do not
+         * contain `delimiter`. Objects whose names, aside from the
+         * `prefix`, contain `delimiter` will have their name,
+         * truncated after the `delimiter`, returned in
+         * `prefixes`. Duplicate `prefixes` are omitted.
+         * </pre>
+         *
+         * <code>string delimiter = 4;</code>
+         *
+         * @param value The delimiter to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDelimiter(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            delimiter_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names begin with this prefix.
+         * </pre>
+         *
+         * <code>string prefix = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPrefix() {
+            prefix_ = getDefaultInstance().getPrefix();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically equal to or
+         * after lexicographic_start. If lexicographic_end is also set, the objects
+         * listed have names between lexicographic_start (inclusive) and
+         * lexicographic_end (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_start = 10;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearLexicographicStart() {
+            lexicographicStart_ = getDefaultInstance().getLexicographicStart();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                readMask_ = builderForValue.build();
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+            if (null == readMaskBuilder_) {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            } else {
+                return readMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                readMask_ = value;
+                onChanged();
+            }
+            bitField0_ |= 0x00000001;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If true, objects that end in exactly one instance of `delimiter`
+         * will have their metadata included in `items` in addition to
+         * `prefixes`.
+         * </pre>
+         *
+         * <code>bool include_trailing_delimiter = 5;</code>
+         *
+         * @param value The includeTrailingDelimiter to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIncludeTrailingDelimiter(boolean value) {
+            includeTrailingDelimiter_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, returns results in a directory-like mode. `items` will contain
+         * only objects whose names, aside from the `prefix`, do not
+         * contain `delimiter`. Objects whose names, aside from the
+         * `prefix`, contain `delimiter` will have their name,
+         * truncated after the `delimiter`, returned in
+         * `prefixes`. Duplicate `prefixes` are omitted.
+         * </pre>
+         *
+         * <code>string delimiter = 4;</code>
+         *
+         * @param value The bytes for delimiter to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDelimiterBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            delimiter_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return The pageToken.
+         */
+        public java.lang.String getPageToken() {
+            java.lang.Object ref = pageToken_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                pageToken_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         */
+        public Builder clearReadMask() {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+                onChanged();
+            }
+            bitField0_ = (bitField0_ & ~0x00000001);
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically equal to or
+         * after lexicographic_start. If lexicographic_end is also set, the objects
+         * listed have names between lexicographic_start (inclusive) and
+         * lexicographic_end (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_start = 10;</code>
+         *
+         * @param value The lexicographicStart to set.
+         * @return This builder for chaining.
+         */
+        public Builder setLexicographicStart(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            lexicographicStart_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ListObjectsRequest build() {
+            ListObjectsRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public ListObjectsRequest getDefaultInstanceForType() {
+            return ListObjectsRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPageToken() {
+            pageToken_ = getDefaultInstance().getPageToken();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to look for objects.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParent(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Name of the bucket in which to look for objects.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The parent.
+         */
+        public java.lang.String getParent() {
+            java.lang.Object ref = parent_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                parent_ = s;
+                return s;
+            }
+        }
+
+        public Builder mergeFrom(ListObjectsRequest other) {
+            if (ListObjectsRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getParent().isEmpty()) {
+                parent_ = other.parent_;
+                onChanged();
+            }
+            if (0 != other.getPageSize()) {
+                setPageSize(other.getPageSize());
+            }
+            if (!other.getPageToken().isEmpty()) {
+                pageToken_ = other.pageToken_;
+                onChanged();
+            }
+            if (!other.getDelimiter().isEmpty()) {
+                delimiter_ = other.delimiter_;
+                onChanged();
+            }
+            if (false != other.getIncludeTrailingDelimiter()) {
+                setIncludeTrailingDelimiter(other.getIncludeTrailingDelimiter());
+            }
+            if (!other.getPrefix().isEmpty()) {
+                prefix_ = other.prefix_;
+                onChanged();
+            }
+            if (false != other.getVersions()) {
+                setVersions(other.getVersions());
+            }
+            if (other.hasReadMask()) {
+                mergeReadMask(other.getReadMask());
+            }
+            if (!other.getLexicographicStart().isEmpty()) {
+                lexicographicStart_ = other.lexicographicStart_;
+                onChanged();
+            }
+            if (!other.getLexicographicEnd().isEmpty()) {
+                lexicographicEnd_ = other.lexicographicEnd_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * If `true`, lists all versions of an object as distinct results.
+         * For more information, see
+         * [Object
+         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
+         * </pre>
+         *
+         * <code>bool versions = 7;</code>
+         *
+         * @param value The versions to set.
+         * @return This builder for chaining.
+         */
+        public Builder setVersions(boolean value) {
+            versions_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read from each result.
+         * If no mask is specified, will default to all fields except items.acl and
+         * items.owner.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+         *
+         * @return The readMask.
+         */
+        public com.google.protobuf.FieldMask getReadMask() {
+            if (null != readMaskBuilder_) {
+                return readMaskBuilder_.getMessage();
+            } else {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Maximum number of `items` plus `prefixes` to return
+         * in a single page of responses. As duplicate `prefixes` are
+         * omitted, fewer total results may be returned than requested. The service
+         * will use this parameter or 1,000 items, whichever is smaller.
+         * </pre>
+         *
+         * <code>int32 page_size = 2;</code>
+         *
+         * @param value The pageSize to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPageSize(int value) {
+            pageSize_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A previously-returned page token representing part of the larger set of
+         * results to view.
+         * </pre>
+         *
+         * <code>string page_token = 3;</code>
+         *
+         * @return The bytes for pageToken.
+         */
+        public com.google.protobuf.ByteString getPageTokenBytes() {
+            java.lang.Object ref = pageToken_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                pageToken_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Filter results to objects whose names are lexicographically before
+         * lexicographic_end. If lexicographic_start is also set, the objects listed
+         * have names between lexicographic_start (inclusive) and lexicographic_end
+         * (exclusive).
+         * </pre>
+         *
+         * <code>string lexicographic_end = 11;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearLexicographicEnd() {
+            lexicographicEnd_ = getDefaultInstance().getLexicographicEnd();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ListObjectsRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ListObjectsRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * If true, objects that end in exactly one instance of `delimiter`
+         * will have their metadata included in `items` in addition to
+         * `prefixes`.
+         * </pre>
+         *
+         * <code>bool include_trailing_delimiter = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIncludeTrailingDelimiter() {
+            includeTrailingDelimiter_ = false;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * If set, returns results in a directory-like mode. `items` will contain
+         * only objects whose names, aside from the `prefix`, do not
+         * contain `delimiter`. Objects whose names, aside from the
+         * `prefix`, contain `delimiter` will have their name,
+         * truncated after the `delimiter`, returned in
+         * `prefixes`. Duplicate `prefixes` are omitted.
+         * </pre>
+         *
+         * <code>string delimiter = 4;</code>
+         *
+         * @return The delimiter.
+         */
+        public java.lang.String getDelimiter() {
+            java.lang.Object ref = delimiter_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                delimiter_ = s;
+                return s;
+            }
+        }
+
     }
 
-    private ListObjectsRequest() {
-        parent_ = "";
-        pageToken_ = "";
-        delimiter_ = "";
-        prefix_ = "";
-        lexicographicStart_ = "";
-        lexicographicEnd_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ListObjectsRequest)
+    private static final com.google.storage.v2.ListObjectsRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ListObjectsRequest();
+    }
+
+    private static final com.google.protobuf.Parser<ListObjectsRequest> PARSER = new com.google.protobuf.AbstractParser<ListObjectsRequest>() {
+
+        @java.lang.Override
+        public ListObjectsRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ListObjectsRequest(input, extensionRegistry);
+        }
+    };
+
+    /**
+     * <pre>
+     * Filter results to objects whose names are lexicographically before
+     * lexicographic_end. If lexicographic_start is also set, the objects listed
+     * have names between lexicographic_start (inclusive) and lexicographic_end
+     * (exclusive).
+     * </pre>
+     *
+     * <code>string lexicographic_end = 11;</code>
+     *
+     * @return The bytes for lexicographicEnd.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getLexicographicEndBytes() {
+        java.lang.Object ref = lexicographicEnd_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            lexicographicEnd_ = b;
+            return b;
+        }
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ListObjectsRequest> getParserForType() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * Filter results to objects whose names begin with this prefix.
+     * </pre>
+     *
+     * <code>string prefix = 6;</code>
+     *
+     * @return The bytes for prefix.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPrefixBytes() {
+        java.lang.Object ref = prefix_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            prefix_ = b;
+            return b;
+        }
+    }
+
+    public static ListObjectsRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ListObjectsRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ListObjectsRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * If `true`, lists all versions of an object as distinct results.
+     * For more information, see
+     * [Object
+     * Versioning](https://cloud.google.com/storage/docs/object-versioning).
+     * </pre>
+     *
+     * <code>bool versions = 7;</code>
+     *
+     * @return The versions.
+     */
+    @java.lang.Override
+    public boolean getVersions() {
+        return versions_;
+    }
+
+    /**
+     * <pre>
+     * A previously-returned page token representing part of the larger set of
+     * results to view.
+     * </pre>
+     *
+     * <code>string page_token = 3;</code>
+     *
+     * @return The pageToken.
+     */
+    @java.lang.Override
+    public java.lang.String getPageToken() {
+        java.lang.Object ref = pageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            pageToken_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Filter results to objects whose names begin with this prefix.
+     * </pre>
+     *
+     * <code>string prefix = 6;</code>
+     *
+     * @return The prefix.
+     */
+    @java.lang.Override
+    public java.lang.String getPrefix() {
+        java.lang.Object ref = prefix_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            prefix_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
+        }
+        if (0 != pageSize_) {
+            output.writeInt32(2, pageSize_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pageToken_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(delimiter_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, delimiter_);
+        }
+        if (false != includeTrailingDelimiter_) {
+            output.writeBool(5, includeTrailingDelimiter_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, prefix_);
+        }
+        if (false != versions_) {
+            output.writeBool(7, versions_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeMessage(8, getReadMask());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lexicographicStart_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 10, lexicographicStart_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lexicographicEnd_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, lexicographicEnd_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    public static ListObjectsRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ListObjectsRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ListObjectsRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ListObjectsRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Filter results to objects whose names are lexicographically equal to or
+     * after lexicographic_start. If lexicographic_end is also set, the objects
+     * listed have names between lexicographic_start (inclusive) and
+     * lexicographic_end (exclusive).
+     * </pre>
+     *
+     * <code>string lexicographic_start = 10;</code>
+     *
+     * @return The lexicographicStart.
+     */
+    @java.lang.Override
+    public java.lang.String getLexicographicStart() {
+        java.lang.Object ref = lexicographicStart_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            lexicographicStart_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public ListObjectsRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
     }
 
     @java.lang.Override
@@ -50,9 +1528,159 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return new ListObjectsRequest();
     }
 
+    /**
+     * <pre>
+     * Mask specifying which fields to read from each result.
+     * If no mask is specified, will default to all fields except items.acl and
+     * items.owner.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    }
+
+    /**
+     * <pre>
+     * Filter results to objects whose names are lexicographically equal to or
+     * after lexicographic_start. If lexicographic_end is also set, the objects
+     * listed have names between lexicographic_start (inclusive) and
+     * lexicographic_end (exclusive).
+     * </pre>
+     *
+     * <code>string lexicographic_start = 10;</code>
+     *
+     * @return The bytes for lexicographicStart.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getLexicographicStartBytes() {
+        java.lang.Object ref = lexicographicStart_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            lexicographicStart_ = b;
+            return b;
+        }
+    }
+
+    public static com.google.protobuf.Parser<ListObjectsRequest> parser() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * A previously-returned page token representing part of the larger set of
+     * results to view.
+     * </pre>
+     *
+     * <code>string page_token = 3;</code>
+     *
+     * @return The bytes for pageToken.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPageTokenBytes() {
+        java.lang.Object ref = pageToken_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            pageToken_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * If set, returns results in a directory-like mode. `items` will contain
+     * only objects whose names, aside from the `prefix`, do not
+     * contain `delimiter`. Objects whose names, aside from the
+     * `prefix`, contain `delimiter` will have their name,
+     * truncated after the `delimiter`, returned in
+     * `prefixes`. Duplicate `prefixes` are omitted.
+     * </pre>
+     *
+     * <code>string delimiter = 4;</code>
+     *
+     * @return The bytes for delimiter.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getDelimiterBytes() {
+        java.lang.Object ref = delimiter_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            delimiter_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. Name of the bucket in which to look for objects.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for parent.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getParentBytes() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            parent_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * If set, returns results in a directory-like mode. `items` will contain
+     * only objects whose names, aside from the `prefix`, do not
+     * contain `delimiter`. Objects whose names, aside from the
+     * `prefix`, contain `delimiter` will have their name,
+     * truncated after the `delimiter`, returned in
+     * `prefixes`. Duplicate `prefixes` are omitted.
+     * </pre>
+     *
+     * <code>string delimiter = 4;</code>
+     *
+     * @return The delimiter.
+     */
+    @java.lang.Override
+    public java.lang.String getDelimiter() {
+        java.lang.Object ref = delimiter_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            delimiter_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    public static Builder newBuilder(ListObjectsRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     private ListObjectsRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -156,21 +1784,6 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListObjectsRequest.class, com.google.storage.v2.ListObjectsRequest.Builder.class);
-    }
-
-    private int bitField0_;
-
-    public static final int PARENT_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object parent_;
-
     /**
      * <pre>
      * Required. Name of the bucket in which to look for objects.
@@ -195,247 +1808,9 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         }
     }
 
-    /**
-     * <pre>
-     * Required. Name of the bucket in which to look for objects.
-     * </pre>
-     *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for parent.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getParentBytes() {
-        java.lang.Object ref = parent_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            parent_ = b;
-            return b;
-        }
+    public static ListObjectsRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
-
-    public static final int PAGE_SIZE_FIELD_NUMBER = 2;
-
-    private int pageSize_;
-
-    /**
-     * <pre>
-     * Maximum number of `items` plus `prefixes` to return
-     * in a single page of responses. As duplicate `prefixes` are
-     * omitted, fewer total results may be returned than requested. The service
-     * will use this parameter or 1,000 items, whichever is smaller.
-     * </pre>
-     *
-     * <code>int32 page_size = 2;</code>
-     *
-     * @return The pageSize.
-     */
-    @java.lang.Override
-    public int getPageSize() {
-        return pageSize_;
-    }
-
-    public static final int PAGE_TOKEN_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object pageToken_;
-
-    /**
-     * <pre>
-     * A previously-returned page token representing part of the larger set of
-     * results to view.
-     * </pre>
-     *
-     * <code>string page_token = 3;</code>
-     *
-     * @return The pageToken.
-     */
-    @java.lang.Override
-    public java.lang.String getPageToken() {
-        java.lang.Object ref = pageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            pageToken_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * A previously-returned page token representing part of the larger set of
-     * results to view.
-     * </pre>
-     *
-     * <code>string page_token = 3;</code>
-     *
-     * @return The bytes for pageToken.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPageTokenBytes() {
-        java.lang.Object ref = pageToken_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            pageToken_ = b;
-            return b;
-        }
-    }
-
-    public static final int DELIMITER_FIELD_NUMBER = 4;
-
-    private volatile java.lang.Object delimiter_;
-
-    /**
-     * <pre>
-     * If set, returns results in a directory-like mode. `items` will contain
-     * only objects whose names, aside from the `prefix`, do not
-     * contain `delimiter`. Objects whose names, aside from the
-     * `prefix`, contain `delimiter` will have their name,
-     * truncated after the `delimiter`, returned in
-     * `prefixes`. Duplicate `prefixes` are omitted.
-     * </pre>
-     *
-     * <code>string delimiter = 4;</code>
-     *
-     * @return The delimiter.
-     */
-    @java.lang.Override
-    public java.lang.String getDelimiter() {
-        java.lang.Object ref = delimiter_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            delimiter_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * If set, returns results in a directory-like mode. `items` will contain
-     * only objects whose names, aside from the `prefix`, do not
-     * contain `delimiter`. Objects whose names, aside from the
-     * `prefix`, contain `delimiter` will have their name,
-     * truncated after the `delimiter`, returned in
-     * `prefixes`. Duplicate `prefixes` are omitted.
-     * </pre>
-     *
-     * <code>string delimiter = 4;</code>
-     *
-     * @return The bytes for delimiter.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDelimiterBytes() {
-        java.lang.Object ref = delimiter_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            delimiter_ = b;
-            return b;
-        }
-    }
-
-    public static final int INCLUDE_TRAILING_DELIMITER_FIELD_NUMBER = 5;
-
-    private boolean includeTrailingDelimiter_;
-
-    /**
-     * <pre>
-     * If true, objects that end in exactly one instance of `delimiter`
-     * will have their metadata included in `items` in addition to
-     * `prefixes`.
-     * </pre>
-     *
-     * <code>bool include_trailing_delimiter = 5;</code>
-     *
-     * @return The includeTrailingDelimiter.
-     */
-    @java.lang.Override
-    public boolean getIncludeTrailingDelimiter() {
-        return includeTrailingDelimiter_;
-    }
-
-    public static final int PREFIX_FIELD_NUMBER = 6;
-
-    private volatile java.lang.Object prefix_;
-
-    /**
-     * <pre>
-     * Filter results to objects whose names begin with this prefix.
-     * </pre>
-     *
-     * <code>string prefix = 6;</code>
-     *
-     * @return The prefix.
-     */
-    @java.lang.Override
-    public java.lang.String getPrefix() {
-        java.lang.Object ref = prefix_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            prefix_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Filter results to objects whose names begin with this prefix.
-     * </pre>
-     *
-     * <code>string prefix = 6;</code>
-     *
-     * @return The bytes for prefix.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPrefixBytes() {
-        java.lang.Object ref = prefix_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            prefix_ = b;
-            return b;
-        }
-    }
-
-    public static final int VERSIONS_FIELD_NUMBER = 7;
-
-    private boolean versions_;
-
-    /**
-     * <pre>
-     * If `true`, lists all versions of an object as distinct results.
-     * For more information, see
-     * [Object
-     * Versioning](https://cloud.google.com/storage/docs/object-versioning).
-     * </pre>
-     *
-     * <code>bool versions = 7;</code>
-     *
-     * @return The versions.
-     */
-    @java.lang.Override
-    public boolean getVersions() {
-        return versions_;
-    }
-
-    public static final int READ_MASK_FIELD_NUMBER = 8;
-
-    private com.google.protobuf.FieldMask readMask_;
 
     /**
      * <pre>
@@ -454,190 +1829,48 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return (0 != (bitField0_ & 0x00000001));
     }
 
-    /**
-     * <pre>
-     * Mask specifying which fields to read from each result.
-     * If no mask is specified, will default to all fields except items.acl and
-     * items.owner.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-     *
-     * @return The readMask.
-     */
     @java.lang.Override
-    public com.google.protobuf.FieldMask getReadMask() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    /**
-     * <pre>
-     * Mask specifying which fields to read from each result.
-     * If no mask is specified, will default to all fields except items.acl and
-     * items.owner.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    public static final int LEXICOGRAPHIC_START_FIELD_NUMBER = 10;
-
-    private volatile java.lang.Object lexicographicStart_;
-
-    /**
-     * <pre>
-     * Filter results to objects whose names are lexicographically equal to or
-     * after lexicographic_start. If lexicographic_end is also set, the objects
-     * listed have names between lexicographic_start (inclusive) and
-     * lexicographic_end (exclusive).
-     * </pre>
-     *
-     * <code>string lexicographic_start = 10;</code>
-     *
-     * @return The lexicographicStart.
-     */
-    @java.lang.Override
-    public java.lang.String getLexicographicStart() {
-        java.lang.Object ref = lexicographicStart_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            lexicographicStart_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Filter results to objects whose names are lexicographically equal to or
-     * after lexicographic_start. If lexicographic_end is also set, the objects
-     * listed have names between lexicographic_start (inclusive) and
-     * lexicographic_end (exclusive).
-     * </pre>
-     *
-     * <code>string lexicographic_start = 10;</code>
-     *
-     * @return The bytes for lexicographicStart.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getLexicographicStartBytes() {
-        java.lang.Object ref = lexicographicStart_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            lexicographicStart_ = b;
-            return b;
-        }
-    }
-
-    public static final int LEXICOGRAPHIC_END_FIELD_NUMBER = 11;
-
-    private volatile java.lang.Object lexicographicEnd_;
-
-    /**
-     * <pre>
-     * Filter results to objects whose names are lexicographically before
-     * lexicographic_end. If lexicographic_start is also set, the objects listed
-     * have names between lexicographic_start (inclusive) and lexicographic_end
-     * (exclusive).
-     * </pre>
-     *
-     * <code>string lexicographic_end = 11;</code>
-     *
-     * @return The lexicographicEnd.
-     */
-    @java.lang.Override
-    public java.lang.String getLexicographicEnd() {
-        java.lang.Object ref = lexicographicEnd_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            lexicographicEnd_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Filter results to objects whose names are lexicographically before
-     * lexicographic_end. If lexicographic_start is also set, the objects listed
-     * have names between lexicographic_start (inclusive) and lexicographic_end
-     * (exclusive).
-     * </pre>
-     *
-     * <code>string lexicographic_end = 11;</code>
-     *
-     * @return The bytes for lexicographicEnd.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getLexicographicEndBytes() {
-        java.lang.Object ref = lexicographicEnd_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            lexicographicEnd_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
             return true;
-        if (0 == isInitialized)
+        }
+        if (!(obj instanceof ListObjectsRequest)) {
+            return super.equals(obj);
+        }
+        ListObjectsRequest other = (ListObjectsRequest) obj;
+        if (!getParent().equals(other.getParent()))
             return false;
-        memoizedIsInitialized = 1;
+        if (other.getPageSize() != getPageSize())
+            return false;
+        if (!getPageToken().equals(other.getPageToken()))
+            return false;
+        if (!getDelimiter().equals(other.getDelimiter()))
+            return false;
+        if (other.getIncludeTrailingDelimiter() != getIncludeTrailingDelimiter())
+            return false;
+        if (!getPrefix().equals(other.getPrefix()))
+            return false;
+        if (other.getVersions() != getVersions())
+            return false;
+        if (other.hasReadMask() != hasReadMask())
+            return false;
+        if (hasReadMask()) {
+            if (!getReadMask().equals(other.getReadMask()))
+                return false;
+        }
+        if (!getLexicographicStart().equals(other.getLexicographicStart()))
+            return false;
+        if (!getLexicographicEnd().equals(other.getLexicographicEnd()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
         return true;
     }
 
     @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
-        }
-        if (0 != pageSize_) {
-            output.writeInt32(2, pageSize_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pageToken_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pageToken_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(delimiter_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, delimiter_);
-        }
-        if (false != includeTrailingDelimiter_) {
-            output.writeBool(5, includeTrailingDelimiter_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(prefix_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, prefix_);
-        }
-        if (false != versions_) {
-            output.writeBool(7, versions_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeMessage(8, getReadMask());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lexicographicStart_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 10, lexicographicStart_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lexicographicEnd_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 11, lexicographicEnd_);
-        }
-        unknownFields.writeTo(output);
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
     }
 
     @java.lang.Override
@@ -681,42 +1914,83 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return size;
     }
 
+    public static ListObjectsRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
+    }
+
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ListObjectsRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Filter results to objects whose names are lexicographically before
+     * lexicographic_end. If lexicographic_start is also set, the objects listed
+     * have names between lexicographic_start (inclusive) and lexicographic_end
+     * (exclusive).
+     * </pre>
+     *
+     * <code>string lexicographic_end = 11;</code>
+     *
+     * @return The lexicographicEnd.
+     */
+    @java.lang.Override
+    public java.lang.String getLexicographicEnd() {
+        java.lang.Object ref = lexicographicEnd_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            lexicographicEnd_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
             return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ListObjectsRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ListObjectsRequest other = (com.google.storage.v2.ListObjectsRequest) obj;
-        if (!getParent().equals(other.getParent()))
+        if (0 == isInitialized)
             return false;
-        if (other.getPageSize() != getPageSize())
-            return false;
-        if (!getPageToken().equals(other.getPageToken()))
-            return false;
-        if (!getDelimiter().equals(other.getDelimiter()))
-            return false;
-        if (other.getIncludeTrailingDelimiter() != getIncludeTrailingDelimiter())
-            return false;
-        if (!getPrefix().equals(other.getPrefix()))
-            return false;
-        if (other.getVersions() != getVersions())
-            return false;
-        if (other.hasReadMask() != hasReadMask())
-            return false;
-        if (hasReadMask()) {
-            if (!getReadMask().equals(other.getReadMask()))
-                return false;
-        }
-        if (!getLexicographicStart().equals(other.getLexicographicStart()))
-            return false;
-        if (!getLexicographicEnd().equals(other.getLexicographicEnd()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
+        memoizedIsInitialized = 1;
         return true;
+    }
+
+    public static ListObjectsRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read from each result.
+     * If no mask is specified, will default to all fields except items.acl and
+     * items.owner.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
+     *
+     * @return The readMask.
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMask getReadMask() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ListObjectsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ListObjectsRequest.class, Builder.class);
     }
 
     @java.lang.Override
@@ -753,1330 +2027,59 @@ ListObjectsRequest extends com.google.protobuf.GeneratedMessageV3 implements Lis
         return hash;
     }
 
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
+    /**
+     * <pre>
+     * Maximum number of `items` plus `prefixes` to return
+     * in a single page of responses. As duplicate `prefixes` are
+     * omitted, fewer total results may be returned than requested. The service
+     * will use this parameter or 1,000 items, whichever is smaller.
+     * </pre>
+     *
+     * <code>int32 page_size = 2;</code>
+     *
+     * @return The pageSize.
+     */
+    @java.lang.Override
+    public int getPageSize() {
+        return pageSize_;
     }
 
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+    public static ListObjectsRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.google.storage.v2.ListObjectsRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    // Use ListObjectsRequest.newBuilder() to construct.
+    private ListObjectsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
     }
 
-    public static com.google.storage.v2.ListObjectsRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    private ListObjectsRequest() {
+        parent_ = "";
+        pageToken_ = "";
+        delimiter_ = "";
+        prefix_ = "";
+        lexicographicStart_ = "";
+        lexicographicEnd_ = "";
     }
 
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+    public static ListObjectsRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ListObjectsRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
     }
 
     /**
      * <pre>
-     * Request message for ListObjects.
+     * If true, objects that end in exactly one instance of `delimiter`
+     * will have their metadata included in `items` in addition to
+     * `prefixes`.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.ListObjectsRequest}
+     * <code>bool include_trailing_delimiter = 5;</code>
+     *
+     * @return The includeTrailingDelimiter.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ListObjectsRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ListObjectsRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ListObjectsRequest.class, com.google.storage.v2.ListObjectsRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ListObjectsRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getReadMaskFieldBuilder();
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            parent_ = "";
-            pageSize_ = 0;
-            pageToken_ = "";
-            delimiter_ = "";
-            includeTrailingDelimiter_ = false;
-            prefix_ = "";
-            versions_ = false;
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-            }
-            bitField0_ = (bitField0_ & ~0x00000001);
-            lexicographicStart_ = "";
-            lexicographicEnd_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ListObjectsRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.ListObjectsRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsRequest build() {
-            com.google.storage.v2.ListObjectsRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ListObjectsRequest buildPartial() {
-            com.google.storage.v2.ListObjectsRequest result = new com.google.storage.v2.ListObjectsRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.parent_ = parent_;
-            result.pageSize_ = pageSize_;
-            result.pageToken_ = pageToken_;
-            result.delimiter_ = delimiter_;
-            result.includeTrailingDelimiter_ = includeTrailingDelimiter_;
-            result.prefix_ = prefix_;
-            result.versions_ = versions_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                if (null != readMaskBuilder_) {
-                    result.readMask_ = readMaskBuilder_.build();
-                } else {
-                    result.readMask_ = readMask_;
-                }
-                to_bitField0_ |= 0x00000001;
-            }
-            result.lexicographicStart_ = lexicographicStart_;
-            result.lexicographicEnd_ = lexicographicEnd_;
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ListObjectsRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ListObjectsRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ListObjectsRequest other) {
-            if (com.google.storage.v2.ListObjectsRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getParent().isEmpty()) {
-                parent_ = other.parent_;
-                onChanged();
-            }
-            if (0 != other.getPageSize()) {
-                setPageSize(other.getPageSize());
-            }
-            if (!other.getPageToken().isEmpty()) {
-                pageToken_ = other.pageToken_;
-                onChanged();
-            }
-            if (!other.getDelimiter().isEmpty()) {
-                delimiter_ = other.delimiter_;
-                onChanged();
-            }
-            if (false != other.getIncludeTrailingDelimiter()) {
-                setIncludeTrailingDelimiter(other.getIncludeTrailingDelimiter());
-            }
-            if (!other.getPrefix().isEmpty()) {
-                prefix_ = other.prefix_;
-                onChanged();
-            }
-            if (false != other.getVersions()) {
-                setVersions(other.getVersions());
-            }
-            if (other.hasReadMask()) {
-                mergeReadMask(other.getReadMask());
-            }
-            if (!other.getLexicographicStart().isEmpty()) {
-                lexicographicStart_ = other.lexicographicStart_;
-                onChanged();
-            }
-            if (!other.getLexicographicEnd().isEmpty()) {
-                lexicographicEnd_ = other.lexicographicEnd_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ListObjectsRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ListObjectsRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object parent_ = "";
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to look for objects.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The parent.
-         */
-        public java.lang.String getParent() {
-            java.lang.Object ref = parent_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                parent_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to look for objects.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for parent.
-         */
-        public com.google.protobuf.ByteString getParentBytes() {
-            java.lang.Object ref = parent_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                parent_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to look for objects.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParent(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to look for objects.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearParent() {
-            parent_ = getDefaultInstance().getParent();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Name of the bucket in which to look for objects.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParentBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        private int pageSize_;
-
-        /**
-         * <pre>
-         * Maximum number of `items` plus `prefixes` to return
-         * in a single page of responses. As duplicate `prefixes` are
-         * omitted, fewer total results may be returned than requested. The service
-         * will use this parameter or 1,000 items, whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @return The pageSize.
-         */
-        @java.lang.Override
-        public int getPageSize() {
-            return pageSize_;
-        }
-
-        /**
-         * <pre>
-         * Maximum number of `items` plus `prefixes` to return
-         * in a single page of responses. As duplicate `prefixes` are
-         * omitted, fewer total results may be returned than requested. The service
-         * will use this parameter or 1,000 items, whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @param value The pageSize to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageSize(int value) {
-            pageSize_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Maximum number of `items` plus `prefixes` to return
-         * in a single page of responses. As duplicate `prefixes` are
-         * omitted, fewer total results may be returned than requested. The service
-         * will use this parameter or 1,000 items, whichever is smaller.
-         * </pre>
-         *
-         * <code>int32 page_size = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPageSize() {
-            pageSize_ = 0;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object pageToken_ = "";
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return The pageToken.
-         */
-        public java.lang.String getPageToken() {
-            java.lang.Object ref = pageToken_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                pageToken_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return The bytes for pageToken.
-         */
-        public com.google.protobuf.ByteString getPageTokenBytes() {
-            java.lang.Object ref = pageToken_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                pageToken_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @param value The pageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageToken(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            pageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPageToken() {
-            pageToken_ = getDefaultInstance().getPageToken();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A previously-returned page token representing part of the larger set of
-         * results to view.
-         * </pre>
-         *
-         * <code>string page_token = 3;</code>
-         *
-         * @param value The bytes for pageToken to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPageTokenBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            pageToken_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object delimiter_ = "";
-
-        /**
-         * <pre>
-         * If set, returns results in a directory-like mode. `items` will contain
-         * only objects whose names, aside from the `prefix`, do not
-         * contain `delimiter`. Objects whose names, aside from the
-         * `prefix`, contain `delimiter` will have their name,
-         * truncated after the `delimiter`, returned in
-         * `prefixes`. Duplicate `prefixes` are omitted.
-         * </pre>
-         *
-         * <code>string delimiter = 4;</code>
-         *
-         * @return The delimiter.
-         */
-        public java.lang.String getDelimiter() {
-            java.lang.Object ref = delimiter_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                delimiter_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * If set, returns results in a directory-like mode. `items` will contain
-         * only objects whose names, aside from the `prefix`, do not
-         * contain `delimiter`. Objects whose names, aside from the
-         * `prefix`, contain `delimiter` will have their name,
-         * truncated after the `delimiter`, returned in
-         * `prefixes`. Duplicate `prefixes` are omitted.
-         * </pre>
-         *
-         * <code>string delimiter = 4;</code>
-         *
-         * @return The bytes for delimiter.
-         */
-        public com.google.protobuf.ByteString getDelimiterBytes() {
-            java.lang.Object ref = delimiter_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                delimiter_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * If set, returns results in a directory-like mode. `items` will contain
-         * only objects whose names, aside from the `prefix`, do not
-         * contain `delimiter`. Objects whose names, aside from the
-         * `prefix`, contain `delimiter` will have their name,
-         * truncated after the `delimiter`, returned in
-         * `prefixes`. Duplicate `prefixes` are omitted.
-         * </pre>
-         *
-         * <code>string delimiter = 4;</code>
-         *
-         * @param value The delimiter to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDelimiter(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            delimiter_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If set, returns results in a directory-like mode. `items` will contain
-         * only objects whose names, aside from the `prefix`, do not
-         * contain `delimiter`. Objects whose names, aside from the
-         * `prefix`, contain `delimiter` will have their name,
-         * truncated after the `delimiter`, returned in
-         * `prefixes`. Duplicate `prefixes` are omitted.
-         * </pre>
-         *
-         * <code>string delimiter = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDelimiter() {
-            delimiter_ = getDefaultInstance().getDelimiter();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If set, returns results in a directory-like mode. `items` will contain
-         * only objects whose names, aside from the `prefix`, do not
-         * contain `delimiter`. Objects whose names, aside from the
-         * `prefix`, contain `delimiter` will have their name,
-         * truncated after the `delimiter`, returned in
-         * `prefixes`. Duplicate `prefixes` are omitted.
-         * </pre>
-         *
-         * <code>string delimiter = 4;</code>
-         *
-         * @param value The bytes for delimiter to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDelimiterBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            delimiter_ = value;
-            onChanged();
-            return this;
-        }
-
-        private boolean includeTrailingDelimiter_;
-
-        /**
-         * <pre>
-         * If true, objects that end in exactly one instance of `delimiter`
-         * will have their metadata included in `items` in addition to
-         * `prefixes`.
-         * </pre>
-         *
-         * <code>bool include_trailing_delimiter = 5;</code>
-         *
-         * @return The includeTrailingDelimiter.
-         */
-        @java.lang.Override
-        public boolean getIncludeTrailingDelimiter() {
-            return includeTrailingDelimiter_;
-        }
-
-        /**
-         * <pre>
-         * If true, objects that end in exactly one instance of `delimiter`
-         * will have their metadata included in `items` in addition to
-         * `prefixes`.
-         * </pre>
-         *
-         * <code>bool include_trailing_delimiter = 5;</code>
-         *
-         * @param value The includeTrailingDelimiter to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIncludeTrailingDelimiter(boolean value) {
-            includeTrailingDelimiter_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If true, objects that end in exactly one instance of `delimiter`
-         * will have their metadata included in `items` in addition to
-         * `prefixes`.
-         * </pre>
-         *
-         * <code>bool include_trailing_delimiter = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIncludeTrailingDelimiter() {
-            includeTrailingDelimiter_ = false;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object prefix_ = "";
-
-        /**
-         * <pre>
-         * Filter results to objects whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 6;</code>
-         *
-         * @return The prefix.
-         */
-        public java.lang.String getPrefix() {
-            java.lang.Object ref = prefix_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                prefix_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 6;</code>
-         *
-         * @return The bytes for prefix.
-         */
-        public com.google.protobuf.ByteString getPrefixBytes() {
-            java.lang.Object ref = prefix_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                prefix_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 6;</code>
-         *
-         * @param value The prefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPrefix(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            prefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPrefix() {
-            prefix_ = getDefaultInstance().getPrefix();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names begin with this prefix.
-         * </pre>
-         *
-         * <code>string prefix = 6;</code>
-         *
-         * @param value The bytes for prefix to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPrefixBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            prefix_ = value;
-            onChanged();
-            return this;
-        }
-
-        private boolean versions_;
-
-        /**
-         * <pre>
-         * If `true`, lists all versions of an object as distinct results.
-         * For more information, see
-         * [Object
-         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
-         * </pre>
-         *
-         * <code>bool versions = 7;</code>
-         *
-         * @return The versions.
-         */
-        @java.lang.Override
-        public boolean getVersions() {
-            return versions_;
-        }
-
-        /**
-         * <pre>
-         * If `true`, lists all versions of an object as distinct results.
-         * For more information, see
-         * [Object
-         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
-         * </pre>
-         *
-         * <code>bool versions = 7;</code>
-         *
-         * @param value The versions to set.
-         * @return This builder for chaining.
-         */
-        public Builder setVersions(boolean value) {
-            versions_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If `true`, lists all versions of an object as distinct results.
-         * For more information, see
-         * [Object
-         * Versioning](https://cloud.google.com/storage/docs/object-versioning).
-         * </pre>
-         *
-         * <code>bool versions = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearVersions() {
-            versions_ = false;
-            onChanged();
-            return this;
-        }
-
-        private com.google.protobuf.FieldMask readMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         *
-         * @return Whether the readMask field is set.
-         */
-        public boolean hasReadMask() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         *
-         * @return The readMask.
-         */
-        public com.google.protobuf.FieldMask getReadMask() {
-            if (null != readMaskBuilder_) {
-                return readMaskBuilder_.getMessage();
-            } else {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                readMask_ = value;
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                readMask_ = builderForValue.build();
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.mergeFrom(value);
-            } else {
-                if (!(0 != (bitField0_ & 0x00000001)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
-                    readMask_ = value;
-                } else {
-                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            bitField0_ |= 0x00000001;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public Builder clearReadMask() {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-                onChanged();
-            }
-            bitField0_ = (bitField0_ & ~0x00000001);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
-            bitField0_ |= 0x00000001;
-            onChanged();
-            return getReadMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-            if (null == readMaskBuilder_) {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            } else {
-                return readMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read from each result.
-         * If no mask is specified, will default to all fields except items.acl and
-         * items.owner.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 8;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
-            if (null == readMaskBuilder_) {
-                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
-                readMask_ = null;
-            }
-            return readMaskBuilder_;
-        }
-
-        private java.lang.Object lexicographicStart_ = "";
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically equal to or
-         * after lexicographic_start. If lexicographic_end is also set, the objects
-         * listed have names between lexicographic_start (inclusive) and
-         * lexicographic_end (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_start = 10;</code>
-         *
-         * @return The lexicographicStart.
-         */
-        public java.lang.String getLexicographicStart() {
-            java.lang.Object ref = lexicographicStart_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                lexicographicStart_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically equal to or
-         * after lexicographic_start. If lexicographic_end is also set, the objects
-         * listed have names between lexicographic_start (inclusive) and
-         * lexicographic_end (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_start = 10;</code>
-         *
-         * @return The bytes for lexicographicStart.
-         */
-        public com.google.protobuf.ByteString getLexicographicStartBytes() {
-            java.lang.Object ref = lexicographicStart_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                lexicographicStart_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically equal to or
-         * after lexicographic_start. If lexicographic_end is also set, the objects
-         * listed have names between lexicographic_start (inclusive) and
-         * lexicographic_end (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_start = 10;</code>
-         *
-         * @param value The lexicographicStart to set.
-         * @return This builder for chaining.
-         */
-        public Builder setLexicographicStart(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            lexicographicStart_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically equal to or
-         * after lexicographic_start. If lexicographic_end is also set, the objects
-         * listed have names between lexicographic_start (inclusive) and
-         * lexicographic_end (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_start = 10;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearLexicographicStart() {
-            lexicographicStart_ = getDefaultInstance().getLexicographicStart();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically equal to or
-         * after lexicographic_start. If lexicographic_end is also set, the objects
-         * listed have names between lexicographic_start (inclusive) and
-         * lexicographic_end (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_start = 10;</code>
-         *
-         * @param value The bytes for lexicographicStart to set.
-         * @return This builder for chaining.
-         */
-        public Builder setLexicographicStartBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            lexicographicStart_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object lexicographicEnd_ = "";
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically before
-         * lexicographic_end. If lexicographic_start is also set, the objects listed
-         * have names between lexicographic_start (inclusive) and lexicographic_end
-         * (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_end = 11;</code>
-         *
-         * @return The lexicographicEnd.
-         */
-        public java.lang.String getLexicographicEnd() {
-            java.lang.Object ref = lexicographicEnd_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                lexicographicEnd_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically before
-         * lexicographic_end. If lexicographic_start is also set, the objects listed
-         * have names between lexicographic_start (inclusive) and lexicographic_end
-         * (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_end = 11;</code>
-         *
-         * @return The bytes for lexicographicEnd.
-         */
-        public com.google.protobuf.ByteString getLexicographicEndBytes() {
-            java.lang.Object ref = lexicographicEnd_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                lexicographicEnd_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically before
-         * lexicographic_end. If lexicographic_start is also set, the objects listed
-         * have names between lexicographic_start (inclusive) and lexicographic_end
-         * (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_end = 11;</code>
-         *
-         * @param value The lexicographicEnd to set.
-         * @return This builder for chaining.
-         */
-        public Builder setLexicographicEnd(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            lexicographicEnd_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically before
-         * lexicographic_end. If lexicographic_start is also set, the objects listed
-         * have names between lexicographic_start (inclusive) and lexicographic_end
-         * (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_end = 11;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearLexicographicEnd() {
-            lexicographicEnd_ = getDefaultInstance().getLexicographicEnd();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Filter results to objects whose names are lexicographically before
-         * lexicographic_end. If lexicographic_start is also set, the objects listed
-         * have names between lexicographic_start (inclusive) and lexicographic_end
-         * (exclusive).
-         * </pre>
-         *
-         * <code>string lexicographic_end = 11;</code>
-         *
-         * @param value The bytes for lexicographicEnd to set.
-         * @return This builder for chaining.
-         */
-        public Builder setLexicographicEndBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            lexicographicEnd_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ListObjectsRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ListObjectsRequest)
-    private static final com.google.storage.v2.ListObjectsRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ListObjectsRequest();
-    }
-
-    public static com.google.storage.v2.ListObjectsRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ListObjectsRequest> PARSER = new com.google.protobuf.AbstractParser<ListObjectsRequest>() {
-
-        @java.lang.Override
-        public ListObjectsRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ListObjectsRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ListObjectsRequest> parser() {
-        return PARSER;
-    }
-
     @java.lang.Override
-    public com.google.protobuf.Parser<ListObjectsRequest> getParserForType() {
-        return PARSER;
+    public boolean getIncludeTrailingDelimiter() {
+        return includeTrailingDelimiter_;
     }
 
-    @java.lang.Override
-    public com.google.storage.v2.ListObjectsRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

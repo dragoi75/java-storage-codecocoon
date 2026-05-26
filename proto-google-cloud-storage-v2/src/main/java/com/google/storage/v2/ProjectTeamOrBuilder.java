@@ -23,53 +23,56 @@ public interface ProjectTeamOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ProjectTeam)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The project number.
-   * </pre>
-   *
-   * <code>string project_number = 1;</code>
-   *
-   * @return The projectNumber.
-   */
-  java.lang.String getProjectNumber();
-  /**
-   *
-   *
-   * <pre>
-   * The project number.
-   * </pre>
-   *
-   * <code>string project_number = 1;</code>
-   *
-   * @return The bytes for projectNumber.
-   */
-  com.google.protobuf.ByteString getProjectNumberBytes();
+    /**
+     *
+     *
+     * <pre>
+     * The team.
+     * </pre>
+     *
+     * <code>string team = 2;</code>
+     *
+     * @return The bytes for team.
+     */
+    com.google.protobuf.ByteString getTeamBytes();
 
-  /**
-   *
-   *
-   * <pre>
-   * The team.
-   * </pre>
-   *
-   * <code>string team = 2;</code>
-   *
-   * @return The team.
-   */
-  java.lang.String getTeam();
-  /**
-   *
-   *
-   * <pre>
-   * The team.
-   * </pre>
-   *
-   * <code>string team = 2;</code>
-   *
-   * @return The bytes for team.
-   */
-  com.google.protobuf.ByteString getTeamBytes();
+    /**
+     *
+     *
+     * <pre>
+     * The team.
+     * </pre>
+     *
+     * <code>string team = 2;</code>
+     *
+     * @return The team.
+     */
+    java.lang.String getTeam();
+
+    /**
+     *
+     *
+     * <pre>
+     * The project number.
+     * </pre>
+     *
+     * <code>string project_number = 1;</code>
+     *
+     * @return The projectNumber.
+     */
+    java.lang.String getProjectNumber();
+
+    /**
+     *
+     *
+     * <pre>
+     * The project number.
+     * </pre>
+     *
+     * <code>string project_number = 1;</code>
+     *
+     * @return The bytes for projectNumber.
+     */
+    com.google.protobuf.ByteString getProjectNumberBytes();
+
 }

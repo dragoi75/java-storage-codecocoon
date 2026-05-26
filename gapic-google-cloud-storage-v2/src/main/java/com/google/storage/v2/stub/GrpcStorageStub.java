@@ -412,491 +412,492 @@ public class GrpcStorageStub extends StorageStub {
   private final GrpcOperationsStub operationsStub;
   private final GrpcStubCallableFactory callableFactory;
 
-  public static final GrpcStorageStub create(StorageStubSettings settings) throws IOException {
-    return new GrpcStorageStub(settings, ClientContext.create(settings));
-  }
-
-  public static final GrpcStorageStub create(ClientContext clientContext) throws IOException {
-    return new GrpcStorageStub(StorageStubSettings.newBuilder().build(), clientContext);
-  }
-
-  public static final GrpcStorageStub create(
-      ClientContext clientContext, GrpcStubCallableFactory callableFactory) throws IOException {
-    return new GrpcStorageStub(
-        StorageStubSettings.newBuilder().build(), clientContext, callableFactory);
-  }
-
-  /**
-   * Constructs an instance of GrpcStorageStub, using the given settings. This is protected so that
-   * it is easy to make a subclass, but otherwise, the static factory methods should be preferred.
-   */
-  protected GrpcStorageStub(StorageStubSettings settings, ClientContext clientContext)
-      throws IOException {
-    this(settings, clientContext, new GrpcStorageCallableFactory());
-  }
-
-  /**
-   * Constructs an instance of GrpcStorageStub, using the given settings. This is protected so that
-   * it is easy to make a subclass, but otherwise, the static factory methods should be preferred.
-   */
-  protected GrpcStorageStub(
-      StorageStubSettings settings,
-      ClientContext clientContext,
-      GrpcStubCallableFactory callableFactory)
-      throws IOException {
-    this.callableFactory = callableFactory;
-    this.operationsStub = GrpcOperationsStub.create(clientContext, callableFactory);
-
-    GrpcCallSettings<DeleteBucketRequest, Empty> deleteBucketTransportSettings =
-        GrpcCallSettings.<DeleteBucketRequest, Empty>newBuilder()
-            .setMethodDescriptor(deleteBucketMethodDescriptor)
-            .build();
-    GrpcCallSettings<GetBucketRequest, Bucket> getBucketTransportSettings =
-        GrpcCallSettings.<GetBucketRequest, Bucket>newBuilder()
-            .setMethodDescriptor(getBucketMethodDescriptor)
-            .build();
-    GrpcCallSettings<CreateBucketRequest, Bucket> createBucketTransportSettings =
-        GrpcCallSettings.<CreateBucketRequest, Bucket>newBuilder()
-            .setMethodDescriptor(createBucketMethodDescriptor)
-            .build();
-    GrpcCallSettings<ListBucketsRequest, ListBucketsResponse> listBucketsTransportSettings =
-        GrpcCallSettings.<ListBucketsRequest, ListBucketsResponse>newBuilder()
-            .setMethodDescriptor(listBucketsMethodDescriptor)
-            .build();
-    GrpcCallSettings<LockBucketRetentionPolicyRequest, Bucket>
-        lockBucketRetentionPolicyTransportSettings =
-            GrpcCallSettings.<LockBucketRetentionPolicyRequest, Bucket>newBuilder()
-                .setMethodDescriptor(lockBucketRetentionPolicyMethodDescriptor)
-                .build();
-    GrpcCallSettings<GetIamPolicyRequest, Policy> getIamPolicyTransportSettings =
-        GrpcCallSettings.<GetIamPolicyRequest, Policy>newBuilder()
-            .setMethodDescriptor(getIamPolicyMethodDescriptor)
-            .build();
-    GrpcCallSettings<SetIamPolicyRequest, Policy> setIamPolicyTransportSettings =
-        GrpcCallSettings.<SetIamPolicyRequest, Policy>newBuilder()
-            .setMethodDescriptor(setIamPolicyMethodDescriptor)
-            .build();
-    GrpcCallSettings<TestIamPermissionsRequest, TestIamPermissionsResponse>
-        testIamPermissionsTransportSettings =
-            GrpcCallSettings.<TestIamPermissionsRequest, TestIamPermissionsResponse>newBuilder()
-                .setMethodDescriptor(testIamPermissionsMethodDescriptor)
-                .build();
-    GrpcCallSettings<UpdateBucketRequest, Bucket> updateBucketTransportSettings =
-        GrpcCallSettings.<UpdateBucketRequest, Bucket>newBuilder()
-            .setMethodDescriptor(updateBucketMethodDescriptor)
-            .build();
-    GrpcCallSettings<DeleteNotificationRequest, Empty> deleteNotificationTransportSettings =
-        GrpcCallSettings.<DeleteNotificationRequest, Empty>newBuilder()
-            .setMethodDescriptor(deleteNotificationMethodDescriptor)
-            .build();
-    GrpcCallSettings<GetNotificationRequest, Notification> getNotificationTransportSettings =
-        GrpcCallSettings.<GetNotificationRequest, Notification>newBuilder()
-            .setMethodDescriptor(getNotificationMethodDescriptor)
-            .build();
-    GrpcCallSettings<CreateNotificationRequest, Notification> createNotificationTransportSettings =
-        GrpcCallSettings.<CreateNotificationRequest, Notification>newBuilder()
-            .setMethodDescriptor(createNotificationMethodDescriptor)
-            .build();
-    GrpcCallSettings<ListNotificationsRequest, ListNotificationsResponse>
-        listNotificationsTransportSettings =
-            GrpcCallSettings.<ListNotificationsRequest, ListNotificationsResponse>newBuilder()
-                .setMethodDescriptor(listNotificationsMethodDescriptor)
-                .build();
-    GrpcCallSettings<ComposeObjectRequest, Object> composeObjectTransportSettings =
-        GrpcCallSettings.<ComposeObjectRequest, Object>newBuilder()
-            .setMethodDescriptor(composeObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<DeleteObjectRequest, Empty> deleteObjectTransportSettings =
-        GrpcCallSettings.<DeleteObjectRequest, Empty>newBuilder()
-            .setMethodDescriptor(deleteObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<GetObjectRequest, Object> getObjectTransportSettings =
-        GrpcCallSettings.<GetObjectRequest, Object>newBuilder()
-            .setMethodDescriptor(getObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<ReadObjectRequest, ReadObjectResponse> readObjectTransportSettings =
-        GrpcCallSettings.<ReadObjectRequest, ReadObjectResponse>newBuilder()
-            .setMethodDescriptor(readObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<UpdateObjectRequest, Object> updateObjectTransportSettings =
-        GrpcCallSettings.<UpdateObjectRequest, Object>newBuilder()
-            .setMethodDescriptor(updateObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<WriteObjectRequest, WriteObjectResponse> writeObjectTransportSettings =
-        GrpcCallSettings.<WriteObjectRequest, WriteObjectResponse>newBuilder()
-            .setMethodDescriptor(writeObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<ListObjectsRequest, ListObjectsResponse> listObjectsTransportSettings =
-        GrpcCallSettings.<ListObjectsRequest, ListObjectsResponse>newBuilder()
-            .setMethodDescriptor(listObjectsMethodDescriptor)
-            .build();
-    GrpcCallSettings<RewriteObjectRequest, RewriteResponse> rewriteObjectTransportSettings =
-        GrpcCallSettings.<RewriteObjectRequest, RewriteResponse>newBuilder()
-            .setMethodDescriptor(rewriteObjectMethodDescriptor)
-            .build();
-    GrpcCallSettings<StartResumableWriteRequest, StartResumableWriteResponse>
-        startResumableWriteTransportSettings =
-            GrpcCallSettings.<StartResumableWriteRequest, StartResumableWriteResponse>newBuilder()
-                .setMethodDescriptor(startResumableWriteMethodDescriptor)
-                .build();
-    GrpcCallSettings<QueryWriteStatusRequest, QueryWriteStatusResponse>
-        queryWriteStatusTransportSettings =
-            GrpcCallSettings.<QueryWriteStatusRequest, QueryWriteStatusResponse>newBuilder()
-                .setMethodDescriptor(queryWriteStatusMethodDescriptor)
-                .build();
-    GrpcCallSettings<GetServiceAccountRequest, ServiceAccount> getServiceAccountTransportSettings =
-        GrpcCallSettings.<GetServiceAccountRequest, ServiceAccount>newBuilder()
-            .setMethodDescriptor(getServiceAccountMethodDescriptor)
-            .build();
-    GrpcCallSettings<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyTransportSettings =
-        GrpcCallSettings.<CreateHmacKeyRequest, CreateHmacKeyResponse>newBuilder()
-            .setMethodDescriptor(createHmacKeyMethodDescriptor)
-            .build();
-    GrpcCallSettings<DeleteHmacKeyRequest, Empty> deleteHmacKeyTransportSettings =
-        GrpcCallSettings.<DeleteHmacKeyRequest, Empty>newBuilder()
-            .setMethodDescriptor(deleteHmacKeyMethodDescriptor)
-            .build();
-    GrpcCallSettings<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyTransportSettings =
-        GrpcCallSettings.<GetHmacKeyRequest, HmacKeyMetadata>newBuilder()
-            .setMethodDescriptor(getHmacKeyMethodDescriptor)
-            .build();
-    GrpcCallSettings<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysTransportSettings =
-        GrpcCallSettings.<ListHmacKeysRequest, ListHmacKeysResponse>newBuilder()
-            .setMethodDescriptor(listHmacKeysMethodDescriptor)
-            .build();
-    GrpcCallSettings<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyTransportSettings =
-        GrpcCallSettings.<UpdateHmacKeyRequest, HmacKeyMetadata>newBuilder()
-            .setMethodDescriptor(updateHmacKeyMethodDescriptor)
-            .build();
-
-    this.deleteBucketCallable =
-        callableFactory.createUnaryCallable(
-            deleteBucketTransportSettings, settings.deleteBucketSettings(), clientContext);
-    this.getBucketCallable =
-        callableFactory.createUnaryCallable(
-            getBucketTransportSettings, settings.getBucketSettings(), clientContext);
-    this.createBucketCallable =
-        callableFactory.createUnaryCallable(
-            createBucketTransportSettings, settings.createBucketSettings(), clientContext);
-    this.listBucketsCallable =
-        callableFactory.createUnaryCallable(
-            listBucketsTransportSettings, settings.listBucketsSettings(), clientContext);
-    this.listBucketsPagedCallable =
-        callableFactory.createPagedCallable(
-            listBucketsTransportSettings, settings.listBucketsSettings(), clientContext);
-    this.lockBucketRetentionPolicyCallable =
-        callableFactory.createUnaryCallable(
-            lockBucketRetentionPolicyTransportSettings,
-            settings.lockBucketRetentionPolicySettings(),
-            clientContext);
-    this.getIamPolicyCallable =
-        callableFactory.createUnaryCallable(
-            getIamPolicyTransportSettings, settings.getIamPolicySettings(), clientContext);
-    this.setIamPolicyCallable =
-        callableFactory.createUnaryCallable(
-            setIamPolicyTransportSettings, settings.setIamPolicySettings(), clientContext);
-    this.testIamPermissionsCallable =
-        callableFactory.createUnaryCallable(
-            testIamPermissionsTransportSettings,
-            settings.testIamPermissionsSettings(),
-            clientContext);
-    this.updateBucketCallable =
-        callableFactory.createUnaryCallable(
-            updateBucketTransportSettings, settings.updateBucketSettings(), clientContext);
-    this.deleteNotificationCallable =
-        callableFactory.createUnaryCallable(
-            deleteNotificationTransportSettings,
-            settings.deleteNotificationSettings(),
-            clientContext);
-    this.getNotificationCallable =
-        callableFactory.createUnaryCallable(
-            getNotificationTransportSettings, settings.getNotificationSettings(), clientContext);
-    this.createNotificationCallable =
-        callableFactory.createUnaryCallable(
-            createNotificationTransportSettings,
-            settings.createNotificationSettings(),
-            clientContext);
-    this.listNotificationsCallable =
-        callableFactory.createUnaryCallable(
-            listNotificationsTransportSettings,
-            settings.listNotificationsSettings(),
-            clientContext);
-    this.listNotificationsPagedCallable =
-        callableFactory.createPagedCallable(
-            listNotificationsTransportSettings,
-            settings.listNotificationsSettings(),
-            clientContext);
-    this.composeObjectCallable =
-        callableFactory.createUnaryCallable(
-            composeObjectTransportSettings, settings.composeObjectSettings(), clientContext);
-    this.deleteObjectCallable =
-        callableFactory.createUnaryCallable(
-            deleteObjectTransportSettings, settings.deleteObjectSettings(), clientContext);
-    this.getObjectCallable =
-        callableFactory.createUnaryCallable(
-            getObjectTransportSettings, settings.getObjectSettings(), clientContext);
-    this.readObjectCallable =
-        callableFactory.createServerStreamingCallable(
-            readObjectTransportSettings, settings.readObjectSettings(), clientContext);
-    this.updateObjectCallable =
-        callableFactory.createUnaryCallable(
-            updateObjectTransportSettings, settings.updateObjectSettings(), clientContext);
-    this.writeObjectCallable =
-        callableFactory.createClientStreamingCallable(
-            writeObjectTransportSettings, settings.writeObjectSettings(), clientContext);
-    this.listObjectsCallable =
-        callableFactory.createUnaryCallable(
-            listObjectsTransportSettings, settings.listObjectsSettings(), clientContext);
-    this.listObjectsPagedCallable =
-        callableFactory.createPagedCallable(
-            listObjectsTransportSettings, settings.listObjectsSettings(), clientContext);
-    this.rewriteObjectCallable =
-        callableFactory.createUnaryCallable(
-            rewriteObjectTransportSettings, settings.rewriteObjectSettings(), clientContext);
-    this.startResumableWriteCallable =
-        callableFactory.createUnaryCallable(
-            startResumableWriteTransportSettings,
-            settings.startResumableWriteSettings(),
-            clientContext);
-    this.queryWriteStatusCallable =
-        callableFactory.createUnaryCallable(
-            queryWriteStatusTransportSettings, settings.queryWriteStatusSettings(), clientContext);
-    this.getServiceAccountCallable =
-        callableFactory.createUnaryCallable(
-            getServiceAccountTransportSettings,
-            settings.getServiceAccountSettings(),
-            clientContext);
-    this.createHmacKeyCallable =
-        callableFactory.createUnaryCallable(
-            createHmacKeyTransportSettings, settings.createHmacKeySettings(), clientContext);
-    this.deleteHmacKeyCallable =
-        callableFactory.createUnaryCallable(
-            deleteHmacKeyTransportSettings, settings.deleteHmacKeySettings(), clientContext);
-    this.getHmacKeyCallable =
-        callableFactory.createUnaryCallable(
-            getHmacKeyTransportSettings, settings.getHmacKeySettings(), clientContext);
-    this.listHmacKeysCallable =
-        callableFactory.createUnaryCallable(
-            listHmacKeysTransportSettings, settings.listHmacKeysSettings(), clientContext);
-    this.listHmacKeysPagedCallable =
-        callableFactory.createPagedCallable(
-            listHmacKeysTransportSettings, settings.listHmacKeysSettings(), clientContext);
-    this.updateHmacKeyCallable =
-        callableFactory.createUnaryCallable(
-            updateHmacKeyTransportSettings, settings.updateHmacKeySettings(), clientContext);
-
-    this.backgroundResources =
-        new BackgroundResourceAggregation(clientContext.getBackgroundResources());
-  }
-
-  public GrpcOperationsStub getOperationsStub() {
-    return operationsStub;
-  }
-
-  @Override
-  public UnaryCallable<DeleteBucketRequest, Empty> deleteBucketCallable() {
-    return deleteBucketCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetBucketRequest, Bucket> getBucketCallable() {
-    return getBucketCallable;
-  }
-
-  @Override
-  public UnaryCallable<CreateBucketRequest, Bucket> createBucketCallable() {
-    return createBucketCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListBucketsRequest, ListBucketsResponse> listBucketsCallable() {
-    return listBucketsCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsPagedCallable() {
-    return listBucketsPagedCallable;
-  }
-
-  @Override
-  public UnaryCallable<LockBucketRetentionPolicyRequest, Bucket>
-      lockBucketRetentionPolicyCallable() {
-    return lockBucketRetentionPolicyCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetIamPolicyRequest, Policy> getIamPolicyCallable() {
-    return getIamPolicyCallable;
-  }
-
-  @Override
-  public UnaryCallable<SetIamPolicyRequest, Policy> setIamPolicyCallable() {
-    return setIamPolicyCallable;
-  }
-
-  @Override
-  public UnaryCallable<TestIamPermissionsRequest, TestIamPermissionsResponse>
-      testIamPermissionsCallable() {
-    return testIamPermissionsCallable;
-  }
-
-  @Override
-  public UnaryCallable<UpdateBucketRequest, Bucket> updateBucketCallable() {
-    return updateBucketCallable;
-  }
-
-  @Override
-  public UnaryCallable<DeleteNotificationRequest, Empty> deleteNotificationCallable() {
-    return deleteNotificationCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetNotificationRequest, Notification> getNotificationCallable() {
-    return getNotificationCallable;
-  }
-
-  @Override
-  public UnaryCallable<CreateNotificationRequest, Notification> createNotificationCallable() {
-    return createNotificationCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListNotificationsRequest, ListNotificationsResponse>
-      listNotificationsCallable() {
-    return listNotificationsCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListNotificationsRequest, ListNotificationsPagedResponse>
-      listNotificationsPagedCallable() {
-    return listNotificationsPagedCallable;
-  }
-
-  @Override
-  public UnaryCallable<ComposeObjectRequest, Object> composeObjectCallable() {
-    return composeObjectCallable;
-  }
-
-  @Override
-  public UnaryCallable<DeleteObjectRequest, Empty> deleteObjectCallable() {
-    return deleteObjectCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetObjectRequest, Object> getObjectCallable() {
-    return getObjectCallable;
-  }
-
-  @Override
-  public ServerStreamingCallable<ReadObjectRequest, ReadObjectResponse> readObjectCallable() {
-    return readObjectCallable;
-  }
-
-  @Override
-  public UnaryCallable<UpdateObjectRequest, Object> updateObjectCallable() {
-    return updateObjectCallable;
-  }
-
-  @Override
-  public ClientStreamingCallable<WriteObjectRequest, WriteObjectResponse> writeObjectCallable() {
-    return writeObjectCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListObjectsRequest, ListObjectsResponse> listObjectsCallable() {
-    return listObjectsCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsPagedCallable() {
-    return listObjectsPagedCallable;
-  }
-
-  @Override
-  public UnaryCallable<RewriteObjectRequest, RewriteResponse> rewriteObjectCallable() {
-    return rewriteObjectCallable;
-  }
-
-  @Override
-  public UnaryCallable<StartResumableWriteRequest, StartResumableWriteResponse>
-      startResumableWriteCallable() {
-    return startResumableWriteCallable;
-  }
-
-  @Override
-  public UnaryCallable<QueryWriteStatusRequest, QueryWriteStatusResponse>
-      queryWriteStatusCallable() {
-    return queryWriteStatusCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetServiceAccountRequest, ServiceAccount> getServiceAccountCallable() {
-    return getServiceAccountCallable;
-  }
-
-  @Override
-  public UnaryCallable<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyCallable() {
-    return createHmacKeyCallable;
-  }
-
-  @Override
-  public UnaryCallable<DeleteHmacKeyRequest, Empty> deleteHmacKeyCallable() {
-    return deleteHmacKeyCallable;
-  }
-
-  @Override
-  public UnaryCallable<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyCallable() {
-    return getHmacKeyCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysCallable() {
-    return listHmacKeysCallable;
-  }
-
-  @Override
-  public UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacKeysPagedCallable() {
-    return listHmacKeysPagedCallable;
-  }
-
-  @Override
-  public UnaryCallable<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyCallable() {
-    return updateHmacKeyCallable;
-  }
-
-  @Override
-  public final void close() {
-    try {
-      backgroundResources.close();
-    } catch (RuntimeException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new IllegalStateException("Failed to close resource", e);
+    @Override
+    public boolean isShutdown() {
+      return backgroundResources.isShutdown();
     }
-  }
 
-  @Override
-  public void shutdown() {
-    backgroundResources.shutdown();
-  }
+    @Override
+    public UnaryCallable<GetBucketRequest, Bucket> getBucketCallable() {
+      return getBucketCallable;
+    }
 
-  @Override
-  public boolean isShutdown() {
-    return backgroundResources.isShutdown();
-  }
+    @Override
+    public UnaryCallable<RewriteObjectRequest, RewriteResponse> rewriteObjectCallable() {
+      return rewriteObjectCallable;
+    }
 
-  @Override
-  public boolean isTerminated() {
-    return backgroundResources.isTerminated();
-  }
+    @Override
+    public UnaryCallable<UpdateBucketRequest, Bucket> updateBucketCallable() {
+      return updateBucketCallable;
+    }
 
-  @Override
-  public void shutdownNow() {
-    backgroundResources.shutdownNow();
-  }
+    @Override
+    public boolean isTerminated() {
+      return backgroundResources.isTerminated();
+    }
 
-  @Override
-  public boolean awaitTermination(long duration, TimeUnit unit) throws InterruptedException {
-    return backgroundResources.awaitTermination(duration, unit);
-  }
+    public static final GrpcStorageStub create(
+        ClientContext clientContext, GrpcStubCallableFactory callableFactory) throws IOException {
+      return new GrpcStorageStub(
+          StorageStubSettings.newBuilder().build(), clientContext, callableFactory);
+    }
+
+    @Override
+    public UnaryCallable<QueryWriteStatusRequest, QueryWriteStatusResponse>
+        queryWriteStatusCallable() {
+      return queryWriteStatusCallable;
+    }
+
+    public static final GrpcStorageStub create(StorageStubSettings settings) throws IOException {
+      return new GrpcStorageStub(settings, ClientContext.create(settings));
+    }
+
+    @Override
+    public void shutdownNow() {
+      backgroundResources.shutdownNow();
+    }
+
+    @Override
+    public UnaryCallable<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyCallable() {
+      return updateHmacKeyCallable;
+    }
+
+    @Override
+    public void shutdown() {
+      backgroundResources.shutdown();
+    }
+
+    @Override
+    public ServerStreamingCallable<ReadObjectRequest, ReadObjectResponse> readObjectCallable() {
+      return readObjectCallable;
+    }
+
+    @Override
+    public UnaryCallable<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyCallable() {
+      return createHmacKeyCallable;
+    }
+
+    @Override
+    public UnaryCallable<DeleteHmacKeyRequest, Empty> deleteHmacKeyCallable() {
+      return deleteHmacKeyCallable;
+    }
+
+    @Override
+    public UnaryCallable<GetObjectRequest, Object> getObjectCallable() {
+      return getObjectCallable;
+    }
+
+    @Override
+    public ClientStreamingCallable<WriteObjectRequest, WriteObjectResponse> writeObjectCallable() {
+      return writeObjectCallable;
+    }
+
+    @Override
+    public UnaryCallable<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyCallable() {
+      return getHmacKeyCallable;
+    }
+
+    @Override
+    public final void close() {
+      try {
+        backgroundResources.close();
+      } catch (RuntimeException e) {
+        throw e;
+      } catch (Exception e) {
+        throw new IllegalStateException("Failed to close resource", e);
+      }
+    }
+
+    @Override
+    public boolean awaitTermination(long duration, TimeUnit unit) throws InterruptedException {
+      return backgroundResources.awaitTermination(duration, unit);
+    }
+
+    @Override
+    public UnaryCallable<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysCallable() {
+      return listHmacKeysCallable;
+    }
+
+    @Override
+    public UnaryCallable<DeleteNotificationRequest, Empty> deleteNotificationCallable() {
+      return deleteNotificationCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsPagedCallable() {
+      return listBucketsPagedCallable;
+    }
+
+    public static final GrpcStorageStub create(ClientContext clientContext) throws IOException {
+      return new GrpcStorageStub(StorageStubSettings.newBuilder().build(), clientContext);
+    }
+
+    @Override
+    public UnaryCallable<GetIamPolicyRequest, Policy> getIamPolicyCallable() {
+      return getIamPolicyCallable;
+    }
+
+    @Override
+    public UnaryCallable<CreateNotificationRequest, Notification> createNotificationCallable() {
+      return createNotificationCallable;
+    }
+
+    @Override
+    public UnaryCallable<StartResumableWriteRequest, StartResumableWriteResponse>
+        startResumableWriteCallable() {
+      return startResumableWriteCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListBucketsRequest, ListBucketsResponse> listBucketsCallable() {
+      return listBucketsCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListObjectsRequest, ListObjectsResponse> listObjectsCallable() {
+      return listObjectsCallable;
+    }
+
+    @Override
+    public UnaryCallable<GetServiceAccountRequest, ServiceAccount> getServiceAccountCallable() {
+      return getServiceAccountCallable;
+    }
+
+    @Override
+    public UnaryCallable<CreateBucketRequest, Bucket> createBucketCallable() {
+      return createBucketCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacKeysPagedCallable() {
+      return listHmacKeysPagedCallable;
+    }
+
+    public GrpcOperationsStub getOperationsStub() {
+      return operationsStub;
+    }
+
+    @Override
+    public UnaryCallable<UpdateObjectRequest, Object> updateObjectCallable() {
+      return updateObjectCallable;
+    }
+
+    @Override
+    public UnaryCallable<TestIamPermissionsRequest, TestIamPermissionsResponse>
+        testIamPermissionsCallable() {
+      return testIamPermissionsCallable;
+    }
+
+    @Override
+    public UnaryCallable<SetIamPolicyRequest, Policy> setIamPolicyCallable() {
+      return setIamPolicyCallable;
+    }
+
+    @Override
+    public UnaryCallable<DeleteBucketRequest, Empty> deleteBucketCallable() {
+      return deleteBucketCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListNotificationsRequest, ListNotificationsResponse>
+        listNotificationsCallable() {
+      return listNotificationsCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListNotificationsRequest, ListNotificationsPagedResponse>
+        listNotificationsPagedCallable() {
+      return listNotificationsPagedCallable;
+    }
+
+    @Override
+    public UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsPagedCallable() {
+      return listObjectsPagedCallable;
+    }
+
+    @Override
+    public UnaryCallable<ComposeObjectRequest, Object> composeObjectCallable() {
+      return composeObjectCallable;
+    }
+
+    /**
+     * Constructs an instance of GrpcStorageStub, using the given settings. This is protected so that
+     * it is easy to make a subclass, but otherwise, the static factory methods should be preferred.
+     */
+    protected GrpcStorageStub(StorageStubSettings settings, ClientContext clientContext)
+        throws IOException {
+      this(settings, clientContext, new GrpcStorageCallableFactory());
+    }
+
+    @Override
+    public UnaryCallable<DeleteObjectRequest, Empty> deleteObjectCallable() {
+      return deleteObjectCallable;
+    }
+
+    /**
+     * Constructs an instance of GrpcStorageStub, using the given settings. This is protected so that
+     * it is easy to make a subclass, but otherwise, the static factory methods should be preferred.
+     */
+    protected GrpcStorageStub(
+        StorageStubSettings settings,
+        ClientContext clientContext,
+        GrpcStubCallableFactory callableFactory)
+        throws IOException {
+      this.callableFactory = callableFactory;
+      this.operationsStub = GrpcOperationsStub.create(clientContext, callableFactory);
+
+      GrpcCallSettings<DeleteBucketRequest, Empty> deleteBucketTransportSettings =
+          GrpcCallSettings.<DeleteBucketRequest, Empty>newBuilder()
+              .setMethodDescriptor(deleteBucketMethodDescriptor)
+              .build();
+      GrpcCallSettings<GetBucketRequest, Bucket> getBucketTransportSettings =
+          GrpcCallSettings.<GetBucketRequest, Bucket>newBuilder()
+              .setMethodDescriptor(getBucketMethodDescriptor)
+              .build();
+      GrpcCallSettings<CreateBucketRequest, Bucket> createBucketTransportSettings =
+          GrpcCallSettings.<CreateBucketRequest, Bucket>newBuilder()
+              .setMethodDescriptor(createBucketMethodDescriptor)
+              .build();
+      GrpcCallSettings<ListBucketsRequest, ListBucketsResponse> listBucketsTransportSettings =
+          GrpcCallSettings.<ListBucketsRequest, ListBucketsResponse>newBuilder()
+              .setMethodDescriptor(listBucketsMethodDescriptor)
+              .build();
+      GrpcCallSettings<LockBucketRetentionPolicyRequest, Bucket>
+          lockBucketRetentionPolicyTransportSettings =
+              GrpcCallSettings.<LockBucketRetentionPolicyRequest, Bucket>newBuilder()
+                  .setMethodDescriptor(lockBucketRetentionPolicyMethodDescriptor)
+                  .build();
+      GrpcCallSettings<GetIamPolicyRequest, Policy> getIamPolicyTransportSettings =
+          GrpcCallSettings.<GetIamPolicyRequest, Policy>newBuilder()
+              .setMethodDescriptor(getIamPolicyMethodDescriptor)
+              .build();
+      GrpcCallSettings<SetIamPolicyRequest, Policy> setIamPolicyTransportSettings =
+          GrpcCallSettings.<SetIamPolicyRequest, Policy>newBuilder()
+              .setMethodDescriptor(setIamPolicyMethodDescriptor)
+              .build();
+      GrpcCallSettings<TestIamPermissionsRequest, TestIamPermissionsResponse>
+          testIamPermissionsTransportSettings =
+              GrpcCallSettings.<TestIamPermissionsRequest, TestIamPermissionsResponse>newBuilder()
+                  .setMethodDescriptor(testIamPermissionsMethodDescriptor)
+                  .build();
+      GrpcCallSettings<UpdateBucketRequest, Bucket> updateBucketTransportSettings =
+          GrpcCallSettings.<UpdateBucketRequest, Bucket>newBuilder()
+              .setMethodDescriptor(updateBucketMethodDescriptor)
+              .build();
+      GrpcCallSettings<DeleteNotificationRequest, Empty> deleteNotificationTransportSettings =
+          GrpcCallSettings.<DeleteNotificationRequest, Empty>newBuilder()
+              .setMethodDescriptor(deleteNotificationMethodDescriptor)
+              .build();
+      GrpcCallSettings<GetNotificationRequest, Notification> getNotificationTransportSettings =
+          GrpcCallSettings.<GetNotificationRequest, Notification>newBuilder()
+              .setMethodDescriptor(getNotificationMethodDescriptor)
+              .build();
+      GrpcCallSettings<CreateNotificationRequest, Notification> createNotificationTransportSettings =
+          GrpcCallSettings.<CreateNotificationRequest, Notification>newBuilder()
+              .setMethodDescriptor(createNotificationMethodDescriptor)
+              .build();
+      GrpcCallSettings<ListNotificationsRequest, ListNotificationsResponse>
+          listNotificationsTransportSettings =
+              GrpcCallSettings.<ListNotificationsRequest, ListNotificationsResponse>newBuilder()
+                  .setMethodDescriptor(listNotificationsMethodDescriptor)
+                  .build();
+      GrpcCallSettings<ComposeObjectRequest, Object> composeObjectTransportSettings =
+          GrpcCallSettings.<ComposeObjectRequest, Object>newBuilder()
+              .setMethodDescriptor(composeObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<DeleteObjectRequest, Empty> deleteObjectTransportSettings =
+          GrpcCallSettings.<DeleteObjectRequest, Empty>newBuilder()
+              .setMethodDescriptor(deleteObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<GetObjectRequest, Object> getObjectTransportSettings =
+          GrpcCallSettings.<GetObjectRequest, Object>newBuilder()
+              .setMethodDescriptor(getObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<ReadObjectRequest, ReadObjectResponse> readObjectTransportSettings =
+          GrpcCallSettings.<ReadObjectRequest, ReadObjectResponse>newBuilder()
+              .setMethodDescriptor(readObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<UpdateObjectRequest, Object> updateObjectTransportSettings =
+          GrpcCallSettings.<UpdateObjectRequest, Object>newBuilder()
+              .setMethodDescriptor(updateObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<WriteObjectRequest, WriteObjectResponse> writeObjectTransportSettings =
+          GrpcCallSettings.<WriteObjectRequest, WriteObjectResponse>newBuilder()
+              .setMethodDescriptor(writeObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<ListObjectsRequest, ListObjectsResponse> listObjectsTransportSettings =
+          GrpcCallSettings.<ListObjectsRequest, ListObjectsResponse>newBuilder()
+              .setMethodDescriptor(listObjectsMethodDescriptor)
+              .build();
+      GrpcCallSettings<RewriteObjectRequest, RewriteResponse> rewriteObjectTransportSettings =
+          GrpcCallSettings.<RewriteObjectRequest, RewriteResponse>newBuilder()
+              .setMethodDescriptor(rewriteObjectMethodDescriptor)
+              .build();
+      GrpcCallSettings<StartResumableWriteRequest, StartResumableWriteResponse>
+          startResumableWriteTransportSettings =
+              GrpcCallSettings.<StartResumableWriteRequest, StartResumableWriteResponse>newBuilder()
+                  .setMethodDescriptor(startResumableWriteMethodDescriptor)
+                  .build();
+      GrpcCallSettings<QueryWriteStatusRequest, QueryWriteStatusResponse>
+          queryWriteStatusTransportSettings =
+              GrpcCallSettings.<QueryWriteStatusRequest, QueryWriteStatusResponse>newBuilder()
+                  .setMethodDescriptor(queryWriteStatusMethodDescriptor)
+                  .build();
+      GrpcCallSettings<GetServiceAccountRequest, ServiceAccount> getServiceAccountTransportSettings =
+          GrpcCallSettings.<GetServiceAccountRequest, ServiceAccount>newBuilder()
+              .setMethodDescriptor(getServiceAccountMethodDescriptor)
+              .build();
+      GrpcCallSettings<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyTransportSettings =
+          GrpcCallSettings.<CreateHmacKeyRequest, CreateHmacKeyResponse>newBuilder()
+              .setMethodDescriptor(createHmacKeyMethodDescriptor)
+              .build();
+      GrpcCallSettings<DeleteHmacKeyRequest, Empty> deleteHmacKeyTransportSettings =
+          GrpcCallSettings.<DeleteHmacKeyRequest, Empty>newBuilder()
+              .setMethodDescriptor(deleteHmacKeyMethodDescriptor)
+              .build();
+      GrpcCallSettings<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyTransportSettings =
+          GrpcCallSettings.<GetHmacKeyRequest, HmacKeyMetadata>newBuilder()
+              .setMethodDescriptor(getHmacKeyMethodDescriptor)
+              .build();
+      GrpcCallSettings<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysTransportSettings =
+          GrpcCallSettings.<ListHmacKeysRequest, ListHmacKeysResponse>newBuilder()
+              .setMethodDescriptor(listHmacKeysMethodDescriptor)
+              .build();
+      GrpcCallSettings<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyTransportSettings =
+          GrpcCallSettings.<UpdateHmacKeyRequest, HmacKeyMetadata>newBuilder()
+              .setMethodDescriptor(updateHmacKeyMethodDescriptor)
+              .build();
+
+      this.deleteBucketCallable =
+          callableFactory.createUnaryCallable(
+              deleteBucketTransportSettings, settings.deleteBucketSettings(), clientContext);
+      this.getBucketCallable =
+          callableFactory.createUnaryCallable(
+              getBucketTransportSettings, settings.getBucketSettings(), clientContext);
+      this.createBucketCallable =
+          callableFactory.createUnaryCallable(
+              createBucketTransportSettings, settings.createBucketSettings(), clientContext);
+      this.listBucketsCallable =
+          callableFactory.createUnaryCallable(
+              listBucketsTransportSettings, settings.listBucketsSettings(), clientContext);
+      this.listBucketsPagedCallable =
+          callableFactory.createPagedCallable(
+              listBucketsTransportSettings, settings.listBucketsSettings(), clientContext);
+      this.lockBucketRetentionPolicyCallable =
+          callableFactory.createUnaryCallable(
+              lockBucketRetentionPolicyTransportSettings,
+              settings.lockBucketRetentionPolicySettings(),
+              clientContext);
+      this.getIamPolicyCallable =
+          callableFactory.createUnaryCallable(
+              getIamPolicyTransportSettings, settings.getIamPolicySettings(), clientContext);
+      this.setIamPolicyCallable =
+          callableFactory.createUnaryCallable(
+              setIamPolicyTransportSettings, settings.setIamPolicySettings(), clientContext);
+      this.testIamPermissionsCallable =
+          callableFactory.createUnaryCallable(
+              testIamPermissionsTransportSettings,
+              settings.testIamPermissionsSettings(),
+              clientContext);
+      this.updateBucketCallable =
+          callableFactory.createUnaryCallable(
+              updateBucketTransportSettings, settings.updateBucketSettings(), clientContext);
+      this.deleteNotificationCallable =
+          callableFactory.createUnaryCallable(
+              deleteNotificationTransportSettings,
+              settings.deleteNotificationSettings(),
+              clientContext);
+      this.getNotificationCallable =
+          callableFactory.createUnaryCallable(
+              getNotificationTransportSettings, settings.getNotificationSettings(), clientContext);
+      this.createNotificationCallable =
+          callableFactory.createUnaryCallable(
+              createNotificationTransportSettings,
+              settings.createNotificationSettings(),
+              clientContext);
+      this.listNotificationsCallable =
+          callableFactory.createUnaryCallable(
+              listNotificationsTransportSettings,
+              settings.listNotificationsSettings(),
+              clientContext);
+      this.listNotificationsPagedCallable =
+          callableFactory.createPagedCallable(
+              listNotificationsTransportSettings,
+              settings.listNotificationsSettings(),
+              clientContext);
+      this.composeObjectCallable =
+          callableFactory.createUnaryCallable(
+              composeObjectTransportSettings, settings.composeObjectSettings(), clientContext);
+      this.deleteObjectCallable =
+          callableFactory.createUnaryCallable(
+              deleteObjectTransportSettings, settings.deleteObjectSettings(), clientContext);
+      this.getObjectCallable =
+          callableFactory.createUnaryCallable(
+              getObjectTransportSettings, settings.getObjectSettings(), clientContext);
+      this.readObjectCallable =
+          callableFactory.createServerStreamingCallable(
+              readObjectTransportSettings, settings.readObjectSettings(), clientContext);
+      this.updateObjectCallable =
+          callableFactory.createUnaryCallable(
+              updateObjectTransportSettings, settings.updateObjectSettings(), clientContext);
+      this.writeObjectCallable =
+          callableFactory.createClientStreamingCallable(
+              writeObjectTransportSettings, settings.writeObjectSettings(), clientContext);
+      this.listObjectsCallable =
+          callableFactory.createUnaryCallable(
+              listObjectsTransportSettings, settings.listObjectsSettings(), clientContext);
+      this.listObjectsPagedCallable =
+          callableFactory.createPagedCallable(
+              listObjectsTransportSettings, settings.listObjectsSettings(), clientContext);
+      this.rewriteObjectCallable =
+          callableFactory.createUnaryCallable(
+              rewriteObjectTransportSettings, settings.rewriteObjectSettings(), clientContext);
+      this.startResumableWriteCallable =
+          callableFactory.createUnaryCallable(
+              startResumableWriteTransportSettings,
+              settings.startResumableWriteSettings(),
+              clientContext);
+      this.queryWriteStatusCallable =
+          callableFactory.createUnaryCallable(
+              queryWriteStatusTransportSettings, settings.queryWriteStatusSettings(), clientContext);
+      this.getServiceAccountCallable =
+          callableFactory.createUnaryCallable(
+              getServiceAccountTransportSettings,
+              settings.getServiceAccountSettings(),
+              clientContext);
+      this.createHmacKeyCallable =
+          callableFactory.createUnaryCallable(
+              createHmacKeyTransportSettings, settings.createHmacKeySettings(), clientContext);
+      this.deleteHmacKeyCallable =
+          callableFactory.createUnaryCallable(
+              deleteHmacKeyTransportSettings, settings.deleteHmacKeySettings(), clientContext);
+      this.getHmacKeyCallable =
+          callableFactory.createUnaryCallable(
+              getHmacKeyTransportSettings, settings.getHmacKeySettings(), clientContext);
+      this.listHmacKeysCallable =
+          callableFactory.createUnaryCallable(
+              listHmacKeysTransportSettings, settings.listHmacKeysSettings(), clientContext);
+      this.listHmacKeysPagedCallable =
+          callableFactory.createPagedCallable(
+              listHmacKeysTransportSettings, settings.listHmacKeysSettings(), clientContext);
+      this.updateHmacKeyCallable =
+          callableFactory.createUnaryCallable(
+              updateHmacKeyTransportSettings, settings.updateHmacKeySettings(), clientContext);
+
+      this.backgroundResources =
+          new BackgroundResourceAggregation(clientContext.getBackgroundResources());
+    }
+
+    @Override
+    public UnaryCallable<LockBucketRetentionPolicyRequest, Bucket>
+        lockBucketRetentionPolicyCallable() {
+      return lockBucketRetentionPolicyCallable;
+    }
+
+    @Override
+    public UnaryCallable<GetNotificationRequest, Notification> getNotificationCallable() {
+      return getNotificationCallable;
+    }
+
 }

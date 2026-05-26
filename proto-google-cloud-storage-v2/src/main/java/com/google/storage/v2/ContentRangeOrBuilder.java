@@ -23,42 +23,43 @@ public interface ContentRangeOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.ContentRange)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * The starting offset of the object data.
-   * </pre>
-   *
-   * <code>int64 start = 1;</code>
-   *
-   * @return The start.
-   */
-  long getStart();
+    /**
+     *
+     *
+     * <pre>
+     * The ending offset of the object data.
+     * </pre>
+     *
+     * <code>int64 end = 2;</code>
+     *
+     * @return The end.
+     */
+    long getEnd();
 
-  /**
-   *
-   *
-   * <pre>
-   * The ending offset of the object data.
-   * </pre>
-   *
-   * <code>int64 end = 2;</code>
-   *
-   * @return The end.
-   */
-  long getEnd();
+    /**
+     *
+     *
+     * <pre>
+     * The complete length of the object data.
+     * </pre>
+     *
+     * <code>int64 complete_length = 3;</code>
+     *
+     * @return The completeLength.
+     */
+    long getCompleteLength();
 
-  /**
-   *
-   *
-   * <pre>
-   * The complete length of the object data.
-   * </pre>
-   *
-   * <code>int64 complete_length = 3;</code>
-   *
-   * @return The completeLength.
-   */
-  long getCompleteLength();
+    /**
+     *
+     *
+     * <pre>
+     * The starting offset of the object data.
+     * </pre>
+     *
+     * <code>int64 start = 1;</code>
+     *
+     * @return The start.
+     */
+    long getStart();
+
 }

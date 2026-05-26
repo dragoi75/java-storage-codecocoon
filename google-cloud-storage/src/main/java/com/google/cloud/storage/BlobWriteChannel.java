@@ -45,33 +45,89 @@ class BlobWriteChannel extends BaseWriteChannel<StorageClientOptions, BlobMetada
     // Contains metadata of the updated object or null if upload is not completed.
     private StorageObject storageObject;
 
-    BlobWriteChannel(StorageClientOptions storageOptions, BlobMetadata blobInfo, String uploadId, ResultRetryAlgorithm<?> algorithmForWrite) {
-        super(storageOptions, blobInfo, uploadId);
-        this.algorithmForWrite = algorithmForWrite;
+    static final class Builder {
+
+        private StorageClientOptions storageOptions;
+
+        private BlobMetadata blobInfo;
+
+        private Supplier<@NonNull String> uploadIdSupplier;
+
+        private ResultRetryAlgorithm<?> algorithmForWrite;
+
+        BlobWriteChannel build() {
+            String uploadId = requireNonNull(uploadIdSupplier, "uploadId must be non null").get();
+            return new BlobWriteChannel(requireNonNull(storageOptions, "storageOptions must be non null"), blobInfo, requireNonNull(uploadId, "uploadId must be non null"), requireNonNull(algorithmForWrite, "algorithmForWrite must be non null"));
+        }
+
+        public Builder setAlgorithmForWrite(ResultRetryAlgorithm<?> algorithmForWrite) {
+            this.algorithmForWrite = algorithmForWrite;
+            return this;
+        }
+
+        public Builder setUploadIdSupplier(Supplier<String> uploadIdSupplier) {
+            this.uploadIdSupplier = uploadIdSupplier;
+            return this;
+        }
+
+        public Builder setStorageOptions(StorageClientOptions storageOptions) {
+            this.storageOptions = storageOptions;
+            return this;
+        }
+
+        public Builder setBlobInfo(BlobMetadata blobInfo) {
+            this.blobInfo = blobInfo;
+            return this;
+        }
+
     }
 
-    boolean isRetrying() {
-        return retrying;
-    }
+    static class StateImpl extends BaseWriteChannel.BaseState<StorageClientOptions, BlobMetadata> {
 
-    StorageObject getStorageObject() {
-        return storageObject;
-    }
+        private static final long serialVersionUID = -9028324143780151286L;
 
-    private StorageObject transmitChunk(int chunkOffset, int chunkLength, long position, boolean last) {
-        return getOptions().getStorageRpcV1().writeWithResponse(getUploadId(), getBuffer(), chunkOffset, position, chunkLength, last);
-    }
+        private final ResultRetryAlgorithm<?> algorithmForWrite;
 
-    private long getRemotePosition() {
-        return getOptions().getStorageRpcV1().getCurrentUploadOffset(getUploadId());
-    }
+        static class Builder extends BaseWriteChannel.BaseState.Builder<StorageClientOptions, BlobMetadata> {
 
-    private static StorageServiceException unrecoverableState(String uploadId, int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last) {
-        return unrecoverableState(uploadId, chunkOffset, chunkLength, localPosition, remotePosition, last, "Unable to recover in upload.\nThis may be a symptom of multiple clients uploading to the same upload session.");
-    }
+            private ResultRetryAlgorithm<?> algorithmForWrite;
 
-    private static StorageServiceException errorResolvingMetadataLastChunk(String uploadId, int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last) {
-        return unrecoverableState(uploadId, chunkOffset, chunkLength, localPosition, remotePosition, last, "Unable to load object metadata to determine if last chunk was successfully written");
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new StateImpl(this);
+            }
+
+            private Builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
+                super(options, blobInfo, uploadId);
+            }
+
+            public Builder setResultRetryAlgorithm(ResultRetryAlgorithm<?> algorithmForWrite) {
+                this.algorithmForWrite = algorithmForWrite;
+                return this;
+            }
+
+        }
+
+        @Override
+        public WriteChannel restore() {
+            try {
+                BlobWriteChannel channel = BlobWriteChannel.newBuilder().setStorageOptions(serviceOptions).setBlobInfo(entity).setUploadIdSupplier(() -> uploadId).setAlgorithmForWrite(algorithmForWrite).build();
+                channel.restore(this);
+                return channel;
+            } catch (Exception e) {
+                throw StorageServiceException.coalesceException(e);
+            }
+        }
+
+        StateImpl(Builder builder) {
+            super(builder);
+            this.algorithmForWrite = builder.algorithmForWrite;
+        }
+
+        static Builder builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
+            return new Builder(options, blobInfo, uploadId);
+        }
+
     }
 
     private static StorageServiceException unrecoverableState(String uploadId, int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last, String message) {
@@ -216,89 +272,37 @@ class BlobWriteChannel extends BaseWriteChannel<StorageClientOptions, BlobMetada
         return StateImpl.builder(getOptions(), getEntity(), getUploadId()).setResultRetryAlgorithm(algorithmForWrite);
     }
 
+    private StorageObject transmitChunk(int chunkOffset, int chunkLength, long position, boolean last) {
+        return getOptions().getStorageRpcV1().writeWithResponse(getUploadId(), getBuffer(), chunkOffset, position, chunkLength, last);
+    }
+
+    BlobWriteChannel(StorageClientOptions storageOptions, BlobMetadata blobInfo, String uploadId, ResultRetryAlgorithm<?> algorithmForWrite) {
+        super(storageOptions, blobInfo, uploadId);
+        this.algorithmForWrite = algorithmForWrite;
+    }
+
     static Builder newBuilder() {
         return new Builder();
     }
 
-    static final class Builder {
-
-        private StorageClientOptions storageOptions;
-
-        private BlobMetadata blobInfo;
-
-        private Supplier<@NonNull String> uploadIdSupplier;
-
-        private ResultRetryAlgorithm<?> algorithmForWrite;
-
-        public Builder setStorageOptions(StorageClientOptions storageOptions) {
-            this.storageOptions = storageOptions;
-            return this;
-        }
-
-        public Builder setBlobInfo(BlobMetadata blobInfo) {
-            this.blobInfo = blobInfo;
-            return this;
-        }
-
-        public Builder setUploadIdSupplier(Supplier<String> uploadIdSupplier) {
-            this.uploadIdSupplier = uploadIdSupplier;
-            return this;
-        }
-
-        public Builder setAlgorithmForWrite(ResultRetryAlgorithm<?> algorithmForWrite) {
-            this.algorithmForWrite = algorithmForWrite;
-            return this;
-        }
-
-        BlobWriteChannel build() {
-            String uploadId = requireNonNull(uploadIdSupplier, "uploadId must be non null").get();
-            return new BlobWriteChannel(requireNonNull(storageOptions, "storageOptions must be non null"), blobInfo, requireNonNull(uploadId, "uploadId must be non null"), requireNonNull(algorithmForWrite, "algorithmForWrite must be non null"));
-        }
+    StorageObject getStorageObject() {
+        return storageObject;
     }
 
-    static class StateImpl extends BaseWriteChannel.BaseState<StorageClientOptions, BlobMetadata> {
-
-        private static final long serialVersionUID = -9028324143780151286L;
-
-        private final ResultRetryAlgorithm<?> algorithmForWrite;
-
-        StateImpl(Builder builder) {
-            super(builder);
-            this.algorithmForWrite = builder.algorithmForWrite;
-        }
-
-        static class Builder extends BaseWriteChannel.BaseState.Builder<StorageClientOptions, BlobMetadata> {
-
-            private ResultRetryAlgorithm<?> algorithmForWrite;
-
-            private Builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
-                super(options, blobInfo, uploadId);
-            }
-
-            public Builder setResultRetryAlgorithm(ResultRetryAlgorithm<?> algorithmForWrite) {
-                this.algorithmForWrite = algorithmForWrite;
-                return this;
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new StateImpl(this);
-            }
-        }
-
-        static Builder builder(StorageClientOptions options, BlobMetadata blobInfo, String uploadId) {
-            return new Builder(options, blobInfo, uploadId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            try {
-                BlobWriteChannel channel = BlobWriteChannel.newBuilder().setStorageOptions(serviceOptions).setBlobInfo(entity).setUploadIdSupplier(() -> uploadId).setAlgorithmForWrite(algorithmForWrite).build();
-                channel.restore(this);
-                return channel;
-            } catch (Exception e) {
-                throw StorageServiceException.coalesceException(e);
-            }
-        }
+    private static StorageServiceException unrecoverableState(String uploadId, int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last) {
+        return unrecoverableState(uploadId, chunkOffset, chunkLength, localPosition, remotePosition, last, "Unable to recover in upload.\nThis may be a symptom of multiple clients uploading to the same upload session.");
     }
+
+    private static StorageServiceException errorResolvingMetadataLastChunk(String uploadId, int chunkOffset, int chunkLength, long localPosition, long remotePosition, boolean last) {
+        return unrecoverableState(uploadId, chunkOffset, chunkLength, localPosition, remotePosition, last, "Unable to load object metadata to determine if last chunk was successfully written");
+    }
+
+    private long getRemotePosition() {
+        return getOptions().getStorageRpcV1().getCurrentUploadOffset(getUploadId());
+    }
+
+    boolean isRetrying() {
+        return retrying;
+    }
+
 }

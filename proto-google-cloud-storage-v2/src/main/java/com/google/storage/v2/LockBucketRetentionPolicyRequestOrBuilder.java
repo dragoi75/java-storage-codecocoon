@@ -23,46 +23,48 @@ public interface LockBucketRetentionPolicyRequestOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.LockBucketRetentionPolicyRequest)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * Required. Name of a bucket.
-   * </pre>
-   *
-   * <code>
-   * string bucket = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-   * </code>
-   *
-   * @return The bucket.
-   */
-  java.lang.String getBucket();
-  /**
-   *
-   *
-   * <pre>
-   * Required. Name of a bucket.
-   * </pre>
-   *
-   * <code>
-   * string bucket = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-   * </code>
-   *
-   * @return The bytes for bucket.
-   */
-  com.google.protobuf.ByteString getBucketBytes();
+    /**
+     *
+     *
+     * <pre>
+     * Required. Name of a bucket.
+     * </pre>
+     *
+     * <code>
+     * string bucket = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for bucket.
+     */
+    com.google.protobuf.ByteString getBucketBytes();
 
-  /**
-   *
-   *
-   * <pre>
-   * Makes the operation conditional on whether bucket's current metageneration
-   * matches the given value. Must be positive.
-   * </pre>
-   *
-   * <code>int64 if_metageneration_match = 2;</code>
-   *
-   * @return The ifMetagenerationMatch.
-   */
-  long getIfMetagenerationMatch();
+    /**
+     *
+     *
+     * <pre>
+     * Makes the operation conditional on whether bucket's current metageneration
+     * matches the given value. Must be positive.
+     * </pre>
+     *
+     * <code>int64 if_metageneration_match = 2;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    long getIfMetagenerationMatch();
+
+    /**
+     *
+     *
+     * <pre>
+     * Required. Name of a bucket.
+     * </pre>
+     *
+     * <code>
+     * string bucket = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bucket.
+     */
+    java.lang.String getBucket();
+
 }

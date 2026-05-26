@@ -32,9 +32,334 @@ ServiceAccount extends com.google.protobuf.GeneratedMessageV3 implements Service
 
     private static final long serialVersionUID = 0L;
 
-    // Use ServiceAccount.newBuilder() to construct.
-    private ServiceAccount(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int EMAIL_ADDRESS_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object emailAddress_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * A service account, owned by Cloud Storage, which may be used when taking
+     * action on behalf of a given project, for example to publish Pub/Sub
+     * notifications or to retrieve security keys.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ServiceAccount}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceAccount)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceAccount)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ServiceAccountOrBuilder {
+
+        private java.lang.Object emailAddress_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ServiceAccount)
+
+        /**
+         * <pre>
+         * The ID of the notification.
+         * </pre>
+         *
+         * <code>string email_address = 1;</code>
+         *
+         * @return The bytes for emailAddress.
+         */
+        public com.google.protobuf.ByteString getEmailAddressBytes() {
+            java.lang.Object ref = emailAddress_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                emailAddress_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The ID of the notification.
+         * </pre>
+         *
+         * <code>string email_address = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEmailAddress() {
+            emailAddress_ = getDefaultInstance().getEmailAddress();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ServiceAccount_fieldAccessorTable.ensureFieldAccessorsInitialized(ServiceAccount.class, Builder.class);
+        }
+
+        public Builder mergeFrom(ServiceAccount other) {
+            if (ServiceAccount.getDefaultInstance() == other)
+                return this;
+            if (!other.getEmailAddress().isEmpty()) {
+                emailAddress_ = other.emailAddress_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * The ID of the notification.
+         * </pre>
+         *
+         * <code>string email_address = 1;</code>
+         *
+         * @param value The emailAddress to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEmailAddress(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            emailAddress_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            emailAddress_ = "";
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public ServiceAccount getDefaultInstanceForType() {
+            return ServiceAccount.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * The ID of the notification.
+         * </pre>
+         *
+         * <code>string email_address = 1;</code>
+         *
+         * @param value The bytes for emailAddress to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEmailAddressBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            emailAddress_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The ID of the notification.
+         * </pre>
+         *
+         * <code>string email_address = 1;</code>
+         *
+         * @return The emailAddress.
+         */
+        public java.lang.String getEmailAddress() {
+            java.lang.Object ref = emailAddress_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                emailAddress_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ServiceAccount parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ServiceAccount) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public ServiceAccount buildPartial() {
+            ServiceAccount result = new ServiceAccount(this);
+            result.emailAddress_ = emailAddress_;
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public ServiceAccount build() {
+            ServiceAccount result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        // Construct using com.google.storage.v2.ServiceAccount.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ServiceAccount)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ServiceAccount) other);
+            }
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ServiceAccount)
+    private static final com.google.storage.v2.ServiceAccount DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ServiceAccount();
+    }
+
+    private static final com.google.protobuf.Parser<ServiceAccount> PARSER = new com.google.protobuf.AbstractParser<ServiceAccount>() {
+
+        @java.lang.Override
+        public ServiceAccount parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServiceAccount(input, extensionRegistry);
+        }
+    };
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static ServiceAccount parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ServiceAccount parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ServiceAccount getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Builder newBuilder(ServiceAccount prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ServiceAccount parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ServiceAccount parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ServiceAccount parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServiceAccount> getParserForType() {
+        return PARSER;
     }
 
     private ServiceAccount() {
@@ -42,14 +367,57 @@ ServiceAccount extends com.google.protobuf.GeneratedMessageV3 implements Service
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ServiceAccount();
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + EMAIL_ADDRESS_FIELD_NUMBER;
+        hash = (53 * hash) + getEmailAddress().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public ServiceAccount getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * The ID of the notification.
+     * </pre>
+     *
+     * <code>string email_address = 1;</code>
+     *
+     * @return The bytes for emailAddress.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getEmailAddressBytes() {
+        java.lang.Object ref = emailAddress_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            emailAddress_ = b;
+            return b;
+        }
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ServiceAccount parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
     }
 
     private ServiceAccount(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -93,18 +461,78 @@ ServiceAccount extends com.google.protobuf.GeneratedMessageV3 implements Service
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ServiceAccount)) {
+            return super.equals(obj);
+        }
+        ServiceAccount other = (ServiceAccount) obj;
+        if (!getEmailAddress().equals(other.getEmailAddress()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emailAddress_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, emailAddress_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static com.google.protobuf.Parser<ServiceAccount> parser() {
+        return PARSER;
+    }
+
+    public static ServiceAccount parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ServiceAccount parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    // Use ServiceAccount.newBuilder() to construct.
+    private ServiceAccount(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static ServiceAccount parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceAccount_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ServiceAccount.class, com.google.storage.v2.ServiceAccount.Builder.class);
+        return StorageProto.internal_static_google_storage_v2_ServiceAccount_fieldAccessorTable.ensureFieldAccessorsInitialized(ServiceAccount.class, Builder.class);
     }
 
-    public static final int EMAIL_ADDRESS_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object emailAddress_;
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emailAddress_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, emailAddress_);
+        }
+        unknownFields.writeTo(output);
+    }
 
     /**
      * <pre>
@@ -128,447 +556,22 @@ ServiceAccount extends com.google.protobuf.GeneratedMessageV3 implements Service
         }
     }
 
-    /**
-     * <pre>
-     * The ID of the notification.
-     * </pre>
-     *
-     * <code>string email_address = 1;</code>
-     *
-     * @return The bytes for emailAddress.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getEmailAddressBytes() {
-        java.lang.Object ref = emailAddress_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            emailAddress_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emailAddress_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, emailAddress_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emailAddress_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, emailAddress_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ServiceAccount)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ServiceAccount other = (com.google.storage.v2.ServiceAccount) obj;
-        if (!getEmailAddress().equals(other.getEmailAddress()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + EMAIL_ADDRESS_FIELD_NUMBER;
-        hash = (53 * hash) + getEmailAddress().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+    public static ServiceAccount parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
     }
 
-    public static com.google.storage.v2.ServiceAccount parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ServiceAccount();
     }
 
-    public static com.google.storage.v2.ServiceAccount parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(java.io.InputStream input) throws java.io.IOException {
+    public static ServiceAccount parseFrom(java.io.InputStream input) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
-    public static com.google.storage.v2.ServiceAccount parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+    public static ServiceAccount parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.google.storage.v2.ServiceAccount parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ServiceAccount parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ServiceAccount prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * A service account, owned by Cloud Storage, which may be used when taking
-     * action on behalf of a given project, for example to publish Pub/Sub
-     * notifications or to retrieve security keys.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ServiceAccount}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceAccount)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceAccount)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ServiceAccountOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceAccount_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ServiceAccount.class, com.google.storage.v2.ServiceAccount.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ServiceAccount.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            emailAddress_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceAccount_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceAccount getDefaultInstanceForType() {
-            return com.google.storage.v2.ServiceAccount.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceAccount build() {
-            com.google.storage.v2.ServiceAccount result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceAccount buildPartial() {
-            com.google.storage.v2.ServiceAccount result = new com.google.storage.v2.ServiceAccount(this);
-            result.emailAddress_ = emailAddress_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ServiceAccount)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ServiceAccount) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ServiceAccount other) {
-            if (com.google.storage.v2.ServiceAccount.getDefaultInstance() == other)
-                return this;
-            if (!other.getEmailAddress().isEmpty()) {
-                emailAddress_ = other.emailAddress_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ServiceAccount parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ServiceAccount) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object emailAddress_ = "";
-
-        /**
-         * <pre>
-         * The ID of the notification.
-         * </pre>
-         *
-         * <code>string email_address = 1;</code>
-         *
-         * @return The emailAddress.
-         */
-        public java.lang.String getEmailAddress() {
-            java.lang.Object ref = emailAddress_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                emailAddress_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID of the notification.
-         * </pre>
-         *
-         * <code>string email_address = 1;</code>
-         *
-         * @return The bytes for emailAddress.
-         */
-        public com.google.protobuf.ByteString getEmailAddressBytes() {
-            java.lang.Object ref = emailAddress_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                emailAddress_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID of the notification.
-         * </pre>
-         *
-         * <code>string email_address = 1;</code>
-         *
-         * @param value The emailAddress to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEmailAddress(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            emailAddress_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID of the notification.
-         * </pre>
-         *
-         * <code>string email_address = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEmailAddress() {
-            emailAddress_ = getDefaultInstance().getEmailAddress();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID of the notification.
-         * </pre>
-         *
-         * <code>string email_address = 1;</code>
-         *
-         * @param value The bytes for emailAddress to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEmailAddressBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            emailAddress_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ServiceAccount)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ServiceAccount)
-    private static final com.google.storage.v2.ServiceAccount DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ServiceAccount();
-    }
-
-    public static com.google.storage.v2.ServiceAccount getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ServiceAccount> PARSER = new com.google.protobuf.AbstractParser<ServiceAccount>() {
-
-        @java.lang.Override
-        public ServiceAccount parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ServiceAccount(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ServiceAccount> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ServiceAccount> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ServiceAccount getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

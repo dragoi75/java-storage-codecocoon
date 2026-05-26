@@ -27,11 +27,7 @@ import com.google.cloud.StringEnumValue;
 public final class StorageTier extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageTier(String value) {
-    super(value);
-  }
-
-  private static final ApiFunction<String, StorageTier> STORAGE_TIER_FACTORY =
+    private static final ApiFunction<String, StorageTier> STORAGE_TIER_FACTORY =
       new ApiFunction<String, StorageTier>() {
         @Override
         public StorageTier apply(String constant) {
@@ -102,21 +98,26 @@ public final class StorageTier extends StringEnumValue {
   public static final StorageTier DURABLE_REDUCED_AVAILABILITY =
       STORAGE_TIER_ENUM.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
-  /**
-   * Get the StorageClass for the given String constant, and throw an exception if the constant is
-   * not recognized.
-   */
-  public static StorageTier valueOfStrict(String value) {
-    return STORAGE_TIER_ENUM.valueOfStrict(value);
-  }
+    /** Return the known values for StorageClass. */
+    public static StorageTier[] values() {
+      return STORAGE_TIER_ENUM.values();
+    }
 
-  /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageTier of(String value) {
-    return STORAGE_TIER_ENUM.valueOf(value);
-  }
+    /** Get the StorageClass for the given String constant, and allow unrecognized values. */
+    public static StorageTier of(String value) {
+      return STORAGE_TIER_ENUM.valueOf(value);
+    }
 
-  /** Return the known values for StorageClass. */
-  public static StorageTier[] values() {
-    return STORAGE_TIER_ENUM.values();
-  }
+    private StorageTier(String value) {
+      super(value);
+    }
+
+    /**
+     * Get the StorageClass for the given String constant, and throw an exception if the constant is
+     * not recognized.
+     */
+    public static StorageTier valueOfStrict(String value) {
+      return STORAGE_TIER_ENUM.valueOfStrict(value);
+    }
+
 }

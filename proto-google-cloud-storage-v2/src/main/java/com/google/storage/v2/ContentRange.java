@@ -30,23 +30,408 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
 
     private static final long serialVersionUID = 0L;
 
-    // Use ContentRange.newBuilder() to construct.
-    private ContentRange(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int START_FIELD_NUMBER = 1;
+
+    private long start_;
+
+    public static final int END_FIELD_NUMBER = 2;
+
+    private long end_;
+
+    public static final int COMPLETE_LENGTH_FIELD_NUMBER = 3;
+
+    private long completeLength_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Specifies a requested range of bytes to download.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ContentRange}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ContentRange)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ContentRange)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ContentRangeOrBuilder {
+
+        private long start_;
+
+        private long end_;
+
+        private long completeLength_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ContentRange)
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ContentRange parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ContentRange) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The starting offset of the object data.
+         * </pre>
+         *
+         * <code>int64 start = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearStart() {
+            start_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The ending offset of the object data.
+         * </pre>
+         *
+         * <code>int64 end = 2;</code>
+         *
+         * @return The end.
+         */
+        @java.lang.Override
+        public long getEnd() {
+            return end_;
+        }
+
+        /**
+         * <pre>
+         * The ending offset of the object data.
+         * </pre>
+         *
+         * <code>int64 end = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEnd() {
+            end_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The complete length of the object data.
+         * </pre>
+         *
+         * <code>int64 complete_length = 3;</code>
+         *
+         * @return The completeLength.
+         */
+        @java.lang.Override
+        public long getCompleteLength() {
+            return completeLength_;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The complete length of the object data.
+         * </pre>
+         *
+         * <code>int64 complete_length = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearCompleteLength() {
+            completeLength_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public ContentRange build() {
+            ContentRange result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public ContentRange buildPartial() {
+            ContentRange result = new ContentRange(this);
+            result.start_ = start_;
+            result.end_ = end_;
+            result.completeLength_ = completeLength_;
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        public Builder mergeFrom(ContentRange other) {
+            if (ContentRange.getDefaultInstance() == other)
+                return this;
+            if (0L != other.getStart()) {
+                setStart(other.getStart());
+            }
+            if (0L != other.getEnd()) {
+                setEnd(other.getEnd());
+            }
+            if (0L != other.getCompleteLength()) {
+                setCompleteLength(other.getCompleteLength());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The starting offset of the object data.
+         * </pre>
+         *
+         * <code>int64 start = 1;</code>
+         *
+         * @param value The start to set.
+         * @return This builder for chaining.
+         */
+        public Builder setStart(long value) {
+            start_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ContentRange_fieldAccessorTable.ensureFieldAccessorsInitialized(ContentRange.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ContentRange)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ContentRange) other);
+            }
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The starting offset of the object data.
+         * </pre>
+         *
+         * <code>int64 start = 1;</code>
+         *
+         * @return The start.
+         */
+        @java.lang.Override
+        public long getStart() {
+            return start_;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The ending offset of the object data.
+         * </pre>
+         *
+         * <code>int64 end = 2;</code>
+         *
+         * @param value The end to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEnd(long value) {
+            end_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public ContentRange getDefaultInstanceForType() {
+            return ContentRange.getDefaultInstance();
+        }
+
+        // Construct using com.google.storage.v2.ContentRange.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The complete length of the object data.
+         * </pre>
+         *
+         * <code>int64 complete_length = 3;</code>
+         *
+         * @param value The completeLength to set.
+         * @return This builder for chaining.
+         */
+        public Builder setCompleteLength(long value) {
+            completeLength_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            start_ = 0L;
+            end_ = 0L;
+            completeLength_ = 0L;
+            return this;
+        }
+
     }
 
-    private ContentRange() {
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ContentRange)
+    private static final com.google.storage.v2.ContentRange DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ContentRange();
+    }
+
+    private static final com.google.protobuf.Parser<ContentRange> PARSER = new com.google.protobuf.AbstractParser<ContentRange>() {
+
+        @java.lang.Override
+        public ContentRange parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ContentRange(input, extensionRegistry);
+        }
+    };
+
+    public static com.google.protobuf.Parser<ContentRange> parser() {
+        return PARSER;
+    }
+
+    public static ContentRange getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Builder newBuilder(ContentRange prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ContentRange parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ContentRange();
+    public ContentRange getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ContentRange parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * The complete length of the object data.
+     * </pre>
+     *
+     * <code>int64 complete_length = 3;</code>
+     *
+     * @return The completeLength.
+     */
+    @java.lang.Override
+    public long getCompleteLength() {
+        return completeLength_;
     }
 
     @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ContentRange parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
     }
 
     private ContentRange(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -99,36 +484,28 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
+    private ContentRange() {
     }
 
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ContentRange_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ContentRange.class, com.google.storage.v2.ContentRange.Builder.class);
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
 
-    public static final int START_FIELD_NUMBER = 1;
-
-    private long start_;
-
-    /**
-     * <pre>
-     * The starting offset of the object data.
-     * </pre>
-     *
-     * <code>int64 start = 1;</code>
-     *
-     * @return The start.
-     */
     @java.lang.Override
-    public long getStart() {
-        return start_;
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
     }
 
-    public static final int END_FIELD_NUMBER = 2;
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ContentRange();
+    }
 
-    private long end_;
+    public static ContentRange parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
 
     /**
      * <pre>
@@ -144,34 +521,23 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
         return end_;
     }
 
-    public static final int COMPLETE_LENGTH_FIELD_NUMBER = 3;
-
-    private long completeLength_;
-
-    /**
-     * <pre>
-     * The complete length of the object data.
-     * </pre>
-     *
-     * <code>int64 complete_length = 3;</code>
-     *
-     * @return The completeLength.
-     */
     @java.lang.Override
-    public long getCompleteLength() {
-        return completeLength_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
             return true;
-        if (0 == isInitialized)
+        }
+        if (!(obj instanceof ContentRange)) {
+            return super.equals(obj);
+        }
+        ContentRange other = (ContentRange) obj;
+        if (other.getStart() != getStart())
             return false;
-        memoizedIsInitialized = 1;
+        if (other.getEnd() != getEnd())
+            return false;
+        if (other.getCompleteLength() != getCompleteLength())
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
         return true;
     }
 
@@ -187,6 +553,67 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
             output.writeInt64(3, completeLength_);
         }
         unknownFields.writeTo(output);
+    }
+
+    // Use ContentRange.newBuilder() to construct.
+    private ContentRange(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static ContentRange parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ContentRange parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ContentRange parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static ContentRange parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static ContentRange parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + START_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getStart());
+        hash = (37 * hash) + END_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getEnd());
+        hash = (37 * hash) + COMPLETE_LENGTH_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getCompleteLength());
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * The starting offset of the object data.
+     * </pre>
+     *
+     * <code>int64 start = 1;</code>
+     *
+     * @return The start.
+     */
+    @java.lang.Override
+    public long getStart() {
+        return start_;
+    }
+
+    public static ContentRange parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
     @java.lang.Override
@@ -210,440 +637,12 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
     }
 
     @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ContentRange)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ContentRange other = (com.google.storage.v2.ContentRange) obj;
-        if (other.getStart() != getStart())
-            return false;
-        if (other.getEnd() != getEnd())
-            return false;
-        if (other.getCompleteLength() != getCompleteLength())
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ContentRange_fieldAccessorTable.ensureFieldAccessorsInitialized(ContentRange.class, Builder.class);
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + START_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getStart());
-        hash = (37 * hash) + END_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getEnd());
-        hash = (37 * hash) + COMPLETE_LENGTH_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getCompleteLength());
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ContentRange parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ContentRange parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ContentRange parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ContentRange prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Specifies a requested range of bytes to download.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ContentRange}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ContentRange)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ContentRange)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ContentRangeOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ContentRange_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ContentRange.class, com.google.storage.v2.ContentRange.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ContentRange.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            start_ = 0L;
-            end_ = 0L;
-            completeLength_ = 0L;
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ContentRange getDefaultInstanceForType() {
-            return com.google.storage.v2.ContentRange.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ContentRange build() {
-            com.google.storage.v2.ContentRange result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ContentRange buildPartial() {
-            com.google.storage.v2.ContentRange result = new com.google.storage.v2.ContentRange(this);
-            result.start_ = start_;
-            result.end_ = end_;
-            result.completeLength_ = completeLength_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ContentRange)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ContentRange) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ContentRange other) {
-            if (com.google.storage.v2.ContentRange.getDefaultInstance() == other)
-                return this;
-            if (0L != other.getStart()) {
-                setStart(other.getStart());
-            }
-            if (0L != other.getEnd()) {
-                setEnd(other.getEnd());
-            }
-            if (0L != other.getCompleteLength()) {
-                setCompleteLength(other.getCompleteLength());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ContentRange parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ContentRange) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private long start_;
-
-        /**
-         * <pre>
-         * The starting offset of the object data.
-         * </pre>
-         *
-         * <code>int64 start = 1;</code>
-         *
-         * @return The start.
-         */
-        @java.lang.Override
-        public long getStart() {
-            return start_;
-        }
-
-        /**
-         * <pre>
-         * The starting offset of the object data.
-         * </pre>
-         *
-         * <code>int64 start = 1;</code>
-         *
-         * @param value The start to set.
-         * @return This builder for chaining.
-         */
-        public Builder setStart(long value) {
-            start_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The starting offset of the object data.
-         * </pre>
-         *
-         * <code>int64 start = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearStart() {
-            start_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long end_;
-
-        /**
-         * <pre>
-         * The ending offset of the object data.
-         * </pre>
-         *
-         * <code>int64 end = 2;</code>
-         *
-         * @return The end.
-         */
-        @java.lang.Override
-        public long getEnd() {
-            return end_;
-        }
-
-        /**
-         * <pre>
-         * The ending offset of the object data.
-         * </pre>
-         *
-         * <code>int64 end = 2;</code>
-         *
-         * @param value The end to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEnd(long value) {
-            end_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ending offset of the object data.
-         * </pre>
-         *
-         * <code>int64 end = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEnd() {
-            end_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long completeLength_;
-
-        /**
-         * <pre>
-         * The complete length of the object data.
-         * </pre>
-         *
-         * <code>int64 complete_length = 3;</code>
-         *
-         * @return The completeLength.
-         */
-        @java.lang.Override
-        public long getCompleteLength() {
-            return completeLength_;
-        }
-
-        /**
-         * <pre>
-         * The complete length of the object data.
-         * </pre>
-         *
-         * <code>int64 complete_length = 3;</code>
-         *
-         * @param value The completeLength to set.
-         * @return This builder for chaining.
-         */
-        public Builder setCompleteLength(long value) {
-            completeLength_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The complete length of the object data.
-         * </pre>
-         *
-         * <code>int64 complete_length = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearCompleteLength() {
-            completeLength_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ContentRange)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ContentRange)
-    private static final com.google.storage.v2.ContentRange DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ContentRange();
-    }
-
-    public static com.google.storage.v2.ContentRange getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ContentRange> PARSER = new com.google.protobuf.AbstractParser<ContentRange>() {
-
-        @java.lang.Override
-        public ContentRange parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ContentRange(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ContentRange> parser() {
-        return PARSER;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ContentRange_descriptor;
     }
 
     @java.lang.Override
@@ -651,8 +650,12 @@ ContentRange extends com.google.protobuf.GeneratedMessageV3 implements ContentRa
         return PARSER;
     }
 
-    @java.lang.Override
-    public com.google.storage.v2.ContentRange getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
+    public static ContentRange parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
+
+    public static ContentRange parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
 }

@@ -27,17 +27,18 @@ final class UniformStorageRetryStrategy implements StorageRetryStrategy {
   private static final long serialVersionUID = -1656941189344618393L;
   private final ResultRetryAlgorithm<?> algorithm;
 
-  public UniformStorageRetryStrategy(ResultRetryAlgorithm<?> algorithm) {
-    this.algorithm = algorithm;
-  }
+    @Override
+    public ResultRetryAlgorithm<?> getNonidempotentHandler() {
+      return algorithm;
+    }
 
-  @Override
-  public ResultRetryAlgorithm<?> getIdempotentHandler() {
-    return algorithm;
-  }
+    @Override
+    public ResultRetryAlgorithm<?> getIdempotentHandler() {
+      return algorithm;
+    }
 
-  @Override
-  public ResultRetryAlgorithm<?> getNonidempotentHandler() {
-    return algorithm;
-  }
+    public UniformStorageRetryStrategy(ResultRetryAlgorithm<?> algorithm) {
+      this.algorithm = algorithm;
+    }
+
 }

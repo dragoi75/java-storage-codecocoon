@@ -39,108 +39,88 @@ public class NotificationName implements ResourceName {
 
     private final String notification;
 
-    @Deprecated
-    protected NotificationName() {
-        project = null;
-        bucket = null;
-        notification = null;
-    }
+    /**
+     * Builder for projects/{project}/buckets/{bucket}/notificationConfigs/{notification}.
+     */
+    public static class Builder {
 
-    private NotificationName(Builder builder) {
-        project = Preconditions.checkNotNull(builder.getProject());
-        bucket = Preconditions.checkNotNull(builder.getBucket());
-        notification = Preconditions.checkNotNull(builder.getNotification());
-    }
+        private String project;
 
-    public String getProject() {
-        return project;
-    }
+        private String bucket;
 
-    public String getBucket() {
-        return bucket;
-    }
+        private String notification;
 
-    public String getNotification() {
-        return notification;
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
-
-    public static NotificationName of(String project, String bucket, String notification) {
-        return newBuilder().setProject(project).setBucket(bucket).setNotification(notification).build();
-    }
-
-    public static String format(String project, String bucket, String notification) {
-        return newBuilder().setProject(project).setBucket(bucket).setNotification(notification).build().toString();
-    }
-
-    public static NotificationName parse(String formattedString) {
-        if (formattedString.isEmpty()) {
-            return null;
+        public NotificationName build() {
+            return new NotificationName(this);
         }
-        Map<String, String> matchMap = PROJECT_BUCKET_NOTIFICATION.validatedMatch(formattedString, "NotificationName.parse: formattedString not in valid format");
-        return of(matchMap.get("project"), matchMap.get("bucket"), matchMap.get("notification"));
-    }
 
-    public static List<NotificationName> parseList(List<String> formattedStrings) {
-        List<NotificationName> list = new ArrayList<>(formattedStrings.size());
-        for (String formattedString : formattedStrings) {
-            list.add(parse(formattedString));
+        public String getBucket() {
+            return bucket;
         }
-        return list;
-    }
 
-    public static List<String> toStringList(List<NotificationName> values) {
-        List<String> list = new ArrayList<>(values.size());
-        for (NotificationName value : values) {
-            if (null != value) {
-                list.add(value.toString());
-            } else {
-                list.add("");
-            }
+        public Builder setNotification(String notification) {
+            this.notification = notification;
+            return this;
         }
-        return list;
-    }
 
-    public static boolean isParsableFrom(String formattedString) {
-        return PROJECT_BUCKET_NOTIFICATION.matches(formattedString);
+        private Builder(NotificationName notificationName) {
+            this.project = notificationName.project;
+            this.bucket = notificationName.bucket;
+            this.notification = notificationName.notification;
+        }
+
+        public Builder setBucket(String bucket) {
+            this.bucket = bucket;
+            return this;
+        }
+
+        protected Builder() {
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+        public String getNotification() {
+            return notification;
+        }
+
     }
 
     @Override
-    public Map<String, String> getFieldValuesMap() {
-        if (null == fieldValuesMap) {
-            synchronized (this) {
-                if (null == fieldValuesMap) {
-                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
-                    if (null != project) {
-                        fieldMapBuilder.put("project", project);
-                    }
-                    if (null != bucket) {
-                        fieldMapBuilder.put("bucket", bucket);
-                    }
-                    if (null != notification) {
-                        fieldMapBuilder.put("notification", notification);
-                    }
-                    fieldValuesMap = fieldMapBuilder.build();
-                }
-            }
-        }
-        return fieldValuesMap;
+    public String toString() {
+        return PROJECT_BUCKET_NOTIFICATION.instantiate("project", project, "bucket", bucket, "notification", notification);
     }
 
     public String getFieldValue(String fieldName) {
         return getFieldValuesMap().get(fieldName);
     }
 
-    @Override
-    public String toString() {
-        return PROJECT_BUCKET_NOTIFICATION.instantiate("project", project, "bucket", bucket, "notification", notification);
+    public String getProject() {
+        return project;
+    }
+
+    public static NotificationName of(String project, String bucket, String notification) {
+        return newBuilder().setProject(project).setBucket(bucket).setNotification(notification).build();
+    }
+
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT_BUCKET_NOTIFICATION.matches(formattedString);
+    }
+
+    private NotificationName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+        bucket = Preconditions.checkNotNull(builder.getBucket());
+        notification = Preconditions.checkNotNull(builder.getNotification());
     }
 
     @Override
@@ -167,55 +147,77 @@ public class NotificationName implements ResourceName {
         return h;
     }
 
-    /**
-     * Builder for projects/{project}/buckets/{bucket}/notificationConfigs/{notification}.
-     */
-    public static class Builder {
-
-        private String project;
-
-        private String bucket;
-
-        private String notification;
-
-        protected Builder() {
+    public static NotificationName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
         }
-
-        public String getProject() {
-            return project;
-        }
-
-        public String getBucket() {
-            return bucket;
-        }
-
-        public String getNotification() {
-            return notification;
-        }
-
-        public Builder setProject(String project) {
-            this.project = project;
-            return this;
-        }
-
-        public Builder setBucket(String bucket) {
-            this.bucket = bucket;
-            return this;
-        }
-
-        public Builder setNotification(String notification) {
-            this.notification = notification;
-            return this;
-        }
-
-        private Builder(NotificationName notificationName) {
-            this.project = notificationName.project;
-            this.bucket = notificationName.bucket;
-            this.notification = notificationName.notification;
-        }
-
-        public NotificationName build() {
-            return new NotificationName(this);
-        }
+        Map<String, String> matchMap = PROJECT_BUCKET_NOTIFICATION.validatedMatch(formattedString, "NotificationName.parse: formattedString not in valid format");
+        return of(matchMap.get("project"), matchMap.get("bucket"), matchMap.get("notification"));
     }
+
+    public String getNotification() {
+        return notification;
+    }
+
+    public static List<NotificationName> parseList(List<String> formattedStrings) {
+        List<NotificationName> list = new ArrayList<>(formattedStrings.size());
+        for (String formattedString : formattedStrings) {
+            list.add(parse(formattedString));
+        }
+        return list;
+    }
+
+    public static List<String> toStringList(List<NotificationName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (NotificationName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
+    @Deprecated
+    protected NotificationName() {
+        project = null;
+        bucket = null;
+        notification = null;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static String format(String project, String bucket, String notification) {
+        return newBuilder().setProject(project).setBucket(bucket).setNotification(notification).build().toString();
+    }
+
+    @Override
+    public Map<String, String> getFieldValuesMap() {
+        if (null == fieldValuesMap) {
+            synchronized (this) {
+                if (null == fieldValuesMap) {
+                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
+                    if (null != project) {
+                        fieldMapBuilder.put("project", project);
+                    }
+                    if (null != bucket) {
+                        fieldMapBuilder.put("bucket", bucket);
+                    }
+                    if (null != notification) {
+                        fieldMapBuilder.put("notification", notification);
+                    }
+                    fieldValuesMap = fieldMapBuilder.build();
+                }
+            }
+        }
+        return fieldValuesMap;
+    }
+
+    public String getBucket() {
+        return bucket;
+    }
+
 }

@@ -30,30 +30,1054 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
 
     private static final long serialVersionUID = 0L;
 
-    // Use ObjectAccessControl.newBuilder() to construct.
-    private ObjectAccessControl(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int ROLE_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object role_;
+
+    public static final int ID_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object id_;
+
+    public static final int ENTITY_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object entity_;
+
+    public static final int ENTITY_ID_FIELD_NUMBER = 4;
+
+    private volatile java.lang.Object entityId_;
+
+    public static final int EMAIL_FIELD_NUMBER = 5;
+
+    private volatile java.lang.Object email_;
+
+    public static final int DOMAIN_FIELD_NUMBER = 6;
+
+    private volatile java.lang.Object domain_;
+
+    public static final int PROJECT_TEAM_FIELD_NUMBER = 7;
+
+    private com.google.storage.v2.ProjectTeam projectTeam_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * An access-control entry.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ObjectAccessControl}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectAccessControl)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectAccessControl)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ObjectAccessControlOrBuilder {
+
+        private java.lang.Object role_ = "";
+
+        private java.lang.Object id_ = "";
+
+        private java.lang.Object entity_ = "";
+
+        private java.lang.Object entityId_ = "";
+
+        private java.lang.Object email_ = "";
+
+        private java.lang.Object domain_ = "";
+
+        private com.google.storage.v2.ProjectTeam projectTeam_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ProjectTeam, com.google.storage.v2.ProjectTeam.Builder, com.google.storage.v2.ProjectTeamOrBuilder> projectTeamBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ObjectAccessControl)
+
+        @java.lang.Override
+        public ObjectAccessControl buildPartial() {
+            ObjectAccessControl result = new ObjectAccessControl(this);
+            result.role_ = role_;
+            result.id_ = id_;
+            result.entity_ = entity_;
+            result.entityId_ = entityId_;
+            result.email_ = email_;
+            result.domain_ = domain_;
+            if (null != projectTeamBuilder_) {
+                result.projectTeam_ = projectTeamBuilder_.build();
+            } else {
+                result.projectTeam_ = projectTeam_;
+            }
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ObjectAccessControl)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ObjectAccessControl) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * The domain associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string domain = 6;</code>
+         *
+         * @param value The domain to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDomain(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            domain_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID of the access-control entry.
+         * </pre>
+         *
+         * <code>string id = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearId() {
+            id_ = getDefaultInstance().getId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The entity holding the permission, in one of the following forms:
+         * * `user-{userid}`
+         * * `user-{email}`
+         * * `group-{groupid}`
+         * * `group-{email}`
+         * * `domain-{domain}`
+         * * `project-{team-projectid}`
+         * * `allUsers`
+         * * `allAuthenticatedUsers`
+         * Examples:
+         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
+         * * The group `example&#64;googlegroups.com` would be
+         * `group-example&#64;googlegroups.com`.
+         * * All members of the Google Apps for Business domain `example.com` would be
+         * `domain-example.com`.
+         * </pre>
+         *
+         * <code>string entity = 3;</code>
+         *
+         * @param value The bytes for entity to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEntityBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            entity_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID for the entity, if any.
+         * </pre>
+         *
+         * <code>string entity_id = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEntityId() {
+            entityId_ = getDefaultInstance().getEntityId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The access permission for the entity.
+         * </pre>
+         *
+         * <code>string role = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearRole() {
+            role_ = getDefaultInstance().getRole();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The entity holding the permission, in one of the following forms:
+         * * `user-{userid}`
+         * * `user-{email}`
+         * * `group-{groupid}`
+         * * `group-{email}`
+         * * `domain-{domain}`
+         * * `project-{team-projectid}`
+         * * `allUsers`
+         * * `allAuthenticatedUsers`
+         * Examples:
+         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
+         * * The group `example&#64;googlegroups.com` would be
+         * `group-example&#64;googlegroups.com`.
+         * * All members of the Google Apps for Business domain `example.com` would be
+         * `domain-example.com`.
+         * </pre>
+         *
+         * <code>string entity = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEntity() {
+            entity_ = getDefaultInstance().getEntity();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The domain associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string domain = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearDomain() {
+            domain_ = getDefaultInstance().getDomain();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The domain associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string domain = 6;</code>
+         *
+         * @return The domain.
+         */
+        public java.lang.String getDomain() {
+            java.lang.Object ref = domain_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                domain_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * The access permission for the entity.
+         * </pre>
+         *
+         * <code>string role = 1;</code>
+         *
+         * @param value The bytes for role to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRoleBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            role_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public Builder clearProjectTeam() {
+            if (null != projectTeamBuilder_) {
+                projectTeam_ = null;
+                projectTeamBuilder_ = null;
+            } else {
+                projectTeam_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * The access permission for the entity.
+         * </pre>
+         *
+         * <code>string role = 1;</code>
+         *
+         * @return The bytes for role.
+         */
+        public com.google.protobuf.ByteString getRoleBytes() {
+            java.lang.Object ref = role_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                role_ = b;
+                return b;
+            }
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<ProjectTeam, ProjectTeam.Builder, ProjectTeamOrBuilder> getProjectTeamFieldBuilder() {
+            if (null == projectTeamBuilder_) {
+                projectTeamBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<ProjectTeam, ProjectTeam.Builder, ProjectTeamOrBuilder>(getProjectTeam(), getParentForChildren(), isClean());
+                projectTeam_ = null;
+            }
+            return projectTeamBuilder_;
+        }
+
+        @java.lang.Override
+        public ObjectAccessControl build() {
+            ObjectAccessControl result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public ProjectTeamOrBuilder getProjectTeamOrBuilder() {
+            if (null == projectTeamBuilder_) {
+                return null == projectTeam_ ? ProjectTeam.getDefaultInstance() : projectTeam_;
+            } else {
+                return projectTeamBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * The entity holding the permission, in one of the following forms:
+         * * `user-{userid}`
+         * * `user-{email}`
+         * * `group-{groupid}`
+         * * `group-{email}`
+         * * `domain-{domain}`
+         * * `project-{team-projectid}`
+         * * `allUsers`
+         * * `allAuthenticatedUsers`
+         * Examples:
+         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
+         * * The group `example&#64;googlegroups.com` would be
+         * `group-example&#64;googlegroups.com`.
+         * * All members of the Google Apps for Business domain `example.com` would be
+         * `domain-example.com`.
+         * </pre>
+         *
+         * <code>string entity = 3;</code>
+         *
+         * @param value The entity to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEntity(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            entity_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID for the entity, if any.
+         * </pre>
+         *
+         * <code>string entity_id = 4;</code>
+         *
+         * @param value The entityId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEntityId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            entityId_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
+        }
+
+        /**
+         * <pre>
+         * The email address associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string email = 5;</code>
+         *
+         * @param value The bytes for email to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEmailBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            email_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public Builder setProjectTeam(ProjectTeam.Builder builderForValue) {
+            if (null != projectTeamBuilder_) {
+                projectTeamBuilder_.setMessage(builderForValue.build());
+            } else {
+                projectTeam_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID for the entity, if any.
+         * </pre>
+         *
+         * <code>string entity_id = 4;</code>
+         *
+         * @return The entityId.
+         */
+        public java.lang.String getEntityId() {
+            java.lang.Object ref = entityId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                entityId_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         *
+         * @return Whether the projectTeam field is set.
+         */
+        public boolean hasProjectTeam() {
+            return null != projectTeamBuilder_ || null != projectTeam_;
+        }
+
+        /**
+         * <pre>
+         * The domain associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string domain = 6;</code>
+         *
+         * @param value The bytes for domain to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDomainBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            domain_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID of the access-control entry.
+         * </pre>
+         *
+         * <code>string id = 2;</code>
+         *
+         * @return The id.
+         */
+        public java.lang.String getId() {
+            java.lang.Object ref = id_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                id_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * The domain associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string domain = 6;</code>
+         *
+         * @return The bytes for domain.
+         */
+        public com.google.protobuf.ByteString getDomainBytes() {
+            java.lang.Object ref = domain_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                domain_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The email address associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string email = 5;</code>
+         *
+         * @return The email.
+         */
+        public java.lang.String getEmail() {
+            java.lang.Object ref = email_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                email_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * The access permission for the entity.
+         * </pre>
+         *
+         * <code>string role = 1;</code>
+         *
+         * @param value The role to set.
+         * @return This builder for chaining.
+         */
+        public Builder setRole(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            role_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ObjectAccessControl getDefaultInstanceForType() {
+            return ObjectAccessControl.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         *
+         * @return The projectTeam.
+         */
+        public ProjectTeam getProjectTeam() {
+            if (null != projectTeamBuilder_) {
+                return projectTeamBuilder_.getMessage();
+            } else {
+                return null == projectTeam_ ? ProjectTeam.getDefaultInstance() : projectTeam_;
+            }
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * The email address associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string email = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearEmail() {
+            email_ = getDefaultInstance().getEmail();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The entity holding the permission, in one of the following forms:
+         * * `user-{userid}`
+         * * `user-{email}`
+         * * `group-{groupid}`
+         * * `group-{email}`
+         * * `domain-{domain}`
+         * * `project-{team-projectid}`
+         * * `allUsers`
+         * * `allAuthenticatedUsers`
+         * Examples:
+         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
+         * * The group `example&#64;googlegroups.com` would be
+         * `group-example&#64;googlegroups.com`.
+         * * All members of the Google Apps for Business domain `example.com` would be
+         * `domain-example.com`.
+         * </pre>
+         *
+         * <code>string entity = 3;</code>
+         *
+         * @return The bytes for entity.
+         */
+        public com.google.protobuf.ByteString getEntityBytes() {
+            java.lang.Object ref = entity_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                entity_ = b;
+                return b;
+            }
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public Builder setProjectTeam(ProjectTeam value) {
+            if (null != projectTeamBuilder_) {
+                projectTeamBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                projectTeam_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID of the access-control entry.
+         * </pre>
+         *
+         * <code>string id = 2;</code>
+         *
+         * @param value The id to set.
+         * @return This builder for chaining.
+         */
+        public Builder setId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            id_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public ProjectTeam.Builder getProjectTeamBuilder() {
+            onChanged();
+            return getProjectTeamFieldBuilder().getBuilder();
+        }
+
+        public Builder mergeFrom(ObjectAccessControl other) {
+            if (ObjectAccessControl.getDefaultInstance() == other)
+                return this;
+            if (!other.getRole().isEmpty()) {
+                role_ = other.role_;
+                onChanged();
+            }
+            if (!other.getId().isEmpty()) {
+                id_ = other.id_;
+                onChanged();
+            }
+            if (!other.getEntity().isEmpty()) {
+                entity_ = other.entity_;
+                onChanged();
+            }
+            if (!other.getEntityId().isEmpty()) {
+                entityId_ = other.entityId_;
+                onChanged();
+            }
+            if (!other.getEmail().isEmpty()) {
+                email_ = other.email_;
+                onChanged();
+            }
+            if (!other.getDomain().isEmpty()) {
+                domain_ = other.domain_;
+                onChanged();
+            }
+            if (other.hasProjectTeam()) {
+                mergeProjectTeam(other.getProjectTeam());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ObjectAccessControl parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ObjectAccessControl) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The email address associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string email = 5;</code>
+         *
+         * @param value The email to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEmail(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            email_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * The ID for the entity, if any.
+         * </pre>
+         *
+         * <code>string entity_id = 4;</code>
+         *
+         * @return The bytes for entityId.
+         */
+        public com.google.protobuf.ByteString getEntityIdBytes() {
+            java.lang.Object ref = entityId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                entityId_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        // Construct using com.google.storage.v2.ObjectAccessControl.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            role_ = "";
+            id_ = "";
+            entity_ = "";
+            entityId_ = "";
+            email_ = "";
+            domain_ = "";
+            if (null != projectTeamBuilder_) {
+                projectTeam_ = null;
+                projectTeamBuilder_ = null;
+            } else {
+                projectTeam_ = null;
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID of the access-control entry.
+         * </pre>
+         *
+         * <code>string id = 2;</code>
+         *
+         * @param value The bytes for id to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            id_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The project team associated with the entity, if any.
+         * </pre>
+         *
+         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
+         */
+        public Builder mergeProjectTeam(ProjectTeam value) {
+            if (null != projectTeamBuilder_) {
+                projectTeamBuilder_.mergeFrom(value);
+            } else {
+                if (null == projectTeam_) {
+                    projectTeam_ = value;
+                } else {
+                    projectTeam_ = ProjectTeam.newBuilder(projectTeam_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ObjectAccessControl_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectAccessControl.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * The ID for the entity, if any.
+         * </pre>
+         *
+         * <code>string entity_id = 4;</code>
+         *
+         * @param value The bytes for entityId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEntityIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            entityId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The ID of the access-control entry.
+         * </pre>
+         *
+         * <code>string id = 2;</code>
+         *
+         * @return The bytes for id.
+         */
+        public com.google.protobuf.ByteString getIdBytes() {
+            java.lang.Object ref = id_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                id_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The entity holding the permission, in one of the following forms:
+         * * `user-{userid}`
+         * * `user-{email}`
+         * * `group-{groupid}`
+         * * `group-{email}`
+         * * `domain-{domain}`
+         * * `project-{team-projectid}`
+         * * `allUsers`
+         * * `allAuthenticatedUsers`
+         * Examples:
+         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
+         * * The group `example&#64;googlegroups.com` would be
+         * `group-example&#64;googlegroups.com`.
+         * * All members of the Google Apps for Business domain `example.com` would be
+         * `domain-example.com`.
+         * </pre>
+         *
+         * <code>string entity = 3;</code>
+         *
+         * @return The entity.
+         */
+        public java.lang.String getEntity() {
+            java.lang.Object ref = entity_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                entity_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * The email address associated with the entity, if any.
+         * </pre>
+         *
+         * <code>string email = 5;</code>
+         *
+         * @return The bytes for email.
+         */
+        public com.google.protobuf.ByteString getEmailBytes() {
+            java.lang.Object ref = email_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                email_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * The access permission for the entity.
+         * </pre>
+         *
+         * <code>string role = 1;</code>
+         *
+         * @return The role.
+         */
+        public java.lang.String getRole() {
+            java.lang.Object ref = role_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                role_ = s;
+                return s;
+            }
+        }
+
     }
 
-    private ObjectAccessControl() {
-        role_ = "";
-        id_ = "";
-        entity_ = "";
-        entityId_ = "";
-        email_ = "";
-        domain_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ObjectAccessControl)
+    private static final com.google.storage.v2.ObjectAccessControl DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ObjectAccessControl();
     }
 
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ObjectAccessControl();
-    }
+    private static final com.google.protobuf.Parser<ObjectAccessControl> PARSER = new com.google.protobuf.AbstractParser<ObjectAccessControl>() {
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
+        @java.lang.Override
+        public ObjectAccessControl parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ObjectAccessControl(input, extensionRegistry);
+        }
+    };
 
     private ObjectAccessControl(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
         this();
@@ -107,11 +1131,11 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
                         }
                     case 58:
                         {
-                            com.google.storage.v2.ProjectTeam.Builder subBuilder = null;
+                            ProjectTeam.Builder subBuilder = null;
                             if (null != projectTeam_) {
                                 subBuilder = projectTeam_.toBuilder();
                             }
-                            projectTeam_ = input.readMessage(com.google.storage.v2.ProjectTeam.parser(), extensionRegistry);
+                            projectTeam_ = input.readMessage(ProjectTeam.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(projectTeam_);
                                 projectTeam_ = subBuilder.buildPartial();
@@ -139,65 +1163,66 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static ObjectAccessControl getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ObjectAccessControl parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ObjectAccessControl parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectAccessControl_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ObjectAccessControl.class, com.google.storage.v2.ObjectAccessControl.Builder.class);
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
     }
 
-    public static final int ROLE_FIELD_NUMBER = 1;
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ObjectAccessControl();
+    }
 
-    private volatile java.lang.Object role_;
+    public static ObjectAccessControl parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ObjectAccessControl parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
 
     /**
      * <pre>
-     * The access permission for the entity.
+     * The domain associated with the entity, if any.
      * </pre>
      *
-     * <code>string role = 1;</code>
+     * <code>string domain = 6;</code>
      *
-     * @return The role.
+     * @return The bytes for domain.
      */
     @java.lang.Override
-    public java.lang.String getRole() {
-        java.lang.Object ref = role_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            role_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The access permission for the entity.
-     * </pre>
-     *
-     * <code>string role = 1;</code>
-     *
-     * @return The bytes for role.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getRoleBytes() {
-        java.lang.Object ref = role_;
+    public com.google.protobuf.ByteString getDomainBytes() {
+        java.lang.Object ref = domain_;
         if (!(ref instanceof java.lang.String)) {
             return (com.google.protobuf.ByteString) ref;
         } else {
             com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            role_ = b;
+            domain_ = b;
             return b;
         }
     }
 
-    public static final int ID_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object id_;
+    public static ObjectAccessControl parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
 
     /**
      * <pre>
@@ -223,28 +1248,123 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
 
     /**
      * <pre>
-     * The ID of the access-control entry.
+     * The project team associated with the entity, if any.
      * </pre>
      *
-     * <code>string id = 2;</code>
-     *
-     * @return The bytes for id.
+     * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString getIdBytes() {
-        java.lang.Object ref = id_;
+    public ProjectTeamOrBuilder getProjectTeamOrBuilder() {
+        return getProjectTeam();
+    }
+
+    /**
+     * <pre>
+     * The access permission for the entity.
+     * </pre>
+     *
+     * <code>string role = 1;</code>
+     *
+     * @return The bytes for role.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getRoleBytes() {
+        java.lang.Object ref = role_;
         if (!(ref instanceof java.lang.String)) {
             return (com.google.protobuf.ByteString) ref;
         } else {
             com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            id_ = b;
+            role_ = b;
             return b;
         }
     }
 
-    public static final int ENTITY_FIELD_NUMBER = 3;
+    public static ObjectAccessControl parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
 
-    private volatile java.lang.Object entity_;
+    public static Builder newBuilder(ObjectAccessControl prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ObjectAccessControl parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ObjectAccessControl)) {
+            return super.equals(obj);
+        }
+        ObjectAccessControl other = (ObjectAccessControl) obj;
+        if (!getRole().equals(other.getRole()))
+            return false;
+        if (!getId().equals(other.getId()))
+            return false;
+        if (!getEntity().equals(other.getEntity()))
+            return false;
+        if (!getEntityId().equals(other.getEntityId()))
+            return false;
+        if (!getEmail().equals(other.getEmail()))
+            return false;
+        if (!getDomain().equals(other.getDomain()))
+            return false;
+        if (other.hasProjectTeam() != hasProjectTeam())
+            return false;
+        if (hasProjectTeam()) {
+            if (!getProjectTeam().equals(other.getProjectTeam()))
+                return false;
+        }
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    public static ObjectAccessControl parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    // Use ObjectAccessControl.newBuilder() to construct.
+    private ObjectAccessControl(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static ObjectAccessControl parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    private ObjectAccessControl() {
+        role_ = "";
+        id_ = "";
+        entity_ = "";
+        entityId_ = "";
+        email_ = "";
+        domain_ = "";
+    }
 
     /**
      * <pre>
@@ -282,6 +1402,153 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
         }
     }
 
+    public static ObjectAccessControl parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The ID of the access-control entry.
+     * </pre>
+     *
+     * <code>string id = 2;</code>
+     *
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getIdBytes() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            id_ = b;
+            return b;
+        }
+    }
+
+    /**
+     * <pre>
+     * The email address associated with the entity, if any.
+     * </pre>
+     *
+     * <code>string email = 5;</code>
+     *
+     * @return The email.
+     */
+    @java.lang.Override
+    public java.lang.String getEmail() {
+        java.lang.Object ref = email_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            email_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * The domain associated with the entity, if any.
+     * </pre>
+     *
+     * <code>string domain = 6;</code>
+     *
+     * @return The domain.
+     */
+    @java.lang.Override
+    public java.lang.String getDomain() {
+        java.lang.Object ref = domain_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            domain_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ObjectAccessControl> getParserForType() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(role_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, role_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(entity_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, entity_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(entityId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, entityId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, email_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(domain_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, domain_);
+        }
+        if (null != projectTeam_) {
+            output.writeMessage(7, getProjectTeam());
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * The ID for the entity, if any.
+     * </pre>
+     *
+     * <code>string entity_id = 4;</code>
+     *
+     * @return The entityId.
+     */
+    @java.lang.Override
+    public java.lang.String getEntityId() {
+        java.lang.Object ref = entityId_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            entityId_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * The email address associated with the entity, if any.
+     * </pre>
+     *
+     * <code>string email = 5;</code>
+     *
+     * @return The bytes for email.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getEmailBytes() {
+        java.lang.Object ref = email_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            email_ = b;
+            return b;
+        }
+    }
+
+    public static ObjectAccessControl parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
     /**
      * <pre>
      * The entity holding the permission, in one of the following forms:
@@ -317,30 +1584,55 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
         }
     }
 
-    public static final int ENTITY_ID_FIELD_NUMBER = 4;
-
-    private volatile java.lang.Object entityId_;
-
     /**
      * <pre>
-     * The ID for the entity, if any.
+     * The project team associated with the entity, if any.
      * </pre>
      *
-     * <code>string entity_id = 4;</code>
+     * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
      *
-     * @return The entityId.
+     * @return Whether the projectTeam field is set.
      */
     @java.lang.Override
-    public java.lang.String getEntityId() {
-        java.lang.Object ref = entityId_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            entityId_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
+    public boolean hasProjectTeam() {
+        return null != projectTeam_;
+    }
+
+    public static ObjectAccessControl parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public ObjectAccessControl getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
         }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + ROLE_FIELD_NUMBER;
+        hash = (53 * hash) + getRole().hashCode();
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + getId().hashCode();
+        hash = (37 * hash) + ENTITY_FIELD_NUMBER;
+        hash = (53 * hash) + getEntity().hashCode();
+        hash = (37 * hash) + ENTITY_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getEntityId().hashCode();
+        hash = (37 * hash) + EMAIL_FIELD_NUMBER;
+        hash = (53 * hash) + getEmail().hashCode();
+        hash = (37 * hash) + DOMAIN_FIELD_NUMBER;
+        hash = (53 * hash) + getDomain().hashCode();
+        if (hasProjectTeam()) {
+            hash = (37 * hash) + PROJECT_TEAM_FIELD_NUMBER;
+            hash = (53 * hash) + getProjectTeam().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
     }
 
     /**
@@ -364,116 +1656,44 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
         }
     }
 
-    public static final int EMAIL_FIELD_NUMBER = 5;
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ObjectAccessControl_fieldAccessorTable.ensureFieldAccessorsInitialized(ObjectAccessControl.class, Builder.class);
+    }
 
-    private volatile java.lang.Object email_;
+    public static com.google.protobuf.Parser<ObjectAccessControl> parser() {
+        return PARSER;
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
+    }
 
     /**
      * <pre>
-     * The email address associated with the entity, if any.
+     * The access permission for the entity.
      * </pre>
      *
-     * <code>string email = 5;</code>
+     * <code>string role = 1;</code>
      *
-     * @return The email.
+     * @return The role.
      */
     @java.lang.Override
-    public java.lang.String getEmail() {
-        java.lang.Object ref = email_;
+    public java.lang.String getRole() {
+        java.lang.Object ref = role_;
         if (!(ref instanceof java.lang.String)) {
             com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
             java.lang.String s = bs.toStringUtf8();
-            email_ = s;
+            role_ = s;
             return s;
         } else {
             return (java.lang.String) ref;
         }
-    }
-
-    /**
-     * <pre>
-     * The email address associated with the entity, if any.
-     * </pre>
-     *
-     * <code>string email = 5;</code>
-     *
-     * @return The bytes for email.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getEmailBytes() {
-        java.lang.Object ref = email_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            email_ = b;
-            return b;
-        }
-    }
-
-    public static final int DOMAIN_FIELD_NUMBER = 6;
-
-    private volatile java.lang.Object domain_;
-
-    /**
-     * <pre>
-     * The domain associated with the entity, if any.
-     * </pre>
-     *
-     * <code>string domain = 6;</code>
-     *
-     * @return The domain.
-     */
-    @java.lang.Override
-    public java.lang.String getDomain() {
-        java.lang.Object ref = domain_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            domain_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The domain associated with the entity, if any.
-     * </pre>
-     *
-     * <code>string domain = 6;</code>
-     *
-     * @return The bytes for domain.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getDomainBytes() {
-        java.lang.Object ref = domain_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            domain_ = b;
-            return b;
-        }
-    }
-
-    public static final int PROJECT_TEAM_FIELD_NUMBER = 7;
-
-    private com.google.storage.v2.ProjectTeam projectTeam_;
-
-    /**
-     * <pre>
-     * The project team associated with the entity, if any.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-     *
-     * @return Whether the projectTeam field is set.
-     */
-    @java.lang.Override
-    public boolean hasProjectTeam() {
-        return null != projectTeam_;
     }
 
     /**
@@ -486,59 +1706,8 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
      * @return The projectTeam.
      */
     @java.lang.Override
-    public com.google.storage.v2.ProjectTeam getProjectTeam() {
-        return null == projectTeam_ ? com.google.storage.v2.ProjectTeam.getDefaultInstance() : projectTeam_;
-    }
-
-    /**
-     * <pre>
-     * The project team associated with the entity, if any.
-     * </pre>
-     *
-     * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.ProjectTeamOrBuilder getProjectTeamOrBuilder() {
-        return getProjectTeam();
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(role_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, role_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(entity_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, entity_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(entityId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 4, entityId_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 5, email_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(domain_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, domain_);
-        }
-        if (null != projectTeam_) {
-            output.writeMessage(7, getProjectTeam());
-        }
-        unknownFields.writeTo(output);
+    public ProjectTeam getProjectTeam() {
+        return null == projectTeam_ ? ProjectTeam.getDefaultInstance() : projectTeam_;
     }
 
     @java.lang.Override
@@ -573,1170 +1742,4 @@ ObjectAccessControl extends com.google.protobuf.GeneratedMessageV3 implements Ob
         return size;
     }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.ObjectAccessControl)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.ObjectAccessControl other = (com.google.storage.v2.ObjectAccessControl) obj;
-        if (!getRole().equals(other.getRole()))
-            return false;
-        if (!getId().equals(other.getId()))
-            return false;
-        if (!getEntity().equals(other.getEntity()))
-            return false;
-        if (!getEntityId().equals(other.getEntityId()))
-            return false;
-        if (!getEmail().equals(other.getEmail()))
-            return false;
-        if (!getDomain().equals(other.getDomain()))
-            return false;
-        if (other.hasProjectTeam() != hasProjectTeam())
-            return false;
-        if (hasProjectTeam()) {
-            if (!getProjectTeam().equals(other.getProjectTeam()))
-                return false;
-        }
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + ROLE_FIELD_NUMBER;
-        hash = (53 * hash) + getRole().hashCode();
-        hash = (37 * hash) + ID_FIELD_NUMBER;
-        hash = (53 * hash) + getId().hashCode();
-        hash = (37 * hash) + ENTITY_FIELD_NUMBER;
-        hash = (53 * hash) + getEntity().hashCode();
-        hash = (37 * hash) + ENTITY_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getEntityId().hashCode();
-        hash = (37 * hash) + EMAIL_FIELD_NUMBER;
-        hash = (53 * hash) + getEmail().hashCode();
-        hash = (37 * hash) + DOMAIN_FIELD_NUMBER;
-        hash = (53 * hash) + getDomain().hashCode();
-        if (hasProjectTeam()) {
-            hash = (37 * hash) + PROJECT_TEAM_FIELD_NUMBER;
-            hash = (53 * hash) + getProjectTeam().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ObjectAccessControl prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * An access-control entry.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ObjectAccessControl}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectAccessControl)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ObjectAccessControl)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ObjectAccessControlOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectAccessControl_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ObjectAccessControl.class, com.google.storage.v2.ObjectAccessControl.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ObjectAccessControl.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            role_ = "";
-            id_ = "";
-            entity_ = "";
-            entityId_ = "";
-            email_ = "";
-            domain_ = "";
-            if (null != projectTeamBuilder_) {
-                projectTeam_ = null;
-                projectTeamBuilder_ = null;
-            } else {
-                projectTeam_ = null;
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ObjectAccessControl_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectAccessControl getDefaultInstanceForType() {
-            return com.google.storage.v2.ObjectAccessControl.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectAccessControl build() {
-            com.google.storage.v2.ObjectAccessControl result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ObjectAccessControl buildPartial() {
-            com.google.storage.v2.ObjectAccessControl result = new com.google.storage.v2.ObjectAccessControl(this);
-            result.role_ = role_;
-            result.id_ = id_;
-            result.entity_ = entity_;
-            result.entityId_ = entityId_;
-            result.email_ = email_;
-            result.domain_ = domain_;
-            if (null != projectTeamBuilder_) {
-                result.projectTeam_ = projectTeamBuilder_.build();
-            } else {
-                result.projectTeam_ = projectTeam_;
-            }
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ObjectAccessControl)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ObjectAccessControl) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ObjectAccessControl other) {
-            if (com.google.storage.v2.ObjectAccessControl.getDefaultInstance() == other)
-                return this;
-            if (!other.getRole().isEmpty()) {
-                role_ = other.role_;
-                onChanged();
-            }
-            if (!other.getId().isEmpty()) {
-                id_ = other.id_;
-                onChanged();
-            }
-            if (!other.getEntity().isEmpty()) {
-                entity_ = other.entity_;
-                onChanged();
-            }
-            if (!other.getEntityId().isEmpty()) {
-                entityId_ = other.entityId_;
-                onChanged();
-            }
-            if (!other.getEmail().isEmpty()) {
-                email_ = other.email_;
-                onChanged();
-            }
-            if (!other.getDomain().isEmpty()) {
-                domain_ = other.domain_;
-                onChanged();
-            }
-            if (other.hasProjectTeam()) {
-                mergeProjectTeam(other.getProjectTeam());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ObjectAccessControl parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ObjectAccessControl) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object role_ = "";
-
-        /**
-         * <pre>
-         * The access permission for the entity.
-         * </pre>
-         *
-         * <code>string role = 1;</code>
-         *
-         * @return The role.
-         */
-        public java.lang.String getRole() {
-            java.lang.Object ref = role_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                role_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The access permission for the entity.
-         * </pre>
-         *
-         * <code>string role = 1;</code>
-         *
-         * @return The bytes for role.
-         */
-        public com.google.protobuf.ByteString getRoleBytes() {
-            java.lang.Object ref = role_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                role_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The access permission for the entity.
-         * </pre>
-         *
-         * <code>string role = 1;</code>
-         *
-         * @param value The role to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRole(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            role_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The access permission for the entity.
-         * </pre>
-         *
-         * <code>string role = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearRole() {
-            role_ = getDefaultInstance().getRole();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The access permission for the entity.
-         * </pre>
-         *
-         * <code>string role = 1;</code>
-         *
-         * @param value The bytes for role to set.
-         * @return This builder for chaining.
-         */
-        public Builder setRoleBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            role_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object id_ = "";
-
-        /**
-         * <pre>
-         * The ID of the access-control entry.
-         * </pre>
-         *
-         * <code>string id = 2;</code>
-         *
-         * @return The id.
-         */
-        public java.lang.String getId() {
-            java.lang.Object ref = id_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                id_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID of the access-control entry.
-         * </pre>
-         *
-         * <code>string id = 2;</code>
-         *
-         * @return The bytes for id.
-         */
-        public com.google.protobuf.ByteString getIdBytes() {
-            java.lang.Object ref = id_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                id_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID of the access-control entry.
-         * </pre>
-         *
-         * <code>string id = 2;</code>
-         *
-         * @param value The id to set.
-         * @return This builder for chaining.
-         */
-        public Builder setId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            id_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID of the access-control entry.
-         * </pre>
-         *
-         * <code>string id = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearId() {
-            id_ = getDefaultInstance().getId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID of the access-control entry.
-         * </pre>
-         *
-         * <code>string id = 2;</code>
-         *
-         * @param value The bytes for id to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            id_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object entity_ = "";
-
-        /**
-         * <pre>
-         * The entity holding the permission, in one of the following forms:
-         * * `user-{userid}`
-         * * `user-{email}`
-         * * `group-{groupid}`
-         * * `group-{email}`
-         * * `domain-{domain}`
-         * * `project-{team-projectid}`
-         * * `allUsers`
-         * * `allAuthenticatedUsers`
-         * Examples:
-         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
-         * * The group `example&#64;googlegroups.com` would be
-         * `group-example&#64;googlegroups.com`.
-         * * All members of the Google Apps for Business domain `example.com` would be
-         * `domain-example.com`.
-         * </pre>
-         *
-         * <code>string entity = 3;</code>
-         *
-         * @return The entity.
-         */
-        public java.lang.String getEntity() {
-            java.lang.Object ref = entity_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                entity_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The entity holding the permission, in one of the following forms:
-         * * `user-{userid}`
-         * * `user-{email}`
-         * * `group-{groupid}`
-         * * `group-{email}`
-         * * `domain-{domain}`
-         * * `project-{team-projectid}`
-         * * `allUsers`
-         * * `allAuthenticatedUsers`
-         * Examples:
-         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
-         * * The group `example&#64;googlegroups.com` would be
-         * `group-example&#64;googlegroups.com`.
-         * * All members of the Google Apps for Business domain `example.com` would be
-         * `domain-example.com`.
-         * </pre>
-         *
-         * <code>string entity = 3;</code>
-         *
-         * @return The bytes for entity.
-         */
-        public com.google.protobuf.ByteString getEntityBytes() {
-            java.lang.Object ref = entity_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                entity_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The entity holding the permission, in one of the following forms:
-         * * `user-{userid}`
-         * * `user-{email}`
-         * * `group-{groupid}`
-         * * `group-{email}`
-         * * `domain-{domain}`
-         * * `project-{team-projectid}`
-         * * `allUsers`
-         * * `allAuthenticatedUsers`
-         * Examples:
-         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
-         * * The group `example&#64;googlegroups.com` would be
-         * `group-example&#64;googlegroups.com`.
-         * * All members of the Google Apps for Business domain `example.com` would be
-         * `domain-example.com`.
-         * </pre>
-         *
-         * <code>string entity = 3;</code>
-         *
-         * @param value The entity to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEntity(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            entity_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The entity holding the permission, in one of the following forms:
-         * * `user-{userid}`
-         * * `user-{email}`
-         * * `group-{groupid}`
-         * * `group-{email}`
-         * * `domain-{domain}`
-         * * `project-{team-projectid}`
-         * * `allUsers`
-         * * `allAuthenticatedUsers`
-         * Examples:
-         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
-         * * The group `example&#64;googlegroups.com` would be
-         * `group-example&#64;googlegroups.com`.
-         * * All members of the Google Apps for Business domain `example.com` would be
-         * `domain-example.com`.
-         * </pre>
-         *
-         * <code>string entity = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEntity() {
-            entity_ = getDefaultInstance().getEntity();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The entity holding the permission, in one of the following forms:
-         * * `user-{userid}`
-         * * `user-{email}`
-         * * `group-{groupid}`
-         * * `group-{email}`
-         * * `domain-{domain}`
-         * * `project-{team-projectid}`
-         * * `allUsers`
-         * * `allAuthenticatedUsers`
-         * Examples:
-         * * The user `liz&#64;example.com` would be `user-liz&#64;example.com`.
-         * * The group `example&#64;googlegroups.com` would be
-         * `group-example&#64;googlegroups.com`.
-         * * All members of the Google Apps for Business domain `example.com` would be
-         * `domain-example.com`.
-         * </pre>
-         *
-         * <code>string entity = 3;</code>
-         *
-         * @param value The bytes for entity to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEntityBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            entity_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object entityId_ = "";
-
-        /**
-         * <pre>
-         * The ID for the entity, if any.
-         * </pre>
-         *
-         * <code>string entity_id = 4;</code>
-         *
-         * @return The entityId.
-         */
-        public java.lang.String getEntityId() {
-            java.lang.Object ref = entityId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                entityId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID for the entity, if any.
-         * </pre>
-         *
-         * <code>string entity_id = 4;</code>
-         *
-         * @return The bytes for entityId.
-         */
-        public com.google.protobuf.ByteString getEntityIdBytes() {
-            java.lang.Object ref = entityId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                entityId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The ID for the entity, if any.
-         * </pre>
-         *
-         * <code>string entity_id = 4;</code>
-         *
-         * @param value The entityId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEntityId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            entityId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID for the entity, if any.
-         * </pre>
-         *
-         * <code>string entity_id = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEntityId() {
-            entityId_ = getDefaultInstance().getEntityId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The ID for the entity, if any.
-         * </pre>
-         *
-         * <code>string entity_id = 4;</code>
-         *
-         * @param value The bytes for entityId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEntityIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            entityId_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object email_ = "";
-
-        /**
-         * <pre>
-         * The email address associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string email = 5;</code>
-         *
-         * @return The email.
-         */
-        public java.lang.String getEmail() {
-            java.lang.Object ref = email_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                email_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The email address associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string email = 5;</code>
-         *
-         * @return The bytes for email.
-         */
-        public com.google.protobuf.ByteString getEmailBytes() {
-            java.lang.Object ref = email_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                email_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The email address associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string email = 5;</code>
-         *
-         * @param value The email to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEmail(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            email_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The email address associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string email = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearEmail() {
-            email_ = getDefaultInstance().getEmail();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The email address associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string email = 5;</code>
-         *
-         * @param value The bytes for email to set.
-         * @return This builder for chaining.
-         */
-        public Builder setEmailBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            email_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object domain_ = "";
-
-        /**
-         * <pre>
-         * The domain associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string domain = 6;</code>
-         *
-         * @return The domain.
-         */
-        public java.lang.String getDomain() {
-            java.lang.Object ref = domain_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                domain_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The domain associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string domain = 6;</code>
-         *
-         * @return The bytes for domain.
-         */
-        public com.google.protobuf.ByteString getDomainBytes() {
-            java.lang.Object ref = domain_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                domain_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The domain associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string domain = 6;</code>
-         *
-         * @param value The domain to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDomain(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            domain_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The domain associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string domain = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearDomain() {
-            domain_ = getDefaultInstance().getDomain();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The domain associated with the entity, if any.
-         * </pre>
-         *
-         * <code>string domain = 6;</code>
-         *
-         * @param value The bytes for domain to set.
-         * @return This builder for chaining.
-         */
-        public Builder setDomainBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            domain_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.ProjectTeam projectTeam_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ProjectTeam, com.google.storage.v2.ProjectTeam.Builder, com.google.storage.v2.ProjectTeamOrBuilder> projectTeamBuilder_;
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         *
-         * @return Whether the projectTeam field is set.
-         */
-        public boolean hasProjectTeam() {
-            return null != projectTeamBuilder_ || null != projectTeam_;
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         *
-         * @return The projectTeam.
-         */
-        public com.google.storage.v2.ProjectTeam getProjectTeam() {
-            if (null != projectTeamBuilder_) {
-                return projectTeamBuilder_.getMessage();
-            } else {
-                return null == projectTeam_ ? com.google.storage.v2.ProjectTeam.getDefaultInstance() : projectTeam_;
-            }
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public Builder setProjectTeam(com.google.storage.v2.ProjectTeam value) {
-            if (null != projectTeamBuilder_) {
-                projectTeamBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                projectTeam_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public Builder setProjectTeam(com.google.storage.v2.ProjectTeam.Builder builderForValue) {
-            if (null != projectTeamBuilder_) {
-                projectTeamBuilder_.setMessage(builderForValue.build());
-            } else {
-                projectTeam_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public Builder mergeProjectTeam(com.google.storage.v2.ProjectTeam value) {
-            if (null != projectTeamBuilder_) {
-                projectTeamBuilder_.mergeFrom(value);
-            } else {
-                if (null == projectTeam_) {
-                    projectTeam_ = value;
-                } else {
-                    projectTeam_ = com.google.storage.v2.ProjectTeam.newBuilder(projectTeam_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public Builder clearProjectTeam() {
-            if (null != projectTeamBuilder_) {
-                projectTeam_ = null;
-                projectTeamBuilder_ = null;
-            } else {
-                projectTeam_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public com.google.storage.v2.ProjectTeam.Builder getProjectTeamBuilder() {
-            onChanged();
-            return getProjectTeamFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        public com.google.storage.v2.ProjectTeamOrBuilder getProjectTeamOrBuilder() {
-            if (null == projectTeamBuilder_) {
-                return null == projectTeam_ ? com.google.storage.v2.ProjectTeam.getDefaultInstance() : projectTeam_;
-            } else {
-                return projectTeamBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * The project team associated with the entity, if any.
-         * </pre>
-         *
-         * <code>.google.storage.v2.ProjectTeam project_team = 7;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ProjectTeam, com.google.storage.v2.ProjectTeam.Builder, com.google.storage.v2.ProjectTeamOrBuilder> getProjectTeamFieldBuilder() {
-            if (null == projectTeamBuilder_) {
-                projectTeamBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.ProjectTeam, com.google.storage.v2.ProjectTeam.Builder, com.google.storage.v2.ProjectTeamOrBuilder>(getProjectTeam(), getParentForChildren(), isClean());
-                projectTeam_ = null;
-            }
-            return projectTeamBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ObjectAccessControl)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ObjectAccessControl)
-    private static final com.google.storage.v2.ObjectAccessControl DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ObjectAccessControl();
-    }
-
-    public static com.google.storage.v2.ObjectAccessControl getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ObjectAccessControl> PARSER = new com.google.protobuf.AbstractParser<ObjectAccessControl>() {
-
-        @java.lang.Override
-        public ObjectAccessControl parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ObjectAccessControl(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ObjectAccessControl> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ObjectAccessControl> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ObjectAccessControl getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

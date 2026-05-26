@@ -83,144 +83,145 @@ import javax.annotation.Generated;
 @Generated("by gapic-generator-java")
 public abstract class StorageStub implements BackgroundResource {
 
-  public UnaryCallable<DeleteBucketRequest, Empty> deleteBucketCallable() {
-    throw new UnsupportedOperationException("Not implemented: deleteBucketCallable()");
-  }
+    public UnaryCallable<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysCallable() {
+      throw new UnsupportedOperationException("Not implemented: listHmacKeysCallable()");
+    }
 
-  public UnaryCallable<GetBucketRequest, Bucket> getBucketCallable() {
-    throw new UnsupportedOperationException("Not implemented: getBucketCallable()");
-  }
+    public UnaryCallable<GetServiceAccountRequest, ServiceAccount> getServiceAccountCallable() {
+      throw new UnsupportedOperationException("Not implemented: getServiceAccountCallable()");
+    }
 
-  public UnaryCallable<CreateBucketRequest, Bucket> createBucketCallable() {
-    throw new UnsupportedOperationException("Not implemented: createBucketCallable()");
-  }
+    public ServerStreamingCallable<ReadObjectRequest, ReadObjectResponse> readObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: readObjectCallable()");
+    }
 
-  public UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsPagedCallable() {
-    throw new UnsupportedOperationException("Not implemented: listBucketsPagedCallable()");
-  }
+    public UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsPagedCallable() {
+      throw new UnsupportedOperationException("Not implemented: listObjectsPagedCallable()");
+    }
 
-  public UnaryCallable<ListBucketsRequest, ListBucketsResponse> listBucketsCallable() {
-    throw new UnsupportedOperationException("Not implemented: listBucketsCallable()");
-  }
+    public UnaryCallable<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyCallable() {
+      throw new UnsupportedOperationException("Not implemented: updateHmacKeyCallable()");
+    }
 
-  public UnaryCallable<LockBucketRetentionPolicyRequest, Bucket>
-      lockBucketRetentionPolicyCallable() {
-    throw new UnsupportedOperationException("Not implemented: lockBucketRetentionPolicyCallable()");
-  }
+    public UnaryCallable<DeleteNotificationRequest, Empty> deleteNotificationCallable() {
+      throw new UnsupportedOperationException("Not implemented: deleteNotificationCallable()");
+    }
 
-  public UnaryCallable<GetIamPolicyRequest, Policy> getIamPolicyCallable() {
-    throw new UnsupportedOperationException("Not implemented: getIamPolicyCallable()");
-  }
+    public UnaryCallable<ListObjectsRequest, ListObjectsResponse> listObjectsCallable() {
+      throw new UnsupportedOperationException("Not implemented: listObjectsCallable()");
+    }
 
-  public UnaryCallable<SetIamPolicyRequest, Policy> setIamPolicyCallable() {
-    throw new UnsupportedOperationException("Not implemented: setIamPolicyCallable()");
-  }
+    public UnaryCallable<GetObjectRequest, Object> getObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: getObjectCallable()");
+    }
 
-  public UnaryCallable<TestIamPermissionsRequest, TestIamPermissionsResponse>
-      testIamPermissionsCallable() {
-    throw new UnsupportedOperationException("Not implemented: testIamPermissionsCallable()");
-  }
+    public UnaryCallable<DeleteHmacKeyRequest, Empty> deleteHmacKeyCallable() {
+      throw new UnsupportedOperationException("Not implemented: deleteHmacKeyCallable()");
+    }
 
-  public UnaryCallable<UpdateBucketRequest, Bucket> updateBucketCallable() {
-    throw new UnsupportedOperationException("Not implemented: updateBucketCallable()");
-  }
+    @Override
+    public abstract void close();
 
-  public UnaryCallable<DeleteNotificationRequest, Empty> deleteNotificationCallable() {
-    throw new UnsupportedOperationException("Not implemented: deleteNotificationCallable()");
-  }
+    public UnaryCallable<DeleteObjectRequest, Empty> deleteObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: deleteObjectCallable()");
+    }
 
-  public UnaryCallable<GetNotificationRequest, Notification> getNotificationCallable() {
-    throw new UnsupportedOperationException("Not implemented: getNotificationCallable()");
-  }
+    public UnaryCallable<QueryWriteStatusRequest, QueryWriteStatusResponse>
+        queryWriteStatusCallable() {
+      throw new UnsupportedOperationException("Not implemented: queryWriteStatusCallable()");
+    }
 
-  public UnaryCallable<CreateNotificationRequest, Notification> createNotificationCallable() {
-    throw new UnsupportedOperationException("Not implemented: createNotificationCallable()");
-  }
+    public UnaryCallable<ListBucketsRequest, ListBucketsPagedResponse> listBucketsPagedCallable() {
+      throw new UnsupportedOperationException("Not implemented: listBucketsPagedCallable()");
+    }
 
-  public UnaryCallable<ListNotificationsRequest, ListNotificationsPagedResponse>
-      listNotificationsPagedCallable() {
-    throw new UnsupportedOperationException("Not implemented: listNotificationsPagedCallable()");
-  }
+    public UnaryCallable<UpdateBucketRequest, Bucket> updateBucketCallable() {
+      throw new UnsupportedOperationException("Not implemented: updateBucketCallable()");
+    }
 
-  public UnaryCallable<ListNotificationsRequest, ListNotificationsResponse>
-      listNotificationsCallable() {
-    throw new UnsupportedOperationException("Not implemented: listNotificationsCallable()");
-  }
+    public UnaryCallable<UpdateObjectRequest, Object> updateObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: updateObjectCallable()");
+    }
 
-  public UnaryCallable<ComposeObjectRequest, Object> composeObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: composeObjectCallable()");
-  }
+    public UnaryCallable<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyCallable() {
+      throw new UnsupportedOperationException("Not implemented: getHmacKeyCallable()");
+    }
 
-  public UnaryCallable<DeleteObjectRequest, Empty> deleteObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: deleteObjectCallable()");
-  }
+    public UnaryCallable<ListNotificationsRequest, ListNotificationsPagedResponse>
+        listNotificationsPagedCallable() {
+      throw new UnsupportedOperationException("Not implemented: listNotificationsPagedCallable()");
+    }
 
-  public UnaryCallable<GetObjectRequest, Object> getObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: getObjectCallable()");
-  }
+    public UnaryCallable<ListNotificationsRequest, ListNotificationsResponse>
+        listNotificationsCallable() {
+      throw new UnsupportedOperationException("Not implemented: listNotificationsCallable()");
+    }
 
-  public ServerStreamingCallable<ReadObjectRequest, ReadObjectResponse> readObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: readObjectCallable()");
-  }
+    public UnaryCallable<DeleteBucketRequest, Empty> deleteBucketCallable() {
+      throw new UnsupportedOperationException("Not implemented: deleteBucketCallable()");
+    }
 
-  public UnaryCallable<UpdateObjectRequest, Object> updateObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: updateObjectCallable()");
-  }
+    public UnaryCallable<ComposeObjectRequest, Object> composeObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: composeObjectCallable()");
+    }
 
-  public ClientStreamingCallable<WriteObjectRequest, WriteObjectResponse> writeObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: writeObjectCallable()");
-  }
+    public ClientStreamingCallable<WriteObjectRequest, WriteObjectResponse> writeObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: writeObjectCallable()");
+    }
 
-  public UnaryCallable<ListObjectsRequest, ListObjectsPagedResponse> listObjectsPagedCallable() {
-    throw new UnsupportedOperationException("Not implemented: listObjectsPagedCallable()");
-  }
+    public UnaryCallable<RewriteObjectRequest, RewriteResponse> rewriteObjectCallable() {
+      throw new UnsupportedOperationException("Not implemented: rewriteObjectCallable()");
+    }
 
-  public UnaryCallable<ListObjectsRequest, ListObjectsResponse> listObjectsCallable() {
-    throw new UnsupportedOperationException("Not implemented: listObjectsCallable()");
-  }
+    public UnaryCallable<StartResumableWriteRequest, StartResumableWriteResponse>
+        startResumableWriteCallable() {
+      throw new UnsupportedOperationException("Not implemented: startResumableWriteCallable()");
+    }
 
-  public UnaryCallable<RewriteObjectRequest, RewriteResponse> rewriteObjectCallable() {
-    throw new UnsupportedOperationException("Not implemented: rewriteObjectCallable()");
-  }
+    public UnaryCallable<CreateNotificationRequest, Notification> createNotificationCallable() {
+      throw new UnsupportedOperationException("Not implemented: createNotificationCallable()");
+    }
 
-  public UnaryCallable<StartResumableWriteRequest, StartResumableWriteResponse>
-      startResumableWriteCallable() {
-    throw new UnsupportedOperationException("Not implemented: startResumableWriteCallable()");
-  }
+    public UnaryCallable<ListBucketsRequest, ListBucketsResponse> listBucketsCallable() {
+      throw new UnsupportedOperationException("Not implemented: listBucketsCallable()");
+    }
 
-  public UnaryCallable<QueryWriteStatusRequest, QueryWriteStatusResponse>
-      queryWriteStatusCallable() {
-    throw new UnsupportedOperationException("Not implemented: queryWriteStatusCallable()");
-  }
+    public UnaryCallable<CreateBucketRequest, Bucket> createBucketCallable() {
+      throw new UnsupportedOperationException("Not implemented: createBucketCallable()");
+    }
 
-  public UnaryCallable<GetServiceAccountRequest, ServiceAccount> getServiceAccountCallable() {
-    throw new UnsupportedOperationException("Not implemented: getServiceAccountCallable()");
-  }
+    public UnaryCallable<TestIamPermissionsRequest, TestIamPermissionsResponse>
+        testIamPermissionsCallable() {
+      throw new UnsupportedOperationException("Not implemented: testIamPermissionsCallable()");
+    }
 
-  public UnaryCallable<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyCallable() {
-    throw new UnsupportedOperationException("Not implemented: createHmacKeyCallable()");
-  }
+    public UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacKeysPagedCallable() {
+      throw new UnsupportedOperationException("Not implemented: listHmacKeysPagedCallable()");
+    }
 
-  public UnaryCallable<DeleteHmacKeyRequest, Empty> deleteHmacKeyCallable() {
-    throw new UnsupportedOperationException("Not implemented: deleteHmacKeyCallable()");
-  }
+    public UnaryCallable<GetBucketRequest, Bucket> getBucketCallable() {
+      throw new UnsupportedOperationException("Not implemented: getBucketCallable()");
+    }
 
-  public UnaryCallable<GetHmacKeyRequest, HmacKeyMetadata> getHmacKeyCallable() {
-    throw new UnsupportedOperationException("Not implemented: getHmacKeyCallable()");
-  }
+    public UnaryCallable<GetIamPolicyRequest, Policy> getIamPolicyCallable() {
+      throw new UnsupportedOperationException("Not implemented: getIamPolicyCallable()");
+    }
 
-  public UnaryCallable<ListHmacKeysRequest, ListHmacKeysPagedResponse> listHmacKeysPagedCallable() {
-    throw new UnsupportedOperationException("Not implemented: listHmacKeysPagedCallable()");
-  }
+    public UnaryCallable<CreateHmacKeyRequest, CreateHmacKeyResponse> createHmacKeyCallable() {
+      throw new UnsupportedOperationException("Not implemented: createHmacKeyCallable()");
+    }
 
-  public UnaryCallable<ListHmacKeysRequest, ListHmacKeysResponse> listHmacKeysCallable() {
-    throw new UnsupportedOperationException("Not implemented: listHmacKeysCallable()");
-  }
+    public UnaryCallable<GetNotificationRequest, Notification> getNotificationCallable() {
+      throw new UnsupportedOperationException("Not implemented: getNotificationCallable()");
+    }
 
-  public UnaryCallable<UpdateHmacKeyRequest, HmacKeyMetadata> updateHmacKeyCallable() {
-    throw new UnsupportedOperationException("Not implemented: updateHmacKeyCallable()");
-  }
+    public UnaryCallable<SetIamPolicyRequest, Policy> setIamPolicyCallable() {
+      throw new UnsupportedOperationException("Not implemented: setIamPolicyCallable()");
+    }
 
-  @Override
-  public abstract void close();
+    public UnaryCallable<LockBucketRetentionPolicyRequest, Bucket>
+        lockBucketRetentionPolicyCallable() {
+      throw new UnsupportedOperationException("Not implemented: lockBucketRetentionPolicyCallable()");
+    }
+
 }

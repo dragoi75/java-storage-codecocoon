@@ -23,32 +23,34 @@ public interface GetServiceAccountRequestOrBuilder
     // @@protoc_insertion_point(interface_extends:google.storage.v2.GetServiceAccountRequest)
     com.google.protobuf.MessageOrBuilder {
 
-  /**
-   *
-   *
-   * <pre>
-   * Required. Project ID.
-   * </pre>
-   *
-   * <code>
-   * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-   * </code>
-   *
-   * @return The project.
-   */
-  java.lang.String getProject();
-  /**
-   *
-   *
-   * <pre>
-   * Required. Project ID.
-   * </pre>
-   *
-   * <code>
-   * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-   * </code>
-   *
-   * @return The bytes for project.
-   */
-  com.google.protobuf.ByteString getProjectBytes();
+    /**
+     *
+     *
+     * <pre>
+     * Required. Project ID.
+     * </pre>
+     *
+     * <code>
+     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for project.
+     */
+    com.google.protobuf.ByteString getProjectBytes();
+
+    /**
+     *
+     *
+     * <pre>
+     * Required. Project ID.
+     * </pre>
+     *
+     * <code>
+     * string project = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The project.
+     */
+    java.lang.String getProject();
+
 }

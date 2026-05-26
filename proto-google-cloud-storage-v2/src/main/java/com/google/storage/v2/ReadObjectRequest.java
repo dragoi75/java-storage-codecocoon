@@ -30,25 +30,1548 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
 
     private static final long serialVersionUID = 0L;
 
-    // Use ReadObjectRequest.newBuilder() to construct.
-    private ReadObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    private int bitField0_;
+
+    public static final int BUCKET_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object bucket_;
+
+    public static final int OBJECT_FIELD_NUMBER = 2;
+
+    private volatile java.lang.Object object_;
+
+    public static final int GENERATION_FIELD_NUMBER = 3;
+
+    private long generation_;
+
+    public static final int READ_OFFSET_FIELD_NUMBER = 4;
+
+    private long readOffset_;
+
+    public static final int READ_LIMIT_FIELD_NUMBER = 5;
+
+    private long readLimit_;
+
+    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 6;
+
+    private long ifGenerationMatch_;
+
+    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 7;
+
+    private long ifGenerationNotMatch_;
+
+    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 8;
+
+    private long ifMetagenerationMatch_;
+
+    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 9;
+
+    private long ifMetagenerationNotMatch_;
+
+    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 10;
+
+    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+    public static final int READ_MASK_FIELD_NUMBER = 12;
+
+    private com.google.protobuf.FieldMask readMask_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for ReadObject.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ReadObjectRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ReadObjectRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ReadObjectRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ReadObjectRequestOrBuilder {
+
+        private int bitField0_;
+
+        private java.lang.Object bucket_ = "";
+
+        private java.lang.Object object_ = "";
+
+        private long generation_;
+
+        private long readOffset_;
+
+        private long readLimit_;
+
+        private long ifGenerationMatch_;
+
+        private long ifGenerationNotMatch_;
+
+        private long ifMetagenerationMatch_;
+
+        private long ifMetagenerationNotMatch_;
+
+        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
+
+        private com.google.protobuf.FieldMask readMask_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ReadObjectRequest)
+
+        /**
+         * <pre>
+         * The name of the bucket containing the object to read.
+         * </pre>
+         *
+         * <code>string bucket = 1;</code>
+         *
+         * @return The bucket.
+         */
+        public java.lang.String getBucket() {
+            java.lang.Object ref = bucket_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                bucket_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<CommonObjectRequestParams, CommonObjectRequestParams.Builder, CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
+                commonObjectRequestParams_ = null;
+            }
+            return commonObjectRequestParamsBuilder_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder mergeCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.mergeFrom(value);
+            } else {
+                if (null == commonObjectRequestParams_) {
+                    commonObjectRequestParams_ = value;
+                } else {
+                    commonObjectRequestParams_ = CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 8;</code>
+         *
+         * @return Whether the ifMetagenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationMatch() {
+            return (0 != (bitField0_ & 0x00000004));
+        }
+
+        /**
+         * <pre>
+         * The maximum number of `data` bytes the server is allowed to return in the
+         * sum of all `Object` messages. A `read_limit` of zero indicates that there
+         * is no limit, and a negative `read_limit` will cause an error.
+         * If the stream returns fewer bytes than allowed by the `read_limit` and no
+         * error occurred, the stream includes all data from the `read_offset` to the
+         * end of the resource.
+         * </pre>
+         *
+         * <code>int64 read_limit = 5;</code>
+         *
+         * @return The readLimit.
+         */
+        @java.lang.Override
+        public long getReadLimit() {
+            return readLimit_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 8;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the object to read.
+         * </pre>
+         *
+         * <code>string object = 2;</code>
+         *
+         * @return The object.
+         */
+        public java.lang.String getObject() {
+            java.lang.Object ref = object_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                object_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of this object (as opposed
+         * to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 3;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearGeneration() {
+            generation_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+            if (null == commonObjectRequestParamsBuilder_) {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            } else {
+                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 6;</code>
+         *
+         * @return The ifGenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationMatch() {
+            return ifGenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         *
+         * @return Whether the readMask field is set.
+         */
+        public boolean hasReadMask() {
+            return (0 != (bitField0_ & 0x00000010));
+        }
+
+        /**
+         * <pre>
+         * The name of the bucket containing the object to read.
+         * </pre>
+         *
+         * <code>string bucket = 1;</code>
+         *
+         * @param value The bytes for bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the object to read.
+         * </pre>
+         *
+         * <code>string object = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearObject() {
+            object_ = getDefaultInstance().getObject();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            bucket_ = "";
+            object_ = "";
+            generation_ = 0L;
+            readOffset_ = 0L;
+            readLimit_ = 0L;
+            ifGenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifMetagenerationMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            ifMetagenerationNotMatch_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+            }
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+            }
+            bitField0_ = (bitField0_ & ~0x00000010);
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+                getReadMaskFieldBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 7;</code>
+         *
+         * @return The ifGenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfGenerationNotMatch() {
+            return ifGenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 9;</code>
+         *
+         * @return Whether the ifMetagenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfMetagenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000008));
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder clearCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParams_ = null;
+                commonObjectRequestParamsBuilder_ = null;
+            } else {
+                commonObjectRequestParams_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams value) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                commonObjectRequestParams_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the bucket containing the object to read.
+         * </pre>
+         *
+         * <code>string bucket = 1;</code>
+         *
+         * @param value The bucket to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucket(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            bucket_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ReadObjectRequest build() {
+            ReadObjectRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            ifGenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 8;</code>
+         *
+         * @return The ifMetagenerationMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationMatch() {
+            return ifMetagenerationMatch_;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         *
+         * @return Whether the commonObjectRequestParams field is set.
+         */
+        public boolean hasCommonObjectRequestParams() {
+            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 9;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfMetagenerationNotMatch() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            ifMetagenerationNotMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * The name of the object to read.
+         * </pre>
+         *
+         * <code>string object = 2;</code>
+         *
+         * @param value The bytes for object to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObjectBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            object_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public Builder setCommonObjectRequestParams(CommonObjectRequestParams.Builder builderForValue) {
+            if (null != commonObjectRequestParamsBuilder_) {
+                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
+            } else {
+                commonObjectRequestParams_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         *
+         * @return The readMask.
+         */
+        public com.google.protobuf.FieldMask getReadMask() {
+            if (null != readMaskBuilder_) {
+                return readMaskBuilder_.getMessage();
+            } else {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of this object (as opposed
+         * to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 3;</code>
+         *
+         * @return The generation.
+         */
+        @java.lang.Override
+        public long getGeneration() {
+            return generation_;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+            if (null == readMaskBuilder_) {
+                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+            } else {
+                return readMaskBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ReadObjectRequest.class, Builder.class);
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
+            bitField0_ |= 0x00000010;
+            onChanged();
+            return getReadMaskFieldBuilder().getBuilder();
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 6;</code>
+         *
+         * @return Whether the ifGenerationMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationMatch() {
+            return (0 != (bitField0_ & 0x00000001));
+        }
+
+        @java.lang.Override
+        public ReadObjectRequest buildPartial() {
+            ReadObjectRequest result = new ReadObjectRequest(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            result.bucket_ = bucket_;
+            result.object_ = object_;
+            result.generation_ = generation_;
+            result.readOffset_ = readOffset_;
+            result.readLimit_ = readLimit_;
+            if ((0 != (from_bitField0_ & 0x00000001))) {
+                result.ifGenerationMatch_ = ifGenerationMatch_;
+                to_bitField0_ |= 0x00000001;
+            }
+            if ((0 != (from_bitField0_ & 0x00000002))) {
+                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
+                to_bitField0_ |= 0x00000002;
+            }
+            if ((0 != (from_bitField0_ & 0x00000004))) {
+                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
+                to_bitField0_ |= 0x00000004;
+            }
+            if ((0 != (from_bitField0_ & 0x00000008))) {
+                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
+                to_bitField0_ |= 0x00000008;
+            }
+            if (null != commonObjectRequestParamsBuilder_) {
+                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
+            } else {
+                result.commonObjectRequestParams_ = commonObjectRequestParams_;
+            }
+            if ((0 != (from_bitField0_ & 0x00000010))) {
+                if (null != readMaskBuilder_) {
+                    result.readMask_ = readMaskBuilder_.build();
+                } else {
+                    result.readMask_ = readMask_;
+                }
+                to_bitField0_ |= 0x00000010;
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * The name of the bucket containing the object to read.
+         * </pre>
+         *
+         * <code>string bucket = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearBucket() {
+            bucket_ = getDefaultInstance().getBucket();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The offset for the first byte to return in the read, relative to the start
+         * of the object.
+         * A negative `read_offset` value will be interpreted as the number of bytes
+         * back from the end of the object to be returned. For example, if an object's
+         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
+         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
+         * a negative offset whose magnitude is larger than the size of the object
+         * will result in an error.
+         * </pre>
+         *
+         * <code>int64 read_offset = 4;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearReadOffset() {
+            readOffset_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         */
+        public CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
+            onChanged();
+            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * The name of the object to read.
+         * </pre>
+         *
+         * <code>string object = 2;</code>
+         *
+         * @return The bytes for object.
+         */
+        public com.google.protobuf.ByteString getObjectBytes() {
+            java.lang.Object ref = object_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                object_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 7;</code>
+         *
+         * @param value The ifGenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationNotMatch(long value) {
+            bitField0_ |= 0x00000002;
+            ifGenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The offset for the first byte to return in the read, relative to the start
+         * of the object.
+         * A negative `read_offset` value will be interpreted as the number of bytes
+         * back from the end of the object to be returned. For example, if an object's
+         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
+         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
+         * a negative offset whose magnitude is larger than the size of the object
+         * will result in an error.
+         * </pre>
+         *
+         * <code>int64 read_offset = 4;</code>
+         *
+         * @return The readOffset.
+         */
+        @java.lang.Override
+        public long getReadOffset() {
+            return readOffset_;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.mergeFrom(value);
+            } else {
+                if (!(0 != (bitField0_ & 0x00000010)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
+                    readMask_ = value;
+                } else {
+                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            bitField0_ |= 0x00000010;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 9;</code>
+         *
+         * @param value The ifMetagenerationNotMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationNotMatch(long value) {
+            bitField0_ |= 0x00000008;
+            ifMetagenerationNotMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * A set of parameters common to Storage API requests concerning an object.
+         * </pre>
+         *
+         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+         *
+         * @return The commonObjectRequestParams.
+         */
+        public CommonObjectRequestParams getCommonObjectRequestParams() {
+            if (null != commonObjectRequestParamsBuilder_) {
+                return commonObjectRequestParamsBuilder_.getMessage();
+            } else {
+                return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+            }
+        }
+
+        /**
+         * <pre>
+         * The name of the object to read.
+         * </pre>
+         *
+         * <code>string object = 2;</code>
+         *
+         * @param value The object to set.
+         * @return This builder for chaining.
+         */
+        public Builder setObject(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            object_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The offset for the first byte to return in the read, relative to the start
+         * of the object.
+         * A negative `read_offset` value will be interpreted as the number of bytes
+         * back from the end of the object to be returned. For example, if an object's
+         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
+         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
+         * a negative offset whose magnitude is larger than the size of the object
+         * will result in an error.
+         * </pre>
+         *
+         * <code>int64 read_offset = 4;</code>
+         *
+         * @param value The readOffset to set.
+         * @return This builder for chaining.
+         */
+        public Builder setReadOffset(long value) {
+            readOffset_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public ReadObjectRequest getDefaultInstanceForType() {
+            return ReadObjectRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 6;</code>
+         *
+         * @param value The ifGenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfGenerationMatch(long value) {
+            bitField0_ |= 0x00000001;
+            ifGenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The maximum number of `data` bytes the server is allowed to return in the
+         * sum of all `Object` messages. A `read_limit` of zero indicates that there
+         * is no limit, and a negative `read_limit` will cause an error.
+         * If the stream returns fewer bytes than allowed by the `read_limit` and no
+         * error occurred, the stream includes all data from the `read_offset` to the
+         * end of the resource.
+         * </pre>
+         *
+         * <code>int64 read_limit = 5;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearReadLimit() {
+            readLimit_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The maximum number of `data` bytes the server is allowed to return in the
+         * sum of all `Object` messages. A `read_limit` of zero indicates that there
+         * is no limit, and a negative `read_limit` will cause an error.
+         * If the stream returns fewer bytes than allowed by the `read_limit` and no
+         * error occurred, the stream includes all data from the `read_offset` to the
+         * end of the resource.
+         * </pre>
+         *
+         * <code>int64 read_limit = 5;</code>
+         *
+         * @param value The readLimit to set.
+         * @return This builder for chaining.
+         */
+        public Builder setReadLimit(long value) {
+            readLimit_ = value;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.ReadObjectRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
+            if (null == readMaskBuilder_) {
+                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
+                readMask_ = null;
+            }
+            return readMaskBuilder_;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ReadObjectRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ReadObjectRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration matches the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_match = 8;</code>
+         *
+         * @param value The ifMetagenerationMatch to set.
+         * @return This builder for chaining.
+         */
+        public Builder setIfMetagenerationMatch(long value) {
+            bitField0_ |= 0x00000004;
+            ifMetagenerationMatch_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(builderForValue.build());
+            } else {
+                readMask_ = builderForValue.build();
+                onChanged();
+            }
+            bitField0_ |= 0x00000010;
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public Builder clearReadMask() {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.clear();
+            } else {
+                readMask_ = null;
+                onChanged();
+            }
+            bitField0_ = (bitField0_ & ~0x00000010);
+            return this;
+        }
+
+        public Builder mergeFrom(ReadObjectRequest other) {
+            if (ReadObjectRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getBucket().isEmpty()) {
+                bucket_ = other.bucket_;
+                onChanged();
+            }
+            if (!other.getObject().isEmpty()) {
+                object_ = other.object_;
+                onChanged();
+            }
+            if (0L != other.getGeneration()) {
+                setGeneration(other.getGeneration());
+            }
+            if (0L != other.getReadOffset()) {
+                setReadOffset(other.getReadOffset());
+            }
+            if (0L != other.getReadLimit()) {
+                setReadLimit(other.getReadLimit());
+            }
+            if (other.hasIfGenerationMatch()) {
+                setIfGenerationMatch(other.getIfGenerationMatch());
+            }
+            if (other.hasIfGenerationNotMatch()) {
+                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
+            }
+            if (other.hasIfMetagenerationMatch()) {
+                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
+            }
+            if (other.hasIfMetagenerationNotMatch()) {
+                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
+            }
+            if (other.hasCommonObjectRequestParams()) {
+                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
+            }
+            if (other.hasReadMask()) {
+                mergeReadMask(other.getReadMask());
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current
+         * metageneration does not match the given value.
+         * </pre>
+         *
+         * <code>optional int64 if_metageneration_not_match = 9;</code>
+         *
+         * @return The ifMetagenerationNotMatch.
+         */
+        @java.lang.Override
+        public long getIfMetagenerationNotMatch() {
+            return ifMetagenerationNotMatch_;
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * matches the given value. Setting to 0 makes the operation succeed only if
+         * there are no live versions of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_match = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearIfGenerationMatch() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            ifGenerationMatch_ = 0L;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * The name of the bucket containing the object to read.
+         * </pre>
+         *
+         * <code>string bucket = 1;</code>
+         *
+         * @return The bytes for bucket.
+         */
+        public com.google.protobuf.ByteString getBucketBytes() {
+            java.lang.Object ref = bucket_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                bucket_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Makes the operation conditional on whether the object's current generation
+         * does not match the given value. If no live object exists, the precondition
+         * fails. Setting to 0 makes the operation succeed only if there is a live
+         * version of the object.
+         * </pre>
+         *
+         * <code>optional int64 if_generation_not_match = 7;</code>
+         *
+         * @return Whether the ifGenerationNotMatch field is set.
+         */
+        @java.lang.Override
+        public boolean hasIfGenerationNotMatch() {
+            return (0 != (bitField0_ & 0x00000002));
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ReadObjectRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ReadObjectRequest) other);
+            }
+        }
+
+        /**
+         * <pre>
+         * If present, selects a specific revision of this object (as opposed
+         * to the latest version, the default).
+         * </pre>
+         *
+         * <code>int64 generation = 3;</code>
+         *
+         * @param value The generation to set.
+         * @return This builder for chaining.
+         */
+        public Builder setGeneration(long value) {
+            generation_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Mask specifying which fields to read.
+         * The checksummed_data field and its children will always be present.
+         * If no mask is specified, will default to all fields except metadata.owner
+         * and metadata.acl.
+         * * may be used to mean "all fields".
+         * </pre>
+         *
+         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+         */
+        public Builder setReadMask(com.google.protobuf.FieldMask value) {
+            if (null != readMaskBuilder_) {
+                readMaskBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                readMask_ = value;
+                onChanged();
+            }
+            bitField0_ |= 0x00000010;
+            return this;
+        }
+
     }
 
-    private ReadObjectRequest() {
-        bucket_ = "";
-        object_ = "";
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ReadObjectRequest)
+    private static final com.google.storage.v2.ReadObjectRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ReadObjectRequest();
+    }
+
+    private static final com.google.protobuf.Parser<ReadObjectRequest> PARSER = new com.google.protobuf.AbstractParser<ReadObjectRequest>() {
+
+        @java.lang.Override
+        public ReadObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ReadObjectRequest(input, extensionRegistry);
+        }
+    };
+
+    public static ReadObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static ReadObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
     }
 
     @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ReadObjectRequest();
+    public com.google.protobuf.Parser<ReadObjectRequest> getParserForType() {
+        return PARSER;
+    }
+
+    /**
+     * <pre>
+     * The name of the object to read.
+     * </pre>
+     *
+     * <code>string object = 2;</code>
+     *
+     * @return The bytes for object.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getObjectBytes() {
+        java.lang.Object ref = object_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            object_ = b;
+            return b;
+        }
+    }
+
+    public static ReadObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    public static ReadObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 8;</code>
+     *
+     * @return The ifMetagenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationMatch() {
+        return ifMetagenerationMatch_;
     }
 
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * does not match the given value. If no live object exists, the precondition
+     * fails. Setting to 0 makes the operation succeed only if there is a live
+     * version of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_not_match = 7;</code>
+     *
+     * @return Whether the ifGenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000002));
+    }
+
+    /**
+     * <pre>
+     * If present, selects a specific revision of this object (as opposed
+     * to the latest version, the default).
+     * </pre>
+     *
+     * <code>int64 generation = 3;</code>
+     *
+     * @return The generation.
+     */
+    @java.lang.Override
+    public long getGeneration() {
+        return generation_;
+    }
+
+    public static ReadObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static ReadObjectRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     *
+     * @return The commonObjectRequestParams.
+     */
+    @java.lang.Override
+    public CommonObjectRequestParams getCommonObjectRequestParams() {
+        return null == commonObjectRequestParams_ ? CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
+    }
+
+    /**
+     * <pre>
+     * The name of the object to read.
+     * </pre>
+     *
+     * <code>string object = 2;</code>
+     *
+     * @return The object.
+     */
+    @java.lang.Override
+    public java.lang.String getObject() {
+        java.lang.Object ref = object_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            object_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read.
+     * The checksummed_data field and its children will always be present.
+     * If no mask is specified, will default to all fields except metadata.owner
+     * and metadata.acl.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+     *
+     * @return The readMask.
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMask getReadMask() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 9;</code>
+     *
+     * @return The ifMetagenerationNotMatch.
+     */
+    @java.lang.Override
+    public long getIfMetagenerationNotMatch() {
+        return ifMetagenerationNotMatch_;
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
+        hash = (53 * hash) + getBucket().hashCode();
+        hash = (37 * hash) + OBJECT_FIELD_NUMBER;
+        hash = (53 * hash) + getObject().hashCode();
+        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
+        hash = (37 * hash) + READ_OFFSET_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getReadOffset());
+        hash = (37 * hash) + READ_LIMIT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getReadLimit());
+        if (hasIfGenerationMatch()) {
+            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
+        }
+        if (hasIfGenerationNotMatch()) {
+            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
+        }
+        if (hasIfMetagenerationMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
+        }
+        if (hasIfMetagenerationNotMatch()) {
+            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
+            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
+        }
+        if (hasCommonObjectRequestParams()) {
+            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
+            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
+        }
+        if (hasReadMask()) {
+            hash = (37 * hash) + READ_MASK_FIELD_NUMBER;
+            hash = (53 * hash) + getReadMask().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
     }
 
     private ReadObjectRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -119,11 +1642,11 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
                         }
                     case 82:
                         {
-                            com.google.storage.v2.CommonObjectRequestParams.Builder subBuilder = null;
+                            CommonObjectRequestParams.Builder subBuilder = null;
                             if (null != commonObjectRequestParams_) {
                                 subBuilder = commonObjectRequestParams_.toBuilder();
                             }
-                            commonObjectRequestParams_ = input.readMessage(com.google.storage.v2.CommonObjectRequestParams.parser(), extensionRegistry);
+                            commonObjectRequestParams_ = input.readMessage(CommonObjectRequestParams.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(commonObjectRequestParams_);
                                 commonObjectRequestParams_ = subBuilder.buildPartial();
@@ -165,20 +1688,107 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
-    }
-
     @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ReadObjectRequest.class, com.google.storage.v2.ReadObjectRequest.Builder.class);
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
     }
 
-    private int bitField0_;
+    public static ReadObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
 
-    public static final int BUCKET_FIELD_NUMBER = 1;
+    public static ReadObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
 
-    private volatile java.lang.Object bucket_;
+    public static ReadObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ReadObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration matches the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_match = 8;</code>
+     *
+     * @return Whether the ifMetagenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationMatch() {
+        return (0 != (bitField0_ & 0x00000004));
+    }
+
+    public static com.google.protobuf.Parser<ReadObjectRequest> parser() {
+        return PARSER;
+    }
+
+    public static ReadObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * The offset for the first byte to return in the read, relative to the start
+     * of the object.
+     * A negative `read_offset` value will be interpreted as the number of bytes
+     * back from the end of the object to be returned. For example, if an object's
+     * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
+     * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
+     * a negative offset whose magnitude is larger than the size of the object
+     * will result in an error.
+     * </pre>
+     *
+     * <code>int64 read_offset = 4;</code>
+     *
+     * @return The readOffset.
+     */
+    @java.lang.Override
+    public long getReadOffset() {
+        return readOffset_;
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 6;</code>
+     *
+     * @return Whether the ifGenerationMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfGenerationMatch() {
+        return (0 != (bitField0_ & 0x00000001));
+    }
+
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current
+     * metageneration does not match the given value.
+     * </pre>
+     *
+     * <code>optional int64 if_metageneration_not_match = 9;</code>
+     *
+     * @return Whether the ifMetagenerationNotMatch field is set.
+     */
+    @java.lang.Override
+    public boolean hasIfMetagenerationNotMatch() {
+        return (0 != (bitField0_ & 0x00000008));
+    }
 
     /**
      * <pre>
@@ -202,196 +1812,13 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
         }
     }
 
-    /**
-     * <pre>
-     * The name of the bucket containing the object to read.
-     * </pre>
-     *
-     * <code>string bucket = 1;</code>
-     *
-     * @return The bytes for bucket.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getBucketBytes() {
-        java.lang.Object ref = bucket_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            bucket_ = b;
-            return b;
-        }
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
     }
 
-    public static final int OBJECT_FIELD_NUMBER = 2;
-
-    private volatile java.lang.Object object_;
-
-    /**
-     * <pre>
-     * The name of the object to read.
-     * </pre>
-     *
-     * <code>string object = 2;</code>
-     *
-     * @return The object.
-     */
     @java.lang.Override
-    public java.lang.String getObject() {
-        java.lang.Object ref = object_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            object_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * The name of the object to read.
-     * </pre>
-     *
-     * <code>string object = 2;</code>
-     *
-     * @return The bytes for object.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getObjectBytes() {
-        java.lang.Object ref = object_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            object_ = b;
-            return b;
-        }
-    }
-
-    public static final int GENERATION_FIELD_NUMBER = 3;
-
-    private long generation_;
-
-    /**
-     * <pre>
-     * If present, selects a specific revision of this object (as opposed
-     * to the latest version, the default).
-     * </pre>
-     *
-     * <code>int64 generation = 3;</code>
-     *
-     * @return The generation.
-     */
-    @java.lang.Override
-    public long getGeneration() {
-        return generation_;
-    }
-
-    public static final int READ_OFFSET_FIELD_NUMBER = 4;
-
-    private long readOffset_;
-
-    /**
-     * <pre>
-     * The offset for the first byte to return in the read, relative to the start
-     * of the object.
-     * A negative `read_offset` value will be interpreted as the number of bytes
-     * back from the end of the object to be returned. For example, if an object's
-     * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
-     * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
-     * a negative offset whose magnitude is larger than the size of the object
-     * will result in an error.
-     * </pre>
-     *
-     * <code>int64 read_offset = 4;</code>
-     *
-     * @return The readOffset.
-     */
-    @java.lang.Override
-    public long getReadOffset() {
-        return readOffset_;
-    }
-
-    public static final int READ_LIMIT_FIELD_NUMBER = 5;
-
-    private long readLimit_;
-
-    /**
-     * <pre>
-     * The maximum number of `data` bytes the server is allowed to return in the
-     * sum of all `Object` messages. A `read_limit` of zero indicates that there
-     * is no limit, and a negative `read_limit` will cause an error.
-     * If the stream returns fewer bytes than allowed by the `read_limit` and no
-     * error occurred, the stream includes all data from the `read_offset` to the
-     * end of the resource.
-     * </pre>
-     *
-     * <code>int64 read_limit = 5;</code>
-     *
-     * @return The readLimit.
-     */
-    @java.lang.Override
-    public long getReadLimit() {
-        return readLimit_;
-    }
-
-    public static final int IF_GENERATION_MATCH_FIELD_NUMBER = 6;
-
-    private long ifGenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 6;</code>
-     *
-     * @return Whether the ifGenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationMatch() {
-        return (0 != (bitField0_ & 0x00000001));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * matches the given value. Setting to 0 makes the operation succeed only if
-     * there are no live versions of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_match = 6;</code>
-     *
-     * @return The ifGenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfGenerationMatch() {
-        return ifGenerationMatch_;
-    }
-
-    public static final int IF_GENERATION_NOT_MATCH_FIELD_NUMBER = 7;
-
-    private long ifGenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current generation
-     * does not match the given value. If no live object exists, the precondition
-     * fails. Setting to 0 makes the operation succeed only if there is a live
-     * version of the object.
-     * </pre>
-     *
-     * <code>optional int64 if_generation_not_match = 7;</code>
-     *
-     * @return Whether the ifGenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfGenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000002));
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ReadObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(ReadObjectRequest.class, Builder.class);
     }
 
     /**
@@ -411,278 +1838,15 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
         return ifGenerationNotMatch_;
     }
 
-    public static final int IF_METAGENERATION_MATCH_FIELD_NUMBER = 8;
-
-    private long ifMetagenerationMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 8;</code>
-     *
-     * @return Whether the ifMetagenerationMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationMatch() {
-        return (0 != (bitField0_ & 0x00000004));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration matches the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_match = 8;</code>
-     *
-     * @return The ifMetagenerationMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationMatch() {
-        return ifMetagenerationMatch_;
-    }
-
-    public static final int IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER = 9;
-
-    private long ifMetagenerationNotMatch_;
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 9;</code>
-     *
-     * @return Whether the ifMetagenerationNotMatch field is set.
-     */
-    @java.lang.Override
-    public boolean hasIfMetagenerationNotMatch() {
-        return (0 != (bitField0_ & 0x00000008));
-    }
-
-    /**
-     * <pre>
-     * Makes the operation conditional on whether the object's current
-     * metageneration does not match the given value.
-     * </pre>
-     *
-     * <code>optional int64 if_metageneration_not_match = 9;</code>
-     *
-     * @return The ifMetagenerationNotMatch.
-     */
-    @java.lang.Override
-    public long getIfMetagenerationNotMatch() {
-        return ifMetagenerationNotMatch_;
-    }
-
-    public static final int COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER = 10;
-
-    private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     *
-     * @return Whether the commonObjectRequestParams field is set.
-     */
-    @java.lang.Override
-    public boolean hasCommonObjectRequestParams() {
-        return null != commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     *
-     * @return The commonObjectRequestParams.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-        return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-    }
-
-    /**
-     * <pre>
-     * A set of parameters common to Storage API requests concerning an object.
-     * </pre>
-     *
-     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-        return getCommonObjectRequestParams();
-    }
-
-    public static final int READ_MASK_FIELD_NUMBER = 12;
-
-    private com.google.protobuf.FieldMask readMask_;
-
-    /**
-     * <pre>
-     * Mask specifying which fields to read.
-     * The checksummed_data field and its children will always be present.
-     * If no mask is specified, will default to all fields except metadata.owner
-     * and metadata.acl.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-     *
-     * @return Whether the readMask field is set.
-     */
-    @java.lang.Override
-    public boolean hasReadMask() {
-        return (0 != (bitField0_ & 0x00000010));
-    }
-
-    /**
-     * <pre>
-     * Mask specifying which fields to read.
-     * The checksummed_data field and its children will always be present.
-     * If no mask is specified, will default to all fields except metadata.owner
-     * and metadata.acl.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-     *
-     * @return The readMask.
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMask getReadMask() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    /**
-     * <pre>
-     * Mask specifying which fields to read.
-     * The checksummed_data field and its children will always be present.
-     * If no mask is specified, will default to all fields except metadata.owner
-     * and metadata.acl.
-     * * may be used to mean "all fields".
-     * </pre>
-     *
-     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, bucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, object_);
-        }
-        if (0L != generation_) {
-            output.writeInt64(3, generation_);
-        }
-        if (0L != readOffset_) {
-            output.writeInt64(4, readOffset_);
-        }
-        if (0L != readLimit_) {
-            output.writeInt64(5, readLimit_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            output.writeInt64(6, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            output.writeInt64(7, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            output.writeInt64(8, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            output.writeInt64(9, ifMetagenerationNotMatch_);
-        }
-        if (null != commonObjectRequestParams_) {
-            output.writeMessage(10, getCommonObjectRequestParams());
-        }
-        if ((0 != (bitField0_ & 0x00000010))) {
-            output.writeMessage(12, getReadMask());
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, bucket_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, object_);
-        }
-        if (0L != generation_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, generation_);
-        }
-        if (0L != readOffset_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, readOffset_);
-        }
-        if (0L != readLimit_) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, readLimit_);
-        }
-        if ((0 != (bitField0_ & 0x00000001))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifGenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000002))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifGenerationNotMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000004))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifMetagenerationMatch_);
-        }
-        if ((0 != (bitField0_ & 0x00000008))) {
-            size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, ifMetagenerationNotMatch_);
-        }
-        if (null != commonObjectRequestParams_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, getCommonObjectRequestParams());
-        }
-        if ((0 != (bitField0_ & 0x00000010))) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(12, getReadMask());
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.ReadObjectRequest)) {
+        if (!(obj instanceof ReadObjectRequest)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.ReadObjectRequest other = (com.google.storage.v2.ReadObjectRequest) obj;
+        ReadObjectRequest other = (ReadObjectRequest) obj;
         if (!getBucket().equals(other.getBucket()))
             return false;
         if (!getObject().equals(other.getObject()))
@@ -734,1400 +1898,239 @@ ReadObjectRequest extends com.google.protobuf.GeneratedMessageV3 implements Read
         return true;
     }
 
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + BUCKET_FIELD_NUMBER;
-        hash = (53 * hash) + getBucket().hashCode();
-        hash = (37 * hash) + OBJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getObject().hashCode();
-        hash = (37 * hash) + GENERATION_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getGeneration());
-        hash = (37 * hash) + READ_OFFSET_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getReadOffset());
-        hash = (37 * hash) + READ_LIMIT_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getReadLimit());
-        if (hasIfGenerationMatch()) {
-            hash = (37 * hash) + IF_GENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationMatch());
-        }
-        if (hasIfGenerationNotMatch()) {
-            hash = (37 * hash) + IF_GENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfGenerationNotMatch());
-        }
-        if (hasIfMetagenerationMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationMatch());
-        }
-        if (hasIfMetagenerationNotMatch()) {
-            hash = (37 * hash) + IF_METAGENERATION_NOT_MATCH_FIELD_NUMBER;
-            hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getIfMetagenerationNotMatch());
-        }
-        if (hasCommonObjectRequestParams()) {
-            hash = (37 * hash) + COMMON_OBJECT_REQUEST_PARAMS_FIELD_NUMBER;
-            hash = (53 * hash) + getCommonObjectRequestParams().hashCode();
-        }
-        if (hasReadMask()) {
-            hash = (37 * hash) + READ_MASK_FIELD_NUMBER;
-            hash = (53 * hash) + getReadMask().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
     }
 
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+    public static ReadObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
     }
 
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ReadObjectRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, bucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, object_);
+        }
+        if (0L != generation_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, generation_);
+        }
+        if (0L != readOffset_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, readOffset_);
+        }
+        if (0L != readLimit_) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(5, readLimit_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(6, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(7, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(8, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, ifMetagenerationNotMatch_);
+        }
+        if (null != commonObjectRequestParams_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(10, getCommonObjectRequestParams());
+        }
+        if ((0 != (bitField0_ & 0x00000010))) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(12, getReadMask());
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
     }
 
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ReadObjectRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucket_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, bucket_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(object_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 2, object_);
+        }
+        if (0L != generation_) {
+            output.writeInt64(3, generation_);
+        }
+        if (0L != readOffset_) {
+            output.writeInt64(4, readOffset_);
+        }
+        if (0L != readLimit_) {
+            output.writeInt64(5, readLimit_);
+        }
+        if ((0 != (bitField0_ & 0x00000001))) {
+            output.writeInt64(6, ifGenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000002))) {
+            output.writeInt64(7, ifGenerationNotMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000004))) {
+            output.writeInt64(8, ifMetagenerationMatch_);
+        }
+        if ((0 != (bitField0_ & 0x00000008))) {
+            output.writeInt64(9, ifMetagenerationNotMatch_);
+        }
+        if (null != commonObjectRequestParams_) {
+            output.writeMessage(10, getCommonObjectRequestParams());
+        }
+        if ((0 != (bitField0_ & 0x00000010))) {
+            output.writeMessage(12, getReadMask());
+        }
+        unknownFields.writeTo(output);
     }
 
     /**
      * <pre>
-     * Request message for ReadObject.
+     * The name of the bucket containing the object to read.
      * </pre>
      *
-     * Protobuf type {@code google.storage.v2.ReadObjectRequest}
+     * <code>string bucket = 1;</code>
+     *
+     * @return The bytes for bucket.
      */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ReadObjectRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ReadObjectRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ReadObjectRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
+    @java.lang.Override
+    public com.google.protobuf.ByteString getBucketBytes() {
+        java.lang.Object ref = bucket_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            bucket_ = b;
+            return b;
         }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ReadObjectRequest.class, com.google.storage.v2.ReadObjectRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ReadObjectRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-                getReadMaskFieldBuilder();
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            bucket_ = "";
-            object_ = "";
-            generation_ = 0L;
-            readOffset_ = 0L;
-            readLimit_ = 0L;
-            ifGenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifMetagenerationMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationNotMatch_ = 0L;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-            }
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-            }
-            bitField0_ = (bitField0_ & ~0x00000010);
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ReadObjectRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.ReadObjectRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectRequest build() {
-            com.google.storage.v2.ReadObjectRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ReadObjectRequest buildPartial() {
-            com.google.storage.v2.ReadObjectRequest result = new com.google.storage.v2.ReadObjectRequest(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            result.bucket_ = bucket_;
-            result.object_ = object_;
-            result.generation_ = generation_;
-            result.readOffset_ = readOffset_;
-            result.readLimit_ = readLimit_;
-            if ((0 != (from_bitField0_ & 0x00000001))) {
-                result.ifGenerationMatch_ = ifGenerationMatch_;
-                to_bitField0_ |= 0x00000001;
-            }
-            if ((0 != (from_bitField0_ & 0x00000002))) {
-                result.ifGenerationNotMatch_ = ifGenerationNotMatch_;
-                to_bitField0_ |= 0x00000002;
-            }
-            if ((0 != (from_bitField0_ & 0x00000004))) {
-                result.ifMetagenerationMatch_ = ifMetagenerationMatch_;
-                to_bitField0_ |= 0x00000004;
-            }
-            if ((0 != (from_bitField0_ & 0x00000008))) {
-                result.ifMetagenerationNotMatch_ = ifMetagenerationNotMatch_;
-                to_bitField0_ |= 0x00000008;
-            }
-            if (null != commonObjectRequestParamsBuilder_) {
-                result.commonObjectRequestParams_ = commonObjectRequestParamsBuilder_.build();
-            } else {
-                result.commonObjectRequestParams_ = commonObjectRequestParams_;
-            }
-            if ((0 != (from_bitField0_ & 0x00000010))) {
-                if (null != readMaskBuilder_) {
-                    result.readMask_ = readMaskBuilder_.build();
-                } else {
-                    result.readMask_ = readMask_;
-                }
-                to_bitField0_ |= 0x00000010;
-            }
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ReadObjectRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ReadObjectRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ReadObjectRequest other) {
-            if (com.google.storage.v2.ReadObjectRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getBucket().isEmpty()) {
-                bucket_ = other.bucket_;
-                onChanged();
-            }
-            if (!other.getObject().isEmpty()) {
-                object_ = other.object_;
-                onChanged();
-            }
-            if (0L != other.getGeneration()) {
-                setGeneration(other.getGeneration());
-            }
-            if (0L != other.getReadOffset()) {
-                setReadOffset(other.getReadOffset());
-            }
-            if (0L != other.getReadLimit()) {
-                setReadLimit(other.getReadLimit());
-            }
-            if (other.hasIfGenerationMatch()) {
-                setIfGenerationMatch(other.getIfGenerationMatch());
-            }
-            if (other.hasIfGenerationNotMatch()) {
-                setIfGenerationNotMatch(other.getIfGenerationNotMatch());
-            }
-            if (other.hasIfMetagenerationMatch()) {
-                setIfMetagenerationMatch(other.getIfMetagenerationMatch());
-            }
-            if (other.hasIfMetagenerationNotMatch()) {
-                setIfMetagenerationNotMatch(other.getIfMetagenerationNotMatch());
-            }
-            if (other.hasCommonObjectRequestParams()) {
-                mergeCommonObjectRequestParams(other.getCommonObjectRequestParams());
-            }
-            if (other.hasReadMask()) {
-                mergeReadMask(other.getReadMask());
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ReadObjectRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ReadObjectRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private int bitField0_;
-
-        private java.lang.Object bucket_ = "";
-
-        /**
-         * <pre>
-         * The name of the bucket containing the object to read.
-         * </pre>
-         *
-         * <code>string bucket = 1;</code>
-         *
-         * @return The bucket.
-         */
-        public java.lang.String getBucket() {
-            java.lang.Object ref = bucket_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                bucket_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the bucket containing the object to read.
-         * </pre>
-         *
-         * <code>string bucket = 1;</code>
-         *
-         * @return The bytes for bucket.
-         */
-        public com.google.protobuf.ByteString getBucketBytes() {
-            java.lang.Object ref = bucket_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                bucket_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the bucket containing the object to read.
-         * </pre>
-         *
-         * <code>string bucket = 1;</code>
-         *
-         * @param value The bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucket(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the bucket containing the object to read.
-         * </pre>
-         *
-         * <code>string bucket = 1;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearBucket() {
-            bucket_ = getDefaultInstance().getBucket();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the bucket containing the object to read.
-         * </pre>
-         *
-         * <code>string bucket = 1;</code>
-         *
-         * @param value The bytes for bucket to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucketBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            bucket_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object object_ = "";
-
-        /**
-         * <pre>
-         * The name of the object to read.
-         * </pre>
-         *
-         * <code>string object = 2;</code>
-         *
-         * @return The object.
-         */
-        public java.lang.String getObject() {
-            java.lang.Object ref = object_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                object_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the object to read.
-         * </pre>
-         *
-         * <code>string object = 2;</code>
-         *
-         * @return The bytes for object.
-         */
-        public com.google.protobuf.ByteString getObjectBytes() {
-            java.lang.Object ref = object_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                object_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * The name of the object to read.
-         * </pre>
-         *
-         * <code>string object = 2;</code>
-         *
-         * @param value The object to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObject(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            object_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the object to read.
-         * </pre>
-         *
-         * <code>string object = 2;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearObject() {
-            object_ = getDefaultInstance().getObject();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The name of the object to read.
-         * </pre>
-         *
-         * <code>string object = 2;</code>
-         *
-         * @param value The bytes for object to set.
-         * @return This builder for chaining.
-         */
-        public Builder setObjectBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            object_ = value;
-            onChanged();
-            return this;
-        }
-
-        private long generation_;
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of this object (as opposed
-         * to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 3;</code>
-         *
-         * @return The generation.
-         */
-        @java.lang.Override
-        public long getGeneration() {
-            return generation_;
-        }
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of this object (as opposed
-         * to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 3;</code>
-         *
-         * @param value The generation to set.
-         * @return This builder for chaining.
-         */
-        public Builder setGeneration(long value) {
-            generation_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * If present, selects a specific revision of this object (as opposed
-         * to the latest version, the default).
-         * </pre>
-         *
-         * <code>int64 generation = 3;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearGeneration() {
-            generation_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long readOffset_;
-
-        /**
-         * <pre>
-         * The offset for the first byte to return in the read, relative to the start
-         * of the object.
-         * A negative `read_offset` value will be interpreted as the number of bytes
-         * back from the end of the object to be returned. For example, if an object's
-         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
-         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
-         * a negative offset whose magnitude is larger than the size of the object
-         * will result in an error.
-         * </pre>
-         *
-         * <code>int64 read_offset = 4;</code>
-         *
-         * @return The readOffset.
-         */
-        @java.lang.Override
-        public long getReadOffset() {
-            return readOffset_;
-        }
-
-        /**
-         * <pre>
-         * The offset for the first byte to return in the read, relative to the start
-         * of the object.
-         * A negative `read_offset` value will be interpreted as the number of bytes
-         * back from the end of the object to be returned. For example, if an object's
-         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
-         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
-         * a negative offset whose magnitude is larger than the size of the object
-         * will result in an error.
-         * </pre>
-         *
-         * <code>int64 read_offset = 4;</code>
-         *
-         * @param value The readOffset to set.
-         * @return This builder for chaining.
-         */
-        public Builder setReadOffset(long value) {
-            readOffset_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The offset for the first byte to return in the read, relative to the start
-         * of the object.
-         * A negative `read_offset` value will be interpreted as the number of bytes
-         * back from the end of the object to be returned. For example, if an object's
-         * length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
-         * `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
-         * a negative offset whose magnitude is larger than the size of the object
-         * will result in an error.
-         * </pre>
-         *
-         * <code>int64 read_offset = 4;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearReadOffset() {
-            readOffset_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long readLimit_;
-
-        /**
-         * <pre>
-         * The maximum number of `data` bytes the server is allowed to return in the
-         * sum of all `Object` messages. A `read_limit` of zero indicates that there
-         * is no limit, and a negative `read_limit` will cause an error.
-         * If the stream returns fewer bytes than allowed by the `read_limit` and no
-         * error occurred, the stream includes all data from the `read_offset` to the
-         * end of the resource.
-         * </pre>
-         *
-         * <code>int64 read_limit = 5;</code>
-         *
-         * @return The readLimit.
-         */
-        @java.lang.Override
-        public long getReadLimit() {
-            return readLimit_;
-        }
-
-        /**
-         * <pre>
-         * The maximum number of `data` bytes the server is allowed to return in the
-         * sum of all `Object` messages. A `read_limit` of zero indicates that there
-         * is no limit, and a negative `read_limit` will cause an error.
-         * If the stream returns fewer bytes than allowed by the `read_limit` and no
-         * error occurred, the stream includes all data from the `read_offset` to the
-         * end of the resource.
-         * </pre>
-         *
-         * <code>int64 read_limit = 5;</code>
-         *
-         * @param value The readLimit to set.
-         * @return This builder for chaining.
-         */
-        public Builder setReadLimit(long value) {
-            readLimit_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * The maximum number of `data` bytes the server is allowed to return in the
-         * sum of all `Object` messages. A `read_limit` of zero indicates that there
-         * is no limit, and a negative `read_limit` will cause an error.
-         * If the stream returns fewer bytes than allowed by the `read_limit` and no
-         * error occurred, the stream includes all data from the `read_offset` to the
-         * end of the resource.
-         * </pre>
-         *
-         * <code>int64 read_limit = 5;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearReadLimit() {
-            readLimit_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 6;</code>
-         *
-         * @return Whether the ifGenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationMatch() {
-            return (0 != (bitField0_ & 0x00000001));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 6;</code>
-         *
-         * @return The ifGenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationMatch() {
-            return ifGenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 6;</code>
-         *
-         * @param value The ifGenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationMatch(long value) {
-            bitField0_ |= 0x00000001;
-            ifGenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * matches the given value. Setting to 0 makes the operation succeed only if
-         * there are no live versions of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_match = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            ifGenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifGenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 7;</code>
-         *
-         * @return Whether the ifGenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfGenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000002));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 7;</code>
-         *
-         * @return The ifGenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfGenerationNotMatch() {
-            return ifGenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 7;</code>
-         *
-         * @param value The ifGenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfGenerationNotMatch(long value) {
-            bitField0_ |= 0x00000002;
-            ifGenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current generation
-         * does not match the given value. If no live object exists, the precondition
-         * fails. Setting to 0 makes the operation succeed only if there is a live
-         * version of the object.
-         * </pre>
-         *
-         * <code>optional int64 if_generation_not_match = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfGenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            ifGenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 8;</code>
-         *
-         * @return Whether the ifMetagenerationMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationMatch() {
-            return (0 != (bitField0_ & 0x00000004));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 8;</code>
-         *
-         * @return The ifMetagenerationMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationMatch() {
-            return ifMetagenerationMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 8;</code>
-         *
-         * @param value The ifMetagenerationMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationMatch(long value) {
-            bitField0_ |= 0x00000004;
-            ifMetagenerationMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration matches the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_match = 8;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationMatch() {
-            bitField0_ = (bitField0_ & ~0x00000004);
-            ifMetagenerationMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private long ifMetagenerationNotMatch_;
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 9;</code>
-         *
-         * @return Whether the ifMetagenerationNotMatch field is set.
-         */
-        @java.lang.Override
-        public boolean hasIfMetagenerationNotMatch() {
-            return (0 != (bitField0_ & 0x00000008));
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 9;</code>
-         *
-         * @return The ifMetagenerationNotMatch.
-         */
-        @java.lang.Override
-        public long getIfMetagenerationNotMatch() {
-            return ifMetagenerationNotMatch_;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 9;</code>
-         *
-         * @param value The ifMetagenerationNotMatch to set.
-         * @return This builder for chaining.
-         */
-        public Builder setIfMetagenerationNotMatch(long value) {
-            bitField0_ |= 0x00000008;
-            ifMetagenerationNotMatch_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Makes the operation conditional on whether the object's current
-         * metageneration does not match the given value.
-         * </pre>
-         *
-         * <code>optional int64 if_metageneration_not_match = 9;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearIfMetagenerationNotMatch() {
-            bitField0_ = (bitField0_ & ~0x00000008);
-            ifMetagenerationNotMatch_ = 0L;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.CommonObjectRequestParams commonObjectRequestParams_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> commonObjectRequestParamsBuilder_;
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         *
-         * @return Whether the commonObjectRequestParams field is set.
-         */
-        public boolean hasCommonObjectRequestParams() {
-            return null != commonObjectRequestParamsBuilder_ || null != commonObjectRequestParams_;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         *
-         * @return The commonObjectRequestParams.
-         */
-        public com.google.storage.v2.CommonObjectRequestParams getCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                return commonObjectRequestParamsBuilder_.getMessage();
-            } else {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                commonObjectRequestParams_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder setCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams.Builder builderForValue) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.setMessage(builderForValue.build());
-            } else {
-                commonObjectRequestParams_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder mergeCommonObjectRequestParams(com.google.storage.v2.CommonObjectRequestParams value) {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_.mergeFrom(value);
-            } else {
-                if (null == commonObjectRequestParams_) {
-                    commonObjectRequestParams_ = value;
-                } else {
-                    commonObjectRequestParams_ = com.google.storage.v2.CommonObjectRequestParams.newBuilder(commonObjectRequestParams_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public Builder clearCommonObjectRequestParams() {
-            if (null != commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParams_ = null;
-                commonObjectRequestParamsBuilder_ = null;
-            } else {
-                commonObjectRequestParams_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParams.Builder getCommonObjectRequestParamsBuilder() {
-            onChanged();
-            return getCommonObjectRequestParamsFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        public com.google.storage.v2.CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                return null == commonObjectRequestParams_ ? com.google.storage.v2.CommonObjectRequestParams.getDefaultInstance() : commonObjectRequestParams_;
-            } else {
-                return commonObjectRequestParamsBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * A set of parameters common to Storage API requests concerning an object.
-         * </pre>
-         *
-         * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder> getCommonObjectRequestParamsFieldBuilder() {
-            if (null == commonObjectRequestParamsBuilder_) {
-                commonObjectRequestParamsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.CommonObjectRequestParams, com.google.storage.v2.CommonObjectRequestParams.Builder, com.google.storage.v2.CommonObjectRequestParamsOrBuilder>(getCommonObjectRequestParams(), getParentForChildren(), isClean());
-                commonObjectRequestParams_ = null;
-            }
-            return commonObjectRequestParamsBuilder_;
-        }
-
-        private com.google.protobuf.FieldMask readMask_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> readMaskBuilder_;
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         *
-         * @return Whether the readMask field is set.
-         */
-        public boolean hasReadMask() {
-            return (0 != (bitField0_ & 0x00000010));
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         *
-         * @return The readMask.
-         */
-        public com.google.protobuf.FieldMask getReadMask() {
-            if (null != readMaskBuilder_) {
-                return readMaskBuilder_.getMessage();
-            } else {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                readMask_ = value;
-                onChanged();
-            }
-            bitField0_ |= 0x00000010;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public Builder setReadMask(com.google.protobuf.FieldMask.Builder builderForValue) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.setMessage(builderForValue.build());
-            } else {
-                readMask_ = builderForValue.build();
-                onChanged();
-            }
-            bitField0_ |= 0x00000010;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public Builder mergeReadMask(com.google.protobuf.FieldMask value) {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.mergeFrom(value);
-            } else {
-                if (!(0 != (bitField0_ & 0x00000010)) || null == readMask_ || com.google.protobuf.FieldMask.getDefaultInstance() == readMask_) {
-                    readMask_ = value;
-                } else {
-                    readMask_ = com.google.protobuf.FieldMask.newBuilder(readMask_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            bitField0_ |= 0x00000010;
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public Builder clearReadMask() {
-            if (null != readMaskBuilder_) {
-                readMaskBuilder_.clear();
-            } else {
-                readMask_ = null;
-                onChanged();
-            }
-            bitField0_ = (bitField0_ & ~0x00000010);
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public com.google.protobuf.FieldMask.Builder getReadMaskBuilder() {
-            bitField0_ |= 0x00000010;
-            onChanged();
-            return getReadMaskFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
-            if (null == readMaskBuilder_) {
-                return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
-            } else {
-                return readMaskBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Mask specifying which fields to read.
-         * The checksummed_data field and its children will always be present.
-         * If no mask is specified, will default to all fields except metadata.owner
-         * and metadata.acl.
-         * * may be used to mean "all fields".
-         * </pre>
-         *
-         * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder> getReadMaskFieldBuilder() {
-            if (null == readMaskBuilder_) {
-                readMaskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.protobuf.FieldMask, com.google.protobuf.FieldMask.Builder, com.google.protobuf.FieldMaskOrBuilder>(getReadMask(), getParentForChildren(), isClean());
-                readMask_ = null;
-            }
-            return readMaskBuilder_;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ReadObjectRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ReadObjectRequest)
-    private static final com.google.storage.v2.ReadObjectRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ReadObjectRequest();
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     *
+     * @return Whether the commonObjectRequestParams field is set.
+     */
+    @java.lang.Override
+    public boolean hasCommonObjectRequestParams() {
+        return null != commonObjectRequestParams_;
     }
 
-    public static com.google.storage.v2.ReadObjectRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
+    /**
+     * <pre>
+     * A set of parameters common to Storage API requests concerning an object.
+     * </pre>
+     *
+     * <code>.google.storage.v2.CommonObjectRequestParams common_object_request_params = 10;</code>
+     */
+    @java.lang.Override
+    public CommonObjectRequestParamsOrBuilder getCommonObjectRequestParamsOrBuilder() {
+        return getCommonObjectRequestParams();
     }
 
-    private static final com.google.protobuf.Parser<ReadObjectRequest> PARSER = new com.google.protobuf.AbstractParser<ReadObjectRequest>() {
+    /**
+     * <pre>
+     * Makes the operation conditional on whether the object's current generation
+     * matches the given value. Setting to 0 makes the operation succeed only if
+     * there are no live versions of the object.
+     * </pre>
+     *
+     * <code>optional int64 if_generation_match = 6;</code>
+     *
+     * @return The ifGenerationMatch.
+     */
+    @java.lang.Override
+    public long getIfGenerationMatch() {
+        return ifGenerationMatch_;
+    }
 
-        @java.lang.Override
-        public ReadObjectRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ReadObjectRequest(input, extensionRegistry);
-        }
-    };
+    private ReadObjectRequest() {
+        bucket_ = "";
+        object_ = "";
+    }
 
-    public static com.google.protobuf.Parser<ReadObjectRequest> parser() {
-        return PARSER;
+    /**
+     * <pre>
+     * Mask specifying which fields to read.
+     * The checksummed_data field and its children will always be present.
+     * If no mask is specified, will default to all fields except metadata.owner
+     * and metadata.acl.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+     *
+     * @return Whether the readMask field is set.
+     */
+    @java.lang.Override
+    public boolean hasReadMask() {
+        return (0 != (bitField0_ & 0x00000010));
+    }
+
+    public static Builder newBuilder(ReadObjectRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * Mask specifying which fields to read.
+     * The checksummed_data field and its children will always be present.
+     * If no mask is specified, will default to all fields except metadata.owner
+     * and metadata.acl.
+     * * may be used to mean "all fields".
+     * </pre>
+     *
+     * <code>optional .google.protobuf.FieldMask read_mask = 12;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.FieldMaskOrBuilder getReadMaskOrBuilder() {
+        return null == readMask_ ? com.google.protobuf.FieldMask.getDefaultInstance() : readMask_;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ReadObjectRequest> getParserForType() {
-        return PARSER;
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ReadObjectRequest();
     }
 
     @java.lang.Override
-    public com.google.storage.v2.ReadObjectRequest getDefaultInstanceForType() {
+    public ReadObjectRequest getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
     }
+
+    public static ReadObjectRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    // Use ReadObjectRequest.newBuilder() to construct.
+    private ReadObjectRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    /**
+     * <pre>
+     * The maximum number of `data` bytes the server is allowed to return in the
+     * sum of all `Object` messages. A `read_limit` of zero indicates that there
+     * is no limit, and a negative `read_limit` will cause an error.
+     * If the stream returns fewer bytes than allowed by the `read_limit` and no
+     * error occurred, the stream includes all data from the `read_offset` to the
+     * end of the resource.
+     * </pre>
+     *
+     * <code>int64 read_limit = 5;</code>
+     *
+     * @return The readLimit.
+     */
+    @java.lang.Override
+    public long getReadLimit() {
+        return readLimit_;
+    }
+
 }

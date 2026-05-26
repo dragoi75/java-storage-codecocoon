@@ -35,41 +35,41 @@ public class ProjectName implements ResourceName {
 
     private final String project;
 
-    @Deprecated
-    protected ProjectName() {
-        project = null;
-    }
+    /**
+     * Builder for projects/{project}.
+     */
+    public static class Builder {
 
-    private ProjectName(Builder builder) {
-        project = Preconditions.checkNotNull(builder.getProject());
-    }
+        private String project;
 
-    public String getProject() {
-        return project;
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
-
-    public static ProjectName of(String project) {
-        return newBuilder().setProject(project).build();
-    }
-
-    public static String format(String project) {
-        return newBuilder().setProject(project).build().toString();
-    }
-
-    public static ProjectName parse(String formattedString) {
-        if (formattedString.isEmpty()) {
-            return null;
+        public ProjectName build() {
+            return new ProjectName(this);
         }
-        Map<String, String> matchMap = PROJECT.validatedMatch(formattedString, "ProjectName.parse: formattedString not in valid format");
-        return of(matchMap.get("project"));
+
+        private Builder(ProjectName projectName) {
+            this.project = projectName.project;
+        }
+
+        protected Builder() {
+        }
+
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
+
+        public String getProject() {
+            return project;
+        }
+
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 1;
+        h *= 1000003;
+        h ^= Objects.hashCode(project);
+        return h;
     }
 
     public static List<ProjectName> parseList(List<String> formattedStrings) {
@@ -80,36 +80,16 @@ public class ProjectName implements ResourceName {
         return list;
     }
 
-    public static List<String> toStringList(List<ProjectName> values) {
-        List<String> list = new ArrayList<>(values.size());
-        for (ProjectName value : values) {
-            if (null != value) {
-                list.add(value.toString());
-            } else {
-                list.add("");
-            }
-        }
-        return list;
+    public static ProjectName of(String project) {
+        return newBuilder().setProject(project).build();
     }
 
-    public static boolean isParsableFrom(String formattedString) {
-        return PROJECT.matches(formattedString);
-    }
-
-    @Override
-    public Map<String, String> getFieldValuesMap() {
-        if (null == fieldValuesMap) {
-            synchronized (this) {
-                if (null == fieldValuesMap) {
-                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
-                    if (null != project) {
-                        fieldMapBuilder.put("project", project);
-                    }
-                    fieldValuesMap = fieldMapBuilder.build();
-                }
-            }
+    public static ProjectName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
         }
-        return fieldValuesMap;
+        Map<String, String> matchMap = PROJECT.validatedMatch(formattedString, "ProjectName.parse: formattedString not in valid format");
+        return of(matchMap.get("project"));
     }
 
     public String getFieldValue(String fieldName) {
@@ -133,39 +113,61 @@ public class ProjectName implements ResourceName {
         return false;
     }
 
+    public String getProject() {
+        return project;
+    }
+
+    public static boolean isParsableFrom(String formattedString) {
+        return PROJECT.matches(formattedString);
+    }
+
     @Override
-    public int hashCode() {
-        int h = 1;
-        h *= 1000003;
-        h ^= Objects.hashCode(project);
-        return h;
+    public Map<String, String> getFieldValuesMap() {
+        if (null == fieldValuesMap) {
+            synchronized (this) {
+                if (null == fieldValuesMap) {
+                    ImmutableMap.Builder<String, String> fieldMapBuilder = ImmutableMap.builder();
+                    if (null != project) {
+                        fieldMapBuilder.put("project", project);
+                    }
+                    fieldValuesMap = fieldMapBuilder.build();
+                }
+            }
+        }
+        return fieldValuesMap;
     }
 
-    /**
-     * Builder for projects/{project}.
-     */
-    public static class Builder {
-
-        private String project;
-
-        protected Builder() {
-        }
-
-        public String getProject() {
-            return project;
-        }
-
-        public Builder setProject(String project) {
-            this.project = project;
-            return this;
-        }
-
-        private Builder(ProjectName projectName) {
-            this.project = projectName.project;
-        }
-
-        public ProjectName build() {
-            return new ProjectName(this);
-        }
+    public Builder toBuilder() {
+        return new Builder(this);
     }
+
+    public static String format(String project) {
+        return newBuilder().setProject(project).build().toString();
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    @Deprecated
+    protected ProjectName() {
+        project = null;
+    }
+
+    private ProjectName(Builder builder) {
+        project = Preconditions.checkNotNull(builder.getProject());
+    }
+
+    public static List<String> toStringList(List<ProjectName> values) {
+        List<String> list = new ArrayList<>(values.size());
+        for (ProjectName value : values) {
+            if (null != value) {
+                list.add(value.toString());
+            } else {
+                list.add("");
+            }
+        }
+        return list;
+    }
+
 }

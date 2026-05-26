@@ -83,29 +83,30 @@ public class NotificationMetadata implements Serializable {
      */
     public abstract static class NotificationBuilder {
 
-        NotificationBuilder() {
-        }
-
-        abstract NotificationBuilder setNotificationId(String notificationId);
-
-        public abstract NotificationBuilder setSelfLink(String selfLink);
-
-        public abstract NotificationBuilder setTopic(String topic);
-
-        public abstract NotificationBuilder setPayloadFormat(PayloadFormatType payloadFormat);
-
-        public abstract NotificationBuilder setObjectNamePrefix(String objectNamePrefix);
-
         public abstract NotificationBuilder setEventTypes(ObjectEventType... eventTypes);
-
-        public abstract NotificationBuilder setEtag(String etag);
-
-        public abstract NotificationBuilder setCustomAttributes(Map<String, String> customAttributes);
 
         /**
          * Creates a {@code NotificationInfo} object.
          */
         public abstract NotificationMetadata create();
+
+        public abstract NotificationBuilder setObjectNamePrefix(String objectNamePrefix);
+
+        public abstract NotificationBuilder setCustomAttributes(Map<String, String> customAttributes);
+
+        NotificationBuilder() {
+        }
+
+        public abstract NotificationBuilder setEtag(String etag);
+
+        abstract NotificationBuilder setNotificationId(String notificationId);
+
+        public abstract NotificationBuilder setPayloadFormat(PayloadFormatType payloadFormat);
+
+        public abstract NotificationBuilder setSelfLink(String selfLink);
+
+        public abstract NotificationBuilder setTopic(String topic);
+
     }
 
     /**
@@ -129,24 +130,27 @@ public class NotificationMetadata implements Serializable {
 
         private String selfUrl;
 
-        NotificationBuilderImpl(String channelName) {
-            this.channelName = channelName;
-        }
-
-        NotificationBuilderImpl(NotificationMetadata metadata) {
-            alertKey = metadata.alertKey;
-            entityTag = metadata.entityTag;
-            selfUrl = metadata.selfUrl;
-            channelName = metadata.channelName;
-            eventKinds = metadata.eventKinds;
-            customProps = metadata.customProps;
-            payloadType = metadata.payloadType;
-            objectPrefix = metadata.objectPrefix;
+        @Override
+        public NotificationMetadata.NotificationBuilder setEtag(String entityTag) {
+            this.entityTag = entityTag;
+            return this;
         }
 
         @Override
-        NotificationMetadata.NotificationBuilder setNotificationId(String alertKey) {
-            this.alertKey = alertKey;
+        public NotificationMetadata.NotificationBuilder setPayloadFormat(PayloadFormatType payloadType) {
+            this.payloadType = payloadType;
+            return this;
+        }
+
+        @Override
+        public NotificationMetadata.NotificationBuilder setCustomAttributes(Map<String, String> customProps) {
+            this.customProps = null != customProps ? ImmutableMap.copyOf(customProps) : null;
+            return this;
+        }
+
+        @Override
+        public NotificationMetadata.NotificationBuilder setEventTypes(ObjectEventType... eventKinds) {
+            this.eventKinds = null != eventKinds ? Arrays.asList(eventKinds) : null;
             return this;
         }
 
@@ -166,32 +170,8 @@ public class NotificationMetadata implements Serializable {
         }
 
         @Override
-        public NotificationMetadata.NotificationBuilder setPayloadFormat(PayloadFormatType payloadType) {
-            this.payloadType = payloadType;
-            return this;
-        }
-
-        @Override
-        public NotificationMetadata.NotificationBuilder setObjectNamePrefix(String objectPrefix) {
-            this.objectPrefix = objectPrefix;
-            return this;
-        }
-
-        @Override
-        public NotificationMetadata.NotificationBuilder setEventTypes(ObjectEventType... eventKinds) {
-            this.eventKinds = null != eventKinds ? Arrays.asList(eventKinds) : null;
-            return this;
-        }
-
-        @Override
-        public NotificationMetadata.NotificationBuilder setEtag(String entityTag) {
-            this.entityTag = entityTag;
-            return this;
-        }
-
-        @Override
-        public NotificationMetadata.NotificationBuilder setCustomAttributes(Map<String, String> customProps) {
-            this.customProps = null != customProps ? ImmutableMap.copyOf(customProps) : null;
+        NotificationMetadata.NotificationBuilder setNotificationId(String alertKey) {
+            this.alertKey = alertKey;
             return this;
         }
 
@@ -200,93 +180,28 @@ public class NotificationMetadata implements Serializable {
             validateTopicFormat(channelName);
             return new NotificationMetadata(this);
         }
-    }
 
-    NotificationMetadata(NotificationBuilderImpl notificationCreator) {
-        alertKey = notificationCreator.alertKey;
-        entityTag = notificationCreator.entityTag;
-        selfUrl = notificationCreator.selfUrl;
-        channelName = notificationCreator.channelName;
-        eventKinds = notificationCreator.eventKinds;
-        customProps = notificationCreator.customProps;
-        payloadType = notificationCreator.payloadType;
-        objectPrefix = notificationCreator.objectPrefix;
-    }
+        NotificationBuilderImpl(String channelName) {
+            this.channelName = channelName;
+        }
 
-    /**
-     * Returns the service-generated id for the notification.
-     */
-    public String getNotificationId() {
-        return alertKey;
-    }
+        @Override
+        public NotificationMetadata.NotificationBuilder setObjectNamePrefix(String objectPrefix) {
+            this.objectPrefix = objectPrefix;
+            return this;
+        }
 
-    /**
-     * Returns the topic in Pub/Sub that receives notifications.
-     */
-    public String getTopic() {
-        return channelName;
-    }
+        NotificationBuilderImpl(NotificationMetadata metadata) {
+            alertKey = metadata.alertKey;
+            entityTag = metadata.entityTag;
+            selfUrl = metadata.selfUrl;
+            channelName = metadata.channelName;
+            eventKinds = metadata.eventKinds;
+            customProps = metadata.customProps;
+            payloadType = metadata.payloadType;
+            objectPrefix = metadata.objectPrefix;
+        }
 
-    /**
-     * Returns the canonical URI of this topic as a string.
-     */
-    public String getSelfLink() {
-        return selfUrl;
-    }
-
-    /**
-     * Returns the desired content of the Payload.
-     */
-    public PayloadFormatType getPayloadFormat() {
-        return payloadType;
-    }
-
-    /**
-     * Returns the object name prefix for which this notification configuration applies.
-     */
-    public String getObjectNamePrefix() {
-        return objectPrefix;
-    }
-
-    /**
-     * Returns HTTP 1.1 Entity tag for the notification. See <a
-     * href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
-     */
-    public String getEtag() {
-        return entityTag;
-    }
-
-    /**
-     * Returns the events that trigger a notification to be sent. If empty, notifications are
-     * triggered by any event. See <a
-     * href="https://cloud.google.com/storage/docs/pubsub-notifications#events">Event types</a> to get
-     * list of available events.
-     */
-    public List<ObjectEventType> getEventTypes() {
-        return eventKinds;
-    }
-
-    /**
-     * Returns the list of additional attributes to attach to each Cloud PubSub message published for
-     * this notification subscription.
-     */
-    public Map<String, String> getCustomAttributes() {
-        return customProps;
-    }
-
-    @Override
-    public int hashCode() {
-        return toProto().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object otherObject) {
-        return this == otherObject || null != otherObject && otherObject.getClass().equals(NotificationMetadata.class) && Objects.equals(toProto(), ((NotificationMetadata) otherObject).toProto());
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("topic", channelName).toString();
     }
 
     com.google.api.services.storage.model.Notification toProto() {
@@ -319,6 +234,74 @@ public class NotificationMetadata implements Serializable {
     }
 
     /**
+     * Returns the object name prefix for which this notification configuration applies.
+     */
+    public String getObjectNamePrefix() {
+        return objectPrefix;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("topic", channelName).toString();
+    }
+
+    /**
+     * Returns the list of additional attributes to attach to each Cloud PubSub message published for
+     * this notification subscription.
+     */
+    public Map<String, String> getCustomAttributes() {
+        return customProps;
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        return this == otherObject || null != otherObject && otherObject.getClass().equals(NotificationMetadata.class) && Objects.equals(toProto(), ((NotificationMetadata) otherObject).toProto());
+    }
+
+    /**
+     * Returns a builder for the current notification.
+     */
+    public NotificationBuilder toNotificationBuilder() {
+        return new NotificationBuilderImpl(this);
+    }
+
+    /**
+     * Creates a {@code NotificationInfo} object for the provided topic.
+     *
+     * @param channelName a string in the format "projects/{project}/topics/{topic}"
+     */
+    public static NotificationBuilder newNotificationBuilder(String channelName) {
+        validateTopicFormat(channelName);
+        return new NotificationBuilderImpl(channelName);
+    }
+
+    private static void validateTopicFormat(String channelName) {
+        PATH_PATTERN.validatedMatch(channelName, "topic name must be in valid format");
+    }
+
+    /**
+     * Returns the service-generated id for the notification.
+     */
+    public String getNotificationId() {
+        return alertKey;
+    }
+
+    /**
+     * Returns the events that trigger a notification to be sent. If empty, notifications are
+     * triggered by any event. See <a
+     * href="https://cloud.google.com/storage/docs/pubsub-notifications#events">Event types</a> to get
+     * list of available events.
+     */
+    public List<ObjectEventType> getEventTypes() {
+        return eventKinds;
+    }
+
+    @Override
+    public int hashCode() {
+        return toProto().hashCode();
+    }
+
+    /**
      * Creates a {@code NotificationInfo} object for the provided topic.
      *
      * <p>Example of creating the NotificationInfo object:
@@ -335,21 +318,37 @@ public class NotificationMetadata implements Serializable {
         return newNotificationBuilder(channelName).create();
     }
 
-    /**
-     * Creates a {@code NotificationInfo} object for the provided topic.
-     *
-     * @param channelName a string in the format "projects/{project}/topics/{topic}"
-     */
-    public static NotificationBuilder newNotificationBuilder(String channelName) {
-        validateTopicFormat(channelName);
-        return new NotificationBuilderImpl(channelName);
+    NotificationMetadata(NotificationBuilderImpl notificationCreator) {
+        alertKey = notificationCreator.alertKey;
+        entityTag = notificationCreator.entityTag;
+        selfUrl = notificationCreator.selfUrl;
+        channelName = notificationCreator.channelName;
+        eventKinds = notificationCreator.eventKinds;
+        customProps = notificationCreator.customProps;
+        payloadType = notificationCreator.payloadType;
+        objectPrefix = notificationCreator.objectPrefix;
     }
 
     /**
-     * Returns a builder for the current notification.
+     * Returns the canonical URI of this topic as a string.
      */
-    public NotificationBuilder toNotificationBuilder() {
-        return new NotificationBuilderImpl(this);
+    public String getSelfLink() {
+        return selfUrl;
+    }
+
+    /**
+     * Returns HTTP 1.1 Entity tag for the notification. See <a
+     * href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
+     */
+    public String getEtag() {
+        return entityTag;
+    }
+
+    /**
+     * Returns the topic in Pub/Sub that receives notifications.
+     */
+    public String getTopic() {
+        return channelName;
     }
 
     static NotificationMetadata fromProto(com.google.api.services.storage.model.Notification protoNotification) {
@@ -385,7 +384,11 @@ public class NotificationMetadata implements Serializable {
         return notificationCreator.create();
     }
 
-    private static void validateTopicFormat(String channelName) {
-        PATH_PATTERN.validatedMatch(channelName, "topic name must be in valid format");
+    /**
+     * Returns the desired content of the Payload.
+     */
+    public PayloadFormatType getPayloadFormat() {
+        return payloadType;
     }
+
 }

@@ -30,69 +30,6 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
 
     private static final long serialVersionUID = 0L;
 
-    // Use ServiceConstants.newBuilder() to construct.
-    private ServiceConstants(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-    }
-
-    private ServiceConstants() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({ "unused" })
-    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
-        return new ServiceConstants();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-        return this.unknownFields;
-    }
-
-    private ServiceConstants(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (null == extensionRegistry) {
-            throw new java.lang.NullPointerException();
-        }
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-            boolean done = false;
-            while (!done) {
-                int tag = input.readTag();
-                switch(tag) {
-                    case 0:
-                        done = true;
-                        break;
-                    default:
-                        {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                }
-            }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
-        } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-        }
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceConstants_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ServiceConstants.class, com.google.storage.v2.ServiceConstants.Builder.class);
-    }
-
     /**
      * <pre>
      * A collection of constant values meaningful to the Storage API.
@@ -455,21 +392,36 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
          */
         public static final int SPLIT_TOKEN_MAX_VALID_DAYS_VALUE = 14;
 
-        public final int getNumber() {
-            if (-1 == index) {
-                throw new java.lang.IllegalArgumentException("Can't get the number of an unknown enum value.");
+        private static final com.google.protobuf.Internal.EnumLiteMap<Values> internalValueMap = new com.google.protobuf.Internal.EnumLiteMap<Values>() {
+
+            public Values findValueByNumber(int number) {
+                return Values.forNumber(number);
             }
-            return value;
+        };
+
+        private static final Values[] VALUES = getStaticValuesArray();
+
+        private final int index;
+
+        private final int value;
+
+        public static final com.google.protobuf.Descriptors.EnumDescriptor getDescriptor() {
+            return ServiceConstants.getDescriptor().getEnumTypes().get(0);
         }
 
-        /**
-         * @param value The numeric wire value of the corresponding enum entry.
-         * @return The enum associated with the given numeric wire value.
-         * @deprecated Use {@link #forNumber(int)} instead.
-         */
-        @java.lang.Deprecated
-        public static Values valueOf(int value) {
-            return forNumber(value);
+        private static Values[] getStaticValuesArray() {
+            return new Values[] { VALUES_UNSPECIFIED, MAX_READ_CHUNK_BYTES, MAX_WRITE_CHUNK_BYTES, MAX_OBJECT_SIZE_MB, MAX_CUSTOM_METADATA_FIELD_NAME_BYTES, MAX_CUSTOM_METADATA_FIELD_VALUE_BYTES, MAX_CUSTOM_METADATA_TOTAL_SIZE_BYTES, MAX_BUCKET_METADATA_TOTAL_SIZE_BYTES, MAX_NOTIFICATION_CONFIGS_PER_BUCKET, MAX_LIFECYCLE_RULES_PER_BUCKET, MAX_NOTIFICATION_CUSTOM_ATTRIBUTES, MAX_NOTIFICATION_CUSTOM_ATTRIBUTE_KEY_LENGTH, MAX_NOTIFICATION_CUSTOM_ATTRIBUTE_VALUE_LENGTH, MAX_LABELS_ENTRIES_COUNT, MAX_LABELS_KEY_VALUE_LENGTH, MAX_LABELS_KEY_VALUE_BYTES, MAX_OBJECT_IDS_PER_DELETE_OBJECTS_REQUEST, SPLIT_TOKEN_MAX_VALID_DAYS };
+        }
+
+        public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
+            if (-1 == index) {
+                throw new java.lang.IllegalStateException("Can't get the descriptor of an unrecognized enum value.");
+            }
+            return getDescriptor().getValues().get(index);
+        }
+
+        public final com.google.protobuf.Descriptors.EnumDescriptor getDescriptorForType() {
+            return getDescriptor();
         }
 
         /**
@@ -513,36 +465,16 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
             }
         }
 
-        public static com.google.protobuf.Internal.EnumLiteMap<Values> internalGetValueMap() {
-            return internalValueMap;
+        private Values(int index, int value) {
+            this.index = index;
+            this.value = value;
         }
 
-        private static final com.google.protobuf.Internal.EnumLiteMap<Values> internalValueMap = new com.google.protobuf.Internal.EnumLiteMap<Values>() {
-
-            public Values findValueByNumber(int number) {
-                return Values.forNumber(number);
-            }
-        };
-
-        public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
+        public final int getNumber() {
             if (-1 == index) {
-                throw new java.lang.IllegalStateException("Can't get the descriptor of an unrecognized enum value.");
+                throw new java.lang.IllegalArgumentException("Can't get the number of an unknown enum value.");
             }
-            return getDescriptor().getValues().get(index);
-        }
-
-        public final com.google.protobuf.Descriptors.EnumDescriptor getDescriptorForType() {
-            return getDescriptor();
-        }
-
-        public static final com.google.protobuf.Descriptors.EnumDescriptor getDescriptor() {
-            return com.google.storage.v2.ServiceConstants.getDescriptor().getEnumTypes().get(0);
-        }
-
-        private static final Values[] VALUES = getStaticValuesArray();
-
-        private static Values[] getStaticValuesArray() {
-            return new Values[] { VALUES_UNSPECIFIED, MAX_READ_CHUNK_BYTES, MAX_WRITE_CHUNK_BYTES, MAX_OBJECT_SIZE_MB, MAX_CUSTOM_METADATA_FIELD_NAME_BYTES, MAX_CUSTOM_METADATA_FIELD_VALUE_BYTES, MAX_CUSTOM_METADATA_TOTAL_SIZE_BYTES, MAX_BUCKET_METADATA_TOTAL_SIZE_BYTES, MAX_NOTIFICATION_CONFIGS_PER_BUCKET, MAX_LIFECYCLE_RULES_PER_BUCKET, MAX_NOTIFICATION_CUSTOM_ATTRIBUTES, MAX_NOTIFICATION_CUSTOM_ATTRIBUTE_KEY_LENGTH, MAX_NOTIFICATION_CUSTOM_ATTRIBUTE_VALUE_LENGTH, MAX_LABELS_ENTRIES_COUNT, MAX_LABELS_KEY_VALUE_LENGTH, MAX_LABELS_KEY_VALUE_BYTES, MAX_OBJECT_IDS_PER_DELETE_OBJECTS_REQUEST, SPLIT_TOKEN_MAX_VALID_DAYS };
+            return value;
         }
 
         public static Values valueOf(com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
@@ -555,17 +487,230 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
             return VALUES[desc.getIndex()];
         }
 
-        private final int index;
-
-        private final int value;
-
-        private Values(int index, int value) {
-            this.index = index;
-            this.value = value;
+        /**
+         * @param value The numeric wire value of the corresponding enum entry.
+         * @return The enum associated with the given numeric wire value.
+         * @deprecated Use {@link #forNumber(int)} instead.
+         */
+        @java.lang.Deprecated
+        public static Values valueOf(int value) {
+            return forNumber(value);
         }
+
+        public static com.google.protobuf.Internal.EnumLiteMap<Values> internalGetValueMap() {
+            return internalValueMap;
+        }
+
     }
 
     private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Shared constants.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.ServiceConstants}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceConstants)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceConstants)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ServiceConstantsOrBuilder {
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.ServiceConstants)
+
+        public Builder mergeFrom(ServiceConstants other) {
+            if (ServiceConstants.getDefaultInstance() == other)
+                return this;
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            ServiceConstants parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (ServiceConstants) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof ServiceConstants)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((ServiceConstants) other);
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public ServiceConstants build() {
+            ServiceConstants result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        // Construct using com.google.storage.v2.ServiceConstants.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
+        }
+
+        @java.lang.Override
+        public ServiceConstants getDefaultInstanceForType() {
+            return ServiceConstants.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        @java.lang.Override
+        public ServiceConstants buildPartial() {
+            ServiceConstants result = new ServiceConstants(this);
+            onBuilt();
+            return result;
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_ServiceConstants_fieldAccessorTable.ensureFieldAccessorsInitialized(ServiceConstants.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            return this;
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.ServiceConstants)
+    private static final com.google.storage.v2.ServiceConstants DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.ServiceConstants();
+    }
+
+    private static final com.google.protobuf.Parser<ServiceConstants> PARSER = new com.google.protobuf.AbstractParser<ServiceConstants>() {
+
+        @java.lang.Override
+        public ServiceConstants parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServiceConstants(input, extensionRegistry);
+        }
+    };
+
+    public static ServiceConstants parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    @java.lang.Override
+    public ServiceConstants getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ServiceConstants parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({ "unused" })
+    protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
+        return new ServiceConstants();
+    }
+
+    public static ServiceConstants parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static ServiceConstants getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static ServiceConstants parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
 
     @java.lang.Override
     public final boolean isInitialized() {
@@ -578,9 +723,16 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
         return true;
     }
 
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        unknownFields.writeTo(output);
+    public static ServiceConstants parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
+    }
+
+    public static ServiceConstants parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
     }
 
     @java.lang.Override
@@ -594,18 +746,117 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
         return size;
     }
 
+    public static ServiceConstants parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof com.google.storage.v2.ServiceConstants)) {
+        if (!(obj instanceof ServiceConstants)) {
             return super.equals(obj);
         }
-        com.google.storage.v2.ServiceConstants other = (com.google.storage.v2.ServiceConstants) obj;
+        ServiceConstants other = (ServiceConstants) obj;
         if (!unknownFields.equals(other.unknownFields))
             return false;
         return true;
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static ServiceConstants parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.google.protobuf.Parser<ServiceConstants> parser() {
+        return PARSER;
+    }
+
+    public static ServiceConstants parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        unknownFields.writeTo(output);
+    }
+
+    public static Builder newBuilder(ServiceConstants prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    public static ServiceConstants parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServiceConstants> getParserForType() {
+        return PARSER;
+    }
+
+    public static ServiceConstants parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    private ServiceConstants(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (null == extensionRegistry) {
+            throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+            boolean done = false;
+            while (!done) {
+                int tag = input.readTag();
+                switch(tag) {
+                    case 0:
+                        done = true;
+                        break;
+                    default:
+                        {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                }
+            }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e).setUnfinishedMessage(this);
+        } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+        }
+    }
+
+    public static ServiceConstants parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    // Use ServiceConstants.newBuilder() to construct.
+    private ServiceConstants(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_ServiceConstants_fieldAccessorTable.ensureFieldAccessorsInitialized(ServiceConstants.class, Builder.class);
+    }
+
+    private ServiceConstants() {
     }
 
     @java.lang.Override
@@ -620,256 +871,9 @@ ServiceConstants extends com.google.protobuf.GeneratedMessageV3 implements Servi
         return hash;
     }
 
-    public static com.google.storage.v2.ServiceConstants parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.ServiceConstants parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
     @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
+    public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+        return this.unknownFields;
     }
 
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.ServiceConstants prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Shared constants.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.ServiceConstants}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceConstants)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.ServiceConstants)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.ServiceConstantsOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceConstants_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.ServiceConstants.class, com.google.storage.v2.ServiceConstants.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.ServiceConstants.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_ServiceConstants_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceConstants getDefaultInstanceForType() {
-            return com.google.storage.v2.ServiceConstants.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceConstants build() {
-            com.google.storage.v2.ServiceConstants result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.ServiceConstants buildPartial() {
-            com.google.storage.v2.ServiceConstants result = new com.google.storage.v2.ServiceConstants(this);
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.ServiceConstants)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.ServiceConstants) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.ServiceConstants other) {
-            if (com.google.storage.v2.ServiceConstants.getDefaultInstance() == other)
-                return this;
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.ServiceConstants parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.ServiceConstants) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.ServiceConstants)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.ServiceConstants)
-    private static final com.google.storage.v2.ServiceConstants DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.ServiceConstants();
-    }
-
-    public static com.google.storage.v2.ServiceConstants getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ServiceConstants> PARSER = new com.google.protobuf.AbstractParser<ServiceConstants>() {
-
-        @java.lang.Override
-        public ServiceConstants parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new ServiceConstants(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<ServiceConstants> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ServiceConstants> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.ServiceConstants getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }

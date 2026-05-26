@@ -30,9 +30,894 @@ CreateBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements Cr
 
     private static final long serialVersionUID = 0L;
 
-    // Use CreateBucketRequest.newBuilder() to construct.
-    private CreateBucketRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
+    public static final int PARENT_FIELD_NUMBER = 1;
+
+    private volatile java.lang.Object parent_;
+
+    public static final int BUCKET_FIELD_NUMBER = 2;
+
+    private com.google.storage.v2.Bucket bucket_;
+
+    public static final int BUCKET_ID_FIELD_NUMBER = 3;
+
+    private volatile java.lang.Object bucketId_;
+
+    public static final int PREDEFINED_ACL_FIELD_NUMBER = 6;
+
+    private volatile java.lang.Object predefinedAcl_;
+
+    public static final int PREDEFINED_DEFAULT_OBJECT_ACL_FIELD_NUMBER = 7;
+
+    private volatile java.lang.Object predefinedDefaultObjectAcl_;
+
+    private byte memoizedIsInitialized = -1;
+
+    /**
+     * <pre>
+     * Request message for CreateBucket.
+     * </pre>
+     *
+     * Protobuf type {@code google.storage.v2.CreateBucketRequest}
+     */
+    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateBucketRequest)
+    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateBucketRequest)
+    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateBucketRequestOrBuilder {
+
+        private java.lang.Object parent_ = "";
+
+        private com.google.storage.v2.Bucket bucket_;
+
+        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Bucket, com.google.storage.v2.Bucket.Builder, com.google.storage.v2.BucketOrBuilder> bucketBuilder_;
+
+        private java.lang.Object bucketId_ = "";
+
+        private java.lang.Object predefinedAcl_ = "";
+
+        private java.lang.Object predefinedDefaultObjectAcl_ = "";
+
+        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateBucketRequest)
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public CreateBucketRequest build() {
+            CreateBucketRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<Bucket, Bucket.Builder, BucketOrBuilder> getBucketFieldBuilder() {
+            if (null == bucketBuilder_) {
+                bucketBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<Bucket, Bucket.Builder, BucketOrBuilder>(getBucket(), getParentForChildren(), isClean());
+                bucket_ = null;
+            }
+            return bucketBuilder_;
+        }
+
+        private Builder(BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of default object access controls to this bucket.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_default_object_acl = 7;</code>
+         *
+         * @return The predefinedDefaultObjectAcl.
+         */
+        public java.lang.String getPredefinedDefaultObjectAcl() {
+            java.lang.Object ref = predefinedDefaultObjectAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                predefinedDefaultObjectAcl_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public CreateBucketRequest getDefaultInstanceForType() {
+            return CreateBucketRequest.getDefaultInstance();
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bucket.
+         */
+        public Bucket getBucket() {
+            if (null != bucketBuilder_) {
+                return bucketBuilder_.getMessage();
+            } else {
+                return null == bucket_ ? Bucket.getDefaultInstance() : bucket_;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project to which this bucket will belong.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The bytes for parent.
+         */
+        public com.google.protobuf.ByteString getParentBytes() {
+            java.lang.Object ref = parent_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                parent_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
+            return super.setRepeatedField(field, index, value);
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+            return super.clone();
+        }
+
+        /**
+         * <pre>
+         * Required. The ID to use for this bucket, which will become the final component of
+         * the bucket's resource name. For example, the value `foo` might result in
+         * a bucket with the name `projects/123456/buckets/foo`.
+         * </pre>
+         *
+         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bytes for bucketId.
+         */
+        public com.google.protobuf.ByteString getBucketIdBytes() {
+            java.lang.Object ref = bucketId_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                bucketId_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.mergeUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public Builder mergeBucket(Bucket value) {
+            if (null != bucketBuilder_) {
+                bucketBuilder_.mergeFrom(value);
+            } else {
+                if (null == bucket_) {
+                    bucket_ = value;
+                } else {
+                    bucket_ = Bucket.newBuilder(bucket_).mergeFrom(value).buildPartial();
+                }
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The ID to use for this bucket, which will become the final component of
+         * the bucket's resource name. For example, the value `foo` might result in
+         * a bucket with the name `projects/123456/buckets/foo`.
+         * </pre>
+         *
+         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bucketId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucketId(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            bucketId_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return Whether the bucket field is set.
+         */
+        public boolean hasBucket() {
+            return null != bucketBuilder_ || null != bucket_;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of default object access controls to this bucket.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_default_object_acl = 7;</code>
+         *
+         * @param value The predefinedDefaultObjectAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedDefaultObjectAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            predefinedDefaultObjectAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public CreateBucketRequest buildPartial() {
+            CreateBucketRequest result = new CreateBucketRequest(this);
+            result.parent_ = parent_;
+            if (null != bucketBuilder_) {
+                result.bucket_ = bucketBuilder_.build();
+            } else {
+                result.bucket_ = bucket_;
+            }
+            result.bucketId_ = bucketId_;
+            result.predefinedAcl_ = predefinedAcl_;
+            result.predefinedDefaultObjectAcl_ = predefinedDefaultObjectAcl_;
+            onBuilt();
+            return result;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this bucket.
+         * Valid values are "authenticatedRead", "private", "projectPrivate",
+         * "publicRead", or "publicReadWrite".
+         * </pre>
+         *
+         * <code>string predefined_acl = 6;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPredefinedAcl() {
+            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public BucketOrBuilder getBucketOrBuilder() {
+            if (null == bucketBuilder_) {
+                return null == bucket_ ? Bucket.getDefaultInstance() : bucket_;
+            } else {
+                return bucketBuilder_.getMessageOrBuilder();
+            }
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of default object access controls to this bucket.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_default_object_acl = 7;</code>
+         *
+         * @param value The bytes for predefinedDefaultObjectAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedDefaultObjectAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            predefinedDefaultObjectAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public Bucket.Builder getBucketBuilder() {
+            onChanged();
+            return getBucketFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this bucket.
+         * Valid values are "authenticatedRead", "private", "projectPrivate",
+         * "publicRead", or "publicReadWrite".
+         * </pre>
+         *
+         * <code>string predefined_acl = 6;</code>
+         *
+         * @param value The bytes for predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Required. The ID to use for this bucket, which will become the final component of
+         * the bucket's resource name. For example, the value `foo` might result in
+         * a bucket with the name `projects/123456/buckets/foo`.
+         * </pre>
+         *
+         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearBucketId() {
+            bucketId_ = getDefaultInstance().getBucketId();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The ID to use for this bucket, which will become the final component of
+         * the bucket's resource name. For example, the value `foo` might result in
+         * a bucket with the name `projects/123456/buckets/foo`.
+         * </pre>
+         *
+         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @return The bucketId.
+         */
+        public java.lang.String getBucketId() {
+            java.lang.Object ref = bucketId_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                bucketId_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+            return StorageProto.internal_static_google_storage_v2_CreateBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateBucketRequest.class, Builder.class);
+        }
+
+        @java.lang.Override
+        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.setField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of default object access controls to this bucket.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_default_object_acl = 7;</code>
+         *
+         * @return The bytes for predefinedDefaultObjectAcl.
+         */
+        public com.google.protobuf.ByteString getPredefinedDefaultObjectAclBytes() {
+            java.lang.Object ref = predefinedDefaultObjectAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                predefinedDefaultObjectAcl_ = b;
+                return b;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project to which this bucket will belong.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParent(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            CreateBucketRequest parsedMessage = null;
+            try {
+                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                parsedMessage = (CreateBucketRequest) e.getUnfinishedMessage();
+                throw e.unwrapIOException();
+            } finally {
+                if (null != parsedMessage) {
+                    mergeFrom(parsedMessage);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. The ID to use for this bucket, which will become the final component of
+         * the bucket's resource name. For example, the value `foo` might result in
+         * a bucket with the name `projects/123456/buckets/foo`.
+         * </pre>
+         *
+         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+         *
+         * @param value The bytes for bucketId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBucketIdBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            bucketId_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            parent_ = "";
+            if (null != bucketBuilder_) {
+                bucket_ = null;
+                bucketBuilder_ = null;
+            } else {
+                bucket_ = null;
+            }
+            bucketId_ = "";
+            predefinedAcl_ = "";
+            predefinedDefaultObjectAcl_ = "";
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public Builder clearBucket() {
+            if (null != bucketBuilder_) {
+                bucket_ = null;
+                bucketBuilder_ = null;
+            } else {
+                bucket_ = null;
+                onChanged();
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+            return StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
+        }
+
+        /**
+         * <pre>
+         * Required. The project to which this bucket will belong.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearParent() {
+            parent_ = getDefaultInstance().getParent();
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this bucket.
+         * Valid values are "authenticatedRead", "private", "projectPrivate",
+         * "publicRead", or "publicReadWrite".
+         * </pre>
+         *
+         * <code>string predefined_acl = 6;</code>
+         *
+         * @param value The predefinedAcl to set.
+         * @return This builder for chaining.
+         */
+        public Builder setPredefinedAcl(java.lang.String value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            predefinedAcl_ = value;
+            onChanged();
+            return this;
+        }
+
+        // Construct using com.google.storage.v2.CreateBucketRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public Builder setBucket(Bucket.Builder builderForValue) {
+            if (null != bucketBuilder_) {
+                bucketBuilder_.setMessage(builderForValue.build());
+            } else {
+                bucket_ = builderForValue.build();
+                onChanged();
+            }
+            return this;
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+            return super.clearOneof(oneof);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this bucket.
+         * Valid values are "authenticatedRead", "private", "projectPrivate",
+         * "publicRead", or "publicReadWrite".
+         * </pre>
+         *
+         * <code>string predefined_acl = 6;</code>
+         *
+         * @return The predefinedAcl.
+         */
+        public java.lang.String getPredefinedAcl() {
+            java.lang.Object ref = predefinedAcl_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                predefinedAcl_ = s;
+                return s;
+            }
+        }
+
+        /**
+         * <pre>
+         * Required. The project to which this bucket will belong.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @param value The bytes for parent to set.
+         * @return This builder for chaining.
+         */
+        public Builder setParentBytes(com.google.protobuf.ByteString value) {
+            if (null == value) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            parent_ = value;
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
+            return super.setUnknownFields(unknownFields);
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of default object access controls to this bucket.
+         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+         * </pre>
+         *
+         * <code>string predefined_default_object_acl = 7;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearPredefinedDefaultObjectAcl() {
+            predefinedDefaultObjectAcl_ = getDefaultInstance().getPredefinedDefaultObjectAcl();
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
+            return super.addRepeatedField(field, value);
+        }
+
+        /**
+         * <pre>
+         * Required. The project to which this bucket will belong.
+         * </pre>
+         *
+         * <code>
+         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+         * </code>
+         *
+         * @return The parent.
+         */
+        public java.lang.String getParent() {
+            java.lang.Object ref = parent_;
+            if ((ref instanceof java.lang.String)) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                parent_ = s;
+                return s;
+            }
+        }
+
+        @java.lang.Override
+        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
+            return super.clearField(field);
+        }
+
+        /**
+         * <pre>
+         * Required. Properties of the new bucket being inserted.
+         * The project and name of the bucket are specified in the parent and
+         * bucket_id fields, respectively. Populating those fields in `bucket` will
+         * result in an error.
+         * </pre>
+         *
+         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+         */
+        public Builder setBucket(Bucket value) {
+            if (null != bucketBuilder_) {
+                bucketBuilder_.setMessage(value);
+            } else {
+                if (null == value) {
+                    throw new NullPointerException();
+                }
+                bucket_ = value;
+                onChanged();
+            }
+            return this;
+        }
+
+        public Builder mergeFrom(CreateBucketRequest other) {
+            if (CreateBucketRequest.getDefaultInstance() == other)
+                return this;
+            if (!other.getParent().isEmpty()) {
+                parent_ = other.parent_;
+                onChanged();
+            }
+            if (other.hasBucket()) {
+                mergeBucket(other.getBucket());
+            }
+            if (!other.getBucketId().isEmpty()) {
+                bucketId_ = other.bucketId_;
+                onChanged();
+            }
+            if (!other.getPredefinedAcl().isEmpty()) {
+                predefinedAcl_ = other.predefinedAcl_;
+                onChanged();
+            }
+            if (!other.getPredefinedDefaultObjectAcl().isEmpty()) {
+                predefinedDefaultObjectAcl_ = other.predefinedDefaultObjectAcl_;
+                onChanged();
+            }
+            this.mergeUnknownFields(other.unknownFields);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <pre>
+         * Apply a predefined set of access controls to this bucket.
+         * Valid values are "authenticatedRead", "private", "projectPrivate",
+         * "publicRead", or "publicReadWrite".
+         * </pre>
+         *
+         * <code>string predefined_acl = 6;</code>
+         *
+         * @return The bytes for predefinedAcl.
+         */
+        public com.google.protobuf.ByteString getPredefinedAclBytes() {
+            java.lang.Object ref = predefinedAcl_;
+            if (!(ref instanceof String)) {
+                return (com.google.protobuf.ByteString) ref;
+            } else {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                predefinedAcl_ = b;
+                return b;
+            }
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (!(other instanceof CreateBucketRequest)) {
+                super.mergeFrom(other);
+                return this;
+            } else {
+                return mergeFrom((CreateBucketRequest) other);
+            }
+        }
+
+    }
+
+    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateBucketRequest)
+    private static final com.google.storage.v2.CreateBucketRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.google.storage.v2.CreateBucketRequest();
+    }
+
+    private static final com.google.protobuf.Parser<CreateBucketRequest> PARSER = new com.google.protobuf.AbstractParser<CreateBucketRequest>() {
+
+        @java.lang.Override
+        public CreateBucketRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return new CreateBucketRequest(input, extensionRegistry);
+        }
+    };
+
+    public static CreateBucketRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the new bucket being inserted.
+     * The project and name of the bucket are specified in the parent and
+     * bucket_id fields, respectively. Populating those fields in `bucket` will
+     * result in an error.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return Whether the bucket field is set.
+     */
+    @java.lang.Override
+    public boolean hasBucket() {
+        return null != bucket_;
+    }
+
+    public static CreateBucketRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (0 != memoizedHashCode) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + PARENT_FIELD_NUMBER;
+        hash = (53 * hash) + getParent().hashCode();
+        if (hasBucket()) {
+            hash = (37 * hash) + BUCKET_FIELD_NUMBER;
+            hash = (53 * hash) + getBucket().hashCode();
+        }
+        hash = (37 * hash) + BUCKET_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getBucketId().hashCode();
+        hash = (37 * hash) + PREDEFINED_ACL_FIELD_NUMBER;
+        hash = (53 * hash) + getPredefinedAcl().hashCode();
+        hash = (37 * hash) + PREDEFINED_DEFAULT_OBJECT_ACL_FIELD_NUMBER;
+        hash = (53 * hash) + getPredefinedDefaultObjectAcl().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static com.google.protobuf.Parser<CreateBucketRequest> parser() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CreateBucketRequest> getParserForType() {
+        return PARSER;
     }
 
     private CreateBucketRequest() {
@@ -42,6 +927,89 @@ CreateBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements Cr
         predefinedDefaultObjectAcl_ = "";
     }
 
+    public static CreateBucketRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static CreateBucketRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of default object access controls to this bucket.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string predefined_default_object_acl = 7;</code>
+     *
+     * @return The bytes for predefinedDefaultObjectAcl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPredefinedDefaultObjectAclBytes() {
+        java.lang.Object ref = predefinedDefaultObjectAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            predefinedDefaultObjectAcl_ = b;
+            return b;
+        }
+    }
+
+    public static CreateBucketRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    // Use CreateBucketRequest.newBuilder() to construct.
+    private CreateBucketRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+    }
+
+    public static CreateBucketRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (1 == isInitialized)
+            return true;
+        if (0 == isInitialized)
+            return false;
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    /**
+     * <pre>
+     * Required. The project to which this bucket will belong.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The bytes for parent.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getParentBytes() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            parent_ = b;
+            return b;
+        }
+    }
+
     @java.lang.Override
     @SuppressWarnings({ "unused" })
     protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
@@ -49,8 +1017,317 @@ CreateBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements Cr
     }
 
     @java.lang.Override
+    public Builder toBuilder() {
+        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CreateBucketRequest)) {
+            return super.equals(obj);
+        }
+        CreateBucketRequest other = (CreateBucketRequest) obj;
+        if (!getParent().equals(other.getParent()))
+            return false;
+        if (other.hasBucket() != hasBucket())
+            return false;
+        if (hasBucket()) {
+            if (!getBucket().equals(other.getBucket()))
+                return false;
+        }
+        if (!getBucketId().equals(other.getBucketId()))
+            return false;
+        if (!getPredefinedAcl().equals(other.getPredefinedAcl()))
+            return false;
+        if (!getPredefinedDefaultObjectAcl().equals(other.getPredefinedDefaultObjectAcl()))
+            return false;
+        if (!unknownFields.equals(other.unknownFields))
+            return false;
+        return true;
+    }
+
+    public static CreateBucketRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public CreateBucketRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static CreateBucketRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static CreateBucketRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to this bucket.
+     * Valid values are "authenticatedRead", "private", "projectPrivate",
+     * "publicRead", or "publicReadWrite".
+     * </pre>
+     *
+     * <code>string predefined_acl = 6;</code>
+     *
+     * @return The predefinedAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getPredefinedAcl() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            predefinedAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. The project to which this bucket will belong.
+     * </pre>
+     *
+     * <code>
+     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
+     * @return The parent.
+     */
+    @java.lang.Override
+    public java.lang.String getParent() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            parent_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    /**
+     * <pre>
+     * Required. The ID to use for this bucket, which will become the final component of
+     * the bucket's resource name. For example, the value `foo` might result in
+     * a bucket with the name `projects/123456/buckets/foo`.
+     * </pre>
+     *
+     * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bucketId.
+     */
+    @java.lang.Override
+    public java.lang.String getBucketId() {
+        java.lang.Object ref = bucketId_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            bucketId_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static CreateBucketRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of default object access controls to this bucket.
+     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
+     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+     * </pre>
+     *
+     * <code>string predefined_default_object_acl = 7;</code>
+     *
+     * @return The predefinedDefaultObjectAcl.
+     */
+    @java.lang.Override
+    public java.lang.String getPredefinedDefaultObjectAcl() {
+        java.lang.Object ref = predefinedDefaultObjectAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            predefinedDefaultObjectAcl_ = s;
+            return s;
+        } else {
+            return (java.lang.String) ref;
+        }
+    }
+
+    public static CreateBucketRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
         return this.unknownFields;
+    }
+
+    public static CreateBucketRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (-1 != size)
+            return size;
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
+        }
+        if (null != bucket_) {
+            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getBucket());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucketId_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, bucketId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, predefinedAcl_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedDefaultObjectAcl_)) {
+            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, predefinedDefaultObjectAcl_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    public static Builder newBuilder(CreateBucketRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the new bucket being inserted.
+     * The project and name of the bucket are specified in the parent and
+     * bucket_id fields, respectively. Populating those fields in `bucket` will
+     * result in an error.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bucket.
+     */
+    @java.lang.Override
+    public Bucket getBucket() {
+        return null == bucket_ ? Bucket.getDefaultInstance() : bucket_;
+    }
+
+    public static CreateBucketRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
+        return StorageProto.internal_static_google_storage_v2_CreateBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(CreateBucketRequest.class, Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Apply a predefined set of access controls to this bucket.
+     * Valid values are "authenticatedRead", "private", "projectPrivate",
+     * "publicRead", or "publicReadWrite".
+     * </pre>
+     *
+     * <code>string predefined_acl = 6;</code>
+     *
+     * @return The bytes for predefinedAcl.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getPredefinedAclBytes() {
+        java.lang.Object ref = predefinedAcl_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            predefinedAcl_ = b;
+            return b;
+        }
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+        return StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * <pre>
+     * Required. Properties of the new bucket being inserted.
+     * The project and name of the bucket are specified in the parent and
+     * bucket_id fields, respectively. Populating those fields in `bucket` will
+     * result in an error.
+     * </pre>
+     *
+     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
+     */
+    @java.lang.Override
+    public BucketOrBuilder getBucketOrBuilder() {
+        return getBucket();
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
+        }
+        if (null != bucket_) {
+            output.writeMessage(2, getBucket());
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucketId_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, bucketId_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, predefinedAcl_);
+        }
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedDefaultObjectAcl_)) {
+            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, predefinedDefaultObjectAcl_);
+        }
+        unknownFields.writeTo(output);
+    }
+
+    /**
+     * <pre>
+     * Required. The ID to use for this bucket, which will become the final component of
+     * the bucket's resource name. For example, the value `foo` might result in
+     * a bucket with the name `projects/123456/buckets/foo`.
+     * </pre>
+     *
+     * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
+     *
+     * @return The bytes for bucketId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getBucketIdBytes() {
+        java.lang.Object ref = bucketId_;
+        if (!(ref instanceof java.lang.String)) {
+            return (com.google.protobuf.ByteString) ref;
+        } else {
+            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+            bucketId_ = b;
+            return b;
+        }
     }
 
     private CreateBucketRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
@@ -75,11 +1352,11 @@ CreateBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements Cr
                         }
                     case 18:
                         {
-                            com.google.storage.v2.Bucket.Builder subBuilder = null;
+                            Bucket.Builder subBuilder = null;
                             if (null != bucket_) {
                                 subBuilder = bucket_.toBuilder();
                             }
-                            bucket_ = input.readMessage(com.google.storage.v2.Bucket.parser(), extensionRegistry);
+                            bucket_ = input.readMessage(Bucket.parser(), extensionRegistry);
                             if (null != subBuilder) {
                                 subBuilder.mergeFrom(bucket_);
                                 bucket_ = subBuilder.buildPartial();
@@ -125,1278 +1402,4 @@ CreateBucketRequest extends com.google.protobuf.GeneratedMessageV3 implements Cr
         }
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-        return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateBucketRequest.class, com.google.storage.v2.CreateBucketRequest.Builder.class);
-    }
-
-    public static final int PARENT_FIELD_NUMBER = 1;
-
-    private volatile java.lang.Object parent_;
-
-    /**
-     * <pre>
-     * Required. The project to which this bucket will belong.
-     * </pre>
-     *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The parent.
-     */
-    @java.lang.Override
-    public java.lang.String getParent() {
-        java.lang.Object ref = parent_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            parent_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The project to which this bucket will belong.
-     * </pre>
-     *
-     * <code>
-     * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-     * </code>
-     *
-     * @return The bytes for parent.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getParentBytes() {
-        java.lang.Object ref = parent_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            parent_ = b;
-            return b;
-        }
-    }
-
-    public static final int BUCKET_FIELD_NUMBER = 2;
-
-    private com.google.storage.v2.Bucket bucket_;
-
-    /**
-     * <pre>
-     * Required. Properties of the new bucket being inserted.
-     * The project and name of the bucket are specified in the parent and
-     * bucket_id fields, respectively. Populating those fields in `bucket` will
-     * result in an error.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return Whether the bucket field is set.
-     */
-    @java.lang.Override
-    public boolean hasBucket() {
-        return null != bucket_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the new bucket being inserted.
-     * The project and name of the bucket are specified in the parent and
-     * bucket_id fields, respectively. Populating those fields in `bucket` will
-     * result in an error.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bucket.
-     */
-    @java.lang.Override
-    public com.google.storage.v2.Bucket getBucket() {
-        return null == bucket_ ? com.google.storage.v2.Bucket.getDefaultInstance() : bucket_;
-    }
-
-    /**
-     * <pre>
-     * Required. Properties of the new bucket being inserted.
-     * The project and name of the bucket are specified in the parent and
-     * bucket_id fields, respectively. Populating those fields in `bucket` will
-     * result in an error.
-     * </pre>
-     *
-     * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-     */
-    @java.lang.Override
-    public com.google.storage.v2.BucketOrBuilder getBucketOrBuilder() {
-        return getBucket();
-    }
-
-    public static final int BUCKET_ID_FIELD_NUMBER = 3;
-
-    private volatile java.lang.Object bucketId_;
-
-    /**
-     * <pre>
-     * Required. The ID to use for this bucket, which will become the final component of
-     * the bucket's resource name. For example, the value `foo` might result in
-     * a bucket with the name `projects/123456/buckets/foo`.
-     * </pre>
-     *
-     * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bucketId.
-     */
-    @java.lang.Override
-    public java.lang.String getBucketId() {
-        java.lang.Object ref = bucketId_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            bucketId_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Required. The ID to use for this bucket, which will become the final component of
-     * the bucket's resource name. For example, the value `foo` might result in
-     * a bucket with the name `projects/123456/buckets/foo`.
-     * </pre>
-     *
-     * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-     *
-     * @return The bytes for bucketId.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getBucketIdBytes() {
-        java.lang.Object ref = bucketId_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            bucketId_ = b;
-            return b;
-        }
-    }
-
-    public static final int PREDEFINED_ACL_FIELD_NUMBER = 6;
-
-    private volatile java.lang.Object predefinedAcl_;
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this bucket.
-     * Valid values are "authenticatedRead", "private", "projectPrivate",
-     * "publicRead", or "publicReadWrite".
-     * </pre>
-     *
-     * <code>string predefined_acl = 6;</code>
-     *
-     * @return The predefinedAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getPredefinedAcl() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            predefinedAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of access controls to this bucket.
-     * Valid values are "authenticatedRead", "private", "projectPrivate",
-     * "publicRead", or "publicReadWrite".
-     * </pre>
-     *
-     * <code>string predefined_acl = 6;</code>
-     *
-     * @return The bytes for predefinedAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPredefinedAclBytes() {
-        java.lang.Object ref = predefinedAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            predefinedAcl_ = b;
-            return b;
-        }
-    }
-
-    public static final int PREDEFINED_DEFAULT_OBJECT_ACL_FIELD_NUMBER = 7;
-
-    private volatile java.lang.Object predefinedDefaultObjectAcl_;
-
-    /**
-     * <pre>
-     * Apply a predefined set of default object access controls to this bucket.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_default_object_acl = 7;</code>
-     *
-     * @return The predefinedDefaultObjectAcl.
-     */
-    @java.lang.Override
-    public java.lang.String getPredefinedDefaultObjectAcl() {
-        java.lang.Object ref = predefinedDefaultObjectAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            predefinedDefaultObjectAcl_ = s;
-            return s;
-        } else {
-            return (java.lang.String) ref;
-        }
-    }
-
-    /**
-     * <pre>
-     * Apply a predefined set of default object access controls to this bucket.
-     * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-     * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-     * </pre>
-     *
-     * <code>string predefined_default_object_acl = 7;</code>
-     *
-     * @return The bytes for predefinedDefaultObjectAcl.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString getPredefinedDefaultObjectAclBytes() {
-        java.lang.Object ref = predefinedDefaultObjectAcl_;
-        if (!(ref instanceof java.lang.String)) {
-            return (com.google.protobuf.ByteString) ref;
-        } else {
-            com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-            predefinedDefaultObjectAcl_ = b;
-            return b;
-        }
-    }
-
-    private byte memoizedIsInitialized = -1;
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (1 == isInitialized)
-            return true;
-        if (0 == isInitialized)
-            return false;
-        memoizedIsInitialized = 1;
-        return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parent_);
-        }
-        if (null != bucket_) {
-            output.writeMessage(2, getBucket());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucketId_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 3, bucketId_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 6, predefinedAcl_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedDefaultObjectAcl_)) {
-            com.google.protobuf.GeneratedMessageV3.writeString(output, 7, predefinedDefaultObjectAcl_);
-        }
-        unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-        int size = memoizedSize;
-        if (-1 != size)
-            return size;
-        size = 0;
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(parent_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parent_);
-        }
-        if (null != bucket_) {
-            size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getBucket());
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(bucketId_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, bucketId_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedAcl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, predefinedAcl_);
-        }
-        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(predefinedDefaultObjectAcl_)) {
-            size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, predefinedDefaultObjectAcl_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof com.google.storage.v2.CreateBucketRequest)) {
-            return super.equals(obj);
-        }
-        com.google.storage.v2.CreateBucketRequest other = (com.google.storage.v2.CreateBucketRequest) obj;
-        if (!getParent().equals(other.getParent()))
-            return false;
-        if (other.hasBucket() != hasBucket())
-            return false;
-        if (hasBucket()) {
-            if (!getBucket().equals(other.getBucket()))
-                return false;
-        }
-        if (!getBucketId().equals(other.getBucketId()))
-            return false;
-        if (!getPredefinedAcl().equals(other.getPredefinedAcl()))
-            return false;
-        if (!getPredefinedDefaultObjectAcl().equals(other.getPredefinedDefaultObjectAcl()))
-            return false;
-        if (!unknownFields.equals(other.unknownFields))
-            return false;
-        return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-        if (0 != memoizedHashCode) {
-            return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + PARENT_FIELD_NUMBER;
-        hash = (53 * hash) + getParent().hashCode();
-        if (hasBucket()) {
-            hash = (37 * hash) + BUCKET_FIELD_NUMBER;
-            hash = (53 * hash) + getBucket().hashCode();
-        }
-        hash = (37 * hash) + BUCKET_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getBucketId().hashCode();
-        hash = (37 * hash) + PREDEFINED_ACL_FIELD_NUMBER;
-        hash = (53 * hash) + getPredefinedAcl().hashCode();
-        hash = (37 * hash) + PREDEFINED_DEFAULT_OBJECT_ACL_FIELD_NUMBER;
-        hash = (53 * hash) + getPredefinedDefaultObjectAcl().hashCode();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(java.nio.ByteBuffer data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(com.google.protobuf.ByteString data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseDelimitedFrom(java.io.InputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseDelimitedFrom(java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(com.google.protobuf.CodedInputStream input) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest parseFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() {
-        return newBuilder();
-    }
-
-    public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-    }
-
-    public static Builder newBuilder(com.google.storage.v2.CreateBucketRequest prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    @java.lang.Override
-    public Builder toBuilder() {
-        return DEFAULT_INSTANCE == this ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-    }
-
-    /**
-     * <pre>
-     * Request message for CreateBucket.
-     * </pre>
-     *
-     * Protobuf type {@code google.storage.v2.CreateBucketRequest}
-     */
-    public static final class // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateBucketRequest)
-    // @@protoc_insertion_point(builder_implements:google.storage.v2.CreateBucketRequest)
-    Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements com.google.storage.v2.CreateBucketRequestOrBuilder {
-
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
-        }
-
-        @java.lang.Override
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateBucketRequest_fieldAccessorTable.ensureFieldAccessorsInitialized(com.google.storage.v2.CreateBucketRequest.class, com.google.storage.v2.CreateBucketRequest.Builder.class);
-        }
-
-        // Construct using com.google.storage.v2.CreateBucketRequest.newBuilder()
-        private Builder() {
-            maybeForceBuilderInitialization();
-        }
-
-        private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-        }
-
-        private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
-            }
-        }
-
-        @java.lang.Override
-        public Builder clear() {
-            super.clear();
-            parent_ = "";
-            if (null != bucketBuilder_) {
-                bucket_ = null;
-                bucketBuilder_ = null;
-            } else {
-                bucket_ = null;
-            }
-            bucketId_ = "";
-            predefinedAcl_ = "";
-            predefinedDefaultObjectAcl_ = "";
-            return this;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-            return com.google.storage.v2.StorageProto.internal_static_google_storage_v2_CreateBucketRequest_descriptor;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateBucketRequest getDefaultInstanceForType() {
-            return com.google.storage.v2.CreateBucketRequest.getDefaultInstance();
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateBucketRequest build() {
-            com.google.storage.v2.CreateBucketRequest result = buildPartial();
-            if (!result.isInitialized()) {
-                throw newUninitializedMessageException(result);
-            }
-            return result;
-        }
-
-        @java.lang.Override
-        public com.google.storage.v2.CreateBucketRequest buildPartial() {
-            com.google.storage.v2.CreateBucketRequest result = new com.google.storage.v2.CreateBucketRequest(this);
-            result.parent_ = parent_;
-            if (null != bucketBuilder_) {
-                result.bucket_ = bucketBuilder_.build();
-            } else {
-                result.bucket_ = bucket_;
-            }
-            result.bucketId_ = bucketId_;
-            result.predefinedAcl_ = predefinedAcl_;
-            result.predefinedDefaultObjectAcl_ = predefinedDefaultObjectAcl_;
-            onBuilt();
-            return result;
-        }
-
-        @java.lang.Override
-        public Builder clone() {
-            return super.clone();
-        }
-
-        @java.lang.Override
-        public Builder setField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.setField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return super.clearField(field);
-        }
-
-        @java.lang.Override
-        public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return super.clearOneof(oneof);
-        }
-
-        @java.lang.Override
-        public Builder setRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
-            return super.setRepeatedField(field, index, value);
-        }
-
-        @java.lang.Override
-        public Builder addRepeatedField(com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
-            return super.addRepeatedField(field, value);
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (!(other instanceof com.google.storage.v2.CreateBucketRequest)) {
-                super.mergeFrom(other);
-                return this;
-            } else {
-                return mergeFrom((com.google.storage.v2.CreateBucketRequest) other);
-            }
-        }
-
-        public Builder mergeFrom(com.google.storage.v2.CreateBucketRequest other) {
-            if (com.google.storage.v2.CreateBucketRequest.getDefaultInstance() == other)
-                return this;
-            if (!other.getParent().isEmpty()) {
-                parent_ = other.parent_;
-                onChanged();
-            }
-            if (other.hasBucket()) {
-                mergeBucket(other.getBucket());
-            }
-            if (!other.getBucketId().isEmpty()) {
-                bucketId_ = other.bucketId_;
-                onChanged();
-            }
-            if (!other.getPredefinedAcl().isEmpty()) {
-                predefinedAcl_ = other.predefinedAcl_;
-                onChanged();
-            }
-            if (!other.getPredefinedDefaultObjectAcl().isEmpty()) {
-                predefinedDefaultObjectAcl_ = other.predefinedDefaultObjectAcl_;
-                onChanged();
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final boolean isInitialized() {
-            return true;
-        }
-
-        @java.lang.Override
-        public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            com.google.storage.v2.CreateBucketRequest parsedMessage = null;
-            try {
-                parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                parsedMessage = (com.google.storage.v2.CreateBucketRequest) e.getUnfinishedMessage();
-                throw e.unwrapIOException();
-            } finally {
-                if (null != parsedMessage) {
-                    mergeFrom(parsedMessage);
-                }
-            }
-            return this;
-        }
-
-        private java.lang.Object parent_ = "";
-
-        /**
-         * <pre>
-         * Required. The project to which this bucket will belong.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The parent.
-         */
-        public java.lang.String getParent() {
-            java.lang.Object ref = parent_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                parent_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project to which this bucket will belong.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return The bytes for parent.
-         */
-        public com.google.protobuf.ByteString getParentBytes() {
-            java.lang.Object ref = parent_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                parent_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The project to which this bucket will belong.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParent(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project to which this bucket will belong.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearParent() {
-            parent_ = getDefaultInstance().getParent();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The project to which this bucket will belong.
-         * </pre>
-         *
-         * <code>
-         * string parent = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
-         * </code>
-         *
-         * @param value The bytes for parent to set.
-         * @return This builder for chaining.
-         */
-        public Builder setParentBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            parent_ = value;
-            onChanged();
-            return this;
-        }
-
-        private com.google.storage.v2.Bucket bucket_;
-
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Bucket, com.google.storage.v2.Bucket.Builder, com.google.storage.v2.BucketOrBuilder> bucketBuilder_;
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return Whether the bucket field is set.
-         */
-        public boolean hasBucket() {
-            return null != bucketBuilder_ || null != bucket_;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bucket.
-         */
-        public com.google.storage.v2.Bucket getBucket() {
-            if (null != bucketBuilder_) {
-                return bucketBuilder_.getMessage();
-            } else {
-                return null == bucket_ ? com.google.storage.v2.Bucket.getDefaultInstance() : bucket_;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public Builder setBucket(com.google.storage.v2.Bucket value) {
-            if (null != bucketBuilder_) {
-                bucketBuilder_.setMessage(value);
-            } else {
-                if (null == value) {
-                    throw new NullPointerException();
-                }
-                bucket_ = value;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public Builder setBucket(com.google.storage.v2.Bucket.Builder builderForValue) {
-            if (null != bucketBuilder_) {
-                bucketBuilder_.setMessage(builderForValue.build());
-            } else {
-                bucket_ = builderForValue.build();
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public Builder mergeBucket(com.google.storage.v2.Bucket value) {
-            if (null != bucketBuilder_) {
-                bucketBuilder_.mergeFrom(value);
-            } else {
-                if (null == bucket_) {
-                    bucket_ = value;
-                } else {
-                    bucket_ = com.google.storage.v2.Bucket.newBuilder(bucket_).mergeFrom(value).buildPartial();
-                }
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public Builder clearBucket() {
-            if (null != bucketBuilder_) {
-                bucket_ = null;
-                bucketBuilder_ = null;
-            } else {
-                bucket_ = null;
-                onChanged();
-            }
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public com.google.storage.v2.Bucket.Builder getBucketBuilder() {
-            onChanged();
-            return getBucketFieldBuilder().getBuilder();
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        public com.google.storage.v2.BucketOrBuilder getBucketOrBuilder() {
-            if (null == bucketBuilder_) {
-                return null == bucket_ ? com.google.storage.v2.Bucket.getDefaultInstance() : bucket_;
-            } else {
-                return bucketBuilder_.getMessageOrBuilder();
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. Properties of the new bucket being inserted.
-         * The project and name of the bucket are specified in the parent and
-         * bucket_id fields, respectively. Populating those fields in `bucket` will
-         * result in an error.
-         * </pre>
-         *
-         * <code>.google.storage.v2.Bucket bucket = 2 [(.google.api.field_behavior) = REQUIRED];</code>
-         */
-        private com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Bucket, com.google.storage.v2.Bucket.Builder, com.google.storage.v2.BucketOrBuilder> getBucketFieldBuilder() {
-            if (null == bucketBuilder_) {
-                bucketBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<com.google.storage.v2.Bucket, com.google.storage.v2.Bucket.Builder, com.google.storage.v2.BucketOrBuilder>(getBucket(), getParentForChildren(), isClean());
-                bucket_ = null;
-            }
-            return bucketBuilder_;
-        }
-
-        private java.lang.Object bucketId_ = "";
-
-        /**
-         * <pre>
-         * Required. The ID to use for this bucket, which will become the final component of
-         * the bucket's resource name. For example, the value `foo` might result in
-         * a bucket with the name `projects/123456/buckets/foo`.
-         * </pre>
-         *
-         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bucketId.
-         */
-        public java.lang.String getBucketId() {
-            java.lang.Object ref = bucketId_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                bucketId_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The ID to use for this bucket, which will become the final component of
-         * the bucket's resource name. For example, the value `foo` might result in
-         * a bucket with the name `projects/123456/buckets/foo`.
-         * </pre>
-         *
-         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return The bytes for bucketId.
-         */
-        public com.google.protobuf.ByteString getBucketIdBytes() {
-            java.lang.Object ref = bucketId_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                bucketId_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Required. The ID to use for this bucket, which will become the final component of
-         * the bucket's resource name. For example, the value `foo` might result in
-         * a bucket with the name `projects/123456/buckets/foo`.
-         * </pre>
-         *
-         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bucketId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucketId(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            bucketId_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The ID to use for this bucket, which will become the final component of
-         * the bucket's resource name. For example, the value `foo` might result in
-         * a bucket with the name `projects/123456/buckets/foo`.
-         * </pre>
-         *
-         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearBucketId() {
-            bucketId_ = getDefaultInstance().getBucketId();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Required. The ID to use for this bucket, which will become the final component of
-         * the bucket's resource name. For example, the value `foo` might result in
-         * a bucket with the name `projects/123456/buckets/foo`.
-         * </pre>
-         *
-         * <code>string bucket_id = 3 [(.google.api.field_behavior) = REQUIRED];</code>
-         *
-         * @param value The bytes for bucketId to set.
-         * @return This builder for chaining.
-         */
-        public Builder setBucketIdBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            bucketId_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object predefinedAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this bucket.
-         * Valid values are "authenticatedRead", "private", "projectPrivate",
-         * "publicRead", or "publicReadWrite".
-         * </pre>
-         *
-         * <code>string predefined_acl = 6;</code>
-         *
-         * @return The predefinedAcl.
-         */
-        public java.lang.String getPredefinedAcl() {
-            java.lang.Object ref = predefinedAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                predefinedAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this bucket.
-         * Valid values are "authenticatedRead", "private", "projectPrivate",
-         * "publicRead", or "publicReadWrite".
-         * </pre>
-         *
-         * <code>string predefined_acl = 6;</code>
-         *
-         * @return The bytes for predefinedAcl.
-         */
-        public com.google.protobuf.ByteString getPredefinedAclBytes() {
-            java.lang.Object ref = predefinedAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                predefinedAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this bucket.
-         * Valid values are "authenticatedRead", "private", "projectPrivate",
-         * "publicRead", or "publicReadWrite".
-         * </pre>
-         *
-         * <code>string predefined_acl = 6;</code>
-         *
-         * @param value The predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this bucket.
-         * Valid values are "authenticatedRead", "private", "projectPrivate",
-         * "publicRead", or "publicReadWrite".
-         * </pre>
-         *
-         * <code>string predefined_acl = 6;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPredefinedAcl() {
-            predefinedAcl_ = getDefaultInstance().getPredefinedAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of access controls to this bucket.
-         * Valid values are "authenticatedRead", "private", "projectPrivate",
-         * "publicRead", or "publicReadWrite".
-         * </pre>
-         *
-         * <code>string predefined_acl = 6;</code>
-         *
-         * @param value The bytes for predefinedAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            predefinedAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        private java.lang.Object predefinedDefaultObjectAcl_ = "";
-
-        /**
-         * <pre>
-         * Apply a predefined set of default object access controls to this bucket.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_default_object_acl = 7;</code>
-         *
-         * @return The predefinedDefaultObjectAcl.
-         */
-        public java.lang.String getPredefinedDefaultObjectAcl() {
-            java.lang.Object ref = predefinedDefaultObjectAcl_;
-            if ((ref instanceof java.lang.String)) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                predefinedDefaultObjectAcl_ = s;
-                return s;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of default object access controls to this bucket.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_default_object_acl = 7;</code>
-         *
-         * @return The bytes for predefinedDefaultObjectAcl.
-         */
-        public com.google.protobuf.ByteString getPredefinedDefaultObjectAclBytes() {
-            java.lang.Object ref = predefinedDefaultObjectAcl_;
-            if (!(ref instanceof String)) {
-                return (com.google.protobuf.ByteString) ref;
-            } else {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                predefinedDefaultObjectAcl_ = b;
-                return b;
-            }
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of default object access controls to this bucket.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_default_object_acl = 7;</code>
-         *
-         * @param value The predefinedDefaultObjectAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedDefaultObjectAcl(java.lang.String value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            predefinedDefaultObjectAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of default object access controls to this bucket.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_default_object_acl = 7;</code>
-         *
-         * @return This builder for chaining.
-         */
-        public Builder clearPredefinedDefaultObjectAcl() {
-            predefinedDefaultObjectAcl_ = getDefaultInstance().getPredefinedDefaultObjectAcl();
-            onChanged();
-            return this;
-        }
-
-        /**
-         * <pre>
-         * Apply a predefined set of default object access controls to this bucket.
-         * Valid values are "authenticatedRead", "bucketOwnerFullControl",
-         * "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
-         * </pre>
-         *
-         * <code>string predefined_default_object_acl = 7;</code>
-         *
-         * @param value The bytes for predefinedDefaultObjectAcl to set.
-         * @return This builder for chaining.
-         */
-        public Builder setPredefinedDefaultObjectAclBytes(com.google.protobuf.ByteString value) {
-            if (null == value) {
-                throw new NullPointerException();
-            }
-            checkByteStringIsUtf8(value);
-            predefinedDefaultObjectAcl_ = value;
-            onChanged();
-            return this;
-        }
-
-        @java.lang.Override
-        public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-        }
-
-        @java.lang.Override
-        public final Builder mergeUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-        }
-        // @@protoc_insertion_point(builder_scope:google.storage.v2.CreateBucketRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:google.storage.v2.CreateBucketRequest)
-    private static final com.google.storage.v2.CreateBucketRequest DEFAULT_INSTANCE;
-
-    static {
-        DEFAULT_INSTANCE = new com.google.storage.v2.CreateBucketRequest();
-    }
-
-    public static com.google.storage.v2.CreateBucketRequest getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<CreateBucketRequest> PARSER = new com.google.protobuf.AbstractParser<CreateBucketRequest>() {
-
-        @java.lang.Override
-        public CreateBucketRequest parsePartialFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return new CreateBucketRequest(input, extensionRegistry);
-        }
-    };
-
-    public static com.google.protobuf.Parser<CreateBucketRequest> parser() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CreateBucketRequest> getParserForType() {
-        return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.storage.v2.CreateBucketRequest getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-    }
 }
