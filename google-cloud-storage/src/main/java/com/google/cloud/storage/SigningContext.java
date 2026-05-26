@@ -77,6 +77,151 @@ public class SigningContext {
 
     private final String preciseDate;
 
+    public static final class RequestSignatureBuilder {
+
+        private final HttpRequestMethod httpMethod;
+
+        private String contentHash;
+
+        private String mimeType;
+
+        private final long expiresAt;
+
+        private Map<String, String> canonicalExtensionHeaders;
+
+        private Map<String, String> requestQueryParams;
+
+        private final URI canonicalResource;
+
+        private CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureSchemeVersion;
+
+        private String accountAddress;
+
+        private long timeMillis;
+
+        public RequestSignatureBuilder setTimestamp(long timeMillis) {
+            this.timeMillis = timeMillis;
+            return this;
+        }
+
+        public RequestSignatureBuilder setAccountEmail(String accountAddress) {
+            this.accountAddress = accountAddress;
+            return this;
+        }
+
+        public RequestSignatureBuilder setSignatureVersion(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureSchemeVersion) {
+            this.signatureSchemeVersion = signatureSchemeVersion;
+            return this;
+        }
+
+        /**
+         * Creates an {@code SignatureInfo} object from this builder.
+         */
+        public SigningContext buildSignature() {
+            checkArgument(null != httpMethod, "Required HTTP method");
+            checkArgument(null != canonicalResource, "Required canonicalized resource");
+            checkArgument(0 <= expiresAt, "Expiration must be greater than or equal to zero");
+            if (CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4.equals(signatureSchemeVersion)) {
+                checkArgument(null != accountAddress, "Account email required to use V4 signing");
+                checkArgument(0 < timeMillis, "Timestamp required to use V4 signing");
+                checkArgument(604800 >= expiresAt, "Expiration can't be longer than 7 days to use V4 signing");
+            }
+            if (null == canonicalExtensionHeaders) {
+                canonicalExtensionHeaders = new HashMap<>();
+            }
+            if (null == requestQueryParams) {
+                requestQueryParams = new HashMap<>();
+            }
+            return new SigningContext(this);
+        }
+
+        public RequestSignatureBuilder setCanonicalizedExtensionHeaders(Map<String, String> canonicalExtensionHeaders) {
+            this.canonicalExtensionHeaders = canonicalExtensionHeaders;
+            return this;
+        }
+
+        public RequestSignatureBuilder setCanonicalizedQueryParams(Map<String, String> requestQueryParams) {
+            this.requestQueryParams = requestQueryParams;
+            return this;
+        }
+
+        /**
+         * Constructs builder.
+         *
+         * @param httpMethod the HTTP method
+         * @param expiresAt the EPOX expiration date
+         * @param canonicalResource the resource URI
+         * @throws IllegalArgumentException if required field is not provided.
+         */
+        public RequestSignatureBuilder(HttpRequestMethod httpMethod, long expiresAt, URI canonicalResource) {
+            this.httpMethod = httpMethod;
+            this.expiresAt = expiresAt;
+            this.canonicalResource = canonicalResource;
+        }
+
+        public RequestSignatureBuilder setContentType(String mimeType) {
+            this.mimeType = mimeType;
+            return this;
+        }
+
+        public RequestSignatureBuilder setContentMd5(String contentHash) {
+            this.contentHash = contentHash;
+            return this;
+        }
+
+        public RequestSignatureBuilder(SigningContext signingContext) {
+            this.httpMethod = signingContext.httpMethod;
+            this.contentHash = signingContext.contentHash;
+            this.mimeType = signingContext.mimeType;
+            this.expiresAt = signingContext.expiresAt;
+            this.canonicalExtensionHeaders = signingContext.canonicalExtensionHeaders;
+            this.requestQueryParams = signingContext.requestQueryParams;
+            this.canonicalResource = signingContext.canonicalResource;
+            this.signatureSchemeVersion = signingContext.signatureSchemeVersion;
+            this.accountAddress = signingContext.accountAddress;
+            this.timeMillis = signingContext.timeMillis;
+        }
+
+    }
+
+    public long getTimestamp() {
+        return timeMillis;
+    }
+
+    public String getAccountEmail() {
+        return accountAddress;
+    }
+
+    /**
+     * Constructs payload to be signed.
+     *
+     * @return payload to sign
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed URLs</a>
+     */
+    public String buildUnsignedPayload() {
+        // TODO reverse order when V4 becomes default
+        if (CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4.equals(signatureSchemeVersion)) {
+            return buildV4UnsignedPayload();
+        }
+        return buildV2UnsignedPayload();
+    }
+
+    public String getContentMd5() {
+        return contentHash;
+    }
+
+    public CloudStorageClient.UrlSigningOption.SignatureSchemeVersion getSignatureVersion() {
+        return signatureSchemeVersion;
+    }
+
+    public Map<String, String> getCanonicalizedExtensionHeaders() {
+        return canonicalExtensionHeaders;
+    }
+
+    public URI getCanonicalizedResource() {
+        return canonicalResource;
+    }
+
     private SigningContext(RequestSignatureBuilder signatureBuilder) {
         this.httpMethod = signatureBuilder.httpMethod;
         this.contentHash = signatureBuilder.contentHash;
@@ -102,89 +247,16 @@ public class SigningContext {
         preciseDate = exactDateFormatter.format(now);
     }
 
-    /**
-     * Constructs payload to be signed.
-     *
-     * @return payload to sign
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed URLs</a>
-     */
-    public String buildUnsignedPayload() {
-        // TODO reverse order when V4 becomes default
-        if (CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4.equals(signatureSchemeVersion)) {
-            return buildV4UnsignedPayload();
-        }
-        return buildV2UnsignedPayload();
+    public String getContentType() {
+        return mimeType;
     }
 
-    private String buildV2UnsignedPayload() {
-        StringBuilder contentBuilder = new StringBuilder();
-        contentBuilder.append(httpMethod.name()).append(COMPONENT_SEPARATOR);
-        if (null != contentHash) {
-            contentBuilder.append(contentHash);
-        }
-        contentBuilder.append(COMPONENT_SEPARATOR);
-        if (null != mimeType) {
-            contentBuilder.append(mimeType);
-        }
-        contentBuilder.append(COMPONENT_SEPARATOR);
-        contentBuilder.append(expiresAt).append(COMPONENT_SEPARATOR);
-        if (0 < canonicalExtensionHeaders.size()) {
-            contentBuilder.append(new CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V2).serialize(canonicalExtensionHeaders));
-        }
-        contentBuilder.append(canonicalResource);
-        return contentBuilder.toString();
+    public Map<String, String> getQueryParams() {
+        return requestQueryParams;
     }
 
-    private String buildV4UnsignedPayload() {
-        StringBuilder contentBuilder = new StringBuilder();
-        contentBuilder.append(GOOG4_RSA_SHA256).append(COMPONENT_SEPARATOR);
-        contentBuilder.append(preciseDate).append(COMPONENT_SEPARATOR);
-        contentBuilder.append(ymdString).append(SCOPE).append(COMPONENT_SEPARATOR);
-        contentBuilder.append(computeV4CanonicalRequestHash());
-        return contentBuilder.toString();
-    }
-
-    private String computeV4CanonicalRequestHash() {
-        StringBuilder canonicalReqBuilder = new StringBuilder();
-        CanonicalExtensionHeadersSerializer extensionHeadersSerializer = new CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
-        canonicalReqBuilder.append(httpMethod.name()).append(COMPONENT_SEPARATOR);
-        canonicalReqBuilder.append(canonicalResource).append(COMPONENT_SEPARATOR);
-        canonicalReqBuilder.append(buildV4QueryString()).append(COMPONENT_SEPARATOR);
-        canonicalReqBuilder.append(extensionHeadersSerializer.serialize(canonicalExtensionHeaders)).append(COMPONENT_SEPARATOR);
-        canonicalReqBuilder.append(extensionHeadersSerializer.serializeHeaderNames(canonicalExtensionHeaders)).append(COMPONENT_SEPARATOR);
-        String providedHash = canonicalExtensionHeaders.get("X-Goog-Content-SHA256");
-        canonicalReqBuilder.append(null == providedHash ? "UNSIGNED-PAYLOAD" : providedHash);
-        return Hashing.sha256().hashString(canonicalReqBuilder.toString(), StandardCharsets.UTF_8).toString();
-    }
-
-    /**
-     * Returns a TreeMap containing the user-supplied query parameters that do not have reserved keys.
-     */
-    private TreeMap<String, String> getNonReservedUserQueryParams() {
-        TreeMap<String, String> paramTreeMap = new TreeMap<String, String>();
-        // Skip any instances of well-known required headers that might have been supplied by the
-        // caller.
-        for (Map.Entry<String, String> paramEntry : requestQueryParams.entrySet()) {
-            // Convert to (and check for the existence of) lowercase keys to prevent cases like a user
-            // supplying "x-goog-algorithm", in order to prevent the resulting query string from
-            // containing "x-goog-algorithm" and "X-Goog-Algorithm".
-            if (!RESERVED_PARAM_NAMES_LOWER.contains(paramEntry.getKey().toLowerCase())) {
-                // URI encode user-supplied parameter, both the name and the value.
-                paramTreeMap.put(rfc3986UriEncode(paramEntry.getKey(), true), rfc3986UriEncode(paramEntry.getValue(), true));
-            }
-        }
-        return paramTreeMap;
-    }
-
-    private String buildQueryStringFromMap(Map<String, String> paramsMap) {
-        StringBuilder qsBuilder = new StringBuilder();
-        String separator = "";
-        for (Map.Entry<String, String> paramEntry : paramsMap.entrySet()) {
-            qsBuilder.append(separator);
-            separator = "&";
-            qsBuilder.append(paramEntry.getKey()).append('=').append(paramEntry.getValue());
-        }
-        return qsBuilder.toString();
+    public HttpRequestMethod getHttpVerb() {
+        return httpMethod;
     }
 
     /**
@@ -222,149 +294,79 @@ public class SigningContext {
         return buildQueryStringFromMap(paramTreeMap);
     }
 
-    public HttpRequestMethod getHttpVerb() {
-        return httpMethod;
+    private String computeV4CanonicalRequestHash() {
+        StringBuilder canonicalReqBuilder = new StringBuilder();
+        CanonicalExtensionHeadersSerializer extensionHeadersSerializer = new CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4);
+        canonicalReqBuilder.append(httpMethod.name()).append(COMPONENT_SEPARATOR);
+        canonicalReqBuilder.append(canonicalResource).append(COMPONENT_SEPARATOR);
+        canonicalReqBuilder.append(buildV4QueryString()).append(COMPONENT_SEPARATOR);
+        canonicalReqBuilder.append(extensionHeadersSerializer.serialize(canonicalExtensionHeaders)).append(COMPONENT_SEPARATOR);
+        canonicalReqBuilder.append(extensionHeadersSerializer.serializeHeaderNames(canonicalExtensionHeaders)).append(COMPONENT_SEPARATOR);
+        String providedHash = canonicalExtensionHeaders.get("X-Goog-Content-SHA256");
+        canonicalReqBuilder.append(null == providedHash ? "UNSIGNED-PAYLOAD" : providedHash);
+        return Hashing.sha256().hashString(canonicalReqBuilder.toString(), StandardCharsets.UTF_8).toString();
     }
 
-    public String getContentMd5() {
-        return contentHash;
+    private String buildQueryStringFromMap(Map<String, String> paramsMap) {
+        StringBuilder qsBuilder = new StringBuilder();
+        String separator = "";
+        for (Map.Entry<String, String> paramEntry : paramsMap.entrySet()) {
+            qsBuilder.append(separator);
+            separator = "&";
+            qsBuilder.append(paramEntry.getKey()).append('=').append(paramEntry.getValue());
+        }
+        return qsBuilder.toString();
     }
 
-    public String getContentType() {
-        return mimeType;
+    /**
+     * Returns a TreeMap containing the user-supplied query parameters that do not have reserved keys.
+     */
+    private TreeMap<String, String> getNonReservedUserQueryParams() {
+        TreeMap<String, String> paramTreeMap = new TreeMap<String, String>();
+        // Skip any instances of well-known required headers that might have been supplied by the
+        // caller.
+        for (Map.Entry<String, String> paramEntry : requestQueryParams.entrySet()) {
+            // Convert to (and check for the existence of) lowercase keys to prevent cases like a user
+            // supplying "x-goog-algorithm", in order to prevent the resulting query string from
+            // containing "x-goog-algorithm" and "X-Goog-Algorithm".
+            if (!RESERVED_PARAM_NAMES_LOWER.contains(paramEntry.getKey().toLowerCase())) {
+                // URI encode user-supplied parameter, both the name and the value.
+                paramTreeMap.put(rfc3986UriEncode(paramEntry.getKey(), true), rfc3986UriEncode(paramEntry.getValue(), true));
+            }
+        }
+        return paramTreeMap;
+    }
+
+    private String buildV4UnsignedPayload() {
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append(GOOG4_RSA_SHA256).append(COMPONENT_SEPARATOR);
+        contentBuilder.append(preciseDate).append(COMPONENT_SEPARATOR);
+        contentBuilder.append(ymdString).append(SCOPE).append(COMPONENT_SEPARATOR);
+        contentBuilder.append(computeV4CanonicalRequestHash());
+        return contentBuilder.toString();
+    }
+
+    private String buildV2UnsignedPayload() {
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append(httpMethod.name()).append(COMPONENT_SEPARATOR);
+        if (null != contentHash) {
+            contentBuilder.append(contentHash);
+        }
+        contentBuilder.append(COMPONENT_SEPARATOR);
+        if (null != mimeType) {
+            contentBuilder.append(mimeType);
+        }
+        contentBuilder.append(COMPONENT_SEPARATOR);
+        contentBuilder.append(expiresAt).append(COMPONENT_SEPARATOR);
+        if (0 < canonicalExtensionHeaders.size()) {
+            contentBuilder.append(new CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V2).serialize(canonicalExtensionHeaders));
+        }
+        contentBuilder.append(canonicalResource);
+        return contentBuilder.toString();
     }
 
     public long getExpiration() {
         return expiresAt;
     }
 
-    public Map<String, String> getCanonicalizedExtensionHeaders() {
-        return canonicalExtensionHeaders;
-    }
-
-    public Map<String, String> getQueryParams() {
-        return requestQueryParams;
-    }
-
-    public URI getCanonicalizedResource() {
-        return canonicalResource;
-    }
-
-    public CloudStorageClient.UrlSigningOption.SignatureSchemeVersion getSignatureVersion() {
-        return signatureSchemeVersion;
-    }
-
-    public long getTimestamp() {
-        return timeMillis;
-    }
-
-    public String getAccountEmail() {
-        return accountAddress;
-    }
-
-    public static final class RequestSignatureBuilder {
-
-        private final HttpRequestMethod httpMethod;
-
-        private String contentHash;
-
-        private String mimeType;
-
-        private final long expiresAt;
-
-        private Map<String, String> canonicalExtensionHeaders;
-
-        private Map<String, String> requestQueryParams;
-
-        private final URI canonicalResource;
-
-        private CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureSchemeVersion;
-
-        private String accountAddress;
-
-        private long timeMillis;
-
-        /**
-         * Constructs builder.
-         *
-         * @param httpMethod the HTTP method
-         * @param expiresAt the EPOX expiration date
-         * @param canonicalResource the resource URI
-         * @throws IllegalArgumentException if required field is not provided.
-         */
-        public RequestSignatureBuilder(HttpRequestMethod httpMethod, long expiresAt, URI canonicalResource) {
-            this.httpMethod = httpMethod;
-            this.expiresAt = expiresAt;
-            this.canonicalResource = canonicalResource;
-        }
-
-        public RequestSignatureBuilder(SigningContext signingContext) {
-            this.httpMethod = signingContext.httpMethod;
-            this.contentHash = signingContext.contentHash;
-            this.mimeType = signingContext.mimeType;
-            this.expiresAt = signingContext.expiresAt;
-            this.canonicalExtensionHeaders = signingContext.canonicalExtensionHeaders;
-            this.requestQueryParams = signingContext.requestQueryParams;
-            this.canonicalResource = signingContext.canonicalResource;
-            this.signatureSchemeVersion = signingContext.signatureSchemeVersion;
-            this.accountAddress = signingContext.accountAddress;
-            this.timeMillis = signingContext.timeMillis;
-        }
-
-        public RequestSignatureBuilder setContentMd5(String contentHash) {
-            this.contentHash = contentHash;
-            return this;
-        }
-
-        public RequestSignatureBuilder setContentType(String mimeType) {
-            this.mimeType = mimeType;
-            return this;
-        }
-
-        public RequestSignatureBuilder setCanonicalizedExtensionHeaders(Map<String, String> canonicalExtensionHeaders) {
-            this.canonicalExtensionHeaders = canonicalExtensionHeaders;
-            return this;
-        }
-
-        public RequestSignatureBuilder setCanonicalizedQueryParams(Map<String, String> requestQueryParams) {
-            this.requestQueryParams = requestQueryParams;
-            return this;
-        }
-
-        public RequestSignatureBuilder setSignatureVersion(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureSchemeVersion) {
-            this.signatureSchemeVersion = signatureSchemeVersion;
-            return this;
-        }
-
-        public RequestSignatureBuilder setAccountEmail(String accountAddress) {
-            this.accountAddress = accountAddress;
-            return this;
-        }
-
-        public RequestSignatureBuilder setTimestamp(long timeMillis) {
-            this.timeMillis = timeMillis;
-            return this;
-        }
-
-        /**
-         * Creates an {@code SignatureInfo} object from this builder.
-         */
-        public SigningContext buildSignature() {
-            checkArgument(null != httpMethod, "Required HTTP method");
-            checkArgument(null != canonicalResource, "Required canonicalized resource");
-            checkArgument(0 <= expiresAt, "Expiration must be greater than or equal to zero");
-            if (CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V4.equals(signatureSchemeVersion)) {
-                checkArgument(null != accountAddress, "Account email required to use V4 signing");
-                checkArgument(0 < timeMillis, "Timestamp required to use V4 signing");
-                checkArgument(604800 >= expiresAt, "Expiration can't be longer than 7 days to use V4 signing");
-            }
-            if (null == canonicalExtensionHeaders) {
-                canonicalExtensionHeaders = new HashMap<>();
-            }
-            if (null == requestQueryParams) {
-                requestQueryParams = new HashMap<>();
-            }
-            return new SigningContext(this);
-        }
-    }
 }

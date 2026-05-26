@@ -156,23 +156,12 @@ public class BlobMetadata implements Serializable {
 
         private final String keySha256Hash;
 
-        CustomerEncryptionInfo(String algorithm, String keySha256Hash) {
-            this.algorithm = algorithm;
-            this.keySha256Hash = keySha256Hash;
+        StorageObject.CustomerEncryption toProto() {
+            return new StorageObject.CustomerEncryption().setEncryptionAlgorithm(algorithm).setKeySha256(keySha256Hash);
         }
 
-        /**
-         * Returns the algorithm used to encrypt the blob.
-         */
-        public String getEncryptionAlgorithm() {
-            return algorithm;
-        }
-
-        /**
-         * Returns the SHA256 hash of the encryption key.
-         */
-        public String getKeySha256() {
-            return keySha256Hash;
+        static CustomerEncryptionInfo fromProto(StorageObject.CustomerEncryption customerEncryptionProto) {
+            return new CustomerEncryptionInfo(customerEncryptionProto.getEncryptionAlgorithm(), customerEncryptionProto.getKeySha256());
         }
 
         @Override
@@ -185,18 +174,30 @@ public class BlobMetadata implements Serializable {
             return Objects.hash(algorithm, keySha256Hash);
         }
 
+        /**
+         * Returns the SHA256 hash of the encryption key.
+         */
+        public String getKeySha256() {
+            return keySha256Hash;
+        }
+
+        /**
+         * Returns the algorithm used to encrypt the blob.
+         */
+        public String getEncryptionAlgorithm() {
+            return algorithm;
+        }
+
         @Override
         public final boolean equals(Object other) {
             return this == other || null != other && other.getClass().equals(CustomerEncryptionInfo.class) && Objects.equals(toProto(), ((CustomerEncryptionInfo) other).toProto());
         }
 
-        StorageObject.CustomerEncryption toProto() {
-            return new StorageObject.CustomerEncryption().setEncryptionAlgorithm(algorithm).setKeySha256(keySha256Hash);
+        CustomerEncryptionInfo(String algorithm, String keySha256Hash) {
+            this.algorithm = algorithm;
+            this.keySha256Hash = keySha256Hash;
         }
 
-        static CustomerEncryptionInfo fromProto(StorageObject.CustomerEncryption customerEncryptionProto) {
-            return new CustomerEncryptionInfo(customerEncryptionProto.getEncryptionAlgorithm(), customerEncryptionProto.getKeySha256());
-        }
     }
 
     /**
@@ -205,73 +206,27 @@ public class BlobMetadata implements Serializable {
     public abstract static class StorageObjectBuilder {
 
         /**
+         * Sets the CRC32C checksum of blob's data as described in <a
+         * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> from hex
+         * string.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+         *     Best Practices</a>
+         * @throws IllegalArgumentException when given an invalid hexadecimal value.
+         */
+        public abstract StorageObjectBuilder setCrc32cFromHexString(String crc32cHexString);
+
+        abstract StorageObjectBuilder setCustomerEncryption(CustomerEncryptionInfo customerEncryption);
+
+        @BetaApi
+        abstract StorageObjectBuilder setRetentionExpirationTime(Long retentionExpirationTime);
+
+        /**
          * Sets the blob identity.
          */
         public abstract StorageObjectBuilder setBlobId(BlobIdentifier blobId);
 
-        abstract StorageObjectBuilder setGeneratedId(String generatedId);
-
-        /**
-         * Sets the blob's data content type.
-         *
-         * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.17">Content-Type</a>
-         */
-        public abstract StorageObjectBuilder setContentType(String contentType);
-
-        /**
-         * Sets the blob's data content disposition.
-         *
-         * @see <a href="https://tools.ietf.org/html/rfc6266">Content-Disposition</a>
-         */
-        public abstract StorageObjectBuilder setContentDisposition(String contentDisposition);
-
-        /**
-         * Sets the blob's data content language.
-         *
-         * @see <a href="http://tools.ietf.org/html/bcp47">Content-Language</a>
-         */
-        public abstract StorageObjectBuilder setContentLanguage(String contentLanguage);
-
-        /**
-         * Sets the blob's data content encoding.
-         *
-         * @see <a href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">Content-Encoding</a>
-         */
-        public abstract StorageObjectBuilder setContentEncoding(String contentEncoding);
-
-        abstract StorageObjectBuilder setComponentCount(Integer componentCount);
-
-        /**
-         * Sets the blob's data cache control.
-         *
-         * @see <a href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control</a>
-         */
-        public abstract StorageObjectBuilder setCacheControl(String cacheControl);
-
-        /**
-         * Sets the blob's access control configuration.
-         *
-         * @see <a
-         *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
-         *     About Access Control Lists</a>
-         */
-        public abstract StorageObjectBuilder setAcl(List<AccessControlEntry> acl);
-
-        abstract StorageObjectBuilder setOwner(AccessControlEntry.TypedEntity owner);
-
-        abstract StorageObjectBuilder setSize(Long size);
-
-        abstract StorageObjectBuilder setEtag(String etag);
-
-        abstract StorageObjectBuilder setSelfLink(String selfLink);
-
-        /**
-         * Sets the MD5 hash of blob's data. MD5 value must be encoded in base64.
-         *
-         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-         *     Best Practices</a>
-         */
-        public abstract StorageObjectBuilder setMd5(String md5);
+        abstract StorageObjectBuilder setCreateTime(Long createTime);
 
         /**
          * Sets the MD5 hash of blob's data from hex string.
@@ -282,15 +237,59 @@ public class BlobMetadata implements Serializable {
          */
         public abstract StorageObjectBuilder setMd5FromHexString(String md5HexString);
 
+        abstract StorageObjectBuilder setMetageneration(Long metageneration);
+
+        abstract StorageObjectBuilder setIsDirectory(boolean isDirectory);
+
+        abstract StorageObjectBuilder setSelfLink(String selfLink);
+
+        abstract StorageObjectBuilder setGeneratedId(String generatedId);
+
         /**
-         * Sets the CRC32C checksum of blob's data as described in <a
-         * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
-         * base64 in big-endian order.
+         * Sets the blob's access control configuration.
          *
-         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-         *     Best Practices</a>
+         * @see <a
+         *     href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
+         *     About Access Control Lists</a>
          */
-        public abstract StorageObjectBuilder setCrc32c(String crc32c);
+        public abstract StorageObjectBuilder setAcl(List<AccessControlEntry> acl);
+
+        abstract StorageObjectBuilder setMediaLink(String mediaLink);
+
+        abstract StorageObjectBuilder setDeleteTime(Long deleteTime);
+
+        /**
+         * Sets the blob's storage class.
+         */
+        public abstract StorageObjectBuilder setStorageClass(StorageTier storageClass);
+
+        abstract StorageObjectBuilder setOwner(AccessControlEntry.TypedEntity owner);
+
+        /**
+         * Sets the blob's data content encoding.
+         *
+         * @see <a href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">Content-Encoding</a>
+         */
+        public abstract StorageObjectBuilder setContentEncoding(String contentEncoding);
+
+        abstract StorageObjectBuilder setEtag(String etag);
+
+        /**
+         * Sets the blob's user provided metadata.
+         */
+        public abstract StorageObjectBuilder setMetadata(Map<String, String> metadata);
+
+        /**
+         * Creates a {@code BlobInfo} object.
+         */
+        public abstract BlobMetadata buildObject();
+
+        /**
+         * Sets the blob's data cache control.
+         *
+         * @see <a href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control</a>
+         */
+        public abstract StorageObjectBuilder setCacheControl(String cacheControl);
 
         /**
          * Sets the custom time for an object. Once set it can't be unset and only changed to a custom
@@ -311,47 +310,19 @@ public class BlobMetadata implements Serializable {
         }
 
         /**
-         * Sets the CRC32C checksum of blob's data as described in <a
-         * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> from hex
-         * string.
+         * Sets the blob's data content type.
          *
-         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-         *     Best Practices</a>
-         * @throws IllegalArgumentException when given an invalid hexadecimal value.
+         * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.17">Content-Type</a>
          */
-        public abstract StorageObjectBuilder setCrc32cFromHexString(String crc32cHexString);
-
-        abstract StorageObjectBuilder setMediaLink(String mediaLink);
+        public abstract StorageObjectBuilder setContentType(String contentType);
 
         /**
-         * Sets the blob's storage class.
+         * Sets the blob's event-based hold.
          */
-        public abstract StorageObjectBuilder setStorageClass(StorageTier storageClass);
+        @BetaApi
+        public abstract StorageObjectBuilder setEventBasedHold(Boolean eventBasedHold);
 
-        /**
-         * Sets the modification time of an object's storage class. Once set it can't be unset directly,
-         * the only way is to rewrite the object with the desired storage class.
-         */
-        public StorageObjectBuilder setTimeStorageClassUpdated(Long timeStorageClassUpdated) {
-            throw new UnsupportedOperationException("Override setTimeStorageClassUpdated with your own implementation," + " or use com.google.cloud.storage.Blob.");
-        }
-
-        /**
-         * Sets the blob's user provided metadata.
-         */
-        public abstract StorageObjectBuilder setMetadata(Map<String, String> metadata);
-
-        abstract StorageObjectBuilder setMetageneration(Long metageneration);
-
-        abstract StorageObjectBuilder setDeleteTime(Long deleteTime);
-
-        abstract StorageObjectBuilder setUpdateTime(Long updateTime);
-
-        abstract StorageObjectBuilder setCreateTime(Long createTime);
-
-        abstract StorageObjectBuilder setIsDirectory(boolean isDirectory);
-
-        abstract StorageObjectBuilder setCustomerEncryption(CustomerEncryptionInfo customerEncryption);
+        abstract StorageObjectBuilder setComponentCount(Integer componentCount);
 
         /**
          * Sets a customer-managed key for server-side encryption of the blob. Note that when a KMS key
@@ -373,10 +344,11 @@ public class BlobMetadata implements Serializable {
         abstract StorageObjectBuilder setKmsKeyName(String kmsKeyName);
 
         /**
-         * Sets the blob's event-based hold.
+         * Sets the blob's data content disposition.
+         *
+         * @see <a href="https://tools.ietf.org/html/rfc6266">Content-Disposition</a>
          */
-        @BetaApi
-        public abstract StorageObjectBuilder setEventBasedHold(Boolean eventBasedHold);
+        public abstract StorageObjectBuilder setContentDisposition(String contentDisposition);
 
         /**
          * Sets the blob's temporary hold.
@@ -384,13 +356,43 @@ public class BlobMetadata implements Serializable {
         @BetaApi
         public abstract StorageObjectBuilder setTemporaryHold(Boolean temporaryHold);
 
-        @BetaApi
-        abstract StorageObjectBuilder setRetentionExpirationTime(Long retentionExpirationTime);
+        /**
+         * Sets the MD5 hash of blob's data. MD5 value must be encoded in base64.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+         *     Best Practices</a>
+         */
+        public abstract StorageObjectBuilder setMd5(String md5);
 
         /**
-         * Creates a {@code BlobInfo} object.
+         * Sets the blob's data content language.
+         *
+         * @see <a href="http://tools.ietf.org/html/bcp47">Content-Language</a>
          */
-        public abstract BlobMetadata buildObject();
+        public abstract StorageObjectBuilder setContentLanguage(String contentLanguage);
+
+        abstract StorageObjectBuilder setSize(Long size);
+
+        /**
+         * Sets the modification time of an object's storage class. Once set it can't be unset directly,
+         * the only way is to rewrite the object with the desired storage class.
+         */
+        public StorageObjectBuilder setTimeStorageClassUpdated(Long timeStorageClassUpdated) {
+            throw new UnsupportedOperationException("Override setTimeStorageClassUpdated with your own implementation," + " or use com.google.cloud.storage.Blob.");
+        }
+
+        abstract StorageObjectBuilder setUpdateTime(Long updateTime);
+
+        /**
+         * Sets the CRC32C checksum of blob's data as described in <a
+         * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
+         * base64 in big-endian order.
+         *
+         * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+         *     Best Practices</a>
+         */
+        public abstract StorageObjectBuilder setCrc32c(String crc32c);
+
     }
 
     static final class BlobInfoBuilderImpl extends StorageObjectBuilder {
@@ -457,8 +459,240 @@ public class BlobMetadata implements Serializable {
 
         private Long retentionExpiryTime;
 
+        @Override
+        BlobMetadata.StorageObjectBuilder setCreateTime(Long creationTime) {
+            this.creationTime = creationTime;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setCrc32cFromHexString(String crc32cHex) {
+            if (null == crc32cHex) {
+                return this;
+            }
+            if (0 != crc32cHex.length() % 2) {
+                throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
+            }
+            String crc32cHexLower = crc32cHex.toLowerCase();
+            ByteBuffer crc32cBuffer = ByteBuffer.allocate(crc32cHexLower.length() / 2);
+            int charPos = 0;
+            while (crc32cHexLower.length() > charPos) {
+                int highBits = this.hexValues.indexOf(crc32cHexLower.charAt(charPos));
+                int lowBits = this.hexValues.indexOf(crc32cHexLower.charAt(charPos + 1));
+                if (-1 == highBits || -1 == lowBits) {
+                    throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
+                }
+                crc32cBuffer.put((byte) (highBits << 4 | lowBits));
+                charPos += 2;
+            }
+            this.crc32cChecksum = BaseEncoding.base64().encode(crc32cBuffer.array());
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setSelfLink(String resourceLink) {
+            this.resourceLink = resourceLink;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setSize(Long contentSize) {
+            this.contentSize = contentSize;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setTimeStorageClassUpdated(Long storageClassUpdateTime) {
+            this.storageClassUpdateTime = storageClassUpdateTime;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setAcl(List<AccessControlEntry> accessControlList) {
+            this.accessControlList = null != accessControlList ? ImmutableList.copyOf(accessControlList) : null;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setTemporaryHold(Boolean tempHoldFlag) {
+            this.tempHoldFlag = tempHoldFlag;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setIsDirectory(boolean directoryFlag) {
+            this.directoryFlag = directoryFlag;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setCustomerEncryption(CustomerEncryptionInfo encryptionInfo) {
+            this.encryptionInfo = encryptionInfo;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setUpdateTime(Long lastUpdatedTime) {
+            this.lastUpdatedTime = lastUpdatedTime;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setEventBasedHold(Boolean eventHoldFlag) {
+            this.eventHoldFlag = eventHoldFlag;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setOwner(AccessControlEntry.TypedEntity ownerEntity) {
+            this.ownerEntity = ownerEntity;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setMd5(String md5Digest) {
+            this.md5Digest = firstNonNull(md5Digest, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setContentDisposition(String dispositionHeader) {
+            this.dispositionHeader = firstNonNull(dispositionHeader, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setMd5FromHexString(String md5Hex) {
+            if (null == md5Hex) {
+                return this;
+            }
+            if (0 != md5Hex.length() % 2) {
+                throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
+            }
+            String md5HexLower = md5Hex.toLowerCase();
+            ByteBuffer md5Buffer = ByteBuffer.allocate(md5HexLower.length() / 2);
+            int charPos = 0;
+            while (md5HexLower.length() > charPos) {
+                int highBits = this.hexValues.indexOf(md5HexLower.charAt(charPos));
+                int lowBits = this.hexValues.indexOf(md5HexLower.charAt(charPos + 1));
+                if (-1 == highBits || -1 == lowBits) {
+                    throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
+                }
+                md5Buffer.put((byte) (highBits << 4 | lowBits));
+                charPos += 2;
+            }
+            this.md5Digest = BaseEncoding.base64().encode(md5Buffer.array());
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setBlobId(BlobIdentifier blobIdentifier) {
+            this.blobIdentifier = checkNotNull(blobIdentifier);
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setDeleteTime(Long deletionTime) {
+            this.deletionTime = deletionTime;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setStorageClass(StorageTier storageTier) {
+            this.storageTier = storageTier;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setComponentCount(Integer partsCount) {
+            this.partsCount = partsCount;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setCrc32c(String crc32cChecksum) {
+            this.crc32cChecksum = firstNonNull(crc32cChecksum, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setKmsKeyName(String kmsKeyId) {
+            this.kmsKeyId = kmsKeyId;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setMetadata(Map<String, String> customMeta) {
+            if (null == customMeta) {
+                this.customMeta = (Map<String, String>) Data.nullOf(EmptyImmutableMap.class);
+            } else {
+                this.customMeta = new HashMap<>(customMeta);
+            }
+            return this;
+        }
+
         BlobInfoBuilderImpl(BlobIdentifier blobIdentifier) {
             this.blobIdentifier = blobIdentifier;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setMetageneration(Long metaGeneration) {
+            this.metaGeneration = metaGeneration;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setContentEncoding(String contentEncodingType) {
+            this.contentEncodingType = firstNonNull(contentEncodingType, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setRetentionExpirationTime(Long retentionExpiryTime) {
+            this.retentionExpiryTime = retentionExpiryTime;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setEtag(String entityTag) {
+            this.entityTag = entityTag;
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setMediaLink(String mediaUrl) {
+            this.mediaUrl = mediaUrl;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setCacheControl(String cacheDirective) {
+            this.cacheDirective = firstNonNull(cacheDirective, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        BlobMetadata.StorageObjectBuilder setGeneratedId(String generatedIdentifier) {
+            this.generatedIdentifier = generatedIdentifier;
+            return this;
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setContentLanguage(String languageTag) {
+            this.languageTag = firstNonNull(languageTag, Data.<String>nullOf(String.class));
+            return this;
+        }
+
+        @Override
+        public BlobMetadata buildObject() {
+            checkNotNull(blobIdentifier);
+            return new BlobMetadata(this);
+        }
+
+        @Override
+        public BlobMetadata.StorageObjectBuilder setContentType(String mimeType) {
+            this.mimeType = firstNonNull(mimeType, Data.<String>nullOf(String.class));
+            return this;
         }
 
         BlobInfoBuilderImpl(BlobMetadata blobMetadata) {
@@ -495,620 +729,11 @@ public class BlobMetadata implements Serializable {
         }
 
         @Override
-        public BlobMetadata.StorageObjectBuilder setBlobId(BlobIdentifier blobIdentifier) {
-            this.blobIdentifier = checkNotNull(blobIdentifier);
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setGeneratedId(String generatedIdentifier) {
-            this.generatedIdentifier = generatedIdentifier;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setContentType(String mimeType) {
-            this.mimeType = firstNonNull(mimeType, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setContentDisposition(String dispositionHeader) {
-            this.dispositionHeader = firstNonNull(dispositionHeader, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setContentLanguage(String languageTag) {
-            this.languageTag = firstNonNull(languageTag, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setContentEncoding(String contentEncodingType) {
-            this.contentEncodingType = firstNonNull(contentEncodingType, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setComponentCount(Integer partsCount) {
-            this.partsCount = partsCount;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setCacheControl(String cacheDirective) {
-            this.cacheDirective = firstNonNull(cacheDirective, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setAcl(List<AccessControlEntry> accessControlList) {
-            this.accessControlList = null != accessControlList ? ImmutableList.copyOf(accessControlList) : null;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setOwner(AccessControlEntry.TypedEntity ownerEntity) {
-            this.ownerEntity = ownerEntity;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setSize(Long contentSize) {
-            this.contentSize = contentSize;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setEtag(String entityTag) {
-            this.entityTag = entityTag;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setSelfLink(String resourceLink) {
-            this.resourceLink = resourceLink;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setMd5(String md5Digest) {
-            this.md5Digest = firstNonNull(md5Digest, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setMd5FromHexString(String md5Hex) {
-            if (null == md5Hex) {
-                return this;
-            }
-            if (0 != md5Hex.length() % 2) {
-                throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
-            }
-            String md5HexLower = md5Hex.toLowerCase();
-            ByteBuffer md5Buffer = ByteBuffer.allocate(md5HexLower.length() / 2);
-            int charPos = 0;
-            while (md5HexLower.length() > charPos) {
-                int highBits = this.hexValues.indexOf(md5HexLower.charAt(charPos));
-                int lowBits = this.hexValues.indexOf(md5HexLower.charAt(charPos + 1));
-                if (-1 == highBits || -1 == lowBits) {
-                    throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
-                }
-                md5Buffer.put((byte) (highBits << 4 | lowBits));
-                charPos += 2;
-            }
-            this.md5Digest = BaseEncoding.base64().encode(md5Buffer.array());
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setCrc32c(String crc32cChecksum) {
-            this.crc32cChecksum = firstNonNull(crc32cChecksum, Data.<String>nullOf(String.class));
-            return this;
-        }
-
-        @Override
         public BlobMetadata.StorageObjectBuilder setCustomTime(Long customTimestamp) {
             this.customTimestamp = customTimestamp;
             return this;
         }
 
-        @Override
-        public BlobMetadata.StorageObjectBuilder setCrc32cFromHexString(String crc32cHex) {
-            if (null == crc32cHex) {
-                return this;
-            }
-            if (0 != crc32cHex.length() % 2) {
-                throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
-            }
-            String crc32cHexLower = crc32cHex.toLowerCase();
-            ByteBuffer crc32cBuffer = ByteBuffer.allocate(crc32cHexLower.length() / 2);
-            int charPos = 0;
-            while (crc32cHexLower.length() > charPos) {
-                int highBits = this.hexValues.indexOf(crc32cHexLower.charAt(charPos));
-                int lowBits = this.hexValues.indexOf(crc32cHexLower.charAt(charPos + 1));
-                if (-1 == highBits || -1 == lowBits) {
-                    throw new IllegalArgumentException("each byte must be represented by 2 valid hexadecimal characters");
-                }
-                crc32cBuffer.put((byte) (highBits << 4 | lowBits));
-                charPos += 2;
-            }
-            this.crc32cChecksum = BaseEncoding.base64().encode(crc32cBuffer.array());
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setMediaLink(String mediaUrl) {
-            this.mediaUrl = mediaUrl;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setMetadata(Map<String, String> customMeta) {
-            if (null == customMeta) {
-                this.customMeta = (Map<String, String>) Data.nullOf(EmptyImmutableMap.class);
-            } else {
-                this.customMeta = new HashMap<>(customMeta);
-            }
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setStorageClass(StorageTier storageTier) {
-            this.storageTier = storageTier;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setTimeStorageClassUpdated(Long storageClassUpdateTime) {
-            this.storageClassUpdateTime = storageClassUpdateTime;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setMetageneration(Long metaGeneration) {
-            this.metaGeneration = metaGeneration;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setDeleteTime(Long deletionTime) {
-            this.deletionTime = deletionTime;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setUpdateTime(Long lastUpdatedTime) {
-            this.lastUpdatedTime = lastUpdatedTime;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setCreateTime(Long creationTime) {
-            this.creationTime = creationTime;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setIsDirectory(boolean directoryFlag) {
-            this.directoryFlag = directoryFlag;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setCustomerEncryption(CustomerEncryptionInfo encryptionInfo) {
-            this.encryptionInfo = encryptionInfo;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setKmsKeyName(String kmsKeyId) {
-            this.kmsKeyId = kmsKeyId;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setEventBasedHold(Boolean eventHoldFlag) {
-            this.eventHoldFlag = eventHoldFlag;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata.StorageObjectBuilder setTemporaryHold(Boolean tempHoldFlag) {
-            this.tempHoldFlag = tempHoldFlag;
-            return this;
-        }
-
-        @Override
-        BlobMetadata.StorageObjectBuilder setRetentionExpirationTime(Long retentionExpiryTime) {
-            this.retentionExpiryTime = retentionExpiryTime;
-            return this;
-        }
-
-        @Override
-        public BlobMetadata buildObject() {
-            checkNotNull(blobIdentifier);
-            return new BlobMetadata(this);
-        }
-    }
-
-    BlobMetadata(BlobInfoBuilderImpl blobBuilder) {
-        blobIdentifier = blobBuilder.blobIdentifier;
-        generatedIdentifier = blobBuilder.generatedIdentifier;
-        cacheDirective = blobBuilder.cacheDirective;
-        contentEncodingType = blobBuilder.contentEncodingType;
-        mimeType = blobBuilder.mimeType;
-        dispositionHeader = blobBuilder.dispositionHeader;
-        languageTag = blobBuilder.languageTag;
-        partsCount = blobBuilder.partsCount;
-        encryptionInfo = blobBuilder.encryptionInfo;
-        accessControlList = blobBuilder.accessControlList;
-        ownerEntity = blobBuilder.ownerEntity;
-        contentSize = blobBuilder.contentSize;
-        entityTag = blobBuilder.entityTag;
-        resourceLink = blobBuilder.resourceLink;
-        md5Digest = blobBuilder.md5Digest;
-        crc32cChecksum = blobBuilder.crc32cChecksum;
-        customTimestamp = blobBuilder.customTimestamp;
-        mediaUrl = blobBuilder.mediaUrl;
-        customMeta = blobBuilder.customMeta;
-        metaGeneration = blobBuilder.metaGeneration;
-        deletionTime = blobBuilder.deletionTime;
-        lastUpdatedTime = blobBuilder.lastUpdatedTime;
-        creationTime = blobBuilder.creationTime;
-        directoryFlag = firstNonNull(blobBuilder.directoryFlag, Boolean.FALSE);
-        storageTier = blobBuilder.storageTier;
-        storageClassUpdateTime = blobBuilder.storageClassUpdateTime;
-        kmsKeyId = blobBuilder.kmsKeyId;
-        eventHoldFlag = blobBuilder.eventHoldFlag;
-        tempHoldFlag = blobBuilder.tempHoldFlag;
-        retentionExpiryTime = blobBuilder.retentionExpiryTime;
-    }
-
-    /**
-     * Returns the blob's identity.
-     */
-    public BlobIdentifier getBlobId() {
-        return blobIdentifier;
-    }
-
-    /**
-     * Returns the name of the containing bucket.
-     */
-    public String getBucket() {
-        return getBlobId().getBucket();
-    }
-
-    /**
-     * Returns the service-generated for the blob.
-     */
-    public String getGeneratedId() {
-        return generatedIdentifier;
-    }
-
-    /**
-     * Returns the blob's name.
-     */
-    public String getName() {
-        return getBlobId().getName();
-    }
-
-    /**
-     * Returns the blob's data cache control.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control</a>
-     */
-    public String getCacheControl() {
-        return Data.isNull(cacheDirective) ? null : cacheDirective;
-    }
-
-    /**
-     * Returns the blob's access control configuration.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
-     *     About Access Control Lists</a>
-     */
-    public List<AccessControlEntry> getAcl() {
-        return accessControlList;
-    }
-
-    /**
-     * Returns the blob's owner. This will always be the uploader of the blob.
-     */
-    public AccessControlEntry.TypedEntity getOwner() {
-        return ownerEntity;
-    }
-
-    /**
-     * Returns the content length of the data in bytes.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.13">Content-Length</a>
-     */
-    public Long getSize() {
-        return contentSize;
-    }
-
-    /**
-     * Returns the blob's data content type.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.17">Content-Type</a>
-     */
-    public String getContentType() {
-        return Data.isNull(mimeType) ? null : mimeType;
-    }
-
-    /**
-     * Returns the blob's data content encoding.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">Content-Encoding</a>
-     */
-    public String getContentEncoding() {
-        return Data.isNull(contentEncodingType) ? null : contentEncodingType;
-    }
-
-    /**
-     * Returns the blob's data content disposition.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc6266">Content-Disposition</a>
-     */
-    public String getContentDisposition() {
-        return Data.isNull(dispositionHeader) ? null : dispositionHeader;
-    }
-
-    /**
-     * Returns the blob's data content language.
-     *
-     * @see <a href="http://tools.ietf.org/html/bcp47">Content-Language</a>
-     */
-    public String getContentLanguage() {
-        return Data.isNull(languageTag) ? null : languageTag;
-    }
-
-    /**
-     * Returns the number of components that make up this blob. Components are accumulated through the
-     * {@link CloudStorageClient#compose(CloudStorageClient.ComposeBlobsRequest)} operation and are limited to a count of 1024,
-     * counting 1 for each non-composite component blob and componentCount for each composite
-     * component blob. This value is set only for composite blobs.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/composite-objects#_Count">Component Count
-     *     Property</a>
-     */
-    public Integer getComponentCount() {
-        return partsCount;
-    }
-
-    /**
-     * Returns HTTP 1.1 Entity tag for the blob.
-     *
-     * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
-     */
-    public String getEtag() {
-        return entityTag;
-    }
-
-    /**
-     * Returns the URI of this blob as a string.
-     */
-    public String getSelfLink() {
-        return resourceLink;
-    }
-
-    /**
-     * Returns the MD5 hash of blob's data encoded in base64.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-     *     Best Practices</a>
-     */
-    public String getMd5() {
-        return Data.isNull(md5Digest) ? null : md5Digest;
-    }
-
-    /**
-     * Returns the MD5 hash of blob's data decoded to string.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-     *     Best Practices</a>
-     */
-    public String getMd5ToHexString() {
-        if (null == md5Digest) {
-            return null;
-        }
-        byte[] decodedMd5Bytes = BaseEncoding.base64().decode(md5Digest);
-        StringBuilder sb = new StringBuilder();
-        for (byte byteVal : decodedMd5Bytes) {
-            sb.append(String.format("%02x", byteVal & 0xff));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Returns the CRC32C checksum of blob's data as described in <a
-     * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
-     * base64 in big-endian order.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-     *     Best Practices</a>
-     */
-    public String getCrc32c() {
-        return Data.isNull(crc32cChecksum) ? null : crc32cChecksum;
-    }
-
-    /**
-     * Returns the CRC32C checksum of blob's data as described in <a
-     * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> decoded to
-     * string.
-     *
-     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
-     *     Best Practices</a>
-     */
-    public String getCrc32cToHexString() {
-        if (null == crc32cChecksum) {
-            return null;
-        }
-        byte[] decodedCrc32c = BaseEncoding.base64().decode(crc32cChecksum);
-        StringBuilder sb = new StringBuilder();
-        for (byte byteVal : decodedCrc32c) {
-            sb.append(String.format("%02x", byteVal & 0xff));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Returns the blob's media download link.
-     */
-    public String getMediaLink() {
-        return mediaUrl;
-    }
-
-    /**
-     * Returns blob's user provided metadata.
-     */
-    public Map<String, String> getMetadata() {
-        return null == customMeta || Data.isNull(customMeta) ? null : Collections.unmodifiableMap(customMeta);
-    }
-
-    /**
-     * Returns blob's data generation. Used for blob versioning.
-     */
-    public Long getGeneration() {
-        return getBlobId().getGeneration();
-    }
-
-    /**
-     * Returns blob's metageneration. Used for preconditions and for detecting changes in metadata. A
-     * metageneration number is only meaningful in the context of a particular generation of a
-     * particular blob.
-     */
-    public Long getMetageneration() {
-        return metaGeneration;
-    }
-
-    /**
-     * Returns the deletion time of the blob expressed as the number of milliseconds since the Unix
-     * epoch.
-     */
-    public Long getDeleteTime() {
-        return deletionTime;
-    }
-
-    /**
-     * Returns the last modification time of the blob's metadata expressed as the number of
-     * milliseconds since the Unix epoch.
-     */
-    public Long getUpdateTime() {
-        return lastUpdatedTime;
-    }
-
-    /**
-     * Returns the creation time of the blob expressed as the number of milliseconds since the Unix
-     * epoch.
-     */
-    public Long getCreateTime() {
-        return creationTime;
-    }
-
-    /**
-     * Returns the custom time specified by the user for an object.
-     */
-    public Long getCustomTime() {
-        return customTimestamp;
-    }
-
-    /**
-     * Returns {@code true} if the current blob represents a directory. This can only happen if the
-     * blob is returned by {@link CloudStorageClient#list(String, CloudStorageClient.BlobListOptions...)} when the {@link
-     * CloudStorageClient.BlobListOptions#restrictToCurrentDirectory()} option is used. When this is the case only {@link
-     * #getBlobId()} and {@link #getSize()} are set for the current blob: {@link BlobIdentifier#getName()}
-     * ends with the '/' character, {@link BlobIdentifier#getGeneration()} returns {@code null} and {@link
-     * #getSize()} is {@code 0}.
-     */
-    public boolean isDirectory() {
-        return directoryFlag;
-    }
-
-    /**
-     * Returns information on the customer-supplied encryption key, if the blob is encrypted using
-     * such a key.
-     */
-    public CustomerEncryptionInfo getCustomerEncryption() {
-        return encryptionInfo;
-    }
-
-    /**
-     * Returns the storage class of the blob.
-     */
-    public StorageTier getStorageClass() {
-        return storageTier;
-    }
-
-    /**
-     * Returns the time that the object's storage class was last changed or the time of the object
-     * creation.
-     */
-    public Long getTimeStorageClassUpdated() {
-        return storageClassUpdateTime;
-    }
-
-    /**
-     * Returns the Cloud KMS key used to encrypt the blob, if any.
-     */
-    public String getKmsKeyName() {
-        return kmsKeyId;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
-     * false}.
-     *
-     * <p>Case 1: {@code true} the field {@link
-     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)} and event-based hold for the blob is enabled.
-     *
-     * <p>Case 2.1: {@code null} the field {@link
-     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, but event-based hold for the blob is not
-     * enabled. This case can be considered implicitly {@code false}.
-     *
-     * <p>Case 2.2: {@code null} the field {@link
-     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is not selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, and the state for this field is unknown.
-     *
-     * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
-     * StorageObjectBuilder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-     * CloudStorageClient#update(BlobMetadata, CloudStorageClient.BlobUploadOptions...)} in which case the value of event-based
-     * hold will remain {@code false} for the given instance.
-     */
-    @BetaApi
-    public Boolean getEventBasedHold() {
-        return Data.<Boolean>isNull(eventHoldFlag) ? null : eventHoldFlag;
-    }
-
-    /**
-     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
-     * false}.
-     *
-     * <p>Case 1: {@code true} the field {@link
-     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)} and temporary hold for the blob is enabled.
-     *
-     * <p>Case 2.1: {@code null} the field {@link
-     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, but temporary hold for the blob is not enabled.
-     * This case can be considered implicitly {@code false}.
-     *
-     * <p>Case 2.2: {@code null} the field {@link
-     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is not selected in a {@link
-     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, and the state for this field is unknown.
-     *
-     * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
-     * StorageObjectBuilder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
-     * CloudStorageClient#update(BlobMetadata, CloudStorageClient.BlobUploadOptions...)} in which case the value of temporary
-     * hold will remain {@code false} for the given instance.
-     */
-    @BetaApi
-    public Boolean getTemporaryHold() {
-        return Data.<Boolean>isNull(tempHoldFlag) ? null : tempHoldFlag;
     }
 
     /**
@@ -1121,128 +746,12 @@ public class BlobMetadata implements Serializable {
     }
 
     /**
-     * Returns a builder for the current blob.
+     * Returns the blob's data content language.
+     *
+     * @see <a href="http://tools.ietf.org/html/bcp47">Content-Language</a>
      */
-    public StorageObjectBuilder asBuilder() {
-        return new BlobInfoBuilderImpl(this);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).add("size", getSize()).add("content-type", getContentType()).add("metadata", getMetadata()).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(blobIdentifier);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return this == other || null != other && other.getClass().equals(BlobMetadata.class) && Objects.equals(toProto(), ((BlobMetadata) other).toProto());
-    }
-
-    StorageObject toProto() {
-        StorageObject protoStorage = blobIdentifier.toProto();
-        if (null != accessControlList) {
-            protoStorage.setAcl(Lists.transform(accessControlList, new Function<AccessControlEntry, ObjectAccessControl>() {
-
-                @Override
-                public ObjectAccessControl apply(AccessControlEntry acl) {
-                    return acl.toObjectProto();
-                }
-            }));
-        }
-        if (null != deletionTime) {
-            protoStorage.setTimeDeleted(new DateTime(deletionTime));
-        }
-        if (null != lastUpdatedTime) {
-            protoStorage.setUpdated(new DateTime(lastUpdatedTime));
-        }
-        if (null != creationTime) {
-            protoStorage.setTimeCreated(new DateTime(creationTime));
-        }
-        if (null != customTimestamp) {
-            protoStorage.setCustomTime(new DateTime(customTimestamp));
-        }
-        if (null != contentSize) {
-            protoStorage.setSize(BigInteger.valueOf(contentSize));
-        }
-        if (null != ownerEntity) {
-            protoStorage.setOwner(new Owner().setEntity(ownerEntity.toProto()));
-        }
-        if (null != storageTier) {
-            protoStorage.setStorageClass(storageTier.toString());
-        }
-        if (null != storageClassUpdateTime) {
-            protoStorage.setTimeStorageClassUpdated(new DateTime(storageClassUpdateTime));
-        }
-        Map<String, String> protoMetadata = customMeta;
-        if (null != customMeta && !Data.isNull(customMeta)) {
-            protoMetadata = Maps.newHashMapWithExpectedSize(customMeta.size());
-            for (Map.Entry<String, String> mapEntry : customMeta.entrySet()) {
-                protoMetadata.put(mapEntry.getKey(), firstNonNull(mapEntry.getValue(), Data.<String>nullOf(String.class)));
-            }
-        }
-        if (null != encryptionInfo) {
-            protoStorage.setCustomerEncryption(encryptionInfo.toProto());
-        }
-        if (null != retentionExpiryTime) {
-            protoStorage.setRetentionExpirationTime(new DateTime(retentionExpiryTime));
-        }
-        protoStorage.setKmsKeyName(kmsKeyId);
-        protoStorage.setEventBasedHold(eventHoldFlag);
-        protoStorage.setTemporaryHold(tempHoldFlag);
-        protoStorage.setMetadata(protoMetadata);
-        protoStorage.setCacheControl(cacheDirective);
-        protoStorage.setContentEncoding(contentEncodingType);
-        protoStorage.setCrc32c(crc32cChecksum);
-        protoStorage.setContentType(mimeType);
-        protoStorage.setMd5Hash(md5Digest);
-        protoStorage.setMediaLink(mediaUrl);
-        protoStorage.setMetageneration(metaGeneration);
-        protoStorage.setContentDisposition(dispositionHeader);
-        protoStorage.setComponentCount(partsCount);
-        protoStorage.setContentLanguage(languageTag);
-        protoStorage.setEtag(entityTag);
-        protoStorage.setId(generatedIdentifier);
-        protoStorage.setSelfLink(resourceLink);
-        return protoStorage;
-    }
-
-    /**
-     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
-     */
-    public static StorageObjectBuilder newBuilder(BucketInfo bucket, String objectKey) {
-        return newBuilder(bucket.getName(), objectKey);
-    }
-
-    /**
-     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
-     */
-    public static StorageObjectBuilder newBuilder(String containerName, String objectKey) {
-        return newBuilder(BlobIdentifier.create(containerName, objectKey));
-    }
-
-    /**
-     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
-     */
-    public static StorageObjectBuilder newBuilder(BucketInfo bucket, String objectKey, Long version) {
-        return newBuilder(bucket.getName(), objectKey, version);
-    }
-
-    /**
-     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
-     */
-    public static StorageObjectBuilder newBuilder(String containerName, String objectKey, Long version) {
-        return newBuilder(BlobIdentifier.create(containerName, objectKey, version));
-    }
-
-    /**
-     * Returns a {@code BlobInfo} builder where blob identity is set using the provided value.
-     */
-    public static StorageObjectBuilder newBuilder(BlobIdentifier blobIdentifier) {
-        return new BlobInfoBuilderImpl(blobIdentifier);
+    public String getContentLanguage() {
+        return Data.isNull(languageTag) ? null : languageTag;
     }
 
     static BlobMetadata fromPb(StorageObject protoStorage) {
@@ -1342,4 +851,499 @@ public class BlobMetadata implements Serializable {
         }
         return blobBuilder.buildObject();
     }
+
+    /**
+     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
+     */
+    public static StorageObjectBuilder newBuilder(BucketInfo bucket, String objectKey) {
+        return newBuilder(bucket.getName(), objectKey);
+    }
+
+    /**
+     * Returns the deletion time of the blob expressed as the number of milliseconds since the Unix
+     * epoch.
+     */
+    public Long getDeleteTime() {
+        return deletionTime;
+    }
+
+    /**
+     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
+     */
+    public static StorageObjectBuilder newBuilder(BucketInfo bucket, String objectKey, Long version) {
+        return newBuilder(bucket.getName(), objectKey, version);
+    }
+
+    /**
+     * Returns the last modification time of the blob's metadata expressed as the number of
+     * milliseconds since the Unix epoch.
+     */
+    public Long getUpdateTime() {
+        return lastUpdatedTime;
+    }
+
+    /**
+     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
+     * false}.
+     *
+     * <p>Case 1: {@code true} the field {@link
+     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)} and event-based hold for the blob is enabled.
+     *
+     * <p>Case 2.1: {@code null} the field {@link
+     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, but event-based hold for the blob is not
+     * enabled. This case can be considered implicitly {@code false}.
+     *
+     * <p>Case 2.2: {@code null} the field {@link
+     * CloudStorageClient.BlobMetadataField#EVENT_BASED_HOLD} is not selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, and the state for this field is unknown.
+     *
+     * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
+     * StorageObjectBuilder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
+     * CloudStorageClient#update(BlobMetadata, CloudStorageClient.BlobUploadOptions...)} in which case the value of event-based
+     * hold will remain {@code false} for the given instance.
+     */
+    @BetaApi
+    public Boolean getEventBasedHold() {
+        return Data.<Boolean>isNull(eventHoldFlag) ? null : eventHoldFlag;
+    }
+
+    /**
+     * Returns the blob's data cache control.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control</a>
+     */
+    public String getCacheControl() {
+        return Data.isNull(cacheDirective) ? null : cacheDirective;
+    }
+
+    /**
+     * Returns the CRC32C checksum of blob's data as described in <a
+     * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> encoded in
+     * base64 in big-endian order.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+     *     Best Practices</a>
+     */
+    public String getCrc32c() {
+        return Data.isNull(crc32cChecksum) ? null : crc32cChecksum;
+    }
+
+    /**
+     * Returns the name of the containing bucket.
+     */
+    public String getBucket() {
+        return getBlobId().getBucket();
+    }
+
+    /**
+     * Returns blob's user provided metadata.
+     */
+    public Map<String, String> getMetadata() {
+        return null == customMeta || Data.isNull(customMeta) ? null : Collections.unmodifiableMap(customMeta);
+    }
+
+    /**
+     * Returns the blob's access control configuration.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists">
+     *     About Access Control Lists</a>
+     */
+    public List<AccessControlEntry> getAcl() {
+        return accessControlList;
+    }
+
+    /**
+     * Returns the MD5 hash of blob's data decoded to string.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+     *     Best Practices</a>
+     */
+    public String getMd5ToHexString() {
+        if (null == md5Digest) {
+            return null;
+        }
+        byte[] decodedMd5Bytes = BaseEncoding.base64().decode(md5Digest);
+        StringBuilder sb = new StringBuilder();
+        for (byte byteVal : decodedMd5Bytes) {
+            sb.append(String.format("%02x", byteVal & 0xff));
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || null != other && other.getClass().equals(BlobMetadata.class) && Objects.equals(toProto(), ((BlobMetadata) other).toProto());
+    }
+
+    /**
+     * Returns blob's metageneration. Used for preconditions and for detecting changes in metadata. A
+     * metageneration number is only meaningful in the context of a particular generation of a
+     * particular blob.
+     */
+    public Long getMetageneration() {
+        return metaGeneration;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(blobIdentifier);
+    }
+
+    /**
+     * Returns the URI of this blob as a string.
+     */
+    public String getSelfLink() {
+        return resourceLink;
+    }
+
+    /**
+     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
+     */
+    public static StorageObjectBuilder newBuilder(String containerName, String objectKey, Long version) {
+        return newBuilder(BlobIdentifier.create(containerName, objectKey, version));
+    }
+
+    /**
+     * Returns the Cloud KMS key used to encrypt the blob, if any.
+     */
+    public String getKmsKeyName() {
+        return kmsKeyId;
+    }
+
+    /**
+     * Returns the custom time specified by the user for an object.
+     */
+    public Long getCustomTime() {
+        return customTimestamp;
+    }
+
+    /**
+     * Returns the service-generated for the blob.
+     */
+    public String getGeneratedId() {
+        return generatedIdentifier;
+    }
+
+    /**
+     * Returns the storage class of the blob.
+     */
+    public StorageTier getStorageClass() {
+        return storageTier;
+    }
+
+    /**
+     * Returns information on the customer-supplied encryption key, if the blob is encrypted using
+     * such a key.
+     */
+    public CustomerEncryptionInfo getCustomerEncryption() {
+        return encryptionInfo;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).add("size", getSize()).add("content-type", getContentType()).add("metadata", getMetadata()).toString();
+    }
+
+    /**
+     * Returns HTTP 1.1 Entity tag for the blob.
+     *
+     * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
+     */
+    public String getEtag() {
+        return entityTag;
+    }
+
+    /**
+     * Returns the blob's name.
+     */
+    public String getName() {
+        return getBlobId().getName();
+    }
+
+    /**
+     * Returns the MD5 hash of blob's data encoded in base64.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+     *     Best Practices</a>
+     */
+    public String getMd5() {
+        return Data.isNull(md5Digest) ? null : md5Digest;
+    }
+
+    /**
+     * Returns the content length of the data in bytes.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.13">Content-Length</a>
+     */
+    public Long getSize() {
+        return contentSize;
+    }
+
+    /**
+     * Returns the blob's data content type.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.17">Content-Type</a>
+     */
+    public String getContentType() {
+        return Data.isNull(mimeType) ? null : mimeType;
+    }
+
+    /**
+     * Returns the blob's identity.
+     */
+    public BlobIdentifier getBlobId() {
+        return blobIdentifier;
+    }
+
+    /**
+     * Returns the blob's data content encoding.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">Content-Encoding</a>
+     */
+    public String getContentEncoding() {
+        return Data.isNull(contentEncodingType) ? null : contentEncodingType;
+    }
+
+    /**
+     * Returns a {@code BlobInfo} builder where blob identity is set using the provided values.
+     */
+    public static StorageObjectBuilder newBuilder(String containerName, String objectKey) {
+        return newBuilder(BlobIdentifier.create(containerName, objectKey));
+    }
+
+    /**
+     * Returns the CRC32C checksum of blob's data as described in <a
+     * href="http://tools.ietf.org/html/rfc4960#appendix-B">RFC 4960, Appendix B;</a> decoded to
+     * string.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI">Hashes and ETags:
+     *     Best Practices</a>
+     */
+    public String getCrc32cToHexString() {
+        if (null == crc32cChecksum) {
+            return null;
+        }
+        byte[] decodedCrc32c = BaseEncoding.base64().decode(crc32cChecksum);
+        StringBuilder sb = new StringBuilder();
+        for (byte byteVal : decodedCrc32c) {
+            sb.append(String.format("%02x", byteVal & 0xff));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Returns {@code true} if the current blob represents a directory. This can only happen if the
+     * blob is returned by {@link CloudStorageClient#list(String, CloudStorageClient.BlobListOptions...)} when the {@link
+     * CloudStorageClient.BlobListOptions#restrictToCurrentDirectory()} option is used. When this is the case only {@link
+     * #getBlobId()} and {@link #getSize()} are set for the current blob: {@link BlobIdentifier#getName()}
+     * ends with the '/' character, {@link BlobIdentifier#getGeneration()} returns {@code null} and {@link
+     * #getSize()} is {@code 0}.
+     */
+    public boolean isDirectory() {
+        return directoryFlag;
+    }
+
+    /**
+     * Returns the number of components that make up this blob. Components are accumulated through the
+     * {@link CloudStorageClient#compose(CloudStorageClient.ComposeBlobsRequest)} operation and are limited to a count of 1024,
+     * counting 1 for each non-composite component blob and componentCount for each composite
+     * component blob. This value is set only for composite blobs.
+     *
+     * @see <a href="https://cloud.google.com/storage/docs/composite-objects#_Count">Component Count
+     *     Property</a>
+     */
+    public Integer getComponentCount() {
+        return partsCount;
+    }
+
+    /**
+     * Returns a {@code BlobInfo} builder where blob identity is set using the provided value.
+     */
+    public static StorageObjectBuilder newBuilder(BlobIdentifier blobIdentifier) {
+        return new BlobInfoBuilderImpl(blobIdentifier);
+    }
+
+    StorageObject toProto() {
+        StorageObject protoStorage = blobIdentifier.toProto();
+        if (null != accessControlList) {
+            protoStorage.setAcl(Lists.transform(accessControlList, new Function<AccessControlEntry, ObjectAccessControl>() {
+
+                @Override
+                public ObjectAccessControl apply(AccessControlEntry acl) {
+                    return acl.toObjectProto();
+                }
+            }));
+        }
+        if (null != deletionTime) {
+            protoStorage.setTimeDeleted(new DateTime(deletionTime));
+        }
+        if (null != lastUpdatedTime) {
+            protoStorage.setUpdated(new DateTime(lastUpdatedTime));
+        }
+        if (null != creationTime) {
+            protoStorage.setTimeCreated(new DateTime(creationTime));
+        }
+        if (null != customTimestamp) {
+            protoStorage.setCustomTime(new DateTime(customTimestamp));
+        }
+        if (null != contentSize) {
+            protoStorage.setSize(BigInteger.valueOf(contentSize));
+        }
+        if (null != ownerEntity) {
+            protoStorage.setOwner(new Owner().setEntity(ownerEntity.toProto()));
+        }
+        if (null != storageTier) {
+            protoStorage.setStorageClass(storageTier.toString());
+        }
+        if (null != storageClassUpdateTime) {
+            protoStorage.setTimeStorageClassUpdated(new DateTime(storageClassUpdateTime));
+        }
+        Map<String, String> protoMetadata = customMeta;
+        if (null != customMeta && !Data.isNull(customMeta)) {
+            protoMetadata = Maps.newHashMapWithExpectedSize(customMeta.size());
+            for (Map.Entry<String, String> mapEntry : customMeta.entrySet()) {
+                protoMetadata.put(mapEntry.getKey(), firstNonNull(mapEntry.getValue(), Data.<String>nullOf(String.class)));
+            }
+        }
+        if (null != encryptionInfo) {
+            protoStorage.setCustomerEncryption(encryptionInfo.toProto());
+        }
+        if (null != retentionExpiryTime) {
+            protoStorage.setRetentionExpirationTime(new DateTime(retentionExpiryTime));
+        }
+        protoStorage.setKmsKeyName(kmsKeyId);
+        protoStorage.setEventBasedHold(eventHoldFlag);
+        protoStorage.setTemporaryHold(tempHoldFlag);
+        protoStorage.setMetadata(protoMetadata);
+        protoStorage.setCacheControl(cacheDirective);
+        protoStorage.setContentEncoding(contentEncodingType);
+        protoStorage.setCrc32c(crc32cChecksum);
+        protoStorage.setContentType(mimeType);
+        protoStorage.setMd5Hash(md5Digest);
+        protoStorage.setMediaLink(mediaUrl);
+        protoStorage.setMetageneration(metaGeneration);
+        protoStorage.setContentDisposition(dispositionHeader);
+        protoStorage.setComponentCount(partsCount);
+        protoStorage.setContentLanguage(languageTag);
+        protoStorage.setEtag(entityTag);
+        protoStorage.setId(generatedIdentifier);
+        protoStorage.setSelfLink(resourceLink);
+        return protoStorage;
+    }
+
+    /**
+     * Returns the creation time of the blob expressed as the number of milliseconds since the Unix
+     * epoch.
+     */
+    public Long getCreateTime() {
+        return creationTime;
+    }
+
+    BlobMetadata(BlobInfoBuilderImpl blobBuilder) {
+        blobIdentifier = blobBuilder.blobIdentifier;
+        generatedIdentifier = blobBuilder.generatedIdentifier;
+        cacheDirective = blobBuilder.cacheDirective;
+        contentEncodingType = blobBuilder.contentEncodingType;
+        mimeType = blobBuilder.mimeType;
+        dispositionHeader = blobBuilder.dispositionHeader;
+        languageTag = blobBuilder.languageTag;
+        partsCount = blobBuilder.partsCount;
+        encryptionInfo = blobBuilder.encryptionInfo;
+        accessControlList = blobBuilder.accessControlList;
+        ownerEntity = blobBuilder.ownerEntity;
+        contentSize = blobBuilder.contentSize;
+        entityTag = blobBuilder.entityTag;
+        resourceLink = blobBuilder.resourceLink;
+        md5Digest = blobBuilder.md5Digest;
+        crc32cChecksum = blobBuilder.crc32cChecksum;
+        customTimestamp = blobBuilder.customTimestamp;
+        mediaUrl = blobBuilder.mediaUrl;
+        customMeta = blobBuilder.customMeta;
+        metaGeneration = blobBuilder.metaGeneration;
+        deletionTime = blobBuilder.deletionTime;
+        lastUpdatedTime = blobBuilder.lastUpdatedTime;
+        creationTime = blobBuilder.creationTime;
+        directoryFlag = firstNonNull(blobBuilder.directoryFlag, Boolean.FALSE);
+        storageTier = blobBuilder.storageTier;
+        storageClassUpdateTime = blobBuilder.storageClassUpdateTime;
+        kmsKeyId = blobBuilder.kmsKeyId;
+        eventHoldFlag = blobBuilder.eventHoldFlag;
+        tempHoldFlag = blobBuilder.tempHoldFlag;
+        retentionExpiryTime = blobBuilder.retentionExpiryTime;
+    }
+
+    /**
+     * Returns blob's data generation. Used for blob versioning.
+     */
+    public Long getGeneration() {
+        return getBlobId().getGeneration();
+    }
+
+    /**
+     * Returns a {@code Boolean} with either {@code true}, {@code null} and in certain cases {@code
+     * false}.
+     *
+     * <p>Case 1: {@code true} the field {@link
+     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)} and temporary hold for the blob is enabled.
+     *
+     * <p>Case 2.1: {@code null} the field {@link
+     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, but temporary hold for the blob is not enabled.
+     * This case can be considered implicitly {@code false}.
+     *
+     * <p>Case 2.2: {@code null} the field {@link
+     * CloudStorageClient.BlobMetadataField#TEMPORARY_HOLD} is not selected in a {@link
+     * CloudStorageClient#get(BlobIdentifier, CloudStorageClient.BlobGetOptions...)}, and the state for this field is unknown.
+     *
+     * <p>Case 3: {@code false} event-based hold is explicitly set to false using in a {@link
+     * StorageObjectBuilder#setEventBasedHold(Boolean)} client side for a follow-up request e.g. {@link
+     * CloudStorageClient#update(BlobMetadata, CloudStorageClient.BlobUploadOptions...)} in which case the value of temporary
+     * hold will remain {@code false} for the given instance.
+     */
+    @BetaApi
+    public Boolean getTemporaryHold() {
+        return Data.<Boolean>isNull(tempHoldFlag) ? null : tempHoldFlag;
+    }
+
+    /**
+     * Returns a builder for the current blob.
+     */
+    public StorageObjectBuilder asBuilder() {
+        return new BlobInfoBuilderImpl(this);
+    }
+
+    /**
+     * Returns the blob's media download link.
+     */
+    public String getMediaLink() {
+        return mediaUrl;
+    }
+
+    /**
+     * Returns the blob's data content disposition.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc6266">Content-Disposition</a>
+     */
+    public String getContentDisposition() {
+        return Data.isNull(dispositionHeader) ? null : dispositionHeader;
+    }
+
+    /**
+     * Returns the blob's owner. This will always be the uploader of the blob.
+     */
+    public AccessControlEntry.TypedEntity getOwner() {
+        return ownerEntity;
+    }
+
+    /**
+     * Returns the time that the object's storage class was last changed or the time of the object
+     * creation.
+     */
+    public Long getTimeStorageClassUpdated() {
+        return storageClassUpdateTime;
+    }
+
 }

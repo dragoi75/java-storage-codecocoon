@@ -42,24 +42,8 @@ public final class StorageServiceException extends BaseHttpServiceException {
 
     private static final long serialVersionUID = -4168430271327813063L;
 
-    public StorageServiceException(int status, String description) {
-        this(status, description, null);
-    }
-
-    public StorageServiceException(int status, String description, Throwable underlying) {
-        super(status, description, null, true, RETRIABLE_FAILURES, underlying);
-    }
-
     public StorageServiceException(int status, String description, String rationale, Throwable underlying) {
         super(status, description, rationale, true, RETRIABLE_FAILURES, underlying);
-    }
-
-    public StorageServiceException(IOException ioFailure) {
-        super(ioFailure, true, RETRIABLE_FAILURES);
-    }
-
-    public StorageServiceException(GoogleJsonError jsonProblem) {
-        super(jsonProblem, true, RETRIABLE_FAILURES);
     }
 
     /**
@@ -71,6 +55,10 @@ public final class StorageServiceException extends BaseHttpServiceException {
     public static StorageServiceException translateAndRethrow(RetryHelperException retryFailure) {
         BaseServiceException.translate(retryFailure);
         throw new StorageServiceException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
+    }
+
+    public StorageServiceException(IOException ioFailure) {
+        super(ioFailure, true, RETRIABLE_FAILURES);
     }
 
     /**
@@ -88,4 +76,17 @@ public final class StorageServiceException extends BaseHttpServiceException {
             return new StorageServiceException(0, ioFailure.getMessage(), CONNECTION_TERMINATED_PREMATURELY, ioFailure);
         }
     }
+
+    public StorageServiceException(GoogleJsonError jsonProblem) {
+        super(jsonProblem, true, RETRIABLE_FAILURES);
+    }
+
+    public StorageServiceException(int status, String description) {
+        this(status, description, null);
+    }
+
+    public StorageServiceException(int status, String description, Throwable underlying) {
+        super(status, description, null, true, RETRIABLE_FAILURES, underlying);
+    }
+
 }

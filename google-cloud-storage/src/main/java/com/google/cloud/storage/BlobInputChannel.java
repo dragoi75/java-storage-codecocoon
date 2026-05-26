@@ -62,42 +62,134 @@ class BlobInputChannel implements ReadChannel {
 
     private byte[] byteArray;
 
-    BlobInputChannel(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
-        this.clientConfig = clientConfig;
-        this.objectId = objectId;
-        this.requestParams = requestParams;
-        openFlag = true;
-        rpcClient = clientConfig.getStorageRpcV1();
-        objectMetadata = objectId.toProto();
+    static class DefaultState implements RestorableState<ReadChannel>, Serializable {
+
+        private static final long serialVersionUID = 3889420316004453706L;
+
+        private final StorageClientOptions clientConfig;
+
+        private final BlobIdentifier objectId;
+
+        private final Map<StorageServiceRpc.StorageOption, ?> requestParams;
+
+        private final String previousVersionTag;
+
+        private final long currentOffset;
+
+        private final boolean openFlag;
+
+        private final boolean eofReached;
+
+        private final int blockSize;
+
+        static class BlobStreamStateBuilder {
+
+            private final StorageClientOptions clientConfig;
+
+            private final BlobIdentifier objectId;
+
+            private final Map<StorageServiceRpc.StorageOption, ?> requestParams;
+
+            private String previousVersionTag;
+
+            private long currentOffset;
+
+            private boolean openFlag;
+
+            private boolean eofReached;
+
+            private int blockSize;
+
+            BlobStreamStateBuilder setEndOfStream(boolean eofReached) {
+                this.eofReached = eofReached;
+                return this;
+            }
+
+            BlobStreamStateBuilder setIsOpen(boolean openFlag) {
+                this.openFlag = openFlag;
+                return this;
+            }
+
+            BlobStreamStateBuilder setChunkSize(int blockSize) {
+                this.blockSize = blockSize;
+                return this;
+            }
+
+            RestorableState<ReadChannel> buildState() {
+                return new DefaultState(this);
+            }
+
+            BlobStreamStateBuilder setPosition(long currentOffset) {
+                this.currentOffset = currentOffset;
+                return this;
+            }
+
+            BlobStreamStateBuilder setLastEtag(String previousVersionTag) {
+                this.previousVersionTag = previousVersionTag;
+                return this;
+            }
+
+            private BlobStreamStateBuilder(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
+                this.clientConfig = clientConfig;
+                this.objectId = objectId;
+                this.requestParams = requestParams;
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("blob", objectId).add("position", currentOffset).add("isOpen", openFlag).add("endOfStream", eofReached).toString();
+        }
+
+        @Override
+        public boolean equals(Object candidate) {
+            if (null == candidate) {
+                return false;
+            }
+            if (!(candidate instanceof DefaultState)) {
+                return false;
+            }
+            final DefaultState thatState = (DefaultState) candidate;
+            return Objects.equals(this.clientConfig, thatState.clientConfig) && Objects.equals(this.objectId, thatState.objectId) && Objects.equals(this.requestParams, thatState.requestParams) && Objects.equals(this.previousVersionTag, thatState.previousVersionTag) && thatState.currentOffset == this.currentOffset && thatState.openFlag == this.openFlag && thatState.eofReached == this.eofReached && thatState.blockSize == this.blockSize;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(clientConfig, objectId, requestParams, previousVersionTag, currentOffset, openFlag, eofReached, blockSize);
+        }
+
+        DefaultState(BlobStreamStateBuilder stateCreator) {
+            this.clientConfig = stateCreator.clientConfig;
+            this.objectId = stateCreator.objectId;
+            this.requestParams = stateCreator.requestParams;
+            this.previousVersionTag = stateCreator.previousVersionTag;
+            this.currentOffset = stateCreator.currentOffset;
+            this.openFlag = stateCreator.openFlag;
+            this.eofReached = stateCreator.eofReached;
+            this.blockSize = stateCreator.blockSize;
+        }
+
+        @Override
+        public ReadChannel restore() {
+            BlobInputChannel inputStream = new BlobInputChannel(clientConfig, objectId, requestParams);
+            inputStream.previousVersionTag = previousVersionTag;
+            inputStream.currentOffset = currentOffset;
+            inputStream.openFlag = openFlag;
+            inputStream.eofReached = eofReached;
+            inputStream.blockSize = blockSize;
+            return inputStream;
+        }
+
+        static BlobStreamStateBuilder newBuilder(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
+            return new BlobStreamStateBuilder(clientConfig, objectId, requestParams);
+        }
+
     }
 
     @Override
-    public RestorableState<ReadChannel> capture() {
-        DefaultState.BlobStreamStateBuilder stateCreator = DefaultState.newBuilder(clientConfig, objectId, requestParams).setPosition(currentOffset).setIsOpen(openFlag).setEndOfStream(eofReached).setChunkSize(blockSize);
-        if (null != byteArray) {
-            stateCreator.setPosition(currentOffset + bufIndex);
-            stateCreator.setEndOfStream(false);
-        }
-        return stateCreator.buildState();
-    }
-
-    @Override
-    public boolean isOpen() {
-        return openFlag;
-    }
-
-    @Override
-    public void close() {
-        if (openFlag) {
-            byteArray = null;
-            openFlag = false;
-        }
-    }
-
-    private void ensureOpen() throws ClosedChannelException {
-        if (!openFlag) {
-            throw new ClosedChannelException();
-        }
+    public void setChunkSize(int blockSize) {
+        this.blockSize = 0 >= blockSize ? STANDARD_BLOCK_SIZE : blockSize;
     }
 
     @Override
@@ -107,11 +199,6 @@ class BlobInputChannel implements ReadChannel {
         byteArray = null;
         bufIndex = 0;
         eofReached = false;
-    }
-
-    @Override
-    public void setChunkSize(int blockSize) {
-        this.blockSize = 0 >= blockSize ? STANDARD_BLOCK_SIZE : blockSize;
     }
 
     @Override
@@ -159,126 +246,42 @@ class BlobInputChannel implements ReadChannel {
         return bytesPending;
     }
 
-    static class DefaultState implements RestorableState<ReadChannel>, Serializable {
+    @Override
+    public boolean isOpen() {
+        return openFlag;
+    }
 
-        private static final long serialVersionUID = 3889420316004453706L;
-
-        private final StorageClientOptions clientConfig;
-
-        private final BlobIdentifier objectId;
-
-        private final Map<StorageServiceRpc.StorageOption, ?> requestParams;
-
-        private final String previousVersionTag;
-
-        private final long currentOffset;
-
-        private final boolean openFlag;
-
-        private final boolean eofReached;
-
-        private final int blockSize;
-
-        DefaultState(BlobStreamStateBuilder stateCreator) {
-            this.clientConfig = stateCreator.clientConfig;
-            this.objectId = stateCreator.objectId;
-            this.requestParams = stateCreator.requestParams;
-            this.previousVersionTag = stateCreator.previousVersionTag;
-            this.currentOffset = stateCreator.currentOffset;
-            this.openFlag = stateCreator.openFlag;
-            this.eofReached = stateCreator.eofReached;
-            this.blockSize = stateCreator.blockSize;
+    @Override
+    public RestorableState<ReadChannel> capture() {
+        DefaultState.BlobStreamStateBuilder stateCreator = DefaultState.newBuilder(clientConfig, objectId, requestParams).setPosition(currentOffset).setIsOpen(openFlag).setEndOfStream(eofReached).setChunkSize(blockSize);
+        if (null != byteArray) {
+            stateCreator.setPosition(currentOffset + bufIndex);
+            stateCreator.setEndOfStream(false);
         }
+        return stateCreator.buildState();
+    }
 
-        static class BlobStreamStateBuilder {
-
-            private final StorageClientOptions clientConfig;
-
-            private final BlobIdentifier objectId;
-
-            private final Map<StorageServiceRpc.StorageOption, ?> requestParams;
-
-            private String previousVersionTag;
-
-            private long currentOffset;
-
-            private boolean openFlag;
-
-            private boolean eofReached;
-
-            private int blockSize;
-
-            private BlobStreamStateBuilder(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
-                this.clientConfig = clientConfig;
-                this.objectId = objectId;
-                this.requestParams = requestParams;
-            }
-
-            BlobStreamStateBuilder setLastEtag(String previousVersionTag) {
-                this.previousVersionTag = previousVersionTag;
-                return this;
-            }
-
-            BlobStreamStateBuilder setPosition(long currentOffset) {
-                this.currentOffset = currentOffset;
-                return this;
-            }
-
-            BlobStreamStateBuilder setIsOpen(boolean openFlag) {
-                this.openFlag = openFlag;
-                return this;
-            }
-
-            BlobStreamStateBuilder setEndOfStream(boolean eofReached) {
-                this.eofReached = eofReached;
-                return this;
-            }
-
-            BlobStreamStateBuilder setChunkSize(int blockSize) {
-                this.blockSize = blockSize;
-                return this;
-            }
-
-            RestorableState<ReadChannel> buildState() {
-                return new DefaultState(this);
-            }
-        }
-
-        static BlobStreamStateBuilder newBuilder(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
-            return new BlobStreamStateBuilder(clientConfig, objectId, requestParams);
-        }
-
-        @Override
-        public ReadChannel restore() {
-            BlobInputChannel inputStream = new BlobInputChannel(clientConfig, objectId, requestParams);
-            inputStream.previousVersionTag = previousVersionTag;
-            inputStream.currentOffset = currentOffset;
-            inputStream.openFlag = openFlag;
-            inputStream.eofReached = eofReached;
-            inputStream.blockSize = blockSize;
-            return inputStream;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(clientConfig, objectId, requestParams, previousVersionTag, currentOffset, openFlag, eofReached, blockSize);
-        }
-
-        @Override
-        public boolean equals(Object candidate) {
-            if (null == candidate) {
-                return false;
-            }
-            if (!(candidate instanceof DefaultState)) {
-                return false;
-            }
-            final DefaultState thatState = (DefaultState) candidate;
-            return Objects.equals(this.clientConfig, thatState.clientConfig) && Objects.equals(this.objectId, thatState.objectId) && Objects.equals(this.requestParams, thatState.requestParams) && Objects.equals(this.previousVersionTag, thatState.previousVersionTag) && thatState.currentOffset == this.currentOffset && thatState.openFlag == this.openFlag && thatState.eofReached == this.eofReached && thatState.blockSize == this.blockSize;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("blob", objectId).add("position", currentOffset).add("isOpen", openFlag).add("endOfStream", eofReached).toString();
+    private void ensureOpen() throws ClosedChannelException {
+        if (!openFlag) {
+            throw new ClosedChannelException();
         }
     }
+
+    @Override
+    public void close() {
+        if (openFlag) {
+            byteArray = null;
+            openFlag = false;
+        }
+    }
+
+    BlobInputChannel(StorageClientOptions clientConfig, BlobIdentifier objectId, Map<StorageServiceRpc.StorageOption, ?> requestParams) {
+        this.clientConfig = clientConfig;
+        this.objectId = objectId;
+        this.requestParams = requestParams;
+        openFlag = true;
+        rpcClient = clientConfig.getStorageRpcV1();
+        objectMetadata = objectId.toProto();
+    }
+
 }

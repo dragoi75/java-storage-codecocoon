@@ -47,45 +47,6 @@ public final class FormPostPolicyV4 {
 
     private final Map<String, String> parameters;
 
-    private FormPostPolicyV4(String endpoint, Map<String, String> parameters) {
-        try {
-            if (!new URI(endpoint).isAbsolute()) {
-                throw new IllegalArgumentException(endpoint + " is not an absolute URL");
-            }
-        } catch (URISyntaxException uriException) {
-            throw new IllegalArgumentException(uriException);
-        }
-        PostFieldsMapV4.validate(parameters);
-        this.endpoint = endpoint;
-        this.parameters = Collections.unmodifiableMap(parameters);
-    }
-
-    /**
-     * Constructs {@code PostPolicyV4} instance of the given URL and fields map.
-     *
-     * @param endpoint URL for the HTTP POST request
-     * @param parameters HTML form fields
-     * @return constructed object
-     * @throws IllegalArgumentException if URL is malformed or fields are not valid
-     */
-    public static FormPostPolicyV4 create(String endpoint, Map<String, String> parameters) {
-        return new FormPostPolicyV4(endpoint, parameters);
-    }
-
-    /**
-     * Returns the URL for the HTTP POST request
-     */
-    public String getUrl() {
-        return endpoint;
-    }
-
-    /**
-     * Returns the HTML form fields
-     */
-    public Map<String, String> getFields() {
-        return parameters;
-    }
-
     /**
      * A helper class to define fields to be specified in a V4 POST request. Instance of this class
      * helps to construct {@code PostPolicyV4} objects. Used in: {@link
@@ -100,6 +61,116 @@ public final class FormPostPolicyV4 {
         private final Map<String, String> parametersMap;
 
         private static final List<String> ALLOWED_KEYS = Arrays.asList("acl", "bucket", "cache-control", "content-disposition", "content-encoding", "content-type", "expires", "file", "key", "policy", "success_action_redirect", "success_action_status", "x-goog-algorithm", "x-goog-credential", "x-goog-date", "x-goog-signature");
+
+        public static class ObjectMetadataBuilder {
+
+            private static final String META_PREFIX = "x-goog-meta-";
+
+            private final Map<String, String> parametersMap;
+
+            public ObjectMetadataBuilder setSuccessActionRedirect(String successRedirect) {
+                parametersMap.put("success_action_redirect", successRedirect);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setContentType(String mimeType) {
+                parametersMap.put("content-type", mimeType);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setContentEncoding(String encodingType) {
+                parametersMap.put("content-encoding", encodingType);
+                return this;
+            }
+
+            public PostFieldsMapV4 create() {
+                return new PostFieldsMapV4(this);
+            }
+
+            public ObjectMetadataBuilder setCustomMetadataField(String metadataName, String metadataValue) {
+                if (!metadataName.startsWith(META_PREFIX)) {
+                    metadataName = META_PREFIX + metadataName;
+                }
+                parametersMap.put(metadataName, metadataValue);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setSuccessActionStatus(int successStatusCode) {
+                parametersMap.put("success_action_status", "" + successStatusCode);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setContentDisposition(String dispositionValue) {
+                parametersMap.put("content-disposition", dispositionValue);
+                return this;
+            }
+
+            /**
+             * @deprecated Invocation of this method has no effect, because all valid HTML form fields
+             *     except Content-Length can use exact matching. Use {@link
+             *     PostConditionsVersion4.ConditionsBuilder#addContentLengthRange(int, int)} to
+             *     specify a range for the content-length.
+             */
+            @Deprecated
+            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder setContentLength(int contentLength) {
+                return this;
+            }
+
+            private ObjectMetadataBuilder() {
+                this.parametersMap = new HashMap<>();
+            }
+
+            /**
+             * @deprecated Use {@link #setCustomMetadataField(String, String)}.
+             */
+            @Deprecated
+            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder AddCustomMetadataField(String metadataName, String metadataValue) {
+                return setCustomMetadataField(metadataName, metadataValue);
+            }
+
+            /**
+             * @deprecated Use {@link #setExpires(String)}.
+             */
+            @Deprecated
+            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder Expires(String expiration) {
+                return setExpires(expiration);
+            }
+
+            public ObjectMetadataBuilder setCacheControl(String cacheDirective) {
+                parametersMap.put("cache-control", cacheDirective);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setExpires(String expiration) {
+                parametersMap.put("expires", expiration);
+                return this;
+            }
+
+            public ObjectMetadataBuilder setAcl(String accessControlList) {
+                parametersMap.put("acl", accessControlList);
+                return this;
+            }
+
+        }
+
+        /**
+         * Constructs {@code PostPolicyV4.PostFieldsV4} object of the given field map.
+         *
+         * @param parameters a map of the HTML form fields
+         * @return constructed object
+         * @throws IllegalArgumentException if an unsupported field is specified
+         */
+        public static PostFieldsMapV4 create(Map<String, String> parameters) {
+            return new PostFieldsMapV4(parameters);
+        }
+
+        public Map<String, String> getFieldsMap() {
+            return parametersMap;
+        }
+
+        public static ObjectMetadataBuilder builder() {
+            return new ObjectMetadataBuilder();
+        }
 
         private static void validate(Map<String, String> parameters) {
             for (String fieldIdentifier : parameters.keySet()) {
@@ -118,114 +189,6 @@ public final class FormPostPolicyV4 {
             this.parametersMap = Collections.unmodifiableMap(parameters);
         }
 
-        /**
-         * Constructs {@code PostPolicyV4.PostFieldsV4} object of the given field map.
-         *
-         * @param parameters a map of the HTML form fields
-         * @return constructed object
-         * @throws IllegalArgumentException if an unsupported field is specified
-         */
-        public static PostFieldsMapV4 create(Map<String, String> parameters) {
-            return new PostFieldsMapV4(parameters);
-        }
-
-        public static ObjectMetadataBuilder builder() {
-            return new ObjectMetadataBuilder();
-        }
-
-        public Map<String, String> getFieldsMap() {
-            return parametersMap;
-        }
-
-        public static class ObjectMetadataBuilder {
-
-            private static final String META_PREFIX = "x-goog-meta-";
-
-            private final Map<String, String> parametersMap;
-
-            private ObjectMetadataBuilder() {
-                this.parametersMap = new HashMap<>();
-            }
-
-            public PostFieldsMapV4 create() {
-                return new PostFieldsMapV4(this);
-            }
-
-            public ObjectMetadataBuilder setAcl(String accessControlList) {
-                parametersMap.put("acl", accessControlList);
-                return this;
-            }
-
-            public ObjectMetadataBuilder setCacheControl(String cacheDirective) {
-                parametersMap.put("cache-control", cacheDirective);
-                return this;
-            }
-
-            public ObjectMetadataBuilder setContentDisposition(String dispositionValue) {
-                parametersMap.put("content-disposition", dispositionValue);
-                return this;
-            }
-
-            public ObjectMetadataBuilder setContentEncoding(String encodingType) {
-                parametersMap.put("content-encoding", encodingType);
-                return this;
-            }
-
-            /**
-             * @deprecated Invocation of this method has no effect, because all valid HTML form fields
-             *     except Content-Length can use exact matching. Use {@link
-             *     PostConditionsVersion4.ConditionsBuilder#addContentLengthRange(int, int)} to
-             *     specify a range for the content-length.
-             */
-            @Deprecated
-            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder setContentLength(int contentLength) {
-                return this;
-            }
-
-            public ObjectMetadataBuilder setContentType(String mimeType) {
-                parametersMap.put("content-type", mimeType);
-                return this;
-            }
-
-            /**
-             * @deprecated Use {@link #setExpires(String)}.
-             */
-            @Deprecated
-            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder Expires(String expiration) {
-                return setExpires(expiration);
-            }
-
-            public ObjectMetadataBuilder setExpires(String expiration) {
-                parametersMap.put("expires", expiration);
-                return this;
-            }
-
-            public ObjectMetadataBuilder setSuccessActionRedirect(String successRedirect) {
-                parametersMap.put("success_action_redirect", successRedirect);
-                return this;
-            }
-
-            public ObjectMetadataBuilder setSuccessActionStatus(int successStatusCode) {
-                parametersMap.put("success_action_status", "" + successStatusCode);
-                return this;
-            }
-
-            /**
-             * @deprecated Use {@link #setCustomMetadataField(String, String)}.
-             */
-            @Deprecated
-            public FormPostPolicyV4.PostFieldsMapV4.ObjectMetadataBuilder AddCustomMetadataField(String metadataName, String metadataValue) {
-                return setCustomMetadataField(metadataName, metadataValue);
-            }
-
-            public ObjectMetadataBuilder setCustomMetadataField(String metadataName, String metadataValue) {
-                if (!metadataName.startsWith(META_PREFIX)) {
-                    metadataName = META_PREFIX + metadataName;
-                }
-                parametersMap.put(metadataName, metadataValue);
-                return this;
-            }
-        }
     }
 
     /**
@@ -242,85 +205,9 @@ public final class FormPostPolicyV4 {
 
         private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-        public PostConditionsVersion4(ConditionsBuilder objectMetadata) {
-            this.conditionSet = objectMetadata.conditionSet;
-        }
-
-        public ConditionsBuilder asBuilder() {
-            return new ConditionsBuilder(conditionSet);
-        }
-
-        public static ConditionsBuilder builder() {
-            return new ConditionsBuilder();
-        }
-
-        public Set<BinaryConditionV4> getConditions() {
-            return Collections.unmodifiableSet(conditionSet);
-        }
-
         public static class ConditionsBuilder {
 
             private final Set<BinaryConditionV4> conditionSet;
-
-            private ConditionsBuilder() {
-                this(new LinkedHashSet<BinaryConditionV4>());
-            }
-
-            private ConditionsBuilder(Set<BinaryConditionV4> conditionSet) {
-                this.conditionSet = conditionSet;
-            }
-
-            public static ConditionsBuilder newBuilder() {
-                return new ConditionsBuilder();
-            }
-
-            public PostConditionsVersion4 create() {
-                return new PostConditionsVersion4(this);
-            }
-
-            public ConditionsBuilder addAcl(ConditionV4Operator operator, String accessControlList) {
-                validateType(operator, "acl");
-                conditionSet.add(new BinaryConditionV4(operator, "acl", accessControlList));
-                return this;
-            }
-
-            public ConditionsBuilder addBucket(ConditionV4Operator operator, String containerName) {
-                validateType(operator, "bucket");
-                conditionSet.add(new BinaryConditionV4(operator, "bucket", containerName));
-                return this;
-            }
-
-            public ConditionsBuilder addCacheControl(ConditionV4Operator operator, String cacheDirective) {
-                validateType(operator, "cache-control");
-                conditionSet.add(new BinaryConditionV4(operator, "cache-control", cacheDirective));
-                return this;
-            }
-
-            public ConditionsBuilder addContentDisposition(ConditionV4Operator operator, String dispositionValue) {
-                validateType(operator, "content-disposition");
-                conditionSet.add(new BinaryConditionV4(operator, "content-disposition", dispositionValue));
-                return this;
-            }
-
-            public ConditionsBuilder addContentEncoding(ConditionV4Operator operator, String encodingType) {
-                validateType(operator, "content-encoding");
-                conditionSet.add(new BinaryConditionV4(operator, "content-encoding", encodingType));
-                return this;
-            }
-
-            /**
-             * @deprecated Invocation of this method has no effect. Use {@link
-             *     #addContentLengthRange(int, int)} to specify a range for the content-length.
-             */
-            public ConditionsBuilder addContentLengthCondition(ConditionV4Operator type, int contentLength) {
-                return this;
-            }
-
-            public ConditionsBuilder addContentType(ConditionV4Operator operator, String mimeType) {
-                validateType(operator, "content-type");
-                conditionSet.add(new BinaryConditionV4(operator, "content-type", mimeType));
-                return this;
-            }
 
             /**
              * @deprecated Use {@link #addExpires(long)}
@@ -330,32 +217,35 @@ public final class FormPostPolicyV4 {
                 return addExpires(expiration);
             }
 
-            /**
-             * @deprecated Use {@link #addExpires(String)}
-             */
-            @Deprecated
-            public FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder addExpires(ConditionV4Operator type, String expiration) {
-                return addExpires(expiration);
+            private void validateType(ConditionV4Operator operator, String metadataName) {
+                if (ConditionV4Operator.MATCHES != operator && ConditionV4Operator.STARTS_WITH != operator) {
+                    throw new IllegalArgumentException("Field " + metadataName + " can't use " + operator);
+                }
             }
 
-            public ConditionsBuilder addExpires(long expiration) {
-                return addExpires(dateFormatter.format(expiration));
-            }
-
-            public ConditionsBuilder addExpires(String expiration) {
-                conditionSet.add(new BinaryConditionV4(ConditionV4Operator.MATCHES, "expires", expiration));
+            public ConditionsBuilder addSuccessActionStatus(int responseCode) {
+                conditionSet.add(new BinaryConditionV4(ConditionV4Operator.MATCHES, "success_action_status", "" + responseCode));
                 return this;
             }
 
-            public ConditionsBuilder addKey(ConditionV4Operator operator, String fieldIdentifier) {
-                validateType(operator, "key");
-                conditionSet.add(new BinaryConditionV4(operator, "key", fieldIdentifier));
+            private ConditionsBuilder() {
+                this(new LinkedHashSet<BinaryConditionV4>());
+            }
+
+            public ConditionsBuilder addAcl(ConditionV4Operator operator, String accessControlList) {
+                validateType(operator, "acl");
+                conditionSet.add(new BinaryConditionV4(operator, "acl", accessControlList));
                 return this;
             }
 
-            public ConditionsBuilder addSuccessActionRedirect(ConditionV4Operator operator, String redirectUrl) {
-                validateType(operator, "success_action_redirect");
-                conditionSet.add(new BinaryConditionV4(operator, "success_action_redirect", redirectUrl));
+            public ConditionsBuilder addContentType(ConditionV4Operator operator, String mimeType) {
+                validateType(operator, "content-type");
+                conditionSet.add(new BinaryConditionV4(operator, "content-type", mimeType));
+                return this;
+            }
+
+            ConditionsBuilder addCustom(ConditionV4Operator operator, String metadataName, String metadataValue) {
+                conditionSet.add(new BinaryConditionV4(operator, metadataName, metadataValue));
                 return this;
             }
 
@@ -367,8 +257,24 @@ public final class FormPostPolicyV4 {
                 return addSuccessActionStatus(responseCode);
             }
 
-            public ConditionsBuilder addSuccessActionStatus(int responseCode) {
-                conditionSet.add(new BinaryConditionV4(ConditionV4Operator.MATCHES, "success_action_status", "" + responseCode));
+            public ConditionsBuilder addExpires(String expiration) {
+                conditionSet.add(new BinaryConditionV4(ConditionV4Operator.MATCHES, "expires", expiration));
+                return this;
+            }
+
+            public ConditionsBuilder addBucket(ConditionV4Operator operator, String containerName) {
+                validateType(operator, "bucket");
+                conditionSet.add(new BinaryConditionV4(operator, "bucket", containerName));
+                return this;
+            }
+
+            private ConditionsBuilder(Set<BinaryConditionV4> conditionSet) {
+                this.conditionSet = conditionSet;
+            }
+
+            public ConditionsBuilder addContentEncoding(ConditionV4Operator operator, String encodingType) {
+                validateType(operator, "content-encoding");
+                conditionSet.add(new BinaryConditionV4(operator, "content-encoding", encodingType));
                 return this;
             }
 
@@ -377,17 +283,76 @@ public final class FormPostPolicyV4 {
                 return this;
             }
 
-            ConditionsBuilder addCustom(ConditionV4Operator operator, String metadataName, String metadataValue) {
-                conditionSet.add(new BinaryConditionV4(operator, metadataName, metadataValue));
+            public ConditionsBuilder addKey(ConditionV4Operator operator, String fieldIdentifier) {
+                validateType(operator, "key");
+                conditionSet.add(new BinaryConditionV4(operator, "key", fieldIdentifier));
                 return this;
             }
 
-            private void validateType(ConditionV4Operator operator, String metadataName) {
-                if (ConditionV4Operator.MATCHES != operator && ConditionV4Operator.STARTS_WITH != operator) {
-                    throw new IllegalArgumentException("Field " + metadataName + " can't use " + operator);
-                }
+            /**
+             * @deprecated Use {@link #addExpires(String)}
+             */
+            @Deprecated
+            public FormPostPolicyV4.PostConditionsVersion4.ConditionsBuilder addExpires(ConditionV4Operator type, String expiration) {
+                return addExpires(expiration);
             }
+
+            public static ConditionsBuilder newBuilder() {
+                return new ConditionsBuilder();
+            }
+
+            public PostConditionsVersion4 create() {
+                return new PostConditionsVersion4(this);
+            }
+
+            public ConditionsBuilder addContentDisposition(ConditionV4Operator operator, String dispositionValue) {
+                validateType(operator, "content-disposition");
+                conditionSet.add(new BinaryConditionV4(operator, "content-disposition", dispositionValue));
+                return this;
+            }
+
+            /**
+             * @deprecated Invocation of this method has no effect. Use {@link
+             *     #addContentLengthRange(int, int)} to specify a range for the content-length.
+             */
+            public ConditionsBuilder addContentLengthCondition(ConditionV4Operator type, int contentLength) {
+                return this;
+            }
+
+            public ConditionsBuilder addCacheControl(ConditionV4Operator operator, String cacheDirective) {
+                validateType(operator, "cache-control");
+                conditionSet.add(new BinaryConditionV4(operator, "cache-control", cacheDirective));
+                return this;
+            }
+
+            public ConditionsBuilder addExpires(long expiration) {
+                return addExpires(dateFormatter.format(expiration));
+            }
+
+            public ConditionsBuilder addSuccessActionRedirect(ConditionV4Operator operator, String redirectUrl) {
+                validateType(operator, "success_action_redirect");
+                conditionSet.add(new BinaryConditionV4(operator, "success_action_redirect", redirectUrl));
+                return this;
+            }
+
         }
+
+        public static ConditionsBuilder builder() {
+            return new ConditionsBuilder();
+        }
+
+        public Set<BinaryConditionV4> getConditions() {
+            return Collections.unmodifiableSet(conditionSet);
+        }
+
+        public PostConditionsVersion4(ConditionsBuilder objectMetadata) {
+            this.conditionSet = objectMetadata.conditionSet;
+        }
+
+        public ConditionsBuilder asBuilder() {
+            return new ConditionsBuilder(conditionSet);
+        }
+
     }
 
     /**
@@ -401,15 +366,6 @@ public final class FormPostPolicyV4 {
         private final String expiryDate;
 
         private final PostConditionsVersion4 conditionSet;
-
-        private PostPolicyV4DocumentModel(String expiryDate, PostConditionsVersion4 conditionSet) {
-            this.expiryDate = expiryDate;
-            this.conditionSet = conditionSet;
-        }
-
-        public static PostPolicyV4DocumentModel create(String expiryDate, PostConditionsVersion4 conditionSet) {
-            return new PostPolicyV4DocumentModel(expiryDate, conditionSet);
-        }
 
         public String toJsonString() {
             JsonObject jsonRoot = new JsonObject();
@@ -476,6 +432,16 @@ public final class FormPostPolicyV4 {
             }
             return escapedBuffer.toString();
         }
+
+        public static PostPolicyV4DocumentModel create(String expiryDate, PostConditionsVersion4 conditionSet) {
+            return new PostPolicyV4DocumentModel(expiryDate, conditionSet);
+        }
+
+        private PostPolicyV4DocumentModel(String expiryDate, PostConditionsVersion4 conditionSet) {
+            this.expiryDate = expiryDate;
+            this.conditionSet = conditionSet;
+        }
+
     }
 
     public enum ConditionV4Operator {
@@ -484,14 +450,15 @@ public final class FormPostPolicyV4 {
 
         private final String identifier;
 
-        ConditionV4Operator(String identifier) {
-            this.identifier = identifier;
-        }
-
         @Override
         public String toString() {
             return identifier;
         }
+
+        ConditionV4Operator(String identifier) {
+            this.identifier = identifier;
+        }
+
     }
 
     /**
@@ -508,23 +475,6 @@ public final class FormPostPolicyV4 {
 
         public final String operand2;
 
-        BinaryConditionV4(ConditionV4Operator operator, String leftOperand, String rightOperand) {
-            this.type = operator;
-            this.operand1 = leftOperand;
-            this.operand2 = rightOperand;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            BinaryConditionV4 binaryClause = (BinaryConditionV4) obj;
-            return binaryClause.type == this.type && this.operand1.equals(binaryClause.operand1) && this.operand2.equals(binaryClause.operand2);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(type, operand1, operand2);
-        }
-
         /**
          * Examples of returned strings: {@code ["eq", "$key", "test-object"]}, {@code ["starts-with",
          * "$acl", "public"]}, {@code ["content-length-range", 246, 266]}.
@@ -534,5 +484,63 @@ public final class FormPostPolicyV4 {
             String content = ConditionV4Operator.CONTENT_LENGTH_RANGE == type ? operand1 + ", " + operand2 : "\"$" + operand1 + "\", \"" + operand2 + "\"";
             return "[\"" + type + "\", " + content + "]";
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, operand1, operand2);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            BinaryConditionV4 binaryClause = (BinaryConditionV4) obj;
+            return binaryClause.type == this.type && this.operand1.equals(binaryClause.operand1) && this.operand2.equals(binaryClause.operand2);
+        }
+
+        BinaryConditionV4(ConditionV4Operator operator, String leftOperand, String rightOperand) {
+            this.type = operator;
+            this.operand1 = leftOperand;
+            this.operand2 = rightOperand;
+        }
+
     }
+
+    /**
+     * Returns the URL for the HTTP POST request
+     */
+    public String getUrl() {
+        return endpoint;
+    }
+
+    /**
+     * Returns the HTML form fields
+     */
+    public Map<String, String> getFields() {
+        return parameters;
+    }
+
+    private FormPostPolicyV4(String endpoint, Map<String, String> parameters) {
+        try {
+            if (!new URI(endpoint).isAbsolute()) {
+                throw new IllegalArgumentException(endpoint + " is not an absolute URL");
+            }
+        } catch (URISyntaxException uriException) {
+            throw new IllegalArgumentException(uriException);
+        }
+        PostFieldsMapV4.validate(parameters);
+        this.endpoint = endpoint;
+        this.parameters = Collections.unmodifiableMap(parameters);
+    }
+
+    /**
+     * Constructs {@code PostPolicyV4} instance of the given URL and fields map.
+     *
+     * @param endpoint URL for the HTTP POST request
+     * @param parameters HTML form fields
+     * @return constructed object
+     * @throws IllegalArgumentException if URL is malformed or fields are not valid
+     */
+    public static FormPostPolicyV4 create(String endpoint, Map<String, String> parameters) {
+        return new FormPostPolicyV4(endpoint, parameters);
+    }
+
 }

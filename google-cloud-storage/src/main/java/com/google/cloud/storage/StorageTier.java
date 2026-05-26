@@ -27,11 +27,7 @@ import com.google.cloud.StringEnumValue;
 public final class StorageTier extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageTier(String fixedValue) {
-    super(fixedValue);
-  }
-
-  private static final ApiFunction<String, StorageTier> STORAGE_TIER_FACTORY =
+    private static final ApiFunction<String, StorageTier> STORAGE_TIER_FACTORY =
       new ApiFunction<String, StorageTier>() {
         @Override
         public StorageTier apply(String constant) {
@@ -102,21 +98,26 @@ public final class StorageTier extends StringEnumValue {
   public static final StorageTier DURABLE_REDUCED_AVAILABILITY =
       STORAGE_TIER_ENUM_DEF.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
-  /**
-   * Get the StorageClass for the given String constant, and throw an exception if the constant is
-   * not recognized.
-   */
-  public static StorageTier valueOfStrict(String fixedValue) {
-    return STORAGE_TIER_ENUM_DEF.valueOfStrict(fixedValue);
-  }
+    /** Get the StorageClass for the given String constant, and allow unrecognized values. */
+    public static StorageTier fromValue(String fixedValue) {
+      return STORAGE_TIER_ENUM_DEF.valueOf(fixedValue);
+    }
 
-  /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageTier fromValue(String fixedValue) {
-    return STORAGE_TIER_ENUM_DEF.valueOf(fixedValue);
-  }
+    /** Return the known values for StorageClass. */
+    public static StorageTier[] values() {
+      return STORAGE_TIER_ENUM_DEF.values();
+    }
 
-  /** Return the known values for StorageClass. */
-  public static StorageTier[] values() {
-    return STORAGE_TIER_ENUM_DEF.values();
-  }
+    /**
+     * Get the StorageClass for the given String constant, and throw an exception if the constant is
+     * not recognized.
+     */
+    public static StorageTier valueOfStrict(String fixedValue) {
+      return STORAGE_TIER_ENUM_DEF.valueOfStrict(fixedValue);
+    }
+
+    private StorageTier(String fixedValue) {
+      super(fixedValue);
+    }
+
 }

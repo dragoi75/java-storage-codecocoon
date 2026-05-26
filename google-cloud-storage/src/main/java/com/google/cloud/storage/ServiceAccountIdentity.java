@@ -48,32 +48,6 @@ public final class ServiceAccountIdentity implements Serializable {
 
     private final String address;
 
-    private ServiceAccountIdentity(String address) {
-        this.address = address;
-    }
-
-    /**
-     * Returns the email address of the service account.
-     */
-    public String getEmail() {
-        return address;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("email", address).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(address);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof ServiceAccountIdentity && Objects.equals(toServiceAccountModel(), ((ServiceAccountIdentity) other).toServiceAccountModel());
-    }
-
     com.google.api.services.storage.model.ServiceAccount toServiceAccountModel() {
         com.google.api.services.storage.model.ServiceAccount serviceAccountModel = new com.google.api.services.storage.model.ServiceAccount();
         serviceAccountModel.setEmailAddress(address);
@@ -87,7 +61,34 @@ public final class ServiceAccountIdentity implements Serializable {
         return new ServiceAccountIdentity(address);
     }
 
+    private ServiceAccountIdentity(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ServiceAccountIdentity && Objects.equals(toServiceAccountModel(), ((ServiceAccountIdentity) other).toServiceAccountModel());
+    }
+
     static ServiceAccountIdentity fromServiceAccountModel(com.google.api.services.storage.model.ServiceAccount accountProto) {
         return new ServiceAccountIdentity(accountProto.getEmailAddress());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("email", address).toString();
+    }
+
+    /**
+     * Returns the email address of the service account.
+     */
+    public String getEmail() {
+        return address;
+    }
+
 }

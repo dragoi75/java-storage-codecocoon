@@ -97,10 +97,11 @@ class HttpStorageRpcSpanNames {
   static final EndSpanOptions DEFAULT_END_SPAN_OPTIONS =
       EndSpanOptions.builder().setSampleToLocalSpanStore(true).build();
 
-  static String getTraceSpanName(String rpcMethod) {
-    return String.format(
-        "%s.%s.%s", RPC_CLIENT_PREFIX, HttpStorageRpcClient.class.getName(), rpcMethod);
-  }
+    private HttpStorageRpcSpanNames() {}
 
-  private HttpStorageRpcSpanNames() {}
+    static String getTraceSpanName(String rpcMethod) {
+      return String.format(
+          "%s.%s.%s", RPC_CLIENT_PREFIX, HttpStorageRpcClient.class.getName(), rpcMethod);
+    }
+
 }

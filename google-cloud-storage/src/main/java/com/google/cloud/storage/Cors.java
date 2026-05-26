@@ -75,41 +75,13 @@ public final class Cors implements Serializable {
 
         private static final Origin ANY = new Origin(ANY_URI);
 
-        private Origin(String value) {
-            this.value = checkNotNull(value);
-        }
-
-        /**
-         * Returns an {@code Origin} object for all possible origins.
-         */
-        public static Origin any() {
-            return ANY;
-        }
-
-        /**
-         * Returns an {@code Origin} object for the given scheme, host and port.
-         */
-        public static Origin of(String scheme, String host, int port) {
-            try {
-                return of(new URI(scheme, null, host, port, null, null, null).toString());
-            } catch (URISyntaxException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-
-        /**
-         * Creates an {@code Origin} object for the provided value.
-         */
-        public static Origin of(String value) {
-            if (ANY_URI.equals(value)) {
-                return any();
-            }
-            return new Origin(value);
-        }
-
         @Override
         public int hashCode() {
             return value.hashCode();
+        }
+
+        public String getValue() {
+            return value;
         }
 
         @Override
@@ -125,9 +97,38 @@ public final class Cors implements Serializable {
             return getValue();
         }
 
-        public String getValue() {
-            return value;
+        /**
+         * Returns an {@code Origin} object for all possible origins.
+         */
+        public static Origin any() {
+            return ANY;
         }
+
+        /**
+         * Creates an {@code Origin} object for the provided value.
+         */
+        public static Origin of(String value) {
+            if (ANY_URI.equals(value)) {
+                return any();
+            }
+            return new Origin(value);
+        }
+
+        private Origin(String value) {
+            this.value = checkNotNull(value);
+        }
+
+        /**
+         * Returns an {@code Origin} object for the given scheme, host and port.
+         */
+        public static Origin of(String scheme, String host, int port) {
+            try {
+                return of(new URI(scheme, null, host, port, null, null, null).toString());
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
     }
 
     /**
@@ -143,7 +144,27 @@ public final class Cors implements Serializable {
 
         private ImmutableList<String> responseHeaders;
 
-        private Builder() {
+        /**
+         * Sets the response headers supported by this CORS configuration.
+         */
+        public Builder setResponseHeaders(Iterable<String> headers) {
+            this.responseHeaders = null != headers ? ImmutableList.copyOf(headers) : null;
+            return this;
+        }
+
+        /**
+         * Creates a CORS configuration.
+         */
+        public Cors build() {
+            return new Cors(this);
+        }
+
+        /**
+         * Sets the origins for this CORS configuration.
+         */
+        public Builder setOrigins(Iterable<Origin> origins) {
+            this.origins = null != origins ? ImmutableList.copyOf(origins) : null;
+            return this;
         }
 
         /**
@@ -163,76 +184,9 @@ public final class Cors implements Serializable {
             return this;
         }
 
-        /**
-         * Sets the origins for this CORS configuration.
-         */
-        public Builder setOrigins(Iterable<Origin> origins) {
-            this.origins = null != origins ? ImmutableList.copyOf(origins) : null;
-            return this;
+        private Builder() {
         }
 
-        /**
-         * Sets the response headers supported by this CORS configuration.
-         */
-        public Builder setResponseHeaders(Iterable<String> headers) {
-            this.responseHeaders = null != headers ? ImmutableList.copyOf(headers) : null;
-            return this;
-        }
-
-        /**
-         * Creates a CORS configuration.
-         */
-        public Cors build() {
-            return new Cors(this);
-        }
-    }
-
-    private Cors(Builder builder) {
-        this.maxAgeSeconds = builder.maxAgeSeconds;
-        this.methods = builder.methods;
-        this.origins = builder.origins;
-        this.responseHeaders = builder.responseHeaders;
-    }
-
-    /**
-     * Returns the max time in seconds in which a client can issue requests before sending a new
-     * preflight request.
-     */
-    public Integer getMaxAgeSeconds() {
-        return maxAgeSeconds;
-    }
-
-    /**
-     * Returns the HTTP methods supported by this CORS configuration.
-     */
-    public List<HttpRequestMethod> getMethods() {
-        return methods;
-    }
-
-    /**
-     * Returns the origins in this CORS configuration.
-     */
-    public List<Origin> getOrigins() {
-        return origins;
-    }
-
-    /**
-     * Returns the response headers supported by this CORS configuration.
-     */
-    public List<String> getResponseHeaders() {
-        return responseHeaders;
-    }
-
-    /**
-     * Returns a builder for this CORS configuration.
-     */
-    public Builder toBuilder() {
-        return newBuilder().setMaxAgeSeconds(maxAgeSeconds).setMethods(methods).setOrigins(origins).setResponseHeaders(responseHeaders);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxAgeSeconds, methods, origins, responseHeaders);
     }
 
     @Override
@@ -244,11 +198,9 @@ public final class Cors implements Serializable {
         return Objects.equals(maxAgeSeconds, other.maxAgeSeconds) && Objects.equals(methods, other.methods) && Objects.equals(origins, other.origins) && Objects.equals(responseHeaders, other.responseHeaders);
     }
 
-    /**
-     * Returns a CORS configuration builder.
-     */
-    public static Builder newBuilder() {
-        return new Builder();
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxAgeSeconds, methods, origins, responseHeaders);
     }
 
     Bucket.Cors toPb() {
@@ -262,6 +214,48 @@ public final class Cors implements Serializable {
             pb.setOrigin(newArrayList(transform(origins, Functions.toStringFunction())));
         }
         return pb;
+    }
+
+    /**
+     * Returns a builder for this CORS configuration.
+     */
+    public Builder toBuilder() {
+        return newBuilder().setMaxAgeSeconds(maxAgeSeconds).setMethods(methods).setOrigins(origins).setResponseHeaders(responseHeaders);
+    }
+
+    /**
+     * Returns the response headers supported by this CORS configuration.
+     */
+    public List<String> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    /**
+     * Returns a CORS configuration builder.
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
+     * Returns the origins in this CORS configuration.
+     */
+    public List<Origin> getOrigins() {
+        return origins;
+    }
+
+    private Cors(Builder builder) {
+        this.maxAgeSeconds = builder.maxAgeSeconds;
+        this.methods = builder.methods;
+        this.origins = builder.origins;
+        this.responseHeaders = builder.responseHeaders;
+    }
+
+    /**
+     * Returns the HTTP methods supported by this CORS configuration.
+     */
+    public List<HttpRequestMethod> getMethods() {
+        return methods;
     }
 
     static Cors fromPb(Bucket.Cors cors) {
@@ -287,4 +281,13 @@ public final class Cors implements Serializable {
         builder.setResponseHeaders(cors.getResponseHeader());
         return builder.build();
     }
+
+    /**
+     * Returns the max time in seconds in which a client can issue requests before sending a new
+     * preflight request.
+     */
+    public Integer getMaxAgeSeconds() {
+        return maxAgeSeconds;
+    }
+
 }

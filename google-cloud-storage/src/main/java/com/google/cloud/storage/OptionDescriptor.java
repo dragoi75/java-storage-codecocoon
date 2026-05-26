@@ -31,38 +31,39 @@ public abstract class OptionDescriptor implements Serializable {
   private final StorageServiceRpc.StorageOption storageOption;
   private final Object optionValue;
 
-  OptionDescriptor(StorageServiceRpc.StorageOption storageOption, Object optionValue) {
-    this.storageOption = checkNotNull(storageOption);
-    this.optionValue = optionValue;
-  }
-
-  StorageServiceRpc.StorageOption getRpcOption() {
-    return storageOption;
-  }
-
-  Object getValue() {
-    return optionValue;
-  }
-
-  @Override
-  public boolean equals(Object candidate) {
-    if (!(candidate instanceof OptionDescriptor)) {
-      return false;
+    @Override
+    public int hashCode() {
+      return Objects.hash(storageOption, optionValue);
     }
-    OptionDescriptor thatDescriptor = (OptionDescriptor) candidate;
-    return Objects.equals(storageOption, thatDescriptor.storageOption) && Objects.equals(optionValue, thatDescriptor.optionValue);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(storageOption, optionValue);
-  }
+    @Override
+    public boolean equals(Object candidate) {
+      if (!(candidate instanceof OptionDescriptor)) {
+        return false;
+      }
+      OptionDescriptor thatDescriptor = (OptionDescriptor) candidate;
+      return Objects.equals(storageOption, thatDescriptor.storageOption) && Objects.equals(optionValue, thatDescriptor.optionValue);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", storageOption.getValue())
-        .add("value", optionValue)
-        .toString();
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", storageOption.getValue())
+          .add("value", optionValue)
+          .toString();
+    }
+
+    Object getValue() {
+      return optionValue;
+    }
+
+    OptionDescriptor(StorageServiceRpc.StorageOption storageOption, Object optionValue) {
+      this.storageOption = checkNotNull(storageOption);
+      this.optionValue = optionValue;
+    }
+
+    StorageServiceRpc.StorageOption getRpcOption() {
+      return storageOption;
+    }
+
 }

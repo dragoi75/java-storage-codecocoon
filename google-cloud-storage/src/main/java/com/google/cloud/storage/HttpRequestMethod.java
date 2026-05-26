@@ -24,11 +24,7 @@ import com.google.cloud.StringEnumValue;
 public final class HttpRequestMethod extends StringEnumValue {
   private static final long serialVersionUID = -1394461645628254471L;
 
-  private HttpRequestMethod(String methodName) {
-    super(methodName);
-  }
-
-  private static final ApiFunction<String, HttpRequestMethod> METHOD_CONSTRUCTOR_FUNC =
+    private static final ApiFunction<String, HttpRequestMethod> METHOD_CONSTRUCTOR_FUNC =
       new ApiFunction<String, HttpRequestMethod>() {
         @Override
         public HttpRequestMethod apply(String constant) {
@@ -46,21 +42,26 @@ public final class HttpRequestMethod extends StringEnumValue {
   public static final HttpRequestMethod DELETE = HTTP_REQUEST_METHOD_TYPE.createAndRegister("DELETE");
   public static final HttpRequestMethod OPTIONS = HTTP_REQUEST_METHOD_TYPE.createAndRegister("OPTIONS");
 
-  /**
-   * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
-   * recognized.
-   */
-  public static HttpRequestMethod valueOfStrict(String methodName) {
-    return HTTP_REQUEST_METHOD_TYPE.valueOfStrict(methodName);
-  }
+    /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
+    public static HttpRequestMethod fromValue(String methodName) {
+      return HTTP_REQUEST_METHOD_TYPE.valueOf(methodName);
+    }
 
-  /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
-  public static HttpRequestMethod fromValue(String methodName) {
-    return HTTP_REQUEST_METHOD_TYPE.valueOf(methodName);
-  }
+    /** Return the known values for HttpMethod. */
+    public static HttpRequestMethod[] values() {
+      return HTTP_REQUEST_METHOD_TYPE.values();
+    }
 
-  /** Return the known values for HttpMethod. */
-  public static HttpRequestMethod[] values() {
-    return HTTP_REQUEST_METHOD_TYPE.values();
-  }
+    /**
+     * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
+     * recognized.
+     */
+    public static HttpRequestMethod valueOfStrict(String methodName) {
+      return HTTP_REQUEST_METHOD_TYPE.valueOfStrict(methodName);
+    }
+
+    private HttpRequestMethod(String methodName) {
+      super(methodName);
+    }
+
 }

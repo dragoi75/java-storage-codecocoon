@@ -36,37 +36,6 @@ public class CanonicalExtensionHeadersSerializer {
 
     private final CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion;
 
-    public CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion) {
-        this.signatureVersion = signatureVersion;
-    }
-
-    public CanonicalExtensionHeadersSerializer() {
-        // TODO switch this when V4 becomes default
-        this.signatureVersion = CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V2;
-    }
-
-    public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
-        StringBuilder serializedHeaders = new StringBuilder();
-        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
-            return serializedHeaders;
-        }
-        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
-        // Sort all custom headers by header name using a lexicographical sort by code point value.
-        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
-        Collections.sort(sortedHeaderNames);
-        for (String headerName : sortedHeaderNames) {
-            // Remove any whitespace around the colon that appears after the header name.
-            // Remove any whitespace around the colon that appears after the header name.
-            // Replace any sequence of whitespace with a single space.
-            // Append a newline (U+000A) to each custom header.
-            serializedHeaders.append(headerName).append(HEADER_SEPARATOR).// Append a newline (U+000A) to each custom header.
-            append(// Append a newline (U+000A) to each custom header.
-            lowercaseHeaders.get(headerName).trim().replaceAll("\\s+", " ")).append(SigningContext.COMPONENT_SEPARATOR);
-        }
-        // Concatenate all custom headers
-        return serializedHeaders;
-    }
-
     public StringBuilder serializeHeaderNames(Map<String, String> canonicalizedExtensionHeaders) {
         StringBuilder serializedHeaders = new StringBuilder();
         if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
@@ -97,4 +66,36 @@ public class CanonicalExtensionHeadersSerializer {
         }
         return lowercaseHeaders;
     }
+
+    public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
+        StringBuilder serializedHeaders = new StringBuilder();
+        if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
+            return serializedHeaders;
+        }
+        Map<String, String> lowercaseHeaders = getLowercaseHeaders(canonicalizedExtensionHeaders);
+        // Sort all custom headers by header name using a lexicographical sort by code point value.
+        List<String> sortedHeaderNames = new ArrayList<>(lowercaseHeaders.keySet());
+        Collections.sort(sortedHeaderNames);
+        for (String headerName : sortedHeaderNames) {
+            // Remove any whitespace around the colon that appears after the header name.
+            // Remove any whitespace around the colon that appears after the header name.
+            // Replace any sequence of whitespace with a single space.
+            // Append a newline (U+000A) to each custom header.
+            serializedHeaders.append(headerName).append(HEADER_SEPARATOR).// Append a newline (U+000A) to each custom header.
+            append(// Append a newline (U+000A) to each custom header.
+            lowercaseHeaders.get(headerName).trim().replaceAll("\\s+", " ")).append(SigningContext.COMPONENT_SEPARATOR);
+        }
+        // Concatenate all custom headers
+        return serializedHeaders;
+    }
+
+    public CanonicalExtensionHeadersSerializer() {
+        // TODO switch this when V4 becomes default
+        this.signatureVersion = CloudStorageClient.UrlSigningOption.SignatureSchemeVersion.V2;
+    }
+
+    public CanonicalExtensionHeadersSerializer(CloudStorageClient.UrlSigningOption.SignatureSchemeVersion signatureVersion) {
+        this.signatureVersion = signatureVersion;
+    }
+
 }
