@@ -27,11 +27,7 @@ import com.google.cloud.StringEnumValue;
 public final class StorageClassType extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageClassType(String value) {
-    super(value);
-  }
-
-  private static final ApiFunction<String, StorageClassType> STORAGE_CLASS_CREATOR_FN =
+    private static final ApiFunction<String, StorageClassType> STORAGE_CLASS_CREATOR_FN =
       new ApiFunction<String, StorageClassType>() {
         @Override
         public StorageClassType apply(String constant) {
@@ -102,21 +98,26 @@ public final class StorageClassType extends StringEnumValue {
   public static final StorageClassType DURABLE_REDUCED_AVAILABILITY =
       STORAGE_CLASS_KIND.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
-  /**
-   * Get the StorageClass for the given String constant, and throw an exception if the constant is
-   * not recognized.
-   */
-  public static StorageClassType valueOfStrict(String value) {
-    return STORAGE_CLASS_KIND.valueOfStrict(value);
-  }
+    /** Return the known values for StorageClass. */
+    public static StorageClassType[] values() {
+      return STORAGE_CLASS_KIND.values();
+    }
 
-  /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageClassType fromValue(String value) {
-    return STORAGE_CLASS_KIND.valueOf(value);
-  }
+    /** Get the StorageClass for the given String constant, and allow unrecognized values. */
+    public static StorageClassType fromValue(String value) {
+      return STORAGE_CLASS_KIND.valueOf(value);
+    }
 
-  /** Return the known values for StorageClass. */
-  public static StorageClassType[] values() {
-    return STORAGE_CLASS_KIND.values();
-  }
+    /**
+     * Get the StorageClass for the given String constant, and throw an exception if the constant is
+     * not recognized.
+     */
+    public static StorageClassType valueOfStrict(String value) {
+      return STORAGE_CLASS_KIND.valueOfStrict(value);
+    }
+
+    private StorageClassType(String value) {
+      super(value);
+    }
+
 }

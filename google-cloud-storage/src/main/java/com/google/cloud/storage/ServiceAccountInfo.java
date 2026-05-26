@@ -48,30 +48,9 @@ public final class ServiceAccountInfo implements Serializable {
 
     private final String emailAddress;
 
-    private ServiceAccountInfo(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    /**
-     * Returns the email address of the service account.
-     */
-    public String getEmail() {
-        return emailAddress;
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("email", emailAddress).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(emailAddress);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
     }
 
     com.google.api.services.storage.model.ServiceAccount toProto() {
@@ -87,7 +66,29 @@ public final class ServiceAccountInfo implements Serializable {
         return new ServiceAccountInfo(emailAddress);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ServiceAccountInfo && Objects.equals(toProto(), ((ServiceAccountInfo) other).toProto());
+    }
+
     static ServiceAccountInfo fromProto(com.google.api.services.storage.model.ServiceAccount accountProto) {
         return new ServiceAccountInfo(accountProto.getEmailAddress());
     }
+
+    private ServiceAccountInfo(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(emailAddress);
+    }
+
+    /**
+     * Returns the email address of the service account.
+     */
+    public String getEmail() {
+        return emailAddress;
+    }
+
 }

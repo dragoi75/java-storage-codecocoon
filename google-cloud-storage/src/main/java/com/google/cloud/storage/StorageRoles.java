@@ -26,121 +26,122 @@ import com.google.cloud.Role;
  */
 public class StorageRoles {
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.buckets.*
-   *   <li>storage.objects.*
-   * </ul>
-   */
-  public static Role admin() {
-    return Role.of("roles/storage.admin");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.objects.get
+     * </ul>
+     */
+    public static Role legacyObjectReader() {
+      return Role.of("roles/storage.legacyObjectReader");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.objects.list
-   *   <li>storage.objects.get
-   * </ul>
-   */
-  public static Role objectViewer() {
-    return Role.of("roles/storage.objectViewer");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.buckets.get
+     *   <li>storage.objects.list
+     *   <li>storage.objects.create
+     *   <li>storage.objects.delete
+     * </ul>
+     */
+    public static Role legacyBucketWriter() {
+      return Role.of("roles/storage.legacyBucketWriter");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.objects.create
-   * </ul>
-   */
-  public static Role objectCreator() {
-    return Role.of("roles/storage.objectCreator");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.objects.list
+     *   <li>storage.objects.get
+     * </ul>
+     */
+    public static Role objectViewer() {
+      return Role.of("roles/storage.objectViewer");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.objects.*
-   * </ul>
-   */
-  public static Role objectAdmin() {
-    return Role.of("roles/storage.objectAdmin");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.objects.get
+     *   <li>storage.objects.update
+     *   <li>storage.objects.getIamPolicy
+     *   <li>storage.objects.setIamPolicy
+     * </ul>
+     */
+    public static Role legacyObjectOwner() {
+      return Role.of("roles/storage.legacyObjectOwner");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.buckets.get
-   *   <li>storage.buckets.update
-   *   <li>storage.buckets.setIamPolicy
-   *   <li>storage.buckets.getIamPolicy
-   *   <li>storage.objects.list
-   *   <li>storage.objects.create
-   *   <li>storage.objects.delete
-   * </ul>
-   */
-  public static Role legacyBucketOwner() {
-    return Role.of("roles/storage.legacyBucketOwner");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.buckets.get
+     *   <li>storage.objects.list
+     * </ul>
+     */
+    public static Role legacyBucketReader() {
+      return Role.of("roles/storage.legacyBucketReader");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.buckets.get
-   *   <li>storage.objects.list
-   *   <li>storage.objects.create
-   *   <li>storage.objects.delete
-   * </ul>
-   */
-  public static Role legacyBucketWriter() {
-    return Role.of("roles/storage.legacyBucketWriter");
-  }
+    private StorageRoles() {
+      // Intentionally left blank.
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.buckets.get
-   *   <li>storage.objects.list
-   * </ul>
-   */
-  public static Role legacyBucketReader() {
-    return Role.of("roles/storage.legacyBucketReader");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.buckets.*
+     *   <li>storage.objects.*
+     * </ul>
+     */
+    public static Role admin() {
+      return Role.of("roles/storage.admin");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.objects.get
-   *   <li>storage.objects.update
-   *   <li>storage.objects.getIamPolicy
-   *   <li>storage.objects.setIamPolicy
-   * </ul>
-   */
-  public static Role legacyObjectOwner() {
-    return Role.of("roles/storage.legacyObjectOwner");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.buckets.get
+     *   <li>storage.buckets.update
+     *   <li>storage.buckets.setIamPolicy
+     *   <li>storage.buckets.getIamPolicy
+     *   <li>storage.objects.list
+     *   <li>storage.objects.create
+     *   <li>storage.objects.delete
+     * </ul>
+     */
+    public static Role legacyBucketOwner() {
+      return Role.of("roles/storage.legacyBucketOwner");
+    }
 
-  /**
-   * Grants the following permissions:
-   *
-   * <ul>
-   *   <li>storage.objects.get
-   * </ul>
-   */
-  public static Role legacyObjectReader() {
-    return Role.of("roles/storage.legacyObjectReader");
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.objects.create
+     * </ul>
+     */
+    public static Role objectCreator() {
+      return Role.of("roles/storage.objectCreator");
+    }
 
-  private StorageRoles() {
-    // Intentionally left blank.
-  }
+    /**
+     * Grants the following permissions:
+     *
+     * <ul>
+     *   <li>storage.objects.*
+     * </ul>
+     */
+    public static Role objectAdmin() {
+      return Role.of("roles/storage.objectAdmin");
+    }
+
 }

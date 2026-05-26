@@ -31,38 +31,39 @@ public abstract class RpcOptionEntry implements Serializable {
   private final CloudStorageRpcClient.StorageOption callOption;
   private final Object payload;
 
-  RpcOptionEntry(CloudStorageRpcClient.StorageOption callOption, Object payload) {
-    this.callOption = checkNotNull(callOption);
-    this.payload = payload;
-  }
-
-  CloudStorageRpcClient.StorageOption getRpcOption() {
-    return callOption;
-  }
-
-  Object getValue() {
-    return payload;
-  }
-
-  @Override
-  public boolean equals(Object otherEntry) {
-    if (!(otherEntry instanceof RpcOptionEntry)) {
-      return false;
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", callOption.getValue())
+          .add("value", payload)
+          .toString();
     }
-    RpcOptionEntry thatEntry = (RpcOptionEntry) otherEntry;
-    return Objects.equals(callOption, thatEntry.callOption) && Objects.equals(payload, thatEntry.payload);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(callOption, payload);
-  }
+    Object getValue() {
+      return payload;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", callOption.getValue())
-        .add("value", payload)
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+      return Objects.hash(callOption, payload);
+    }
+
+    RpcOptionEntry(CloudStorageRpcClient.StorageOption callOption, Object payload) {
+      this.callOption = checkNotNull(callOption);
+      this.payload = payload;
+    }
+
+    @Override
+    public boolean equals(Object otherEntry) {
+      if (!(otherEntry instanceof RpcOptionEntry)) {
+        return false;
+      }
+      RpcOptionEntry thatEntry = (RpcOptionEntry) otherEntry;
+      return Objects.equals(callOption, thatEntry.callOption) && Objects.equals(payload, thatEntry.payload);
+    }
+
+    CloudStorageRpcClient.StorageOption getRpcOption() {
+      return callOption;
+    }
+
 }

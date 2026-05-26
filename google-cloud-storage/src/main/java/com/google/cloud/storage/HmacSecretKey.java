@@ -30,15 +30,6 @@ public class HmacSecretKey implements Serializable {
 
     private final HmacKeyInfo keyInfo;
 
-    private HmacSecretKey(SecretMetadataBuilder secretMetadataBuilder) {
-        this.secretValue = secretMetadataBuilder.secretValue;
-        this.keyInfo = secretMetadataBuilder.keyInfo;
-    }
-
-    public static SecretMetadataBuilder newSecretMetadataBuilder(String secretValue) {
-        return new SecretMetadataBuilder(secretValue);
-    }
-
     /**
      * Builder for {@code HmacKey} objects. *
      */
@@ -47,6 +38,18 @@ public class HmacSecretKey implements Serializable {
         private String secretValue;
 
         private HmacKeyInfo keyInfo;
+
+        /**
+         * Creates an {@code HmacKey} object from this builder. *
+         */
+        public HmacSecretKey buildHmacSecretKey() {
+            return new HmacSecretKey(this);
+        }
+
+        public SecretMetadataBuilder setMetadata(HmacKeyInfo keyInfo) {
+            this.keyInfo = keyInfo;
+            return this;
+        }
 
         private SecretMetadataBuilder(String secretValue) {
             this.secretValue = secretValue;
@@ -57,61 +60,6 @@ public class HmacSecretKey implements Serializable {
             return this;
         }
 
-        public SecretMetadataBuilder setMetadata(HmacKeyInfo keyInfo) {
-            this.keyInfo = keyInfo;
-            return this;
-        }
-
-        /**
-         * Creates an {@code HmacKey} object from this builder. *
-         */
-        public HmacSecretKey buildHmacSecretKey() {
-            return new HmacSecretKey(this);
-        }
-    }
-
-    /**
-     * Returns the secret key associated with this HMAC key. *
-     */
-    public String getSecretKey() {
-        return secretValue;
-    }
-
-    /**
-     * Returns the metadata associated with this HMAC key. *
-     */
-    public HmacKeyInfo getMetadata() {
-        return keyInfo;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(secretValue, keyInfo);
-    }
-
-    @Override
-    public boolean equals(Object otherObject) {
-        if (otherObject == this) {
-            return true;
-        }
-        if (null == otherObject || otherObject.getClass() != getClass()) {
-            return false;
-        }
-        final HmacKeyInfo other = (HmacKeyInfo) otherObject;
-        return Objects.equals(this.secretValue, secretValue) && Objects.equals(this.keyInfo, keyInfo);
-    }
-
-    com.google.api.services.storage.model.HmacKey toPb() {
-        com.google.api.services.storage.model.HmacKey protoKey = new com.google.api.services.storage.model.HmacKey();
-        protoKey.setSecret(this.secretValue);
-        if (null != keyInfo) {
-            protoKey.setMetadata(keyInfo.toProto());
-        }
-        return protoKey;
-    }
-
-    static HmacSecretKey fromProto(com.google.api.services.storage.model.HmacKey protoKey) {
-        return HmacSecretKey.newSecretMetadataBuilder(protoKey.getSecret()).setMetadata(HmacKeyInfo.fromProto(protoKey.getMetadata())).buildHmacSecretKey();
     }
 
     public enum HmacKeyStatus {
@@ -149,121 +97,6 @@ public class HmacSecretKey implements Serializable {
 
         private final Long modificationTime;
 
-        private HmacKeyInfo(AccessKeyBuilder secretMetadataBuilder) {
-            this.accessIdentifier = secretMetadataBuilder.accessIdentifier;
-            this.entityTag = secretMetadataBuilder.entityTag;
-            this.identifier = secretMetadataBuilder.identifier;
-            this.projectIdentifier = secretMetadataBuilder.projectIdentifier;
-            this.svcAccount = secretMetadataBuilder.svcAccount;
-            this.statusText = secretMetadataBuilder.statusText;
-            this.creationTime = secretMetadataBuilder.creationTime;
-            this.modificationTime = secretMetadataBuilder.modificationTime;
-        }
-
-        public static AccessKeyBuilder newAccessKeyBuilder(ServiceAccountInfo svcAccount) {
-            return new AccessKeyBuilder(svcAccount);
-        }
-
-        public AccessKeyBuilder toBuilder() {
-            return new AccessKeyBuilder(this);
-        }
-
-        public static HmacKeyInfo of(ServiceAccountInfo svcAccount, String accessIdentifier, String projectIdentifier) {
-            return newAccessKeyBuilder(svcAccount).setAccessId(accessIdentifier).setProjectId(projectIdentifier).buildHmacKeyInfo();
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(accessIdentifier, projectIdentifier);
-        }
-
-        @Override
-        public boolean equals(Object otherObject) {
-            if (otherObject == this) {
-                return true;
-            }
-            if (null == otherObject || otherObject.getClass() != getClass()) {
-                return false;
-            }
-            final HmacKeyInfo comparedInfo = (HmacKeyInfo) otherObject;
-            return Objects.equals(this.accessIdentifier, comparedInfo.accessIdentifier) && Objects.equals(this.entityTag, comparedInfo.entityTag) && Objects.equals(this.identifier, comparedInfo.identifier) && Objects.equals(this.projectIdentifier, comparedInfo.projectIdentifier) && Objects.equals(this.svcAccount, comparedInfo.svcAccount) && Objects.equals(this.statusText, comparedInfo.statusText) && Objects.equals(this.creationTime, comparedInfo.creationTime) && Objects.equals(this.modificationTime, comparedInfo.modificationTime);
-        }
-
-        public com.google.api.services.storage.model.HmacKeyMetadata toProto() {
-            com.google.api.services.storage.model.HmacKeyMetadata keyInfo = new com.google.api.services.storage.model.HmacKeyMetadata();
-            keyInfo.setAccessId(this.accessIdentifier);
-            keyInfo.setEtag(this.entityTag);
-            keyInfo.setId(this.identifier);
-            keyInfo.setProjectId(this.projectIdentifier);
-            keyInfo.setServiceAccountEmail(null == this.svcAccount ? null : this.svcAccount.getEmail());
-            keyInfo.setState(null == this.statusText ? null : this.statusText.toString());
-            keyInfo.setTimeCreated(null == this.creationTime ? null : new DateTime(this.creationTime));
-            keyInfo.setUpdated(null == this.modificationTime ? null : new DateTime(this.modificationTime));
-            return keyInfo;
-        }
-
-        static HmacKeyInfo fromProto(com.google.api.services.storage.model.HmacKeyMetadata keyInfo) {
-            return newAccessKeyBuilder(ServiceAccountInfo.create(keyInfo.getServiceAccountEmail())).setAccessId(keyInfo.getAccessId()).setCreateTime(keyInfo.getTimeCreated().getValue()).setEtag(keyInfo.getEtag()).setId(keyInfo.getId()).setProjectId(keyInfo.getProjectId()).setState(HmacKeyStatus.valueOf(keyInfo.getState())).setUpdateTime(keyInfo.getUpdated().getValue()).buildHmacKeyInfo();
-        }
-
-        /**
-         * Returns the access id for this HMAC key. This is the id needed to get or delete the key. *
-         */
-        public String getAccessId() {
-            return accessIdentifier;
-        }
-
-        /**
-         * Returns HTTP 1.1 Entity tag for this HMAC key.
-         *
-         * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
-         */
-        public String getEtag() {
-            return entityTag;
-        }
-
-        /**
-         * Returns the resource name of this HMAC key. *
-         */
-        public String getId() {
-            return identifier;
-        }
-
-        /**
-         * Returns the project id associated with this HMAC key. *
-         */
-        public String getProjectId() {
-            return projectIdentifier;
-        }
-
-        /**
-         * Returns the service account associated with this HMAC key. *
-         */
-        public ServiceAccountInfo getServiceAccount() {
-            return svcAccount;
-        }
-
-        /**
-         * Returns the current state of this HMAC key. *
-         */
-        public HmacKeyStatus getState() {
-            return statusText;
-        }
-
-        /**
-         * Returns the creation time of this HMAC key. *
-         */
-        public Long getCreateTime() {
-            return creationTime;
-        }
-
-        /**
-         * Returns the last updated time of this HMAC key. *
-         */
-        public Long getUpdateTime() {
-            return modificationTime;
-        }
-
         /**
          * Builder for {@code HmacKeyMetadata} objects. *
          */
@@ -285,48 +118,13 @@ public class HmacSecretKey implements Serializable {
 
             private Long modificationTime;
 
-            private AccessKeyBuilder(ServiceAccountInfo svcAccount) {
-                this.svcAccount = svcAccount;
-            }
-
-            private AccessKeyBuilder(HmacKeyInfo keyInfo) {
-                this.accessIdentifier = keyInfo.accessIdentifier;
-                this.entityTag = keyInfo.entityTag;
-                this.identifier = keyInfo.identifier;
-                this.projectIdentifier = keyInfo.projectIdentifier;
-                this.svcAccount = keyInfo.svcAccount;
-                this.statusText = keyInfo.statusText;
-                this.creationTime = keyInfo.creationTime;
-                this.modificationTime = keyInfo.modificationTime;
-            }
-
-            public AccessKeyBuilder setAccessId(String accessIdentifier) {
-                this.accessIdentifier = accessIdentifier;
-                return this;
-            }
-
-            public AccessKeyBuilder setEtag(String entityTag) {
-                this.entityTag = entityTag;
-                return this;
-            }
-
-            public AccessKeyBuilder setId(String identifier) {
-                this.identifier = identifier;
-                return this;
-            }
-
-            public AccessKeyBuilder setServiceAccount(ServiceAccountInfo svcAccount) {
-                this.svcAccount = svcAccount;
-                return this;
-            }
-
             public AccessKeyBuilder setState(HmacKeyStatus statusText) {
                 this.statusText = statusText;
                 return this;
             }
 
-            public AccessKeyBuilder setCreateTime(long creationTime) {
-                this.creationTime = creationTime;
+            public AccessKeyBuilder setUpdateTime(long modificationTime) {
+                this.modificationTime = modificationTime;
                 return this;
             }
 
@@ -342,10 +140,216 @@ public class HmacSecretKey implements Serializable {
                 return new HmacKeyInfo(this);
             }
 
-            public AccessKeyBuilder setUpdateTime(long modificationTime) {
-                this.modificationTime = modificationTime;
+            public AccessKeyBuilder setCreateTime(long creationTime) {
+                this.creationTime = creationTime;
                 return this;
             }
+
+            private AccessKeyBuilder(HmacKeyInfo keyInfo) {
+                this.accessIdentifier = keyInfo.accessIdentifier;
+                this.entityTag = keyInfo.entityTag;
+                this.identifier = keyInfo.identifier;
+                this.projectIdentifier = keyInfo.projectIdentifier;
+                this.svcAccount = keyInfo.svcAccount;
+                this.statusText = keyInfo.statusText;
+                this.creationTime = keyInfo.creationTime;
+                this.modificationTime = keyInfo.modificationTime;
+            }
+
+            private AccessKeyBuilder(ServiceAccountInfo svcAccount) {
+                this.svcAccount = svcAccount;
+            }
+
+            public AccessKeyBuilder setId(String identifier) {
+                this.identifier = identifier;
+                return this;
+            }
+
+            public AccessKeyBuilder setServiceAccount(ServiceAccountInfo svcAccount) {
+                this.svcAccount = svcAccount;
+                return this;
+            }
+
+            public AccessKeyBuilder setAccessId(String accessIdentifier) {
+                this.accessIdentifier = accessIdentifier;
+                return this;
+            }
+
+            public AccessKeyBuilder setEtag(String entityTag) {
+                this.entityTag = entityTag;
+                return this;
+            }
+
         }
+
+        static HmacKeyInfo fromProto(com.google.api.services.storage.model.HmacKeyMetadata keyInfo) {
+            return newAccessKeyBuilder(ServiceAccountInfo.create(keyInfo.getServiceAccountEmail())).setAccessId(keyInfo.getAccessId()).setCreateTime(keyInfo.getTimeCreated().getValue()).setEtag(keyInfo.getEtag()).setId(keyInfo.getId()).setProjectId(keyInfo.getProjectId()).setState(HmacKeyStatus.valueOf(keyInfo.getState())).setUpdateTime(keyInfo.getUpdated().getValue()).buildHmacKeyInfo();
+        }
+
+        /**
+         * Returns the last updated time of this HMAC key. *
+         */
+        public Long getUpdateTime() {
+            return modificationTime;
+        }
+
+        /**
+         * Returns the service account associated with this HMAC key. *
+         */
+        public ServiceAccountInfo getServiceAccount() {
+            return svcAccount;
+        }
+
+        public com.google.api.services.storage.model.HmacKeyMetadata toProto() {
+            com.google.api.services.storage.model.HmacKeyMetadata keyInfo = new com.google.api.services.storage.model.HmacKeyMetadata();
+            keyInfo.setAccessId(this.accessIdentifier);
+            keyInfo.setEtag(this.entityTag);
+            keyInfo.setId(this.identifier);
+            keyInfo.setProjectId(this.projectIdentifier);
+            keyInfo.setServiceAccountEmail(null == this.svcAccount ? null : this.svcAccount.getEmail());
+            keyInfo.setState(null == this.statusText ? null : this.statusText.toString());
+            keyInfo.setTimeCreated(null == this.creationTime ? null : new DateTime(this.creationTime));
+            keyInfo.setUpdated(null == this.modificationTime ? null : new DateTime(this.modificationTime));
+            return keyInfo;
+        }
+
+        /**
+         * Returns the access id for this HMAC key. This is the id needed to get or delete the key. *
+         */
+        public String getAccessId() {
+            return accessIdentifier;
+        }
+
+        /**
+         * Returns the current state of this HMAC key. *
+         */
+        public HmacKeyStatus getState() {
+            return statusText;
+        }
+
+        /**
+         * Returns HTTP 1.1 Entity tag for this HMAC key.
+         *
+         * @see <a href="http://tools.ietf.org/html/rfc2616#section-3.11">Entity Tags</a>
+         */
+        public String getEtag() {
+            return entityTag;
+        }
+
+        private HmacKeyInfo(AccessKeyBuilder secretMetadataBuilder) {
+            this.accessIdentifier = secretMetadataBuilder.accessIdentifier;
+            this.entityTag = secretMetadataBuilder.entityTag;
+            this.identifier = secretMetadataBuilder.identifier;
+            this.projectIdentifier = secretMetadataBuilder.projectIdentifier;
+            this.svcAccount = secretMetadataBuilder.svcAccount;
+            this.statusText = secretMetadataBuilder.statusText;
+            this.creationTime = secretMetadataBuilder.creationTime;
+            this.modificationTime = secretMetadataBuilder.modificationTime;
+        }
+
+        /**
+         * Returns the project id associated with this HMAC key. *
+         */
+        public String getProjectId() {
+            return projectIdentifier;
+        }
+
+        public static AccessKeyBuilder newAccessKeyBuilder(ServiceAccountInfo svcAccount) {
+            return new AccessKeyBuilder(svcAccount);
+        }
+
+        public static HmacKeyInfo of(ServiceAccountInfo svcAccount, String accessIdentifier, String projectIdentifier) {
+            return newAccessKeyBuilder(svcAccount).setAccessId(accessIdentifier).setProjectId(projectIdentifier).buildHmacKeyInfo();
+        }
+
+        @Override
+        public boolean equals(Object otherObject) {
+            if (otherObject == this) {
+                return true;
+            }
+            if (null == otherObject || otherObject.getClass() != getClass()) {
+                return false;
+            }
+            final HmacKeyInfo comparedInfo = (HmacKeyInfo) otherObject;
+            return Objects.equals(this.accessIdentifier, comparedInfo.accessIdentifier) && Objects.equals(this.entityTag, comparedInfo.entityTag) && Objects.equals(this.identifier, comparedInfo.identifier) && Objects.equals(this.projectIdentifier, comparedInfo.projectIdentifier) && Objects.equals(this.svcAccount, comparedInfo.svcAccount) && Objects.equals(this.statusText, comparedInfo.statusText) && Objects.equals(this.creationTime, comparedInfo.creationTime) && Objects.equals(this.modificationTime, comparedInfo.modificationTime);
+        }
+
+        public AccessKeyBuilder toBuilder() {
+            return new AccessKeyBuilder(this);
+        }
+
+        /**
+         * Returns the creation time of this HMAC key. *
+         */
+        public Long getCreateTime() {
+            return creationTime;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(accessIdentifier, projectIdentifier);
+        }
+
+        /**
+         * Returns the resource name of this HMAC key. *
+         */
+        public String getId() {
+            return identifier;
+        }
+
     }
+
+    /**
+     * Returns the metadata associated with this HMAC key. *
+     */
+    public HmacKeyInfo getMetadata() {
+        return keyInfo;
+    }
+
+    com.google.api.services.storage.model.HmacKey toPb() {
+        com.google.api.services.storage.model.HmacKey protoKey = new com.google.api.services.storage.model.HmacKey();
+        protoKey.setSecret(this.secretValue);
+        if (null != keyInfo) {
+            protoKey.setMetadata(keyInfo.toProto());
+        }
+        return protoKey;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(secretValue, keyInfo);
+    }
+
+    static HmacSecretKey fromProto(com.google.api.services.storage.model.HmacKey protoKey) {
+        return HmacSecretKey.newSecretMetadataBuilder(protoKey.getSecret()).setMetadata(HmacKeyInfo.fromProto(protoKey.getMetadata())).buildHmacSecretKey();
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == this) {
+            return true;
+        }
+        if (null == otherObject || otherObject.getClass() != getClass()) {
+            return false;
+        }
+        final HmacKeyInfo other = (HmacKeyInfo) otherObject;
+        return Objects.equals(this.secretValue, secretValue) && Objects.equals(this.keyInfo, keyInfo);
+    }
+
+    private HmacSecretKey(SecretMetadataBuilder secretMetadataBuilder) {
+        this.secretValue = secretMetadataBuilder.secretValue;
+        this.keyInfo = secretMetadataBuilder.keyInfo;
+    }
+
+    /**
+     * Returns the secret key associated with this HMAC key. *
+     */
+    public String getSecretKey() {
+        return secretValue;
+    }
+
+    public static SecretMetadataBuilder newSecretMetadataBuilder(String secretValue) {
+        return new SecretMetadataBuilder(secretValue);
+    }
+
 }

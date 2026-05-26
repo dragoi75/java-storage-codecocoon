@@ -30,6 +30,10 @@ import java.util.List;
  */
 class PolicyHelper {
 
+    private PolicyHelper() {
+        // Intentionally left blank.
+    }
+
     static Policy convertFromApiPolicy(com.google.api.services.storage.model.Policy apiPolicy) {
         Policy.Builder policyBuilder = Policy.newBuilder();
         List<Bindings> bindings = apiPolicy.getBindings();
@@ -73,7 +77,4 @@ class PolicyHelper {
         return new com.google.api.services.storage.model.Policy().setBindings(bindings).setEtag(policy.getEtag()).setVersion(policy.getVersion());
     }
 
-    private PolicyHelper() {
-        // Intentionally left blank.
-    }
 }

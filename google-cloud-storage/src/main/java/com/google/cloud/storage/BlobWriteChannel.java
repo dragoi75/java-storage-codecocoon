@@ -32,27 +32,45 @@ import java.util.concurrent.Callable;
  */
 class BlobWriteChannel extends BaseWriteChannel<StorageSettings, BlobAttributes> {
 
-    BlobWriteChannel(StorageSettings options, BlobAttributes blob, Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
-        this(options, blob, open(options, blob, optionsMap));
-    }
-
-    BlobWriteChannel(StorageSettings options, URL signedURL) {
-        this(options, open(signedURL, options));
-    }
-
-    BlobWriteChannel(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
-        super(options, blobInfo, uploadId);
-    }
-
-    BlobWriteChannel(StorageSettings options, String uploadId) {
-        super(options, null, uploadId);
-    }
-
     // Contains metadata of the updated object or null if upload is not completed.
     private StorageObject storageObject;
 
-    StorageObject getStorageObject() {
-        return storageObject;
+    static class StateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobAttributes> {
+
+        private static final long serialVersionUID = -9028324143780151286L;
+
+        static class Builder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobAttributes> {
+
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new StateImpl(this);
+            }
+
+            private Builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
+                super(options, blobInfo, uploadId);
+            }
+
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobWriteChannel channel = new BlobWriteChannel(serviceOptions, entity, uploadId);
+            channel.restore(this);
+            return channel;
+        }
+
+        static Builder builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
+            return new Builder(options, blobInfo, uploadId);
+        }
+
+        StateImpl(Builder builder) {
+            super(builder);
+        }
+
+    }
+
+    protected StateImpl.Builder stateBuilder() {
+        return StateImpl.builder(getOptions(), getEntity(), getUploadId());
     }
 
     @Override
@@ -65,24 +83,6 @@ class BlobWriteChannel extends BaseWriteChannel<StorageSettings, BlobAttributes>
                     storageObject = getOptions().getStorageRpcV1().writeWithResponse(getUploadId(), getBuffer(), 0, getPosition(), length, last);
                 }
             }), getOptions().getRetrySettings(), StorageImpl.EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelper.RetryHelperException e) {
-            throw StorageOperationException.translateAndRethrow(e);
-        }
-    }
-
-    protected StateImpl.Builder stateBuilder() {
-        return StateImpl.builder(getOptions(), getEntity(), getUploadId());
-    }
-
-    private static String open(final StorageSettings options, final BlobAttributes blob, final Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
-        try {
-            return runWithRetries(new Callable<String>() {
-
-                @Override
-                public String call() {
-                    return options.getStorageRpcV1().open(blob.toProto(), optionsMap);
-                }
-            }, options.getRetrySettings(), StorageImpl.EXCEPTION_HANDLER, options.getClock());
         } catch (RetryHelper.RetryHelperException e) {
             throw StorageOperationException.translateAndRethrow(e);
         }
@@ -123,35 +123,38 @@ class BlobWriteChannel extends BaseWriteChannel<StorageSettings, BlobAttributes>
         return isValid;
     }
 
-    static class StateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobAttributes> {
+    BlobWriteChannel(StorageSettings options, URL signedURL) {
+        this(options, open(signedURL, options));
+    }
 
-        private static final long serialVersionUID = -9028324143780151286L;
+    BlobWriteChannel(StorageSettings options, String uploadId) {
+        super(options, null, uploadId);
+    }
 
-        StateImpl(Builder builder) {
-            super(builder);
-        }
+    StorageObject getStorageObject() {
+        return storageObject;
+    }
 
-        static class Builder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobAttributes> {
+    BlobWriteChannel(StorageSettings options, BlobAttributes blob, Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
+        this(options, blob, open(options, blob, optionsMap));
+    }
 
-            private Builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
-                super(options, blobInfo, uploadId);
-            }
+    BlobWriteChannel(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
+        super(options, blobInfo, uploadId);
+    }
 
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new StateImpl(this);
-            }
-        }
+    private static String open(final StorageSettings options, final BlobAttributes blob, final Map<CloudStorageRpcClient.StorageOption, ?> optionsMap) {
+        try {
+            return runWithRetries(new Callable<String>() {
 
-        static Builder builder(StorageSettings options, BlobAttributes blobInfo, String uploadId) {
-            return new Builder(options, blobInfo, uploadId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            BlobWriteChannel channel = new BlobWriteChannel(serviceOptions, entity, uploadId);
-            channel.restore(this);
-            return channel;
+                @Override
+                public String call() {
+                    return options.getStorageRpcV1().open(blob.toProto(), optionsMap);
+                }
+            }, options.getRetrySettings(), StorageImpl.EXCEPTION_HANDLER, options.getClock());
+        } catch (RetryHelper.RetryHelperException e) {
+            throw StorageOperationException.translateAndRethrow(e);
         }
     }
+
 }
