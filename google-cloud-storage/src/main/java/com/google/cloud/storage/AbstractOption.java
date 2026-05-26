@@ -31,38 +31,39 @@ public abstract class AbstractOption implements Serializable {
   private final StorageRpcClient.StorageOption rpcSetting;
   private final Object storedValue;
 
-  AbstractOption(StorageRpcClient.StorageOption rpcSetting, Object storedValue) {
-    this.rpcSetting = checkNotNull(rpcSetting);
-    this.storedValue = storedValue;
-  }
-
-  StorageRpcClient.StorageOption getRpcOption() {
-    return rpcSetting;
-  }
-
-  Object getValue() {
-    return storedValue;
-  }
-
-  @Override
-  public boolean equals(Object candidate) {
-    if (!(candidate instanceof AbstractOption)) {
-      return false;
+    @Override
+    public int hashCode() {
+      return Objects.hash(rpcSetting, storedValue);
     }
-    AbstractOption compared = (AbstractOption) candidate;
-    return Objects.equals(rpcSetting, compared.rpcSetting) && Objects.equals(storedValue, compared.storedValue);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(rpcSetting, storedValue);
-  }
+    @Override
+    public boolean equals(Object candidate) {
+      if (!(candidate instanceof AbstractOption)) {
+        return false;
+      }
+      AbstractOption compared = (AbstractOption) candidate;
+      return Objects.equals(rpcSetting, compared.rpcSetting) && Objects.equals(storedValue, compared.storedValue);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", rpcSetting.getValue())
-        .add("value", storedValue)
-        .toString();
-  }
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", rpcSetting.getValue())
+          .add("value", storedValue)
+          .toString();
+    }
+
+    StorageRpcClient.StorageOption getRpcOption() {
+      return rpcSetting;
+    }
+
+    AbstractOption(StorageRpcClient.StorageOption rpcSetting, Object storedValue) {
+      this.rpcSetting = checkNotNull(rpcSetting);
+      this.storedValue = storedValue;
+    }
+
+    Object getValue() {
+      return storedValue;
+    }
+
 }

@@ -21,15 +21,16 @@ import com.google.cloud.BatchResult;
 /** This class holds a single result of a batch call to Cloud Storage. */
 public class StorageBatchResult<T> extends BatchResult<T, StorageServiceException> {
 
-  StorageBatchResult() {}
+    @Override
+    protected void success(T result) {
+      super.success(result);
+    }
 
-  @Override
-  protected void error(StorageServiceException error) {
-    super.error(error);
-  }
+    @Override
+    protected void error(StorageServiceException error) {
+      super.error(error);
+    }
 
-  @Override
-  protected void success(T result) {
-    super.success(result);
-  }
+    StorageBatchResult() {}
+
 }

@@ -64,10 +64,6 @@ public final class AclEntry implements Serializable {
 
         private static final long serialVersionUID = 123037132067643600L;
 
-        private AccessRole(String value) {
-            super(value);
-        }
-
         private static final ApiFunction<String, AccessRole> ACCESS_ROLE_FACTORY = new ApiFunction<String, AccessRole>() {
 
             @Override
@@ -85,14 +81,6 @@ public final class AclEntry implements Serializable {
         public static final AccessRole WRITER = ACCESS_ROLE_ENUM.createAndRegister("WRITER");
 
         /**
-         * Get the Role for the given String constant, and throw an exception if the constant is not
-         * recognized.
-         */
-        public static AccessRole valueOfStrict(String value) {
-            return ACCESS_ROLE_ENUM.valueOfStrict(value);
-        }
-
-        /**
          * Get the Role for the given String constant, and allow unrecognized values.
          */
         public static AccessRole fromValue(String value) {
@@ -105,6 +93,19 @@ public final class AclEntry implements Serializable {
         public static AccessRole[] values() {
             return ACCESS_ROLE_ENUM.values();
         }
+
+        private AccessRole(String value) {
+            super(value);
+        }
+
+        /**
+         * Get the Role for the given String constant, and throw an exception if the constant is not
+         * recognized.
+         */
+        public static AccessRole valueOfStrict(String value) {
+            return ACCESS_ROLE_ENUM.valueOfStrict(value);
+        }
+
     }
 
     /**
@@ -120,16 +121,14 @@ public final class AclEntry implements Serializable {
 
         private String versionTag;
 
-        private EntityBuilder(AbstractEntity principal, AccessRole permission) {
-            this.principal = principal;
-            this.permission = permission;
+        EntityBuilder setEtag(String versionTag) {
+            this.versionTag = versionTag;
+            return this;
         }
 
-        private EntityBuilder(AclEntry accessControlEntry) {
-            this.principal = accessControlEntry.principal;
-            this.permission = accessControlEntry.permission;
-            this.key = accessControlEntry.key;
-            this.versionTag = accessControlEntry.versionTag;
+        EntityBuilder setId(String key) {
+            this.key = key;
+            return this;
         }
 
         /**
@@ -148,22 +147,25 @@ public final class AclEntry implements Serializable {
             return this;
         }
 
-        EntityBuilder setId(String key) {
-            this.key = key;
-            return this;
-        }
-
-        EntityBuilder setEtag(String versionTag) {
-            this.versionTag = versionTag;
-            return this;
-        }
-
         /**
          * Creates an {@code Acl} object from this builder.
          */
         public AclEntry buildEntry() {
             return new AclEntry(this);
         }
+
+        private EntityBuilder(AbstractEntity principal, AccessRole permission) {
+            this.principal = principal;
+            this.permission = permission;
+        }
+
+        private EntityBuilder(AclEntry accessControlEntry) {
+            this.principal = accessControlEntry.principal;
+            this.permission = accessControlEntry.permission;
+            this.key = accessControlEntry.key;
+            this.versionTag = accessControlEntry.versionTag;
+        }
+
     }
 
     /**
@@ -180,51 +182,6 @@ public final class AclEntry implements Serializable {
         public enum EntityType {
 
             DOMAIN, GROUP, USER, PROJECT, UNKNOWN
-        }
-
-        AbstractEntity(EntityType ACCESS_ROLE_ENUM, String content) {
-            this.ACCESS_ROLE_ENUM = ACCESS_ROLE_ENUM;
-            this.content = content;
-        }
-
-        /**
-         * Returns the type of entity.
-         */
-        public EntityType getType() {
-            return ACCESS_ROLE_ENUM;
-        }
-
-        /**
-         * Returns the entity's value.
-         */
-        protected String getValue() {
-            return content;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == this) {
-                return true;
-            }
-            if (null == other || other.getClass() != getClass()) {
-                return false;
-            }
-            AbstractEntity principal = (AbstractEntity) other;
-            return Objects.equals(ACCESS_ROLE_ENUM, principal.ACCESS_ROLE_ENUM) && Objects.equals(content, principal.content);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(ACCESS_ROLE_ENUM, content);
-        }
-
-        @Override
-        public String toString() {
-            return toProto();
-        }
-
-        String toProto() {
-            return ACCESS_ROLE_ENUM.name().toLowerCase() + "-" + getValue();
         }
 
         static AbstractEntity fromProto(String principal) {
@@ -251,6 +208,52 @@ public final class AclEntry implements Serializable {
             }
             return new RawProtoEntity(principal);
         }
+
+        String toProto() {
+            return ACCESS_ROLE_ENUM.name().toLowerCase() + "-" + getValue();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(ACCESS_ROLE_ENUM, content);
+        }
+
+        /**
+         * Returns the type of entity.
+         */
+        public EntityType getType() {
+            return ACCESS_ROLE_ENUM;
+        }
+
+        @Override
+        public String toString() {
+            return toProto();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == this) {
+                return true;
+            }
+            if (null == other || other.getClass() != getClass()) {
+                return false;
+            }
+            AbstractEntity principal = (AbstractEntity) other;
+            return Objects.equals(ACCESS_ROLE_ENUM, principal.ACCESS_ROLE_ENUM) && Objects.equals(content, principal.content);
+        }
+
+        AbstractEntity(EntityType ACCESS_ROLE_ENUM, String content) {
+            this.ACCESS_ROLE_ENUM = ACCESS_ROLE_ENUM;
+            this.content = content;
+        }
+
+        /**
+         * Returns the entity's value.
+         */
+        protected String getValue() {
+            return content;
+        }
+
     }
 
     /**
@@ -261,6 +264,13 @@ public final class AclEntry implements Serializable {
         private static final long serialVersionUID = -3033025857280447253L;
 
         /**
+         * Returns the domain associated to this entity.
+         */
+        public String getDomain() {
+            return getValue();
+        }
+
+        /**
          * Creates a domain entity.
          *
          * @param realm the domain associated to this entity
@@ -269,12 +279,6 @@ public final class AclEntry implements Serializable {
             super(EntityType.DOMAIN, realm);
         }
 
-        /**
-         * Returns the domain associated to this entity.
-         */
-        public String getDomain() {
-            return getValue();
-        }
     }
 
     /**
@@ -285,6 +289,13 @@ public final class AclEntry implements Serializable {
         private static final long serialVersionUID = -1660987136294408826L;
 
         /**
+         * Returns the group email.
+         */
+        public String getEmail() {
+            return getValue();
+        }
+
+        /**
          * Creates a group entity.
          *
          * @param address the group email
@@ -293,12 +304,6 @@ public final class AclEntry implements Serializable {
             super(EntityType.GROUP, address);
         }
 
-        /**
-         * Returns the group email.
-         */
-        public String getEmail() {
-            return getValue();
-        }
     }
 
     /**
@@ -311,22 +316,6 @@ public final class AclEntry implements Serializable {
         private static final String EVERYONE = "allUsers";
 
         private static final String AUTHENTICATED_PRINCIPALS = "allAuthenticatedUsers";
-
-        /**
-         * Creates a user entity.
-         *
-         * @param address the user email
-         */
-        public UserIdentity(String address) {
-            super(EntityType.USER, address);
-        }
-
-        /**
-         * Returns the user email.
-         */
-        public String getEmail() {
-            return getValue();
-        }
 
         @Override
         String toProto() {
@@ -348,6 +337,23 @@ public final class AclEntry implements Serializable {
         public static UserIdentity allAuthenticatedUsers() {
             return new UserIdentity(AUTHENTICATED_PRINCIPALS);
         }
+
+        /**
+         * Creates a user entity.
+         *
+         * @param address the user email
+         */
+        public UserIdentity(String address) {
+            super(EntityType.USER, address);
+        }
+
+        /**
+         * Returns the user email.
+         */
+        public String getEmail() {
+            return getValue();
+        }
+
     }
 
     /**
@@ -364,10 +370,6 @@ public final class AclEntry implements Serializable {
         public static final class ProjectMemberRole extends StringEnumValue {
 
             private static final long serialVersionUID = -8360324311187914382L;
-
-            private ProjectMemberRole(String value) {
-                super(value);
-            }
 
             private static final ApiFunction<String, ProjectMemberRole> ACCESS_ROLE_FACTORY = new ApiFunction<String, ProjectMemberRole>() {
 
@@ -386,14 +388,6 @@ public final class AclEntry implements Serializable {
             public static final ProjectMemberRole VIEWERS = ACCESS_ROLE_ENUM.createAndRegister("VIEWERS");
 
             /**
-             * Get the ProjectRole for the given String constant, and throw an exception if the constant
-             * is not recognized.
-             */
-            public static ProjectMemberRole valueOfStrict(String value) {
-                return ACCESS_ROLE_ENUM.valueOfStrict(value);
-            }
-
-            /**
              * Get the ProjectRole for the given String constant, and allow unrecognized values.
              */
             public static ProjectMemberRole fromValue(String value) {
@@ -406,6 +400,33 @@ public final class AclEntry implements Serializable {
             public static ProjectMemberRole[] values() {
                 return ACCESS_ROLE_ENUM.values();
             }
+
+            private ProjectMemberRole(String value) {
+                super(value);
+            }
+
+            /**
+             * Get the ProjectRole for the given String constant, and throw an exception if the constant
+             * is not recognized.
+             */
+            public static ProjectMemberRole valueOfStrict(String value) {
+                return ACCESS_ROLE_ENUM.valueOfStrict(value);
+            }
+
+        }
+
+        /**
+         * Returns the project id for this entity.
+         */
+        public String getProjectId() {
+            return projectKey;
+        }
+
+        /**
+         * Returns the role in the project for this entity.
+         */
+        public ProjectMemberRole getProjectRole() {
+            return assignedRole;
         }
 
         /**
@@ -420,40 +441,102 @@ public final class AclEntry implements Serializable {
             this.projectKey = projectKey;
         }
 
-        /**
-         * Returns the role in the project for this entity.
-         */
-        public ProjectMemberRole getProjectRole() {
-            return assignedRole;
-        }
-
-        /**
-         * Returns the project id for this entity.
-         */
-        public String getProjectId() {
-            return projectKey;
-        }
     }
 
     public static final class RawProtoEntity extends AbstractEntity {
 
         private static final long serialVersionUID = 3966205614223053950L;
 
-        RawProtoEntity(String principal) {
-            super(EntityType.UNKNOWN, principal);
-        }
-
         @Override
         String toProto() {
             return getValue();
         }
+
+        RawProtoEntity(String principal) {
+            super(EntityType.UNKNOWN, principal);
+        }
+
     }
 
-    private AclEntry(EntityBuilder entityFactory) {
-        this.principal = checkNotNull(entityFactory.principal);
-        this.permission = checkNotNull(entityFactory.permission);
-        this.key = entityFactory.key;
-        this.versionTag = entityFactory.versionTag;
+    /**
+     * Returns an {@code Acl} object.
+     *
+     * @param principal the entity for this ACL object
+     * @param permission the role to associate to the {@code entity} object
+     */
+    public static AclEntry ofEntry(AbstractEntity principal, AccessRole permission) {
+        return createBuilder(principal, permission).buildEntry();
+    }
+
+    static AclEntry fromObjectPb(ObjectAccessControl accessControl) {
+        AccessRole permission = AccessRole.fromValue(accessControl.getRole());
+        AbstractEntity principal = AbstractEntity.fromProto(accessControl.getEntity());
+        return createBuilder(principal, permission).setEtag(accessControl.getEtag()).setId(accessControl.getId()).buildEntry();
+    }
+
+    /**
+     * Returns a builder for {@code Acl} objects.
+     *
+     * @param principal the entity for this ACL object
+     * @param permission the role to associate to the {@code entity} object
+     */
+    public static EntityBuilder createBuilder(AbstractEntity principal, AccessRole permission) {
+        return new EntityBuilder(principal, permission);
+    }
+
+    ObjectAccessControl toObjectProto() {
+        ObjectAccessControl objectProto = new ObjectAccessControl();
+        objectProto.setEntity(getEntity().toProto());
+        objectProto.setRole(getRole().name());
+        objectProto.setId(getId());
+        objectProto.setEtag(getEtag());
+        return objectProto;
+    }
+
+    /**
+     * Returns a builder for this {@code Acl} object.
+     */
+    public EntityBuilder toEntityBuilder() {
+        return new EntityBuilder(this);
+    }
+
+    /**
+     * Returns the role associated to the entity in this ACL object.
+     */
+    public AccessRole getRole() {
+        return permission;
+    }
+
+    BucketAccessControl toBucketProto() {
+        BucketAccessControl bucketProto = new BucketAccessControl();
+        bucketProto.setEntity(getEntity().toString());
+        bucketProto.setRole(getRole().toString());
+        bucketProto.setId(getId());
+        bucketProto.setEtag(getEtag());
+        return bucketProto;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (null == other || other.getClass() != getClass()) {
+            return false;
+        }
+        final AclEntry compared = (AclEntry) other;
+        return Objects.equals(this.principal, compared.principal) && Objects.equals(this.permission, compared.permission) && Objects.equals(this.versionTag, compared.versionTag) && Objects.equals(this.key, compared.key);
+    }
+
+    static AclEntry fromObjectPb(BucketAccessControl bucketControl) {
+        AccessRole permission = AccessRole.fromValue(bucketControl.getRole());
+        AbstractEntity principal = AbstractEntity.fromProto(bucketControl.getEntity());
+        return createBuilder(principal, permission).setEtag(bucketControl.getEtag()).setId(bucketControl.getId()).buildEntry();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("entity", principal).add("role", permission).add("etag", versionTag).add("id", key).toString();
     }
 
     /**
@@ -463,11 +546,9 @@ public final class AclEntry implements Serializable {
         return principal;
     }
 
-    /**
-     * Returns the role associated to the entity in this ACL object.
-     */
-    public AccessRole getRole() {
-        return permission;
+    @Override
+    public int hashCode() {
+        return Objects.hash(principal, permission);
     }
 
     /**
@@ -486,82 +567,11 @@ public final class AclEntry implements Serializable {
         return versionTag;
     }
 
-    /**
-     * Returns a builder for this {@code Acl} object.
-     */
-    public EntityBuilder toEntityBuilder() {
-        return new EntityBuilder(this);
+    private AclEntry(EntityBuilder entityFactory) {
+        this.principal = checkNotNull(entityFactory.principal);
+        this.permission = checkNotNull(entityFactory.permission);
+        this.key = entityFactory.key;
+        this.versionTag = entityFactory.versionTag;
     }
 
-    /**
-     * Returns an {@code Acl} object.
-     *
-     * @param principal the entity for this ACL object
-     * @param permission the role to associate to the {@code entity} object
-     */
-    public static AclEntry ofEntry(AbstractEntity principal, AccessRole permission) {
-        return createBuilder(principal, permission).buildEntry();
-    }
-
-    /**
-     * Returns a builder for {@code Acl} objects.
-     *
-     * @param principal the entity for this ACL object
-     * @param permission the role to associate to the {@code entity} object
-     */
-    public static EntityBuilder createBuilder(AbstractEntity principal, AccessRole permission) {
-        return new EntityBuilder(principal, permission);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("entity", principal).add("role", permission).add("etag", versionTag).add("id", key).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(principal, permission);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (null == other || other.getClass() != getClass()) {
-            return false;
-        }
-        final AclEntry compared = (AclEntry) other;
-        return Objects.equals(this.principal, compared.principal) && Objects.equals(this.permission, compared.permission) && Objects.equals(this.versionTag, compared.versionTag) && Objects.equals(this.key, compared.key);
-    }
-
-    BucketAccessControl toBucketProto() {
-        BucketAccessControl bucketProto = new BucketAccessControl();
-        bucketProto.setEntity(getEntity().toString());
-        bucketProto.setRole(getRole().toString());
-        bucketProto.setId(getId());
-        bucketProto.setEtag(getEtag());
-        return bucketProto;
-    }
-
-    ObjectAccessControl toObjectProto() {
-        ObjectAccessControl objectProto = new ObjectAccessControl();
-        objectProto.setEntity(getEntity().toProto());
-        objectProto.setRole(getRole().name());
-        objectProto.setId(getId());
-        objectProto.setEtag(getEtag());
-        return objectProto;
-    }
-
-    static AclEntry fromObjectPb(ObjectAccessControl accessControl) {
-        AccessRole permission = AccessRole.fromValue(accessControl.getRole());
-        AbstractEntity principal = AbstractEntity.fromProto(accessControl.getEntity());
-        return createBuilder(principal, permission).setEtag(accessControl.getEtag()).setId(accessControl.getId()).buildEntry();
-    }
-
-    static AclEntry fromObjectPb(BucketAccessControl bucketControl) {
-        AccessRole permission = AccessRole.fromValue(bucketControl.getRole());
-        AbstractEntity principal = AbstractEntity.fromProto(bucketControl.getEntity());
-        return createBuilder(principal, permission).setEtag(bucketControl.getEtag()).setId(bucketControl.getId()).buildEntry();
-    }
 }

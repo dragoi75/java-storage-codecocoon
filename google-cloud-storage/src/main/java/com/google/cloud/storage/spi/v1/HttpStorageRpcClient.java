@@ -105,19 +105,6 @@ public class HttpStorageRpcClient implements StorageRpcClient {
 
     private static final long ONE_MEGABYTE = 1024L * 1024L;
 
-    public HttpStorageRpcClient(StorageSettings settings) {
-        HttpTransportOptions transportConfig = (HttpTransportOptions) settings.getTransportOptions();
-        HttpTransport httpTransport = transportConfig.getHttpTransportFactory().create();
-        HttpRequestInitializer requestSetup = transportConfig.getHttpRequestInitializer(settings);
-        this.settings = settings;
-        // Open Census initialization
-        metricsHttpModule = new CensusHttpModule(telemetry, true);
-        requestSetup = metricsHttpModule.getHttpRequestInitializer(requestSetup);
-        batchInitializer = metricsHttpModule.getHttpRequestInitializer(null);
-        HttpStorageRpcSpans.registerAllSpanNamesForCollection();
-        storageBackend = new Storage.Builder(httpTransport, new JacksonFactory(), requestSetup).setRootUrl(settings.getHost()).setApplicationName(settings.getApplicationName()).build();
-    }
-
     private class DefaultRpcBatcher implements RpcBatchBuilder {
 
         // Batch size is limited as, due to some current service implementation details, the service
@@ -132,27 +119,6 @@ public class HttpStorageRpcClient implements StorageRpcClient {
 
         private int currentBatchCount;
 
-        private DefaultRpcBatcher(Storage storageBackend) {
-            this.storageBackend = storageBackend;
-            batchQueue = new LinkedList<>();
-            // add OpenCensus HttpRequestInitializer
-            batchQueue.add(storageBackend.batch(batchInitializer));
-        }
-
-        @Override
-        public void addDeletion(StorageObject objectToDelete, ResultCallback<Void> resultHandler, Map<StorageOption, ?> settings) {
-            try {
-                if (BATCH_MAX_SIZE == currentBatchCount) {
-                    batchQueue.add(storageBackend.batch());
-                    currentBatchCount = 0;
-                }
-                buildDeleteCall(objectToDelete, settings).queue(batchQueue.getLast(), toJsonBatchCallback(resultHandler));
-                currentBatchCount += 1;
-            } catch (IOException ioException) {
-                throw toStorageException(ioException);
-            }
-        }
-
         @Override
         public void addUpdate(StorageObject objectToDelete, ResultCallback<StorageObject> resultHandler, Map<StorageOption, ?> settings) {
             try {
@@ -161,20 +127,6 @@ public class HttpStorageRpcClient implements StorageRpcClient {
                     currentBatchCount = 0;
                 }
                 buildPatchCall(objectToDelete, settings).queue(batchQueue.getLast(), toJsonBatchCallback(resultHandler));
-                currentBatchCount += 1;
-            } catch (IOException ioException) {
-                throw toStorageException(ioException);
-            }
-        }
-
-        @Override
-        public void addFetch(StorageObject objectToDelete, ResultCallback<StorageObject> resultHandler, Map<StorageOption, ?> settings) {
-            try {
-                if (BATCH_MAX_SIZE == currentBatchCount) {
-                    batchQueue.add(storageBackend.batch());
-                    currentBatchCount = 0;
-                }
-                getCall(objectToDelete, settings).queue(batchQueue.getLast(), toJsonBatchCallback(resultHandler));
                 currentBatchCount += 1;
             } catch (IOException ioException) {
                 throw toStorageException(ioException);
@@ -202,255 +154,69 @@ public class HttpStorageRpcClient implements StorageRpcClient {
                 currentSpan.end();
             }
         }
-    }
 
-    private static <T> JsonBatchCallback<T> toJsonBatchCallback(final RpcBatchBuilder.ResultCallback<T> resultHandler) {
-        return new JsonBatchCallback<T>() {
-
-            @Override
-            public void onSuccess(T response, HttpHeaders httpHeaders) throws IOException {
-                resultHandler.handleSuccess(response);
-            }
-
-            @Override
-            public void onFailure(GoogleJsonError googleJsonError, HttpHeaders httpHeaders) throws IOException {
-                resultHandler.handleFailure(googleJsonError);
-            }
-        };
-    }
-
-    private static StorageServiceException toStorageException(IOException ioException) {
-        return new StorageServiceException(ioException);
-    }
-
-    private static StorageServiceException toStorageException(GoogleJsonError ioException) {
-        return new StorageServiceException(ioException);
-    }
-
-    private static void setEncryptionHeaders(HttpHeaders httpFields, String fieldPrefix, Map<StorageOption, ?> settings) {
-        String secretValue = StorageOption.CUSTOMER_SUPPLIED_KEY.getString(settings);
-        if (null != secretValue) {
-            BaseEncoding encoder = BaseEncoding.base64();
-            HashFunction digestFunction = Hashing.sha256();
-            httpFields.set(fieldPrefix + "algorithm", "AES256");
-            httpFields.set(fieldPrefix + "key", secretValue);
-            httpFields.set(fieldPrefix + "key-sha256", encoder.encode(digestFunction.hashBytes(encoder.decode(secretValue)).asBytes()));
+        private DefaultRpcBatcher(Storage storageBackend) {
+            this.storageBackend = storageBackend;
+            batchQueue = new LinkedList<>();
+            // add OpenCensus HttpRequestInitializer
+            batchQueue.add(storageBackend.batch(batchInitializer));
         }
-    }
 
-    /**
-     * Helper method to start a span.
-     */
-    private Span startTraceSpan(String traceName) {
-        return telemetry.spanBuilder(traceName).setRecordEvents(metricsHttpModule.isRecordEvents()).startSpan();
-    }
-
-    @Override
-    public Bucket create(Bucket container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_BUCKET);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.buckets().insert(this.settings.getProjectId(), container).setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setPredefinedDefaultObjectAcl(StorageOption.PREDEFINED_DEFAULT_OBJECT_ACL.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public StorageObject create(StorageObject objectToDelete, final InputStream inputStream, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_OBJECT);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            Storage.Objects.Insert createCall = storageBackend.objects().insert(objectToDelete.getBucket(), objectToDelete, new InputStreamContent(objectToDelete.getContentType(), inputStream));
-            createCall.getMediaHttpUploader().setDirectUploadEnabled(true);
-            Boolean disableCompression = StorageOption.IF_DISABLE_GZIP_CONTENT.getBoolean(settings);
-            if (null != disableCompression) {
-                createCall.setDisableGZipContent(disableCompression);
-            }
-            setEncryptionHeaders(createCall.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
-            return createCall.setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).setKmsKeyName(StorageOption.KMS_KEY_NAME.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public Tuple<String, Iterable<Bucket>> list(Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_BUCKETS);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            Buckets containerCollection = storageBackend.buckets().list(this.settings.getProjectId()).setProjection(DEFAULT_PROJECTION).setPrefix(StorageOption.PREFIX.getString(settings)).setMaxResults(StorageOption.MAX_RESULTS.getLong(settings)).setPageToken(StorageOption.PAGE_TOKEN.getString(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-            return Tuple.<String, Iterable<Bucket>>of(containerCollection.getNextPageToken(), containerCollection.getItems());
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public Tuple<String, Iterable<StorageObject>> list(final String container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECTS);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            Objects itemCollection = storageBackend.objects().list(container).setProjection(DEFAULT_PROJECTION).setVersions(StorageOption.VERSIONS.getBoolean(settings)).setDelimiter(StorageOption.DELIMITER.getString(settings)).setPrefix(StorageOption.PREFIX.getString(settings)).setMaxResults(StorageOption.MAX_RESULTS.getLong(settings)).setPageToken(StorageOption.PAGE_TOKEN.getString(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-            Iterable<StorageObject> storedEntities = Iterables.concat(firstNonNull(itemCollection.getItems(), ImmutableList.<StorageObject>of()), null != itemCollection.getPrefixes() ? Lists.transform(itemCollection.getPrefixes(), storageObjectFromPrefix(container)) : ImmutableList.<StorageObject>of());
-            return Tuple.of(itemCollection.getNextPageToken(), storedEntities);
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    private static Function<String, StorageObject> storageObjectFromPrefix(final String container) {
-        return new Function<String, StorageObject>() {
-
-            @Override
-            public StorageObject apply(String prefix) {
-                return new StorageObject().set("isDirectory", true).setBucket(container).setName(prefix).setSize(BigInteger.ZERO);
-            }
-        };
-    }
-
-    @Override
-    public Bucket get(Bucket container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_BUCKET);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.buckets().get(container.getName()).setProjection(DEFAULT_PROJECTION).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return null;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    private Storage.Objects.Get getCall(StorageObject blobItem, Map<StorageOption, ?> settings) throws IOException {
-        Storage.Objects.Get fetchRequest = storageBackend.objects().get(blobItem.getBucket(), blobItem.getName());
-        setEncryptionHeaders(fetchRequest.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
-        return fetchRequest.setGeneration(blobItem.getGeneration()).setProjection(DEFAULT_PROJECTION).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
-    }
-
-    @Override
-    public StorageObject get(StorageObject blobItem, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return getCall(blobItem, settings).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return null;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public Bucket patch(Bucket container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_BUCKET);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            String viewMode = StorageOption.PROJECTION.getString(settings);
-            if (null != container.getIamConfiguration() && null != container.getIamConfiguration().getBucketPolicyOnly() && null != container.getIamConfiguration().getBucketPolicyOnly().getEnabled() && container.getIamConfiguration().getBucketPolicyOnly().getEnabled()) {
-                // If BucketPolicyOnly is enabled, patch calls will fail if ACL information is included in
-                // the request
-                container.setDefaultObjectAcl(null);
-                container.setAcl(null);
-                if (null == viewMode) {
-                    viewMode = NO_ACL_PROJECTION;
+        @Override
+        public void addDeletion(StorageObject objectToDelete, ResultCallback<Void> resultHandler, Map<StorageOption, ?> settings) {
+            try {
+                if (BATCH_MAX_SIZE == currentBatchCount) {
+                    batchQueue.add(storageBackend.batch());
+                    currentBatchCount = 0;
                 }
+                buildDeleteCall(objectToDelete, settings).queue(batchQueue.getLast(), toJsonBatchCallback(resultHandler));
+                currentBatchCount += 1;
+            } catch (IOException ioException) {
+                throw toStorageException(ioException);
             }
-            return storageBackend.buckets().patch(container.getName(), container).setProjection(null == viewMode ? DEFAULT_PROJECTION : viewMode).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setPredefinedDefaultObjectAcl(StorageOption.PREDEFINED_DEFAULT_OBJECT_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        }
+
+        @Override
+        public void addFetch(StorageObject objectToDelete, ResultCallback<StorageObject> resultHandler, Map<StorageOption, ?> settings) {
+            try {
+                if (BATCH_MAX_SIZE == currentBatchCount) {
+                    batchQueue.add(storageBackend.batch());
+                    currentBatchCount = 0;
+                }
+                getCall(objectToDelete, settings).queue(batchQueue.getLast(), toJsonBatchCallback(resultHandler));
+                currentBatchCount += 1;
+            } catch (IOException ioException) {
+                throw toStorageException(ioException);
+            }
+        }
+
+    }
+
+    @Override
+    public String open(String presignedLink) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            GenericUrl requestUrl = new GenericUrl(presignedLink);
+            requestUrl.set("uploadType", "resumable");
+            String encodedBytesParams = "";
+            byte[] payloadBytes = new byte[encodedBytesParams.length()];
+            HttpRequestFactory httpRequestFactory = storageBackend.getRequestFactory();
+            HttpRequest preparedRequest = httpRequestFactory.buildPostRequest(requestUrl, new ByteArrayContent("", payloadBytes, 0, payloadBytes.length));
+            HttpHeaders httpHeaders = preparedRequest.getHeaders();
+            httpHeaders.set("X-Upload-Content-Type", "");
+            httpHeaders.set("x-goog-resumable", "start");
+            HttpResponse result = preparedRequest.execute();
+            if (201 != result.getStatusCode()) {
+                GoogleJsonError jsonError = new GoogleJsonError();
+                jsonError.setCode(result.getStatusCode());
+                jsonError.setMessage(result.getStatusMessage());
+                throw toStorageException(jsonError);
+            }
+            return result.getHeaders().getLocation();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    private Storage.Objects.Patch buildPatchCall(StorageObject objectToDelete, Map<StorageOption, ?> settings) throws IOException {
-        return storageBackend.objects().patch(objectToDelete.getBucket(), objectToDelete.getName(), objectToDelete).setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
-    }
-
-    @Override
-    public StorageObject patch(StorageObject objectToDelete, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return buildPatchCall(objectToDelete, settings).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public boolean delete(Bucket container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_BUCKET);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            storageBackend.buckets().delete(container.getName()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-            return true;
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    private Storage.Objects.Delete buildDeleteCall(StorageObject blobEntry, Map<StorageOption, ?> settings) throws IOException {
-        return storageBackend.objects().delete(blobEntry.getBucket(), blobEntry.getName()).setGeneration(blobEntry.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
-    }
-
-    @Override
-    public boolean delete(StorageObject blobEntry, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            buildDeleteCall(blobEntry, settings).execute();
-            return true;
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
-            }
-            throw storageError;
         } finally {
             currentScope.close();
             currentSpan.end();
@@ -487,15 +253,71 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public byte[] load(StorageObject sourceObject, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LOAD);
+    public boolean deleteNotification(String container, String alertId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_NOTIFICATION);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            Storage.Objects.Get getCall = storageBackend.objects().get(sourceObject.getBucket(), sourceObject.getName()).setGeneration(sourceObject.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
-            setEncryptionHeaders(getCall.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            getCall.executeMedia().download(buffer);
-            return buffer.toByteArray();
+            storageBackend.notifications().delete(container, alertId).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public boolean deleteAcl(String container, String entityId, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_BUCKET_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            storageBackend.bucketAccessControls().delete(container, entityId).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public boolean delete(StorageObject blobEntry, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            buildDeleteCall(blobEntry, settings).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public Policy setIamPolicy(String container, Policy accessControl, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_SET_BUCKET_IAM_POLICY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.buckets().setIamPolicy(container, accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -506,15 +328,428 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public RpcBatchBuilder createBatch() {
-        return new DefaultRpcBatcher(storageBackend);
+    public TestIamPermissionsResponse testIamPermissions(String container, List<String> permissionList, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_TEST_BUCKET_IAM_PERMISSIONS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.buckets().testIamPermissions(container, permissionList).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
     }
 
-    private Get buildReadRequest(StorageObject sourceObject, Map<StorageOption, ?> settings) throws IOException {
-        Get getOperation = storageBackend.objects().get(sourceObject.getBucket(), sourceObject.getName()).setGeneration(sourceObject.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
-        setEncryptionHeaders(getOperation.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
-        getOperation.setReturnRawInputStream(true);
-        return getOperation;
+    private RewriteOperationResponse performRewrite(ObjectRewriteRequest getOperation, String authToken) {
+        try {
+            String projectIdentifier = StorageOption.USER_PROJECT.getString(getOperation.sourceOptions);
+            if (null == projectIdentifier) {
+                projectIdentifier = StorageOption.USER_PROJECT.getString(getOperation.targetOptions);
+            }
+            Long maxBytesPerCall = null != getOperation.megabytesRewrittenPerCall ? getOperation.megabytesRewrittenPerCall * ONE_MEGABYTE : null;
+            Storage.Objects.Rewrite rewriteOperation = storageBackend.objects().rewrite(getOperation.source.getBucket(), getOperation.source.getName(), getOperation.target.getBucket(), getOperation.target.getName(), getOperation.overrideInfo ? getOperation.target : null).setSourceGeneration(getOperation.source.getGeneration()).setRewriteToken(authToken).setMaxBytesRewrittenPerCall(maxBytesPerCall).setProjection(DEFAULT_PROJECTION).setIfSourceMetagenerationMatch(StorageOption.IF_SOURCE_METAGENERATION_MATCH.getLong(getOperation.sourceOptions)).setIfSourceMetagenerationNotMatch(StorageOption.IF_SOURCE_METAGENERATION_NOT_MATCH.getLong(getOperation.sourceOptions)).setIfSourceGenerationMatch(StorageOption.IF_SOURCE_GENERATION_MATCH.getLong(getOperation.sourceOptions)).setIfSourceGenerationNotMatch(StorageOption.IF_SOURCE_GENERATION_NOT_MATCH.getLong(getOperation.sourceOptions)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(getOperation.targetOptions)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(getOperation.targetOptions)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(getOperation.targetOptions)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(getOperation.targetOptions)).setDestinationPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(getOperation.targetOptions)).setUserProject(projectIdentifier).setDestinationKmsKeyName(StorageOption.KMS_KEY_NAME.getString(getOperation.targetOptions));
+            HttpHeaders httpHeaders = rewriteOperation.getRequestHeaders();
+            setEncryptionHeaders(httpHeaders, ORIGIN_CRYPTO_KEY_PREFIX, getOperation.sourceOptions);
+            setEncryptionHeaders(httpHeaders, CRYPTO_KEY_PREFIX, getOperation.targetOptions);
+            com.google.api.services.storage.model.RewriteResponse rewriteResult = rewriteOperation.execute();
+            return new RewriteOperationResponse(getOperation, rewriteResult.getResource(), rewriteResult.getObjectSize().longValue(), rewriteResult.getDone(), rewriteResult.getRewriteToken(), rewriteResult.getTotalBytesRewritten().longValue());
+        } catch (IOException ioException) {
+            telemetry.getCurrentSpan().setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        }
+    }
+
+    @Override
+    public StorageObject create(StorageObject objectToDelete, final InputStream inputStream, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_OBJECT);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            Insert createCall = storageBackend.objects().insert(objectToDelete.getBucket(), objectToDelete, new InputStreamContent(objectToDelete.getContentType(), inputStream));
+            createCall.getMediaHttpUploader().setDirectUploadEnabled(true);
+            Boolean disableCompression = StorageOption.IF_DISABLE_GZIP_CONTENT.getBoolean(settings);
+            if (null != disableCompression) {
+                createCall.setDisableGZipContent(disableCompression);
+            }
+            setEncryptionHeaders(createCall.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
+            return createCall.setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).setKmsKeyName(StorageOption.KMS_KEY_NAME.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public List<ObjectAccessControl> listAcls(String container, String blobItem, Long versionNumber) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECT_ACLS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.objectAccessControls().list(container, blobItem).setGeneration(versionNumber).execute().getItems();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public BucketAccessControl patchAcl(BucketAccessControl accessControl, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_BUCKET_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.bucketAccessControls().patch(accessControl.getBucket(), accessControl.getEntity(), accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    private Storage.Objects.Patch buildPatchCall(StorageObject objectToDelete, Map<StorageOption, ?> settings) throws IOException {
+        return storageBackend.objects().patch(objectToDelete.getBucket(), objectToDelete.getName(), objectToDelete).setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
+    }
+
+    @Override
+    public Notification createNotification(String container, Notification alertId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_NOTIFICATION);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.notifications().insert(container, alertId).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    private Get getCall(StorageObject blobItem, Map<StorageOption, ?> settings) throws IOException {
+        Get fetchRequest = storageBackend.objects().get(blobItem.getBucket(), blobItem.getName());
+        setEncryptionHeaders(fetchRequest.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
+        return fetchRequest.setGeneration(blobItem.getGeneration()).setProjection(DEFAULT_PROJECTION).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
+    }
+
+    @Override
+    public List<ObjectAccessControl> listDefaultAcls(String container) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECT_DEFAULT_ACLS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.defaultObjectAccessControls().list(container).execute().getItems();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public String open(StorageObject blobItem, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            Insert getOperation = storageBackend.objects().insert(blobItem.getBucket(), blobItem);
+            GenericUrl requestUrl = getOperation.buildHttpRequest().getUrl();
+            String urlScheme = requestUrl.getScheme();
+            String hostName = requestUrl.getHost();
+            int portNumber = requestUrl.getPort();
+            portNumber = 0 < portNumber ? portNumber : requestUrl.toURL().getDefaultPort();
+            String requestPath = "/upload" + requestUrl.getRawPath();
+            requestUrl = new GenericUrl(urlScheme + "://" + hostName + ":" + portNumber + requestPath);
+            requestUrl.set("uploadType", "resumable");
+            requestUrl.set("name", blobItem.getName());
+            for (StorageOption storageOption : settings.keySet()) {
+                Object inputStream = storageOption.get(settings);
+                if (null != inputStream) {
+                    requestUrl.set(storageOption.getValue(), inputStream.toString());
+                }
+            }
+            JsonFactory jsonParserFactory = storageBackend.getJsonFactory();
+            HttpRequestFactory httpRequestFactory = storageBackend.getRequestFactory();
+            HttpRequest preparedRequest = httpRequestFactory.buildPostRequest(requestUrl, new JsonHttpContent(jsonParserFactory, blobItem));
+            HttpHeaders httpHeaders = preparedRequest.getHeaders();
+            httpHeaders.set("X-Upload-Content-Type", firstNonNull(blobItem.getContentType(), "application/octet-stream"));
+            String secretValue = StorageOption.CUSTOMER_SUPPLIED_KEY.getString(settings);
+            if (null != secretValue) {
+                BaseEncoding encoder = BaseEncoding.base64();
+                HashFunction digestFunction = Hashing.sha256();
+                httpHeaders.set("x-goog-encryption-algorithm", "AES256");
+                httpHeaders.set("x-goog-encryption-key", secretValue);
+                httpHeaders.set("x-goog-encryption-key-sha256", encoder.encode(digestFunction.hashBytes(encoder.decode(secretValue)).asBytes()));
+            }
+            HttpResponse result = preparedRequest.execute();
+            if (200 != result.getStatusCode()) {
+                GoogleJsonError jsonError = new GoogleJsonError();
+                jsonError.setCode(result.getStatusCode());
+                jsonError.setMessage(result.getStatusMessage());
+                throw toStorageException(jsonError);
+            }
+            return result.getHeaders().getLocation();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public Tuple<String, Iterable<StorageObject>> list(final String container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECTS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            Objects itemCollection = storageBackend.objects().list(container).setProjection(DEFAULT_PROJECTION).setVersions(StorageOption.VERSIONS.getBoolean(settings)).setDelimiter(StorageOption.DELIMITER.getString(settings)).setPrefix(StorageOption.PREFIX.getString(settings)).setMaxResults(StorageOption.MAX_RESULTS.getLong(settings)).setPageToken(StorageOption.PAGE_TOKEN.getString(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            Iterable<StorageObject> storedEntities = Iterables.concat(firstNonNull(itemCollection.getItems(), ImmutableList.<StorageObject>of()), null != itemCollection.getPrefixes() ? Lists.transform(itemCollection.getPrefixes(), storageObjectFromPrefix(container)) : ImmutableList.<StorageObject>of());
+            return Tuple.of(itemCollection.getNextPageToken(), storedEntities);
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public ObjectAccessControl createAcl(ObjectAccessControl accessControl) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_OBJECT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.objectAccessControls().insert(accessControl.getBucket(), accessControl.getObject(), accessControl).setGeneration(accessControl.getGeneration()).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    /**
+     * Helper method to start a span.
+     */
+    private Span startTraceSpan(String traceName) {
+        return telemetry.spanBuilder(traceName).setRecordEvents(metricsHttpModule.isRecordEvents()).startSpan();
+    }
+
+    @Override
+    public StorageRpcClient.RewriteOperationResponse continueRewrite(RewriteOperationResponse priorRewriteResult) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CONTINUE_REWRITE);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return performRewrite(priorRewriteResult.rewriteRequest, priorRewriteResult.rewriteToken);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public boolean deleteDefaultAcl(String container, String entityId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT_DEFAULT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            storageBackend.defaultObjectAccessControls().delete(container, entityId).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public ObjectAccessControl getDefaultAcl(String container, String entityId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT_DEFAULT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.defaultObjectAccessControls().get(container, entityId).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return null;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    private static StorageServiceException toStorageException(GoogleJsonError ioException) {
+        return new StorageServiceException(ioException);
+    }
+
+    @Override
+    public ObjectAccessControl patchAcl(ObjectAccessControl accessControl) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.objectAccessControls().patch(accessControl.getBucket(), accessControl.getObject(), accessControl.getEntity(), accessControl).setGeneration(accessControl.getGeneration()).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public boolean deleteAcl(String container, String blobItem, Long versionNumber, String entityId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            storageBackend.objectAccessControls().delete(container, blobItem, entityId).setGeneration(versionNumber).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public StorageObject patch(StorageObject objectToDelete, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return buildPatchCall(objectToDelete, settings).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public Bucket lockRetentionPolicy(Bucket container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_LOCK_RETENTION_POLICY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.buckets().lockRetentionPolicy(container.getName(), StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public HmacKey createHmacKey(String accountEmail, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_HMAC_KEY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        String projectIdentifier = StorageOption.PROJECT_ID.getString(settings);
+        if (null == projectIdentifier) {
+            projectIdentifier = this.settings.getProjectId();
+        }
+        try {
+            return storageBackend.projects().hmacKeys().create(projectIdentifier, accountEmail).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public List<BucketAccessControl> listAcls(String container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_BUCKET_ACLS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.bucketAccessControls().list(container).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute().getItems();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public ObjectAccessControl getAcl(String container, String blobItem, Long versionNumber, String entityId) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.objectAccessControls().get(container, blobItem, entityId).setGeneration(versionNumber).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return null;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public HmacKeyMetadata getHmacKey(String accessIdentifier, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_HMAC_KEY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        String projectIdentifier = StorageOption.PROJECT_ID.getString(settings);
+        if (null == projectIdentifier) {
+            projectIdentifier = this.settings.getProjectId();
+        }
+        try {
+            return storageBackend.projects().hmacKeys().get(projectIdentifier, accessIdentifier).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public StorageRpcClient.RewriteOperationResponse openRewrite(ObjectRewriteRequest objectRewriteSpec) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN_REWRITE);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return performRewrite(objectRewriteSpec, null);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public RpcBatchBuilder createBatch() {
+        return new DefaultRpcBatcher(storageBackend);
     }
 
     @Override
@@ -534,6 +769,94 @@ public class HttpStorageRpcClient implements StorageRpcClient {
                 return 0;
             }
             throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    private Storage.Objects.Delete buildDeleteCall(StorageObject blobEntry, Map<StorageOption, ?> settings) throws IOException {
+        return storageBackend.objects().delete(blobEntry.getBucket(), blobEntry.getName()).setGeneration(blobEntry.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
+    }
+
+    private static <T> JsonBatchCallback<T> toJsonBatchCallback(final RpcBatchBuilder.ResultCallback<T> resultHandler) {
+        return new JsonBatchCallback<T>() {
+
+            @Override
+            public void onSuccess(T response, HttpHeaders httpHeaders) throws IOException {
+                resultHandler.handleSuccess(response);
+            }
+
+            @Override
+            public void onFailure(GoogleJsonError googleJsonError, HttpHeaders httpHeaders) throws IOException {
+                resultHandler.handleFailure(googleJsonError);
+            }
+        };
+    }
+
+    @Override
+    public StorageObject get(StorageObject blobItem, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return getCall(blobItem, settings).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return null;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    private static void setEncryptionHeaders(HttpHeaders httpFields, String fieldPrefix, Map<StorageOption, ?> settings) {
+        String secretValue = StorageOption.CUSTOMER_SUPPLIED_KEY.getString(settings);
+        if (null != secretValue) {
+            BaseEncoding encoder = BaseEncoding.base64();
+            HashFunction digestFunction = Hashing.sha256();
+            httpFields.set(fieldPrefix + "algorithm", "AES256");
+            httpFields.set(fieldPrefix + "key", secretValue);
+            httpFields.set(fieldPrefix + "key-sha256", encoder.encode(digestFunction.hashBytes(encoder.decode(secretValue)).asBytes()));
+        }
+    }
+
+    @Override
+    public boolean delete(Bucket container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_BUCKET);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            storageBackend.buckets().delete(container.getName()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            return true;
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return false;
+            }
+            throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public void deleteHmacKey(HmacKeyMetadata hmacKeyInfo, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_HMAC_KEY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        String projectIdentifier = hmacKeyInfo.getProjectId();
+        if (null == projectIdentifier) {
+            projectIdentifier = this.settings.getProjectId();
+        }
+        try {
+            storageBackend.projects().hmacKeys().delete(projectIdentifier, hmacKeyInfo.getAccessId()).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
         } finally {
             currentScope.close();
             currentSpan.end();
@@ -562,6 +885,80 @@ public class HttpStorageRpcClient implements StorageRpcClient {
                 return Tuple.of(null, new byte[0]);
             }
             throw storageError;
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public List<Notification> listNotifications(String container) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_NOTIFICATIONS);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.notifications().list(container).execute().getItems();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyInfo, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_UPDATE_HMAC_KEY);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        String projectIdentifier = hmacKeyInfo.getProjectId();
+        if (null == projectIdentifier) {
+            projectIdentifier = this.settings.getProjectId();
+        }
+        try {
+            return storageBackend.projects().hmacKeys().update(projectIdentifier, hmacKeyInfo.getAccessId(), hmacKeyInfo).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public Bucket patch(Bucket container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_BUCKET);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            String viewMode = StorageOption.PROJECTION.getString(settings);
+            if (null != container.getIamConfiguration() && null != container.getIamConfiguration().getBucketPolicyOnly() && null != container.getIamConfiguration().getBucketPolicyOnly().getEnabled() && container.getIamConfiguration().getBucketPolicyOnly().getEnabled()) {
+                // If BucketPolicyOnly is enabled, patch calls will fail if ACL information is included in
+                // the request
+                container.setDefaultObjectAcl(null);
+                container.setAcl(null);
+                if (null == viewMode) {
+                    viewMode = NO_ACL_PROJECTION;
+                }
+            }
+            return storageBackend.buckets().patch(container.getName(), container).setProjection(null == viewMode ? DEFAULT_PROJECTION : viewMode).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setPredefinedDefaultObjectAcl(StorageOption.PREDEFINED_DEFAULT_OBJECT_ACL.getString(settings)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
+        } finally {
+            currentScope.close();
+            currentSpan.end();
+        }
+    }
+
+    @Override
+    public ObjectAccessControl patchDefaultAcl(ObjectAccessControl accessControl) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT_DEFAULT_ACL);
+        Scope currentScope = telemetry.withSpan(currentSpan);
+        try {
+            return storageBackend.defaultObjectAccessControls().patch(accessControl.getBucket(), accessControl.getEntity(), accessControl).execute();
+        } catch (IOException ioException) {
+            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
+            throw toStorageException(ioException);
         } finally {
             currentScope.close();
             currentSpan.end();
@@ -627,252 +1024,25 @@ public class HttpStorageRpcClient implements StorageRpcClient {
         }
     }
 
-    @Override
-    public String open(StorageObject blobItem, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            Insert getOperation = storageBackend.objects().insert(blobItem.getBucket(), blobItem);
-            GenericUrl requestUrl = getOperation.buildHttpRequest().getUrl();
-            String urlScheme = requestUrl.getScheme();
-            String hostName = requestUrl.getHost();
-            int portNumber = requestUrl.getPort();
-            portNumber = 0 < portNumber ? portNumber : requestUrl.toURL().getDefaultPort();
-            String requestPath = "/upload" + requestUrl.getRawPath();
-            requestUrl = new GenericUrl(urlScheme + "://" + hostName + ":" + portNumber + requestPath);
-            requestUrl.set("uploadType", "resumable");
-            requestUrl.set("name", blobItem.getName());
-            for (StorageOption storageOption : settings.keySet()) {
-                Object inputStream = storageOption.get(settings);
-                if (null != inputStream) {
-                    requestUrl.set(storageOption.getValue(), inputStream.toString());
-                }
+    private static StorageServiceException toStorageException(IOException ioException) {
+        return new StorageServiceException(ioException);
+    }
+
+    private Get buildReadRequest(StorageObject sourceObject, Map<StorageOption, ?> settings) throws IOException {
+        Get getOperation = storageBackend.objects().get(sourceObject.getBucket(), sourceObject.getName()).setGeneration(sourceObject.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
+        setEncryptionHeaders(getOperation.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
+        getOperation.setReturnRawInputStream(true);
+        return getOperation;
+    }
+
+    private static Function<String, StorageObject> storageObjectFromPrefix(final String container) {
+        return new Function<String, StorageObject>() {
+
+            @Override
+            public StorageObject apply(String prefix) {
+                return new StorageObject().set("isDirectory", true).setBucket(container).setName(prefix).setSize(BigInteger.ZERO);
             }
-            JsonFactory jsonParserFactory = storageBackend.getJsonFactory();
-            HttpRequestFactory httpRequestFactory = storageBackend.getRequestFactory();
-            HttpRequest preparedRequest = httpRequestFactory.buildPostRequest(requestUrl, new JsonHttpContent(jsonParserFactory, blobItem));
-            HttpHeaders httpHeaders = preparedRequest.getHeaders();
-            httpHeaders.set("X-Upload-Content-Type", firstNonNull(blobItem.getContentType(), "application/octet-stream"));
-            String secretValue = StorageOption.CUSTOMER_SUPPLIED_KEY.getString(settings);
-            if (null != secretValue) {
-                BaseEncoding encoder = BaseEncoding.base64();
-                HashFunction digestFunction = Hashing.sha256();
-                httpHeaders.set("x-goog-encryption-algorithm", "AES256");
-                httpHeaders.set("x-goog-encryption-key", secretValue);
-                httpHeaders.set("x-goog-encryption-key-sha256", encoder.encode(digestFunction.hashBytes(encoder.decode(secretValue)).asBytes()));
-            }
-            HttpResponse result = preparedRequest.execute();
-            if (200 != result.getStatusCode()) {
-                GoogleJsonError jsonError = new GoogleJsonError();
-                jsonError.setCode(result.getStatusCode());
-                jsonError.setMessage(result.getStatusMessage());
-                throw toStorageException(jsonError);
-            }
-            return result.getHeaders().getLocation();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public String open(String presignedLink) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            GenericUrl requestUrl = new GenericUrl(presignedLink);
-            requestUrl.set("uploadType", "resumable");
-            String encodedBytesParams = "";
-            byte[] payloadBytes = new byte[encodedBytesParams.length()];
-            HttpRequestFactory httpRequestFactory = storageBackend.getRequestFactory();
-            HttpRequest preparedRequest = httpRequestFactory.buildPostRequest(requestUrl, new ByteArrayContent("", payloadBytes, 0, payloadBytes.length));
-            HttpHeaders httpHeaders = preparedRequest.getHeaders();
-            httpHeaders.set("X-Upload-Content-Type", "");
-            httpHeaders.set("x-goog-resumable", "start");
-            HttpResponse result = preparedRequest.execute();
-            if (201 != result.getStatusCode()) {
-                GoogleJsonError jsonError = new GoogleJsonError();
-                jsonError.setCode(result.getStatusCode());
-                jsonError.setMessage(result.getStatusMessage());
-                throw toStorageException(jsonError);
-            }
-            return result.getHeaders().getLocation();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public StorageRpcClient.RewriteOperationResponse openRewrite(ObjectRewriteRequest objectRewriteSpec) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_OPEN_REWRITE);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return performRewrite(objectRewriteSpec, null);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public StorageRpcClient.RewriteOperationResponse continueRewrite(RewriteOperationResponse priorRewriteResult) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CONTINUE_REWRITE);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return performRewrite(priorRewriteResult.rewriteRequest, priorRewriteResult.rewriteToken);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    private RewriteOperationResponse performRewrite(ObjectRewriteRequest getOperation, String authToken) {
-        try {
-            String projectIdentifier = StorageOption.USER_PROJECT.getString(getOperation.sourceOptions);
-            if (null == projectIdentifier) {
-                projectIdentifier = StorageOption.USER_PROJECT.getString(getOperation.targetOptions);
-            }
-            Long maxBytesPerCall = null != getOperation.megabytesRewrittenPerCall ? getOperation.megabytesRewrittenPerCall * ONE_MEGABYTE : null;
-            Storage.Objects.Rewrite rewriteOperation = storageBackend.objects().rewrite(getOperation.source.getBucket(), getOperation.source.getName(), getOperation.target.getBucket(), getOperation.target.getName(), getOperation.overrideInfo ? getOperation.target : null).setSourceGeneration(getOperation.source.getGeneration()).setRewriteToken(authToken).setMaxBytesRewrittenPerCall(maxBytesPerCall).setProjection(DEFAULT_PROJECTION).setIfSourceMetagenerationMatch(StorageOption.IF_SOURCE_METAGENERATION_MATCH.getLong(getOperation.sourceOptions)).setIfSourceMetagenerationNotMatch(StorageOption.IF_SOURCE_METAGENERATION_NOT_MATCH.getLong(getOperation.sourceOptions)).setIfSourceGenerationMatch(StorageOption.IF_SOURCE_GENERATION_MATCH.getLong(getOperation.sourceOptions)).setIfSourceGenerationNotMatch(StorageOption.IF_SOURCE_GENERATION_NOT_MATCH.getLong(getOperation.sourceOptions)).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(getOperation.targetOptions)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(getOperation.targetOptions)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(getOperation.targetOptions)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(getOperation.targetOptions)).setDestinationPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(getOperation.targetOptions)).setUserProject(projectIdentifier).setDestinationKmsKeyName(StorageOption.KMS_KEY_NAME.getString(getOperation.targetOptions));
-            HttpHeaders httpHeaders = rewriteOperation.getRequestHeaders();
-            setEncryptionHeaders(httpHeaders, ORIGIN_CRYPTO_KEY_PREFIX, getOperation.sourceOptions);
-            setEncryptionHeaders(httpHeaders, CRYPTO_KEY_PREFIX, getOperation.targetOptions);
-            com.google.api.services.storage.model.RewriteResponse rewriteResult = rewriteOperation.execute();
-            return new RewriteOperationResponse(getOperation, rewriteResult.getResource(), rewriteResult.getObjectSize().longValue(), rewriteResult.getDone(), rewriteResult.getRewriteToken(), rewriteResult.getTotalBytesRewritten().longValue());
-        } catch (IOException ioException) {
-            telemetry.getCurrentSpan().setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        }
-    }
-
-    @Override
-    public BucketAccessControl getAcl(String container, String entityId, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_BUCKET_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.bucketAccessControls().get(container, entityId).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return null;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public boolean deleteAcl(String container, String entityId, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_BUCKET_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            storageBackend.bucketAccessControls().delete(container, entityId).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-            return true;
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public BucketAccessControl createAcl(BucketAccessControl accessControl, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_BUCKET_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.bucketAccessControls().insert(accessControl.getBucket(), accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public BucketAccessControl patchAcl(BucketAccessControl accessControl, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_BUCKET_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.bucketAccessControls().patch(accessControl.getBucket(), accessControl.getEntity(), accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public List<BucketAccessControl> listAcls(String container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_BUCKET_ACLS);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.bucketAccessControls().list(container).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute().getItems();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public ObjectAccessControl getDefaultAcl(String container, String entityId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT_DEFAULT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.defaultObjectAccessControls().get(container, entityId).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return null;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public boolean deleteDefaultAcl(String container, String entityId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT_DEFAULT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            storageBackend.defaultObjectAccessControls().delete(container, entityId).execute();
-            return true;
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
+        };
     }
 
     @Override
@@ -890,12 +1060,25 @@ public class HttpStorageRpcClient implements StorageRpcClient {
         }
     }
 
+    public HttpStorageRpcClient(StorageSettings settings) {
+        HttpTransportOptions transportConfig = (HttpTransportOptions) settings.getTransportOptions();
+        HttpTransport httpTransport = transportConfig.getHttpTransportFactory().create();
+        HttpRequestInitializer requestSetup = transportConfig.getHttpRequestInitializer(settings);
+        this.settings = settings;
+        // Open Census initialization
+        metricsHttpModule = new CensusHttpModule(telemetry, true);
+        requestSetup = metricsHttpModule.getHttpRequestInitializer(requestSetup);
+        batchInitializer = metricsHttpModule.getHttpRequestInitializer(null);
+        HttpStorageRpcSpans.registerAllSpanNamesForCollection();
+        storageBackend = new Storage.Builder(httpTransport, new JacksonFactory(), requestSetup).setRootUrl(settings.getHost()).setApplicationName(settings.getApplicationName()).build();
+    }
+
     @Override
-    public ObjectAccessControl patchDefaultAcl(ObjectAccessControl accessControl) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT_DEFAULT_ACL);
+    public ServiceAccount getServiceAccount(String projectIdentifier) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_SERVICE_ACCOUNT);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            return storageBackend.defaultObjectAccessControls().patch(accessControl.getBucket(), accessControl.getEntity(), accessControl).execute();
+            return storageBackend.projects().serviceAccount().get(projectIdentifier).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -906,114 +1089,12 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public List<ObjectAccessControl> listDefaultAcls(String container) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECT_DEFAULT_ACLS);
+    public Tuple<String, Iterable<Bucket>> list(Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_BUCKETS);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            return storageBackend.defaultObjectAccessControls().list(container).execute().getItems();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public ObjectAccessControl getAcl(String container, String blobItem, Long versionNumber, String entityId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_OBJECT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.objectAccessControls().get(container, blobItem, entityId).setGeneration(versionNumber).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return null;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public boolean deleteAcl(String container, String blobItem, Long versionNumber, String entityId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_OBJECT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            storageBackend.objectAccessControls().delete(container, blobItem, entityId).setGeneration(versionNumber).execute();
-            return true;
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            StorageServiceException storageError = toStorageException(ioException);
-            if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
-            }
-            throw storageError;
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public ObjectAccessControl createAcl(ObjectAccessControl accessControl) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_OBJECT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.objectAccessControls().insert(accessControl.getBucket(), accessControl.getObject(), accessControl).setGeneration(accessControl.getGeneration()).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public ObjectAccessControl patchAcl(ObjectAccessControl accessControl) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_PATCH_OBJECT_ACL);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.objectAccessControls().patch(accessControl.getBucket(), accessControl.getObject(), accessControl.getEntity(), accessControl).setGeneration(accessControl.getGeneration()).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public List<ObjectAccessControl> listAcls(String container, String blobItem, Long versionNumber) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_OBJECT_ACLS);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.objectAccessControls().list(container, blobItem).setGeneration(versionNumber).execute().getItems();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public HmacKey createHmacKey(String accountEmail, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_HMAC_KEY);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        String projectIdentifier = StorageOption.PROJECT_ID.getString(settings);
-        if (null == projectIdentifier) {
-            projectIdentifier = this.settings.getProjectId();
-        }
-        try {
-            return storageBackend.projects().hmacKeys().create(projectIdentifier, accountEmail).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            Buckets containerCollection = storageBackend.buckets().list(this.settings.getProjectId()).setProjection(DEFAULT_PROJECTION).setPrefix(StorageOption.PREFIX.getString(settings)).setMaxResults(StorageOption.MAX_RESULTS.getLong(settings)).setPageToken(StorageOption.PAGE_TOKEN.getString(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            return Tuple.<String, Iterable<Bucket>>of(containerCollection.getNextPageToken(), containerCollection.getItems());
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -1044,15 +1125,11 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public HmacKeyMetadata getHmacKey(String accessIdentifier, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_HMAC_KEY);
+    public Bucket create(Bucket container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_BUCKET);
         Scope currentScope = telemetry.withSpan(currentSpan);
-        String projectIdentifier = StorageOption.PROJECT_ID.getString(settings);
-        if (null == projectIdentifier) {
-            projectIdentifier = this.settings.getProjectId();
-        }
         try {
-            return storageBackend.projects().hmacKeys().get(projectIdentifier, accessIdentifier).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            return storageBackend.buckets().insert(this.settings.getProjectId(), container).setProjection(DEFAULT_PROJECTION).setPredefinedAcl(StorageOption.PREDEFINED_ACL.getString(settings)).setPredefinedDefaultObjectAcl(StorageOption.PREDEFINED_DEFAULT_OBJECT_ACL.getString(settings)).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -1063,37 +1140,18 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyInfo, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_UPDATE_HMAC_KEY);
+    public Bucket get(Bucket container, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_BUCKET);
         Scope currentScope = telemetry.withSpan(currentSpan);
-        String projectIdentifier = hmacKeyInfo.getProjectId();
-        if (null == projectIdentifier) {
-            projectIdentifier = this.settings.getProjectId();
-        }
         try {
-            return storageBackend.projects().hmacKeys().update(projectIdentifier, hmacKeyInfo.getAccessId(), hmacKeyInfo).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
+            return storageBackend.buckets().get(container.getName()).setProjection(DEFAULT_PROJECTION).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setFields(StorageOption.FIELDS.getString(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public void deleteHmacKey(HmacKeyMetadata hmacKeyInfo, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_HMAC_KEY);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        String projectIdentifier = hmacKeyInfo.getProjectId();
-        if (null == projectIdentifier) {
-            projectIdentifier = this.settings.getProjectId();
-        }
-        try {
-            storageBackend.projects().hmacKeys().delete(projectIdentifier, hmacKeyInfo.getAccessId()).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
+            StorageServiceException storageError = toStorageException(ioException);
+            if (HTTP_NOT_FOUND == storageError.getCode()) {
+                return null;
+            }
+            throw storageError;
         } finally {
             currentScope.close();
             currentSpan.end();
@@ -1120,47 +1178,16 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public Policy setIamPolicy(String container, Policy accessControl, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_SET_BUCKET_IAM_POLICY);
+    public BucketAccessControl getAcl(String container, String entityId, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_BUCKET_ACL);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            return storageBackend.buckets().setIamPolicy(container, accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public TestIamPermissionsResponse testIamPermissions(String container, List<String> permissionList, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_TEST_BUCKET_IAM_PERMISSIONS);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.buckets().testIamPermissions(container, permissionList).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public boolean deleteNotification(String container, String alertId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_DELETE_NOTIFICATION);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            storageBackend.notifications().delete(container, alertId).execute();
-            return true;
+            return storageBackend.bucketAccessControls().get(container, entityId).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             StorageServiceException storageError = toStorageException(ioException);
             if (HTTP_NOT_FOUND == storageError.getCode()) {
-                return false;
+                return null;
             }
             throw storageError;
         } finally {
@@ -1170,11 +1197,11 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public List<Notification> listNotifications(String container) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LIST_NOTIFICATIONS);
+    public BucketAccessControl createAcl(BucketAccessControl accessControl, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_BUCKET_ACL);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            return storageBackend.notifications().list(container).execute().getItems();
+            return storageBackend.bucketAccessControls().insert(accessControl.getBucket(), accessControl).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -1185,11 +1212,15 @@ public class HttpStorageRpcClient implements StorageRpcClient {
     }
 
     @Override
-    public Notification createNotification(String container, Notification alertId) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_CREATE_NOTIFICATION);
+    public byte[] load(StorageObject sourceObject, Map<StorageOption, ?> settings) {
+        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_LOAD);
         Scope currentScope = telemetry.withSpan(currentSpan);
         try {
-            return storageBackend.notifications().insert(container, alertId).execute();
+            Get getCall = storageBackend.objects().get(sourceObject.getBucket(), sourceObject.getName()).setGeneration(sourceObject.getGeneration()).setIfMetagenerationMatch(StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setIfMetagenerationNotMatch(StorageOption.IF_METAGENERATION_NOT_MATCH.getLong(settings)).setIfGenerationMatch(StorageOption.IF_GENERATION_MATCH.getLong(settings)).setIfGenerationNotMatch(StorageOption.IF_GENERATION_NOT_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings));
+            setEncryptionHeaders(getCall.getRequestHeaders(), CRYPTO_KEY_PREFIX, settings);
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            getCall.executeMedia().download(buffer);
+            return buffer.toByteArray();
         } catch (IOException ioException) {
             currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
             throw toStorageException(ioException);
@@ -1199,33 +1230,4 @@ public class HttpStorageRpcClient implements StorageRpcClient {
         }
     }
 
-    @Override
-    public Bucket lockRetentionPolicy(Bucket container, Map<StorageOption, ?> settings) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_LOCK_RETENTION_POLICY);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.buckets().lockRetentionPolicy(container.getName(), StorageOption.IF_METAGENERATION_MATCH.getLong(settings)).setUserProject(StorageOption.USER_PROJECT.getString(settings)).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
-
-    @Override
-    public ServiceAccount getServiceAccount(String projectIdentifier) {
-        Span currentSpan = startTraceSpan(HttpStorageRpcSpans.SPAN_NAME_GET_SERVICE_ACCOUNT);
-        Scope currentScope = telemetry.withSpan(currentSpan);
-        try {
-            return storageBackend.projects().serviceAccount().get(projectIdentifier).execute();
-        } catch (IOException ioException) {
-            currentSpan.setStatus(Status.UNKNOWN.withDescription(ioException.getMessage()));
-            throw toStorageException(ioException);
-        } finally {
-            currentScope.close();
-            currentSpan.end();
-        }
-    }
 }

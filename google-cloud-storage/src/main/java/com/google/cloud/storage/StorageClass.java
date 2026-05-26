@@ -26,11 +26,7 @@ import com.google.cloud.StringEnumValue;
 public final class StorageClass extends StringEnumValue {
   private static final long serialVersionUID = -6938125060419556331L;
 
-  private StorageClass(String constant) {
-    super(constant);
-  }
-
-  private static final ApiFunction<String, StorageClass> CONSTRUCTOR =
+    private static final ApiFunction<String, StorageClass> CONSTRUCTOR =
       new ApiFunction<String, StorageClass>() {
         @Override
         public StorageClass apply(String constant) {
@@ -82,21 +78,26 @@ public final class StorageClass extends StringEnumValue {
   public static final StorageClass DURABLE_REDUCED_AVAILABILITY =
       type.createAndRegister("DURABLE_REDUCED_AVAILABILITY");
 
-  /**
-   * Get the StorageClass for the given String constant, and throw an exception if the constant is
-   * not recognized.
-   */
-  public static StorageClass valueOfStrict(String constant) {
-    return type.valueOfStrict(constant);
-  }
+    /** Return the known values for StorageClass. */
+    public static StorageClass[] values() {
+      return type.values();
+    }
 
-  /** Get the StorageClass for the given String constant, and allow unrecognized values. */
-  public static StorageClass valueOf(String constant) {
-    return type.valueOf(constant);
-  }
+    /** Get the StorageClass for the given String constant, and allow unrecognized values. */
+    public static StorageClass valueOf(String constant) {
+      return type.valueOf(constant);
+    }
 
-  /** Return the known values for StorageClass. */
-  public static StorageClass[] values() {
-    return type.values();
-  }
+    /**
+     * Get the StorageClass for the given String constant, and throw an exception if the constant is
+     * not recognized.
+     */
+    public static StorageClass valueOfStrict(String constant) {
+      return type.valueOfStrict(constant);
+    }
+
+    private StorageClass(String constant) {
+      super(constant);
+    }
+
 }

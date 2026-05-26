@@ -31,39 +31,38 @@ import java.util.concurrent.Callable;
  */
 class ChunkedBlobWriter extends BaseWriteChannel<StorageSettings, BlobMetadata> {
 
-    ChunkedBlobWriter(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> storageSettingsMap) {
-        this(storageSettings, metadata, openWriter(storageSettings, metadata, storageSettingsMap));
-    }
+    static class UploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
 
-    ChunkedBlobWriter(StorageSettings storageSettings, URL signedUri) {
-        this(storageSettings, openWriter(signedUri, storageSettings));
-    }
+        private static final long serialVersionUID = -9028324143780151286L;
 
-    ChunkedBlobWriter(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-        super(storageSettings, metadata, transferId);
-    }
+        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
 
-    ChunkedBlobWriter(StorageSettings storageSettings, String transferId) {
-        super(storageSettings, null, transferId);
-    }
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new UploadState(this);
+            }
 
-    @Override
-    protected void flushBuffer(final int byteCount, final boolean isFinal) {
-        try {
-            runWithRetries(callable(new Runnable() {
+            private UploadBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+                super(storageSettings, metadata, transferId);
+            }
 
-                @Override
-                public void run() {
-                    getOptions().getStorageRpcV1().write(getUploadId(), getBuffer(), 0, getPosition(), byteCount, isFinal);
-                }
-            }), getOptions().getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, getOptions().getClock());
-        } catch (RetryHelper.RetryHelperException retryException) {
-            throw StorageServiceException.translateThenThrow(retryException);
         }
-    }
 
-    protected UploadState.UploadBuilder stateBuilder() {
-        return UploadState.newBuilder(getOptions(), getEntity(), getUploadId());
+        @Override
+        public WriteChannel restore() {
+            ChunkedBlobWriter writer = new ChunkedBlobWriter(serviceOptions, entity, uploadId);
+            writer.restore(this);
+            return writer;
+        }
+
+        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+            return new UploadBuilder(storageSettings, metadata, transferId);
+        }
+
+        UploadState(UploadBuilder stateCreator) {
+            super(stateCreator);
+        }
+
     }
 
     private static String openWriter(final StorageSettings storageSettings, final BlobMetadata metadata, final Map<StorageRpcClient.StorageOption, ?> storageSettingsMap) {
@@ -115,35 +114,39 @@ class ChunkedBlobWriter extends BaseWriteChannel<StorageSettings, BlobMetadata> 
         return validFlag;
     }
 
-    static class UploadState extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
+    @Override
+    protected void flushBuffer(final int byteCount, final boolean isFinal) {
+        try {
+            runWithRetries(callable(new Runnable() {
 
-        private static final long serialVersionUID = -9028324143780151286L;
-
-        UploadState(UploadBuilder stateCreator) {
-            super(stateCreator);
-        }
-
-        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
-
-            private UploadBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-                super(storageSettings, metadata, transferId);
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new UploadState(this);
-            }
-        }
-
-        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-            return new UploadBuilder(storageSettings, metadata, transferId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            ChunkedBlobWriter writer = new ChunkedBlobWriter(serviceOptions, entity, uploadId);
-            writer.restore(this);
-            return writer;
+                @Override
+                public void run() {
+                    getOptions().getStorageRpcV1().write(getUploadId(), getBuffer(), 0, getPosition(), byteCount, isFinal);
+                }
+            }), getOptions().getRetrySettings(), StorageServiceImpl.EXCEPTION_HANDLER, getOptions().getClock());
+        } catch (RetryHelper.RetryHelperException retryException) {
+            throw StorageServiceException.translateThenThrow(retryException);
         }
     }
+
+    ChunkedBlobWriter(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+        super(storageSettings, metadata, transferId);
+    }
+
+    ChunkedBlobWriter(StorageSettings storageSettings, BlobMetadata metadata, Map<StorageRpcClient.StorageOption, ?> storageSettingsMap) {
+        this(storageSettings, metadata, openWriter(storageSettings, metadata, storageSettingsMap));
+    }
+
+    protected UploadState.UploadBuilder stateBuilder() {
+        return UploadState.newBuilder(getOptions(), getEntity(), getUploadId());
+    }
+
+    ChunkedBlobWriter(StorageSettings storageSettings, URL signedUri) {
+        this(storageSettings, openWriter(signedUri, storageSettings));
+    }
+
+    ChunkedBlobWriter(StorageSettings storageSettings, String transferId) {
+        super(storageSettings, null, transferId);
+    }
+
 }

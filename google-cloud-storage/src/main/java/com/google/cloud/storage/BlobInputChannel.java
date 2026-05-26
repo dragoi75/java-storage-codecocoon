@@ -62,51 +62,135 @@ class BlobInputChannel implements ReadChannel {
 
     private byte[] dataBuffer;
 
-    BlobInputChannel(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-        this.storageSettings = storageSettings;
-        this.identifier = identifier;
-        this.optionsMap = optionsMap;
-        openFlag = true;
-        rpcClient = storageSettings.getStorageRpcV1();
-        objectMetadata = identifier.toProto();
-    }
+    static class BlobReadState implements RestorableState<ReadChannel>, Serializable {
 
-    @Override
-    public RestorableState<ReadChannel> capture() {
-        BlobReadState.BlobReadRequestBuilder requestMaker = BlobReadState.newBuilder(storageSettings, identifier, optionsMap).setPosition(offset).setIsOpen(openFlag).setEndOfStream(eofReached).setChunkSize(segmentSize);
-        if (null != dataBuffer) {
-            requestMaker.setPosition(offset + bufferIndex);
-            requestMaker.setEndOfStream(false);
+        private static final long serialVersionUID = 3889420316004453706L;
+
+        private final StorageSettings storageSettings;
+
+        private final BlobIdentifier identifier;
+
+        private final Map<StorageRpcClient.StorageOption, ?> optionsMap;
+
+        private final String previousEtag;
+
+        private final long offset;
+
+        private final boolean openFlag;
+
+        private final boolean eofReached;
+
+        private final int segmentSize;
+
+        static class BlobReadRequestBuilder {
+
+            private final StorageSettings storageSettings;
+
+            private final BlobIdentifier identifier;
+
+            private final Map<StorageRpcClient.StorageOption, ?> optionsMap;
+
+            private String previousEtag;
+
+            private long offset;
+
+            private boolean openFlag;
+
+            private boolean eofReached;
+
+            private int segmentSize;
+
+            BlobReadRequestBuilder setEndOfStream(boolean eofReached) {
+                this.eofReached = eofReached;
+                return this;
+            }
+
+            BlobReadRequestBuilder setChunkSize(int segmentSize) {
+                this.segmentSize = segmentSize;
+                return this;
+            }
+
+            BlobReadRequestBuilder setPosition(long offset) {
+                this.offset = offset;
+                return this;
+            }
+
+            RestorableState<ReadChannel> buildRequest() {
+                return new BlobReadState(this);
+            }
+
+            BlobReadRequestBuilder setLastEtag(String previousEtag) {
+                this.previousEtag = previousEtag;
+                return this;
+            }
+
+            BlobReadRequestBuilder setIsOpen(boolean openFlag) {
+                this.openFlag = openFlag;
+                return this;
+            }
+
+            private BlobReadRequestBuilder(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+                this.storageSettings = storageSettings;
+                this.identifier = identifier;
+                this.optionsMap = optionsMap;
+            }
+
         }
-        return requestMaker.buildRequest();
-    }
 
-    @Override
-    public boolean isOpen() {
-        return openFlag;
-    }
-
-    @Override
-    public void close() {
-        if (openFlag) {
-            dataBuffer = null;
-            openFlag = false;
+        @Override
+        public int hashCode() {
+            return Objects.hash(storageSettings, identifier, optionsMap, previousEtag, offset, openFlag, eofReached, segmentSize);
         }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("blob", identifier).add("position", offset).add("isOpen", openFlag).add("endOfStream", eofReached).toString();
+        }
+
+        @Override
+        public boolean equals(Object otherObject) {
+            if (null == otherObject) {
+                return false;
+            }
+            if (!(otherObject instanceof BlobReadState)) {
+                return false;
+            }
+            final BlobReadState otherState = (BlobReadState) otherObject;
+            return Objects.equals(this.storageSettings, otherState.storageSettings) && Objects.equals(this.identifier, otherState.identifier) && Objects.equals(this.optionsMap, otherState.optionsMap) && Objects.equals(this.previousEtag, otherState.previousEtag) && otherState.offset == this.offset && otherState.openFlag == this.openFlag && otherState.eofReached == this.eofReached && otherState.segmentSize == this.segmentSize;
+        }
+
+        @Override
+        public ReadChannel restore() {
+            BlobInputChannel inputChannel = new BlobInputChannel(storageSettings, identifier, optionsMap);
+            inputChannel.previousEtag = previousEtag;
+            inputChannel.offset = offset;
+            inputChannel.openFlag = openFlag;
+            inputChannel.eofReached = eofReached;
+            inputChannel.segmentSize = segmentSize;
+            return inputChannel;
+        }
+
+        BlobReadState(BlobReadRequestBuilder requestMaker) {
+            this.storageSettings = requestMaker.storageSettings;
+            this.identifier = requestMaker.identifier;
+            this.optionsMap = requestMaker.optionsMap;
+            this.previousEtag = requestMaker.previousEtag;
+            this.offset = requestMaker.offset;
+            this.openFlag = requestMaker.openFlag;
+            this.eofReached = requestMaker.eofReached;
+            this.segmentSize = requestMaker.segmentSize;
+        }
+
+        static BlobReadRequestBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
+            return new BlobReadRequestBuilder(storageSettings, identifier, requestOptions);
+        }
+
     }
 
     private void ensureOpen() throws ClosedChannelException {
         if (!openFlag) {
             throw new ClosedChannelException();
         }
-    }
-
-    @Override
-    public void seek(long offset) throws IOException {
-        ensureOpen();
-        this.offset = offset;
-        dataBuffer = null;
-        bufferIndex = 0;
-        eofReached = false;
     }
 
     @Override
@@ -159,126 +243,45 @@ class BlobInputChannel implements ReadChannel {
         return bytesToWrite;
     }
 
-    static class BlobReadState implements RestorableState<ReadChannel>, Serializable {
+    @Override
+    public void seek(long offset) throws IOException {
+        ensureOpen();
+        this.offset = offset;
+        dataBuffer = null;
+        bufferIndex = 0;
+        eofReached = false;
+    }
 
-        private static final long serialVersionUID = 3889420316004453706L;
-
-        private final StorageSettings storageSettings;
-
-        private final BlobIdentifier identifier;
-
-        private final Map<StorageRpcClient.StorageOption, ?> optionsMap;
-
-        private final String previousEtag;
-
-        private final long offset;
-
-        private final boolean openFlag;
-
-        private final boolean eofReached;
-
-        private final int segmentSize;
-
-        BlobReadState(BlobReadRequestBuilder requestMaker) {
-            this.storageSettings = requestMaker.storageSettings;
-            this.identifier = requestMaker.identifier;
-            this.optionsMap = requestMaker.optionsMap;
-            this.previousEtag = requestMaker.previousEtag;
-            this.offset = requestMaker.offset;
-            this.openFlag = requestMaker.openFlag;
-            this.eofReached = requestMaker.eofReached;
-            this.segmentSize = requestMaker.segmentSize;
-        }
-
-        static class BlobReadRequestBuilder {
-
-            private final StorageSettings storageSettings;
-
-            private final BlobIdentifier identifier;
-
-            private final Map<StorageRpcClient.StorageOption, ?> optionsMap;
-
-            private String previousEtag;
-
-            private long offset;
-
-            private boolean openFlag;
-
-            private boolean eofReached;
-
-            private int segmentSize;
-
-            private BlobReadRequestBuilder(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
-                this.storageSettings = storageSettings;
-                this.identifier = identifier;
-                this.optionsMap = optionsMap;
-            }
-
-            BlobReadRequestBuilder setLastEtag(String previousEtag) {
-                this.previousEtag = previousEtag;
-                return this;
-            }
-
-            BlobReadRequestBuilder setPosition(long offset) {
-                this.offset = offset;
-                return this;
-            }
-
-            BlobReadRequestBuilder setIsOpen(boolean openFlag) {
-                this.openFlag = openFlag;
-                return this;
-            }
-
-            BlobReadRequestBuilder setEndOfStream(boolean eofReached) {
-                this.eofReached = eofReached;
-                return this;
-            }
-
-            BlobReadRequestBuilder setChunkSize(int segmentSize) {
-                this.segmentSize = segmentSize;
-                return this;
-            }
-
-            RestorableState<ReadChannel> buildRequest() {
-                return new BlobReadState(this);
-            }
-        }
-
-        static BlobReadRequestBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> requestOptions) {
-            return new BlobReadRequestBuilder(storageSettings, identifier, requestOptions);
-        }
-
-        @Override
-        public ReadChannel restore() {
-            BlobInputChannel inputChannel = new BlobInputChannel(storageSettings, identifier, optionsMap);
-            inputChannel.previousEtag = previousEtag;
-            inputChannel.offset = offset;
-            inputChannel.openFlag = openFlag;
-            inputChannel.eofReached = eofReached;
-            inputChannel.segmentSize = segmentSize;
-            return inputChannel;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(storageSettings, identifier, optionsMap, previousEtag, offset, openFlag, eofReached, segmentSize);
-        }
-
-        @Override
-        public boolean equals(Object otherObject) {
-            if (null == otherObject) {
-                return false;
-            }
-            if (!(otherObject instanceof BlobReadState)) {
-                return false;
-            }
-            final BlobReadState otherState = (BlobReadState) otherObject;
-            return Objects.equals(this.storageSettings, otherState.storageSettings) && Objects.equals(this.identifier, otherState.identifier) && Objects.equals(this.optionsMap, otherState.optionsMap) && Objects.equals(this.previousEtag, otherState.previousEtag) && otherState.offset == this.offset && otherState.openFlag == this.openFlag && otherState.eofReached == this.eofReached && otherState.segmentSize == this.segmentSize;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("blob", identifier).add("position", offset).add("isOpen", openFlag).add("endOfStream", eofReached).toString();
+    @Override
+    public void close() {
+        if (openFlag) {
+            dataBuffer = null;
+            openFlag = false;
         }
     }
+
+    BlobInputChannel(StorageSettings storageSettings, BlobIdentifier identifier, Map<StorageRpcClient.StorageOption, ?> optionsMap) {
+        this.storageSettings = storageSettings;
+        this.identifier = identifier;
+        this.optionsMap = optionsMap;
+        openFlag = true;
+        rpcClient = storageSettings.getStorageRpcV1();
+        objectMetadata = identifier.toProto();
+    }
+
+    @Override
+    public boolean isOpen() {
+        return openFlag;
+    }
+
+    @Override
+    public RestorableState<ReadChannel> capture() {
+        BlobReadState.BlobReadRequestBuilder requestMaker = BlobReadState.newBuilder(storageSettings, identifier, optionsMap).setPosition(offset).setIsOpen(openFlag).setEndOfStream(eofReached).setChunkSize(segmentSize);
+        if (null != dataBuffer) {
+            requestMaker.setPosition(offset + bufferIndex);
+            requestMaker.setEndOfStream(false);
+        }
+        return requestMaker.buildRequest();
+    }
+
 }

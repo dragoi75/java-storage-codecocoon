@@ -36,26 +36,6 @@ public final class BlobIdentifier implements Serializable {
 
     private final Long versionId;
 
-    private BlobIdentifier(String containerName, String objectKey, Long versionId) {
-        this.containerName = containerName;
-        this.objectKey = objectKey;
-        this.versionId = versionId;
-    }
-
-    /**
-     * Returns the name of the bucket containing the blob.
-     */
-    public String getBucket() {
-        return containerName;
-    }
-
-    /**
-     * Returns the name of the blob.
-     */
-    public String getName() {
-        return objectKey;
-    }
-
     /**
      * Returns blob's data generation. Used for versioning.
      */
@@ -63,26 +43,10 @@ public final class BlobIdentifier implements Serializable {
         return versionId;
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(containerName, objectKey, versionId);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (null == o || !o.getClass().equals(BlobIdentifier.class)) {
-            return false;
-        }
-        BlobIdentifier rhs = (BlobIdentifier) o;
-        return Objects.equals(containerName, rhs.containerName) && Objects.equals(objectKey, rhs.objectKey) && Objects.equals(versionId, rhs.versionId);
+    private BlobIdentifier(String containerName, String objectKey, Long versionId) {
+        this.containerName = containerName;
+        this.objectKey = objectKey;
+        this.versionId = versionId;
     }
 
     StorageObject toProto() {
@@ -118,4 +82,41 @@ public final class BlobIdentifier implements Serializable {
     static BlobIdentifier fromProto(StorageObject storageProto) {
         return BlobIdentifier.create(storageProto.getBucket(), storageProto.getName(), storageProto.getGeneration());
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null == o || !o.getClass().equals(BlobIdentifier.class)) {
+            return false;
+        }
+        BlobIdentifier rhs = (BlobIdentifier) o;
+        return Objects.equals(containerName, rhs.containerName) && Objects.equals(objectKey, rhs.objectKey) && Objects.equals(versionId, rhs.versionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(containerName, objectKey, versionId);
+    }
+
+    /**
+     * Returns the name of the bucket containing the blob.
+     */
+    public String getBucket() {
+        return containerName;
+    }
+
+    /**
+     * Returns the name of the blob.
+     */
+    public String getName() {
+        return objectKey;
+    }
+
 }
