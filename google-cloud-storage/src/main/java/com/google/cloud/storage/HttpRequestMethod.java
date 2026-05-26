@@ -24,11 +24,7 @@ import com.google.cloud.StringEnumValue;
 public final class HttpRequestMethod extends StringEnumValue {
   private static final long serialVersionUID = -1394461645628254471L;
 
-  private HttpRequestMethod(String name) {
-    super(name);
-  }
-
-  private static final ApiFunction<String, HttpRequestMethod> FACTORY_FUNCTION =
+    private static final ApiFunction<String, HttpRequestMethod> FACTORY_FUNCTION =
       new ApiFunction<String, HttpRequestMethod>() {
         @Override
         public HttpRequestMethod apply(String constant) {
@@ -46,21 +42,26 @@ public final class HttpRequestMethod extends StringEnumValue {
   public static final HttpRequestMethod DELETE = ENUM_TYPE.createAndRegister("DELETE");
   public static final HttpRequestMethod OPTIONS = ENUM_TYPE.createAndRegister("OPTIONS");
 
-  /**
-   * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
-   * recognized.
-   */
-  public static HttpRequestMethod valueOfStrict(String name) {
-    return ENUM_TYPE.valueOfStrict(name);
-  }
+    /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
+    public static HttpRequestMethod fromValue(String name) {
+      return ENUM_TYPE.valueOf(name);
+    }
 
-  /** Get the HttpMethod for the given String constant, and allow unrecognized values. */
-  public static HttpRequestMethod fromValue(String name) {
-    return ENUM_TYPE.valueOf(name);
-  }
+    /** Return the known values for HttpMethod. */
+    public static HttpRequestMethod[] values() {
+      return ENUM_TYPE.values();
+    }
 
-  /** Return the known values for HttpMethod. */
-  public static HttpRequestMethod[] values() {
-    return ENUM_TYPE.values();
-  }
+    private HttpRequestMethod(String name) {
+      super(name);
+    }
+
+    /**
+     * Get the HttpMethod for the given String constant, and throw an exception if the constant is not
+     * recognized.
+     */
+    public static HttpRequestMethod valueOfStrict(String name) {
+      return ENUM_TYPE.valueOfStrict(name);
+    }
+
 }

@@ -62,28 +62,129 @@ class BlobReadStream implements ReadChannel {
 
     private byte[] bytesArray;
 
-    BlobReadStream(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> operationParams) {
-        this.storageSettings = storageSettings;
-        this.objectIdentifier = objectIdentifier;
-        this.operationParams = operationParams;
-        openFlag = true;
-        cloudRpcClient = storageSettings.getStorageRpcV1();
-        objectMetadata = objectIdentifier.toProto();
-    }
+    static class StateSnapshot implements RestorableState<ReadChannel>, Serializable {
 
-    @Override
-    public RestorableState<ReadChannel> capture() {
-        StateSnapshot.BlobReadRequestBuilder requestMaker = StateSnapshot.newBuilder(storageSettings, objectIdentifier, operationParams).setPosition(currentIndex).setIsOpen(openFlag).setEndOfStream(streamEnded).setChunkSize(segmentSize);
-        if (null != bytesArray) {
-            requestMaker.setPosition(currentIndex + bufferIndex);
-            requestMaker.setEndOfStream(false);
+        private static final long serialVersionUID = 3889420316004453706L;
+
+        private final StorageSettings storageSettings;
+
+        private final BlobIdentifier objectIdentifier;
+
+        private final Map<CloudStorageRpc.StorageOption, ?> operationParams;
+
+        private final String previousVersionTag;
+
+        private final long currentIndex;
+
+        private final boolean openFlag;
+
+        private final boolean streamEnded;
+
+        private final int segmentSize;
+
+        static class BlobReadRequestBuilder {
+
+            private final StorageSettings storageSettings;
+
+            private final BlobIdentifier objectIdentifier;
+
+            private final Map<CloudStorageRpc.StorageOption, ?> operationParams;
+
+            private String previousVersionTag;
+
+            private long currentIndex;
+
+            private boolean openFlag;
+
+            private boolean streamEnded;
+
+            private int segmentSize;
+
+            BlobReadRequestBuilder setIsOpen(boolean openFlag) {
+                this.openFlag = openFlag;
+                return this;
+            }
+
+            BlobReadRequestBuilder setChunkSize(int segmentSize) {
+                this.segmentSize = segmentSize;
+                return this;
+            }
+
+            RestorableState<ReadChannel> buildSnapshot() {
+                return new StateSnapshot(this);
+            }
+
+            BlobReadRequestBuilder setEndOfStream(boolean streamEnded) {
+                this.streamEnded = streamEnded;
+                return this;
+            }
+
+            BlobReadRequestBuilder setLastEtag(String previousVersionTag) {
+                this.previousVersionTag = previousVersionTag;
+                return this;
+            }
+
+            BlobReadRequestBuilder setPosition(long currentIndex) {
+                this.currentIndex = currentIndex;
+                return this;
+            }
+
+            private BlobReadRequestBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> requestParams) {
+                this.storageSettings = storageSettings;
+                this.objectIdentifier = objectIdentifier;
+                this.operationParams = requestParams;
+            }
+
         }
-        return requestMaker.buildSnapshot();
-    }
 
-    @Override
-    public boolean isOpen() {
-        return openFlag;
+        @Override
+        public int hashCode() {
+            return Objects.hash(storageSettings, objectIdentifier, operationParams, previousVersionTag, currentIndex, openFlag, streamEnded, segmentSize);
+        }
+
+        @Override
+        public boolean equals(Object candidate) {
+            if (null == candidate) {
+                return false;
+            }
+            if (!(candidate instanceof StateSnapshot)) {
+                return false;
+            }
+            final StateSnapshot thatSnapshot = (StateSnapshot) candidate;
+            return Objects.equals(this.storageSettings, thatSnapshot.storageSettings) && Objects.equals(this.objectIdentifier, thatSnapshot.objectIdentifier) && Objects.equals(this.operationParams, thatSnapshot.operationParams) && Objects.equals(this.previousVersionTag, thatSnapshot.previousVersionTag) && thatSnapshot.currentIndex == this.currentIndex && thatSnapshot.openFlag == this.openFlag && thatSnapshot.streamEnded == this.streamEnded && thatSnapshot.segmentSize == this.segmentSize;
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this).add("blob", objectIdentifier).add("position", currentIndex).add("isOpen", openFlag).add("endOfStream", streamEnded).toString();
+        }
+
+        StateSnapshot(BlobReadRequestBuilder requestMaker) {
+            this.storageSettings = requestMaker.storageSettings;
+            this.objectIdentifier = requestMaker.objectIdentifier;
+            this.operationParams = requestMaker.operationParams;
+            this.previousVersionTag = requestMaker.previousVersionTag;
+            this.currentIndex = requestMaker.currentIndex;
+            this.openFlag = requestMaker.openFlag;
+            this.streamEnded = requestMaker.streamEnded;
+            this.segmentSize = requestMaker.segmentSize;
+        }
+
+        static BlobReadRequestBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> requestParams) {
+            return new BlobReadRequestBuilder(storageSettings, objectIdentifier, requestParams);
+        }
+
+        @Override
+        public ReadChannel restore() {
+            BlobReadStream stream = new BlobReadStream(storageSettings, objectIdentifier, operationParams);
+            stream.previousVersionTag = previousVersionTag;
+            stream.currentIndex = currentIndex;
+            stream.openFlag = openFlag;
+            stream.streamEnded = streamEnded;
+            stream.segmentSize = segmentSize;
+            return stream;
+        }
+
     }
 
     @Override
@@ -94,12 +195,6 @@ class BlobReadStream implements ReadChannel {
         }
     }
 
-    private void ensureOpen() throws ClosedChannelException {
-        if (!openFlag) {
-            throw new ClosedChannelException();
-        }
-    }
-
     @Override
     public void seek(long currentIndex) throws IOException {
         ensureOpen();
@@ -107,6 +202,12 @@ class BlobReadStream implements ReadChannel {
         bytesArray = null;
         bufferIndex = 0;
         streamEnded = false;
+    }
+
+    private void ensureOpen() throws ClosedChannelException {
+        if (!openFlag) {
+            throw new ClosedChannelException();
+        }
     }
 
     @Override
@@ -159,126 +260,28 @@ class BlobReadStream implements ReadChannel {
         return bytesToWrite;
     }
 
-    static class StateSnapshot implements RestorableState<ReadChannel>, Serializable {
-
-        private static final long serialVersionUID = 3889420316004453706L;
-
-        private final StorageSettings storageSettings;
-
-        private final BlobIdentifier objectIdentifier;
-
-        private final Map<CloudStorageRpc.StorageOption, ?> operationParams;
-
-        private final String previousVersionTag;
-
-        private final long currentIndex;
-
-        private final boolean openFlag;
-
-        private final boolean streamEnded;
-
-        private final int segmentSize;
-
-        StateSnapshot(BlobReadRequestBuilder requestMaker) {
-            this.storageSettings = requestMaker.storageSettings;
-            this.objectIdentifier = requestMaker.objectIdentifier;
-            this.operationParams = requestMaker.operationParams;
-            this.previousVersionTag = requestMaker.previousVersionTag;
-            this.currentIndex = requestMaker.currentIndex;
-            this.openFlag = requestMaker.openFlag;
-            this.streamEnded = requestMaker.streamEnded;
-            this.segmentSize = requestMaker.segmentSize;
+    @Override
+    public RestorableState<ReadChannel> capture() {
+        StateSnapshot.BlobReadRequestBuilder requestMaker = StateSnapshot.newBuilder(storageSettings, objectIdentifier, operationParams).setPosition(currentIndex).setIsOpen(openFlag).setEndOfStream(streamEnded).setChunkSize(segmentSize);
+        if (null != bytesArray) {
+            requestMaker.setPosition(currentIndex + bufferIndex);
+            requestMaker.setEndOfStream(false);
         }
-
-        static class BlobReadRequestBuilder {
-
-            private final StorageSettings storageSettings;
-
-            private final BlobIdentifier objectIdentifier;
-
-            private final Map<CloudStorageRpc.StorageOption, ?> operationParams;
-
-            private String previousVersionTag;
-
-            private long currentIndex;
-
-            private boolean openFlag;
-
-            private boolean streamEnded;
-
-            private int segmentSize;
-
-            private BlobReadRequestBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> requestParams) {
-                this.storageSettings = storageSettings;
-                this.objectIdentifier = objectIdentifier;
-                this.operationParams = requestParams;
-            }
-
-            BlobReadRequestBuilder setLastEtag(String previousVersionTag) {
-                this.previousVersionTag = previousVersionTag;
-                return this;
-            }
-
-            BlobReadRequestBuilder setPosition(long currentIndex) {
-                this.currentIndex = currentIndex;
-                return this;
-            }
-
-            BlobReadRequestBuilder setIsOpen(boolean openFlag) {
-                this.openFlag = openFlag;
-                return this;
-            }
-
-            BlobReadRequestBuilder setEndOfStream(boolean streamEnded) {
-                this.streamEnded = streamEnded;
-                return this;
-            }
-
-            BlobReadRequestBuilder setChunkSize(int segmentSize) {
-                this.segmentSize = segmentSize;
-                return this;
-            }
-
-            RestorableState<ReadChannel> buildSnapshot() {
-                return new StateSnapshot(this);
-            }
-        }
-
-        static BlobReadRequestBuilder newBuilder(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> requestParams) {
-            return new BlobReadRequestBuilder(storageSettings, objectIdentifier, requestParams);
-        }
-
-        @Override
-        public ReadChannel restore() {
-            BlobReadStream stream = new BlobReadStream(storageSettings, objectIdentifier, operationParams);
-            stream.previousVersionTag = previousVersionTag;
-            stream.currentIndex = currentIndex;
-            stream.openFlag = openFlag;
-            stream.streamEnded = streamEnded;
-            stream.segmentSize = segmentSize;
-            return stream;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(storageSettings, objectIdentifier, operationParams, previousVersionTag, currentIndex, openFlag, streamEnded, segmentSize);
-        }
-
-        @Override
-        public boolean equals(Object candidate) {
-            if (null == candidate) {
-                return false;
-            }
-            if (!(candidate instanceof StateSnapshot)) {
-                return false;
-            }
-            final StateSnapshot thatSnapshot = (StateSnapshot) candidate;
-            return Objects.equals(this.storageSettings, thatSnapshot.storageSettings) && Objects.equals(this.objectIdentifier, thatSnapshot.objectIdentifier) && Objects.equals(this.operationParams, thatSnapshot.operationParams) && Objects.equals(this.previousVersionTag, thatSnapshot.previousVersionTag) && thatSnapshot.currentIndex == this.currentIndex && thatSnapshot.openFlag == this.openFlag && thatSnapshot.streamEnded == this.streamEnded && thatSnapshot.segmentSize == this.segmentSize;
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this).add("blob", objectIdentifier).add("position", currentIndex).add("isOpen", openFlag).add("endOfStream", streamEnded).toString();
-        }
+        return requestMaker.buildSnapshot();
     }
+
+    BlobReadStream(StorageSettings storageSettings, BlobIdentifier objectIdentifier, Map<CloudStorageRpc.StorageOption, ?> operationParams) {
+        this.storageSettings = storageSettings;
+        this.objectIdentifier = objectIdentifier;
+        this.operationParams = operationParams;
+        openFlag = true;
+        cloudRpcClient = storageSettings.getStorageRpcV1();
+        objectMetadata = objectIdentifier.toProto();
+    }
+
+    @Override
+    public boolean isOpen() {
+        return openFlag;
+    }
+
 }

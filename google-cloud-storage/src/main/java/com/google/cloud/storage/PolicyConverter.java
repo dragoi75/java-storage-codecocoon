@@ -30,6 +30,28 @@ import java.util.List;
  */
 class PolicyConverter {
 
+    static com.google.api.services.storage.model.Policy toApiPolicy(Policy domainPolicy) {
+        List<Bindings> bindingList = new ArrayList<>(domainPolicy.getBindingsList().size());
+        for (Binding incomingBinding : domainPolicy.getBindingsList()) {
+            Bindings externalBinding = new Bindings();
+            externalBinding.setRole(incomingBinding.getRole());
+            externalBinding.setMembers(new ArrayList<>(incomingBinding.getMembers()));
+            if (null != incomingBinding.getCondition()) {
+                Expr expression = new Expr();
+                expression.setTitle(incomingBinding.getCondition().getTitle());
+                expression.setDescription(incomingBinding.getCondition().getDescription());
+                expression.setExpression(incomingBinding.getCondition().getExpression());
+                externalBinding.setCondition(expression);
+            }
+            bindingList.add(externalBinding);
+        }
+        return new com.google.api.services.storage.model.Policy().setBindings(bindingList).setEtag(domainPolicy.getEtag()).setVersion(domainPolicy.getVersion());
+    }
+
+    private PolicyConverter() {
+        // Intentionally left blank.
+    }
+
     static Policy fromApiPolicy(com.google.api.services.storage.model.Policy externalPolicy) {
         Policy.Builder policyFactory = Policy.newBuilder();
         List<Bindings> bindingList = externalPolicy.getBindings();
@@ -55,25 +77,4 @@ class PolicyConverter {
         return policyFactory.setEtag(externalPolicy.getEtag()).setVersion(externalPolicy.getVersion()).build();
     }
 
-    static com.google.api.services.storage.model.Policy toApiPolicy(Policy domainPolicy) {
-        List<Bindings> bindingList = new ArrayList<>(domainPolicy.getBindingsList().size());
-        for (Binding incomingBinding : domainPolicy.getBindingsList()) {
-            Bindings externalBinding = new Bindings();
-            externalBinding.setRole(incomingBinding.getRole());
-            externalBinding.setMembers(new ArrayList<>(incomingBinding.getMembers()));
-            if (null != incomingBinding.getCondition()) {
-                Expr expression = new Expr();
-                expression.setTitle(incomingBinding.getCondition().getTitle());
-                expression.setDescription(incomingBinding.getCondition().getDescription());
-                expression.setExpression(incomingBinding.getCondition().getExpression());
-                externalBinding.setCondition(expression);
-            }
-            bindingList.add(externalBinding);
-        }
-        return new com.google.api.services.storage.model.Policy().setBindings(bindingList).setEtag(domainPolicy.getEtag()).setVersion(domainPolicy.getVersion());
-    }
-
-    private PolicyConverter() {
-        // Intentionally left blank.
-    }
 }

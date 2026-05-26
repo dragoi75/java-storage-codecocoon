@@ -42,22 +42,6 @@ public final class StorageOperationException extends BaseHttpServiceException {
 
     private static final long serialVersionUID = -4168430271327813063L;
 
-    public StorageOperationException(int status, String description) {
-        this(status, description, null);
-    }
-
-    public StorageOperationException(int status, String description, Throwable underlyingThrowable) {
-        super(status, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
-    }
-
-    public StorageOperationException(int status, String description, String explanation, Throwable underlyingThrowable) {
-        super(status, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
-    }
-
-    public StorageOperationException(IOException ioError) {
-        super(ioError, true, TRANSIENT_ERRORS);
-    }
-
     public StorageOperationException(GoogleJsonError jsonPayload) {
         super(jsonPayload, true, TRANSIENT_ERRORS);
     }
@@ -71,6 +55,10 @@ public final class StorageOperationException extends BaseHttpServiceException {
     public static StorageOperationException translateAndRethrow(RetryHelperException retryFailure) {
         BaseServiceException.translate(retryFailure);
         throw new StorageOperationException(UNKNOWN_CODE, retryFailure.getMessage(), retryFailure.getCause());
+    }
+
+    public StorageOperationException(IOException ioError) {
+        super(ioError, true, TRANSIENT_ERRORS);
     }
 
     /**
@@ -88,4 +76,17 @@ public final class StorageOperationException extends BaseHttpServiceException {
             return new StorageOperationException(0, ioError.getMessage(), CONNECTION_TERMINATED_EARLY, ioError);
         }
     }
+
+    public StorageOperationException(int status, String description) {
+        this(status, description, null);
+    }
+
+    public StorageOperationException(int status, String description, String explanation, Throwable underlyingThrowable) {
+        super(status, description, explanation, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
+    public StorageOperationException(int status, String description, Throwable underlyingThrowable) {
+        super(status, description, null, true, TRANSIENT_ERRORS, underlyingThrowable);
+    }
+
 }

@@ -141,16 +141,17 @@ class HttpStorageRpcSpans {
           SPAN_LOCK_RETENTION_POLICY,
           SPAN_NAME_BATCH_SUBMIT);
 
-  static String getTraceSpanName(String methodDescriptor) {
-    return String.format(
-        "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageClient.class.getName(), methodDescriptor);
-  }
+    private HttpStorageRpcSpans() {}
 
-  static void registerAllSpanNamesForCollection() {
-    Tracing.getExportComponent()
-        .getSampledSpanStore()
-        .registerSpanNamesForCollection(ALL_SPAN_NAMES);
-  }
+    static String getTraceSpanName(String methodDescriptor) {
+      return String.format(
+          "%s.%s.%s", SPAN_NAME_CLIENT_PREFIX, HttpStorageClient.class.getName(), methodDescriptor);
+    }
 
-  private HttpStorageRpcSpans() {}
+    static void registerAllSpanNamesForCollection() {
+      Tracing.getExportComponent()
+          .getSampledSpanStore()
+          .registerSpanNamesForCollection(ALL_SPAN_NAMES);
+    }
+
 }

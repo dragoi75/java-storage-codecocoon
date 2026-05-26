@@ -36,15 +36,6 @@ public class CanonicalExtensionHeadersSerializer {
 
     private final StorageClient.UrlSigningOption.SignatureProtocolVersion signatureVersion;
 
-    public CanonicalExtensionHeadersSerializer(StorageClient.UrlSigningOption.SignatureProtocolVersion signatureVersion) {
-        this.signatureVersion = signatureVersion;
-    }
-
-    public CanonicalExtensionHeadersSerializer() {
-        // TODO switch this when V4 becomes default
-        this.signatureVersion = StorageClient.UrlSigningOption.SignatureProtocolVersion.V2;
-    }
-
     public StringBuilder serialize(Map<String, String> canonicalizedExtensionHeaders) {
         StringBuilder serializedHeaders = new StringBuilder();
         if (null == canonicalizedExtensionHeaders || canonicalizedExtensionHeaders.isEmpty()) {
@@ -97,4 +88,14 @@ public class CanonicalExtensionHeadersSerializer {
         }
         return lowercaseHeaders;
     }
+
+    public CanonicalExtensionHeadersSerializer() {
+        // TODO switch this when V4 becomes default
+        this.signatureVersion = StorageClient.UrlSigningOption.SignatureProtocolVersion.V2;
+    }
+
+    public CanonicalExtensionHeadersSerializer(StorageClient.UrlSigningOption.SignatureProtocolVersion signatureVersion) {
+        this.signatureVersion = signatureVersion;
+    }
+
 }

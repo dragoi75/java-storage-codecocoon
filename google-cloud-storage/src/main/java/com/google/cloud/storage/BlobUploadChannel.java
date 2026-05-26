@@ -31,20 +31,38 @@ import java.util.concurrent.Callable;
  */
 class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> {
 
-    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<CloudStorageRpc.StorageOption, ?> storageSettingsMap) {
-        this(storageSettings, metadata, openChannel(storageSettings, metadata, storageSettingsMap));
-    }
+    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
 
-    BlobUploadChannel(StorageSettings storageSettings, URL accessUri) {
-        this(storageSettings, openChannel(accessUri, storageSettings));
-    }
+        private static final long serialVersionUID = -9028324143780151286L;
 
-    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-        super(storageSettings, metadata, transferId);
-    }
+        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
 
-    BlobUploadChannel(StorageSettings storageSettings, String transferId) {
-        super(storageSettings, null, transferId);
+            @Override
+            public RestorableState<WriteChannel> build() {
+                return new UploadStateImpl(this);
+            }
+
+            private UploadBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+                super(storageSettings, metadata, transferId);
+            }
+
+        }
+
+        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+            return new UploadBuilder(storageSettings, metadata, transferId);
+        }
+
+        @Override
+        public WriteChannel restore() {
+            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
+            uploadStream.restore(this);
+            return uploadStream;
+        }
+
+        UploadStateImpl(UploadBuilder buildSource) {
+            super(buildSource);
+        }
+
     }
 
     @Override
@@ -62,24 +80,6 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> 
         }
     }
 
-    protected UploadStateImpl.UploadBuilder stateBuilder() {
-        return UploadStateImpl.newBuilder(getOptions(), getEntity(), getUploadId());
-    }
-
-    private static String openChannel(final StorageSettings storageSettings, final BlobMetadata metadata, final Map<CloudStorageRpc.StorageOption, ?> storageSettingsMap) {
-        try {
-            return runWithRetries(new Callable<String>() {
-
-                @Override
-                public String call() {
-                    return storageSettings.getStorageRpcV1().open(metadata.toProto(), storageSettingsMap);
-                }
-            }, storageSettings.getRetrySettings(), StorageClientImpl.EXCEPTION_HANDLER, storageSettings.getClock());
-        } catch (RetryHelper.RetryHelperException retryEx) {
-            throw StorageOperationException.translateAndRethrow(retryEx);
-        }
-    }
-
     private static String openChannel(final URL accessUri, final StorageSettings storageSettings) {
         try {
             return runWithRetries(new Callable<String>() {
@@ -90,6 +90,20 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> 
                         throw new StorageOperationException(2, "invalid signedURL");
                     }
                     return storageSettings.getStorageRpcV1().open(accessUri.toString());
+                }
+            }, storageSettings.getRetrySettings(), StorageClientImpl.EXCEPTION_HANDLER, storageSettings.getClock());
+        } catch (RetryHelper.RetryHelperException retryEx) {
+            throw StorageOperationException.translateAndRethrow(retryEx);
+        }
+    }
+
+    private static String openChannel(final StorageSettings storageSettings, final BlobMetadata metadata, final Map<CloudStorageRpc.StorageOption, ?> storageSettingsMap) {
+        try {
+            return runWithRetries(new Callable<String>() {
+
+                @Override
+                public String call() {
+                    return storageSettings.getStorageRpcV1().open(metadata.toProto(), storageSettingsMap);
                 }
             }, storageSettings.getRetrySettings(), StorageClientImpl.EXCEPTION_HANDLER, storageSettings.getClock());
         } catch (RetryHelper.RetryHelperException retryEx) {
@@ -115,35 +129,24 @@ class BlobUploadChannel extends BaseWriteChannel<StorageSettings, BlobMetadata> 
         return validFlag;
     }
 
-    static class UploadStateImpl extends BaseWriteChannel.BaseState<StorageSettings, BlobMetadata> {
-
-        private static final long serialVersionUID = -9028324143780151286L;
-
-        UploadStateImpl(UploadBuilder buildSource) {
-            super(buildSource);
-        }
-
-        static class UploadBuilder extends BaseWriteChannel.BaseState.Builder<StorageSettings, BlobMetadata> {
-
-            private UploadBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-                super(storageSettings, metadata, transferId);
-            }
-
-            @Override
-            public RestorableState<WriteChannel> build() {
-                return new UploadStateImpl(this);
-            }
-        }
-
-        static UploadBuilder newBuilder(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
-            return new UploadBuilder(storageSettings, metadata, transferId);
-        }
-
-        @Override
-        public WriteChannel restore() {
-            BlobUploadChannel uploadStream = new BlobUploadChannel(serviceOptions, entity, uploadId);
-            uploadStream.restore(this);
-            return uploadStream;
-        }
+    BlobUploadChannel(StorageSettings storageSettings, String transferId) {
+        super(storageSettings, null, transferId);
     }
+
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, String transferId) {
+        super(storageSettings, metadata, transferId);
+    }
+
+    BlobUploadChannel(StorageSettings storageSettings, BlobMetadata metadata, Map<CloudStorageRpc.StorageOption, ?> storageSettingsMap) {
+        this(storageSettings, metadata, openChannel(storageSettings, metadata, storageSettingsMap));
+    }
+
+    BlobUploadChannel(StorageSettings storageSettings, URL accessUri) {
+        this(storageSettings, openChannel(accessUri, storageSettings));
+    }
+
+    protected UploadStateImpl.UploadBuilder stateBuilder() {
+        return UploadStateImpl.newBuilder(getOptions(), getEntity(), getUploadId());
+    }
+
 }

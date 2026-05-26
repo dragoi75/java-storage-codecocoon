@@ -79,12 +79,57 @@ public class StorageBlob extends BlobMetadata {
 
         private static final long serialVersionUID = 214616862061934846L;
 
-        private BlobSourceOptions(CloudStorageRpc.StorageOption rpcSetting) {
-            super(rpcSetting, null);
+        /**
+         * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
+         * blob.
+         */
+        public static BlobSourceOptions withDecryptionKey(Key decryptionKey) {
+            String encodedKey = BaseEncoding.base64().encode(decryptionKey.getEncoded());
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.CUSTOMER_SUPPLIED_KEY, encodedKey);
         }
 
-        private BlobSourceOptions(CloudStorageRpc.StorageOption rpcSetting, Object objectParam) {
-            super(rpcSetting, objectParam);
+        static StorageClient.BlobGetOptions[] toGetOptionsArray(BlobMetadata blobMetadata, BlobSourceOptions... storageSettings) {
+            StorageClient.BlobGetOptions[] blobSourceOptionsArray = new StorageClient.BlobGetOptions[storageSettings.length];
+            int currentIndex = 0;
+            for (BlobSourceOptions srcOption : storageSettings) {
+                blobSourceOptionsArray[currentIndex++] = srcOption.asGetOption(blobMetadata);
+            }
+            return blobSourceOptionsArray;
+        }
+
+        static StorageClient.BlobSourceOptions[] toSourceOptionsArray(BlobMetadata blobMetadata, BlobSourceOptions... storageSettings) {
+            StorageClient.BlobSourceOptions[] blobSourceOptionsArray = new StorageClient.BlobSourceOptions[storageSettings.length];
+            int currentIndex = 0;
+            for (BlobSourceOptions srcOption : storageSettings) {
+                blobSourceOptionsArray[currentIndex++] = srcOption.asSourceOptions(blobMetadata);
+            }
+            return blobSourceOptionsArray;
+        }
+
+        /**
+         * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
+         * blob.
+         *
+         * @param decryptionKey the AES256 encoded in base64
+         */
+        public static BlobSourceOptions withDecryptionKey(String decryptionKey) {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.CUSTOMER_SUPPLIED_KEY, decryptionKey);
+        }
+
+        /**
+         * Returns an option for blob's generation mismatch. If this option is used the request will
+         * fail if generation matches.
+         */
+        public static BlobSourceOptions generationNotMatch() {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_GENERATION_NOT_MATCH);
+        }
+
+        /**
+         * Returns an option for blob's billing user project. This option is used only if the blob's
+         * bucket has requester_pays flag enabled.
+         */
+        public static BlobSourceOptions userProject(String projectId) {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.USER_PROJECT, projectId);
         }
 
         private StorageClient.BlobSourceOptions asSourceOptions(BlobMetadata blobMetadata) {
@@ -106,6 +151,34 @@ public class StorageBlob extends BlobMetadata {
             }
         }
 
+        /**
+         * Returns an option for blob's metageneration mismatch. If this option is used the request will
+         * fail if metageneration matches.
+         */
+        public static BlobSourceOptions metagenerationNotMatch() {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_METAGENERATION_NOT_MATCH);
+        }
+
+        /**
+         * Returns an option for blob's generation match. If this option is used the request will fail
+         * if generation does not match.
+         */
+        public static BlobSourceOptions generationMatch() {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_GENERATION_MATCH);
+        }
+
+        /**
+         * Returns an option for blob's metageneration match. If this option is used the request will
+         * fail if metageneration does not match.
+         */
+        public static BlobSourceOptions withMetagenerationMatch() {
+            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_METAGENERATION_MATCH);
+        }
+
+        private BlobSourceOptions(CloudStorageRpc.StorageOption rpcSetting, Object objectParam) {
+            super(rpcSetting, objectParam);
+        }
+
         private StorageClient.BlobGetOptions asGetOption(BlobMetadata blobMetadata) {
             switch(getRpcOption()) {
                 case IF_GENERATION_MATCH:
@@ -125,129 +198,10 @@ public class StorageBlob extends BlobMetadata {
             }
         }
 
-        /**
-         * Returns an option for blob's generation match. If this option is used the request will fail
-         * if generation does not match.
-         */
-        public static BlobSourceOptions generationMatch() {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_GENERATION_MATCH);
+        private BlobSourceOptions(CloudStorageRpc.StorageOption rpcSetting) {
+            super(rpcSetting, null);
         }
 
-        /**
-         * Returns an option for blob's generation mismatch. If this option is used the request will
-         * fail if generation matches.
-         */
-        public static BlobSourceOptions generationNotMatch() {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_GENERATION_NOT_MATCH);
-        }
-
-        /**
-         * Returns an option for blob's metageneration match. If this option is used the request will
-         * fail if metageneration does not match.
-         */
-        public static BlobSourceOptions withMetagenerationMatch() {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_METAGENERATION_MATCH);
-        }
-
-        /**
-         * Returns an option for blob's metageneration mismatch. If this option is used the request will
-         * fail if metageneration matches.
-         */
-        public static BlobSourceOptions metagenerationNotMatch() {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.IF_METAGENERATION_NOT_MATCH);
-        }
-
-        /**
-         * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
-         * blob.
-         */
-        public static BlobSourceOptions withDecryptionKey(Key decryptionKey) {
-            String encodedKey = BaseEncoding.base64().encode(decryptionKey.getEncoded());
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.CUSTOMER_SUPPLIED_KEY, encodedKey);
-        }
-
-        /**
-         * Returns an option to set a customer-supplied AES256 key for server-side encryption of the
-         * blob.
-         *
-         * @param decryptionKey the AES256 encoded in base64
-         */
-        public static BlobSourceOptions withDecryptionKey(String decryptionKey) {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.CUSTOMER_SUPPLIED_KEY, decryptionKey);
-        }
-
-        /**
-         * Returns an option for blob's billing user project. This option is used only if the blob's
-         * bucket has requester_pays flag enabled.
-         */
-        public static BlobSourceOptions userProject(String projectId) {
-            return new BlobSourceOptions(CloudStorageRpc.StorageOption.USER_PROJECT, projectId);
-        }
-
-        static StorageClient.BlobSourceOptions[] toSourceOptionsArray(BlobMetadata blobMetadata, BlobSourceOptions... storageSettings) {
-            StorageClient.BlobSourceOptions[] blobSourceOptionsArray = new StorageClient.BlobSourceOptions[storageSettings.length];
-            int currentIndex = 0;
-            for (BlobSourceOptions srcOption : storageSettings) {
-                blobSourceOptionsArray[currentIndex++] = srcOption.asSourceOptions(blobMetadata);
-            }
-            return blobSourceOptionsArray;
-        }
-
-        static StorageClient.BlobGetOptions[] toGetOptionsArray(BlobMetadata blobMetadata, BlobSourceOptions... storageSettings) {
-            StorageClient.BlobGetOptions[] blobSourceOptionsArray = new StorageClient.BlobGetOptions[storageSettings.length];
-            int currentIndex = 0;
-            for (BlobSourceOptions srcOption : storageSettings) {
-                blobSourceOptionsArray[currentIndex++] = srcOption.asGetOption(blobMetadata);
-            }
-            return blobSourceOptionsArray;
-        }
-    }
-
-    /**
-     * Downloads this blob to the given file path using specified blob read options.
-     *
-     * @param destinationPath destination
-     * @param storageSettings blob read options
-     * @throws StorageOperationException upon failure
-     */
-    public void downloadTo(Path destinationPath, BlobSourceOptions... storageSettings) {
-        try (OutputStream destinationStream = Files.newOutputStream(destinationPath)) {
-            downloadTo(destinationStream, storageSettings);
-        } catch (IOException ioException) {
-            throw new StorageOperationException(ioException);
-        }
-    }
-
-    /**
-     * Downloads this blob to the given output stream using specified blob read options.
-     *
-     * @param destinationStream
-     * @param storageSettings
-     */
-    public void downloadTo(OutputStream destinationStream, BlobSourceOptions... storageSettings) {
-        final CountingOutputStream countingStream = new CountingOutputStream(destinationStream);
-        final CloudStorageRpc rpcClient = this.storageSettings.getStorageRpcV1();
-        final Map<CloudStorageRpc.StorageOption, ?> requestOptionsMap = StorageClientImpl.buildOptionMap(getBlobId(), storageSettings);
-        runWithRetries(callable(new Runnable() {
-
-            @Override
-            public void run() {
-                rpcClient.read(getBlobId().toProto(), requestOptionsMap, countingStream.getCount(), countingStream);
-            }
-        }), this.storageSettings.getRetrySettings(), StorageClientImpl.EXCEPTION_HANDLER, this.storageSettings.getClock());
-    }
-
-    /**
-     * Downloads this blob to the given file path.
-     *
-     * <p>This method is replaced with {@link #downloadTo(Path, BlobSourceOptions...)}, but is kept
-     * here for binary compatibility with the older versions of the client library.
-     *
-     * @param destinationPath destination
-     * @throws StorageOperationException upon failure
-     */
-    public void downloadTo(Path destinationPath) {
-        downloadTo(destinationPath, new BlobSourceOptions[0]);
     }
 
     /**
@@ -259,35 +213,6 @@ public class StorageBlob extends BlobMetadata {
 
         private final BlobInfoBuilderImpl builderImpl;
 
-        BlobInfoBuilder(StorageBlob storageBlob) {
-            this.cloudStorageClient = storageBlob.getStorage();
-            this.builderImpl = new BlobInfoBuilderImpl(storageBlob);
-        }
-
-        @Override
-        public StorageBlob.BlobInfoBuilder setBlobId(BlobIdentifier identifier) {
-            builderImpl.setBlobId(identifier);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setGeneratedId(String generatedIdentifier) {
-            builderImpl.setGeneratedId(generatedIdentifier);
-            return this;
-        }
-
-        @Override
-        public StorageBlob.BlobInfoBuilder setContentType(String mimeType) {
-            builderImpl.setContentType(mimeType);
-            return this;
-        }
-
-        @Override
-        public StorageBlob.BlobInfoBuilder setContentDisposition(String dispositionHeader) {
-            builderImpl.setContentDisposition(dispositionHeader);
-            return this;
-        }
-
         @Override
         public StorageBlob.BlobInfoBuilder setContentLanguage(String languageTag) {
             builderImpl.setContentLanguage(languageTag);
@@ -295,32 +220,26 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setContentEncoding(String encodingScheme) {
-            builderImpl.setContentEncoding(encodingScheme);
+        StorageBlob.BlobInfoBuilder setIsDirectory(boolean directoryFlag) {
+            builderImpl.setIsDirectory(directoryFlag);
             return this;
         }
 
         @Override
-        StorageBlob.BlobInfoBuilder setComponentCount(Integer numComponents) {
-            builderImpl.setComponentCount(numComponents);
+        public StorageBlob.BlobInfoBuilder setTemporaryHold(Boolean tempHold) {
+            builderImpl.setTemporaryHold(tempHold);
             return this;
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setCacheControl(String cacheDirective) {
-            builderImpl.setCacheControl(cacheDirective);
+        public StorageBlob.BlobInfoBuilder setCrc32c(String crcChecksum) {
+            builderImpl.setCrc32c(crcChecksum);
             return this;
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setAcl(List<AccessControlEntry> accessControlList) {
-            builderImpl.setAcl(accessControlList);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setOwner(TypedEntity resourcePrincipal) {
-            builderImpl.setOwner(resourcePrincipal);
+        StorageBlob.BlobInfoBuilder setCustomerEncryption(CustomerEncryptionInfo encryptionInfo) {
+            builderImpl.setCustomerEncryption(encryptionInfo);
             return this;
         }
 
@@ -331,8 +250,20 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
-        StorageBlob.BlobInfoBuilder setEtag(String entityTag) {
-            builderImpl.setEtag(entityTag);
+        StorageBlob.BlobInfoBuilder setUpdateTime(Long lastUpdated) {
+            builderImpl.setUpdateTime(lastUpdated);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setDeleteTime(Long deletionTimestamp) {
+            builderImpl.setDeleteTime(deletionTimestamp);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setGeneratedId(String generatedIdentifier) {
+            builderImpl.setGeneratedId(generatedIdentifier);
             return this;
         }
 
@@ -343,8 +274,48 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setMd5(String checksum) {
-            builderImpl.setMd5(checksum);
+        public StorageBlob buildStorageObject() {
+            return new StorageBlob(cloudStorageClient, builderImpl);
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setRetentionExpirationTime(Long retentionExpiry) {
+            builderImpl.setRetentionExpirationTime(retentionExpiry);
+            return this;
+        }
+
+        BlobInfoBuilder(StorageBlob storageBlob) {
+            this.cloudStorageClient = storageBlob.getStorage();
+            this.builderImpl = new BlobInfoBuilderImpl(storageBlob);
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setStorageClass(StorageTier tier) {
+            builderImpl.setStorageClass(tier);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setEtag(String entityTag) {
+            builderImpl.setEtag(entityTag);
+            return this;
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setBlobId(BlobIdentifier identifier) {
+            builderImpl.setBlobId(identifier);
+            return this;
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setEventBasedHold(Boolean eventHoldFlag) {
+            builderImpl.setEventBasedHold(eventHoldFlag);
+            return this;
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setContentEncoding(String encodingScheme) {
+            builderImpl.setContentEncoding(encodingScheme);
             return this;
         }
 
@@ -355,8 +326,38 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setCrc32c(String crcChecksum) {
-            builderImpl.setCrc32c(crcChecksum);
+        public StorageBlob.BlobInfoBuilder setCacheControl(String cacheDirective) {
+            builderImpl.setCacheControl(cacheDirective);
+            return this;
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setContentDisposition(String dispositionHeader) {
+            builderImpl.setContentDisposition(dispositionHeader);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setKmsKeyName(String keyName) {
+            builderImpl.setKmsKeyName(keyName);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setOwner(TypedEntity resourcePrincipal) {
+            builderImpl.setOwner(resourcePrincipal);
+            return this;
+        }
+
+        @Override
+        StorageBlob.BlobInfoBuilder setCreateTime(Long creationTimestamp) {
+            builderImpl.setCreateTime(creationTimestamp);
+            return this;
+        }
+
+        @Override
+        public StorageBlob.BlobInfoBuilder setAcl(List<AccessControlEntry> accessControlList) {
+            builderImpl.setAcl(accessControlList);
             return this;
         }
 
@@ -373,14 +374,20 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
+        StorageBlob.BlobInfoBuilder setComponentCount(Integer numComponents) {
+            builderImpl.setComponentCount(numComponents);
+            return this;
+        }
+
+        @Override
         public StorageBlob.BlobInfoBuilder setMetadata(Map<String, String> metaMap) {
             builderImpl.setMetadata(metaMap);
             return this;
         }
 
         @Override
-        public StorageBlob.BlobInfoBuilder setStorageClass(StorageTier tier) {
-            builderImpl.setStorageClass(tier);
+        public StorageBlob.BlobInfoBuilder setMd5(String checksum) {
+            builderImpl.setMd5(checksum);
             return this;
         }
 
@@ -391,132 +398,11 @@ public class StorageBlob extends BlobMetadata {
         }
 
         @Override
-        StorageBlob.BlobInfoBuilder setDeleteTime(Long deletionTimestamp) {
-            builderImpl.setDeleteTime(deletionTimestamp);
+        public StorageBlob.BlobInfoBuilder setContentType(String mimeType) {
+            builderImpl.setContentType(mimeType);
             return this;
         }
 
-        @Override
-        StorageBlob.BlobInfoBuilder setUpdateTime(Long lastUpdated) {
-            builderImpl.setUpdateTime(lastUpdated);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setCreateTime(Long creationTimestamp) {
-            builderImpl.setCreateTime(creationTimestamp);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setIsDirectory(boolean directoryFlag) {
-            builderImpl.setIsDirectory(directoryFlag);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setCustomerEncryption(CustomerEncryptionInfo encryptionInfo) {
-            builderImpl.setCustomerEncryption(encryptionInfo);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setKmsKeyName(String keyName) {
-            builderImpl.setKmsKeyName(keyName);
-            return this;
-        }
-
-        @Override
-        public StorageBlob.BlobInfoBuilder setEventBasedHold(Boolean eventHoldFlag) {
-            builderImpl.setEventBasedHold(eventHoldFlag);
-            return this;
-        }
-
-        @Override
-        public StorageBlob.BlobInfoBuilder setTemporaryHold(Boolean tempHold) {
-            builderImpl.setTemporaryHold(tempHold);
-            return this;
-        }
-
-        @Override
-        StorageBlob.BlobInfoBuilder setRetentionExpirationTime(Long retentionExpiry) {
-            builderImpl.setRetentionExpirationTime(retentionExpiry);
-            return this;
-        }
-
-        @Override
-        public StorageBlob buildStorageObject() {
-            return new StorageBlob(cloudStorageClient, builderImpl);
-        }
-    }
-
-    StorageBlob(StorageClient cloudStorageClient, BlobInfoBuilderImpl builderImpl) {
-        super(builderImpl);
-        this.cloudStorageClient = checkNotNull(cloudStorageClient);
-        this.storageSettings = cloudStorageClient.getOptions();
-    }
-
-    /**
-     * Checks if this blob exists.
-     *
-     * <p>Example of checking if the blob exists.
-     *
-     * <pre>{@code
-     * boolean exists = blob.exists();
-     * if (exists) {
-     *   // the blob exists
-     * } else {
-     *   // the blob was not found
-     * }
-     * }</pre>
-     *
-     * @param storageSettings blob read options
-     * @return true if this blob exists, false otherwise
-     * @throws StorageOperationException upon failure
-     */
-    public boolean existsInStorage(BlobSourceOptions... storageSettings) {
-        int count = storageSettings.length;
-        StorageClient.BlobGetOptions[] fetchParams = Arrays.copyOf(toGetOptionsArray(this, storageSettings), count + 1);
-        fetchParams[count] = StorageClient.BlobGetOptions.fieldsSelector();
-        return null != cloudStorageClient.get(getBlobId(), fetchParams);
-    }
-
-    /**
-     * Returns this blob's content.
-     *
-     * <p>Example of reading all bytes of the blob, if its generation matches the {@link
-     * StorageBlob#getGeneration()} value, otherwise a {@link StorageOperationException} is thrown.
-     *
-     * <pre>{@code
-     * byte[] content = blob.getContent(BlobSourceOption.generationMatch());
-     * }</pre>
-     *
-     * @param storageSettings blob read options
-     * @throws StorageOperationException upon failure
-     */
-    public byte[] getContent(BlobSourceOptions... storageSettings) {
-        return cloudStorageClient.readAllBytes(getBlobId(), toSourceOptionsArray(this, storageSettings));
-    }
-
-    /**
-     * Fetches current blob's latest information. Returns {@code null} if the blob does not exist.
-     *
-     * <p>Example of getting the blob's latest information, if its generation does not match the
-     * {@link StorageBlob#getGeneration()} value, otherwise a {@link StorageOperationException} is thrown.
-     *
-     * <pre>{@code
-     * Blob latestBlob = blob.reload(BlobSourceOption.generationNotMatch());
-     * if (latestBlob == null) {
-     *   // the blob was not found
-     * }
-     * }</pre>
-     *
-     * @param storageSettings blob read options
-     * @return a {@code Blob} object with latest information or {@code null} if not found
-     * @throws StorageOperationException upon failure
-     */
-    public StorageBlob reloadFromStorage(BlobSourceOptions... storageSettings) {
-        return cloudStorageClient.get(getBlobId(), toGetOptionsArray(this, storageSettings));
     }
 
     /**
@@ -565,26 +451,176 @@ public class StorageBlob extends BlobMetadata {
     }
 
     /**
-     * Deletes this blob.
+     * Sends a copy request for the current blob to the target bucket, preserving its name. Possibly
+     * copying also some of the metadata (e.g. content-type).
      *
-     * <p>Example of deleting the blob, if its generation matches the {@link StorageBlob#getGeneration()}
-     * value, otherwise a {@link StorageOperationException} is thrown.
+     * <p>Example of copying the blob to a different bucket, keeping the original name.
      *
      * <pre>{@code
-     * boolean deleted = blob.delete(BlobSourceOption.generationMatch());
-     * if (deleted) {
-     *   // the blob was deleted
-     * } else {
-     *   // the blob was not found
+     * String bucketName = "my_unique_bucket";
+     * CopyWriter copyWriter = blob.copyTo(bucketName);
+     * Blob copiedBlob = copyWriter.getResult();
+     * }</pre>
+     *
+     * @param destinationBucket target bucket's name
+     * @param storageSettings source blob options
+     * @return a {@link BlobCopyWriter} object that can be used to get information on the newly created
+     *     blob or to complete the copy if more than one RPC request is needed
+     * @throws StorageOperationException upon failure
+     */
+    public BlobCopyWriter copyToTarget(String destinationBucket, BlobSourceOptions... storageSettings) {
+        return copyToTarget(destinationBucket, getName(), storageSettings);
+    }
+
+    /**
+     * Downloads this blob to the given file path.
+     *
+     * <p>This method is replaced with {@link #downloadTo(Path, BlobSourceOptions...)}, but is kept
+     * here for binary compatibility with the older versions of the client library.
+     *
+     * @param destinationPath destination
+     * @throws StorageOperationException upon failure
+     */
+    public void downloadTo(Path destinationPath) {
+        downloadTo(destinationPath, new BlobSourceOptions[0]);
+    }
+
+    static StorageBlob fromProto(StorageClient cloudStorageClient, StorageObject protoObject) {
+        BlobMetadata metadata = BlobMetadata.fromPb(protoObject);
+        return new StorageBlob(cloudStorageClient, new BlobInfoBuilderImpl(metadata));
+    }
+
+    /**
+     * Generates a signed URL for this blob. If you want to allow access for a fixed amount of time to
+     * this blob, you can use this method to generate a URL that is only valid within a certain time
+     * period. This is particularly useful if you don't want publicly accessible blobs, but also don't
+     * want to require users to explicitly log in. Signing a URL requires a service account signer. If
+     * an instance of {@link ServiceAccountSigner} was passed to {@link
+     * StorageSettings}' builder via {@code setCredentials(Credentials)} or the default credentials are
+     * being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set or your
+     * application is running in App Engine, then {@code signUrl} will use that credentials to sign
+     * the URL. If the credentials passed to {@link StorageSettings} do not implement {@link
+     * ServiceAccountSigner} (this is the case, for instance, for Compute Engine credentials and
+     * Google Cloud SDK credentials) then {@code signUrl} will throw an {@link IllegalStateException}
+     * unless an implementation of {@link ServiceAccountSigner} is passed using the {@link
+     * UrlSigningOption#withSigner(ServiceAccountSigner)} option.
+     *
+     * <p>A service account signer is looked for in the following order:
+     *
+     * <ol>
+     *   <li>The signer passed with the option {@link UrlSigningOption#withSigner(ServiceAccountSigner)}
+     *   <li>The credentials passed to {@link StorageSettings}
+     *   <li>The default credentials, if no credentials were passed to {@link StorageSettings}
+     * </ol>
+     *
+     * <p>Example of creating a signed URL for the blob that is valid for 2 weeks, using the default
+     * credentials for signing the URL:
+     *
+     * <pre>{@code
+     * URL signedUrl = blob.signUrl(14, TimeUnit.DAYS);
+     * }</pre>
+     *
+     * <p>Example of creating a signed URL for the blob passing the {@link
+     * UrlSigningOption#withSigner(ServiceAccountSigner)} option, that will be used to sign the URL:
+     *
+     * <pre>{@code
+     * String keyPath = "/path/to/key.json";
+     * URL signedUrl = blob.signUrl(14, TimeUnit.DAYS, SignUrlOption.signWith(
+     *     ServiceAccountCredentials.fromStream(new FileInputStream(keyPath))));
+     * }</pre>
+     *
+     * <p>Example of creating a signed URL for a blob generation:
+     *
+     * <pre>{@code
+     * URL signedUrl = blob.signUrl(1, TimeUnit.HOURS,
+     *     SignUrlOption.withQueryParams(ImmutableMap.of("generation", "1576656755290328")));
+     * }</pre>
+     *
+     * @param expiryAmount time until the signed URL expires, expressed in {@code unit}. The finer
+     *     granularity supported is 1 second, finer granularities will be truncated
+     * @param timeMeasure time unit of the {@code duration} parameter
+     * @param storageSettings optional URL signing options
+     * @return a signed URL for this blob and the specified options
+     * @throws IllegalStateException if {@link UrlSigningOption#withSigner(ServiceAccountSigner)} was not
+     *     used and no implementation of {@link ServiceAccountSigner} was provided to {@link
+     *     StorageSettings}
+     * @throws IllegalArgumentException if {@code SignUrlOption.withMd5()} option is used and {@code
+     *     blobInfo.md5()} is {@code null}
+     * @throws IllegalArgumentException if {@code SignUrlOption.withContentType()} option is used and
+     *     {@code blobInfo.contentType()} is {@code null}
+     * @throws SigningException if the attempt to sign the URL failed
+     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed-URLs</a>
+     */
+    public URL generateSignedUrl(long expiryAmount, TimeUnit timeMeasure, UrlSigningOption... storageSettings) {
+        return cloudStorageClient.signUrl(this, expiryAmount, timeMeasure, storageSettings);
+    }
+
+    /**
+     * Returns the ACL entry for the specified entity on this blob or {@code null} if not found.
+     *
+     * <p>Example of getting the ACL entry for an entity.
+     *
+     * <pre>{@code
+     * Acl acl = blob.getAcl(User.ofAllAuthenticatedUsers());
+     * }</pre>
+     *
+     * @throws StorageOperationException upon failure
+     */
+    public AccessControlEntry getAcl(TypedEntity principal) {
+        return cloudStorageClient.getAcl(getBlobId(), principal);
+    }
+
+    @Override
+    public StorageBlob.BlobInfoBuilder toBlobInfoBuilder() {
+        return new BlobInfoBuilder(this);
+    }
+
+    StorageBlob(StorageClient cloudStorageClient, BlobInfoBuilderImpl builderImpl) {
+        super(builderImpl);
+        this.cloudStorageClient = checkNotNull(cloudStorageClient);
+        this.storageSettings = cloudStorageClient.getOptions();
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(super.hashCode(), storageSettings);
+    }
+
+    /**
+     * Returns the blob's {@code Storage} object used to issue requests.
+     */
+    public StorageClient getStorage() {
+        return cloudStorageClient;
+    }
+
+    @Override
+    public final boolean equals(Object otherValue) {
+        if (this == otherValue) {
+            return true;
+        }
+        if (null == otherValue || !otherValue.getClass().equals(StorageBlob.class)) {
+            return false;
+        }
+        StorageBlob comparedBlob = (StorageBlob) otherValue;
+        return Objects.equals(toProto(), comparedBlob.toProto()) && Objects.equals(storageSettings, comparedBlob.storageSettings);
+    }
+
+    /**
+     * Lists the ACL entries for this blob.
+     *
+     * <p>Example of listing the ACL entries.
+     *
+     * <pre>{@code
+     * List<Acl> acls = blob.listAcls();
+     * for (Acl acl : acls) {
+     *   // do something with ACL entry
      * }
      * }</pre>
      *
-     * @param storageSettings blob delete options
-     * @return {@code true} if blob was deleted, {@code false} if it was not found
      * @throws StorageOperationException upon failure
      */
-    public boolean deleteBlob(BlobSourceOptions... storageSettings) {
-        return cloudStorageClient.delete(getBlobId(), toSourceOptionsArray(this, storageSettings));
+    public List<AccessControlEntry> listAclEntries() {
+        return cloudStorageClient.listAcls(getBlobId());
     }
 
     /**
@@ -609,28 +645,6 @@ public class StorageBlob extends BlobMetadata {
     public BlobCopyWriter copyToTarget(BlobIdentifier destinationBlob, BlobSourceOptions... storageSettings) {
         StorageClient.CopyOperationRequest transferRequest = StorageClient.CopyOperationRequest.newCopyOperationBuilder().setSource(getBucket(), getName()).setSourceOptions(toSourceOptionsArray(this, storageSettings)).setTarget(destinationBlob).buildCopyOperation();
         return cloudStorageClient.copy(transferRequest);
-    }
-
-    /**
-     * Sends a copy request for the current blob to the target bucket, preserving its name. Possibly
-     * copying also some of the metadata (e.g. content-type).
-     *
-     * <p>Example of copying the blob to a different bucket, keeping the original name.
-     *
-     * <pre>{@code
-     * String bucketName = "my_unique_bucket";
-     * CopyWriter copyWriter = blob.copyTo(bucketName);
-     * Blob copiedBlob = copyWriter.getResult();
-     * }</pre>
-     *
-     * @param destinationBucket target bucket's name
-     * @param storageSettings source blob options
-     * @return a {@link BlobCopyWriter} object that can be used to get information on the newly created
-     *     blob or to complete the copy if more than one RPC request is needed
-     * @throws StorageOperationException upon failure
-     */
-    public BlobCopyWriter copyToTarget(String destinationBucket, BlobSourceOptions... storageSettings) {
-        return copyToTarget(destinationBucket, getName(), storageSettings);
     }
 
     /**
@@ -665,6 +679,186 @@ public class StorageBlob extends BlobMetadata {
      */
     public BlobCopyWriter copyToTarget(String destinationBucket, String destinationBlob, BlobSourceOptions... storageSettings) {
         return copyToTarget(BlobIdentifier.create(destinationBucket, destinationBlob), storageSettings);
+    }
+
+    private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+        objectInputStream.defaultReadObject();
+        this.cloudStorageClient = storageSettings.getService();
+    }
+
+    /**
+     * Returns this blob's content.
+     *
+     * <p>Example of reading all bytes of the blob, if its generation matches the {@link
+     * StorageBlob#getGeneration()} value, otherwise a {@link StorageOperationException} is thrown.
+     *
+     * <pre>{@code
+     * byte[] content = blob.getContent(BlobSourceOption.generationMatch());
+     * }</pre>
+     *
+     * @param storageSettings blob read options
+     * @throws StorageOperationException upon failure
+     */
+    public byte[] getContent(BlobSourceOptions... storageSettings) {
+        return cloudStorageClient.readAllBytes(getBlobId(), toSourceOptionsArray(this, storageSettings));
+    }
+
+    /**
+     * Returns a {@code WriteChannel} object for writing to this blob. By default any md5 and crc32c
+     * values in the current blob are ignored unless requested via the {@code
+     * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options.
+     *
+     * <p>Example of writing the blob's content through a writer.
+     *
+     * <pre>{@code
+     * byte[] content = "Hello, World!".getBytes(UTF_8);
+     * try (WriteChannel writer = blob.writer()) {
+     *   try {
+     *     writer.write(ByteBuffer.wrap(content, 0, content.length));
+     *   } catch (Exception ex) {
+     *     // handle exception
+     *   }
+     * }
+     * }</pre>
+     *
+     * @param storageSettings target blob options
+     * @throws StorageOperationException upon failure
+     */
+    public WriteChannel openWriter(StorageClient.BlobWriteSetting... storageSettings) {
+        return cloudStorageClient.writer(this, storageSettings);
+    }
+
+    /**
+     * Checks if this blob exists.
+     *
+     * <p>Example of checking if the blob exists.
+     *
+     * <pre>{@code
+     * boolean exists = blob.exists();
+     * if (exists) {
+     *   // the blob exists
+     * } else {
+     *   // the blob was not found
+     * }
+     * }</pre>
+     *
+     * @param storageSettings blob read options
+     * @return true if this blob exists, false otherwise
+     * @throws StorageOperationException upon failure
+     */
+    public boolean existsInStorage(BlobSourceOptions... storageSettings) {
+        int count = storageSettings.length;
+        StorageClient.BlobGetOptions[] fetchParams = Arrays.copyOf(toGetOptionsArray(this, storageSettings), count + 1);
+        fetchParams[count] = StorageClient.BlobGetOptions.fieldsSelector();
+        return null != cloudStorageClient.get(getBlobId(), fetchParams);
+    }
+
+    /**
+     * Updates an ACL entry on this blob.
+     *
+     * <p>Example of updating a new ACL entry.
+     *
+     * <pre>{@code
+     * Acl acl = blob.updateAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
+     * }</pre>
+     *
+     * @throws StorageOperationException upon failure
+     */
+    public AccessControlEntry updateAclEntry(AccessControlEntry accessControlList) {
+        return cloudStorageClient.updateAcl(getBlobId(), accessControlList);
+    }
+
+    /**
+     * Fetches current blob's latest information. Returns {@code null} if the blob does not exist.
+     *
+     * <p>Example of getting the blob's latest information, if its generation does not match the
+     * {@link StorageBlob#getGeneration()} value, otherwise a {@link StorageOperationException} is thrown.
+     *
+     * <pre>{@code
+     * Blob latestBlob = blob.reload(BlobSourceOption.generationNotMatch());
+     * if (latestBlob == null) {
+     *   // the blob was not found
+     * }
+     * }</pre>
+     *
+     * @param storageSettings blob read options
+     * @return a {@code Blob} object with latest information or {@code null} if not found
+     * @throws StorageOperationException upon failure
+     */
+    public StorageBlob reloadFromStorage(BlobSourceOptions... storageSettings) {
+        return cloudStorageClient.get(getBlobId(), toGetOptionsArray(this, storageSettings));
+    }
+
+    /**
+     * Downloads this blob to the given file path using specified blob read options.
+     *
+     * @param destinationPath destination
+     * @param storageSettings blob read options
+     * @throws StorageOperationException upon failure
+     */
+    public void downloadTo(Path destinationPath, BlobSourceOptions... storageSettings) {
+        try (OutputStream destinationStream = Files.newOutputStream(destinationPath)) {
+            downloadTo(destinationStream, storageSettings);
+        } catch (IOException ioException) {
+            throw new StorageOperationException(ioException);
+        }
+    }
+
+    /**
+     * Downloads this blob to the given output stream using specified blob read options.
+     *
+     * @param destinationStream
+     * @param storageSettings
+     */
+    public void downloadTo(OutputStream destinationStream, BlobSourceOptions... storageSettings) {
+        final CountingOutputStream countingStream = new CountingOutputStream(destinationStream);
+        final CloudStorageRpc rpcClient = this.storageSettings.getStorageRpcV1();
+        final Map<CloudStorageRpc.StorageOption, ?> requestOptionsMap = StorageClientImpl.buildOptionMap(getBlobId(), storageSettings);
+        runWithRetries(callable(new Runnable() {
+
+            @Override
+            public void run() {
+                rpcClient.read(getBlobId().toProto(), requestOptionsMap, countingStream.getCount(), countingStream);
+            }
+        }), this.storageSettings.getRetrySettings(), StorageClientImpl.EXCEPTION_HANDLER, this.storageSettings.getClock());
+    }
+
+    /**
+     * Deletes this blob.
+     *
+     * <p>Example of deleting the blob, if its generation matches the {@link StorageBlob#getGeneration()}
+     * value, otherwise a {@link StorageOperationException} is thrown.
+     *
+     * <pre>{@code
+     * boolean deleted = blob.delete(BlobSourceOption.generationMatch());
+     * if (deleted) {
+     *   // the blob was deleted
+     * } else {
+     *   // the blob was not found
+     * }
+     * }</pre>
+     *
+     * @param storageSettings blob delete options
+     * @return {@code true} if blob was deleted, {@code false} if it was not found
+     * @throws StorageOperationException upon failure
+     */
+    public boolean deleteBlob(BlobSourceOptions... storageSettings) {
+        return cloudStorageClient.delete(getBlobId(), toSourceOptionsArray(this, storageSettings));
+    }
+
+    /**
+     * Creates a new ACL entry on this blob.
+     *
+     * <p>Example of creating a new ACL entry.
+     *
+     * <pre>{@code
+     * Acl acl = blob.createAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
+     * }</pre>
+     *
+     * @throws StorageOperationException upon failure
+     */
+    public AccessControlEntry createAclEntry(AccessControlEntry accessControlList) {
+        return cloudStorageClient.createAcl(getBlobId(), accessControlList);
     }
 
     /**
@@ -704,111 +898,6 @@ public class StorageBlob extends BlobMetadata {
     }
 
     /**
-     * Returns a {@code WriteChannel} object for writing to this blob. By default any md5 and crc32c
-     * values in the current blob are ignored unless requested via the {@code
-     * BlobWriteOption.md5Match} and {@code BlobWriteOption.crc32cMatch} options.
-     *
-     * <p>Example of writing the blob's content through a writer.
-     *
-     * <pre>{@code
-     * byte[] content = "Hello, World!".getBytes(UTF_8);
-     * try (WriteChannel writer = blob.writer()) {
-     *   try {
-     *     writer.write(ByteBuffer.wrap(content, 0, content.length));
-     *   } catch (Exception ex) {
-     *     // handle exception
-     *   }
-     * }
-     * }</pre>
-     *
-     * @param storageSettings target blob options
-     * @throws StorageOperationException upon failure
-     */
-    public WriteChannel openWriter(StorageClient.BlobWriteSetting... storageSettings) {
-        return cloudStorageClient.writer(this, storageSettings);
-    }
-
-    /**
-     * Generates a signed URL for this blob. If you want to allow access for a fixed amount of time to
-     * this blob, you can use this method to generate a URL that is only valid within a certain time
-     * period. This is particularly useful if you don't want publicly accessible blobs, but also don't
-     * want to require users to explicitly log in. Signing a URL requires a service account signer. If
-     * an instance of {@link com.google.auth.ServiceAccountSigner} was passed to {@link
-     * StorageSettings}' builder via {@code setCredentials(Credentials)} or the default credentials are
-     * being used and the environment variable {@code GOOGLE_APPLICATION_CREDENTIALS} is set or your
-     * application is running in App Engine, then {@code signUrl} will use that credentials to sign
-     * the URL. If the credentials passed to {@link StorageSettings} do not implement {@link
-     * ServiceAccountSigner} (this is the case, for instance, for Compute Engine credentials and
-     * Google Cloud SDK credentials) then {@code signUrl} will throw an {@link IllegalStateException}
-     * unless an implementation of {@link ServiceAccountSigner} is passed using the {@link
-     * UrlSigningOption#withSigner(ServiceAccountSigner)} option.
-     *
-     * <p>A service account signer is looked for in the following order:
-     *
-     * <ol>
-     *   <li>The signer passed with the option {@link StorageClient.UrlSigningOption#withSigner(ServiceAccountSigner)}
-     *   <li>The credentials passed to {@link StorageSettings}
-     *   <li>The default credentials, if no credentials were passed to {@link StorageSettings}
-     * </ol>
-     *
-     * <p>Example of creating a signed URL for the blob that is valid for 2 weeks, using the default
-     * credentials for signing the URL:
-     *
-     * <pre>{@code
-     * URL signedUrl = blob.signUrl(14, TimeUnit.DAYS);
-     * }</pre>
-     *
-     * <p>Example of creating a signed URL for the blob passing the {@link
-     * StorageClient.UrlSigningOption#withSigner(ServiceAccountSigner)} option, that will be used to sign the URL:
-     *
-     * <pre>{@code
-     * String keyPath = "/path/to/key.json";
-     * URL signedUrl = blob.signUrl(14, TimeUnit.DAYS, SignUrlOption.signWith(
-     *     ServiceAccountCredentials.fromStream(new FileInputStream(keyPath))));
-     * }</pre>
-     *
-     * <p>Example of creating a signed URL for a blob generation:
-     *
-     * <pre>{@code
-     * URL signedUrl = blob.signUrl(1, TimeUnit.HOURS,
-     *     SignUrlOption.withQueryParams(ImmutableMap.of("generation", "1576656755290328")));
-     * }</pre>
-     *
-     * @param expiryAmount time until the signed URL expires, expressed in {@code unit}. The finer
-     *     granularity supported is 1 second, finer granularities will be truncated
-     * @param timeMeasure time unit of the {@code duration} parameter
-     * @param storageSettings optional URL signing options
-     * @return a signed URL for this blob and the specified options
-     * @throws IllegalStateException if {@link StorageClient.UrlSigningOption#withSigner(ServiceAccountSigner)} was not
-     *     used and no implementation of {@link ServiceAccountSigner} was provided to {@link
-     *     StorageSettings}
-     * @throws IllegalArgumentException if {@code SignUrlOption.withMd5()} option is used and {@code
-     *     blobInfo.md5()} is {@code null}
-     * @throws IllegalArgumentException if {@code SignUrlOption.withContentType()} option is used and
-     *     {@code blobInfo.contentType()} is {@code null}
-     * @throws SigningException if the attempt to sign the URL failed
-     * @see <a href="https://cloud.google.com/storage/docs/access-control#Signed-URLs">Signed-URLs</a>
-     */
-    public URL generateSignedUrl(long expiryAmount, TimeUnit timeMeasure, StorageClient.UrlSigningOption... storageSettings) {
-        return cloudStorageClient.signUrl(this, expiryAmount, timeMeasure, storageSettings);
-    }
-
-    /**
-     * Returns the ACL entry for the specified entity on this blob or {@code null} if not found.
-     *
-     * <p>Example of getting the ACL entry for an entity.
-     *
-     * <pre>{@code
-     * Acl acl = blob.getAcl(User.ofAllAuthenticatedUsers());
-     * }</pre>
-     *
-     * @throws StorageOperationException upon failure
-     */
-    public AccessControlEntry getAcl(AccessControlEntry.TypedEntity principal) {
-        return cloudStorageClient.getAcl(getBlobId(), principal);
-    }
-
-    /**
      * Deletes the ACL entry for the specified entity on this blob.
      *
      * <p>Example of deleting the ACL entry for an entity.
@@ -825,94 +914,8 @@ public class StorageBlob extends BlobMetadata {
      * @return {@code true} if the ACL was deleted, {@code false} if it was not found
      * @throws StorageOperationException upon failure
      */
-    public boolean deleteAclEntry(AccessControlEntry.TypedEntity principal) {
+    public boolean deleteAclEntry(TypedEntity principal) {
         return cloudStorageClient.deleteAcl(getBlobId(), principal);
     }
 
-    /**
-     * Creates a new ACL entry on this blob.
-     *
-     * <p>Example of creating a new ACL entry.
-     *
-     * <pre>{@code
-     * Acl acl = blob.createAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.READER));
-     * }</pre>
-     *
-     * @throws StorageOperationException upon failure
-     */
-    public AccessControlEntry createAclEntry(AccessControlEntry accessControlList) {
-        return cloudStorageClient.createAcl(getBlobId(), accessControlList);
-    }
-
-    /**
-     * Updates an ACL entry on this blob.
-     *
-     * <p>Example of updating a new ACL entry.
-     *
-     * <pre>{@code
-     * Acl acl = blob.updateAcl(Acl.of(User.ofAllAuthenticatedUsers(), Acl.Role.OWNER));
-     * }</pre>
-     *
-     * @throws StorageOperationException upon failure
-     */
-    public AccessControlEntry updateAclEntry(AccessControlEntry accessControlList) {
-        return cloudStorageClient.updateAcl(getBlobId(), accessControlList);
-    }
-
-    /**
-     * Lists the ACL entries for this blob.
-     *
-     * <p>Example of listing the ACL entries.
-     *
-     * <pre>{@code
-     * List<Acl> acls = blob.listAcls();
-     * for (Acl acl : acls) {
-     *   // do something with ACL entry
-     * }
-     * }</pre>
-     *
-     * @throws StorageOperationException upon failure
-     */
-    public List<AccessControlEntry> listAclEntries() {
-        return cloudStorageClient.listAcls(getBlobId());
-    }
-
-    /**
-     * Returns the blob's {@code Storage} object used to issue requests.
-     */
-    public StorageClient getStorage() {
-        return cloudStorageClient;
-    }
-
-    @Override
-    public StorageBlob.BlobInfoBuilder toBlobInfoBuilder() {
-        return new BlobInfoBuilder(this);
-    }
-
-    @Override
-    public final boolean equals(Object otherValue) {
-        if (this == otherValue) {
-            return true;
-        }
-        if (null == otherValue || !otherValue.getClass().equals(StorageBlob.class)) {
-            return false;
-        }
-        StorageBlob comparedBlob = (StorageBlob) otherValue;
-        return Objects.equals(toProto(), comparedBlob.toProto()) && Objects.equals(storageSettings, comparedBlob.storageSettings);
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(super.hashCode(), storageSettings);
-    }
-
-    private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        objectInputStream.defaultReadObject();
-        this.cloudStorageClient = storageSettings.getService();
-    }
-
-    static StorageBlob fromProto(StorageClient cloudStorageClient, StorageObject protoObject) {
-        BlobMetadata metadata = BlobMetadata.fromPb(protoObject);
-        return new StorageBlob(cloudStorageClient, new BlobInfoBuilderImpl(metadata));
-    }
 }

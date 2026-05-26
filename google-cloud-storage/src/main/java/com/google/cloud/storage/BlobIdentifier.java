@@ -36,41 +36,16 @@ public final class BlobIdentifier implements Serializable {
 
     private final Long version;
 
-    private BlobIdentifier(String container, String objectKey, Long version) {
-        this.container = container;
-        this.objectKey = objectKey;
-        this.version = version;
+    StorageObject toProto() {
+        StorageObject proto = new StorageObject();
+        proto.setBucket(container);
+        proto.setName(objectKey);
+        proto.setGeneration(version);
+        return proto;
     }
 
-    /**
-     * Returns the name of the bucket containing the blob.
-     */
-    public String getBucket() {
-        return container;
-    }
-
-    /**
-     * Returns the name of the blob.
-     */
-    public String getName() {
-        return objectKey;
-    }
-
-    /**
-     * Returns blob's data generation. Used for versioning.
-     */
-    public Long getGeneration() {
-        return version;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(container, objectKey, version);
+    static BlobIdentifier fromProto(StorageObject proto) {
+        return BlobIdentifier.create(proto.getBucket(), proto.getName(), proto.getGeneration());
     }
 
     @Override
@@ -85,12 +60,27 @@ public final class BlobIdentifier implements Serializable {
         return Objects.equals(container, thatIdentifier.container) && Objects.equals(objectKey, thatIdentifier.objectKey) && Objects.equals(version, thatIdentifier.version);
     }
 
-    StorageObject toProto() {
-        StorageObject proto = new StorageObject();
-        proto.setBucket(container);
-        proto.setName(objectKey);
-        proto.setGeneration(version);
-        return proto;
+    /**
+     * Creates a {@code BlobId} object.
+     *
+     * @param container name of the containing bucket
+     * @param objectKey blob's name
+     * @param version blob's data generation, used for versioning. If {@code null} the identifier
+     *     refers to the latest blob's generation
+     */
+    public static BlobIdentifier create(String container, String objectKey, Long version) {
+        return new BlobIdentifier(checkNotNull(container), checkNotNull(objectKey), version);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(container, objectKey, version);
+    }
+
+    private BlobIdentifier(String container, String objectKey, Long version) {
+        this.container = container;
+        this.objectKey = objectKey;
+        this.version = version;
     }
 
     /**
@@ -104,18 +94,29 @@ public final class BlobIdentifier implements Serializable {
     }
 
     /**
-     * Creates a {@code BlobId} object.
-     *
-     * @param container name of the containing bucket
-     * @param objectKey blob's name
-     * @param version blob's data generation, used for versioning. If {@code null} the identifier
-     *     refers to the latest blob's generation
+     * Returns the name of the blob.
      */
-    public static BlobIdentifier create(String container, String objectKey, Long version) {
-        return new BlobIdentifier(checkNotNull(container), checkNotNull(objectKey), version);
+    public String getName() {
+        return objectKey;
     }
 
-    static BlobIdentifier fromProto(StorageObject proto) {
-        return BlobIdentifier.create(proto.getBucket(), proto.getName(), proto.getGeneration());
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("bucket", getBucket()).add("name", getName()).add("generation", getGeneration()).toString();
     }
+
+    /**
+     * Returns the name of the bucket containing the blob.
+     */
+    public String getBucket() {
+        return container;
+    }
+
+    /**
+     * Returns blob's data generation. Used for versioning.
+     */
+    public Long getGeneration() {
+        return version;
+    }
+
 }

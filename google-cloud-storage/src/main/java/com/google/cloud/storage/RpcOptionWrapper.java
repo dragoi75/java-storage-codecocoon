@@ -31,38 +31,39 @@ public abstract class RpcOptionWrapper implements Serializable {
   private final CloudStorageRpc.StorageOption storageOption;
   private final Object data;
 
-  RpcOptionWrapper(CloudStorageRpc.StorageOption storageOption, Object data) {
-    this.storageOption = checkNotNull(storageOption);
-    this.data = data;
-  }
-
-  CloudStorageRpc.StorageOption getRpcOption() {
-    return storageOption;
-  }
-
-  Object getValue() {
-    return data;
-  }
-
-  @Override
-  public boolean equals(Object otherObject) {
-    if (!(otherObject instanceof RpcOptionWrapper)) {
-      return false;
+    Object getValue() {
+      return data;
     }
-    RpcOptionWrapper thatWrapper = (RpcOptionWrapper) otherObject;
-    return Objects.equals(storageOption, thatWrapper.storageOption) && Objects.equals(data, thatWrapper.data);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(storageOption, data);
-  }
+    @Override
+    public int hashCode() {
+      return Objects.hash(storageOption, data);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", storageOption.getValue())
-        .add("value", data)
-        .toString();
-  }
+    @Override
+    public boolean equals(Object otherObject) {
+      if (!(otherObject instanceof RpcOptionWrapper)) {
+        return false;
+      }
+      RpcOptionWrapper thatWrapper = (RpcOptionWrapper) otherObject;
+      return Objects.equals(storageOption, thatWrapper.storageOption) && Objects.equals(data, thatWrapper.data);
+    }
+
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+          .add("name", storageOption.getValue())
+          .add("value", data)
+          .toString();
+    }
+
+    RpcOptionWrapper(CloudStorageRpc.StorageOption storageOption, Object data) {
+      this.storageOption = checkNotNull(storageOption);
+      this.data = data;
+    }
+
+    CloudStorageRpc.StorageOption getRpcOption() {
+      return storageOption;
+    }
+
 }
